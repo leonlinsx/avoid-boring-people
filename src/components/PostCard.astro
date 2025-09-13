@@ -1,0 +1,53 @@
+---
+const { post } = Astro.props;
+---
+
+<article class="post-card">
+  <h2 class="post-title">
+    <a href={post.url}>{post.frontmatter.title}</a>
+  </h2>
+
+  <p class="post-summary">{post.frontmatter.summary}</p>
+
+  <p class="post-meta">
+    {post.frontmatter.category} ·
+    {new Date(post.frontmatter.pubDate).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })} ·
+    {post.frontmatter.readingTime} min read
+  </p>
+</article>
+
+<style>
+  .post-card {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .post-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .post-title a {
+    text-decoration: none;
+    color: #333;
+  }
+
+  .post-title a:hover {
+    text-decoration: underline;
+  }
+
+  .post-summary {
+    color: #555;
+    margin-bottom: 0.3rem;
+  }
+
+  .post-meta {
+    font-size: 0.9rem;
+    color: #777;
+  }
+</style>

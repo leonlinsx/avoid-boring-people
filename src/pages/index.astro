@@ -1,49 +1,78 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+// Load posts
+const allPosts = await Astro.glob('./writing/*.md');
+
+// Sort newest first
+const posts = allPosts
+  .sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate))
+  .slice(0, 3); // only show latest 3
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<BaseLayout title="Home">
+  <section class="hero">
+    <h1>I write to think clearly about finance, tech, and ideas that interest me</h1>
+    <p>Sharing my writing helps my ideas compound and helps me connect with other curious people.</p>
+    <p><a href="/newsletter">Join 5000+ readers →</a></p>
+    <p><a href="/best-of">New here? Start here →</a></p>
+  </section>
+
+  <section class="latest-posts">
+    <h2>Latest Posts</h2>
+    {posts.map(post => (
+      <PostCard post={post} />
+    ))}
+  </section>
+
+  <!-- About teaser -->
+  <section class="about-teaser">
+    <p>
+      I've worked in investing, investment banking, big tech, and startups,
+      and now I write to make sense of it all.
+      <a href="/about">Read more →</a>
+    </p>
+  </section>
+
+  <!-- As featured in -->
+  <section class="featured">
+    <h3>As featured in</h3>
+    <div class="logos">
+      <img src="/logos/sample1.png" alt="Publication 1" />
+      <img src="/logos/sample2.png" alt="Publication 2" />
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="contact-cta">
+    <p>
+      I consult and angel invest selectively.
+      <a href="/about#contact">Get in touch →</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-teaser, .featured, .contact-cta {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .featured .logos {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .featured img {
+    max-height: 40px;
+    filter: grayscale(100%);
+    opacity: 0.8;
+  }
+
+  .featured img:hover {
+    opacity: 1;
+  }
+</style>

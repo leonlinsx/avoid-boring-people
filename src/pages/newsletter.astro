@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Newsletter">
+  <h1>Newsletter</h1>
+  <p class="subtext">
+    <strong>Avoid Boring People</strong> is where I share essays on finance, tech,
+    books, and the ideas that spark curiosity. Writing is how I think and learn —
+    and the newsletter is the best way to follow along.
+  </p>
+
+  <section class="banner">
+    <img
+      src="/logos/newsletter-banner.png"
+      alt="Avoid Boring People newsletter banner"
+    />
+  </section>
+
+  <section class="pitch">
+    <p>
+      <strong>Join 5,000+ curious readers</strong> who get my writing directly in
+      their inbox.
+    </p>
+  </section>
+
+  <section class="signup">
+    <iframe
+      src="https://avoidboringpeople.substack.com/embed"
+      width="100%"
+      height="150"
+      style="border:1px solid #EEE; background:white; max-width: 600px; margin: 0 auto; display: block;"
+      frameborder="0"
+      scrolling="no"></iframe>
+  </section>
+
+  <section class="expectations">
+    <h2>What to expect</h2>
+    <ul>
+      <li>Essays on finance, tech, and ideas</li>
+      <li>Book notes and reflections</li>
+      <li>Occasional thoughts on movement and lifestyle</li>
+      <li>Sent whenever I have something to say</li>
+    </ul>
+  </section>
+
+  <section class="closing">
+    <p>
+      If you like thoughtful writing and the occasional unexpected connection, I
+      think you’ll enjoy it. Subscribe and join the community.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .subtext {
+    color: #555;
+    margin-bottom: 2rem;
+  }
+
+  .banner img {
+    max-width: 100%;
+    margin: 1.5rem 0;
+  }
+
+  .pitch {
+    margin-bottom: 2rem;
+  }
+
+  .signup {
+    margin: 2rem 0;
+  }
+
+  .expectations ul {
+    list-style: disc;
+    padding-left: 1.2rem;
+  }
+
+  .expectations li {
+    margin-bottom: 0.5rem;
+  }
+
+  .closing {
+    margin-top: 2.5rem;
+    font-weight: 500;
+  }
+</style>

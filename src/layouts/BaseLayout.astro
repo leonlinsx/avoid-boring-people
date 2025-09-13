@@ -1,0 +1,23 @@
+---
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <!-- you can import your Header component here -->
+    </header>
+
+    <main>
+      <slot /> <!-- this is where page content goes -->
+    </main>
+
+    <footer>
+      <!-- you can import your Footer component here -->
+    </footer>
+  </body>
+</html>

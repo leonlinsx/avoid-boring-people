@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+// Load all Markdown posts under /writing/
+const allPosts = await Astro.glob('./*.md');
+
+// Sort posts by date (newest first)
+const posts = allPosts.sort(
+  (a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)
+);
+
+// Grab active category from query string (?category=Finance)
+const url = new URL(Astro.request.url);
+const active = url.searchParams.get('category') ?? 'All';
+
+// Filter if category selected
+const filtered =
+  active === 'All' ? posts : posts.filter(p => p.frontmatter.category === active);
+---
+
+<BaseLayout title="Writing">
+  <h1>Writing</h1>
+
+  <!-- Category Filters -->
+  <nav class="category-nav">
+  {['All', 'Finance', 'Tech', 'Book Notes', 'Movement', 'Lifestyle'].map(cat => (
+    <a
+      href={`/writing?category=${cat}`}
+      class={active === cat ? 'active' : ''}
+    >
+      {cat}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .category-nav {
+    margin-bottom: 1.5rem;
+  }
+
+  .category-nav a {
+    margin-right: 1rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding-bottom: 0.2rem;
+  }
+
+  .category-nav a:hover {
+    color: #000;
+  }
+
+  .category-nav a.active {
+    border-bottom: 2px solid #000;
+    font-weight: bold;
+  }
+</style>
+
+
+  <!-- Post List -->
+  {filtered.map(post => (
+    <PostCard post={post} />
+  ))}
+</BaseLayout>

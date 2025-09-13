@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+
+// Select specific posts to feature
+const bestPosts = await Astro.glob("./writing/*.md");
+const featured = bestPosts.filter((post) =>
+  ["cycles.md"].includes(post.file.split("/").pop())
+);
+---
+
+<BaseLayout title="Best Of">
+  <h1>Start Here</h1>
+  <p>
+    These are some of my favorite pieces — a good place to begin if you’re new
+    here.
+  </p>
+
+  {featured.map((post) => <PostCard post={post} />)}
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    color: #555;
+  }
+</style>
