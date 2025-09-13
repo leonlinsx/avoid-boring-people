@@ -1,22 +1,33 @@
 ---
 const { post } = Astro.props;
+
+// Safe destructuring with fallbacks
+const title = post?.data?.title ?? "Untitled";
+const desc = post?.data?.description ?? "";
+const category = post?.data?.category ?? "";
+const date = post?.data?.pubDate ? new Date(post.data.pubDate) : null;
+const rt = post?.data?.readingTime; // number of minutes
+const href = `/writing/${post?.slug || post?.id || ""}/`;
 ---
 
 <article class="post-card">
   <h2 class="post-title">
-    <a href={post.url}>{post.frontmatter.title}</a>
+    <a href={href}>{title}</a>
   </h2>
 
-  <p class="post-summary">{post.frontmatter.summary}</p>
+  {desc && <p class="post-summary">{desc}</p>}
 
   <p class="post-meta">
-    {post.frontmatter.category} ·
-    {new Date(post.frontmatter.pubDate).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })} ·
-    {post.frontmatter.readingTime} min read
+    {category}
+    {
+      date &&
+        ` · ${date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}`
+    }
+    {rt && ` · ${rt} min read`}
   </p>
 </article>
 
@@ -24,7 +35,7 @@ const { post } = Astro.props;
   .post-card {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .post-title {
@@ -34,7 +45,7 @@ const { post } = Astro.props;
 
   .post-title a {
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
   }
 
   .post-title a:hover {

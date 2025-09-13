@@ -1,36 +1,51 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import readingTime from "reading-time";
 
-// Load posts
-const allPosts = await Astro.glob('./writing/*.md');
+// Load posts from content collection
+const allPosts = await getCollection("blog");
 
-// Sort newest first
+// Add readingTime and sort newest first, then limit to 3
 const posts = allPosts
-  .sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate))
-  .slice(0, 3); // only show latest 3
+  .map((p) => ({
+    ...p,
+    data: {
+      ...p.data,
+      readingTime: Math.max(
+        1,
+        Math.round(readingTime(p.body ?? "").minutes)
+      ),
+    },
+  }))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
 <BaseLayout title="Home">
   <section class="hero">
-    <h1>I write to think clearly about finance, tech, and ideas that interest me</h1>
-    <p>Sharing my writing helps my ideas compound and helps me connect with other curious people.</p>
+    <h1>
+      I write to think clearly about finance, tech, and ideas that interest me
+    </h1>
+    <p>
+      Sharing my writing helps my ideas compound and helps me connect with other
+      curious people.
+    </p>
     <p><a href="/newsletter">Join 5000+ readers →</a></p>
     <p><a href="/best-of">New here? Start here →</a></p>
   </section>
 
   <section class="latest-posts">
     <h2>Latest Posts</h2>
-    {posts.map(post => (
-      <PostCard post={post} />
-    ))}
+    {posts.map((post) => <PostCard post={post} />)}
   </section>
 
   <!-- About teaser -->
   <section class="about-teaser">
     <p>
-      I've worked in investing, investment banking, big tech, and startups,
-      and now I write to make sense of it all.
+      I've worked in investing, investment banking, big tech, and startups, and
+      now I write to make sense of it all.
       <a href="/about">Read more →</a>
     </p>
   </section>
@@ -54,25 +69,52 @@ const posts = allPosts
 </BaseLayout>
 
 <style>
-  .about-teaser, .featured, .contact-cta {
-    margin-top: 3rem;
+  .hero {
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .latest-posts {
+    margin-top: 2rem;
+  }
+
+  .about-teaser,
+  .contact-cta {
+    margin-top: 2.5rem;
+    padding: 1rem;
+    background: var(--color-quote);
+    border-radius: 8px;
+  }
+
+  .featured {
+    margin-top: 2.5rem;
     text-align: center;
   }
 
   .featured .logos {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.25rem;
     margin-top: 1rem;
   }
 
   .featured img {
-    max-height: 40px;
+    height: 32px;
+    max-width: 150px;
+    object-fit: contain;
     filter: grayscale(100%);
-    opacity: 0.8;
+    opacity: 0.85;
+    transition: opacity 0.2s;
   }
 
   .featured img:hover {
     opacity: 1;
+  }
+
+  @media (min-width: 768px) {
+    .featured img {
+      height: 36px;
+    }
   }
 </style>

@@ -1,14 +1,33 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
+import PostCard from "../components/PostCard.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  category,
+  readingTime,
+} = Astro.props;
+
+// Load other posts in the same category
+const allPosts = await getCollection("blog");
+const related = allPosts
+  .filter(
+    (p) => p.data.category === category && p.data.title !== title // exclude current post
+  )
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3); // limit to 3
 ---
 
 <html lang="en">
@@ -40,13 +59,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         margin-bottom: 1em;
         padding: 1em 0;
         text-align: center;
-        line-height: 1;
+        line-height: 1.4;
       }
       .title h1 {
         margin: 0 0 0.5em 0;
       }
-      .date {
+      .meta {
         margin-bottom: 0.5em;
+        font-size: 0.95rem;
         color: rgb(var(--gray));
       }
       .last-updated-on {
@@ -58,14 +78,20 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         border-top: 1px solid #eee;
         text-align: center;
       }
-
       .newsletter-cta h2 {
         margin-bottom: 0.5rem;
       }
-
       .newsletter-cta p {
         margin-bottom: 1rem;
         color: #555;
+      }
+      .related-posts {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+      }
+      .related-posts h2 {
+        margin-bottom: 1rem;
       }
     </style>
   </head>
@@ -83,8 +109,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         </div>
         <div class="prose">
           <div class="title">
-            <div class="date">
+            <div class="meta">
               <FormattedDate date={pubDate} />
+              {category && ` · ${category}`}
+              {readingTime && ` · ${readingTime} min read`}
               {
                 updatedDate && (
                   <div class="last-updated-on">
@@ -112,6 +140,18 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
               frameborder="0"
               scrolling="no"></iframe>
           </section>
+
+          <!-- Related posts -->
+          {
+            related.length > 0 && (
+              <section class="related-posts">
+                <h2>Related Posts</h2>
+                {related.map((p) => (
+                  <PostCard post={p} />
+                ))}
+              </section>
+            )
+          }
         </div>
       </article>
     </main>

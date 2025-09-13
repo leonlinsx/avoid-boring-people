@@ -1,12 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
 
-// Select specific posts to feature
-const bestPosts = await Astro.glob("./writing/*.md");
-const featured = bestPosts.filter((post) =>
-  ["cycles.md"].includes(post.file.split("/").pop())
-);
+// Load all posts from the blog collection
+const allPosts = await getCollection("blog");
+
+// Manually pick featured posts by slug (filenames without .md)
+const featuredSlugs = ["cycles", "book-notes-sapiens", "tech-trends"];
+
+const featured = allPosts.filter((post) => featuredSlugs.includes(post.slug));
 ---
 
 <BaseLayout title="Best Of">

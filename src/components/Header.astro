@@ -1,54 +1,107 @@
 ---
 import { SITE_TITLE } from "../consts";
-import HeaderLink from "./HeaderLink.astro";
+
+// Current path for active link styling
+const currentPath = Astro.url.pathname;
 ---
 
 <header>
   <nav>
-    <a href="/writing">Writing</a>
-    <a href="/best-of">Best Of</a>
-    <a href="/newsletter">Newsletter</a>
-    <a href="/about">About</a>
+    <!-- Logo (links to Home) -->
+    <a href="/" class="site-logo" aria-label={SITE_TITLE}>
+      <img src="/logos/substack_logo.png" alt={SITE_TITLE} />
+    </a>
+
+    <!-- Primary navigation -->
+    <div class="nav-links">
+      <a
+        href="/writing"
+        class={currentPath.startsWith("/writing") ? "active" : ""}>Writing</a
+      >
+      <a
+        href="/best-of"
+        class={currentPath.startsWith("/best-of") ? "active" : ""}>Best Of</a
+      >
+      <a
+        href="/newsletter"
+        class={currentPath.startsWith("/newsletter") ? "active" : ""}
+        >Newsletter</a
+      >
+      <a href="/about" class={currentPath.startsWith("/about") ? "active" : ""}
+        >About</a
+      >
+    </div>
   </nav>
 </header>
+
 <style>
   header {
     margin: 0;
-    padding: 0 1em;
-    background: white;
-    box-shadow: 0 2px 8px rgba(var(--black), 5%);
-  }
-  h2 {
-    margin: 0;
-    font-size: 1em;
+    padding: 0.5rem 1rem;
+    background: var(--color-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
-  h2 a,
-  h2 a.active {
-    text-decoration: none;
-  }
   nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
   }
-  nav a {
-    padding: 1em 0.5em;
-    color: var(--black);
-    border-bottom: 4px solid transparent;
-    text-decoration: none;
-  }
-  nav a.active {
-    text-decoration: none;
-    border-bottom-color: var(--accent);
-  }
-  .social-links,
-  .social-links a {
+
+  /* Logo */
+  .site-logo {
     display: flex;
+    align-items: center;
+    text-decoration: none;
   }
+
+  .site-logo img {
+    height: 32px;
+    width: auto;
+    display: block;
+    transition: opacity 0.2s ease;
+  }
+
+  .site-logo:hover img {
+    opacity: 0.85;
+  }
+
+  /* Navigation links */
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    padding: 1em 0.3em;
+    color: var(--color-text);
+    border-bottom: 3px solid transparent;
+    text-decoration: none;
+    font-weight: 500;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-link);
+  }
+
+  .nav-links a.active {
+    border-bottom-color: var(--color-link);
+    font-weight: 600;
+  }
+
   @media (max-width: 720px) {
-    .social-links {
-      display: none;
+    .nav-links {
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .site-logo img {
+      height: 28px;
     }
   }
 </style>

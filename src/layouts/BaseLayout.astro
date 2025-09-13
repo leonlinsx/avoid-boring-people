@@ -1,23 +1,28 @@
 ---
 const { title } = Astro.props;
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {title ? `${title} | Avoid Boring People` : "Avoid Boring People"}
+    </title>
   </head>
   <body>
-    <header>
-      <!-- you can import your Header component here -->
-    </header>
+    <!-- Site Header -->
+    <Header />
 
-    <main>
-      <slot /> <!-- this is where page content goes -->
+    <!-- Main content area -->
+    <main style="max-width: 720px; margin: 2rem auto; padding: 0 1rem;">
+      <slot />
+      <!-- ✅ page-specific content renders here -->
     </main>
 
-    <footer>
-      <!-- you can import your Footer component here -->
-    </footer>
+    <!-- Site Footer -->
+    <Footer />
   </body>
 </html>
