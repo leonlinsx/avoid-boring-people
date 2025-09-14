@@ -1,7 +1,7 @@
 ---
 title: "A story is a lie and a story is true"
 description: "On stories, pitches, investing, startups, and why narratives matter."
-pubDate: 2020-06-01
+pubDate: 2020-07-01
 category: "Tech"
 tags: ["finance", "investing", "tech", "startups"]
 featured: true
