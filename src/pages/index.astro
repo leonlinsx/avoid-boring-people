@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseHead from "../components/BaseHead.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
@@ -7,23 +8,24 @@ import readingTime from "reading-time";
 // Load posts from content collection
 const allPosts = await getCollection("blog");
 
-// Add readingTime and sort newest first, then limit to 3
+// Compute reading time, preserve slug, sort newest first, limit 3
 const posts = allPosts
   .map((p) => ({
     ...p,
+    slug: p.slug, // ✅ preserve slug so PostCard links work
     data: {
       ...p.data,
-      readingTime: Math.max(
-        1,
-        Math.round(readingTime(p.body ?? "").minutes)
-      ),
+      readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
     },
   }))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 ---
 
-<BaseLayout title="Home">
+<BaseLayout
+  title="Home | Avoid Boring People"
+  description="Writing on finance, tech, and other ideas by Leon Lin"
+>
   <section class="hero">
     <h1>
       I write to think clearly about finance, tech, and ideas that interest me
@@ -41,7 +43,6 @@ const posts = allPosts
     {posts.map((post) => <PostCard post={post} />)}
   </section>
 
-  <!-- About teaser -->
   <section class="about-teaser">
     <p>
       I've worked in investing, investment banking, big tech, and startups, and
@@ -50,7 +51,6 @@ const posts = allPosts
     </p>
   </section>
 
-  <!-- As featured in -->
   <section class="featured">
     <h3>As featured in</h3>
     <div class="logos">
@@ -59,11 +59,11 @@ const posts = allPosts
     </div>
   </section>
 
-  <!-- Contact CTA -->
   <section class="contact-cta">
     <p>
-      I consult and angel invest selectively.
-      <a href="/about#contact">Get in touch →</a>
+      I consult and angel invest selectively. <a href="/about#contact"
+        >Get in touch →</a
+      >
     </p>
   </section>
 </BaseLayout>
@@ -82,8 +82,15 @@ const posts = allPosts
   .contact-cta {
     margin-top: 2.5rem;
     padding: 1rem;
-    background: var(--color-quote);
     border-radius: 8px;
+
+    /* ❌ remove background */
+    background: none;
+
+    /* Optional: remove extra border radius now that background is gone */
+    border-radius: 0;
+    padding: 0;
+    margin-top: 2rem; /* adjust spacing if needed */
   }
 
   .featured {

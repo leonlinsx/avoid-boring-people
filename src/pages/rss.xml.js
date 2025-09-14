@@ -1,16 +1,17 @@
-import { getCollection } from 'astro:content';
-import rss from '@astrojs/rss';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from "astro:content";
+import rss from "@astrojs/rss";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../consts";
 
 export async function GET() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection("blog");
 
   return rss({
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    site: 'https://www.leonlinsx.com/',
-    items: posts.map(post => {
-      const slug = post.slug || post.id; // ✅ support both
+    site: SITE_URL,
+    items: posts.map((post) => {
+      // fallback to post.id if slug isn’t available
+      const slug = post.slug || post.id;
       return {
         title: post.data.title,
         description: post.data.description,

@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+import { SITE_OG_IMAGE } from "../consts";
+
 const { post } = Astro.props;
 
 // Safe destructuring with fallbacks
@@ -7,40 +10,95 @@ const desc = post?.data?.description ?? "";
 const category = post?.data?.category ?? "";
 const date = post?.data?.pubDate ? new Date(post.data.pubDate) : null;
 const rt = post?.data?.readingTime; // number of minutes
-const href = `/writing/${post?.slug || post?.id || ""}/`;
+
+// ✅ Use slug (preferred) or fallback to id
+const href = `/writing/${post?.slug ?? post?.id?.replace(/\.md$/, "")}/`;
+
+// Handle hero image or fallback
+const heroImage = post?.data?.heroImage;
+const thumbnail = heroImage ?? SITE_OG_IMAGE;
 ---
 
 <article class="post-card">
-  <h2 class="post-title">
-    <a href={href}>{title}</a>
-  </h2>
-
-  {desc && <p class="post-summary">{desc}</p>}
-
-  <p class="post-meta">
-    {category}
+  <a href={href} class="thumb-link">
     {
-      date &&
-        ` · ${date.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}`
+      typeof thumbnail === "object" ? (
+        <Image
+          src={thumbnail}
+          alt={title}
+          width={120}
+          height={80}
+          class="post-thumb"
+        />
+      ) : (
+        <img
+          src={thumbnail}
+          alt={title}
+          width="120"
+          height="80"
+          class="post-thumb"
+          loading="lazy"
+        />
+      )
     }
-    {rt && ` · ${rt} min read`}
-  </p>
+  </a>
+
+  <div class="post-content">
+    <h2 class="post-title">
+      <a href={href}>{title}</a>
+    </h2>
+
+    {desc && <p class="post-summary">{desc}</p>}
+
+    <p class="post-meta">
+      {category}
+      {
+        date &&
+          ` · ${date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}`
+      }
+      {rt && ` · ${rt} min read`}
+    </p>
+  </div>
 </article>
 
 <style>
   .post-card {
+    display: flex;
+    align-items: flex-start; /* ✅ align image top with text top */
+    gap: 1rem;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-border);
   }
 
+  /* Thumbnail */
+  .thumb-link {
+    flex-shrink: 0;
+  }
+
+  .post-thumb {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+
+    margin-top: 0.25rem; /* ✅ optional: nudge image down a bit for optical balance */
+  }
+
+  /* Content */
+  .post-content {
+    flex: 1;
+  }
+
   .post-title {
-    font-size: 1.4rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.2rem;
+    margin: 0 0 0.3rem 0;
   }
 
   .post-title a {
@@ -54,11 +112,21 @@ const href = `/writing/${post?.slug || post?.id || ""}/`;
 
   .post-summary {
     color: #555;
-    margin-bottom: 0.3rem;
+    margin: 0 0 0.4rem 0;
   }
 
   .post-meta {
     font-size: 0.9rem;
     color: #777;
+  }
+
+  @media (max-width: 600px) {
+    .post-card {
+      flex-direction: column;
+    }
+    .post-thumb {
+      width: 100%;
+      height: auto;
+    }
   }
 </style>

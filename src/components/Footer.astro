@@ -1,36 +1,45 @@
-<footer class="footer">
-  <p>
-    <a href="/newsletter">Newsletter</a> ·
-    <a
-      href="https://twitter.com/leonlinsx"
-      target="_blank"
-      rel="noopener noreferrer">Twitter</a
-    > ·
-    <a
-      href="https://www.threads.net/@leon.lin.sx"
-      target="_blank"
-      rel="noopener noreferrer">Threads</a
-    > ·
-    <a href="/rss.xml">RSS Feed</a>
-  </p>
-  <p>© {new Date().getFullYear()} Leon Lin</p>
+<footer class="site-footer">
+  <div class="footer-container">
+    <p>
+      <a
+        href="https://twitter.com/leonlinsx"
+        target="_blank"
+        rel="noopener noreferrer">Twitter</a
+      > ·
+      <a
+        href="https://www.threads.net/@leon.lin.sx"
+        target="_blank"
+        rel="noopener noreferrer">Threads</a
+      > ·
+      <a href="/rss.xml">RSS Feed</a>
+    </p>
+    <p>© {new Date().getFullYear()} Leon Lin</p>
+  </div>
 </footer>
 
 <style>
-  .footer {
-    text-align: center;
-    padding: 2rem 1rem;
-    margin-top: 3rem;
+  .site-footer {
+    width: 100%; /* ✅ full browser width */
     border-top: 1px solid #eee;
+    background: var(--color-bg);
+  }
+
+  .footer-container {
+    max-width: 1200px; /* ✅ content constrained */
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    text-align: center;
     font-size: 0.9rem;
     color: #555;
   }
-  .footer a {
-    color: inherit;
+
+  .footer-container a {
+    color: #000;
     text-decoration: none;
     margin: 0 0.5rem;
   }
-  .footer a:hover {
+
+  .footer-container a:hover {
     text-decoration: underline;
   }
 </style>

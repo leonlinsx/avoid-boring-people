@@ -7,10 +7,11 @@ import readingTime from "reading-time";
 // Load all posts
 const all = await getCollection("blog");
 
-// Compute reading time + sort newest first
+// Compute reading time + keep slug + sort newest first
 const posts = all
   .map((p) => ({
     ...p,
+    slug: p.slug, // ✅ keep slug for PostCard links
     data: {
       ...p.data,
       readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
@@ -35,7 +36,10 @@ const filtered =
   active === "All" ? posts : posts.filter((p) => p.data.category === active);
 ---
 
-<BaseLayout title="Writing">
+<BaseLayout
+  title="Writing | Avoid Boring People"
+  description="All essays and posts by Leon Lin on finance, tech, books, lifestyle, and more."
+>
   <h1>Writing</h1>
 
   <!-- Category Filters -->

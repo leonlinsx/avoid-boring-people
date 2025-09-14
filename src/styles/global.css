@@ -59,15 +59,19 @@ main {
 /* -------------------------------
    3. Headings
 ---------------------------------*/
-h1, h2, h3, h4 {
-  font-weight: 600;
+h1, h2, h3, h4, h5, h6 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 600; /* keeps them bold but elegant */
   line-height: 1.3;
+}
+
+h1, h2, h3, h4 {
   margin-bottom: 0.8rem;
   margin-top: 2rem;
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 2.25rem; /* slightly bigger for hero headings */
 }
 
 h2 {
