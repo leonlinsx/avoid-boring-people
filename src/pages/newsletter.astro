@@ -1,91 +1,150 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import BaseHead from "../components/BaseHead.astro";
 ---
 
 <BaseLayout
   title="Newsletter | Avoid Boring People"
   description="Join 5,000+ readers of Avoid Boring People to get essays on finance, tech, and ideas delivered directly to your inbox."
 >
-  <h1>Newsletter</h1>
-  <p class="subtext">
-    <strong>Avoid Boring People</strong> is where I share essays on finance, tech,
-    and other ideas. Writing is how I think and learn — and the newsletter is the
-    best way to follow along.
-  </p>
-
-  <section class="banner">
+  <!-- Hero / Banner -->
+  <section class="hero">
     <img
       src="/logos/substack_banner.png"
       alt="Avoid Boring People newsletter banner"
+      class="banner-img"
     />
-  </section>
-
-  <section class="pitch">
-    <p>
-      <strong>Join 5,000+ curious readers</strong> who get my writing directly in
-      their inbox.
+    <h1 class="visually-hidden">Avoid Boring People</h1>
+    <p class="subtext">
+      Essays on finance, tech, and other compounding ideas — delivered directly
+      to your inbox, free from algorithms and feeds. Join <strong
+        >5,000+ curious readers</strong
+      > today.
     </p>
   </section>
 
+  <!-- Primary Subscribe CTA -->
   <section class="signup">
-    <iframe
-      src="https://avoidboringpeople.substack.com/embed"
-      width="100%"
-      height="150"
-      style="border:1px solid #EEE; background:white; max-width: 600px; margin: 0 auto; display: block;"
-      frameborder="0"
-      scrolling="no"></iframe>
+    <div class="signup-box">
+      <iframe
+        src="https://avoidboringpeople.substack.com/embed"
+        width="100%"
+        height="150"
+        frameborder="0"
+        scrolling="no"></iframe>
+    </div>
+    <p class="trust-text">Free. No spam. Unsubscribe anytime.</p>
   </section>
 
+  <!-- What to Expect -->
   <section class="expectations">
-    <h2>What to expect</h2>
+    <h2>What to Expect</h2>
     <ul>
-      <li>Essays on finance, tech, and ideas</li>
+      <li>Same content as the website, but more convenient for you</li>
+      <li>Finance and tech analysis and explanations</li>
       <li>Book notes and reflections</li>
       <li>Occasional thoughts on movement and lifestyle</li>
-      <li>Sent whenever I have something to say</li>
+      <li>Delivered only when I have something worth sharing</li>
     </ul>
   </section>
 
-  <section class="closing">
+  <!-- About the Name -->
+  <section class="about-name">
     <p>
-      If you like thoughtful writing and the occasional unexpected connection, I
-      think you’ll enjoy it. Subscribe and join the community.
+      <em>About the name:</em> I chose it because of the double meaning. Strangely,
+      people often default to one interpretation. I promise I'm not as intimidating
+      as I sound.
     </p>
   </section>
 </BaseLayout>
 
 <style>
+  .hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .banner-img {
+    max-width: 100%;
+    margin: 1.5rem auto;
+    display: block;
+  }
+
   .subtext {
     color: #555;
-    margin-bottom: 2rem;
+    margin: 1rem auto 2rem;
+    max-width: 600px;
+    font-size: 1.1rem;
   }
 
-  .banner img {
-    max-width: 100%;
-    margin: 1.5rem 0;
-  }
-
-  .pitch {
-    margin-bottom: 2rem;
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .signup {
     margin: 2rem 0;
+    text-align: center;
+  }
+
+  .signup-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .signup-box iframe {
+    display: block;
+    width: 100%;
+    border: none;
+  }
+
+  .trust-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.75rem;
+  }
+
+  .expectations {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .expectations h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
   }
 
   .expectations ul {
     list-style: disc;
     padding-left: 1.2rem;
+    max-width: 600px;
+    margin: 1rem auto;
+    text-align: left;
   }
 
   .expectations li {
     margin-bottom: 0.5rem;
   }
 
-  .closing {
-    margin-top: 2.5rem;
-    font-weight: 500;
+  .about-name {
+    margin-top: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #666;
+    font-size: 0.95rem;
+    text-align: center;
+    font-style: italic;
   }
 </style>
