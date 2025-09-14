@@ -12,7 +12,7 @@ import {
 interface Props {
   title: string;
   description: string;
-  image?: string; // allow string paths from frontmatter
+  image?: string | { src: string }; // support string or image object
 }
 
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
@@ -20,13 +20,22 @@ const { title, description, image } = Astro.props;
 
 // Resolve OG image
 let ogImage: string;
+
 if (image) {
-  // If frontmatter heroImage is relative, prepend SITE_URL
-  ogImage = image.startsWith("http")
-    ? image
-    : `${SITE_URL.replace(/\/$/, "")}${image}`;
+  if (typeof image === "string") {
+    // Case 1: URL or relative string
+    ogImage = image.startsWith("http")
+      ? image
+      : `${SITE_URL.replace(/\/$/, "")}${image}`;
+  } else if (typeof image === "object" && "src" in image) {
+    // Case 2: Astro content image object
+    ogImage = `${SITE_URL.replace(/\/$/, "")}${image.src}`;
+  } else {
+    // Fallback in case something unexpected sneaks in
+    ogImage = `${SITE_URL.replace(/\/$/, "")}${SITE_OG_IMAGE}`;
+  }
 } else {
-  // Fallback to sitewide default
+  // Fallback
   ogImage = `${SITE_URL.replace(/\/$/, "")}${SITE_OG_IMAGE}`;
 }
 ---

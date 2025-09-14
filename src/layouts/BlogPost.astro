@@ -19,7 +19,15 @@ const {
   readingTime,
 } = Astro.props;
 
-const hero = heroImage ?? SITE_BANNER_IMAGE;
+// Normalize hero image → allow object (imported asset), string (URL/path), or fallback
+let hero: string | Record<string, any> = SITE_BANNER_IMAGE;
+if (heroImage) {
+  if (typeof heroImage === "object" && heroImage.src) {
+    hero = heroImage; // Astro asset
+  } else if (typeof heroImage === "string") {
+    hero = heroImage; // raw string path or external URL
+  }
+}
 
 // Related posts
 const allPosts = await getCollection("blog");
@@ -34,27 +42,35 @@ const related = allPosts
   .slice(0, 3);
 ---
 
-<BaseLayout title={title} description={description} image={hero}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={typeof hero === "object" ? hero.src : hero}
+>
   <main>
     <article>
       <!-- Hero Image -->
       {
         hero && (
           <div class="hero-image">
-            {typeof hero === "object" ? (
+            {typeof hero === "object" && hero.src ? (
               <Image
                 src={hero}
                 alt={title}
+                format="webp"
+                width={1200}
+                height={630}
+                fit="cover"
                 loading="eager"
                 fetchpriority="high"
                 decoding="async"
               />
             ) : (
               <img
-                src={hero}
+                src={hero as string}
                 alt={title}
-                width="720"
-                height="360"
+                width="1200"
+                height="630"
                 loading="eager"
                 fetchpriority="high"
                 decoding="async"

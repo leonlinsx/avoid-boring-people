@@ -1,7 +1,7 @@
 ---
 title: "How Market Cycles Shape Investor Psychology"
 pubDate: 2025-01-15
-category: "Finance"
+category: "Tech"
 tags: ["markets", "behavioral"]
 summary: "A reflection on behavioral biases during different stages of the cycle."
 readingTime: 6

@@ -11,7 +11,7 @@ const all = await getCollection("blog");
 const posts = all
   .map((p) => ({
     ...p,
-    slug: p.slug, // keep slug for PostCard links
+    slug: p.slug ?? p.id.replace(/\.md$/, ""), // safe slug for PostCard links
     data: {
       ...p.data,
       readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
@@ -23,17 +23,23 @@ const posts = all
 const url = new URL(Astro.request.url);
 const active = url.searchParams.get("category") ?? "All";
 
+// Normalizer for comparisons
+const normalize = (str: string) => str.trim().toLowerCase();
+
+// Build dynamic category list
 const categories = [
   "All",
-  "Finance",
-  "Tech",
-  "Book Notes",
-  "Movement",
-  "Lifestyle",
-];
+  ...Array.from(new Set(posts.map((p) => p.data.category?.trim() || ""))).sort(
+    (a, b) => a.localeCompare(b)
+  ),
+].filter(Boolean); // remove empty strings if any
 
 const filtered =
-  active === "All" ? posts : posts.filter((p) => p.data.category === active);
+  active === "All"
+    ? posts
+    : posts.filter(
+        (p) => normalize(p.data.category || "") === normalize(active)
+      );
 ---
 
 <BaseLayout
@@ -41,24 +47,62 @@ const filtered =
   description="All essays and posts by Leon Lin on finance, tech, books, lifestyle, and more."
 >
   <h1>Essays, Notes, and More</h1>
-  <p class="subtext">Thinking out loud about finance, technology, and how we work and live.</p>
+  <p class="subtext">
+    Thinking out loud about finance, technology, and how we work and live.
+  </p>
 
   <!-- Category Filters -->
   <nav class="filters" aria-label="Filter posts by category">
     {
       categories.map((cat) => (
-        <a
-          href={`/writing?category=${encodeURIComponent(cat)}`}
-          class={`filter-link ${active === cat ? "is-active" : ""}`}
+        <button
+          type="button"
+          class="filter-link"
+          data-category={cat}
+          aria-pressed={cat === "All"}
         >
           {cat}
-        </a>
+        </button>
       ))
     }
   </nav>
 
   <!-- Post List -->
-  {filtered.map((post) => <PostCard post={post} />)}
+  <div id="post-list">
+    {
+      posts.map((post) => (
+        <div
+          class="post-card-wrapper"
+          data-category={post.data.category || ""}
+          style="display: block;"
+        >
+          <PostCard post={post} />
+        </div>
+      ))
+    }
+  </div>
+
+  <script type="module">
+    const normalize = (str) => (str || "").trim().toLowerCase();
+    const buttons = Array.from(document.querySelectorAll(".filter-link"));
+    const posts = Array.from(document.querySelectorAll(".post-card-wrapper"));
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const cat = btn.getAttribute("data-category");
+        buttons.forEach((b) => b.classList.toggle("is-active", b === btn));
+        posts.forEach((post) => {
+          const postCat = post.getAttribute("data-category");
+          if (cat === "All" || normalize(postCat) === normalize(cat)) {
+            post.style.display = "block";
+          } else {
+            post.style.display = "none";
+          }
+        });
+      });
+    });
+    // Set initial state to All
+    buttons[0]?.click();
+  </script>
 </BaseLayout>
 
 <style>

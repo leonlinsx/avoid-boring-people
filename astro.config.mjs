@@ -2,11 +2,11 @@
 import mdx from "@astrojs/mdx";
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import remarkFootnotes from "remark-footnotes"; // ✅ add plugin
 import { SITE_URL } from "./src/consts.ts";
 
 export default defineConfig({
   site: SITE_URL,
-  trailingSlash: "always", // or "never" – stay consistent
   integrations: [
     sitemap({
       // Add last modified dates if available
@@ -21,4 +21,9 @@ export default defineConfig({
     }),
     mdx(),
   ],
+  markdown: {
+    remarkPlugins: [
+      [remarkFootnotes, { inlineNotes: true }], // enable footnotes
+    ],
+  },
 });

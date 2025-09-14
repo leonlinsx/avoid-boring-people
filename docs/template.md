@@ -1,11 +1,18 @@
 ---
-title: "Post Title Here"
-description: "1–2 sentence summary for SEO, previews, and RSS."
+title: "Your Post Title"
+description: "A short summary for SEO, previews, and RSS."
 pubDate: 2025-01-15
-updatedDate: 2025-01-20 # optional
-category: Finance # e.g. Finance, Tech, Book Notes, Lifestyle
-heroImage: "/logos/substack_banner.png" # optional, used for OG/social previews & hero
-readingTime: 4 # auto-calculated if omitted
-draft: false # optional, set true to exclude from build
-tags: ["investing", "markets"] # optional, future-proofing for search/filter
+updatedDate: 2025-01-20 # optional, only if updated after pubDate
+category: Finance
+tags: ["finance", "example", "optional"]
+heroImage: "/images/your-post-slug/hero.png" # put hero image in /public/images/<slug>/
+draft: false # optional: mark true to exclude from build
 ---
+
+Your post content starts here…
+
+## Example usage
+
+![Alt text for accessibility](/images/your-post-slug/inline-1.png)
+
+More text here…

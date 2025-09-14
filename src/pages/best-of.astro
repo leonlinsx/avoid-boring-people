@@ -3,13 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
-// Load all posts from the blog collection
 const allPosts = await getCollection("blog");
 
-// Manually pick featured posts by slug (filenames without .md)
-const featuredSlugs = ["cycles", "book-notes-sapiens", "tech-trends"];
-
-const featured = allPosts.filter((post) => featuredSlugs.includes(post.slug));
+// Filter posts with featured: true
+const featured = allPosts
+  .filter((post) => post.data.featured)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <BaseLayout
