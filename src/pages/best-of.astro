@@ -23,13 +23,3 @@ const featured = allPosts.filter((post) => featuredSlugs.includes(post.slug));
 
   {featured.map((post) => <PostCard post={post} />)}
 </BaseLayout>
-
-<style>
-  h1 {
-    margin-bottom: 1rem;
-  }
-
-  p {
-    margin-bottom: 2rem;
-  }
-</style>

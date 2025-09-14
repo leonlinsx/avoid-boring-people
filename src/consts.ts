@@ -8,5 +8,7 @@ export const SITE_URL = 'https://www.leonlinsx.com/';
 export const SITE_AUTHOR = 'Leon Lin';
 
 // ✅ Default Open Graph image (used if no heroImage is set in frontmatter)
-export const SITE_OG_IMAGE = '/logos/substack_logo.png'; 
 // Place this file in `public/logos/` so it's accessible at /logos/substack_logo.png
+export const SITE_OG_IMAGE = '/logos/substack_logo.png'; 
+
+export const SITE_BANNER_IMAGE = '/logos/substack_banner.png'; 

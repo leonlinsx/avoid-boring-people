@@ -5,7 +5,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import PostCard from "../components/PostCard.astro";
-import { SITE_OG_IMAGE } from "../consts";
+import { SITE_BANNER_IMAGE } from "../consts";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -19,7 +19,7 @@ const {
   readingTime,
 } = Astro.props;
 
-const hero = heroImage ?? SITE_OG_IMAGE;
+const hero = heroImage ?? SITE_BANNER_IMAGE;
 
 // Related posts
 const allPosts = await getCollection("blog");
@@ -38,17 +38,17 @@ const related = allPosts
   <main>
     <article>
       <!-- Hero Image -->
-      {hero && (
-        <div class="hero-image">
-          {
-            typeof hero === "object" ? (
+      {
+        hero && (
+          <div class="hero-image">
+            {typeof hero === "object" ? (
               <Image src={hero} alt={title} />
             ) : (
               <img src={hero} alt={title} width="720" height="360" />
-            )
-          }
-        </div>
-      )}
+            )}
+          </div>
+        )
+      }
 
       <div class="prose">
         <div class="title">
@@ -85,14 +85,16 @@ const related = allPosts
         </section>
 
         <!-- Related posts -->
-        {related.length > 0 && (
-          <section class="related-posts">
-            <h2>Related Posts</h2>
-            {related.map((p) => (
-              <PostCard post={p} />
-            ))}
-          </section>
-        )}
+        {
+          related.length > 0 && (
+            <section class="related-posts">
+              <h2>Related Posts</h2>
+              {related.map((p) => (
+                <PostCard post={p} />
+              ))}
+            </section>
+          )
+        }
       </div>
     </article>
   </main>
@@ -100,25 +102,18 @@ const related = allPosts
 
 <style>
   .hero-image {
-    max-width: 720px;
+    max-width: 1100px;
     margin: 0 auto 2rem auto;
   }
 
   .hero-image img,
   .hero-image :global(img) {
     width: 100%;
+    max-width: 100%;
     height: auto;
     display: block;
     border-radius: 12px;
     box-shadow: var(--box-shadow);
-  }
-
-  .prose {
-    width: 720px;
-    max-width: calc(100% - 2em);
-    margin: auto;
-    padding: 1em;
-    color: rgb(var(--gray-dark));
   }
 
   .title {

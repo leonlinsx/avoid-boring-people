@@ -7,11 +7,10 @@ import readingTime from "reading-time";
 // Load posts from content collection
 const allPosts = await getCollection("blog");
 
-// Compute reading time, preserve slug, sort newest first, limit 3
 const posts = allPosts
   .map((p) => ({
     ...p,
-    slug: p.slug, // ✅ preserve slug so PostCard links work
+    slug: p.slug,
     data: {
       ...p.data,
       readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
@@ -25,45 +24,34 @@ const posts = allPosts
   title="Home | Avoid Boring People"
   description="Writing on finance, tech, and other ideas by Leon Lin"
 >
+  <!-- Hero -->
   <section class="hero">
     <h1>
       I write to think clearly about finance, tech, and ideas that interest me
     </h1>
     <p>
-      Sharing my writing helps my ideas compound and helps me connect with other
-      curious people.
+      Sharing my writing helps my ideas compound and connect with curious
+      people.
     </p>
-    <p><a href="/newsletter">Join 5000+ readers →</a></p>
-    <p><a href="/best-of">New here? Start here →</a></p>
+    <p class="subtle-cta">
+      Read my <a href="/best-of">favorite posts</a>, or
+      <a href="/newsletter">join 5,000+ readers</a> who get updates by email.
+    </p>
   </section>
 
+  <!-- Latest Posts -->
   <section class="latest-posts">
     <h2>Latest Posts</h2>
     {posts.map((post) => <PostCard post={post} />)}
   </section>
 
-  <section class="about-teaser">
-    <p>
-      I've worked in investing, investment banking, big tech, and startups, and
-      now I write to make sense of it all.
-      <a href="/about">Read more →</a>
-    </p>
-  </section>
-
+  <!-- Featured Logos -->
   <section class="featured">
     <h3>As featured in</h3>
     <div class="logos">
       <img src="/logos/hacker_news_logo.png" alt="HackerNews" />
-      <img src="/logos/sample2.png" alt="Publication 2" />
+      <img src="/logos/failory_logo.png" alt="Failory" />
     </div>
-  </section>
-
-  <section class="contact-cta">
-    <p>
-      I consult and angel invest selectively. <a href="/about#contact"
-        >Get in touch →</a
-      >
-    </p>
   </section>
 </BaseLayout>
 
@@ -71,29 +59,28 @@ const posts = allPosts
   .hero {
     margin-bottom: 2.5rem;
     text-align: center;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .subtle-cta {
+    font-size: 1rem;
+    color: #444;
+    margin-top: 1rem;
+  }
+
+  .subtle-cta a {
+    color: var(--color-link);
+    text-decoration: underline;
   }
 
   .latest-posts {
     margin-top: 2rem;
   }
 
-  .about-teaser,
-  .contact-cta {
-    margin-top: 2.5rem;
-    padding: 1rem;
-    border-radius: 8px;
-
-    /* ❌ remove background */
-    background: none;
-
-    /* Optional: remove extra border radius now that background is gone */
-    border-radius: 0;
-    padding: 0;
-    margin-top: 2rem; /* adjust spacing if needed */
-  }
-
   .featured {
-    margin-top: 2.5rem;
+    margin-top: 3rem;
     text-align: center;
   }
 
@@ -101,7 +88,7 @@ const posts = allPosts
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
     margin-top: 1rem;
   }
 
@@ -109,19 +96,12 @@ const posts = allPosts
     height: 32px;
     max-width: 150px;
     object-fit: contain;
-
-    /* Show original color, no grayscale */
     filter: none;
-
-    /* Keep logos fully visible */
     opacity: 1;
-
-    /* remove hover transition since no change is needed */
     transition: none;
   }
 
   .featured img:hover {
-    /* No effect on hover */
     opacity: 1;
     filter: none;
   }
