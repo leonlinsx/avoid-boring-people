@@ -139,14 +139,7 @@ a:hover {
 /* -------------------------------
    6. Navigation
 ---------------------------------*/
-header {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: var(--space-md);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 
 nav ul {
   list-style: none;
@@ -166,16 +159,7 @@ nav a:hover {
 /* -------------------------------
    7. Footer
 ---------------------------------*/
-footer {
-  max-width: 900px;
-  margin: var(--space-lg) auto;
-  padding: var(--space-lg) var(--space-md);
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--color-text);
-  border-top: 1px solid var(--color-border);
-  transition: color 0.3s, border-color 0.3s;
-}
+
 
 /* -------------------------------
    8. Code Blocks

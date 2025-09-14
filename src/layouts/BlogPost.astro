@@ -42,9 +42,23 @@ const related = allPosts
         hero && (
           <div class="hero-image">
             {typeof hero === "object" ? (
-              <Image src={hero} alt={title} />
+              <Image
+                src={hero}
+                alt={title}
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
             ) : (
-              <img src={hero} alt={title} width="720" height="360" />
+              <img
+                src={hero}
+                alt={title}
+                width="720"
+                height="360"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
             )}
           </div>
         )
