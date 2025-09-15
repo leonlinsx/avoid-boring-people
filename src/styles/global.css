@@ -301,3 +301,72 @@ img.center {
   margin: var(--space-xl) auto;
   border-radius: 8px;
 }
+
+/* -------------------------------
+   12. Search Bar
+---------------------------------*/
+.writing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+  gap: var(--space-lg);
+}
+
+.writing-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem 0.15rem 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  min-width: 220px;
+  max-width: 320px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-bar:focus-within {
+  border-color: var(--color-link);
+  box-shadow: 0 2px 8px rgba(0,102,204,0.08);
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  flex: 1;
+  padding: 0.4rem 0.2rem;
+  color: var(--color-text);
+  font-family: inherit;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+  opacity: 1;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--color-link);
+  padding: 0 0.3rem;
+  border-radius: 50%;
+  transition: background 0.15s, color 0.2s;
+}
+
+.search-btn:hover, .search-btn:focus {
+  background: var(--color-link);
+  color: #fff;
+}

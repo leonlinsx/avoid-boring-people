@@ -1,0 +1,144 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import readingTime from "reading-time";
+import { SITE_TITLE } from "../../consts";
+
+// Extract query param `q` from the URL
+const url = new URL(Astro.request.url);
+const q = (url.searchParams.get("q") || "").trim();
+
+// Fetch all posts
+const allPosts = await getCollection("blog");
+
+const posts = allPosts
+  .map((p) => ({
+    ...p,
+    slug: p.id.replace(/\.md$/, ""),
+    data: {
+      ...p.data,
+      category: p.data.category?.trim() || "",
+      readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
+    },
+  }))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={`Search | ${SITE_TITLE}`}
+  description={`Search results for "${q}"`}
+>
+  <div class="search-header">
+    <h1>Search Results</h1>
+    <form
+      class="search-bar"
+      role="search"
+      method="get"
+      action="/writing/search"
+    >
+      <input
+        type="search"
+        id="client-search-input"
+        name="q"
+        value={q}
+        aria-label="Search"
+        class="search-input"
+        autocomplete="off"
+      />
+      <button type="submit" class="search-btn" aria-label="Search">🔍</button>
+    </form>
+  </div>
+
+  <div id="post-list">
+    {posts.map((post) => <PostCard post={post} />)}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"
+  ></script>
+  <script type="module">
+    const input = document.getElementById("client-search-input");
+    const postList = document.getElementById("post-list");
+    const allPosts = Array.from(postList.children);
+
+    const postsData = allPosts.map((el) => ({
+      el,
+      title: el.querySelector(".post-title")?.textContent || "",
+      summary: el.querySelector(".post-summary")?.textContent || "",
+      category: el.querySelector(".post-meta")?.textContent || "",
+    }));
+
+    const fuse = new window.Fuse(postsData, {
+      keys: ["title", "summary", "category"],
+      threshold: 0.3,
+    });
+
+    // Run search immediately if query present in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get("q")?.trim() || "";
+    if (initialQuery) {
+      input.value = initialQuery;
+      runSearch(initialQuery);
+    }
+
+    input.addEventListener("input", (e) => {
+      runSearch(e.target.value.trim());
+    });
+
+    function runSearch(query) {
+      if (!query) {
+        allPosts.forEach((el) => (el.style.display = ""));
+        return;
+      }
+      const found = fuse.search(query).map((r) => r.item.el);
+      allPosts.forEach((el) => (el.style.display = "none"));
+      found.forEach((el) => (el.style.display = ""));
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .search-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* stretch full width */
+    gap: 1rem;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+  .search-bar {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 100%; /* remove constraint */
+  }
+  .search-input {
+    flex: 1;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box; /* make sure it respects parent width */
+  }
+  .search-btn {
+    padding: 0.35rem 0.75rem;
+    /* border: 1px solid var(--color-border); */
+    border-radius: 999px;
+    border: none; /* ✅ remove border */
+    background: transparent; /* ✅ no blue background */
+    color: var(--color-text); /* ✅ matches your text color */
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    flex-shrink: 0; /* don’t let button compress */
+  }
+  .search-btn:hover {
+    opacity: 0.85;
+  }
+  #post-list {
+    display: grid;
+    gap: 1.5rem;
+    width: 100%;
+  }
+</style>

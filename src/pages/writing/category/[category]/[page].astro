@@ -1,0 +1,197 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import PostCard from "../../../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import readingTime from "reading-time";
+import { SITE_TITLE } from "../../../../consts";
+import type { GetStaticPaths } from "astro";
+
+const titleCase = (s: string) =>
+  s.replace(
+    /\w\S*/g,
+    (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+  );
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const all = await getCollection("blog");
+
+  // ✅ stable, global category list
+  const categories = Array.from(
+    new Set(all.map((p) => p.data.category?.trim().toLowerCase() || ""))
+  )
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b));
+
+  const routes: any[] = [];
+
+  for (const category of categories) {
+    const filtered = all
+      .filter((p) => (p.data.category?.trim().toLowerCase() || "") === category)
+      .map((p) => ({
+        ...p,
+        slug: p.id.replace(/\.md$/, ""),
+        data: {
+          ...p.data,
+          category: p.data.category?.trim() || "",
+          readingTime: Math.max(
+            1,
+            Math.round(readingTime(p.body ?? "").minutes)
+          ),
+        },
+      }))
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    const pages = paginate(filtered, {
+      pageSize: 8,
+      params: { category },
+    });
+
+    // ✅ Keep Astro's { page } intact; add our own props
+    routes.push(
+      ...pages.map((pg) => ({
+        ...pg,
+        props: {
+          ...(pg.props || {}),
+          categories,
+          activeCategory: category,
+        },
+      }))
+    );
+  }
+
+  return routes;
+}) satisfies GetStaticPaths;
+
+// ✅ Use the injected page object for posts & pagination
+const { page, categories = [], activeCategory = "" } = Astro.props;
+const pagedPosts = page.data;
+const currentPage = page.currentPage;
+const totalPages = page.lastPage;
+---
+
+<BaseLayout
+  title={`Writing | ${SITE_TITLE}`}
+  description={`Essays and posts in category "${titleCase(activeCategory)}"`}
+>
+  <div class="writing-header">
+    <h1>Category: {titleCase(activeCategory)}</h1>
+    <form
+      class="search-bar"
+      role="search"
+      method="get"
+      action="/writing/search"
+    >
+      <input
+        type="search"
+        name="q"
+        aria-label="Search"
+        class="search-input"
+        autocomplete="off"
+      />
+      <button type="submit" class="search-btn" aria-label="Search">🔍</button>
+    </form>
+  </div>
+
+  <!-- Category Filters -->
+  <nav class="filters" aria-label="Filter posts by category">
+    <a href="/writing" class="filter-link">All</a>
+    {
+      categories.map((cat) => {
+        const isActive = cat === activeCategory.toLowerCase();
+        return (
+          <a
+            href={`/writing/category/${encodeURIComponent(cat)}`}
+            class={`filter-link${isActive ? " is-active" : ""}`}
+          >
+            {titleCase(cat)}
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <!-- Posts -->
+  <div id="post-list">
+    {pagedPosts.map((post) => <PostCard post={post} />)}
+  </div>
+
+  <!-- Pagination (canonical page 1 = /writing/category/<cat>) -->
+  {
+    totalPages > 1 && (
+      <nav class="pagination" aria-label="Pagination">
+        {Array.from({ length: totalPages }, (_, i) => {
+          const pageNum = i + 1;
+          const base = `/writing/category/${encodeURIComponent(activeCategory)}`;
+          const href = pageNum === 1 ? base : `${base}/${pageNum}`;
+          return (
+            <a
+              href={href}
+              class={`page-link${pageNum === currentPage ? " is-active" : ""}`}
+            >
+              {pageNum}
+            </a>
+          );
+        })}
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem 0;
+  }
+  .filter-link {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      background-color 0.2s;
+  }
+  .filter-link:hover {
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
+  .filter-link.is-active {
+    background: var(--color-link);
+    border-color: var(--color-link);
+    color: #fff;
+    font-weight: 600;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.3rem;
+    margin: 2.2rem 0 1.2rem 0;
+  }
+  .page-link {
+    margin: 0 0.25rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: 8px;
+    border: 2px solid var(--color-border);
+    text-decoration: none;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .page-link:hover {
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
+  .page-link.is-active {
+    background: var(--color-link);
+    color: #fff;
+    font-weight: bold;
+    border-color: var(--color-link);
+  }
+</style>

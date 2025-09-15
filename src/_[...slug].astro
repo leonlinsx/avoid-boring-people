@@ -1,0 +1,262 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+import readingTime from "reading-time";
+import { SITE_TITLE } from "../../consts";
+
+const PAGE_SIZE = 8;
+
+// Load all blog posts - assign slug, readingTime, and sort newest first
+const all = await getCollection("blog");
+
+const posts = all
+  .map((p) => ({
+    ...p,
+    slug: p.slug ?? p.id.replace(/\.md$/, ""),
+    data: {
+      ...p.data,
+      readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
+    },
+  }))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Get unique categories
+const categories = Array.from(
+  new Set(posts.map((p) => p.data.category).filter(Boolean))
+).sort();
+
+// Extract slug params from URL (it's an array of strings or undefined)
+const slugParams = Astro.params.slug || [];
+
+// Defaults
+let currentCategory = null;
+let currentPage = 1;
+
+if (slugParams.length === 1) {
+  // /writing/2
+  currentPage = Number(slugParams[0]) || 1;
+} else if (slugParams.length >= 2 && slugParams[0] === "category") {
+  // /writing/category/Finance or /writing/category/Finance/2
+  currentCategory = decodeURIComponent(slugParams[1] ?? "");
+  if (slugParams[2]) currentPage = Number(slugParams[2]) || 1;
+}
+
+// Normalize for case-insensitive comparison
+const normalize = (s = "") => s.trim().toLowerCase();
+
+// Filter posts by category if selected
+const filteredPosts =
+  currentCategory === null
+    ? posts
+    : posts.filter(
+        (p) => normalize(p.data.category) === normalize(currentCategory)
+      );
+
+// Pagination calculations
+const totalPages = Math.ceil(filteredPosts.length / PAGE_SIZE);
+const start = (currentPage - 1) * PAGE_SIZE;
+const end = start + PAGE_SIZE;
+const pagedPosts = filteredPosts.slice(start, end);
+
+// Set of post slugs to avoid conflicts in getStaticPaths
+const postSlugsSet = new Set(posts.map((p) => p.slug));
+
+export async function getStaticPaths() {
+  const all = await getCollection("blog");
+  const posts = all.map((p) => ({
+    slug: p.slug ?? p.id.replace(/\.md$/, ""),
+    category: p.data.category,
+  }));
+  const PAGE_SIZE = 8;
+
+  const categories = Array.from(
+    new Set(posts.map((p) => p.category).filter(Boolean))
+  );
+
+  const paths: { params: { slug?: string[] } }[] = [];
+
+  // Global pagination
+  const totalPages = Math.ceil(posts.length / PAGE_SIZE);
+  for (let page = 1; page <= totalPages; page++) {
+    if (page === 1) {
+      paths.push({ params: { slug: undefined } }); // /writing
+    } else {
+      paths.push({ params: { slug: [String(page)] } }); // /writing/2
+    }
+  }
+
+  // Category pagination
+  for (const cat of categories) {
+    const filteredPosts = posts.filter((p) => p.category === cat);
+    const catPages = Math.ceil(filteredPosts.length / PAGE_SIZE);
+
+    for (let page = 1; page <= catPages; page++) {
+      if (page === 1) {
+        // /writing/category/Finance
+        paths.push({ params: { slug: ["category", cat] } });
+      } else {
+        // /writing/category/Finance/2
+        paths.push({ params: { slug: ["category", cat, String(page)] } });
+      }
+    }
+  }
+
+  return paths;
+}
+
+---
+
+<BaseLayout
+  title={`Writing | ${SITE_TITLE}`}
+  description="All essays and posts by Leon Lin on finance, tech, books, lifestyle, and more."
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 2rem;"
+  >
+    <h1 style="margin: 0;">Essays, Notes, and More</h1>
+    <form id="search-form" style="position: relative; min-width: 240px;">
+      <input
+        type="search"
+        id="search-box"
+        name="q"
+        placeholder="Search..."
+        aria-label="Search posts"
+      />
+      <button
+        type="submit"
+        style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--color-link); font-size: 1.2rem;"
+      >
+        🔍
+      </button>
+    </form>
+  </div>
+
+  <script type="module">
+    document.getElementById("search-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = document.getElementById("search-box").value.trim();
+      window.location.href = q
+        ? `/search?q=${encodeURIComponent(q)}`
+        : "/search";
+    });
+  </script>
+
+  <p class="subtext">
+    Thinking out loud about finance, technology, and how we work and live.
+  </p>
+
+  <!-- Categories Filter -->
+  <nav class="filters" aria-label="Filter posts by category">
+    <a
+      href="/writing"
+      class={`filter-link ${currentCategory === null ? "is-active" : ""}`}
+      >All</a
+    >
+    {
+      categories.map((cat) => (
+        <a
+          href={`/writing/category/${encodeURIComponent(cat ?? "")}`}
+          class={`filter-link ${normalize(currentCategory ?? "") === normalize(cat ?? "") ? "is-active" : ""}`}
+        >
+          {cat}
+        </a>
+      ))
+    }
+  </nav>
+
+  <!-- Post list -->
+  <div id="post-list">
+    {pagedPosts.map((post) => <PostCard post={post} />)}
+  </div>
+
+  <!-- Pagination -->
+  {
+    totalPages > 1 && (
+      <nav class="pagination" aria-label="Pagination">
+        {Array.from({ length: totalPages }, (_, i) => {
+          const pageNum = i + 1;
+          if (currentCategory === null) {
+            return (
+              <a
+                href={pageNum === 1 ? "/writing" : `/writing/${pageNum}`}
+                class={`page-link ${pageNum === currentPage ? "is-active" : ""}`}
+                aria-current={pageNum === currentPage ? "page" : undefined}
+              >
+                {pageNum}
+              </a>
+            );
+          } else {
+            return (
+              <a
+                href={
+                  pageNum === 1
+                    ? `/writing/category/${encodeURIComponent(currentCategory)}`
+                    : `/writing/category/${encodeURIComponent(currentCategory)}/${pageNum}`
+                }
+                class={`page-link ${pageNum === currentPage ? "is-active" : ""}`}
+                aria-current={pageNum === currentPage ? "page" : undefined}
+              >
+                {pageNum}
+              </a>
+            );
+          }
+        })}
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .filter-link {
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      background-color 0.2s;
+  }
+  .filter-link:hover {
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
+  .filter-link.is-active {
+    background-color: var(--color-link);
+    border-color: var(--color-link);
+    color: white;
+    font-weight: 600;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+  }
+  .page-link {
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .page-link:hover {
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
+  .page-link.is-active {
+    background-color: var(--color-link);
+    border-color: var(--color-link);
+    color: white;
+    font-weight: 600;
+  }
+</style>
