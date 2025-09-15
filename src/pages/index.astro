@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
+import { SITE_TITLE } from "../consts";
 
 // Load posts from content collection
 const allPosts = await getCollection("blog");
@@ -21,7 +22,7 @@ const posts = allPosts
 ---
 
 <BaseLayout
-  title="Home | Avoid Boring People"
+  title={`Home | ${SITE_TITLE}`}
   description="Writing on finance, tech, and other ideas by Leon Lin"
 >
   <!-- Hero -->

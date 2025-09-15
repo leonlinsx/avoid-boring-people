@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../consts";
 ---
 
 <BaseLayout
-  title="Newsletter | Avoid Boring People"
+  title={`Newsletter | ${SITE_TITLE}`}
   description="Join 5,000+ readers of Avoid Boring People to get essays on finance, tech, and ideas delivered directly to your inbox."
 >
   <!-- Hero / Banner -->

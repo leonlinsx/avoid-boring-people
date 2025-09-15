@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../consts";
 ---
 
 <BaseLayout
-  title="404 | Avoid Boring People"
+  title={`404 | ${SITE_TITLE}`}
   description="This page could not be found. Return to the home page."
 >
   <h1>404</h1>

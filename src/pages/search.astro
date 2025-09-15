@@ -1,0 +1,192 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE, SITE_OG_IMAGE } from "../consts";
+---
+
+<BaseLayout
+  title={`Search | ${SITE_TITLE}`}
+  description="Search all essays and posts by Leon Lin."
+>
+  <div class="search-container">
+    <input
+      id="search-input"
+      class="search-input"
+      type="text"
+      placeholder="Search posts..."
+      autofocus
+    />
+    <div id="search-results" class="search-results"></div>
+  </div>
+
+  <!-- Fuse.js for fuzzy search -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"
+  ></script>
+  <script type="module">
+    const input = document.getElementById("search-input");
+    const results = document.getElementById("search-results");
+
+    let fuse;
+    let posts = [];
+
+    // Fetch the index
+    fetch("/api/search-index.json")
+      .then((res) => res.json())
+      .then((data) => {
+        posts = data;
+        fuse = new window.Fuse(posts, {
+          keys: ["title", "description", "category", "tags"],
+          threshold: 0.3,
+        });
+
+        // Run immediately if query param exists
+        const url = new URL(window.location.href);
+        const q = url.searchParams.get("q");
+        if (q) {
+          input.value = q;
+          runSearch(q);
+        }
+      });
+
+    input.addEventListener("input", (e) => {
+      const q = e.target.value.trim();
+      runSearch(q);
+
+      // Sync query param
+      const url = new URL(window.location.href);
+      if (q) {
+        url.searchParams.set("q", q);
+      } else {
+        url.searchParams.delete("q");
+      }
+      window.history.replaceState({}, "", url.toString());
+    });
+
+    function runSearch(q) {
+      if (!q || !fuse) {
+        results.innerHTML = "";
+        return;
+      }
+
+      const found = fuse.search(q).map((r) => r.item);
+
+      if (!found.length) {
+        results.innerHTML = "<div>No results found.</div>";
+        return;
+      }
+
+      results.innerHTML = found
+        .map((post) => {
+          const link = `/writing/${post.slug}/`;
+          const thumb =
+            post.heroImage?.src || post.heroImage || "${SITE_OG_IMAGE}";
+          const date = post.pubDate
+            ? new Date(post.pubDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })
+            : "";
+
+          return `
+            <article class="post-card">
+              <a href="${link}" class="thumb-link">
+                <img
+                  src="${thumb}"
+                  alt="${post.title}"
+                  width="120"
+                  height="80"
+                  class="post-thumb"
+                  loading="lazy"
+                />
+              </a>
+              <div class="post-content">
+                <h2 class="post-title">
+                  <a href="${link}">${post.title}</a>
+                </h2>
+                ${
+                  post.description
+                    ? `<p class="post-summary">${post.description}</p>`
+                    : ""
+                }
+                <p class="post-meta">
+                  ${post.category || ""}${date ? " · " + date : ""}
+                </p>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .search-container {
+    max-width: 700px;
+    margin: 2rem auto;
+  }
+  .search-input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  .search-results {
+    margin-top: 2rem;
+  }
+
+  /* ✅ Match PostCard styles */
+  .post-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .thumb-link {
+    flex-shrink: 0;
+  }
+  .post-thumb {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    margin-top: 0.25rem;
+  }
+  .post-content {
+    flex: 1;
+  }
+  .post-title {
+    font-size: 1.2rem;
+    margin: 0 0 0.3rem 0;
+  }
+  .post-title a {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+  .post-title a:hover {
+    text-decoration: underline;
+  }
+  .post-summary {
+    color: #555;
+    margin: 0 0 0.4rem 0;
+  }
+  .post-meta {
+    font-size: 0.9rem;
+    color: #777;
+  }
+
+  @media (max-width: 600px) {
+    .post-card {
+      flex-direction: column;
+    }
+    .post-thumb {
+      width: 100%;
+      height: auto;
+    }
+  }
+</style>

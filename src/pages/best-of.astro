@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
+import { SITE_TITLE } from "../consts";
 
 const allPosts = await getCollection("blog");
 
@@ -12,7 +13,7 @@ const featured = allPosts
 ---
 
 <BaseLayout
-  title="Best Of | Avoid Boring People"
+  title={`Best Of | ${SITE_TITLE}`}
   description="A handpicked collection of my favorite essays on finance, tech, and other ideas — start here if you’re new."
 >
   <h1>Start Here</h1>
