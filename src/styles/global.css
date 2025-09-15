@@ -305,12 +305,28 @@ img.center {
 /* -------------------------------
    12. Search Bar
 ---------------------------------*/
+
+
 .writing-header {
   display: flex;
-  align-items: center;
+  align-items: center; /* vertically center all children */
   justify-content: space-between;
   margin-bottom: var(--space-lg);
   gap: var(--space-lg);
+}
+
+.writing-header .subtext {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  color: #555;
+  font-size: 1.05rem;
+}
+
+.writing-header .subtext {
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-size: 1.05rem;
 }
 
 .writing-header h1 {
