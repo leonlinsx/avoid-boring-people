@@ -10,6 +10,7 @@
     "start": "npm run build && npm run preview"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.4",
     "@astrojs/mdx": "^4.3.5",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.1",
@@ -17,6 +18,7 @@
     "fuse.js": "^7.1.0",
     "reading-time": "^1.5.0",
     "remark-footnotes": "^4.0.1",
-    "sharp": "^0.34.3"
+    "sharp": "^0.34.3",
+    "typescript": "^5.9.2"
   }
 }

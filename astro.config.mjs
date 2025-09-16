@@ -2,28 +2,25 @@
 import mdx from "@astrojs/mdx";
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
-import remarkFootnotes from "remark-footnotes"; // ✅ add plugin
+import remarkFootnotes from "remark-footnotes";
 import { SITE_URL } from "./src/consts.ts";
 
 export default defineConfig({
   site: SITE_URL,
   integrations: [
     sitemap({
-      // Add last modified dates if available
+      // Simplified: SitemapItem has no .data, so just return lastmod = now
       serialize(item) {
-        // Check for updatedDate or fallback to published date
-        const lastmod = item.data?.updatedDate || item.data?.pubDate;
         return {
           ...item,
-          lastmod: lastmod ? new Date(lastmod).toISOString() : undefined,
+          lastmod: new Date().toISOString(),
         };
       },
     }),
     mdx(),
   ],
   markdown: {
-    remarkPlugins: [
-      [remarkFootnotes, { inlineNotes: true }], // enable footnotes
-    ],
+    // @ts-expect-error - remarkFootnotes typing mismatch
+    remarkPlugins: [[remarkFootnotes, { inlineNotes: true }]],
   },
 });

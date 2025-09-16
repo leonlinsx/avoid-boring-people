@@ -1,4 +1,4 @@
-import { z, defineCollection, image } from "astro:content";
+import { z, defineCollection } from "astro:content";
 
 const blog = defineCollection({
   type: "content",
@@ -17,7 +17,7 @@ const blog = defineCollection({
     // - Relative string path (e.g. "./ergo_5.webp")
     heroImage: z
       .union([
-        image().refine(
+        z.image().refine(
           (img) => img.width >= 1200 && img.height >= 630,
           {
             message:
