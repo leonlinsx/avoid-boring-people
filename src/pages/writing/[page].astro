@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 import readingTime from "reading-time";
 import { SITE_TITLE } from "../../consts";
 import type { GetStaticPaths } from "astro";
+import Pagination from "../../components/Pagination.astro";
 
 const titleCase = (s: string) =>
   s.replace(
@@ -110,24 +111,7 @@ const activeCategory = ""; // "All" page
   </div>
 
   <!-- Pagination -->
-  {
-    totalPages > 1 && (
-      <nav class="pagination" aria-label="Pagination">
-        {Array.from({ length: totalPages }, (_, i) => {
-          const pageNum = i + 1;
-          const href = pageNum === 1 ? "/writing" : `/writing/${pageNum}`;
-          return (
-            <a
-              href={href}
-              class={`page-link${pageNum === currentPage ? " is-active" : ""}`}
-            >
-              {pageNum}
-            </a>
-          );
-        })}
-      </nav>
-    )
-  }
+  <Pagination currentPage={currentPage} totalPages={totalPages} />
 </BaseLayout>
 
 <style>

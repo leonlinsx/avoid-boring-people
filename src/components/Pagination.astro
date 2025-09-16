@@ -1,0 +1,81 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  activeCategory?: string;
+}
+
+const { currentPage, totalPages, activeCategory = "" } = Astro.props;
+
+const pageHref = (page: number) => {
+  if (activeCategory) {
+    return page === 1
+      ? `/writing/category/${encodeURIComponent(activeCategory)}`
+      : `/writing/category/${encodeURIComponent(activeCategory)}/${page}`;
+  } else {
+    return page === 1 ? `/writing` : `/writing/${page}`;
+  }
+};
+
+// Ellipses pagination helper (unchanged)
+function getPageNumbers(current: number, total: number): (number | string)[] {
+  const delta = 2;
+  const range: (number | string)[] = [];
+  const left = Math.max(2, current - delta);
+  const right = Math.min(total - 1, current + delta);
+
+  range.push(1);
+  if (left > 2) range.push("...");
+  for (let i = left; i <= right; i++) {
+    range.push(i);
+  }
+  if (right < total - 1) range.push("...");
+  if (total > 1) range.push(total);
+
+  return range;
+}
+
+const pages = getPageNumbers(currentPage, totalPages);
+---
+
+<nav class="pagination" aria-label="Pagination Navigation">
+  <ul class="pagination-list">
+    {
+      currentPage > 1 && (
+        <li>
+          <a href={pageHref(currentPage - 1)} class="pagination-link">
+            ← Prev
+          </a>
+        </li>
+      )
+    }
+
+    {
+      pages.map((pg) => (
+        <li>
+          {typeof pg === "string" ? (
+            <span class="pagination-ellipsis">{pg}</span>
+          ) : (
+            <a
+              href={pageHref(pg)}
+              class={`pagination-link${pg === currentPage ? " is-current" : ""}`}
+              aria-current={pg === currentPage ? "page" : undefined}
+            >
+              {pg}
+            </a>
+          )}
+        </li>
+      ))
+    }
+
+    {
+      currentPage < totalPages && (
+        <li>
+          <a href={pageHref(currentPage + 1)} class="pagination-link">
+            Next →
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</nav>
