@@ -1,3 +1,4 @@
+
 /* =========================================================
    Global Styles (src/styles/global.css)
    ========================================================= */
@@ -397,4 +398,22 @@ img.center {
 .search-btn:hover, .search-btn:focus {
   background: var(--color-link);
   color: #fff;
+}
+
+/* -------------------------------
+   13. 404 Page Styles
+---------------------------------*/
+
+.void-image-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.void-image {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
 }

@@ -1,6 +1,6 @@
 ---
 title: "Specialists vs Generalists"
-description: "Specialize most of the time, but spend time understanding the broader ideas"
+description: "Specialize most of the time, but spend time understanding the bigger picture"
 pubDate: 2017-12-01
 category: Lifestyle
 tags: ["generalists"]
