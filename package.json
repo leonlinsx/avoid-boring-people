@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "astro dev --open",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "preview": "astro preview --open",
+    "astro": "astro",
+    "start": "npm run build && npm run preview"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.5",

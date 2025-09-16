@@ -1,8 +1,8 @@
 ---
-title: "Book review: Fooled by Randomness"
+title: "Book Review: Fooled by Randomness"
 description: "Randomness does not look random"
 pubDate: 2017-02-23
-category: Book review
+category: Book Review
 tags: ["risk", "math"]
 heroImage: "./f_1.webp"
 ---

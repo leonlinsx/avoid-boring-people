@@ -264,6 +264,18 @@ img.center {
   clear: both;
 }
 
+.side-by-side-images {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+.side-by-side-images img {
+  max-width: 48%;
+  height: auto;
+  display: block;
+}
+
 /* -------------------------------
    11. Prose (Blog Content)
 ---------------------------------*/
