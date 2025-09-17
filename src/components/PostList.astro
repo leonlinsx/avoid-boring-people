@@ -1,0 +1,21 @@
+---
+import PostCard from "./PostCard.astro";
+const { posts = [] } = Astro.props;
+---
+
+<section class="writing-post-list">
+  {posts.map((post) => (
+    <PostCard post={post} />
+  ))}
+</section>
+
+<style>
+  .writing-post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;       /* vertical whitespace between cards */
+    width: 100%;     /* take full width of parent container */
+    margin: 0;
+    padding: 0;
+  }
+</style>

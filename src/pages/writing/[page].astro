@@ -1,17 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostCard from "../../components/PostCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
 import { SITE_TITLE } from "../../consts";
 import type { GetStaticPaths } from "astro";
 import Pagination from "../../components/Pagination.astro";
-
-const titleCase = (s: string) =>
-  s.replace(
-    /\w\S*/g,
-    (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-  );
+import Filters from "../../components/Filters.astro";
+import PostList from "../../components/PostList.astro";
+import WritingHeader from "../../components/WritingHeader.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await getCollection("blog");
@@ -58,117 +54,17 @@ const activeCategory = ""; // "All" page
   title={`Writing | ${SITE_TITLE}`}
   description="All essays, notes, and more."
 >
-  <div class="writing-header">
-    <div>
-      <h1>Essays, Notes, and More</h1>
-      <p class="subtext">
-        Thinking out loud about finance, tech, and other compounding ideas
-      </p>
-    </div>
-    <form
-      class="search-bar"
-      role="search"
-      method="get"
-      action="/writing/search"
-    >
-      <input
-        type="search"
-        name="q"
-        aria-label="Search"
-        class="search-input"
-        autocomplete="off"
-      />
-      <button type="submit" class="search-btn" aria-label="Search">🔍</button>
-    </form>
-  </div>
+  <WritingHeader
+    title="Essays, Notes, and More"
+    subtitle="Thinking out loud about finance, tech, and other compounding ideas"
+  />
 
   <!-- Category Filters -->
-  <nav class="filters" aria-label="Filter posts by category">
-    <a
-      href="/writing/1"
-      class={`filter-link${activeCategory === "" ? " is-active" : ""}`}
-    >
-      All
-    </a>
-    {
-      categories.map((cat) => {
-        const label = titleCase(cat);
-        return (
-          <a
-            href={`/writing/category/${encodeURIComponent(cat)}/1`}
-            class={`filter-link${activeCategory === cat ? " is-active" : ""}`}
-          >
-            {label}
-          </a>
-        );
-      })
-    }
-  </nav>
+  <Filters categories={categories} activeCategory={activeCategory} />
 
   <!-- Posts -->
-  <div id="post-list">
-    {pagedPosts.map((post) => <PostCard post={post} />)}
-  </div>
+  <PostList posts={pagedPosts} />
 
   <!-- Pagination -->
   <Pagination currentPage={currentPage} totalPages={totalPages} />
 </BaseLayout>
-
-<style>
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0 0 1.5rem 0;
-  }
-  .filter-link {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    color: var(--color-text);
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition:
-      color 0.2s,
-      border-color 0.2s,
-      background-color 0.2s;
-  }
-  .filter-link:hover {
-    border-color: var(--color-link);
-    color: var(--color-link);
-  }
-  .filter-link.is-active {
-    background: var(--color-link);
-    border-color: var(--color-link);
-    color: #fff;
-    font-weight: 600;
-  }
-  .pagination {
-    display: flex;
-    justify-content: center;
-    gap: 0.3rem;
-    margin: 2.2rem 0 1.2rem 0;
-  }
-  .page-link {
-    margin: 0 0.25rem;
-    padding: 0.45rem 1.1rem;
-    border-radius: 8px;
-    border: 2px solid var(--color-border);
-    text-decoration: none;
-    transition:
-      background 0.2s,
-      color 0.2s,
-      border-color 0.2s;
-  }
-  .page-link:hover {
-    border-color: var(--color-link);
-    color: var(--color-link);
-  }
-  .page-link.is-active {
-    background: var(--color-link);
-    color: #fff;
-    font-weight: bold;
-    border-color: var(--color-link);
-  }
-</style>

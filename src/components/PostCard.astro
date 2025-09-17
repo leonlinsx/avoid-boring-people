@@ -4,17 +4,12 @@ import { SITE_OG_IMAGE } from "../consts";
 
 const { post } = Astro.props;
 
-// Safe destructuring with fallbacks
 const title = post?.data?.title ?? "Untitled";
 const desc = post?.data?.description ?? "";
 const category = post?.data?.category ?? "";
 const date = post?.data?.pubDate ? new Date(post.data.pubDate) : null;
-const rt = post?.data?.readingTime; // number of minutes
-
-// ✅ Use slug (preferred) or fallback to id
+const rt = post?.data?.readingTime;
 const href = `/writing/${post?.slug ?? post?.id?.replace(/\.md$/, "")}/`;
-
-// Handle hero image or fallback
 const heroImage = post?.data?.heroImage;
 const thumbnail = heroImage ?? SITE_OG_IMAGE;
 ---
@@ -64,69 +59,3 @@ const thumbnail = heroImage ?? SITE_OG_IMAGE;
     </p>
   </div>
 </article>
-
-<style>
-  .post-card {
-    display: flex;
-    align-items: flex-start; /* ✅ align image top with text top */
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  /* Thumbnail */
-  .thumb-link {
-    flex-shrink: 0;
-  }
-
-  .post-thumb {
-    width: 120px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
-
-    margin-top: 0.25rem; /* nudge image down a bit for optical balance */
-  }
-
-  /* Content */
-  .post-content {
-    flex: 1;
-  }
-
-  .post-title {
-    font-size: 1.2rem;
-    margin: 0 0 0.3rem 0;
-  }
-
-  .post-title a {
-    text-decoration: none;
-    color: var(--color-text);
-  }
-
-  .post-title a:hover {
-    text-decoration: underline;
-  }
-
-  .post-summary {
-    color: #555;
-    margin: 0 0 0.4rem 0;
-  }
-
-  .post-meta {
-    font-size: 0.9rem;
-    color: #777;
-  }
-
-  @media (max-width: 600px) {
-    .post-card {
-      flex-direction: column;
-    }
-    .post-thumb {
-      width: 100%;
-      height: auto;
-    }
-  }
-</style>

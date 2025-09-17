@@ -1,0 +1,28 @@
+---
+import { titleCase, normalizeCategory } from "../utils/text";
+
+const { categories = [], activeCategory = "" } = Astro.props;
+---
+
+<nav class="writing-filters" aria-label="Filter posts by category">
+  <a
+    href="/writing/1"
+    class={`writing-filter-link${normalizeCategory(activeCategory) === "" ? " is-active" : ""}`}
+  >
+    All
+  </a>
+
+  {
+    categories.map((cat) => {
+      const label = titleCase(cat);
+      return (
+        <a
+          href={`/writing/category/${encodeURIComponent(cat)}/1`}
+          class={`writing-filter-link${normalizeCategory(activeCategory) === normalizeCategory(cat) ? " is-active" : ""}`}
+        >
+          {label}
+        </a>
+      );
+    })
+  }
+</nav>

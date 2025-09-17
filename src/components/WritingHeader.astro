@@ -1,0 +1,23 @@
+---
+const { title, subtitle = "", showSearch = true } = Astro.props;
+---
+
+<header class="writing-header">
+  <div>
+    <h1>{title}</h1>
+    {subtitle && <p class="subtext">{subtitle}</p>}
+  </div>
+
+  {showSearch && (
+    <form class="search-bar" role="search" method="get" action="/writing/search">
+      <input
+        type="search"
+        name="q"
+        aria-label="Search"
+        class="search-input"
+        autocomplete="off"
+      />
+      <button type="submit" class="search-btn" aria-label="Search">🔍</button>
+    </form>
+  )}
+</header>

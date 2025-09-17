@@ -1,6 +1,6 @@
 ---
 title: "Ergodicity: What Does It Mean?"
-description: "Why ergodicity matters for risk, investing, and expected value."
+description: "Why the difference between ensemble and time averages matters for investing and risk"
 pubDate: 2021-04-03
 category: "Finance"
 tags: ["finance", "math", "ergodicity", "risk"]
