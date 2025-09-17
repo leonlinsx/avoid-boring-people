@@ -1,24 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
+import PostList from "../components/PostList.astro";
 import { getCollection } from "astro:content";
-import readingTime from "reading-time";
 import { SITE_TITLE } from "../consts";
 
-// Load posts from content collection
 const allPosts = await getCollection("blog");
 
-const posts = allPosts
-  .map((p) => ({
-    ...p,
-    slug: p.slug,
-    data: {
-      ...p.data,
-      readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
-    },
-  }))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+// Pick only posts you marked with featured: true in frontmatter
+const featured = allPosts
+  .filter((post) => post.data.featured)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <BaseLayout
@@ -28,98 +19,33 @@ const posts = allPosts
   <!-- Hero -->
   <section class="hero">
     <h1>
-      I write to think clearly about finance, tech, and ideas that interest me
+      I write to make sense of finance, tech, and the ideas shaping our future
     </h1>
     <p>
-      Sharing my writing helps my ideas compound and connect with curious
+      Sharing my writing helps my ideas compound and helps me connect with curious
       people.
     </p>
     <p class="subtle-cta">
-      Read my <a href="/best-of">favorite posts</a>, or
+      Learn more about me <a href="/about">here</a>, or
       <a href="/newsletter">join 5,000+ readers</a> who get updates by email.
     </p>
   </section>
 
-  <!-- Latest Posts -->
-  <section class="latest-posts">
-    <h2>Latest Posts</h2>
-    {posts.map((post) => <PostCard post={post} />)}
+  <!-- Start Here -->
+  <section class="best-of">
+    <h2>Start Here</h2>
+    <p class="subtext">
+      Some of my favourite pieces — a good place to begin if you're new here.
+    </p>
+    <PostList posts={featured} />
   </section>
 
   <!-- Featured Logos -->
   <section class="featured">
     <h3>As featured in</h3>
-    <div class="logos">
-      <img
-        src="/logos/hacker_news_logo.png"
-        alt="HackerNews"
-        width="150"
-        height="36"
-      />
-      <img
-        src="/logos/failory_logo.png"
-        alt="Failory"
-        width="150"
-        height="36"
-      />
+    <div class="logo-row">
+      <img src="/logos/hacker_news_logo.png" alt="HackerNews" />
+      <img src="/logos/failory_logo.png" alt="Failory" />
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .hero {
-    margin-bottom: 2.5rem;
-    text-align: center;
-    max-width: 720px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .subtle-cta {
-    font-size: 1rem;
-    color: #444;
-    margin-top: 1rem;
-  }
-
-  .subtle-cta a {
-    color: var(--color-link);
-    text-decoration: underline;
-  }
-
-  .latest-posts {
-    margin-top: 2rem;
-  }
-
-  .featured {
-    margin-top: 3rem;
-    text-align: center;
-  }
-
-  .featured .logos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .featured img {
-    height: 32px;
-    max-width: 150px;
-    object-fit: contain;
-    filter: none;
-    opacity: 1;
-    transition: none;
-  }
-
-  .featured img:hover {
-    opacity: 1;
-    filter: none;
-  }
-
-  @media (min-width: 768px) {
-    .featured img {
-      height: 36px;
-    }
-  }
-</style>
