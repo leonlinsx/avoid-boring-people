@@ -23,4 +23,10 @@ export default defineConfig({
     // @ts-expect-error - remarkFootnotes typing mismatch
     remarkPlugins: [[remarkFootnotes, { inlineNotes: true }]],
   },
+
+  // ✅ Redirects must be an object
+  redirects: {
+    "/writing": "/writing/1",
+    "/writing/category/:category": "/writing/category/:category/1",
+  },
 });

@@ -14,8 +14,9 @@ Your post content starts here…
 
 ## Example usage
 
+![post](./g_1.webp)
+
 ![Alt text for accessibility](/images/your-post-slug/inline-1.png)
 
 More text here…
 
-![post](./g_1.webp)

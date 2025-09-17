@@ -3,11 +3,15 @@ const { title, description, image } = Astro.props;
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BaseHead from "../components/BaseHead.astro";
+import { SITE_URL } from "../consts";
 ---
 
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} image={image} />
+
+    <!-- ✅ Canonical tag -->
+    <link rel="canonical" href={`${SITE_URL}${Astro.url.pathname}`} />
   </head>
   <body>
     <!-- Site Header (full width) -->

@@ -95,16 +95,21 @@ const totalPages = page.lastPage;
 
   <!-- Category Filters -->
   <nav class="filters" aria-label="Filter posts by category">
-    <a href="/writing" class="filter-link">All</a>
+    <a
+      href="/writing/1"
+      class={`filter-link${activeCategory === "" ? " is-active" : ""}`}
+    >
+      All
+    </a>
     {
       categories.map((cat) => {
-        const isActive = cat === activeCategory.toLowerCase();
+        const label = titleCase(cat);
         return (
           <a
-            href={`/writing/category/${encodeURIComponent(cat)}`}
-            class={`filter-link${isActive ? " is-active" : ""}`}
+            href={`/writing/category/${encodeURIComponent(cat)}/1`}
+            class={`filter-link${activeCategory === cat ? " is-active" : ""}`}
           >
-            {titleCase(cat)}
+            {label}
           </a>
         );
       })

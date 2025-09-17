@@ -85,7 +85,7 @@ const activeCategory = ""; // "All" page
   <!-- Category Filters -->
   <nav class="filters" aria-label="Filter posts by category">
     <a
-      href="/writing"
+      href="/writing/1"
       class={`filter-link${activeCategory === "" ? " is-active" : ""}`}
     >
       All
@@ -95,8 +95,8 @@ const activeCategory = ""; // "All" page
         const label = titleCase(cat);
         return (
           <a
-            href={`/writing/category/${encodeURIComponent(cat)}`}
-            class="filter-link"
+            href={`/writing/category/${encodeURIComponent(cat)}/1`}
+            class={`filter-link${activeCategory === cat ? " is-active" : ""}`}
           >
             {label}
           </a>
