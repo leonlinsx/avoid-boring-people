@@ -6,7 +6,7 @@ import { SITE_TITLE } from "../consts";
 
 const allPosts = await getCollection("blog");
 
-// Pick only posts you marked with featured: true in frontmatter
+// Pick featured posts
 const featured = allPosts
   .filter((post) => post.data.featured)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -18,31 +18,58 @@ const featured = allPosts
 >
   <!-- Hero -->
   <section class="hero">
-    <h1>
-      I write to make sense of finance, tech, and the ideas shaping our future
-    </h1>
+    <div class="banner-wrapper">
+      <img
+        src="/logos/substack_banner.png"
+        alt="Avoid Boring People newsletter banner"
+        class="banner-img"
+        height="120"
+      />
+      <span class="tooltip">
+        I chose the name because of the double meaning. People always default to
+        one interpretation, but I promise I'm not as intimidating as I sound.
+      </span>
+    </div>
+
+    <h1>I write to think clearly about finance, tech, and strange ideas</h1>
     <p>
-      Sharing my writing helps my ideas compound and helps me connect with curious
-      people.
+      Sharing my writing helps my ideas compound and helps me connect with
+      curious people.
     </p>
     <p class="subtle-cta">
-      Learn more about me <a href="/about">here</a>, or
-      <a href="/newsletter">join 5,000+ readers</a> who get updates by email.
+      Start with a few favourites below, or
+      <a href="#subscribe">join 5,000+ readers</a> who get updates by email.
     </p>
   </section>
 
   <!-- Start Here -->
-  <section class="best-of">
-    <h2>Start Here</h2>
-    <p class="subtext">
-      Some of my favourite pieces — a good place to begin if you're new here.
-    </p>
+  <section class="content-section">
+    <h2>Best Of</h2>
+    <p class="subtext">Essays that capture what this site is about</p>
     <PostList posts={featured} />
+  </section>
+
+  <!-- Newsletter Signup -->
+  <section id="subscribe" class="signup">
+    <h2>Join the Newsletter</h2>
+    <p class="subtext">
+      Irregular essays on finance, tech, and life. Delivered directly to your
+      inbox.
+    </p>
+    <div class="signup-box" aria-label="Newsletter signup form">
+      <iframe
+        src="https://avoidboringpeople.substack.com/embed"
+        width="100%"
+        height="150"
+        frameborder="0"
+        scrolling="no"></iframe>
+    </div>
+    <p class="trust-text">Free. No spam. Unsubscribe anytime.</p>
   </section>
 
   <!-- Featured Logos -->
   <section class="featured">
-    <h3>As featured in</h3>
+    <h2>As featured in</h2>
     <div class="logo-row">
       <img src="/logos/hacker_news_logo.png" alt="HackerNews" />
       <img src="/logos/failory_logo.png" alt="Failory" />

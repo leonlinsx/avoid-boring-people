@@ -30,6 +30,8 @@
   --space-md: 1rem;     /* 16px */
   --space-lg: 2rem;     /* 32px */
   --space-xl: 3rem;     /* 48px */
+
+  --max-content-width: 860px;
 }
 
 /* Dark mode overrides */
@@ -72,7 +74,7 @@ body {
 ---------------------------------*/
 main {
   width: 100%;
-  max-width: 860px;
+  max-width: var(--max-content-width);
   margin: 0 auto;
   padding: var(--space-lg) var(--space-md);
 }
@@ -602,3 +604,139 @@ img.center {
     height: 36px;
   }
 }
+
+/* -------------------------------
+   18. Newsletter Styles
+---------------------------------*/
+
+.signup {
+  margin: var(--space-xl) 0;
+  text-align: center;
+}
+
+.signup h2 {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-sm);
+}
+
+.signup-box {
+  background: var(--color-bg);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: var(--space-md) auto;
+  overflow: hidden;
+}
+
+.signup-box iframe {
+  display: block;
+  width: 100%;
+  border: none;
+}
+
+.trust-text {
+  font-size: 0.9rem;
+  color: var(--color-text-meta); /* matches metadata gray */
+  margin-top: var(--space-sm);
+}
+
+/* About the name */
+.about-name {
+  margin-top: var(--space-xl);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--color-text-meta);
+  font-size: 0.95rem;
+  text-align: center;
+  font-style: italic;
+}
+
+/* -------------------------------
+   19. Hero & Tooltip
+---------------------------------*/
+
+.hero {
+  text-align: center;
+  margin-bottom: var(--space-lg); /* reduced for balance */
+  max-width: var(--max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero h1 {
+  margin-top: 0; /* prevent extra top margin after banner */
+  margin-bottom: var(--space-md); /* tighter below */
+}
+
+.hero p {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+}
+
+.subtle-cta {
+  margin-top: var(--space-sm);
+  margin-bottom: 0; /* prevent extra gap */
+}
+
+.banner-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--space-m);
+}
+
+.banner-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-top: 0;
+  margin-bottom: var(--space-md); /* reduce from lg → md (16px) */
+}
+
+/* Tooltip (desktop only) */
+.tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: var(--space-sm);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--color-border) transparent transparent transparent;
+}
+
+.banner-wrapper:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Hide tooltip on mobile */
+@media (max-width: 600px) {
+  .tooltip {
+    display: none;
+  }
+}
+

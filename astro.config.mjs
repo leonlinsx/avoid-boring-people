@@ -28,5 +28,6 @@ export default defineConfig({
   redirects: {
     "/writing": "/writing/1",
     "/writing/category/:category": "/writing/category/:category/1",
+    '/newsletter': '/#subscribe',
   },
 });
