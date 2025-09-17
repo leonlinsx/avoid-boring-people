@@ -26,8 +26,8 @@ export default defineConfig({
 
   // ✅ Redirects must be an object
   redirects: {
-    "/writing": "/writing/1",
-    "/writing/category/:category": "/writing/category/:category/1",
+    "/writing": { destination: "/writing/1", status: 308 },
+    "/writing/category/:category": { destination: "/writing/category/:category/1", status: 308 },
     '/newsletter': '/#subscribe',
   },
 });
