@@ -15,10 +15,14 @@ const currentPath = Astro.url.pathname;
     </a>
 
     <nav class="nav-links">
+      <!-- directs to /1 to avoid redirecting from screen flash -->
       <a
-        href="/writing"
-        class={currentPath.startsWith("/writing") ? "active" : ""}>Writing</a
+        href="/writing/1"
+        class={currentPath.startsWith("/writing") ? "active" : ""}
       >
+        Writing
+      </a>
+
       <a href="/about" class={currentPath.startsWith("/about") ? "active" : ""}
         >About</a
       >
