@@ -1,8 +1,6 @@
 ---
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
-import PostCard from "../../../../components/PostCard.astro";
-import { getCollection } from "astro:content";
-import readingTime from "reading-time";
+import { getCategoryPostsPaginated } from "../../../../utils/text";
 import { SITE_TITLE } from "../../../../consts";
 import type { GetStaticPaths } from "astro";
 import Pagination from "../../../../components/Pagination.astro";
@@ -12,53 +10,7 @@ import WritingHeader from "../../../../components/WritingHeader.astro";
 import { titleCase } from "../../../../utils/text";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const all = await getCollection("blog");
-
-  // ✅ stable, global category list
-  const categories = Array.from(
-    new Set(all.map((p) => p.data.category?.trim().toLowerCase() || ""))
-  )
-    .filter(Boolean)
-    .sort((a, b) => a.localeCompare(b));
-
-  const routes: any[] = [];
-
-  for (const category of categories) {
-    const filtered = all
-      .filter((p) => (p.data.category?.trim().toLowerCase() || "") === category)
-      .map((p) => ({
-        ...p,
-        slug: p.id.replace(/\.md$/, ""),
-        data: {
-          ...p.data,
-          category: p.data.category?.trim() || "",
-          readingTime: Math.max(
-            1,
-            Math.round(readingTime(p.body ?? "").minutes)
-          ),
-        },
-      }))
-      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-    const pages = paginate(filtered, {
-      pageSize: 8,
-      params: { category },
-    });
-
-    // ✅ Keep Astro's { page } intact; add our own props
-    routes.push(
-      ...pages.map((pg) => ({
-        ...pg,
-        props: {
-          ...(pg.props || {}),
-          categories,
-          activeCategory: category,
-        },
-      }))
-    );
-  }
-
-  return routes;
+  return await getCategoryPostsPaginated(paginate, 8);
 }) satisfies GetStaticPaths;
 
 // ✅ Use the injected page object for posts & pagination

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import readingTime from "reading-time";
+import { getAllPostsPaginated } from "../../utils/text";
 import { SITE_TITLE } from "../../consts";
 import type { GetStaticPaths } from "astro";
 import Pagination from "../../components/Pagination.astro";
@@ -10,29 +9,7 @@ import PostList from "../../components/PostList.astro";
 import WritingHeader from "../../components/WritingHeader.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const allPosts = await getCollection("blog");
-
-  // Build global categories list
-  const categories = Array.from(
-    new Set(allPosts.map((p) => p.data.category?.trim().toLowerCase() || ""))
-  )
-    .filter(Boolean)
-    .sort((a, b) => a.localeCompare(b));
-
-  const posts = allPosts
-    .map((p) => ({
-      ...p,
-      slug: p.id.replace(/\.md$/, ""),
-      data: {
-        ...p.data,
-        category: p.data.category?.trim() || "",
-        readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
-      },
-    }))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-  const pages = paginate(posts, { pageSize: 8 });
-
+  const { pages, categories } = await getAllPostsPaginated(paginate, 8);
   return pages.map((pg) => ({
     ...pg,
     props: {
