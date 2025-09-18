@@ -24,7 +24,11 @@ const totalPages = page.lastPage;
   title={`Writing | ${SITE_TITLE}`}
   description={`Essays and posts in category "${titleCase(activeCategory)}"`}
 >
-  <WritingHeader title={`Category: ${titleCase(activeCategory)}`} />
+  <WritingHeader
+    title={`Category: ${titleCase(activeCategory)}`}
+    subtitle=""
+    showSearch={false}
+  />
 
   <!-- Category Filters -->
   <Filters categories={categories} activeCategory={activeCategory} />

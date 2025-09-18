@@ -31,10 +31,12 @@ const activeCategory = ""; // "All" page
   title={`Writing | ${SITE_TITLE}`}
   description="All essays, notes, and more."
 >
-  <WritingHeader
-    title="Essays, Notes, and More"
-    subtitle="Thinking out loud about finance, tech, and other compounding ideas"
-  />
+<WritingHeader
+  title="Essays, Notes, and More"
+  subtitle="Thinking out loud about finance, tech, and other compounding ideas"
+  showSearch={true}
+/>
+
 
   <!-- Category Filters -->
   <Filters categories={categories} activeCategory={activeCategory} />

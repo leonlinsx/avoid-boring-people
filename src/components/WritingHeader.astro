@@ -1,23 +1,43 @@
 ---
-const { title, subtitle = "", showSearch = true } = Astro.props;
+import SearchBarToggle from "./SearchBarToggle.tsx";
+const { title, subtitle = "", showSearch = false } = Astro.props;
 ---
 
 <header class="writing-header">
-  <div>
+  <div class="writing-header-text">
     <h1>{title}</h1>
-    {subtitle && <p class="subtext">{subtitle}</p>}
+    <div class="subtitle-row">
+      <p class="subtext">{subtitle}</p>
+      <!-- Mobile toggle next to subtitle -->
+      {
+        showSearch && (
+          <div class="mobile-search">
+            <SearchBarToggle client:load />
+          </div>
+        )
+      }
+    </div>
   </div>
 
-  {showSearch && (
-    <form class="search-bar" role="search" method="get" action="/writing/search">
-      <input
-        type="search"
-        name="q"
-        aria-label="Search"
-        class="search-input"
-        autocomplete="off"
-      />
-      <button type="submit" class="search-btn" aria-label="Search">🔍</button>
-    </form>
-  )}
+  <!-- Desktop search (always visible) -->
+  {
+    showSearch && (
+      <form
+        class="search-bar-desktop"
+        role="search"
+        method="get"
+        action="/writing/search"
+      >
+        <input
+          type="search"
+          name="q"
+          class="search-input"
+          placeholder="Search…"
+        />
+        <button type="submit" class="search-btn">
+          🔍
+        </button>
+      </form>
+    )
+  }
 </header>

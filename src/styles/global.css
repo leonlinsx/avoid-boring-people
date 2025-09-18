@@ -307,51 +307,132 @@ img.center {
   border-radius: 8px;
 }
 
-
 /* -------------------------------
-   12. Search Bar
+   12. Writing Header & Search Bar
 ---------------------------------*/
 .writing-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--space-lg);
+  align-items: center; /* centers search with text block on desktop */
   gap: var(--space-lg);
+  margin-bottom: var(--space-lg); /* spacing before filters */
 }
 
-.writing-header .subtext {
-  margin-top: var(--space-xs);
-  margin-bottom: var(--space-xs);
-  color: var(--color-text-muted);
-  font-size: 1.05rem;
+.writing-header-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .writing-header h1 {
-  margin: 0;
-  font-size: 2rem;
+  font-size: 2rem; /* override size only */
   font-weight: 700;
   font-family: Georgia, "Times New Roman", serif;
+  margin: 0 0 var(--space-xs) 0; /* tight control between h1 + subtitle */
 }
 
-.search-bar {
+.writing-header .subtext {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  margin: 0;
+  min-height: 1.4em; /* preserve spacing if empty */
+}
+
+.writing-header .subtext:empty::before {
+  content: "\00a0";
+  visibility: hidden;
+}
+
+/* --- Subtitle row: subtitle + search icon --- */
+.subtitle-row {
+  display: grid;
+  grid-template-columns: 1fr auto;   /* subtitle left, icon right */
+  grid-auto-rows: auto;
+  column-gap: var(--space-sm);
+  row-gap: var(--space-sm);
+  align-items: center;
+}
+
+.subtitle-row .subtext {
+  grid-column: 1 / 2; /* subtitle always in left col */
+  grid-row: 1;
+}
+
+/* flatten Astro wrapper so island doesn’t break layout */
+.subtitle-row astro-island { display: contents; }
+
+/* --- Mobile search --- */
+/* Default (collapsed) — icon sits in col 2, row 1 */
+.mobile-search {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   align-items: center;
-  margin-left: auto;
+}
+
+.search-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: var(--color-link);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Hide search form until expanded */
+.search-bar-mobile {
+  display: none;
+  width: 100%;
+  max-width: none;
+  margin-top: var(--space-sm);
   background: var(--color-bg);
   border: 1.5px solid var(--color-border);
   border-radius: 999px;
-  padding: 0.15rem 0.5rem 0.15rem 1rem;
+  padding: 0.25rem 0.75rem 0.25rem 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+/* Expanded: search bar moves to row 2, spanning both cols */
+.mobile-search.is-open {
+  grid-column: 1 / -1; /* span full width */
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: var(--space-sm);
+}
+
+.mobile-search.is-open .search-toggle {
+  display: none;
+}
+
+.mobile-search.is-open .search-bar-mobile {
+  display: flex;
+  width: 100%;
+  animation: slideDown 0.25s ease;
+}
+
+/* --- Desktop-only search */
+.search-bar-desktop {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem 0.25rem 1rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.03);
   min-width: 220px;
-  max-width: 320px;
+  max-width: 280px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.search-bar:focus-within {
+.search-bar-desktop:focus-within {
   border-color: var(--color-link);
   box-shadow: 0 2px 8px rgba(0,102,204,0.08);
 }
 
+/* Input + button shared */
 .search-input {
   border: none;
   outline: none;
@@ -362,7 +443,6 @@ img.center {
   color: var(--color-text);
   font-family: inherit;
 }
-
 .search-input::placeholder {
   color: var(--color-text-subtle);
   opacity: 1;
@@ -371,18 +451,38 @@ img.center {
 .search-btn {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
   color: var(--color-link);
   padding: 0 0.3rem;
   border-radius: 50%;
   transition: background 0.15s, color 0.2s;
 }
-
 .search-btn:hover,
 .search-btn:focus {
   background: var(--color-link);
   color: #fff;
+}
+
+/* --- Responsive rules --- */
+@media (max-width: 640px) {
+  .writing-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+  }
+  .writing-header h1 { font-size: 1.75rem; }
+
+  .search-bar-desktop { display: none; }
+}
+@media (min-width: 641px) {
+  .mobile-search { display: none; }
+}
+
+/* --- Animation --- */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 
