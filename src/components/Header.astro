@@ -1,6 +1,12 @@
 ---
 import { SITE_TITLE } from "../consts";
-const currentPath = Astro.url.pathname;
+import HeaderLink from "./HeaderLink.astro";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
 ---
 
 <header class="site-header">
@@ -15,16 +21,11 @@ const currentPath = Astro.url.pathname;
     </a>
 
     <nav class="nav-links">
-      <!-- directs to /1 to avoid redirecting from screen flash -->
-      <a
-        href="/writing/1"
-        class={currentPath.startsWith("/writing") ? "active" : ""}
+      <HeaderLink href="/writing/1" currentPath={currentPath} class="nav-item"
+        >Writing</HeaderLink
       >
-        Writing
-      </a>
-
-      <a href="/about" class={currentPath.startsWith("/about") ? "active" : ""}
-        >About</a
+      <HeaderLink href="/about" currentPath={currentPath} class="nav-item"
+        >About</HeaderLink
       >
     </nav>
   </div>
@@ -32,20 +33,21 @@ const currentPath = Astro.url.pathname;
 
 <style>
   .site-header {
-    width: 100%; /* spans full browser width */
+    width: 100%;
     background: var(--color-bg);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--color-border); /* ✅ theme-aware cleanup */
   }
 
   .nav-container {
     width: 100%;
-    max-width: 860px; /* unified with main content */
+    max-width: var(--max-content-width); /* ✅ uses global variable */
     margin: 0 auto;
-    padding: 0.5rem 1rem;
+    padding: var(--space-sm) var(--space-md);
 
     display: flex;
     align-items: center;
-    justify-content: space-between; /* logo left, nav right */
+    justify-content: space-between;
   }
 
   .site-logo {
@@ -64,15 +66,14 @@ const currentPath = Astro.url.pathname;
     transition: opacity 0.2s ease;
   }
 
-  /* ✅ Nav links use serif font */
   .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--space-lg);
     align-items: center;
     font-family: Georgia, "Times New Roman", serif;
   }
 
-  .nav-links a {
+  .nav-item {
     padding: 1em 0.3em;
     color: var(--color-text);
     border-bottom: 3px solid transparent;
@@ -83,19 +84,19 @@ const currentPath = Astro.url.pathname;
       color 0.2s;
   }
 
-  .nav-links a:hover {
+  .nav-item:hover {
     color: var(--color-link);
   }
 
-  .nav-links a.active {
+  .nav-item.active {
     border-bottom-color: var(--color-link);
     font-weight: 600;
   }
 
   @media (max-width: 480px) {
     .nav-links {
-      gap: 0.75rem;
-      font-size: 0.85rem; /* smaller text */
+      gap: var(--space-sm);
+      font-size: 0.85rem;
     }
 
     .site-logo img {

@@ -1,17 +1,23 @@
 ---
 interface Props {
-	date: Date;
+  date: string | Date; // accept string or Date
+  format?: Intl.DateTimeFormatOptions; // allow custom formatting
+  locale?: string; // optional locale override
 }
 
-const { date } = Astro.props;
+const { date, format, locale = "en-US" } = Astro.props;
+
+// Normalize date input
+const parsedDate = typeof date === "string" ? new Date(date) : date;
+
+// Default format (same as before if not overridden)
+const defaultFormat: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+};
 ---
 
-<time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		})
-	}
+<time datetime={parsedDate.toISOString()}>
+  {parsedDate.toLocaleDateString(locale, format || defaultFormat)}
 </time>

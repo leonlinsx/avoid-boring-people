@@ -15,28 +15,27 @@ interface Props {
   image?: string | { src: string }; // support string or image object
 }
 
-const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 const { title, description, image } = Astro.props;
 
-// Resolve OG image
+// Resolve OG image safely with URL constructor
 let ogImage: string;
-
 if (image) {
   if (typeof image === "string") {
-    // Case 1: URL or relative string
+    // Case 1: Full URL or relative path
     ogImage = image.startsWith("http")
       ? image
-      : `${SITE_URL.replace(/\/$/, "")}${image}`;
+      : new URL(image, SITE_URL).toString();
   } else if (typeof image === "object" && "src" in image) {
     // Case 2: Astro content image object
-    ogImage = `${SITE_URL.replace(/\/$/, "")}${image.src}`;
+    ogImage = new URL(image.src, SITE_URL).toString();
   } else {
-    // Fallback in case something unexpected sneaks in
-    ogImage = `${SITE_URL.replace(/\/$/, "")}${SITE_OG_IMAGE}`;
+    // Fallback
+    ogImage = new URL(SITE_OG_IMAGE, SITE_URL).toString();
   }
 } else {
   // Fallback
-  ogImage = `${SITE_URL.replace(/\/$/, "")}${SITE_OG_IMAGE}`;
+  ogImage = new URL(SITE_OG_IMAGE, SITE_URL).toString();
 }
 ---
 
@@ -58,12 +57,12 @@ if (image) {
 <link rel="shortcut icon" href="/favicon.ico" />
 
 <!-- Sitemap & RSS -->
-<link rel="sitemap" href={`${SITE_URL}sitemap-index.xml`} />
+<link rel="sitemap" href={new URL("sitemap-index.xml", SITE_URL).toString()} />
 <link
   rel="alternate"
   type="application/rss+xml"
   title={SITE_TITLE}
-  href={`${SITE_URL}rss.xml`}
+  href={new URL("rss.xml", SITE_URL).toString()}
 />
 
 <meta name="generator" content={Astro.generator} />

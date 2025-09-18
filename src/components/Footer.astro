@@ -4,13 +4,19 @@
       <a
         href="https://twitter.com/leonlinsx"
         target="_blank"
-        rel="noopener noreferrer">Twitter</a
-      > ·
+        rel="noopener noreferrer"
+      >
+        Twitter
+      </a>
+      ·
       <a
         href="https://www.threads.net/@leon.lin.sx"
         target="_blank"
-        rel="noopener noreferrer">Threads</a
-      > ·
+        rel="noopener noreferrer"
+      >
+        Threads
+      </a>
+      ·
       <a href="/rss.xml">RSS Feed</a>
     </p>
     <p>© {new Date().getFullYear()} Leon Lin</p>
@@ -19,27 +25,29 @@
 
 <style>
   .site-footer {
-    width: 100%; /* full browser width */
-    border-top: 1px solid #eee;
+    width: 100%;
+    border-top: 1px solid var(--color-border);
     background: var(--color-bg);
   }
 
   .footer-container {
-    max-width: 860px; /* unified with main content */
+    max-width: var(--max-content-width); /* consistent with layout */
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: var(--space-lg) var(--space-md);
     text-align: center;
     font-size: 0.9rem;
-    color: #555;
+    color: var(--color-text-muted); /* theme-aware muted text */
   }
 
   .footer-container a {
-    color: #000;
+    color: var(--color-text); /* theme-aware text */
     text-decoration: none;
-    margin: 0 0.5rem;
+    margin: 0 var(--space-sm);
+    transition: color 0.2s;
   }
 
   .footer-container a:hover {
+    color: var(--color-link); /* matches global hover behavior */
     text-decoration: underline;
   }
 </style>
