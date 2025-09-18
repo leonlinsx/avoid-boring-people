@@ -1,6 +1,15 @@
 ---
 import SearchBarToggle from "./SearchBarToggle.tsx";
+import SearchBar from "./SearchBar.astro";
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  showSearch?: boolean;
+}
+
 const { title, subtitle = "", showSearch = false } = Astro.props;
+
 ---
 
 <header class="writing-header">
@@ -12,24 +21,5 @@ const { title, subtitle = "", showSearch = false } = Astro.props;
     </div>
   </div>
 
-  {
-    showSearch && (
-      <form
-        class="search-bar-desktop"
-        role="search"
-        method="get"
-        action="/writing/search"
-      >
-        <input
-          type="search"
-          name="q"
-          class="search-input"
-          placeholder=""
-        />
-        <button type="submit" class="search-btn">
-          🔍
-        </button>
-      </form>
-    )
-  }
+  {showSearch && <SearchBar className="search-bar-desktop" variant="compact" />}
 </header>

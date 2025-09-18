@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"a"> {
   href: string;
-  currentPath?: string; // now optional; we’ll fallback if omitted
+  currentPath: string; // now optional; we’ll fallback if omitted
 }
 
 const { href, currentPath, class: className, ...props } = Astro.props;

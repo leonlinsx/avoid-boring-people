@@ -17,7 +17,7 @@ const pageHref = (page: number) => {
   }
 };
 
-// Ellipses pagination helper (unchanged)
+// Ellipses pagination helper
 function getPageNumbers(current: number, total: number): (number | string)[] {
   const delta = 2;
   const range: (number | string)[] = [];
@@ -58,7 +58,10 @@ const pages = getPageNumbers(currentPage, totalPages);
           ) : (
             <a
               href={pageHref(pg)}
-              class={`pagination-link${pg === currentPage ? " is-current" : ""}`}
+              class:list={[
+                "pagination-link",
+                { "is-current": pg === currentPage },
+              ]}
               aria-current={pg === currentPage ? "page" : undefined}
             >
               {pg}

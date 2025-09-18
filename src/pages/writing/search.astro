@@ -4,6 +4,7 @@ import PostCard from "../../components/PostCard.astro";
 import { getCollection } from "astro:content";
 import readingTime from "reading-time";
 import { SITE_TITLE } from "../../consts";
+import SearchBar from "../../components/SearchBar.astro";
 
 // Extract query param `q` from the URL
 const url = new URL(Astro.request.url);
@@ -31,23 +32,7 @@ const posts = allPosts
 >
   <div class="search-header">
     <h1>Search Results</h1>
-    <form
-      class="search-bar"
-      role="search"
-      method="get"
-      action="/writing/search"
-    >
-      <input
-        type="search"
-        id="client-search-input"
-        name="q"
-        value={q}
-        aria-label="Search"
-        class="search-input"
-        autocomplete="off"
-      />
-      <button type="submit" class="search-btn" aria-label="Search">🔍</button>
-    </form>
+    <SearchBar q={q} id="client-search-input" variant="full" />
   </div>
 
   <div id="post-list">
@@ -108,10 +93,16 @@ const posts = allPosts
   }
   .search-bar {
     display: flex;
-    gap: 0.5rem;
-    width: 100%;
-    max-width: 100%; /* remove constraint */
+    align-items: center;
+    width: 100%; /* full width of container */
+    max-width: none; /* no max constraint */
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem 0.25rem 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
   }
+
   .search-input {
     flex: 1;
     padding: 0.35rem 0.75rem;

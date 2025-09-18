@@ -1,0 +1,28 @@
+---
+interface Props {
+  q?: string;
+  className?: string;
+  id?: string;
+  variant?: "compact" | "full"; // 👈 new
+}
+
+const { q = "", className = "", id, variant = "compact" } = Astro.props;
+---
+
+<form
+  class:list={["search-bar", className, variant]}
+  role="search"
+  method="get"
+  action="/writing/search"
+>
+  <input
+    type="search"
+    id={id}
+    name="q"
+    value={q}
+    aria-label="Search"
+    class="search-input"
+    autocomplete="off"
+  />
+  <button type="submit" class="search-btn" aria-label="Search">🔍</button>
+</form>

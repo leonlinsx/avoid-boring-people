@@ -1,7 +1,13 @@
 ---
 import { titleCase, normalizeCategory } from "../utils/text";
 
+interface Props {
+  categories: string[];
+  activeCategory?: string;
+}
+
 const { categories = [], activeCategory = "" } = Astro.props;
+
 ---
 
 <nav class="writing-filters" aria-label="Filter posts by category">
