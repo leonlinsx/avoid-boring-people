@@ -8,18 +8,10 @@ const { title, subtitle = "", showSearch = false } = Astro.props;
     <h1>{title}</h1>
     <div class="subtitle-row">
       <p class="subtext">{subtitle}</p>
-      <!-- Mobile toggle next to subtitle -->
-      {
-        showSearch && (
-          <div class="mobile-search">
-            <SearchBarToggle client:load />
-          </div>
-        )
-      }
+      {showSearch && <SearchBarToggle client:load />}
     </div>
   </div>
 
-  <!-- Desktop search (always visible) -->
   {
     showSearch && (
       <form
@@ -32,7 +24,7 @@ const { title, subtitle = "", showSearch = false } = Astro.props;
           type="search"
           name="q"
           class="search-input"
-          placeholder="Search…"
+          placeholder=""
         />
         <button type="submit" class="search-btn">
           🔍

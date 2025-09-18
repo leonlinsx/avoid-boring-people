@@ -23,36 +23,38 @@ export default function SearchBarToggle() {
   }, []);
 
   return (
-    // IMPORTANT: we toggle a class on the wrapper so CSS can move the bar to a new line
     <div class={`mobile-search ${isOpen ? "is-open" : ""}`} ref={wrapperRef}>
-      {/* Icon (hidden when open) */}
-      <button
-        type="button"
-        class="search-toggle"
-        aria-label="Open search"
-        onClick={() => setIsOpen(true)}
-        hidden={isOpen}
-      >
-        🔍
-      </button>
+      {!isOpen && (
+        <button
+          type="button"
+          class="search-toggle"
+          aria-label="Open search"
+          onClick={() => setIsOpen(true)}
+        >
+          🔍
+        </button>
+      )}
 
-      {/* Bar (always in DOM; only shown when wrapper has .is-open) */}
-      <form
-        class="search-bar-mobile"
-        role="search"
-        method="get"
-        action="/writing/search"
-      >
-        <input
-          type="search"
-          name="q"
-          class="search-input"
-          placeholder="Search…"
-          autoComplete="off"
-          autoFocus={isOpen}
-        />
-        <button type="submit" class="search-btn" aria-label="Search">🔍</button>
-      </form>
+      {isOpen && (
+        <form
+          class="search-bar-mobile"
+          role="search"
+          method="get"
+          action="/writing/search"
+        >
+          <input
+            type="search"
+            name="q"
+            class="search-input"
+            placeholder=""
+            autoComplete="off"
+            autoFocus
+          />
+          <button type="submit" class="search-btn" aria-label="Search">
+            🔍
+          </button>
+        </form>
+      )}
     </div>
   );
 }
