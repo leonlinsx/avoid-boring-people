@@ -1,6 +1,9 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
+// sets page-level metadata like <title>, <meta description>, Open Graph tags, preload links, favicons, etc.
+// sou need it because every page (index, /writing, /about, /404, etc.) should share consistent metadata logic, 
+// while still allowing you to pass unique values
 import "../styles/global.css";
 import {
   SITE_TITLE,
@@ -81,10 +84,14 @@ if (image) {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description || SITE_DESCRIPTION} />
 <meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={SITE_TITLE} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={canonicalURL} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description || SITE_DESCRIPTION} />
-<meta property="twitter:image" content={ogImage} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:creator" content="@leonlinsx" />
+<meta name="twitter:site" content="@leonlinsx" />
+
