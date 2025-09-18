@@ -12,25 +12,24 @@ const isProd = import.meta.env.PROD;
   <head>
     <BaseHead title={title} description={description} image={image} />
 
-    {isProd && GA_ID && (
-      <>
-        <script is:inline>
-          // Only run GA if we’re on the production domain
-          const allowedHost = "leonlins.com";
-          if (location.hostname === allowedHost) {
-            const gtagScript = document.createElement("script");
-            gtagScript.async = true;
-            gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-            document.head.appendChild(gtagScript);
-
+    {
+      isProd && GA_ID && (
+        <>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          />
+          <script
+            set:html={`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            gtag("js", new Date());
-            gtag("config", "{GA_ID}", { anonymize_ip: true });
-          }
-        </script>
-      </>
-    )}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}', { anonymize_ip: true });
+          `}
+          />
+        </>
+      )
+    }
   </head>
   <body>
     <!-- Site Header (full width) -->
@@ -43,24 +42,6 @@ const isProd = import.meta.env.PROD;
 
     <!-- Site Footer -->
     <Footer />
-
-    {isProd && GA_ID && (
-      <script is:inline>
-        // Page view tracking, but only on the production domain
-        const allowedHost = "leonlins.com";
-        if (location.hostname === allowedHost) {
-          const sendPV = () => {
-            if (!window.gtag) return;
-            window.gtag("event", "page_view", {
-              page_path: location.pathname + location.search,
-              page_title: document.title
-            });
-          };
-          window.addEventListener("astro:page-load", sendPV);
-          window.addEventListener("astro:after-swap", sendPV);
-        }
-      </script>
-    )}
   </body>
 </html>
 
