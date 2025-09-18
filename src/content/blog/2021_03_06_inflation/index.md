@@ -11,8 +11,6 @@ heroImage: "./i_3.webp"
 
 We probably know less about inflation than we believe we do.
 
----
-
 ## What I don't understand about inflation
 
 I don't understand inflation.

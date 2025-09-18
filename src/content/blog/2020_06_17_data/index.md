@@ -11,8 +11,6 @@ heroImage: "./data_9.webp"
 
 It is unlikely you have an information edge as a retail investor vs professional; you should find edge elsewhere
 
----
-
 ## Using data in investing
 
 Last week, we looked at [how companies use machine learning to take data, process it, and come to a conclusion.](https://avoidboringpeople.substack.com/p/the-next-machine-learning-startup "ML")

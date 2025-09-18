@@ -14,8 +14,6 @@ featured: false
 2. Technology competition is about relative, not absolute strength
 3. Society is about relative, not absolute status
 
----
-
 ## 1. Don't bet on the most likely winner
 
 Imagine you're an investment analyst [^1].

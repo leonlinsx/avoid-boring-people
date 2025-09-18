@@ -11,8 +11,6 @@ heroImage: "./m_4.png"
 
 Natural monopolies are rare, and regulation usually hurts more than helps in fixing that
 
----
-
 ## Winner takes all?
 
 Josh Breinlinger, a VC at Turtle Ventures, has a short post on his site about [how most marketplaces are not "winner takes all":](https://acrowdedspace.com/post/642666403989684224/winner-take-all-or-not "win")

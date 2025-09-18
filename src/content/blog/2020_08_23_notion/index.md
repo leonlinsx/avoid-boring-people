@@ -13,8 +13,6 @@ heroImage: "./n_5.webp"
 2. Notion's greatest strengths are flexible forms, visual based building, and template options
 3. Notion’s biggest problems are likely to be quality related, and I give a few marketing and product ideas to solve them
 
----
-
 ## Notion workspace for your workplace
 
 In the movie [Inception by Christopher Nolan,](https://en.wikipedia.org/wiki/Inception "Inception") the main characters wander through nested layers of dreams to carry out a task. Their actions within that layer affect the layer itself, and also the layers above or below it. Sometimes you’re interested in what’s happening in that layer, sometimes in affecting other layers.

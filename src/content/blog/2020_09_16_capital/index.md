@@ -11,8 +11,6 @@ heroImage: "./c_8.webp"
 
 The reduced cost of capital now implies a wealth transfer from savers to borrowers, and that it's optimal for a person to be taking more risk today than before.
 
----
-
 ## Implications of low cost of capital
 
 I want to take a look at **cost of capital** today. I've been wondering what the implications are of our current low cost environment, plus [Michael Pettis](https://carnegieendowment.org/chinafinancialmarkets/82610 "Pettis") recently wrote a good article on interest rates vs growth, so let's look closer at this topic. I won't have all the answers either, so comments are definitely welcome, either reply directly or on the post's comment box.

@@ -11,8 +11,6 @@ heroImage: "./d_1.webp"
 
 Third Point argues that Disney should stop paying its dividend and invest in streaming; Semper Augustus disagrees.
 
----
-
 ## Activism at Disneyland
 
 The activist investment fund Third Point recently published a [letter to Disney,](https://www.valuewalk.com/2020/10/third-point-walt-disney-company/ "disney") suggesting the company change their business strategy [^1]. This led to [a rebuttal by another investment firm](https://valueinvestingworld.substack.com/p/chris-bloomstrans-letter-to-the-walt "Semper"), Semper Augustus (h/t Joe Koster). It's less common for investment firms to provide counterarguments against an activist, so let's take a look at both sides [^2].

@@ -11,8 +11,6 @@ heroImage: "./i_1.webp"
 
 There's a lot of similarity between early internet trends and things that are popular today.
 
---- 
-
 ## Book review
 
 I read [How the internet happened](https://www.amazon.com/How-Internet-Happened-Netscape-iPhone/dp/1631493078 "how") by Brian McCullough recently, and it was a good read on the history of consumer internet. The book starts around the origin of Mosaic (one of the first internet browsers), and goes up to Facebook and Iphones. Reading the founding stories of internet companies one chapter at a time, I was surprised by how similar many of the issues were vs today.

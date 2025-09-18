@@ -11,7 +11,7 @@ export async function GET() {
     site: SITE_URL,
     items: posts.map((post) => {
       // fallback to post.id if slug isn’t available
-      const slug = post.slug || post.id;
+      const slug = post.slug ?? post.id.replace(/\.md$/, "");
       return {
         title: post.data.title,
         description: post.data.description,

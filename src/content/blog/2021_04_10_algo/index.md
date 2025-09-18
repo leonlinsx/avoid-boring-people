@@ -11,8 +11,6 @@ heroImage: "./a_3.webp"
 
 An algorithm is a defined process to follow to get a desired result. Much of our lives are decided by algorithms. Knowing what algorithms to follow can result in more efficient and effective decision making.
 
----
-
 ## Algorithms in life
 
 I recently re-read [Algorithms to Live By](https://algorithmstoliveby.com/ "algo"), a book by Brian Christian and Tom Griffiths on how algorithms can help us be more effective in our lives. Having [picked up programming last year,](https://avoidboringpeople.substack.com/p/avoid-boring-people-in-2020-be8 "prog") I got more out of this time around. 

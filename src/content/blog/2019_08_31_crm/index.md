@@ -8,11 +8,10 @@ heroImage: "./c_4.webp"
 ---
 
 ## Takeaways
+
 1. Finding a pair trade in a bubble might be better than shorting it or riding the momentum
 2. What is a personal CRM and why are people talking about it?
 3. We don't know ourselves very well; how to increase self-awareness
-
---- 
 
 ### Bubbles and russian spies
 

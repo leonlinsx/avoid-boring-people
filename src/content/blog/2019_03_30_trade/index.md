@@ -13,8 +13,6 @@ heroImage: "./r_2.png"
 2. Chinese influencers are changing the way products are sold
 3. Raise your ambitions to be more successful
 
----
-
 ### Tax not tariff
 
 There is a common misconception that the US trade imbalance can be corrected with trade measures such as tariffs or exchange rates. Michael Pettis, who excels at using first principles to explain economics [^1], disagrees, [recently writing about why taxing capital inflows would be better than imposing tariffs in addressing the US trade imbalance.](https://carnegieendowment.org/chinafinancialmarkets/79641 "Pettis")

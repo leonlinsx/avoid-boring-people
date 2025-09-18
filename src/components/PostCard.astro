@@ -2,21 +2,20 @@
 import { Image } from "astro:assets";
 import { SITE_OG_IMAGE } from "../consts";
 import FormattedDate from "./FormattedDate.astro";
-import type { CollectionEntry } from "astro:content";
-type BlogPost = CollectionEntry<"blog">;
+import type { BlogPost } from "../utils/text"; // ✅ import enriched type
 
 interface Props {
   post: BlogPost;
 }
 
 const { post } = Astro.props;
-const title = post?.data?.title ?? "Untitled";
-const desc = post?.data?.description ?? "";
-const category = post?.data?.category ?? "";
-const date = post?.data?.pubDate ? new Date(post.data.pubDate) : null;
-const rt = post?.data?.readingTime;
-const href = `/writing/${post?.slug ?? post?.id?.replace(/\.md$/, "")}/`;
-const heroImage = post?.data?.heroImage;
+const title = post.data.title ?? "Untitled";
+const desc = post.data.description ?? "";
+const category = post.data.category ?? "";
+const date = post.data.pubDate ? new Date(post.data.pubDate) : null;
+const rt = post.data.readingTime; // ✅ always exists (number)
+const href = `/writing/${post.slug}/`; // ✅ slug guaranteed by enrichPost
+const heroImage = post.data.heroImage;
 const thumbnail = heroImage ?? SITE_OG_IMAGE;
 ---
 
@@ -53,14 +52,12 @@ const thumbnail = heroImage ?? SITE_OG_IMAGE;
 
     <p class="post-meta">
       {category}
-      {
-        date && (
-          <>
-            {" "}
-            · <FormattedDate date={date} />
-          </>
-        )
-      }
+      {date && (
+        <>
+          {" "}
+          · <FormattedDate date={date} />
+        </>
+      )}
       {rt && ` · ${rt} min read`}
     </p>
   </div>

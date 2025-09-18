@@ -11,8 +11,6 @@ heroImage: "./i_4.webp"
 
 Whether you should do a direct listing depends on the type of company you are
 
----
-
 ## IPOs vs direct listings
 
 [Aswath Damodaran](https://twitter.com/AswathDamodaran?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor "Aswath"), one of the best finance profs out there [^1], [wrote about IPOs vs direct listings a while ago](http://aswathdamodaran.blogspot.com/2019/10/disrupting-ipo-process-challenging.html? "Aswath"). I'll review highlights below; banking ex-colleagues feel free to disagree. If you aren't familiar with direct listings, [a16z has a primer.](https://a16z.com/2019/07/02/direct-listings/ "a16z")

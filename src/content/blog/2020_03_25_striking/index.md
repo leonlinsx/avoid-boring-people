@@ -11,8 +11,6 @@ heroImage: "./b_1.webp"
 
 Independent inquiry is needed in your search for truth, not dependence on anyone else's view or a mere book.
 
----
-
 ## Striking thoughts book summary
 
 Bruce Lee remains a well known name even now, more than 30 years after his death. Best known for his martial arts, Bruce was also well read in philosophy, studying it at the University of Washington and then developing his own style after. The book [Striking Thoughts](https://www.amazon.com/Bruce-Lee-Striking-Thoughts-Library/dp/0804834717 "Striking") contains a collection of his sayings on a wide range of topics. 

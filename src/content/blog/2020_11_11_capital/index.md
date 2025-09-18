@@ -11,8 +11,6 @@ heroImage: "./c_1.webp"
 
 A research paper proposes that you should look to work with strong teammates and not strong companies if you're interested in innovation
 
----
-
 ## People vs Companies
 
 We discussed [middlemen in financial capital last week](https://avoidboringpeople.substack.com/p/do-investment-bankers-add-value "ib"). This week, let's look at middlemen in human capital. 

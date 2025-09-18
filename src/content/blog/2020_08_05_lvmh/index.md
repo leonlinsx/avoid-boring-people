@@ -12,8 +12,6 @@ featured: false
 
 As the CEO of LVMH, Bernard Arnault believes that star brands require creativity for ideas but control on execution, combined with a blend of past and present
 
----
-
 ## Top of the luxury chain
 
 [LVMH](https://en.wikipedia.org/wiki/LVMH "LVMH") is the parent company of many luxury brands we're familiar with. [Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ "1987") through the merger of "Louis Vuitton" and "Moët et Chandon and Hennessy", it now houses more than 70 brands across wine, fashion, jewellery, and more. Compared to its nearest competitor, Kering [^1], [LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html "rev")

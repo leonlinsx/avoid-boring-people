@@ -11,8 +11,6 @@ heroImage: "./v_3.webp"
 
 AQR looks into the performance of value investing (bad), common criticisms of value investing (invalid), and comes up with their own explanation of why value investing hasn't worked (valid?)
 
----
-
 ## Valuations 
 
 We've talked about [whether investment bankers add value](https://avoidboringpeople.substack.com/p/do-investment-bankers-add-value "bank") (probably?), [whether companies add value](https://avoidboringpeople.substack.com/p/do-companies-add-value "co") (less than we think), and this week we'll wrap up the value series [^1] by looking at whether value investing adds value.

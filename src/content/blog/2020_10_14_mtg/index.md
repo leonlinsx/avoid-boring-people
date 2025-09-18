@@ -12,8 +12,6 @@ featured: false
 
 Magic: The Gathering is a lucrative card game business that has run into self-inflicted controversy due to over-aggressive monetisation
 
----
-
 ## Cards, Commander, Cardboard crack
 
 How much can cardboard cost?

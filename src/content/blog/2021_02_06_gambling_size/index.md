@@ -12,8 +12,6 @@ featured: false
 
 Behavioural edge in investing comes from being able to do things that are unpopular. Everyone loves to gamble, the more important thing is to size your risk appropriately.
 
----
-
 ## Behavioural edge and why it's difficult
 
 John Huber likes to divide the "edge" you can get in investing into [three main sources:](https://sabercapitalmgt.com/what-is-your-edge/ "edge")

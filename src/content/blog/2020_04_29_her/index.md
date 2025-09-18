@@ -13,8 +13,6 @@ heroImage: "./her_1.webp"
 2. The only person that Charlie Munger invests in says investing isn't about being smart, but about thinking like an owner
 3. Try to better understand the tradeoffs in decision making
 
----
-
 ## AI as a service(s business)
 
 I've written about machine learning (ML) and artificial intelligence (AI) before [^1], [summarising Vicki Boykis' work on how you often don't need fancy tech, and usually the business dictates, not the tech.](https://avoidboringpeople.substack.com/p/you-dont-want-quality-time-you-want "ABP") Scott Locklin elaborates on the problems faced by ML startups [here](https://scottlocklin.wordpress.com/2020/02/21/andreessen-horowitz-craps-on-ai-startups-from-a-great-height/ "Scott") [^2], mostly responding to a related a16z post [here.](https://a16z.com/2020/02/16/the-new-business-of-ai-and-how-its-different-from-traditional-software/ "a16z")

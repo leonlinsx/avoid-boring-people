@@ -15,8 +15,6 @@ I had to put together some analysis on the data pipeline industry recently, and 
 2.  risks,
 3.  companies involved at each stage
 
----
-
 ## 1. Market overview
 
 The data pipeline industry has a TAM of >$100bn, with some companies alone valued close to that [^1]. Since data pipelines are a broad area, I'll restrict discussion to sectors more relevant to data analysis. A mix of public and private companies compete to fit within the technology stack of organisations using data, which is essentially every sizable firm today [^2].

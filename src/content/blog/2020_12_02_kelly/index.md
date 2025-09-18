@@ -13,8 +13,6 @@ featured: true
 1. The Kelly criterion is a mathematical way of sizing your portfolio, though be careful with your assumptions
 2. HASH.ai is making agent based simulations easier; I try to model startup failure rates
 
----
-
 ## 1. Kelly criterion for portfolio sizing
 
 Sarah is an aspiring angel investor. Her friends Nicholas, Alyson, and Chase have a magical business idea involving pest extermination, and Sarah thinks it's going to be a huge hit.

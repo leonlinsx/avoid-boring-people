@@ -11,8 +11,6 @@ heroImage: "./a_1.webp"
 
 Kegan's theory describes how we can continue to grow as adults and reach our fullest potential.
 
----
-
 ## Kegan's theory of adult development
 
 Imagine a caterpillar that dies before it changes into a butterfly. Or a larva before turning into a ladybug. We’d think it was a shame that these never reached their full potential. Just like a caterpillar is not meant to die as a caterpillar, [Robert Kegan believes adult development theory can help us better understand how to reach our fullest potential.](https://www.youtube.com/watch?v=bhRNMj6UNYY "youtube")

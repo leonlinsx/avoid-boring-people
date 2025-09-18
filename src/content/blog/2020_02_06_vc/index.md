@@ -11,8 +11,6 @@ heroImage: "./v_1.webp"
 
 Secrets of Sand Hill Road was a good read even for someone in finance, less so if you're already in VC.
 
----
-
 ## Secrets of Sand Hill Road book summary
 
 I read [Secrets of Sand Hill Road](https://a16z.com/book/secrets-of-sand-hill-road/ "a16z") over the holidays and thought it was a decent intro to VC and how the industry is incentivised. As someone not in the industry and only with angel investing, public markets and investment banking experience, **I still learnt some things that I hadn't known before.** If you are in the industry I feel like there might not be that much new information, though you're likely not the target audience. Highlights from the book below:

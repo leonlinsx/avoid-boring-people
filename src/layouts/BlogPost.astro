@@ -6,8 +6,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import PostCard from "../components/PostCard.astro";
 import { SITE_BANNER_IMAGE } from "../consts";
+import { enrichPost } from "../utils/text";
 
+// Astro passes only the frontmatter as props
 type Props = CollectionEntry<"blog">["data"];
+const raw = Astro.props;
+
+// ✅ Rebuild a "full post" object with body so enrichPost can compute readingTime
+const body = await Astro.slots.render("default");
+const current = enrichPost({
+  id: "",   // slug/id not needed for this page
+  slug: "",
+  body,
+  data: raw,
+} as any);
 
 const {
   title,
@@ -17,27 +29,23 @@ const {
   heroImage,
   category,
   readingTime,
-} = Astro.props;
+} = current.data;
 
-// Normalize hero image → allow object (imported asset), string (URL/path), or fallback
+// Normalize hero image
 let hero: string | Record<string, any> = SITE_BANNER_IMAGE;
 if (heroImage) {
   if (typeof heroImage === "object" && heroImage.src) {
-    hero = heroImage; // Astro asset
+    hero = heroImage;
   } else if (typeof heroImage === "string") {
-    hero = heroImage; // raw string path or external URL
+    hero = heroImage;
   }
 }
 
-// Related posts
+// Related posts (also enriched)
 const allPosts = await getCollection("blog");
 const related = allPosts
   .filter((p) => p.data.category === category && p.data.title !== title)
-  .map((p) => ({
-    ...p,
-    slug: p.slug,
-    data: { ...p.data },
-  }))
+  .map(enrichPost)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 ---
@@ -49,36 +57,33 @@ const related = allPosts
 >
   <main>
     <article>
-      <!-- Hero Image -->
-      {
-        hero && (
-          <div class="hero-image">
-            {typeof hero === "object" && hero.src ? (
-              <Image
-                src={hero}
-                alt={title}
-                format="webp"
-                width={1200}
-                height={630}
-                fit="cover"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            ) : (
-              <img
-                src={hero as string}
-                alt={title}
-                width="1200"
-                height="630"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            )}
-          </div>
-        )
-      }
+      {hero && (
+        <div class="hero-image">
+          {typeof hero === "object" && hero.src ? (
+            <Image
+              src={hero}
+              alt={title}
+              format="webp"
+              width={1200}
+              height={630}
+              fit="cover"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          ) : (
+            <img
+              src={hero as string}
+              alt={title}
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          )}
+        </div>
+      )}
 
       <div class="prose">
         <div class="title">
@@ -86,16 +91,13 @@ const related = allPosts
             <FormattedDate date={pubDate} />
             {category && ` · ${category}`}
             {readingTime && ` · ${readingTime} min read`}
-            {
-              updatedDate && (
-                <div class="last-updated-on">
-                  Last updated on <FormattedDate date={updatedDate} />
-                </div>
-              )
-            }
+            {updatedDate && (
+              <div class="last-updated-on">
+                Last updated on <FormattedDate date={updatedDate} />
+              </div>
+            )}
           </div>
           <h1>{title}</h1>
-          <hr />
         </div>
 
         <!-- Post content -->
@@ -115,16 +117,14 @@ const related = allPosts
         </section>
 
         <!-- Related posts -->
-        {
-          related.length > 0 && (
-            <section class="related-posts">
-              <h2>Related Posts</h2>
-              {related.map((p) => (
-                <PostCard post={p} />
-              ))}
-            </section>
-          )
-        }
+        {related.length > 0 && (
+          <section class="related-posts">
+            <h2>Related Posts</h2>
+            {related.map((p) => (
+              <PostCard post={p} />
+            ))}
+          </section>
+        )}
       </div>
     </article>
   </main>
@@ -135,7 +135,6 @@ const related = allPosts
     max-width: 1100px;
     margin: 0 auto 2rem auto;
   }
-
   .hero-image img,
   .hero-image :global(img) {
     width: 100%;
@@ -145,24 +144,32 @@ const related = allPosts
     border-radius: 12px;
     box-shadow: var(--box-shadow);
   }
-
   .title {
-    margin-bottom: 1em;
-    padding: 1em 0;
+    margin-bottom: 2rem;
     text-align: center;
     line-height: 1.4;
   }
-
   .meta {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.75rem;
     font-size: 0.95rem;
     color: rgb(var(--gray));
   }
-
   .last-updated-on {
     font-style: italic;
   }
-
+  .title h1 {
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+  }
+  .title h1::after {
+    content: "";
+    display: block;
+    margin: 0.75rem auto 0 auto;
+    width: 100%;
+    height: 1px;
+    background-color: #ddd;
+  }
   .newsletter-cta,
   .related-posts {
     margin-top: 3rem;
@@ -170,7 +177,6 @@ const related = allPosts
     border-top: 1px solid #eee;
     text-align: center;
   }
-
   .related-posts h2 {
     margin-bottom: 1rem;
     text-align: left;

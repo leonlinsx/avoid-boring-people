@@ -11,8 +11,6 @@ heroImage: "./c_2.webp"
 
 Cameo is a company that has taken advantage of the long long tail, realising that a small gesture from a minor celeb can make a big difference to a fan.
 
----
-
 ## 1. Cameo and the long long tail
 
 [Kevin Kelly,](https://kk.org/biography "Kevin") cofounder of Wired magazine, coined the phrase [1,000 true fans](https://kk.org/thetechnium/1000-true-fans/ "1000") many years ago. [Li Jin](https://li.substack.com/people/1021248 "Li") recently built on that idea with her [100 true fans](https://a16z.com/2020/02/06/100-true-fans/ "100") article. If you haven't read either, the gist is that an achievable amount of loyal fans (100 or 1,000) are enough for creators to make a living. For example, someone who had 1,000 fans paying $100 per year would have enough to get by in most cities; likewise for a creator who had 100 fans paying $1,000 per year. And getting 1,000 fans doesn't sound too far-fetched.

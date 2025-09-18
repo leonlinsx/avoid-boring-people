@@ -11,8 +11,6 @@ heroImage: "./p_6.webp"
 
 Michael Filler and Matthew Realff propose that all processes come from 8 different types of steps. By understanding what steps are available, you can rearrange them to get process improvement. Process improvement is underrated because of its intangible nature. 
 
----
-
 ## Process vs product
 
 If you were asked to compare the object on the left vs the object on the right, what points would you make?

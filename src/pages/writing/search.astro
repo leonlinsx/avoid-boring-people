@@ -2,27 +2,19 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 import { getCollection } from "astro:content";
-import readingTime from "reading-time";
 import { SITE_TITLE } from "../../consts";
 import SearchBar from "../../components/SearchBar.astro";
+import { enrichPost } from "../../utils/text"; // ✅ reuse helper
 
 // Extract query param `q` from the URL
 const url = new URL(Astro.request.url);
 const q = (url.searchParams.get("q") || "").trim();
 
-// Fetch all posts
+// Fetch and enrich all posts
 const allPosts = await getCollection("blog");
 
 const posts = allPosts
-  .map((p) => ({
-    ...p,
-    slug: p.id.replace(/\.md$/, ""),
-    data: {
-      ...p.data,
-      category: p.data.category?.trim() || "",
-      readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
-    },
-  }))
+  .map(enrichPost)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
@@ -39,8 +31,7 @@ const posts = allPosts
     {posts.map((post) => <PostCard post={post} />)}
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
   <script type="module">
     const input = document.getElementById("client-search-input");
     const postList = document.getElementById("post-list");
@@ -86,7 +77,7 @@ const posts = allPosts
   .search-header {
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* stretch full width */
+    align-items: stretch;
     gap: 1rem;
     margin-bottom: 2rem;
     width: 100%;
@@ -94,15 +85,14 @@ const posts = allPosts
   .search-bar {
     display: flex;
     align-items: center;
-    width: 100%; /* full width of container */
-    max-width: none; /* no max constraint */
+    width: 100%;
+    max-width: none;
     background: var(--color-bg);
     border: 1.5px solid var(--color-border);
     border-radius: 999px;
     padding: 0.25rem 0.75rem 0.25rem 1rem;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
   }
-
   .search-input {
     flex: 1;
     padding: 0.35rem 0.75rem;
@@ -110,19 +100,18 @@ const posts = allPosts
     border-radius: 999px;
     font-size: 0.95rem;
     width: 100%;
-    box-sizing: border-box; /* make sure it respects parent width */
+    box-sizing: border-box;
   }
   .search-btn {
     padding: 0.35rem 0.75rem;
-    /* border: 1px solid var(--color-border); */
     border-radius: 999px;
-    border: none; /* ✅ remove border */
-    background: transparent; /* ✅ no blue background */
-    color: var(--color-text); /* ✅ matches your text color */
+    border: none;
+    background: transparent;
+    color: var(--color-text);
     font-weight: 600;
     cursor: pointer;
     transition: opacity 0.2s;
-    flex-shrink: 0; /* don’t let button compress */
+    flex-shrink: 0;
   }
   .search-btn:hover {
     opacity: 0.85;

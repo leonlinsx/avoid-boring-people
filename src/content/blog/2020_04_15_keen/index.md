@@ -11,8 +11,6 @@ heroImage: "./k_2.webp"
 
 Keen is a new product from Google intended to keep track of your interests, though I'm unsure if it's meant to be more social or more idea focused
 
---- 
-
 ## Keen walkthrough
 
 I was invited to try a beta of [Keen](https://staykeen.com/ "Keen"), a new product from [Area 120, Google's workshop for experimental products](https://area120.google.com/ "120") [^1]. Keen is meant to "help you expand your interests", by "staying keen on your interests, getting recommendations, and curating good ideas". Like my prior posts on [Hoppin](https://www.leonlinsx.com/hoppin/ "Hoppin") or [Cosign](https://avoidboringpeople.substack.com/p/would-you-cosign-your-ai-chess-partner "Cosign"), let's take a closer look at the product.

@@ -12,8 +12,6 @@ heroImage: "./g_5.webp"
 1. Gatekeeping is usually done to preserve individual status rather than group status, and should be avoided
 2. Cost of capital and illiquidity spirals are linked in a feedback loop
 
----
-
 ## 1. Gatekeeping for group vs individual status
 
 You've seen this before.

@@ -12,8 +12,6 @@ heroImage: "./min_2.webp"
 
 Some skills in life have dramatically larger variance than others, which is helpful to know when deciding how much more effort to put in on the margin.
 
----
-
 ## Skill ceilings in life
 
 I played a lot of role-playing games (RPGs) on the PC when I was younger [^1]. In RPGs, you control a character that grows in strength over time as you complete quests. Some popular ones include [Final Fantasy, World of Warcraft, or Guild Wars](https://vgsales.fandom.com/wiki/Best_selling_RPG_games "rpg") [^2].

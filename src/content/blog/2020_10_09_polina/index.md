@@ -11,8 +11,6 @@ heroImage: "./p_1.webp"
 
 Polina Marinova of the Profile thinks that good writing requires good editing, nuance is important, and intentionally emphasises the faults in people
 
----
-
 ## Profile of Polina of the Profile
 
 As part of a [Renaissance Collective](https://www.renaissancecollective.co/value-of-the-renaissance-collective-community) X [Highlighter](https://highlighter.com/discover) collaboration, I hosted [Polina Marinova](https://readtheprofile.com/) for a town hall recently.

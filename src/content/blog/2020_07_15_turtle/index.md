@@ -11,8 +11,6 @@ heroImage: "./t_3.webp"
 
 Companies are not incentivised to take risk, hurting innovation within the company and increasing the likelihood a startup wins against them.
 
---- 
-
 ## Tortoise vs hare
 
 I'll take it for granted that everyone's familiar with the [tortoise vs hare fable.](http://read.gov/aesop/025.html "aesop") Hare races tortoise, falls asleep, loses, and spends the rest of his life living in shame before writing an explosive tell all on how it was [all a shell game](https://en.wikipedia.org/wiki/Shell_game "shell") [^1].

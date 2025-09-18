@@ -11,8 +11,6 @@ heroImage: "./i_2.webp"
 
 Investment banking is rarely about investing, and more about connecting sources and users of financial capital.
 
----
-
 ## Investment banking overview
 
 I've had to explain to a few people what investment banking's actually about recently, and I figured I might as well do a short primer here as well. Especially given the mismatch between expectations and reality, hopefully this will help clarify things.

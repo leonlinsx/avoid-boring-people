@@ -13,8 +13,6 @@ heroImage: "./g_3.webp"
 2. The timing of when you rebalance your investment portfolio could lead to a significant difference in your returns
 3. We're bad at describing probabilities and even worse at combining them
 
----
-
 ### Video games killed the sports star
 
 On Nov 21st, the popular gaming company [Valve](https://store.steampowered.com/ "Steam") announced a new game, [Half-Life Alyx](https://half-life.com/en/alyx "Alyx"). Alyx is a sequel in the Half-Life series, widely considered one of the greatest games of all time; the last update was released twelve years ago. You can check out the 2 min trailer for Alyx below. Keep in mind this is meant to be played _in VR!_

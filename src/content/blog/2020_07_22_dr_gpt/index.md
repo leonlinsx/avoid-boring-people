@@ -12,8 +12,6 @@ featured: true
 
 GPT-3 is an impressive model of text prediction that generalises to many use cases. I walk through how it works at a high level, whether the hype is deserved, how to detect GPT, and whether it’s going to plunder our jobs.
 
----
-
 ## Only human after all
 
 About a week ago, Sharif Shameem shared [this video on twitter

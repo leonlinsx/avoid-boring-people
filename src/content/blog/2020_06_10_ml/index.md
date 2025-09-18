@@ -11,8 +11,6 @@ heroImage: "./m_13.webp"
 
 Machine learning is less scary than you think, and more common than you think.
 
----
-
 ## Machine learning magic
 
 We hear about machine learning (ML), deep learning, or artificial intelligence all the time now [^1].

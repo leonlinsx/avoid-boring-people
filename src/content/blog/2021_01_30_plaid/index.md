@@ -12,8 +12,6 @@ heroImage: "./plaid_3.webp"
 
 Plaid is a financial technology company that helps other companies connect with bank data. By doing the boring stuff others don't want to do it makes life more convenient for everyone else and becomes a highly sticky product.
 
----
-
 ## 1. Abstracting away layers of work
 
 I'll be discussing the financial technology company [Plaid](https://plaid.com/ "plaid") today. Before that, it would help to get some intuition on abstraction and Application Programming Interfaces (APIs). I'll spend section 1 on abstraction and section 2 on APIs; skip ahead to section 3 if you're already familiar with those concepts. As usual, I'll err on the side of being less technically accurate for easier understanding.

@@ -11,8 +11,6 @@ heroImage: "./p_1.webp"
 
 Improving your process involves mapping out the steps, knowing what to include or exclude, having both theory and practical experience, and repeated experimentation
 
----
-
 ## Another look at process improvement
 
 We started out the month looking at art, and there's a reason for that. Art is high skill, low luck. While it's possible to create great art without much skill, most art is crafted intentionally. Since you start from scratch, every element is there for a reason. We saw this in Manet's "unpolished" depiction of modern life, Dominique-Ingres' "unrealistic" body shape, and Picasso's "ugly" drawings, where weird features were the point of the painting and what looked natural was manufactured deliberately. Throughout these, the artists followed their own deliberate process to get consistent results.

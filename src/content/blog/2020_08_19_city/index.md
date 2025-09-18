@@ -11,8 +11,6 @@ heroImage: "./c_3.png"
 
 The predictions of the death of large cities are overblown and I expect most to recover within five years.
 
----
-
 ## NYC is dead, long live NYC
 
 An article recently proclaimed that [NYC is dead forever.](https://www.linkedin.com/pulse/nyc-dead-forever-heres-why-james-altucher/ "NYC") Because of the internet, the loss of business, culture, dining, commercial real estate, and colleges in the city has turned from a temporary situation to a permanent outcome. As a result, the article concludes that people are leaving NYC and never coming back.

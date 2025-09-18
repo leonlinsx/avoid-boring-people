@@ -10,8 +10,6 @@ heroImage: "./c_1.webp"
 ## Takeaway
 
 Investing in communities is a popular trend now; communities have always been at the center of how computing and the internet developed.  
-
----
   
 ## Communities in tech  
 

@@ -11,8 +11,6 @@ heroImage: "./n_1.webp"
 
 Communicating nonviolently by observing feelings and needs will help improve relationships and reduce chances of people feeling threatened, making it more likely for everyone to get what they want.
 
----
-
 ## Nonviolent communication for better relationships
 
 I once unintentionally implied a friend was bad at math, and she's never let me forget it. Makes you wonder how many people I've offended accidentally. For a supposedly intelligent species, we're terrible at communicating how we feel and what we'd like others to do. We expect people to read our minds, getting frustrated when they can't, despite being unable to do so ourselves. We could all work on better communication; it's a neverending goal of mine.
