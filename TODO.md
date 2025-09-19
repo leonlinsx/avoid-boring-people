@@ -6,7 +6,7 @@
 Replace one-off values with variables. -->
 <!-- 6. table of contents -->
 <!-- 7. pagination ellipses too high -->
-8. substack embed in blogpost
+8. substack embed in blogpost design 
 <!-- 9. related posts left aligned not center -->
 <!-- 10. easter egg mouse hover for longer befor reveal -->
 - share button for socials

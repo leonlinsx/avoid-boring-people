@@ -1,0 +1,229 @@
+---
+import { Mail, Linkedin, Twitter, Share2, Hash } from "lucide-astro";
+
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+const encodedTitle = encodeURIComponent(title);
+const encodedURL = encodeURIComponent(url);
+---
+
+<section class="share-buttons">
+  <p class="share-label">Share this post:</p>
+
+  <!-- Desktop pills -->
+  <div class="share-links desktop-only">
+    <a
+      href={`https://www.threads.net/intent/post?text=${encodedTitle}%20${encodedURL}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Share on Threads"
+      data-share="Threads"
+    >
+      <Hash class="icon" /> Threads
+    </a>
+
+    <a
+      href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Share on Twitter"
+      data-share="Twitter"
+    >
+      <Twitter class="icon" /> Twitter
+    </a>
+
+    <a
+      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Share on LinkedIn"
+      data-share="LinkedIn"
+    >
+      <Linkedin class="icon" /> LinkedIn
+    </a>
+
+    <a
+      href={`mailto:?subject=${encodedTitle}&body=${encodedURL}`}
+      aria-label="Share via Email"
+      data-share="Email"
+    >
+      <Mail class="icon" /> Email
+    </a>
+  </div>
+
+  <!-- Mobile dropdown -->
+  <div class="mobile-only dropdown">
+    <button type="button" class="dropdown-toggle">
+      <Share2 class="icon" /> Share
+    </button>
+    <div class="dropdown-menu">
+      <a
+        href={`https://www.threads.net/intent/post?text=${encodedTitle}%20${encodedURL}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-share="Threads">Threads</a
+      >
+      <a
+        href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-share="Twitter">Twitter</a
+      >
+      <a
+        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-share="LinkedIn">LinkedIn</a
+      >
+      <a
+        href={`mailto:?subject=${encodedTitle}&body=${encodedURL}`}
+        data-share="Email">Email</a
+      >
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  function trackShare(platform) {
+    if (window.gtag) {
+      gtag("event", "share", {
+        event_category: "engagement",
+        event_label: platform,
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.querySelector(".dropdown-toggle");
+    const menu = document.querySelector(".dropdown-menu");
+
+    // Track clicks on all share links
+    document.querySelectorAll("[data-share]").forEach((el) => {
+      el.addEventListener("click", () => {
+        trackShare(el.dataset.share);
+        if (menu?.classList.contains("open")) menu.classList.remove("open");
+      });
+    });
+
+    // Mobile dropdown toggle
+    if (toggle && menu) {
+      toggle.addEventListener("click", () => {
+        menu.classList.toggle("open");
+      });
+    }
+  });
+</script>
+
+<style>
+  .share-buttons {
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+  }
+  .share-label {
+    font-size: var(--text-base-sm);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  /* Desktop pills */
+  .desktop-only {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-md);
+  }
+  .share-links a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--text-base-sm);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: var(--shadow-xs);
+  }
+  .share-links a:hover {
+    background: var(--color-border);
+    transform: translateY(-1px);
+  }
+  .icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+  }
+
+  /* Mobile dropdown */
+  .mobile-only {
+    display: none;
+    position: relative;
+    margin-top: var(--space-md);
+  }
+  .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-xs);
+  }
+  .dropdown-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-sm) 0;
+    z-index: 100;
+    min-width: 180px;
+  }
+  .dropdown-menu.open {
+    display: flex;
+    animation: slideDown 0.25s ease;
+  }
+  .dropdown-menu a {
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: var(--text-base-sm);
+    color: var(--color-text);
+  }
+  .dropdown-menu a:hover {
+    background: var(--color-border);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .desktop-only {
+      display: none;
+    }
+    .mobile-only {
+      display: block;
+    }
+  }
+</style>

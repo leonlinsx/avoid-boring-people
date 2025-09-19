@@ -5,9 +5,10 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import PostList from "../components/PostList.astro";
-import { SITE_BANNER_IMAGE } from "../consts";
+import { SITE_BANNER_IMAGE, SITE_URL } from "../consts";
 import { enrichPost } from "../utils/text";
 import TableOfContents from "../components/TableOfContents.astro";
+import ShareButtons from "../components/ShareButtons.astro";
 
 interface Heading {
   level: number;
@@ -15,15 +16,14 @@ interface Heading {
   text: string;
 }
 
-// Astro passes only the frontmatter as props
 type Props = CollectionEntry<"blog">["data"];
 const raw = Astro.props;
 const { headings = [] } = raw;
 
-// ✅ Rebuild a "full post" object with body so enrichPost can compute readingTime
+// ✅ Build full post object for enrichPost
 const body = await Astro.slots.render("default");
 const current = enrichPost({
-  id: "", // slug/id not needed for this page
+  id: "",
   slug: "",
   body,
   data: raw,
@@ -49,13 +49,16 @@ if (heroImage) {
   }
 }
 
-// Related posts (also enriched)
+// Related posts
 const allPosts = await getCollection("blog");
 const related = allPosts
   .filter((p) => p.data.category === category && p.data.title !== title)
   .map(enrichPost)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
+
+// ✅ Canonical URL (matches BaseHead.astro)
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 ---
 
 <BaseLayout
@@ -117,6 +120,9 @@ const related = allPosts
 
         <!-- Post content -->
         <slot />
+
+        <!-- ✅ Share Buttons -->
+        <ShareButtons title={title} url={canonicalURL} />
 
         <!-- Newsletter CTA -->
         <section id="subscribe" class="signup">
@@ -205,13 +211,13 @@ const related = allPosts
   }
 
   .related-posts .post-card {
-    align-items: flex-start; /* ensure image + text top align */
+    align-items: flex-start;
   }
 
   .related-posts .post-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 6rem; /* adjust based on your typical content */
+    min-height: 6rem;
   }
 </style>

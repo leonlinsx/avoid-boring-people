@@ -17,6 +17,8 @@
     "@astrojs/sitemap": "^3.5.1",
     "astro": "^5.13.7",
     "fuse.js": "^7.1.0",
+    "lucide-astro": "^0.544.0",
+    "lucide-react": "^0.544.0",
     "preact": "^10.27.2",
     "reading-time": "^1.5.0",
     "remark-footnotes": "^4.0.1",
