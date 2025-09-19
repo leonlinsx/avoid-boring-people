@@ -7,15 +7,23 @@ import FormattedDate from "../components/FormattedDate.astro";
 import PostCard from "../components/PostCard.astro";
 import { SITE_BANNER_IMAGE } from "../consts";
 import { enrichPost } from "../utils/text";
+import TableOfContents from "../components/TableOfContents.astro";
+
+interface Heading {
+  level: number;
+  id: string;
+  text: string;
+}
 
 // Astro passes only the frontmatter as props
 type Props = CollectionEntry<"blog">["data"];
 const raw = Astro.props;
+const { headings = [] } = raw;
 
 // ✅ Rebuild a "full post" object with body so enrichPost can compute readingTime
 const body = await Astro.slots.render("default");
 const current = enrichPost({
-  id: "",   // slug/id not needed for this page
+  id: "", // slug/id not needed for this page
   slug: "",
   body,
   data: raw,
@@ -57,33 +65,35 @@ const related = allPosts
 >
   <main>
     <article>
-      {hero && (
-        <div class="hero-image">
-          {typeof hero === "object" && hero.src ? (
-            <Image
-              src={hero}
-              alt={title}
-              format="webp"
-              width={1200}
-              height={630}
-              fit="cover"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          ) : (
-            <img
-              src={hero as string}
-              alt={title}
-              width="1200"
-              height="630"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          )}
-        </div>
-      )}
+      {
+        hero && (
+          <div class="hero-image">
+            {typeof hero === "object" && hero.src ? (
+              <Image
+                src={hero}
+                alt={title}
+                format="webp"
+                width={1200}
+                height={630}
+                fit="cover"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            ) : (
+              <img
+                src={hero as string}
+                alt={title}
+                width="1200"
+                height="630"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            )}
+          </div>
+        )
+      }
 
       <div class="prose">
         <div class="title">
@@ -91,14 +101,19 @@ const related = allPosts
             <FormattedDate date={pubDate} />
             {category && ` · ${category}`}
             {readingTime && ` · ${readingTime} min read`}
-            {updatedDate && (
-              <div class="last-updated-on">
-                Last updated on <FormattedDate date={updatedDate} />
-              </div>
-            )}
+            {
+              updatedDate && (
+                <div class="last-updated-on">
+                  Last updated on <FormattedDate date={updatedDate} />
+                </div>
+              )
+            }
           </div>
           <h1>{title}</h1>
         </div>
+
+        <!-- TOC -->
+        <TableOfContents headings={headings} />
 
         <!-- Post content -->
         <slot />
@@ -117,14 +132,16 @@ const related = allPosts
         </section>
 
         <!-- Related posts -->
-        {related.length > 0 && (
-          <section class="related-posts">
-            <h2>Related Posts</h2>
-            {related.map((p) => (
-              <PostCard post={p} />
-            ))}
-          </section>
-        )}
+        {
+          related.length > 0 && (
+            <section class="related-posts">
+              <h2>Related Posts</h2>
+              {related.map((p) => (
+                <PostCard post={p} />
+              ))}
+            </section>
+          )
+        }
       </div>
     </article>
   </main>
