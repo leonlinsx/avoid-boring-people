@@ -4,6 +4,7 @@
 // sets page-level metadata like <title>, <meta description>, Open Graph tags, preload links, favicons, etc.
 // you need it because every page (index, /writing, /about, /404, etc.) should share consistent metadata logic, 
 // while still allowing you to pass unique values
+
 import "../styles/global.css";
 import {
   SITE_TITLE,
@@ -14,7 +15,7 @@ import {
 
 interface Props {
   title: string;
-  description: string;
+  description?: string;
   image?: string | { src: string }; // support string or image object
 }
 
@@ -25,28 +26,26 @@ const { title, description, image } = Astro.props;
 let ogImage: string;
 if (image) {
   if (typeof image === "string") {
-    // Case 1: Full URL or relative path
     ogImage = image.startsWith("http")
       ? image
       : new URL(image, SITE_URL).toString();
   } else if (typeof image === "object" && "src" in image) {
-    // Case 2: Astro content image object
     ogImage = new URL(image.src, SITE_URL).toString();
   } else {
-    // Fallback
     ogImage = new URL(SITE_OG_IMAGE, SITE_URL).toString();
   }
 } else {
-  // Fallback
   ogImage = new URL(SITE_OG_IMAGE, SITE_URL).toString();
 }
+
+const metaDescription = description || SITE_DESCRIPTION;
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-<!-- Preload Fonts (put before other <link> tags) -->
+<!-- Preload Fonts -->
 <link
   rel="preload"
   href="/fonts/atkinson-regular.woff"
@@ -56,8 +55,9 @@ if (image) {
 />
 
 <!-- Favicons -->
-<link rel="icon" href="/logos/substack_logo.png" type="image/png" />
-<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" href="/logos/substack_logo.png" type="image/png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/logos/substack_logo.png" />
 
 <!-- Sitemap & RSS -->
 <link rel="sitemap" href={new URL("sitemap-index.xml", SITE_URL).toString()} />
@@ -76,13 +76,13 @@ if (image) {
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
-<meta name="description" content={description || SITE_DESCRIPTION} />
+<meta name="description" content={metaDescription} />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description || SITE_DESCRIPTION} />
+<meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:site_name" content={SITE_TITLE} />
 
@@ -90,8 +90,17 @@ if (image) {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={canonicalURL} />
 <meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description || SITE_DESCRIPTION} />
+<meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImage} />
 <meta name="twitter:creator" content="@leonlinsx" />
 <meta name="twitter:site" content="@leonlinsx" />
 
+<!-- Structured Data: Organization Logo -->
+<script type="application/ld+json">
+{JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": SITE_URL,
+  "logo": new URL("/logos/substack_logo.png", SITE_URL).toString()
+})}
+</script>
