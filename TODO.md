@@ -2,8 +2,8 @@
 2. replace broken links -abp, leonlinsx
 3. event tracking when appropriate
 <!-- 4. change images to png -->
-5. Create a small design tokens file (_tokens.css) with your radius, shadows, type scale, spacing.
-Replace one-off values with variables.
+<!-- 5. Create a small design tokens file (_tokens.css) with your radius, shadows, type scale, spacing.
+Replace one-off values with variables. -->
 <!-- 6. table of contents -->
 <!-- 7. pagination ellipses too high -->
 8. substack embed in blogpost

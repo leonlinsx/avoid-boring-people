@@ -1,0 +1,238 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE_TITLE } from "../consts";
+---
+
+<BaseLayout
+  title={`Design Tokens | ${SITE_TITLE}`}
+  description="Visual reference and cheat sheet for design tokens"
+>
+  <head>
+    <!-- Prevent indexing -->
+    <meta name="robots" content="noindex" />
+  </head>
+
+  <h1>🎨 Design Tokens</h1>
+
+  <!-- ================== VISUAL TOKENS ================== -->
+
+  <!-- Radius -->
+  <section>
+    <h2>Radius</h2>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <div style="text-align:center;">
+        <div
+          style="width:80px; height:80px; background:var(--color-border); border-radius:var(--radius-sm);"
+        >
+        </div>
+        <p>--radius-sm</p>
+      </div>
+      <div style="text-align:center;">
+        <div
+          style="width:80px; height:80px; background:var(--color-border); border-radius:var(--radius-md);"
+        >
+        </div>
+        <p>--radius-md</p>
+      </div>
+      <div style="text-align:center;">
+        <div
+          style="width:80px; height:80px; background:var(--color-border); border-radius:var(--radius-lg);"
+        >
+        </div>
+        <p>--radius-lg</p>
+      </div>
+      <div style="text-align:center;">
+        <div
+          style="width:80px; height:80px; background:var(--color-border); border-radius:var(--radius-xl);"
+        >
+        </div>
+        <p>--radius-xl</p>
+      </div>
+      <div style="text-align:center;">
+        <div
+          style="width:120px; height:40px; background:var(--color-border); border-radius:var(--radius-pill);"
+        >
+        </div>
+        <p>--radius-pill</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shadows -->
+  <section>
+    <h2>Shadows</h2>
+    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div
+          style="width:120px; height:80px; background:var(--color-bg); box-shadow:var(--shadow-xs);"
+        >
+        </div>
+        <p>--shadow-xs</p>
+      </div>
+      <div style="text-align:center;">
+        <div
+          style="width:120px; height:80px; background:var(--color-bg); box-shadow:var(--shadow-sm);"
+        >
+        </div>
+        <p>--shadow-sm</p>
+      </div>
+      <div style="text-align:center;">
+        <div
+          style="width:120px; height:80px; background:var(--color-bg); box-shadow:var(--shadow-md);"
+        >
+        </div>
+        <p>--shadow-md</p>
+      </div>
+      <div style="text-align:center;">
+        <div
+          style="width:120px; height:80px; background:var(--color-bg); box-shadow:var(--shadow-lg);"
+        >
+        </div>
+        <p>--shadow-lg</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section>
+    <h2>Typography</h2>
+    <p style="font-size:var(--text-xs)">--text-xs (0.875rem)</p>
+    <p style="font-size:var(--text-sm)">--text-sm (0.9rem)</p>
+    <p style="font-size:var(--text-base-sm)">--text-base-sm (0.95rem)</p>
+    <p style="font-size:var(--text-base)">--text-base (1rem)</p>
+    <p style="font-size:var(--text-md)">--text-md (1.15rem)</p>
+    <p style="font-size:var(--text-lg)">--text-lg (1.25rem)</p>
+    <p style="font-size:var(--text-xl)">--text-xl (1.75rem)</p>
+    <p style="font-size:var(--text-2xl)">--text-2xl (2.5rem)</p>
+  </section>
+
+  <!-- Spacing -->
+  <section>
+    <h2>Spacing</h2>
+    <div
+      style="display:flex; flex-direction:column; gap:0.5rem; max-width:200px;"
+    >
+      <div style="background:var(--color-border); height:var(--space-xs);">
+      </div>
+      <p>--space-xs</p>
+      <div style="background:var(--color-border); height:var(--space-sm);">
+      </div>
+      <p>--space-sm</p>
+      <div style="background:var(--color-border); height:var(--space-md);">
+      </div>
+      <p>--space-md</p>
+      <div style="background:var(--color-border); height:var(--space-lg);">
+      </div>
+      <p>--space-lg</p>
+      <div style="background:var(--color-border); height:var(--space-xl);">
+      </div>
+      <p>--space-xl</p>
+    </div>
+  </section>
+
+  <!-- ================== CHEAT SHEET ================== -->
+  <section>
+    <h2>📘 Cheat Sheet</h2>
+
+    <h3>📐 Radius</h3>
+    <table>
+      <tr><th>Token</th><th>Value</th><th>Common Uses</th></tr>
+      <tr><td>--radius-sm</td><td>4px</td><td>Code blocks, blockquotes</td></tr>
+      <tr
+        ><td>--radius-md</td><td>6px</td><td>Images, thumbnails, search bars</td
+        ></tr
+      >
+      <tr><td>--radius-lg</td><td>8px</td><td>Prose images, embeds</td></tr>
+      <tr
+        ><td>--radius-xl</td><td>12px</td><td>Newsletter box, 404 image</td></tr
+      >
+      <tr
+        ><td>--radius-pill</td><td>999px</td><td
+          >Search bars, filter pills, buttons</td
+        ></tr
+      >
+    </table>
+
+    <h3>🌑 Shadows</h3>
+    <table>
+      <tr><th>Token</th><th>Value</th><th>Common Uses</th></tr>
+      <tr
+        ><td>--shadow-xs</td><td>0 1px 4px rgba(0,0,0,0.03)</td><td
+          >Inputs, subtle UI</td
+        ></tr
+      >
+      <tr
+        ><td>--shadow-sm</td><td>0 2px 6px rgba(0,0,0,0.05)</td><td
+          >Small floating UI</td
+        ></tr
+      >
+      <tr
+        ><td>--shadow-md</td><td>0 4px 12px rgba(0,0,0,0.06)</td><td
+          >Cards, newsletter signup</td
+        ></tr
+      >
+      <tr
+        ><td>--shadow-lg</td><td>0 4px 24px rgba(0,0,0,0.15)</td><td
+          >Hero images, 404 void</td
+        ></tr
+      >
+    </table>
+
+    <h3>🔤 Typography</h3>
+    <table>
+      <tr><th>Token</th><th>Value</th><th>Common Uses</th></tr>
+      <tr
+        ><td>--text-xs</td><td>0.875rem</td><td>Small metadata, pagination</td
+        ></tr
+      >
+      <tr><td>--text-sm</td><td>0.9rem</td><td>Footnotes, post meta</td></tr>
+      <tr
+        ><td>--text-base-sm</td><td>0.95rem</td><td
+          >Subtext, buttons, filters</td
+        ></tr
+      >
+      <tr><td>--text-base</td><td>1rem</td><td>Body text, inputs</td></tr>
+      <tr><td>--text-md</td><td>1.15rem</td><td>h4, medium headings</td></tr>
+      <tr><td>--text-lg</td><td>1.25rem</td><td>Post titles, h3</td></tr>
+      <tr><td>--text-xl</td><td>1.75rem</td><td>h2, hero mobile</td></tr>
+      <tr><td>--text-2xl</td><td>2.5rem</td><td>Main h1 titles</td></tr>
+    </table>
+
+    <h3>📏 Spacing</h3>
+    <table>
+      <tr><th>Token</th><th>Value</th><th>Common Uses</th></tr>
+      <tr
+        ><td>--space-xs</td><td>0.25rem</td><td>Tiny gaps, icon spacing</td></tr
+      >
+      <tr><td>--space-sm</td><td>0.5rem</td><td>Compact gaps, filters</td></tr>
+      <tr
+        ><td>--space-md</td><td>1rem</td><td>Paragraph margins, box padding</td
+        ></tr
+      >
+      <tr><td>--space-lg</td><td>2rem</td><td>Section padding</td></tr>
+      <tr
+        ><td>--space-xl</td><td>3rem</td><td>Section rhythm, large gaps</td></tr
+      >
+    </table>
+  </section>
+
+  <style>
+    table {
+      border-collapse: collapse;
+      margin: 1rem 0;
+      width: 100%;
+      max-width: 800px;
+    }
+    th,
+    td {
+      border: 1px solid var(--color-border-soft);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      font-size: var(--text-sm);
+    }
+    th {
+      background: var(--color-quote);
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>
