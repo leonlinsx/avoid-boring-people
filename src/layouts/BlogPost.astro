@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
-import PostCard from "../components/PostCard.astro";
+import PostList from "../components/PostList.astro";
 import { SITE_BANNER_IMAGE } from "../consts";
 import { enrichPost } from "../utils/text";
 import TableOfContents from "../components/TableOfContents.astro";
@@ -119,16 +119,19 @@ const related = allPosts
         <slot />
 
         <!-- Newsletter CTA -->
-        <section class="newsletter-cta">
+        <section id="subscribe" class="signup">
           <h2>Enjoyed this post?</h2>
-          <p>Get my next essays in your inbox:</p>
-          <iframe
-            src="https://avoidboringpeople.substack.com/embed"
-            width="100%"
-            height="150"
-            style="border:1px solid #EEE; background:white; max-width: 600px; margin: 0 auto; display: block;"
-            frameborder="0"
-            scrolling="no"></iframe>
+          <p class="subtext">Get my next essays in your inbox:</p>
+          <div class="signup-box" aria-label="Newsletter signup form">
+            <iframe
+              src="https://avoidboringpeople.substack.com/embed"
+              width="100%"
+              height="150"
+              frameborder="0"
+              scrolling="no"
+              title="Newsletter signup form"></iframe>
+          </div>
+          <p class="trust-text">Free. No spam. Unsubscribe anytime.</p>
         </section>
 
         <!-- Related posts -->
@@ -136,9 +139,7 @@ const related = allPosts
           related.length > 0 && (
             <section class="related-posts">
               <h2>Related Posts</h2>
-              {related.map((p) => (
-                <PostCard post={p} />
-              ))}
+              <PostList posts={related} variant="list" />
             </section>
           )
         }
@@ -187,15 +188,31 @@ const related = allPosts
     height: 1px;
     background-color: #ddd;
   }
-  .newsletter-cta,
-  .related-posts {
+  .newsletter-cta {
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid #eee;
     text-align: center;
   }
+
+  .related-posts {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
   .related-posts h2 {
     margin-bottom: 1rem;
     text-align: left;
+  }
+
+  .related-posts .post-card {
+    align-items: flex-start; /* ensure image + text top align */
+  }
+
+  .related-posts .post-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 6rem; /* adjust based on your typical content */
   }
 </style>

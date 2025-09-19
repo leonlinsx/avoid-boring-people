@@ -41,7 +41,7 @@ const featured = allPosts
       />
       <span class="tooltip">
         I chose the name because of the double meaning. People always default to
-        one interpretation, but I promise I'm not as intimidating as I sound.
+        one interpretation of it, but I promise I'm not as intimidating as I sound.
       </span>
     </div>
 
@@ -91,3 +91,34 @@ const featured = allPosts
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .banner-wrapper {
+    position: relative; /* anchor for absolute tooltip */
+    display: inline-block;
+  }
+
+  .tooltip {
+    position: absolute;
+    bottom: 100%; /* place it above the banner */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 0.5rem;
+
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    max-width: 480px;
+    text-align: center;
+    line-height: 1.4;
+
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    white-space: normal; /* allow wrapping if long */
+  }
+
+  .banner-wrapper:hover .tooltip {
+    opacity: 1;
+    transition-delay: 3.1415s; /* only appears if you linger */
+  }
+</style>

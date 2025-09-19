@@ -1,6 +1,53 @@
 
 
+# 2025-09-18
 
+## Table of Contents
+- Added a **desktop TOC** styled like Substack/Notion:
+  - Collapsed mini-bar on the right, expands on hover.
+  - Scroll spy highlights active section.
+  - Smooth scrolling to headings.
+- Mobile TOC:
+  - Floating button (`☰ Contents`) bottom-left.
+  - Expands into a drawer with backdrop overlay.
+  - Clicking outside or on a link closes it.
+- Fixed bug with headings starting with numbers (`1. Heading`):
+  - Switched to `getElementById` to handle numeric-start IDs.
+  - Scroll spy now correctly activates these headings.
+
+## BlogPost Layout
+- Unified newsletter CTA styling:
+  - Blog posts now use the same `.signup` structure as the index page.
+  - Removed inline iframe styles; rely on shared `.signup-box`.
+- Related posts:
+  - Refactored to reuse `<PostList>` for consistent alignment and styling.
+  - Adjusted CSS so related posts are left-aligned and match index layout.
+
+## Pagination
+- Improved pagination ellipsis (`…`) styling:
+  - Made ellipsis center-aligned with pagination buttons. 
+  - Couldnt figure out how to get bottom aligned, but center looks good
+  - Styled as “ghost button” (no border/hover, faint text).
+  - Ensures consistent visual alignment across numbers, next/prev buttons, and ellipses.
+
+## Tooltip (Banner Easter Egg)
+- Refactored tooltip design:
+  - Appears **above the banner** (no extra spacing below).
+  - Muted caption-style text, not a popup box.
+  - Fades in after a short hover delay (3s).
+  - Fades out immediately when hover ends.
+- Removed old global tooltip styles (`visibility`, `box-shadow`, arrow).
+- Kept a **mobile override**: tooltip hidden on screens ≤600px (since no hover on mobile).
+
+---
+
+## Summary
+Today’s refactoring focused on **polish and consistency**:
+- Clean, modular Table of Contents for desktop and mobile.
+- Unified newsletter signup styling.
+- Consistent alignment of related posts and pagination UI.
+- Subtle Easter egg tooltip above the banner without breaking layout.
+- Removed redundant global styles to keep CSS lean.
 
 # 2025-09-17
 
