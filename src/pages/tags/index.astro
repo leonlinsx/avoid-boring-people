@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import { SITE_TITLE } from "../../consts";
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
 
-const posts = await getCollection("blog");
+const posts = await getCollection('blog');
 
 // Collect all tags with counts
 const tagCounts = new Map<string, number>();
@@ -16,7 +16,7 @@ for (const post of posts) {
 
 // Convert to sorted array
 const tags = Array.from(tagCounts.entries()).sort((a, b) =>
-  a[0].localeCompare(b[0])
+  a[0].localeCompare(b[0]),
 );
 ---
 
@@ -26,13 +26,15 @@ const tags = Array.from(tagCounts.entries()).sort((a, b) =>
 >
   <h1>All Tags</h1>
   <ul class="tag-list">
-    {tags.map(([tag, count]) => (
-      <li>
-        <a href={`/tags/${encodeURIComponent(tag)}/`}>
-          {tag} ({count})
-        </a>
-      </li>
-    ))}
+    {
+      tags.map(([tag, count]) => (
+        <li>
+          <a href={`/tags/${encodeURIComponent(tag)}/`}>
+            {tag} ({count})
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </BaseLayout>
 
@@ -53,7 +55,10 @@ const tags = Array.from(tagCounts.entries()).sort((a, b) =>
     font-size: var(--text-base-sm);
     color: var(--color-text);
     text-decoration: none;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
   }
   .tag-list li a:hover {
     background: var(--color-border);

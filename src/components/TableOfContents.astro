@@ -1,5 +1,5 @@
 ---
-import type { MarkdownHeading } from "astro";
+import type { MarkdownHeading } from 'astro';
 
 type Props = {
   headings?: MarkdownHeading[];
@@ -18,11 +18,13 @@ const { headings = [] } = Astro.props as Props;
   <!-- expanded: flyout -->
   <div class="toc-flyout">
     <ul>
-      {headings.map((h) => (
-        <li class={`level-${h.depth}`}>
-          <a href={`#${h.slug}`}>{h.text}</a>
-        </li>
-      ))}
+      {
+        headings.map((h) => (
+          <li class={`level-${h.depth}`}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </aside>
@@ -32,11 +34,13 @@ const { headings = [] } = Astro.props as Props;
   <button id="toc-toggle" class="toc-button">☰ Contents</button>
   <div id="toc-drawer" class="toc-drawer">
     <ul>
-      {headings.map((h) => (
-        <li class={`level-${h.depth}`}>
-          <a href={`#${h.slug}`}>{h.text}</a>
-        </li>
-      ))}
+      {
+        headings.map((h) => (
+          <li class={`level-${h.depth}`}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))
+      }
     </ul>
   </div>
   <!-- Backdrop only used on mobile -->
@@ -92,10 +96,18 @@ const { headings = [] } = Astro.props as Props;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     z-index: 100;
   }
-  .toc-desktop:hover .toc-flyout { display: block; }
+  .toc-desktop:hover .toc-flyout {
+    display: block;
+  }
 
-  .toc-flyout ul { list-style: none; margin: 0; padding: 0; }
-  .toc-flyout li { margin: 0.25rem 0; }
+  .toc-flyout ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .toc-flyout li {
+    margin: 0.25rem 0;
+  }
   .toc-flyout a {
     display: block;
     text-decoration: none;
@@ -103,19 +115,35 @@ const { headings = [] } = Astro.props as Props;
     font-size: 0.9rem;
     padding: 0.25rem 0.5rem;
     border-radius: 0.4rem;
-    transition: background 0.2s, color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
   }
-  .toc-flyout a:hover { background: rgba(0, 102, 204, 0.08); color: var(--color-text); }
-  .toc-flyout a.active { font-weight: 600; color: var(--color-link); }
+  .toc-flyout a:hover {
+    background: rgba(0, 102, 204, 0.08);
+    color: var(--color-text);
+  }
+  .toc-flyout a.active {
+    font-weight: 600;
+    color: var(--color-link);
+  }
 
-  .level-3 { margin-left: 1rem; }
+  .level-3 {
+    margin-left: 1rem;
+  }
 
   /* ===== MOBILE (fixed) ===== */
-  .toc-mobile { display: none; } /* hidden by default on desktop */
+  .toc-mobile {
+    display: none;
+  } /* hidden by default on desktop */
 
   @media (max-width: 900px) {
-    .toc-desktop { display: none; }
-    .toc-mobile { display: block; }
+    .toc-desktop {
+      display: none;
+    }
+    .toc-mobile {
+      display: block;
+    }
 
     .toc-button {
       position: fixed;
@@ -123,17 +151,20 @@ const { headings = [] } = Astro.props as Props;
       left: 1rem;
       z-index: 200;
       background: var(--color-border); /* subtle gray background */
-      color: var(--color-text-muted);  /* muted text */
+      color: var(--color-text-muted); /* muted text */
       border: none;
       border-radius: 999px;
       padding: 0.5rem 0.9rem;
       font-size: 0.85rem;
       font-weight: 500;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       cursor: pointer;
       transition: background 0.2s;
     }
-    .toc-button:hover { background: var(--color-border-soft); color: var(--color-text); }
+    .toc-button:hover {
+      background: var(--color-border-soft);
+      color: var(--color-text);
+    }
 
     .toc-drawer {
       position: fixed;
@@ -149,10 +180,18 @@ const { headings = [] } = Astro.props as Props;
       transition: bottom 0.3s ease;
       z-index: 200;
     }
-    .toc-drawer.open { bottom: 0; }
+    .toc-drawer.open {
+      bottom: 0;
+    }
 
-    .toc-drawer ul { list-style: none; padding: 0; margin: 0; }
-    .toc-drawer li { margin: 0.5rem 0; }
+    .toc-drawer ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .toc-drawer li {
+      margin: 0.5rem 0;
+    }
     .toc-drawer a {
       text-decoration: none;
       color: var(--color-text-muted);
@@ -161,84 +200,100 @@ const { headings = [] } = Astro.props as Props;
       padding: 0.25rem 0;
       transition: color 0.2s;
     }
-    .toc-drawer a:hover { color: var(--color-text); }
-    .toc-drawer a.active { font-weight: 600; color: var(--color-link); }
+    .toc-drawer a:hover {
+      color: var(--color-text);
+    }
+    .toc-drawer a.active {
+      font-weight: 600;
+      color: var(--color-link);
+    }
 
     /* Backdrop */
     .toc-backdrop {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.2);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.2);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s;
       z-index: 150;
     }
-    .toc-backdrop.visible { opacity: 1; pointer-events: all; }
+    .toc-backdrop.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
   }
 </style>
 
 <script>
   // ===== Scroll spy (unchanged logic; matches IDs as-is) =====
-  const segments = document.querySelectorAll(".toc-bar-segment");
-  const links = document.querySelectorAll(".toc-flyout a, .toc-drawer a");
-  const sections = document.querySelectorAll("h2[id], h3[id]");
+  const segments = document.querySelectorAll('.toc-bar-segment');
+  const links = document.querySelectorAll('.toc-flyout a, .toc-drawer a');
+  const sections = document.querySelectorAll('h2[id], h3[id]');
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          segments.forEach((seg) => seg.classList.remove("active"));
-          links.forEach((l) => l.classList.remove("active"));
+          segments.forEach((seg) => seg.classList.remove('active'));
+          links.forEach((l) => l.classList.remove('active'));
 
-          const id = entry.target.getAttribute("id");
-          const activeSeg = document.querySelector(`.toc-bar-segment[data-id="${id}"]`);
+          const id = entry.target.getAttribute('id');
+          const activeSeg = document.querySelector(
+            `.toc-bar-segment[data-id="${id}"]`,
+          );
           const activeLinks = document.querySelectorAll(`a[href="#${id}"]`);
-          if (activeSeg) activeSeg.classList.add("active");
-          activeLinks.forEach((a) => a.classList.add("active"));
+          if (activeSeg) activeSeg.classList.add('active');
+          activeLinks.forEach((a) => a.classList.add('active'));
         }
       });
     },
-    { rootMargin: "0px 0px -70% 0px" }
+    { rootMargin: '0px 0px -70% 0px' },
   );
   sections.forEach((sec) => observer.observe(sec));
 
   // ===== Smooth scroll (fix: use getElementById for numeric-start IDs) =====
   links.forEach((link) => {
-    link.addEventListener("click", (e) => {
+    link.addEventListener('click', (e) => {
       e.preventDefault();
-      const href = link.getAttribute("href") || "";
-      const id = href.startsWith("#") ? href.slice(1) : href;
+      const href = link.getAttribute('href') || '';
+      const id = href.startsWith('#') ? href.slice(1) : href;
 
       // getElementById handles IDs starting with digits
-      const target = document.getElementById(id)
+      const target =
+        document.getElementById(id) ||
         // fallback if ever needed
-        || (window.CSS && CSS.escape ? document.querySelector(`#${CSS.escape(id)}`) : null);
+        (window.CSS && CSS.escape
+          ? document.querySelector(`#${CSS.escape(id)}`)
+          : null);
 
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        target.scrollIntoView({ behavior: 'smooth' });
       }
 
       // Close mobile drawer/backdrop if open
-      document.getElementById("toc-drawer")?.classList.remove("open");
-      document.getElementById("toc-backdrop")?.classList.remove("visible");
+      document.getElementById('toc-drawer')?.classList.remove('open');
+      document.getElementById('toc-backdrop')?.classList.remove('visible');
     });
   });
 
   // ===== Mobile drawer + backdrop toggle =====
-  const btn = document.getElementById("toc-toggle");
-  const drawer = document.getElementById("toc-drawer");
-  const backdrop = document.getElementById("toc-backdrop");
+  const btn = document.getElementById('toc-toggle');
+  const drawer = document.getElementById('toc-drawer');
+  const backdrop = document.getElementById('toc-backdrop');
 
   if (btn && drawer && backdrop) {
-    btn.addEventListener("click", () => {
-      drawer.classList.toggle("open");
-      backdrop.classList.toggle("visible");
+    btn.addEventListener('click', () => {
+      drawer.classList.toggle('open');
+      backdrop.classList.toggle('visible');
     });
 
-    backdrop.addEventListener("click", () => {
-      drawer.classList.remove("open");
-      backdrop.classList.remove("visible");
+    backdrop.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      backdrop.classList.remove('visible');
     });
   }
 </script>

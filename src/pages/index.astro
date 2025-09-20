@@ -1,12 +1,12 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import PostList from "../components/PostList.astro";
-import { getCollection } from "astro:content";
-import { SITE_TITLE } from "../consts";
-import { enrichPost } from "../utils/text"; // ✅ import enrichment
-import SubscribeForm from "../components/SubscribeForm.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import { SITE_TITLE } from '../consts';
+import { enrichPost } from '../utils/text'; // ✅ import enrichment
+import SubscribeForm from '../components/SubscribeForm.astro';
 
-const allPosts = await getCollection("blog");
+const allPosts = await getCollection('blog');
 
 // Pick featured posts, enriched
 const featured = allPosts

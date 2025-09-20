@@ -1,13 +1,13 @@
 ---
-import { type CollectionEntry, getCollection, render } from "astro:content";
-import BlogPost from "../../layouts/BlogPost.astro";
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog');
   return posts.map((post) => {
     // Clean slug: strip both `/index.md` and `.md`
     const slug =
-      post.slug ?? post.id.replace(/\/index\.md$/, "").replace(/\.md$/, "");
+      post.slug ?? post.id.replace(/\/index\.md$/, '').replace(/\.md$/, '');
 
     // ✅ attach slug to post before passing as props
     return {
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
   });
 }
 
-type Props = CollectionEntry<"blog"> & { slug: string };
+type Props = CollectionEntry<'blog'> & { slug: string };
 
 const post = Astro.props;
 

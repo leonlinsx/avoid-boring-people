@@ -5,7 +5,7 @@ interface Props {
   activeCategory?: string;
 }
 
-const { currentPage, totalPages, activeCategory = "" } = Astro.props;
+const { currentPage, totalPages, activeCategory = '' } = Astro.props;
 
 const pageHref = (page: number) => {
   if (activeCategory) {
@@ -25,11 +25,11 @@ function getPageNumbers(current: number, total: number): (number | string)[] {
   const right = Math.min(total - 1, current + delta);
 
   range.push(1);
-  if (left > 2) range.push("...");
+  if (left > 2) range.push('...');
   for (let i = left; i <= right; i++) {
     range.push(i);
   }
-  if (right < total - 1) range.push("...");
+  if (right < total - 1) range.push('...');
   if (total > 1) range.push(total);
 
   return range;
@@ -53,16 +53,16 @@ const pages = getPageNumbers(currentPage, totalPages);
     {
       pages.map((pg) => (
         <li>
-          {typeof pg === "string" ? (
+          {typeof pg === 'string' ? (
             <span class="pagination-ellipsis">{pg}</span>
           ) : (
             <a
               href={pageHref(pg)}
               class:list={[
-                "pagination-link",
-                { "is-current": pg === currentPage },
+                'pagination-link',
+                { 'is-current': pg === currentPage },
               ]}
-              aria-current={pg === currentPage ? "page" : undefined}
+              aria-current={pg === currentPage ? 'page' : undefined}
             >
               {pg}
             </a>

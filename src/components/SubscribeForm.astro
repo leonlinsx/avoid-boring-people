@@ -8,9 +8,9 @@ interface Props {
 
 const {
   compact = false,
-  title = compact ? "" : "Enjoyed this post?",
-  subtext = compact ? "" : "Get my next essays in your inbox:",
-  trustText = "",
+  title = compact ? '' : 'Enjoyed this post?',
+  subtext = compact ? '' : 'Get my next essays in your inbox:',
+  trustText = '',
 } = Astro.props;
 ---
 
@@ -20,7 +20,7 @@ const {
 
   <form
     id="substack-form"
-    class:list={["signup-box", compact && "compact"]}
+    class:list={['signup-box', compact && 'compact']}
     action="https://avoidboringpeople.substack.com/api/v1/free"
     method="post"
     target="_blank"
@@ -29,7 +29,7 @@ const {
     <input
       type="hidden"
       name="source"
-      value={compact ? "blog-inline" : "blog-footer"}
+      value={compact ? 'blog-inline' : 'blog-footer'}
     />
 
     <label for="email" class="sr-only">Email address</label>
@@ -49,19 +49,19 @@ const {
 </section>
 
 <script is:inline>
-  const form = document.getElementById("substack-form");
-  const msg = document.getElementById("subscribe-message");
-  const firstUrl = document.getElementById("first_url");
+  const form = document.getElementById('substack-form');
+  const msg = document.getElementById('subscribe-message');
+  const firstUrl = document.getElementById('first_url');
   firstUrl.value = location.href;
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const isCompact = form.classList.contains("compact");
+    const isCompact = form.classList.contains('compact');
     msg.textContent = isCompact
-      ? "✅ Check inbox!"
-      : "✅ Thanks! Check your inbox to confirm.";
-    msg.className = "subscribe-message success";
+      ? '✅ Check inbox!'
+      : '✅ Thanks! Check your inbox to confirm.';
+    msg.className = 'subscribe-message success';
 
     setTimeout(() => {
       form.submit();

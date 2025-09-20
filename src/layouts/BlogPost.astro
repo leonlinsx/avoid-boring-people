@@ -1,21 +1,21 @@
 ---
-import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import FormattedDate from "../components/FormattedDate.astro";
-import PostList from "../components/PostList.astro";
-import { SITE_BANNER_IMAGE, SITE_URL } from "../consts";
-import { enrichPost } from "../utils/text";
-import TableOfContents from "../components/TableOfContents.astro";
-import ShareButtons from "../components/ShareButtons.astro";
-import TagList from "../components/TagList.astro";
-import readingTime from "reading-time";
-import SubscribeForm from "../components/SubscribeForm.astro";
-import type { MarkdownHeading } from "astro";
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import PostList from '../components/PostList.astro';
+import { SITE_BANNER_IMAGE, SITE_URL } from '../consts';
+import { enrichPost } from '../utils/text';
+import TableOfContents from '../components/TableOfContents.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import TagList from '../components/TagList.astro';
+import readingTime from 'reading-time';
+import SubscribeForm from '../components/SubscribeForm.astro';
+import type { MarkdownHeading } from 'astro';
 
 type Props = {
-  post: CollectionEntry<"blog">;
+  post: CollectionEntry<'blog'>;
   headings?: MarkdownHeading[];
 };
 
@@ -32,14 +32,14 @@ const {
 } = post.data;
 
 // ✅ reading time
-const body = await Astro.slots.render("default");
-const rt = Math.max(1, Math.round(readingTime(body ?? "").minutes));
+const body = await Astro.slots.render('default');
+const rt = Math.max(1, Math.round(readingTime(body ?? '').minutes));
 
 // ✅ Use hero image or fallback
 const hero = heroImage ?? SITE_BANNER_IMAGE;
 
 // ✅ Related posts
-const allPosts = await getCollection("blog");
+const allPosts = await getCollection('blog');
 const related = allPosts
   .filter((p) => p.data.category === category && p.data.title !== title)
   .map(enrichPost)
@@ -53,14 +53,14 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 <BaseLayout
   title={title}
   description={description}
-  image={typeof hero === "object" ? hero.src : hero}
+  image={typeof hero === 'object' ? hero.src : hero}
 >
   <main>
     <article>
       {
         hero && (
           <div class="hero-image">
-            {typeof hero === "object" ? (
+            {typeof hero === 'object' ? (
               <Image
                 src={hero}
                 alt={title}
@@ -166,7 +166,7 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
     padding-bottom: 0.75rem;
   }
   .title h1::after {
-    content: "";
+    content: '';
     display: block;
     margin: 0.75rem auto 0 auto;
     width: 100%;

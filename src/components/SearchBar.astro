@@ -3,14 +3,14 @@ interface Props {
   q?: string;
   className?: string;
   id?: string;
-  variant?: "compact" | "full"; // 👈 new
+  variant?: 'compact' | 'full'; // 👈 new
 }
 
-const { q = "", className = "", id, variant = "compact" } = Astro.props;
+const { q = '', className = '', id, variant = 'compact' } = Astro.props;
 ---
 
 <form
-  class:list={["search-bar", className, variant]}
+  class:list={['search-bar', className, variant]}
   role="search"
   method="get"
   action="/writing/search"

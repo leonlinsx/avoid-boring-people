@@ -1,5 +1,5 @@
 ---
-import { Mail, Linkedin, Twitter, Share2, Hash } from "lucide-astro";
+import { Mail, Linkedin, Twitter, Share2, Hash } from 'lucide-astro';
 
 interface Props {
   title: string;
@@ -90,42 +90,42 @@ const encodedURL = encodeURIComponent(url);
 <script is:inline>
   function trackShare(platform) {
     if (window.gtag) {
-      gtag("event", "share", {
-        event_category: "engagement",
+      gtag('event', 'share', {
+        event_category: 'engagement',
         event_label: platform,
       });
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const dropdown = document.querySelector(".dropdown");
-    const toggle = document.querySelector(".dropdown-toggle");
-    const menu = document.querySelector(".dropdown-menu");
+  document.addEventListener('DOMContentLoaded', () => {
+    const dropdown = document.querySelector('.dropdown');
+    const toggle = document.querySelector('.dropdown-toggle');
+    const menu = document.querySelector('.dropdown-menu');
 
     // Track clicks on all share links
-    document.querySelectorAll("[data-share]").forEach((el) => {
-      el.addEventListener("click", () => {
+    document.querySelectorAll('[data-share]').forEach((el) => {
+      el.addEventListener('click', () => {
         trackShare(el.dataset.share);
-        if (menu?.classList.contains("open")) menu.classList.remove("open");
+        if (menu?.classList.contains('open')) menu.classList.remove('open');
       });
     });
 
     // Mobile dropdown toggle
     if (toggle && menu) {
-      toggle.addEventListener("click", (e) => {
+      toggle.addEventListener('click', (e) => {
         e.stopPropagation(); // prevent immediate close
-        menu.classList.toggle("open");
+        menu.classList.toggle('open');
       });
     }
 
     // Close dropdown when clicking outside
-    document.addEventListener("click", (e) => {
+    document.addEventListener('click', (e) => {
       if (
-        menu?.classList.contains("open") &&
+        menu?.classList.contains('open') &&
         dropdown &&
         !dropdown.contains(e.target)
       ) {
-        menu.classList.remove("open");
+        menu.classList.remove('open');
       }
     });
   });

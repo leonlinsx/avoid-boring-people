@@ -1,17 +1,17 @@
 ---
-import { Image } from "astro:assets";
-import { SITE_OG_IMAGE } from "../consts";
-import FormattedDate from "./FormattedDate.astro";
-import type { BlogPost } from "../utils/text";
+import { Image } from 'astro:assets';
+import { SITE_OG_IMAGE } from '../consts';
+import FormattedDate from './FormattedDate.astro';
+import type { BlogPost } from '../utils/text';
 
 interface Props {
   post: BlogPost;
 }
 
 const { post } = Astro.props;
-const title = post.data.title ?? "Untitled";
-const desc = post.data.description ?? "";
-const category = post.data.category ?? "";
+const title = post.data.title ?? 'Untitled';
+const desc = post.data.description ?? '';
+const category = post.data.category ?? '';
 const date = post.data.pubDate ? new Date(post.data.pubDate) : null;
 const rt = post.data.readingTime;
 
@@ -25,24 +25,26 @@ const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;
 
 <article class="post-card">
   <a href={href} class="thumb-link">
-    {typeof thumbnail === "object" ? (
-      <Image
-        src={thumbnail}
-        alt={title}
-        width={120}
-        height={80}
-        class="post-thumb"
-      />
-    ) : (
-      <img
-        src={thumbnail}
-        alt={title}
-        width="120"
-        height="80"
-        class="post-thumb"
-        loading="lazy"
-      />
-    )}
+    {
+      typeof thumbnail === 'object' ? (
+        <Image
+          src={thumbnail}
+          alt={title}
+          width={120}
+          height={80}
+          class="post-thumb"
+        />
+      ) : (
+        <img
+          src={thumbnail}
+          alt={title}
+          width="120"
+          height="80"
+          class="post-thumb"
+          loading="lazy"
+        />
+      )
+    }
   </a>
 
   <div class="post-content">
@@ -54,12 +56,14 @@ const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;
 
     <p class="post-meta">
       {category}
-      {date && (
-        <>
-          {" "}
-          · <FormattedDate date={date} />
-        </>
-      )}
+      {
+        date && (
+          <>
+            {' '}
+            · <FormattedDate date={date} />
+          </>
+        )
+      }
       {rt && ` · ${rt} min read`}
     </p>
   </div>

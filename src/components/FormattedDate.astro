@@ -5,16 +5,16 @@ interface Props {
   locale?: string; // optional locale override
 }
 
-const { date, format, locale = "en-US" } = Astro.props;
+const { date, format, locale = 'en-US' } = Astro.props;
 
 // Normalize date input
-const parsedDate = typeof date === "string" ? new Date(date) : date;
+const parsedDate = typeof date === 'string' ? new Date(date) : date;
 
 // Default format (same as before if not overridden)
 const defaultFormat: Intl.DateTimeFormatOptions = {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
 };
 ---
 

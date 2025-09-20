@@ -1,20 +1,20 @@
 ---
-import BaseLayout from "../../../../layouts/BaseLayout.astro";
-import { getCategoryPostsPaginated } from "../../../../utils/text";
-import { SITE_TITLE } from "../../../../consts";
-import type { GetStaticPaths } from "astro";
-import Pagination from "../../../../components/Pagination.astro";
-import Filters from "../../../../components/Filters.astro";
-import PostList from "../../../../components/PostList.astro";
-import WritingHeader from "../../../../components/WritingHeader.astro";
-import { titleCase } from "../../../../utils/text";
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getCategoryPostsPaginated } from '../../../../utils/text';
+import { SITE_TITLE } from '../../../../consts';
+import type { GetStaticPaths } from 'astro';
+import Pagination from '../../../../components/Pagination.astro';
+import Filters from '../../../../components/Filters.astro';
+import PostList from '../../../../components/PostList.astro';
+import WritingHeader from '../../../../components/WritingHeader.astro';
+import { titleCase } from '../../../../utils/text';
 
 export const getStaticPaths = (async ({ paginate }) => {
   return await getCategoryPostsPaginated(paginate, 8);
 }) satisfies GetStaticPaths;
 
 // ✅ Use the injected page object for posts & pagination
-const { page, categories = [], activeCategory = "" } = Astro.props;
+const { page, categories = [], activeCategory = '' } = Astro.props;
 const pagedPosts = page.data;
 const currentPage = page.currentPage;
 const totalPages = page.lastPage;

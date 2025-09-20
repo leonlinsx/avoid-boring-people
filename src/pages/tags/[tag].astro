@@ -1,12 +1,12 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostList from "../../components/PostList.astro";
-import { getCollection } from "astro:content";
-import { SITE_TITLE } from "../../consts";
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
 
 // Build paths for each tag
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog');
   const allTags = new Set(posts.flatMap((post) => post.data.tags || []));
   return Array.from(allTags).map((tag) => ({
     params: { tag: tag.toLowerCase() },
@@ -15,8 +15,8 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.props;
-const posts = (await getCollection("blog")).filter((post) =>
-  post.data.tags?.map((t) => t.toLowerCase()).includes(tag.toLowerCase())
+const posts = (await getCollection('blog')).filter((post) =>
+  post.data.tags?.map((t) => t.toLowerCase()).includes(tag.toLowerCase()),
 );
 ---
 

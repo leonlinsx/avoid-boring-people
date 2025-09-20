@@ -1,6 +1,6 @@
 ---
-import SearchBarToggle from "./SearchBarToggle.tsx";
-import SearchBar from "./SearchBar.astro";
+import SearchBarToggle from './SearchBarToggle.tsx';
+import SearchBar from './SearchBar.astro';
 
 interface Props {
   title: string;
@@ -8,8 +8,7 @@ interface Props {
   showSearch?: boolean;
 }
 
-const { title, subtitle = "", showSearch = false } = Astro.props;
-
+const { title, subtitle = '', showSearch = false } = Astro.props;
 ---
 
 <header class="writing-header">

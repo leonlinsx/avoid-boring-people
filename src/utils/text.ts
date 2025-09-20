@@ -1,53 +1,54 @@
-import { getCollection, type CollectionEntry } from "astro:content";
-import readingTime from "reading-time";
-import type { ImageMetadata } from "astro";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import readingTime from 'reading-time';
+import type { ImageMetadata } from 'astro';
 
-export type BlogPost = CollectionEntry<"blog"> & {
+export type BlogPost = CollectionEntry<'blog'> & {
   slug: string;
-  data: CollectionEntry<"blog">["data"] & {
-    category: string;              // display
-    categoryNormalized: string;    // for filtering
+  data: CollectionEntry<'blog'>['data'] & {
+    category: string; // display
+    categoryNormalized: string; // for filtering
     readingTime: number;
     tags: string[];
-    heroImage?: ImageMetadata;   // ✅ use Astro’s built-in type;
+    heroImage?: ImageMetadata; // ✅ use Astro’s built-in type;
   };
 };
 
-
 export type PaginateFn = <T>(
   items: T[],
-  options: { pageSize: number; params?: Record<string, any> }
+  options: { pageSize: number; params?: Record<string, any> },
 ) => Array<any>;
 
 /**
  * Convert a string to Title Case.
  */
 export const titleCase = (s: string) =>
-  (s ?? "").toString().replace(
-    /\w\S*/g,
-    (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-  );
+  (s ?? '')
+    .toString()
+    .replace(
+      /\w\S*/g,
+      (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
+    );
 
 /**
  * Normalize categories to lowercase, trimmed.
  */
 export const normalizeCategory = (s: string) =>
-  (s ?? "").toString().trim().toLowerCase();
+  (s ?? '').toString().trim().toLowerCase();
 
 /**
  * Ensure every post has slug, normalized category, and readingTime.
  */
-export function enrichPost(p: CollectionEntry<"blog">): BlogPost {
-  const slug = p.id.replace(/\/index\.md$/, "").replace(/\.md$/, "");
+export function enrichPost(p: CollectionEntry<'blog'>): BlogPost {
+  const slug = p.id.replace(/\/index\.md$/, '').replace(/\.md$/, '');
 
   return {
     ...p,
     slug,
     data: {
       ...p.data,
-      category: p.data.category?.trim() || "",          // ✅ preserve original case
-      categoryNormalized: normalizeCategory(p.data.category ?? ""), // ✅ safe for filters
-      readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
+      category: p.data.category?.trim() || '', // ✅ preserve original case
+      categoryNormalized: normalizeCategory(p.data.category ?? ''), // ✅ safe for filters
+      readingTime: Math.max(1, Math.round(readingTime(p.body ?? '').minutes)),
       tags: Array.isArray(p.data.tags) ? p.data.tags : [],
       heroImage: normalizeHeroImage(p.data.heroImage),
     },
@@ -59,12 +60,12 @@ function normalizeHeroImage(heroImage: unknown): ImageMetadata | undefined {
   if (!heroImage) return undefined;
 
   if (
-    typeof heroImage === "object" &&
+    typeof heroImage === 'object' &&
     heroImage !== null &&
-    "src" in heroImage &&
-    "width" in heroImage &&
-    "height" in heroImage &&
-    "format" in heroImage
+    'src' in heroImage &&
+    'width' in heroImage &&
+    'height' in heroImage &&
+    'format' in heroImage
   ) {
     return heroImage as ImageMetadata;
   }
@@ -75,14 +76,11 @@ function normalizeHeroImage(heroImage: unknown): ImageMetadata | undefined {
 /**
  * Paginate all posts, with categories list.
  */
-export async function getAllPostsPaginated(
-  paginate: PaginateFn,
-  pageSize = 8
-) {
-  const allPosts = await getCollection("blog");
+export async function getAllPostsPaginated(paginate: PaginateFn, pageSize = 8) {
+  const allPosts = await getCollection('blog');
 
   const categories = Array.from(
-    new Set(allPosts.map((p) => normalizeCategory(p.data.category ?? "")))
+    new Set(allPosts.map((p) => normalizeCategory(p.data.category ?? ''))),
   )
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b));
@@ -101,12 +99,12 @@ export async function getAllPostsPaginated(
  */
 export async function getCategoryPostsPaginated(
   paginate: PaginateFn,
-  pageSize = 8
+  pageSize = 8,
 ) {
-  const all = await getCollection("blog");
+  const all = await getCollection('blog');
 
   const categories = Array.from(
-    new Set(all.map((p) => normalizeCategory(p.data.category ?? "")))
+    new Set(all.map((p) => normalizeCategory(p.data.category ?? ''))),
   )
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b));
@@ -115,7 +113,7 @@ export async function getCategoryPostsPaginated(
 
   for (const category of categories) {
     const filtered: BlogPost[] = all
-      .filter((p) => normalizeCategory(p.data.category ?? "") === category)
+      .filter((p) => normalizeCategory(p.data.category ?? '') === category)
       .map(enrichPost)
       .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -132,7 +130,7 @@ export async function getCategoryPostsPaginated(
           categories,
           activeCategory: category,
         },
-      }))
+      })),
     );
   }
 

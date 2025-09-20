@@ -28,5 +28,5 @@ export function extractHeadings(html: string): Heading[] {
  * Helper to strip any nested HTML tags (like <em>, <code>) from heading text.
  */
 function stripTags(str: string): string {
-  return str.replace(/<[^>]*>/g, "").trim();
+  return str.replace(/<[^>]*>/g, '').trim();
 }

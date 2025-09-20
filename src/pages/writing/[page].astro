@@ -1,12 +1,12 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getAllPostsPaginated } from "../../utils/text";
-import { SITE_TITLE } from "../../consts";
-import type { GetStaticPaths } from "astro";
-import Pagination from "../../components/Pagination.astro";
-import Filters from "../../components/Filters.astro";
-import PostList from "../../components/PostList.astro";
-import WritingHeader from "../../components/WritingHeader.astro";
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllPostsPaginated } from '../../utils/text';
+import { SITE_TITLE } from '../../consts';
+import type { GetStaticPaths } from 'astro';
+import Pagination from '../../components/Pagination.astro';
+import Filters from '../../components/Filters.astro';
+import PostList from '../../components/PostList.astro';
+import WritingHeader from '../../components/WritingHeader.astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const { pages, categories } = await getAllPostsPaginated(paginate, 8);
@@ -24,19 +24,18 @@ const pagedPosts = page.data;
 const currentPage = page.currentPage;
 const totalPages = page.lastPage;
 
-const activeCategory = ""; // "All" page
+const activeCategory = ''; // "All" page
 ---
 
 <BaseLayout
   title={`Writing | ${SITE_TITLE}`}
   description="All essays, notes, and more."
 >
-<WritingHeader
-  title="Essays, Notes, and More"
-  subtitle="Thinking out loud about finance, tech, and other compounding ideas"
-  showSearch={true}
-/>
-
+  <WritingHeader
+    title="Essays, Notes, and More"
+    subtitle="Thinking out loud about finance, tech, and other compounding ideas"
+    showSearch={true}
+  />
 
   <!-- Category Filters -->
   <Filters categories={categories} activeCategory={activeCategory} />

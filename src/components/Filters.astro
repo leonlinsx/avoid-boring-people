@@ -1,19 +1,18 @@
 ---
-import { titleCase, normalizeCategory } from "../utils/text";
+import { titleCase, normalizeCategory } from '../utils/text';
 
 interface Props {
   categories: string[];
   activeCategory?: string;
 }
 
-const { categories = [], activeCategory = "" } = Astro.props;
-
+const { categories = [], activeCategory = '' } = Astro.props;
 ---
 
 <nav class="writing-filters" aria-label="Filter posts by category">
   <a
     href="/writing/1"
-    class={`writing-filter-link${normalizeCategory(activeCategory) === "" ? " is-active" : ""}`}
+    class={`writing-filter-link${normalizeCategory(activeCategory) === '' ? ' is-active' : ''}`}
   >
     All
   </a>
@@ -24,7 +23,7 @@ const { categories = [], activeCategory = "" } = Astro.props;
       return (
         <a
           href={`/writing/category/${encodeURIComponent(cat)}/1`}
-          class={`writing-filter-link${normalizeCategory(activeCategory) === normalizeCategory(cat) ? " is-active" : ""}`}
+          class={`writing-filter-link${normalizeCategory(activeCategory) === normalizeCategory(cat) ? ' is-active' : ''}`}
         >
           {label}
         </a>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "preact/hooks";
+import { useState, useEffect, useRef } from 'preact/hooks';
 
 export default function SearchBarToggle() {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,23 +7,26 @@ export default function SearchBarToggle() {
   // Close on outside click + Esc
   useEffect(() => {
     function onDown(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
     function onEsc(e: KeyboardEvent) {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === 'Escape') setIsOpen(false);
     }
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onEsc);
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onEsc);
     return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onEsc);
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onEsc);
     };
   }, []);
 
   return (
-    <div class={`mobile-search ${isOpen ? "is-open" : ""}`} ref={wrapperRef}>
+    <div class={`mobile-search ${isOpen ? 'is-open' : ''}`} ref={wrapperRef}>
       {!isOpen && (
         <button
           type="button"
