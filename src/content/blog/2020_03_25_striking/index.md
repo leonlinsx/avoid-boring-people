@@ -99,7 +99,7 @@ I'm not saying we all have equal opportunities. The world isn't fair, and never 
 
 Similarly to the points on ego, these are easy to say and harder to practice. We all intuitively know that failure is necessary for eventual success, but that initial phase is painful. I've avoided pursuing some hobbies for years, just because I know I'll be bad at first [^3]. The lessons here are simple but not easy.
 
-Another point I want to highlight is the last point about outcome vs attempts. I'm a fan of small scale experimentation, when the stakes are low. As long as you're not [risking your survival](https://avoidboringpeople.substack.com/p/consequences-are-more-important-than "risk"), aiming big is better than aiming small. Asymmetric experimentation means your successes, when they happen, will likely far outweigh your failures. 
+Another point I want to highlight is the last point about outcome vs attempts. I'm a fan of small scale experimentation, when the stakes are low. As long as you're not risking your survival, aiming big is better than aiming small. Asymmetric experimentation means your successes, when they happen, will likely far outweigh your failures. 
 
 ### Other
 

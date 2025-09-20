@@ -37,7 +37,7 @@ As you can see, it's not just "take the Consumer Price Index" and be done with i
 
 > total PCE price inflation is highly volatile, even on a year-to-year basis. Consequently, economists and policymakers have suggested alternative procedures for reweighting the index's components so as to reduce the variance of the measured inflation, to better distinguish transitory from persistent movements, and, ultimately to better anticipate future developments in inflation
 
-We recently discussed how definitions were important when dealing with [monopolies](https://avoidboringpeople.substack.com/p/monopoly-i-know-it-when-i-see-it "monopoly"); regulations depend on definitions.
+We recently discussed how definitions were important when dealing with [monopolies](https://leonlins.com/writing/2021_02_13_monopoly/ "monopoly"); regulations depend on definitions.
 
 Similarly, what you define as inflation has large effects on public policy and thus the economy. Imagine if the Fed only looked at the rising costs of cities, and left out suburban areas. Or if they only looked at energy costs, and left out housing costs.
 

@@ -51,7 +51,7 @@ Another editor gave her the advice "I can tell your thinking is sloppy therefore
 
 > If you are able to be precise in your thinking and the words you use, you're going to stand out from everyone else.
 
-I'd caveat that this takes a long time to pay off. For example, how many people posting about GPT-3 a few months ago actually bothered to read the paper it was based on? By [actually doing the work](https://avoidboringpeople.substack.com/p/doctor-gpt-3) you can make more precise arguments that make a more compelling case.
+I'd caveat that this takes a long time to pay off. For example, how many people posting about GPT-3 a few months ago actually bothered to read the paper it was based on? By [actually doing the work](https://leonlins.com/writing/2020_07_22_dr_gpt/) you can make more precise arguments that make a more compelling case.
 
 **When to stop adding detail**
 

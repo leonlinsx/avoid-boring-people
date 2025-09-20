@@ -25,7 +25,7 @@ Hence, rather than discuss depressing dog acting markets, today I want to look a
 
 ![post](./c_1.webp)
 
-I first mentioned Cameo [about a year ago](https://avoidboringpeople.substack.com/p/would-you-buy-the-libra-neopet-kin "Cameo") while trying to guilt people into buying me a Jenna Coleman cameo [^3], and they're a good example of a beneficiary of the long long tail. The marketplace works because the individual return for these celebrities on their own is low, but the combined return of all of them is high. Paris the mini pig on her own is not likely to make enough for her owner, but combine her with Fiona the Hippo or Lola the Sloth and you might actually have a viable business for the platform providing the service.
+I first mentioned Cameo [about a year ago](https://leonlins.com/writing/2020_07_29_cameo/ "Cameo") while trying to guilt people into buying me a Jenna Coleman cameo [^3], and they're a good example of a beneficiary of the long long tail. The marketplace works because the individual return for these celebrities on their own is low, but the combined return of all of them is high. Paris the mini pig on her own is not likely to make enough for her owner, but combine her with Fiona the Hippo or Lola the Sloth and you might actually have a viable business for the platform providing the service.
 
 Marketplaces succeed by aggregating demand and supply, so let's start by analysing Cameo's.
 
@@ -109,7 +109,7 @@ Cameo found initial success through the long long tail, realising that a small g
 
 ## 2. & 3. The long long tail in finance and personal life
 
-I normally also do a finance piece and a personal growth piece. Given the length of the tech section above and [the GPT-3 article on AI from last week](https://avoidboringpeople.substack.com/p/doctor-gpt-3 "GPT"), I'm going to keep this month's section on both brief.
+I normally also do a finance piece and a personal growth piece. Given the length of the tech section above and [the GPT-3 article on AI from last week](https://leonlins.com/writing/2020_07_22_dr_gpt/ "GPT"), I'm going to keep this month's section on both brief.
 
 The long long tail is also a phenomenon in finance, and the easiest example of this is [Robinhood](https://robinhood.com/us/en/ "Robinhood"), the startup offering commission-free trading. Opinion is split on whether this is a good thing or whether Robinhood is stealing from the poor to feed the rich through payment for order flow [^11]. Regardless, the rise of Robinhood and competitors has enabled a newer, larger, weirder group of traders to grow. And just like before, I'd pick the platform to be the winner rather than any single individual.
 

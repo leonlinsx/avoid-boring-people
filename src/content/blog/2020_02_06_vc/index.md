@@ -27,7 +27,7 @@ Recognising that capital could become a commodity and needing to differentiate v
 
 > 10-20% of the investments are our home runs, where the VC is expecting to return ten to one hundred times her money
 
-Scott's [mentioned this publicly before](https://www.quora.com/What-are-some-common-misconceptions-that-non-industry-people-have-about-venture-capital/answer/Scott-Kupor "Scott") but always helpful to get a reminder of what the [base rates](https://plus.credit-suisse.com/rpc4/ravDocView?docid=gIamqy "base rates") are for VC. I've written more on the subject [before](https://avoidboringpeople.substack.com/p/does-xi-jinping-understand-seed-investing "Xi")
+Scott's [mentioned this publicly before](https://www.quora.com/What-are-some-common-misconceptions-that-non-industry-people-have-about-venture-capital/answer/Scott-Kupor "Scott") but always helpful to get a reminder of what the [base rates](https://plus.credit-suisse.com/rpc4/ravDocView?docid=gIamqy "base rates") are for VC. I've written more on the subject [before](https://leonlins.com/writing/2019_03_03_moloch/ "Xi")
 
 As a reminder, even if you’re more conservative on the distribution of returns than above, those 100x returns will still give you success:
 

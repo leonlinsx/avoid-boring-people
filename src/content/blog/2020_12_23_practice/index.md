@@ -32,7 +32,7 @@ And yet another reason is that the beginner usually has no idea what they're doi
 
 Over the long run though, process wins out. Luck will average out [^2], and you're left with the output of your process and skill. If your process is bad on average, you will be bad on average. 
 
-We've seen suggestions on how to improve processes [in an older article this year](https://avoidboringpeople.substack.com/p/often-overlooked-process-improvement "process"). Some additional thoughts I've had:
+We've seen suggestions on how to improve processes [in an older article this year](https://leonlins.com/writing/2020_08_26_process/ "process"). Some additional thoughts I've had:
 
 ### 1. Knowing what you're doing
 

@@ -15,7 +15,7 @@ heroImage: "./her_1.webp"
 
 ## AI as a service(s business)
 
-I've written about machine learning (ML) and artificial intelligence (AI) before [^1], [summarising Vicki Boykis' work on how you often don't need fancy tech, and usually the business dictates, not the tech.](https://avoidboringpeople.substack.com/p/you-dont-want-quality-time-you-want "ABP") Scott Locklin elaborates on the problems faced by ML startups [here](https://scottlocklin.wordpress.com/2020/02/21/andreessen-horowitz-craps-on-ai-startups-from-a-great-height/ "Scott") [^2], mostly responding to a related a16z post [here.](https://a16z.com/2020/02/16/the-new-business-of-ai-and-how-its-different-from-traditional-software/ "a16z")
+I've written about machine learning (ML) and artificial intelligence (AI) before [^1]. Scott Locklin elaborates on the problems faced by ML startups [here](https://scottlocklin.wordpress.com/2020/02/21/andreessen-horowitz-craps-on-ai-startups-from-a-great-height/ "Scott") [^2], mostly responding to a related a16z post [here.](https://a16z.com/2020/02/16/the-new-business-of-ai-and-how-its-different-from-traditional-software/ "a16z")
 
 His main points are:
 
@@ -37,7 +37,7 @@ Is 25% of rev spent on just cloud operations [^3] a lot? To contextualise that n
 
 > anecdotal data shows that many companies spend up to 10-15% of revenue on \[manual data cleaning and data accuracy maintenance\] process – usually not counting core engineering resources – and suggests ongoing development work exceeds typical bug fixes and feature additions - a16z
 
-Turns out AI companies do have other COGS, spending up to 15% on manual data processes. Mainstream media focuses on the predictions from machine learning, [but data scientists spend more of their time on data collection and cleaning.](https://avoidboringpeople.substack.com/p/you-dont-want-quality-time-you-want "ABP") That isn't going away, meaning **most AI companies are immediately 15% less profitable than a software company.** That's also before any other COGS involved, implying final gross margins are even lower.
+Turns out AI companies do have other COGS, spending up to 15% on manual data processes. Mainstream media focuses on the predictions from machine learning, [but data scientists spend more of their time on data collection and cleaning.](https://leonlins.com/writing/2020_02_26_time/ "ABP") That isn't going away, meaning **most AI companies are immediately 15% less profitable than a software company.** That's also before any other COGS involved, implying final gross margins are even lower.
 
 The allure of investing in software companies is that marginal costs are low, so a high percentage of incremental revenue is converted to profit. AI companies need to lower that COGS % or expect some benefit of scale in order to be as attractive. Is that likely?
 
@@ -159,7 +159,7 @@ These first two lessons are similar to the earlier point about viewing sharehold
 
 > The third point is that knowledge is indeed cumulative but you must always maintain intellectual honesty
 
-I've discussed [being open-minded and intellectually honest before,](https://avoidboringpeople.substack.com/p/improving-forecasts-and-incentivising "intellectual") and would again agree that this is important but hard to do. When's the last time you've changed your mind on a non-trivial issue?
+ Would again agree that this is important but hard to do. When's the last time you've changed your mind on a non-trivial issue?
 
 > The last thing is that you should let your passion be your guide. Don’t listen to what others think of you. They have nothing to do with you. Accept that your circle of competence will be small and don’t worry about everything else. Making money doesn’t depend on how much you know; it depends on whether what you know is right or wrong. If what you know is right, you will not lose money.
 

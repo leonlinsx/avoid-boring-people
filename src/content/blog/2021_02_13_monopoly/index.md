@@ -19,7 +19,7 @@ Josh Breinlinger, a VC at Turtle Ventures, has a short post on his site about [h
 
 I'm inclined to agree. We hear about "winner takes all" all the time. Which begs the question, why aren't there more monopolies?
 
-"But wait, aren't there tons of monopolies? You just [gave an example last week](https://avoidboringpeople.substack.com/p/gambling-is-fine-as-long-as-youve "week")"
+"But wait, aren't there tons of monopolies?"
 
 As defined by having a single player with all the share - I'm not sure there are?
 
@@ -39,7 +39,7 @@ The harder it is to get started, the easier it is for incumbent businesses to gr
 
 Historically, physical barriers were the main constraint. Getting into railroads? Well you'll have to lay tracks. Getting into shipping? You'll need boats. In the medieval times and trying to establish a trade route? You'll need carriages and mercenaries and [maps](https://www.visualcapitalist.com/medieval-trade-route-map/ "map").
 
-Much of that has been abstracted away these days, like our discussion of [abstraction in computing](https://avoidboringpeople.substack.com/p/first-plaid-then-the-world "abstract"). Many companies can take the physical layer for granted, and scale more quickly at lower cost.
+Much of that has been abstracted away these days, like our discussion of [abstraction in computing](https://leonlins.com/writing/2021_01_30_plaid/ "abstract"). Many companies can take the physical layer for granted, and scale more quickly at lower cost.
 
 What has not changed is regulatory barriers. We've overcome nature, but have not overcome man. Nor do I believe that we will, since rules will always be a part of society.
 

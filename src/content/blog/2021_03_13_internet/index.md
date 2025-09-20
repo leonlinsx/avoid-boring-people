@@ -74,7 +74,7 @@ A simple reason for that is that things change quickly, requiring a change in bu
 
 ## Preferring to be the platform
 
-[As we discussed on abstraction](https://avoidboringpeople.substack.com/p/first-plaid-then-the-world "api"), companies wanted to commoditise the layer below them:
+[As we discussed on abstraction](https://leonlins.com/writing/2021_01_30_plaid/ "api"), companies wanted to commoditise the layer below them:
 
 > Netscape benefited as the underlying platform that was the most trusted and valued by users \[...\] Netscape would even encourage others to build add-ons and plugins that would interact with Netscape's own software, adding features and functions that Netscape itself couldn't dream up.
 

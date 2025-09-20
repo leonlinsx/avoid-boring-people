@@ -23,7 +23,7 @@ A "full service" bank like JP Morgan is enormous. You can think about it as four
 
 ![post](./i_2.webp)
 
-When I refer to investment banking or banking in this article, I'm specifically talking about the blue business on the right. And to make my life easier, I'll focus just on the "Banker" box, excluding discussion of the equity research and sales and trading arms for simplicity. I've mentioned equity research [here](https://avoidboringpeople.substack.com/p/you-dont-want-quality-time-you-want "er") before when discussing the impact of roboadvisors.
+When I refer to investment banking or banking in this article, I'm specifically talking about the blue business on the right. And to make my life easier, I'll focus just on the "Banker" box, excluding discussion of the equity research and sales and trading arms for simplicity. I've mentioned equity research [here](https://leonlins.com/writing/2020_02_26_sellside/ "er") before when discussing the impact of roboadvisors.
 
 So now that we know our scope, what does the investment banking group do?
 

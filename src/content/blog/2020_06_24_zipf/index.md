@@ -13,7 +13,7 @@ Zipf's law and Shannon's information entropy can help us find alien life
 
 ## How can we find alien life?
 
-We've talked about [how machine learning companies use data to recognise text](https://avoidboringpeople.substack.com/p/the-next-machine-learning-startup "ML") and how [investors use data to pick companies.](https://avoidboringpeople.substack.com/p/not-everything-is-insider-trading "invest")
+We've talked about [how machine learning companies use data to recognise text](https://leonlins.com/writing/2020_06_10_ml/ "ML") and how [investors use data to pick companies.](https://leonlins.com/writing/2020_06_17_data/ "invest")
 
 This week, let's talk about how scientists are using data to look for aliens. Some of the content below will draw from [Laurance Doyle's talk with the Long Now group.](http://longnow.org/seminars/02020/apr/29/interspecies-communication-and-search-extraterrestrial-intelligence/ "Long")
 

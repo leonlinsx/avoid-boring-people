@@ -64,7 +64,7 @@ I'll make the link shortly, and for now let's just keep those story shapes in mi
 
 ### Stocks have shapes
 
-Last month, we discussed one reason your investment pitch sucks: [you aren't accounting for consensus.](https://avoidboringpeople.substack.com/p/relatively-speaking-the-billionaire/comments "pitch")
+Last month, we discussed one reason your investment pitch sucks: [you aren't accounting for consensus.](https://leonlins.com/writing/2020_05_07_relative_billionaire/ "pitch")
 
 This month, let's discuss another common reason that can be even more frustrating.
 

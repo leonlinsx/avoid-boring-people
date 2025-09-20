@@ -44,7 +44,7 @@ NVC also made an interesting point on emotional growth, saying we move through t
 
 Naturally, this is a draining position to be in. Those that realise the high costs associated with the prior stage rebel and become obnoxious, feeling angry and wanting to dump any and all responsibility. That's still immature. 
 
-The last stage of growth is emotional liberation, where we respond to others out of compassion, and accept responsibility for ourselves but not for others. It reminds me of [Kegan's theory of adult development](https://avoidboringpeople.substack.com/p/dont-die-as-a-caterpillar "kegan"), which has most people stagnating at the middle stage.
+The last stage of growth is emotional liberation, where we respond to others out of compassion, and accept responsibility for ourselves but not for others. It reminds me of [Kegan's theory of adult development](https://leonlins.com/writing/2020_04_22_kegan/ "kegan"), which has most people stagnating at the middle stage.
 
 **Fourth step:** once we know what we're feeling and why, we can finally make requests (not demands) of others. The clearer our request is, the more likely we'll be able to get what we desire. For example "I want you to be more responsible" is unclear compared to "I would feel happy if you did the dishes after eating"
 

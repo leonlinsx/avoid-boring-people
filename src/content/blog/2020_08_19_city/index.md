@@ -29,7 +29,7 @@ People have their own unique priorities when evaluating cities. The person's pri
 
 Usually, the pace at which the person's priority changes has been faster than the pace at which a city's ability changes. You move to a city for your first job after graduating college, and then stay there for a while until you need more space for a family. The city stayed the same, you changed.
 
-Recently though, cities have lost nearly everything that attracted people to them. You may have stayed the same and want the same things, but the city changed. If you recall our [pace layer](https://avoidboringpeople.substack.com/p/wisely-and-slow-they-stumble-that "pace") discussion, in this case the "governance", "infrastructure", and "commerce" layers all moved more quickly than expected.
+Recently though, cities have lost nearly everything that attracted people to them. You may have stayed the same and want the same things, but the city changed. If you recall our [pace layer](https://leonlins.com/writing/2020_03_04_pace/ "pace") discussion, in this case the "governance", "infrastructure", and "commerce" layers all moved more quickly than expected.
 
 ![post](./c_2.webp)
 
@@ -103,7 +103,7 @@ Culture is build via many things, including history, people, stories. It's built
 
 ## Cities have lasted a long time
 
-As I summarised in the [Josh Wolfe article](https://avoidboringpeople.substack.com/p/authentic-contrarians-vs-consensus "Josh"), there'll be continued tension from city folks seeing suburban folks enjoy a more normal life, seemingly without consequences. Many will even make the choice to move, finally deciding the tradeoff is worth it.
+There'll be continued tension from city folks seeing suburban folks enjoy a more normal life, seemingly without consequences. Many will even make the choice to move, finally deciding the tradeoff is worth it.
 
 And that's the crux of the issue - living in a city is always going to be a tradeoff, made consciously or subconsciously by everyone. There's no right or wrong answer, just the one more appropriate for that particular person's situation.
 

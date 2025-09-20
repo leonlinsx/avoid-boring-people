@@ -82,7 +82,7 @@ Practically, what this means for investing is:
 
 2. **What can seem attractive at first is often terrible,** as a small number of outlier values skew the average upwards [^7].
 
-3. **If you don't like the odds you're seeing, try changing the game.** The previous post I did on [the Kelly Criterion](https://avoidboringpeople.substack.com/p/having-faith-in-the-kelly-criterion "kelly") talks about sizing your bet, which will affect how much you gain or lose.
+3. **If you don't like the odds you're seeing, try changing the game.** The previous post I did on [the Kelly Criterion](https://leonlins.com/writing/2020_12_02_kelly/ "kelly") talks about sizing your bet, which will affect how much you gain or lose.
 
 In summary, ergodicity is about whether the long run average over many simulations is the same as the average over one simulation. When things are non-ergodic, and many things in life are non-ergodic, you have to be extremely careful about the amount of risk you're taking.
 

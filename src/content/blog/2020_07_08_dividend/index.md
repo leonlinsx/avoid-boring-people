@@ -13,7 +13,7 @@ Investing for dividends has more nuances than might first appear.
 
 ## Return on dividends
 
-In [footnote 8 of last week's free post](https://avoidboringpeople.substack.com/p/a-story-is-a-lie-and-a-story-is-true "footnote") I made a throwaway remark on dividends mattering less than capital return because I didn't want to spend more time digging into the subject.
+In [footnote 8 of last week's post](https://leonlins.com/writing/2020_07_01_stories/ "footnote") I made a throwaway remark on dividends mattering less than capital return because I didn't want to spend more time digging into the subject.
 
 Today, let's actually dig into dividends. 
 

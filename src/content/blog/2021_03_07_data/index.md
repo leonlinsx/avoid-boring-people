@@ -27,7 +27,7 @@ Given the growth rate of data generation and the revenue associated (>20% yoy), 
 
 ## 2. Risks
 
-- Security (95% likely) - Large profits mean high rewards for malicious actors who obtain data illegally [^4](https://avoidboringpeople.substack.com/p/data-analysis-industry-investment#footnote-5). If security costs rise (and they will), this will hurt business margins
+- Security (95% likely) - Large profits mean high rewards for malicious actors who obtain data illegally [^4]. If security costs rise (and they will), this will hurt business margins
 - Data privacy regulation (70%) - This increases compliance costs, helping incumbents and hurting startups
 - Upstream margin pressure (30%) - Should there be more industry consolidation at certain layers of the data stack, those companies could squeeze margins for firms that have no alternatives [^5]
 

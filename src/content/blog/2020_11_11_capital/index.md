@@ -13,7 +13,7 @@ A research paper proposes that you should look to work with strong teammates and
 
 ## People vs Companies
 
-We discussed [middlemen in financial capital last week](https://avoidboringpeople.substack.com/p/do-investment-bankers-add-value "ib"). This week, let's look at middlemen in human capital. 
+We discussed [middlemen in financial capital last week](https://leonlins.com/writing/2020_11_04_ib/ "ib"). This week, let's look at middlemen in human capital. 
 
 In the paper ["Are Inventors or Firms the Engines of Innovation?"](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3081933 "paper") Ajay Bhaskarabhatla, Luis Cabral, Deepak Hegde, and Thomas Peeters look into whether we should credit humans or companies more for innovations. Surprisingly, they find that **humans deserve much more merit.** Let's take a closer look.
 

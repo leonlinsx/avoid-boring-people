@@ -48,7 +48,7 @@ This is in contrast to the [A/B testing](https://www.crazyegg.com/blog/ab-testin
 
 > we won’t launch a product if the tests clearly show it is going to be a failure, but we won’t use tests to modify products, either.
 
-This is reminiscent of the Steve Jobs quote, "that customers don't know what they want until you show it to them [^3]." If we recall that fashion sits on the top of [the pace layer diagram](https://avoidboringpeople.substack.com/p/wisely-and-slow-they-stumble-that "pace"), it makes sense that Bernard would think this way, given the quick pace of change in the industry. He's always looking for something new for the season, and needs to dictate consumer taste rather than be directed by it.
+This is reminiscent of the Steve Jobs quote, "that customers don't know what they want until you show it to them [^3]." If we recall that fashion sits on the top of [the pace layer diagram](https://leonlins.com/writing/2020_03_04_pace/ "pace"), it makes sense that Bernard would think this way, given the quick pace of change in the industry. He's always looking for something new for the season, and needs to dictate consumer taste rather than be directed by it.
 
 However, Bernard draws the line on the production and operations processes. Here, he looks to control as much of the action as possible. You can be creative in ideas but not in execution:
 
@@ -120,7 +120,7 @@ And that so far has worked for him, at least based on the stock price and the ma
 
 ![post](./l_4.webp)
 
-How much of his framework is applicable to other businesses? I mostly agree on the emphasis of creativity but also operational excellence. As per the recent note on [why companies are bad at innovating](https://avoidboringpeople.substack.com/p/its-turtles-all-the-way-down "turtle") though, I’m unsure if most companies are willing to accept the volatility implied with accepting more creativity. I’m unsure if the past vs present duality is easily implemented, beyond some marketing campaign just for show.
+How much of his framework is applicable to other businesses? I mostly agree on the emphasis of creativity but also operational excellence. As per the recent note on [why companies are bad at innovating](https://leonlins.com/writing/2020_07_15_turtle/ "turtle") though, I’m unsure if most companies are willing to accept the volatility implied with accepting more creativity. I’m unsure if the past vs present duality is easily implemented, beyond some marketing campaign just for show.
 
 With all Bernard's achieved, you'd think he'd be ready to retire. He's not done empire building though. Even now, Bernard still believes [it's day 1:](https://www.forbes.com/sites/quora/2017/04/21/what-is-jeff-bezos-day-1-philosophy/#1867a2be1052 "Day")
 

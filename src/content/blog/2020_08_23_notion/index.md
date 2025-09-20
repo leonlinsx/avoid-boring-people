@@ -59,7 +59,7 @@ In the last 10 years, the increased bandwidth of the internet has also enabled o
 
 The internet and cloud provided the foundation for the growth of all the [Software as a Service (SaaS)](https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/ "SaaS") businesses we see today. By taking it as a given that someone else will provide the infrastructure (IaaS) or platform (PaaS) required to support them, software companies can concentrate on addressing the needs of a specific segment.
 
-With the [low cost of capital](https://avoidboringpeople.substack.com/p/cost-of-capital-in-the-21st-century "low"), high potential margins, and sticky revenue base, it's no wonder we've seen so many software companies try to digitalise functions that used to be physical. We have company wikis replacing compendiums, kanban boards replacing post it notes, and note taking apps replacing journals. Most of us have to deal with at least 10, if not more, different software platforms while doing work.
+With the [low cost of capital](https://leonlins.com/writing/2020_09_16_capital/ "low"), high potential margins, and sticky revenue base, it's no wonder we've seen so many software companies try to digitalise functions that used to be physical. We have company wikis replacing compendiums, kanban boards replacing post it notes, and note taking apps replacing journals. Most of us have to deal with at least 10, if not more, different software platforms while doing work.
 
 This is where Notion comes in. **[Notion wants to be your all-in-one workspace,](https://www.notion.so/product "Notion")** the main place you write, plan, and organise your work. All of that separate software we just mentioned? Notion wants to bundle them all, and give you one consistent user experience with enough flexibility to cater to most of your tasks.
 
@@ -117,11 +117,11 @@ In the afternoon you'd pull some customer churn data, filter and cut it down to 
 
 If we think back to the Inception analogy, we're not just interested in how much space Notion will occupy within its current layers, but also how it will interact with or even take over other layers. If your data analysis, visualisation, and sync could all be done with Notion, that will make a lot of the software we use now redundant.
 
-There's probably a [pace layer](https://avoidboringpeople.substack.com/p/wisely-and-slow-they-stumble-that "pace") comparison to make here as well, with the upper, faster, visual layers moving faster and dominating the attention cycle.
+There's probably a [pace layer](https://leonlins.com/writing/2020_03_04_pace/ "pace") comparison to make here as well, with the upper, faster, visual layers moving faster and dominating the attention cycle.
 
 ![post](./n_8.webp)
 
-When I was thinking about this article, I had initially wanted to do a financial model for Notion, [like the one I did for newsletters](https://avoidboringpeople.substack.com/p/theres-more-to-communities-than-facebook "news"). However, given the lack of data I'd be making up too many assumptions. I have read they're already profitable with a revenue run-rate of [$30mm](https://www.forbes.com/sites/davidjeans/2020/04/01/buzzy-work-app-notion-hits-2-billion-valuation/#15da831578ec "30"), and I can see them doing 10x that revenue at a 40% margin, while still growing double digits. We'll have to wait on more data, but no wonder people are excited [^9].
+When I was thinking about this article, I had initially wanted to do a financial model for Notion, [like the one I did for newsletters](https://leonlins.com/writing/2021_04_17_community/ "news"). However, given the lack of data I'd be making up too many assumptions. I have read they're already profitable with a revenue run-rate of [$30mm](https://www.forbes.com/sites/davidjeans/2020/04/01/buzzy-work-app-notion-hits-2-billion-valuation/#15da831578ec "30"), and I can see them doing 10x that revenue at a 40% margin, while still growing double digits. We'll have to wait on more data, but no wonder people are excited [^9].
 
 That's enough justification above for Notion's valuation, and we'll come back to some wilder ideas of how to increase the addressable market. For now, let's do an overview of product features.
 

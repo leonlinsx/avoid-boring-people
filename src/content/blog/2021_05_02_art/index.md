@@ -13,7 +13,7 @@ I started learning art history a while ago, to better understand what I was look
 
 I've been primarily using [smarthistory](https://smarthistory.org/ "smart") to learn art history, though the video that kick started my journey was [this MoMa one on how to paint like Picasso](https://www.youtube.com/watch?v=rGZYfSzvPvs&list=PLfYVzk0sNiGEZXlIltPP7Yy_s5gTM7hf8 "moma").
 
-I've also touched on art history before with articles on [Picasso](https://avoidboringpeople.substack.com/p/picassos-new-painting-perspectives "picasso") and [Manet](https://avoidboringpeople.substack.com/p/manet-and-modernity "manet") if you want to check those out.
+I've also touched on art history before with articles on [Picasso](https://leonlins.com/writing/2020_04_08_picasso/ "picasso") and [Manet](https://leonlins.com/writing/2020_12_09_art/ "manet") if you want to check those out.
 
 **The most important thing I learnt about art history is to be open-minded.**
 
@@ -60,7 +60,7 @@ I also started learning to draw last year for a couple of reasons:
 
 I started with [draw a box](https://drawabox.com/ "draw"), and then moved on to [New Masters Academy](https://www.nma.art/ "nma"), which I'm still using [^6]. I mainly work with pencil and fountain pen [^7].
 
-As a sidenote, if [aphantasia is real](https://avoidboringpeople.substack.com/p/can-you-see-things-in-a-different "abp"), I probably have it, seeing as I'm a 3-4 on the below test. It hasn't been a hurdle when drawing from reference, though it might be one when drawing from imagination.
+As a sidenote, if [aphantasia is real](https://leonlins.com/writing/2019_07_31_aphantasia/ "abp"), I probably have it, seeing as I'm a 3-4 on the below test. It hasn't been a hurdle when drawing from reference, though it might be one when drawing from imagination.
 
 ![post](./a_6.webp)
 

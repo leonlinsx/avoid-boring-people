@@ -69,7 +69,7 @@ Well... yes and no.
 
 Those two images I just showed? I lied, those aren't from GPT-3.
 
-They're actually from GPT-2, the older model released in February of 2019. In fact, long time readers of this newsletter might recall [this article](https://avoidboringpeople.substack.com/p/moloch-the-judger-of-social-credit "Moloch") I wrote back then, highlighting the already admirable results from the model [^4]. The text generated from the older model was already awesome.
+They're actually from GPT-2, the older model released in February of 2019. In fact, long time readers of this newsletter might recall [this article](https://leonlins.com/writing/2019_03_03_moloch/ "Moloch") I wrote back then, highlighting the already admirable results from the model [^4]. The text generated from the older model was already awesome.
 
 So, what's different this time? Did the robots just get a better marketing department?
 
@@ -134,7 +134,7 @@ If you remember high school math, this is matrix multiplication or linear algebr
 
 ![post](./gpt_8.webp)
 
-The function used is a [neural network, so it's more complicated than just multiplying by two.](https://towardsdatascience.com/learn-how-recurrent-neural-networks-work-84e975feaaf7 "neural") I'll gloss over exactly how those work as I've gone over the intuition before [here](https://avoidboringpeople.substack.com/p/the-next-machine-learning-startup "ML"), and it'll overly complicate this walk through. Free subs, email me and I'll forward.
+The function used is a [neural network, so it's more complicated than just multiplying by two.](https://towardsdatascience.com/learn-how-recurrent-neural-networks-work-84e975feaaf7 "neural") I'll gloss over exactly how those work as I've gone over the intuition before [here](https://leonlins.com/writing/2020_06_10_ml/ "ML"), and it'll overly complicate this walk through. Free subs, email me and I'll forward.
 
 What's more important to understand here is that the word is transformed into something else. The model can control both how the word is initially turned into numbers, and what function we perform. e.g. instead of (1, 2, 3) times 2, we could have "Had" turned into (2, 3, 4), and then times 3 to equal (6, 9, 12)
 
@@ -274,7 +274,7 @@ Firstly, [because of the hyperparameters used in GPT-3,](https://medium.com/anal
 
 ![post](./gpt_30.webp)
 
-For those unfamiliar with Zipf's law, I've previously covered it [here](https://avoidboringpeople.substack.com/p/war-of-the-words "Zipf") when talking about searching for aliens (yes, aliens. Free subs email me and I'll forward). Essentially, it states that in a large sample of text, the frequency of any word is inversely proportional to its rank, when ranked by frequency of occurrence. e.g. the most common word is ~2x more frequent than the 2nd most common word.
+For those unfamiliar with Zipf's law, I've previously covered it [here](https://leonlins.com/writing/2020_06_24_zipf/ "Zipf") when talking about searching for aliens (yes, aliens. Free subs email me and I'll forward). Essentially, it states that in a large sample of text, the frequency of any word is inversely proportional to its rank, when ranked by frequency of occurrence. e.g. the most common word is ~2x more frequent than the 2nd most common word.
 
 I've plotted Zipf's law for my newsletter before, and it looks like the top graph. If GPT-3 were to write my articles, you'd expect something like the bottom instead (with more words of course, the example is just for illustrative purposes).
 

@@ -133,7 +133,7 @@ One industry that understands this well is the gaming market. Look to how the co
 
 ![post](./c_10.webp)
 
-Besides value and selectivity, the last factor I'd think about for virtual groups is **growth potential.** Growth usually comes at the expense of selectivity; as the group grows the value added by the next member is lower on average. For example, [when I wrote about Cosign,](https://avoidboringpeople.substack.com/p/would-you-cosign-your-ai-chess-partner "cosign") I was concerned about expansion.
+Besides value and selectivity, the last factor I'd think about for virtual groups is **growth potential.** Growth usually comes at the expense of selectivity; as the group grows the value added by the next member is lower on average.
 
 There are ways around this, such as doing batch intakes on a periodic basis. That's the model that colleges, startup accelerators, or online course communities take. Another option is to have a fixed number of spots, and only admit new people once someone leaves. For groups that are intended to be evergreen, such as RenCo or The Interintellect, it'll be interesting to see how they manage growth vs other competing factors.
 

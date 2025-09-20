@@ -13,7 +13,7 @@ AQR looks into the performance of value investing (bad), common criticisms of va
 
 ## Valuations 
 
-We've talked about [whether investment bankers add value](https://avoidboringpeople.substack.com/p/do-investment-bankers-add-value "bank") (probably?), [whether companies add value](https://avoidboringpeople.substack.com/p/do-companies-add-value "co") (less than we think), and this week we'll wrap up the value series [^1] by looking at whether value investing adds value.
+We've talked about [whether investment bankers add value](https://leonlins.com/writing/2020_11_04_ib/ "bank") (probably?), [whether companies add value](https://leonlins.com/writing/2020_11_11_capital/ "co") (less than we think), and this week we'll wrap up the value series [^1] by looking at whether value investing adds value.
 
 The paper [Is (Systematic) Value Investing Dead?](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3554267 "paper") by Ronen Israel, Kristoffer Laursen, Scott Richardson at well-known investment firm AQR discusses whether value investing still works. This follows [an earlier paper this year](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3525096 "paper") from Fama and French, the professors who popularised value investing as an investment factor, which concluded that the return on value investing has declined in recent years [^2]. In other words, it's not good to be a value investor anymore.
 
@@ -91,7 +91,7 @@ For those unfamiliar with yield curves, think of them as the interest rates bond
 
 > And wouldn’t it make sense to trade bonds directly if you had the skill to forecast changes in the shape of the yield curve?
 
-I'm less sure I agree with both of these. There's plenty of reasons why people stick in equities - it's a more fashionable sector and more "prestigious" and more common to get into. Also, as I've written about before, [low rates imply people should take more risk](https://avoidboringpeople.substack.com/p/cost-of-capital-in-the-21st-century "risk"), and value investing by its nature implies less risk.
+I'm less sure I agree with both of these. There's plenty of reasons why people stick in equities - it's a more fashionable sector and more "prestigious" and more common to get into. Also, as I've written about before, [low rates imply people should take more risk](https://leonlins.com/writing/2020_09_16_capital/ "risk"), and value investing by its nature implies less risk.
 
 Criticism #5 is that too many people know about value investing, and hence it's become "crowded," driving down returns. **AQR disagrees that value investing has become crowded** (more popular as an investing strategy) and says the evidence is the opposite: 
 
@@ -119,7 +119,7 @@ Since they're using "perfect information," the portfolio performs well - If you 
 
 ![post](./v_4.webp)
 
-It's not a terribly satisfying explanation, since it's the equivalent of saying "less people believe in the importance of value, therefore it works less." However, there's a sizeable portion of truth in that. Recall the earlier article about [stories and stocks](https://avoidboringpeople.substack.com/p/a-story-is-a-lie-and-a-story-is-true "story"), in which I argue the importance of stories. If people as a whole have decided that "growth" is what matters more, that has a self-reinforcing feedback loop in the markets. This typically takes an economic cycle to correct, but we haven't quite seen one yet.
+It's not a terribly satisfying explanation, since it's the equivalent of saying "less people believe in the importance of value, therefore it works less." However, there's a sizeable portion of truth in that. Recall the earlier article about [stories and stocks](https://leonlins.com/writing/2020_07_01_stories/ "story"), in which I argue the importance of stories. If people as a whole have decided that "growth" is what matters more, that has a self-reinforcing feedback loop in the markets. This typically takes an economic cycle to correct, but we haven't quite seen one yet.
 
 [^1] I would like to say this was planned from the start of this month, but it was a coincidence.
 [^2] I'm simplifying in the main text here, they actually say that although the return has declined in the latter half of the July 1963-June 2019 period, [there's not enough data yet to conclude if value investing as an investment factor works or not.](https://www.institutionalinvestor.com/article/b1k3pd2z3ptx9g/Ken-French-There-Is-No-Way-to-Tell-If-Value-Premium-Is-Disappearing "ii") Note I'm using investment factor here as something specific, i.e. a filterable criteria to weight an investment portfolio by, as mentioned later in the main text.

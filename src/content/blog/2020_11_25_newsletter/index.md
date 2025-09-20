@@ -7,7 +7,7 @@ tags: ["writing"]
 heroImage: "./n_1.webp"
 ---
 
-Newsletters continue to rise in popularity, driven by [trends in cost, convenience, and control of the audience](https://avoidboringpeople.substack.com/p/theres-more-to-communities-than-facebook). Both amateur and professional writers are publishing independently in order to benefit from the high leverage of working in public. Writing publicly is like buying an option, with capped downside and potentially unlimited upside.
+Newsletters continue to rise in popularity, driven by [trends in cost, convenience, and control of the audience](https://leonlins.com/writing/2019_07_31_news/). Both amateur and professional writers are publishing independently in order to benefit from the high leverage of working in public. Writing publicly is like buying an option, with capped downside and potentially unlimited upside.
 
 We're a group of newsletter authors with a combined audience in the hundreds of thousands, writing about topics ranging from product management to being human. We're sharing our tips on:
 
@@ -29,7 +29,7 @@ Hopefully we can inspire some of you to join us in the content creator journey.
 
 > "Write something that is 10x better than anything else out there on this topic. If it doesn't meet this bar, don't publish." - [Li Jin of Li's Newsletter](https://li.substack.com/)
 
-> "By doing in-depth research you can capture nuances ignored by others and build credibility with your audience." - [Leon Lin of Avoid Boring People](https://avoidboringpeople.substack.com/)
+> "By doing in-depth research you can capture nuances ignored by others and build credibility with your audience." - [Leon Lin of Avoid Boring People](https://leonlins.com/)
 
 > "Clear thinking = clear writing. Before you write, ask yourself, 'What am I trying to say?' Then write as if you're talking to a friend." - [Brad Wolverton of Trends.co](https://twitter.com/bradwolverton/status/1246504862948483073)
 
@@ -49,7 +49,7 @@ Hopefully we can inspire some of you to join us in the content creator journey.
 
 > "Authenticity is the new norm for content. If you sound like an academic or a corporate robot, readers will tune out. Instead of hammering your personality out of the text, let it be the soul of your writing." - [Alex Taussig of Drinking from the firehose](https://www.firehose.vc/)
 
-> "Newsletters inherently make people expect more personal content. Readers subscribe to hear your voice, not a typical news piece. Push the boundaries on personality." - [Leon Lin of Avoid Boring People](https://avoidboringpeople.substack.com/)
+> "Newsletters inherently make people expect more personal content. Readers subscribe to hear your voice, not a typical news piece. Push the boundaries on personality." - [Leon Lin of Avoid Boring People](https://leonlins.com/)
 
 > "Everyone has a 'voice.' Find yours, and build a relationship with your audience through it." - [Nikhil Basu Trivedi of next big thing](https://nbt.substack.com/)
 
@@ -65,7 +65,7 @@ Hopefully we can inspire some of you to join us in the content creator journey.
 
 ### Reward your most engaged readers
 
-> "I like leaving surprises for the diligent reader. This could be details in the footnotes that only a few will understand, an interesting link just slightly related to the main topic, or an inconspicuous reference to something else. Don't handhold the reader too much, and keep your secrets." - [Leon Lin of Avoid Boring People](https://avoidboringpeople.substack.com/)
+> "I like leaving surprises for the diligent reader. This could be details in the footnotes that only a few will understand, an interesting link just slightly related to the main topic, or an inconspicuous reference to something else. Don't handhold the reader too much, and keep your secrets." - [Leon Lin of Avoid Boring People](https://leonlins.com/)
 
 > "Promoting other people's work is the most effective form of self promotion. Thanking your biggest fans or highlighting their work creates signals of belonging which becomes a virtuous loop that drives more people to your work." - [Sari Azout of Check your Pulse ](https://sariazout.substack.com/)
 
@@ -77,7 +77,7 @@ Hopefully we can inspire some of you to join us in the content creator journey.
 
 > "Title and subtitle and image and opening lines all have to deliver on a hook that will draw people in from Twitter." - [Nathan Baschez of Divinations](https://divinations.substack.com/)
 
-> "Spend time to come up with a few alternative titles, and pick the best one from the list. Don't default to the first title that comes to mind." - [Leon Lin of Avoid Boring People](https://avoidboringpeople.substack.com/)
+> "Spend time to come up with a few alternative titles, and pick the best one from the list. Don't default to the first title that comes to mind." - [Leon Lin of Avoid Boring People](https://leonlins.com/)
 
 ### Give away your most interesting stuff on Twitter
 
@@ -105,7 +105,7 @@ Hopefully we can inspire some of you to join us in the content creator journey.
 
 > "I try to respond to every comment and email that I get in response to a post. I've even encouraged private email responders to post public comments so that the community can see our back-and-forth." - [Nikhil Basu Trivedi of next big thing](https://nbt.substack.com/)
 
-> "Replies build relationships. If your intent is to build a lasting community, always be replying." - [Leon Lin of Avoid Boring People](https://avoidboringpeople.substack.com/)
+> "Replies build relationships. If your intent is to build a lasting community, always be replying." - [Leon Lin of Avoid Boring People](https://leonlins.com/)
 
 ### Enable relationships between your readers
 
@@ -143,7 +143,7 @@ Write now.
 
 ## Contributors
 
--   Leon Lin writes to help you [Avoid Boring People](https://avoidboringpeople.substack.com/)
+-   Leon Lin writes to help you [Avoid Boring People](https://leonlins.com/)
 -   Lenny Rachitsky of [Lenny's Newsletter](https://www.lennyrachitsky.com/)
 -   Nathan Baschez of [Divinations](https://divinations.substack.com/)
 -   Nikhil Basu Trivedi [of next big thing](https://nbt.substack.com/)

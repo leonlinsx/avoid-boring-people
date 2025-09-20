@@ -44,7 +44,7 @@ If we wanted to, we could gatekeep anything.
 
 There are valid forms of gatekeeping. If you're excluding someone because they would be harmful to the community, that's reasonable. For example, if you're building a group of video gamers, and you get a membership request from someone who wants to ban video games, it probably doesn't make sense to accept her in.
 
-More often though, gatekeeping is an attempt by individuals in the "in-group" to maintain their status, as if they somehow lose out the more people know what they know. It comes from a place of insecurity; from people afraid to let others realise what they do can be done by others too. As I wrote about last month, that's like [shorting the lottery](https://avoidboringpeople.substack.com/p/it-only-goes-up-from-here "short"), and probably a bad idea. For example, the impressionist painters were all gatekept when they first started, but look at their influence in art now [^2].
+More often though, gatekeeping is an attempt by individuals in the "in-group" to maintain their status, as if they somehow lose out the more people know what they know. It comes from a place of insecurity; from people afraid to let others realise what they do can be done by others too. As I wrote about last month, that's like shorting the lottery, and probably a bad idea. For example, the impressionist painters were all gatekept when they first started, but look at their influence in art now [^2].
 
 Now, note that the gatekeeper's aren't totally wrong. **In fact, their suggestions often make sense.** For example, it would be tremendously helpful to know linear algebra while studying machine learning. And if you want to become an expert, you have to master all the math required [^3]. But artificially preventing people from starting a subject doesn't help anyone. A better response would have been "Yes, here's some simpler courses to get started, come back and revisit the fundamentals after." Enable rather than disable.
 
@@ -66,7 +66,7 @@ For example, [how flour was in short supply a while back](https://www.theatlanti
 
 Or how the 08 crisis caused runs on banking institutions, bringing some to bankruptcy.
 
-And recall earlier this year when we discussed that [liquidity was the cause of crises, not capital.](https://avoidboringpeople.substack.com/p/fluctuat-nec-mergitur "liquidity")
+And recall earlier this year when we discussed that liquidity was the cause of crises, not capital.
 
 Today we'll look at highlights of the paper ["Market Liquidity and Funding Liquidity"](https://www.nber.org/system/files/working_papers/w12939/w12939.pdf "Markus") by Markus Brunnermeier and Lasse Pedersen. The paper's long and mostly mathematical [^6], but we can still review the conclusions.
 
@@ -120,5 +120,5 @@ Even the Fed has realised to not be the gatekeeper of last resort.
 [^4]: I've skipped discussion about safety issues e.g. you _should_ gatekeep someone from free soloing if they've never climbed anything before. I trust in the reader to have common sense here; hopefully that's not too much of an ask
 [^5]: You'll notice I didn't use toilet paper as an example. That's because I have a strong opinion against a popular TP medium article that went viral a while ago which I believe to be mostly inaccurate. I'm planning to write about it and those kinds of "here's a counterintuitive explanation" articles that are not counterintuitive but just wrong; haven't had time for it yet.
 [^6]: Also, full disclosure that I don't fully understand the math in the paper. Particularly, there's a speculator skewed return conclusion that I don't quite follow.
-[^7]: For readers unaware of what cost of capital means, think of it as the cost of funding. I wrote about it more previously for paid subs [here](https://avoidboringpeople.substack.com/p/cost-of-capital-in-the-21st-century "sub")
+[^7]: For readers unaware of what cost of capital means, think of it as the cost of funding. I wrote about it more previously [here](https://leonlins.com/writing/2020_09_16_capital/ "sub")
 [^8]: "When a trader — e.g. a dealer, hedge fund, or investment bank — buys a security, he can use the security as collateral and borrow against it, but he cannot borrow the entire price. The difference between the security’s price and collateral value, denoted as the margin, must be financed with the trader’s own capital"

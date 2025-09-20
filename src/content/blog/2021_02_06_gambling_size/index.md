@@ -20,7 +20,7 @@ John Huber likes to divide the "edge" you can get in investing into [three main 
 2. Analytical advantage - your analysis of that information is better
 3. Behavioural advantage - your mindset and actions
 
-I believe that information and analytical advantages continue to shrink, and are already not very large, even for the pros. Remember that it is the [relative difference](https://avoidboringpeople.substack.com/p/relatively-speaking-the-billionaire "relative") that matters, and not the absolute level. If you're using satellite data and your competitor is too, you do not have an information edge. If your detailed diligence process is the same as that of another [Tiger cub](https://en.wikipedia.org/wiki/Tiger_Management "Tiger") because your bosses used to work together, you do not have an analytical edge.
+I believe that information and analytical advantages continue to shrink, and are already not very large, even for the pros. Remember that it is the [relative difference](https://leonlins.com/writing/2020_05_07_relative_billionaire/ "relative") that matters, and not the absolute level. If you're using satellite data and your competitor is too, you do not have an information edge. If your detailed diligence process is the same as that of another [Tiger cub](https://en.wikipedia.org/wiki/Tiger_Management "Tiger") because your bosses used to work together, you do not have an analytical edge.
 
 I also believe that the behavioural advantage is not shrinking, and will continue to be a differentiator for financial returns. The speed of information transfer has changed, analytical methods are well known, but humans still behave the same.
 
@@ -68,7 +68,7 @@ Knowing that's the case, **having a small percentage of the portfolio dedicated 
 
 A lot of the common financial knowledge is good advice (diversify, low cost investments etc), but we often fail to account for the fact that people want an outlet to gamble. This ends up backfiring when people can't resist any longer and take on too much risk in a moment of weakness. It doesn't help that you invested in an index fund for 10 years before pulling it out to short a stock with unlimited downside.
 
-Instead, say you set aside 5% of your capital to invest in [Fyre festival time shares](https://en.wikipedia.org/wiki/Fyre_Festival "fyre") and the latest pump and dump scheme. You'll be able to satisfy both the gambling urge whenever it arises, but never be in a position to risk your livelihood. It's a somewhat similar approach to the [Kelly criterion](https://avoidboringpeople.substack.com/p/having-faith-in-the-kelly-criterion "kelly") that we discussed before.
+Instead, say you set aside 5% of your capital to invest in [Fyre festival time shares](https://en.wikipedia.org/wiki/Fyre_Festival "fyre") and the latest pump and dump scheme. You'll be able to satisfy both the gambling urge whenever it arises, but never be in a position to risk your livelihood. It's a somewhat similar approach to the [Kelly criterion](https://leonlins.com/writing/2020_12_02_kelly/ "kelly") that we discussed before.
 
 If you lose all the 5%, that's too bad, but you've capped your downside and have to further reduce risk if you want to bet again. And if you've stumbled upon the next Amazon, that's fantastic.
 

@@ -70,7 +70,7 @@ We've found some avenues where our efforts can scale, and the diminishing margin
 
 People desiring to become influencers implicitly realise:
 
-1. It's practically possible to be dramatically different from the average. Recalling what we discussed about [relative differences, not absolutes, mattering more](https://avoidboringpeople.substack.com/p/relatively-speaking-the-billionaire "relative"), this is one way to visibly signal a high status to others.
+1. It's practically possible to be dramatically different from the average. Recalling what we discussed about [relative differences, not absolutes, mattering more](https://leonlins.com/writing/2020_05_07_relative_billionaire/ "relative"), this is one way to visibly signal a high status to others.
 2. Although the probability is small, the payoff when you've "made it" is magnitudes larger compared to cost. It's a gamble, but who doesn't love gambling? No wonder we're all addicted.
 
 I also plotted the wealth of the richest person against mean household wealth, and it's a similar 100,000x difference. Financial rewards are also something that do not have a ceiling.
