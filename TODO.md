@@ -13,5 +13,6 @@ Replace one-off values with variables. -->
 <!-- - use tags and new page for tag filters -->
 - dark mode toggle
 <!-- - share mobile close on tap fix -->
-- related post on articles styling spacing too wide
+<!-- - related post on articles styling spacing too wide -->
+<!-- - related posts image vs title alignment -->
 - automated posting

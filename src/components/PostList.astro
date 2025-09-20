@@ -61,7 +61,7 @@ const enrichedPosts: BlogPost[] = posts.map((p) => enrichPost(p as any));
   }
 
   .writing-post-list.compact :global(.post-thumb) {
-    margin: 0; /* reset any inherited vertical margins */
+    margin: var(--space-xs); /* reset any inherited vertical margins */
     display: block;
   }
 
