@@ -3,7 +3,7 @@ title:  "Don't die as a caterpillar"
 description: "Kegan's theory of adult development"
 pubDate: 2020-04-22
 category: Lifestyle
-tags: ["behaviour", "psychology"]
+tags: ["behaviour",]
 heroImage: "./a_1.webp"
 ---
 

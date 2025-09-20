@@ -1,0 +1,48 @@
+---
+interface Props {
+  tags?: string[];
+}
+
+const { tags = [] } = Astro.props; // ✅ ensures tags is always an array
+---
+
+{
+  tags.length > 0 && (
+    <ul class="tag-list">
+      {tags.map((tag) => (
+        <li>
+          <a href={`/tags/${tag.toLowerCase()}`}>{tag}</a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+    padding: 0;
+    list-style: none;
+  }
+  .tag-list li a {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-base-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .tag-list li a:hover {
+    background: var(--color-border);
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
+</style>

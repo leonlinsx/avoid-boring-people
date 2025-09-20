@@ -9,6 +9,8 @@ import { SITE_BANNER_IMAGE, SITE_URL } from "../consts";
 import { enrichPost } from "../utils/text";
 import TableOfContents from "../components/TableOfContents.astro";
 import ShareButtons from "../components/ShareButtons.astro";
+import TagList from "../components/TagList.astro";
+import readingTime from "reading-time";
 
 interface Heading {
   level: number;
@@ -16,18 +18,12 @@ interface Heading {
   text: string;
 }
 
-type Props = CollectionEntry<"blog">["data"];
-const raw = Astro.props;
-const { headings = [] } = raw;
+type Props = {
+  post: CollectionEntry<"blog">;
+  headings?: Heading[];
+};
 
-// ✅ Build full post object for enrichPost
-const body = await Astro.slots.render("default");
-const current = enrichPost({
-  id: "",
-  slug: "",
-  body,
-  data: raw,
-} as any);
+const { post, headings = [] } = Astro.props;
 
 const {
   title,
@@ -36,20 +32,17 @@ const {
   updatedDate,
   heroImage,
   category,
-  readingTime,
-} = current.data;
+  tags = [],
+} = post.data;
 
-// Normalize hero image
-let hero: string | Record<string, any> = SITE_BANNER_IMAGE;
-if (heroImage) {
-  if (typeof heroImage === "object" && heroImage.src) {
-    hero = heroImage;
-  } else if (typeof heroImage === "string") {
-    hero = heroImage;
-  }
-}
+// ✅ reading time
+const body = await Astro.slots.render("default");
+const rt = Math.max(1, Math.round(readingTime(body ?? "").minutes));
 
-// Related posts
+// ✅ Use hero image or fallback
+const hero = heroImage ?? SITE_BANNER_IMAGE;
+
+// ✅ Related posts
 const allPosts = await getCollection("blog");
 const related = allPosts
   .filter((p) => p.data.category === category && p.data.title !== title)
@@ -57,7 +50,7 @@ const related = allPosts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-// ✅ Canonical URL (matches BaseHead.astro)
+// ✅ Canonical URL
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 ---
 
@@ -68,49 +61,45 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 >
   <main>
     <article>
-      {
-        hero && (
-          <div class="hero-image">
-            {typeof hero === "object" && hero.src ? (
-              <Image
-                src={hero}
-                alt={title}
-                format="webp"
-                width={1200}
-                height={630}
-                fit="cover"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            ) : (
-              <img
-                src={hero as string}
-                alt={title}
-                width="1200"
-                height="630"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            )}
-          </div>
-        )
-      }
+      {hero && (
+        <div class="hero-image">
+          {typeof hero === "object" ? (
+            <Image
+              src={hero}
+              alt={title}
+              format="webp"
+              width={1200}
+              height={630}
+              fit="cover"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          ) : (
+            <img
+              src={hero}
+              alt={title}
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          )}
+        </div>
+      )}
 
       <div class="prose">
         <div class="title">
           <div class="meta">
             <FormattedDate date={pubDate} />
             {category && ` · ${category}`}
-            {readingTime && ` · ${readingTime} min read`}
-            {
-              updatedDate && (
-                <div class="last-updated-on">
-                  Last updated on <FormattedDate date={updatedDate} />
-                </div>
-              )
-            }
+            {rt && ` · ${rt} min read`}
+            {updatedDate && (
+              <div class="last-updated-on">
+                Last updated on <FormattedDate date={updatedDate} />
+              </div>
+            )}
           </div>
           <h1>{title}</h1>
         </div>
@@ -121,7 +110,10 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
         <!-- Post content -->
         <slot />
 
-        <!-- ✅ Share Buttons -->
+        <!-- Tags -->
+        <TagList tags={tags} />
+
+        <!-- Share Buttons -->
         <ShareButtons title={title} url={canonicalURL} />
 
         <!-- Newsletter CTA -->
@@ -135,19 +127,18 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
               height="150"
               frameborder="0"
               scrolling="no"
-              title="Newsletter signup form"></iframe>
+              title="Newsletter signup form"
+            ></iframe>
           </div>
         </section>
 
         <!-- Related posts -->
-        {
-          related.length > 0 && (
-            <section class="related-posts">
-              <h2>Related Posts</h2>
-              <PostList posts={related} variant="list" />
-            </section>
-          )
-        }
+        {related.length > 0 && (
+          <section class="related-posts">
+            <h2>Related Posts</h2>
+            <PostList posts={related} variant="list" />
+          </section>
+        )}
       </div>
     </article>
   </main>
@@ -175,7 +166,7 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
   .meta {
     margin-bottom: 0.75rem;
     font-size: 0.95rem;
-    color: rgb(var(--gray));
+    color: rgb(var(--color-text-meta));
   }
   .last-updated-on {
     font-style: italic;
@@ -199,7 +190,6 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
     border-top: 1px solid #eee;
     text-align: center;
   }
-
   .related-posts {
     margin-top: 3rem;
     padding-top: 2rem;
@@ -209,11 +199,9 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
     margin-bottom: 1rem;
     text-align: left;
   }
-
   .related-posts .post-card {
     align-items: flex-start;
   }
-
   .related-posts .post-content {
     display: flex;
     flex-direction: column;

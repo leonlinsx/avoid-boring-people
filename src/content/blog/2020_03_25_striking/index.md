@@ -3,7 +3,7 @@ title:  "Book Review: Bruce Lee's Striking Thoughts"
 description: "Become the cup"
 pubDate: 2020-03-25
 category: Book Review
-tags: ["psychology"]
+tags: ["behaviour"]
 heroImage: "./b_1.webp"
 ---
 

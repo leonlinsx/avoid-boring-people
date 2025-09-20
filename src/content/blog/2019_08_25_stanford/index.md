@@ -3,7 +3,7 @@ title:  "Stanford prison experiment or Stanford prison acting class?"
 description: "The SPE survived for almost 50 years because no researcher has been through its archives"
 pubDate: 2019-08-25
 category: Lifestyle
-tags: ["behaviour", "science", "psychology"]
+tags: ["behaviour", "science",]
 heroImage: "./s_1.webp"
 ---
 

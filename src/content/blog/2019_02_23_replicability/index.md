@@ -3,7 +3,7 @@ title: "Replicability crisis in science"
 description: "Many popular studies turn out to not be true"
 pubDate: 2019-02-23
 category: Tech
-tags: ["science", "psychology"]
+tags: ["science", "behaviour"]
 heroImage: "./rep_1.png"
 ---
 

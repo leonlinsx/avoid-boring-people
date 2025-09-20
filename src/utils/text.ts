@@ -4,10 +4,14 @@ import readingTime from "reading-time";
 export type BlogPost = CollectionEntry<"blog"> & {
   slug: string;
   data: CollectionEntry<"blog">["data"] & {
-    category: string;
-    readingTime: number; // guaranteed after enrichment
+    category: string;              // display
+    categoryNormalized: string;    // for filtering
+    readingTime: number;
+    tags: string[];
+    heroImage?: { src: string; width: number; height: number; format: string };
   };
 };
+
 
 export type PaginateFn = <T>(
   items: T[],
@@ -33,18 +37,37 @@ export const normalizeCategory = (s: string) =>
  * Ensure every post has slug, normalized category, and readingTime.
  */
 export function enrichPost(p: CollectionEntry<"blog">): BlogPost {
+  const slug = p.id.replace(/\/index\.md$/, "").replace(/\.md$/, "");
+
   return {
     ...p,
-    slug: p.id.replace(/\.md$/, ""),
+    slug,
     data: {
       ...p.data,
-      category: p.data.category?.trim() || "",
-      readingTime: Math.max(
-        1,
-        Math.round(readingTime(p.body ?? "").minutes)
-      ),
+      category: p.data.category?.trim() || "",          // ✅ preserve original case
+      categoryNormalized: normalizeCategory(p.data.category ?? ""), // ✅ safe for filters
+      readingTime: Math.max(1, Math.round(readingTime(p.body ?? "").minutes)),
+      tags: Array.isArray(p.data.tags) ? p.data.tags : [],
+      heroImage: normalizeHeroImage(p.data.heroImage),
     },
   };
+}
+
+
+// ✅ heroImage is either an Astro image object or undefined
+function normalizeHeroImage(
+  heroImage: unknown
+): { src: string; width: number; height: number; format: string } | undefined {
+  if (!heroImage) return undefined;
+  if (typeof heroImage === "object" && heroImage !== null && "src" in heroImage) {
+    return heroImage as {
+      src: string;
+      width: number;
+      height: number;
+      format: string;
+    };
+  }
+  return undefined;
 }
 
 /**

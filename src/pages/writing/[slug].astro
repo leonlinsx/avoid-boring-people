@@ -4,13 +4,20 @@ import BlogPost from "../../layouts/BlogPost.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
-  return posts.map((post) => ({
-    params: { slug: post.slug ?? post.id.replace(/\.md$/, "") },
-    props: post,
-  }));
+  return posts.map((post) => {
+    // Clean slug: strip both `/index.md` and `.md`
+    const slug =
+      post.slug ?? post.id.replace(/\/index\.md$/, "").replace(/\.md$/, "");
+
+    // ✅ attach slug to post before passing as props
+    return {
+      params: { slug },
+      props: { ...post, slug },
+    };
+  });
 }
 
-type Props = CollectionEntry<"blog">;
+type Props = CollectionEntry<"blog"> & { slug: string };
 
 const post = Astro.props;
 
@@ -18,6 +25,6 @@ const post = Astro.props;
 const { Content, headings } = await render(post);
 ---
 
-<BlogPost {...post.data} heroImage={post.data.heroImage} headings={headings}>
+<BlogPost post={post} headings={headings}>
   <Content />
 </BlogPost>

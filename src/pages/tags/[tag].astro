@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostList from "../../components/PostList.astro";
+import { getCollection } from "astro:content";
+import { SITE_TITLE } from "../../consts";
+
+// Build paths for each tag
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const allTags = new Set(posts.flatMap((post) => post.data.tags || []));
+  return Array.from(allTags).map((tag) => ({
+    params: { tag: tag.toLowerCase() },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const posts = (await getCollection("blog")).filter((post) =>
+  post.data.tags?.map((t) => t.toLowerCase()).includes(tag.toLowerCase())
+);
+---
+
+<BaseLayout
+  title={`Posts tagged "${tag}" | ${SITE_TITLE}`}
+  description={`Browse all posts tagged with "${tag}".`}
+>
+  <div class="tag-header">
+    <a href="/tags" class="writing-filter-link">← All tags</a>
+    <h1>Posts tagged “{tag}”</h1>
+  </div>
+
+  <PostList posts={posts} />
+</BaseLayout>
+
+<style>
+  .tag-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+  .tag-header h1 {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: 600;
+  }
+</style>
