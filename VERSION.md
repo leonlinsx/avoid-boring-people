@@ -1,4 +1,42 @@
 
+# 2025-09-20
+
+### Related Posts & PostList
+- Refactored `PostList.astro` to support a `compact` variant for Related Posts.  
+- Moved overrides for spacing, title, summary, and meta into the compact variant (instead of `BlogPost.astro`).  
+- Fixed divider → next card spacing by restoring controlled `padding-bottom` + `margin-bottom` on `.post-card`.  
+- Cleaned up `BlogPost.astro` so Related Posts wrapper only handles the section divider + heading; all card-level spacing lives in `PostList.astro`.
+
+### Search Bar
+- Fixed misaligned 🔍 icon in the search bar when resizing:  
+  - Removed conflicting vertical padding in `.search-bar-desktop`.  
+  - Let `.search-input` control the container height with balanced padding.  
+  - Updated `.search-btn` to `height: 100%` + `aspect-ratio: 1` so it stays square and vertically centered. 
+
+### Headings / TOC
+- Replaced custom `Heading` type with Astro’s built-in `MarkdownHeading[]` across:
+  - `[slug].astro`
+  - `BlogPost.astro`
+  - `TableOfContents.astro`
+- Removed unnecessary mapping (`depth → level`, `slug → id`).
+- Fixed prop typing in `TableOfContents.astro` using a `Props` type (`headings?: MarkdownHeading[]`) to avoid missing property warnings.
+
+### Hero Image Typing
+- Updated `BlogPost` type to use Astro’s `ImageMetadata` for `heroImage` instead of `{ src: string; width: number; height: number; format: string }`.
+- Fixed `normalizeHeroImage` to return `ImageMetadata | undefined` and cast properly, eliminating type mismatches on `format`.
+
+### Package.json
+- Added a proper `"name"` field (`"leonlins-blog"`) instead of leaving it empty, improving clarity and avoiding npm/tooling warnings.
+
+### SubscribeForm
+- Removed invalid `rel="noopener"` attribute from `<form>`.  
+  - `rel` is not valid on forms (only `<a>` / `<link>`).  
+  - Security impact is covered by `target="_blank"` on forms by default.
+
+### PostList
+- Removed unnecessary `key={post.id}` prop when mapping over posts in `PostList.astro`.  
+  - Astro doesn’t use React’s diffing model, so `key` is not a valid prop.  
+  - This eliminated the TS error: `Property 'key' does not exist on type 'IntrinsicAttributes & Props'` 
 
 # 2025-09-18
 

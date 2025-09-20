@@ -15,7 +15,7 @@ const enrichedPosts: BlogPost[] = posts.map((p) => enrichPost(p as any));
 ---
 
 <section class:list={["writing-post-list", variant]}>
-  {enrichedPosts.map((post) => <PostCard post={post} key={post.id} />)}
+  {enrichedPosts.map((post) => <PostCard post={post} />)}
 </section>
 
 <style>

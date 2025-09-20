@@ -1,10 +1,11 @@
 ---
-interface Heading {
-  depth: number;
-  slug: string;
-  text: string;
-}
-const { headings = [] } = Astro.props;
+import type { MarkdownHeading } from "astro";
+
+type Props = {
+  headings?: MarkdownHeading[];
+};
+
+const { headings = [] } = Astro.props as Props;
 ---
 
 <!-- ================= DESKTOP ================= -->

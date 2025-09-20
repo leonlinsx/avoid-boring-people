@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import readingTime from "reading-time";
+import type { ImageMetadata } from "astro";
 
 export type BlogPost = CollectionEntry<"blog"> & {
   slug: string;
@@ -8,7 +9,7 @@ export type BlogPost = CollectionEntry<"blog"> & {
     categoryNormalized: string;    // for filtering
     readingTime: number;
     tags: string[];
-    heroImage?: { src: string; width: number; height: number; format: string };
+    heroImage?: ImageMetadata;   // ✅ use Astro’s built-in type;
   };
 };
 
@@ -53,20 +54,21 @@ export function enrichPost(p: CollectionEntry<"blog">): BlogPost {
   };
 }
 
-
-// ✅ heroImage is either an Astro image object or undefined
-function normalizeHeroImage(
-  heroImage: unknown
-): { src: string; width: number; height: number; format: string } | undefined {
+// ✅ heroImage is either an Astro ImageMetadata object or undefined
+function normalizeHeroImage(heroImage: unknown): ImageMetadata | undefined {
   if (!heroImage) return undefined;
-  if (typeof heroImage === "object" && heroImage !== null && "src" in heroImage) {
-    return heroImage as {
-      src: string;
-      width: number;
-      height: number;
-      format: string;
-    };
+
+  if (
+    typeof heroImage === "object" &&
+    heroImage !== null &&
+    "src" in heroImage &&
+    "width" in heroImage &&
+    "height" in heroImage &&
+    "format" in heroImage
+  ) {
+    return heroImage as ImageMetadata;
   }
+
   return undefined;
 }
 

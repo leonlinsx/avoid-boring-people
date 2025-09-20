@@ -12,16 +12,11 @@ import ShareButtons from "../components/ShareButtons.astro";
 import TagList from "../components/TagList.astro";
 import readingTime from "reading-time";
 import SubscribeForm from "../components/SubscribeForm.astro";
-
-interface Heading {
-  level: number;
-  id: string;
-  text: string;
-}
+import type { MarkdownHeading } from "astro";
 
 type Props = {
   post: CollectionEntry<"blog">;
-  headings?: Heading[];
+  headings?: MarkdownHeading[];
 };
 
 const { post, headings = [] } = Astro.props;
