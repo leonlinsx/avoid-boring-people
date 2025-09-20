@@ -1,0 +1,15 @@
+{
+  "recurse": true,
+  "silent": true,
+  "timeout": 10000,
+  "skip": [
+    "https://twitter.com/*",
+    "https://substack.com/*",
+    "https://fonts.googleapis.com/*",
+    "https://stats.stackexchange.com/*",
+    "https://towardsdatascience.com/*",
+    "https://papers.ssrn.com/*",
+    "https://blogs.cfainstitute.org/*",
+    "https://marginalrevolution.com/*"
+  ]
+}

@@ -5,6 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import remarkFootnotes from "remark-footnotes";
 import { SITE_URL } from "./src/consts.ts";
 import preact from '@astrojs/preact';
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   site: SITE_URL,
@@ -31,5 +32,14 @@ export default defineConfig({
     "/writing": { destination: "/writing/1", status: 308 },
     "/writing/category/:category": { destination: "/writing/category/:category/1", status: 308 },
     '/newsletter': '/#subscribe',
+  },
+
+  vite: {
+    plugins: [
+      visualizer({
+        filename: "dist/stats.html",
+        template: "treemap", // or 'sunburst', 'network'
+      }),
+    ],
   },
 });

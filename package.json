@@ -8,7 +8,9 @@
     "preview": "astro preview --open",
     "astro": "astro",
     "start": "npm run build && npm run preview",
-    "debug:tags": "astro run scripts/debug-tags.ts"
+    "debug:tags": "astro run scripts/debug-tags.ts",
+    "linkcheck:internal": "node scripts/link-report.js internal",
+    "linkcheck:external": "node scripts/link-report.js external"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -34,8 +36,10 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.3.1",
     "eslint-plugin-prettier": "^5.5.4",
+    "linkinator": "^6.1.4",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
+    "rollup-plugin-visualizer": "^6.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
