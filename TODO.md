@@ -12,6 +12,6 @@ Replace one-off values with variables. -->
 <!-- - share button for socials -->
 <!-- - use tags and new page for tag filters -->
 - dark mode toggle
-- share mobile close on tap fix
+<!-- - share mobile close on tap fix -->
 - related post on articles styling spacing too wide
 - automated posting

@@ -350,8 +350,25 @@ img.center { display: block; margin: var(--space-lg) auto; }
 /* -------------------------------
    16. Post Card Styles
 ---------------------------------*/
-.post-card { display: flex; align-items: flex-start; gap: var(--space-md); padding-bottom: var(--space-md); border-bottom: 1px solid var(--color-border-soft); }
-.post-card:last-child { border-bottom: none; padding-bottom: 0; }
+.post-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+
+  /* Divider */
+  border-bottom: 1px solid var(--color-border-soft);
+
+  /* Vertical rhythm */
+  padding-bottom: var(--space-sm);   /* space between content and divider */
+  margin-bottom: var(--space-lg);   /* breathing room before next title */
+}
+
+.post-card:last-child {
+  border-bottom: none;
+  margin-bottom: 0; /* no extra space after the last card */
+}
+
+
 .thumb-link { flex-shrink: 0; }
 .post-thumb {
   width: 120px; height: 80px; object-fit: cover; border-radius: var(--radius-md);
