@@ -11,6 +11,7 @@ import TableOfContents from "../components/TableOfContents.astro";
 import ShareButtons from "../components/ShareButtons.astro";
 import TagList from "../components/TagList.astro";
 import readingTime from "reading-time";
+import SubscribeForm from "../components/SubscribeForm.astro";
 
 interface Heading {
   level: number;
@@ -61,33 +62,35 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 >
   <main>
     <article>
-      {hero && (
-        <div class="hero-image">
-          {typeof hero === "object" ? (
-            <Image
-              src={hero}
-              alt={title}
-              format="webp"
-              width={1200}
-              height={630}
-              fit="cover"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          ) : (
-            <img
-              src={hero}
-              alt={title}
-              width="1200"
-              height="630"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          )}
-        </div>
-      )}
+      {
+        hero && (
+          <div class="hero-image">
+            {typeof hero === "object" ? (
+              <Image
+                src={hero}
+                alt={title}
+                format="webp"
+                width={1200}
+                height={630}
+                fit="cover"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            ) : (
+              <img
+                src={hero}
+                alt={title}
+                width="1200"
+                height="630"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            )}
+          </div>
+        )
+      }
 
       <div class="prose">
         <div class="title">
@@ -95,11 +98,13 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
             <FormattedDate date={pubDate} />
             {category && ` · ${category}`}
             {rt && ` · ${rt} min read`}
-            {updatedDate && (
-              <div class="last-updated-on">
-                Last updated on <FormattedDate date={updatedDate} />
-              </div>
-            )}
+            {
+              updatedDate && (
+                <div class="last-updated-on">
+                  Last updated on <FormattedDate date={updatedDate} />
+                </div>
+              )
+            }
           </div>
           <h1>{title}</h1>
         </div>
@@ -117,28 +122,17 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
         <ShareButtons title={title} url={canonicalURL} />
 
         <!-- Newsletter CTA -->
-        <section id="subscribe" class="signup">
-          <h2>Enjoyed this post?</h2>
-          <p class="subtext">Get my next essays in your inbox:</p>
-          <div class="signup-box" aria-label="Newsletter signup form">
-            <iframe
-              src="https://avoidboringpeople.substack.com/embed"
-              width="100%"
-              height="150"
-              frameborder="0"
-              scrolling="no"
-              title="Newsletter signup form"
-            ></iframe>
-          </div>
-        </section>
+        <SubscribeForm compact={false} />
 
         <!-- Related posts -->
-        {related.length > 0 && (
-          <section class="related-posts">
-            <h2>Related Posts</h2>
-            <PostList posts={related} variant="list" />
-          </section>
-        )}
+        {
+          related.length > 0 && (
+            <section class="related-posts">
+              <h2>Related Posts</h2>
+              <PostList posts={related} variant="list" />
+            </section>
+          )
+        }
       </div>
     </article>
   </main>

@@ -4,6 +4,7 @@ import PostList from "../components/PostList.astro";
 import { getCollection } from "astro:content";
 import { SITE_TITLE } from "../consts";
 import { enrichPost } from "../utils/text"; // ✅ import enrichment
+import SubscribeForm from "../components/SubscribeForm.astro";
 
 const allPosts = await getCollection("blog");
 
@@ -41,7 +42,8 @@ const featured = allPosts
       />
       <span class="tooltip">
         I chose the name because of the double meaning. People always default to
-        one interpretation of it, but I promise I'm not as intimidating as I sound.
+        one interpretation of it, but I promise I'm not as intimidating as I
+        sound.
       </span>
     </div>
 
@@ -65,21 +67,10 @@ const featured = allPosts
 
   <!-- Newsletter Signup -->
   <section id="subscribe" class="signup">
-    <h2>Join the Newsletter</h2>
-    <p class="subtext">
-      Irregular essays on finance, tech, and life. Delivered directly to your
-      inbox.
-    </p>
-    <div class="signup-box" aria-label="Newsletter signup form">
-      <iframe
-        src="https://avoidboringpeople.substack.com/embed"
-        width="100%"
-        height="150"
-        frameborder="0"
-        scrolling="no"
-        title="Newsletter signup form"></iframe>
-    </div>
-    <p class="trust-text">Free. No spam. Unsubscribe anytime.</p>
+    <SubscribeForm
+      title="Join the Newsletter"
+      subtext="Irregular essays on finance, tech, and life. Delivered directly to your inbox."
+    />
   </section>
 
   <!-- Featured Logos -->

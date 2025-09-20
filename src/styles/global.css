@@ -10,8 +10,11 @@
   --color-bg: #ffffff;
   --color-text: #222222;
   --color-link: #0066cc;
+  --color-link-hover: #005bb5; 
   --color-border: #eeeeee;
   --color-quote: #f9f9f9;
+  --color-success: #1a7f37; /* accessible green */
+  --color-error:   #d93025; /* accessible red */
 
   /* Text semantic colors */
   --color-text-muted: #555;   /* subtext, summaries */
@@ -60,8 +63,11 @@
   --color-bg: #111111;
   --color-text: #f5f5f5;
   --color-link: #4ea1ff;
+  --color-link-hover: #80c2ff;
   --color-border: #333333;
   --color-quote: #1a1a1a;
+  --color-success: #4cc38a;
+  --color-error:   #ff6b6b;
 
   --color-border-soft: rgba(255, 255, 255, 0.12);
 }
@@ -375,21 +381,84 @@ img.center { display: block; margin: var(--space-lg) auto; }
 @media (min-width: 768px) { .logo-row img { height: 36px; } }
 
 /* -------------------------------
-   18. Newsletter Styles
+   18. Newsletter Sign Up Styles
 ---------------------------------*/
-.signup { margin: var(--space-xl) 0; text-align: center; }
-.signup-box {
-  background: var(--color-bg); border: 1px solid var(--color-border-soft);
-  border-radius: var(--radius-xl); box-shadow: var(--shadow-md);
-  max-width: 600px; margin: var(--space-md) auto; overflow: hidden; padding: var(--space-md);
+.signup { 
+  margin: var(--space-xl) 0; 
+  text-align: center; 
 }
-.signup h2 { font-size: var(--text-xl); font-weight: 600; margin-bottom: var(--space-sm); }
-.signup p.subtext { color: var(--color-text-muted); margin-bottom: var(--space-md); font-size: var(--text-base); }
-.signup iframe { display: block; width: 100%; border: none; border-radius: var(--radius-lg); min-height: 160px; }
-.trust-text { font-size: var(--text-sm); color: var(--color-text-meta); margin-top: var(--space-sm); }
+.signup h2 { 
+  font-size: var(--text-xl); 
+  font-weight: 600; 
+  margin-bottom: var(--space-sm); 
+}
+.signup p.subtext { 
+  color: var(--color-text-muted); 
+  margin-bottom: var(--space-md); 
+  font-size: var(--text-base); 
+}
+
+/* New: subscribe box, inputs, button */
+.signup .signup-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--space-sm);
+  background: var(--color-bg);
+  /* border: 1px solid var(--color-border-soft); */
+  border-radius: var(--radius-lg);
+  /* box-shadow: var(--shadow-sm); */
+}
+.signup .signup-box input[type="email"] {
+  flex: 1;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+.signup .signup-box button {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-link);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.signup .signup-box button:hover {
+  background: var(--color-link-hover);
+}
+
+/* Feedback message */
+.signup .subscribe-message {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+.signup .subscribe-message.success { color: var(--color-success); font-weight: 500; }
+.signup .subscribe-message.error   { color: var(--color-error);   font-weight: 500; }
+
+/* Keep unrelated rules */
+.trust-text { 
+  font-size: var(--text-sm); 
+  color: var(--color-text-meta); 
+  margin-top: var(--space-sm); 
+}
 .about-name {
-  margin-top: var(--space-xl); max-width: 600px; margin-left: auto; margin-right: auto;
-  color: var(--color-text-meta); font-size: var(--text-base-sm); text-align: center; font-style: italic;
+  margin-top: var(--space-xl); 
+  max-width: 600px; 
+  margin-left: auto; 
+  margin-right: auto;
+  color: var(--color-text-meta); 
+  font-size: var(--text-base-sm); 
+  text-align: center; 
+  font-style: italic;
 }
 
 /* -------------------------------

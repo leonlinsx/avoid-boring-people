@@ -10,5 +10,5 @@ Replace one-off values with variables. -->
 <!-- 9. related posts left aligned not center -->
 <!-- 10. easter egg mouse hover for longer befor reveal -->
 <!-- - share button for socials -->
-- use tags and new page for tag filters
+<!-- - use tags and new page for tag filters -->
 - dark mode toggle

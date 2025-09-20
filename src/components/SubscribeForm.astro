@@ -1,0 +1,102 @@
+---
+interface Props {
+  compact?: boolean;
+  title?: string;
+  subtext?: string;
+  trustText?: string;
+}
+
+const {
+  compact = false,
+  title = compact ? "" : "Enjoyed this post?",
+  subtext = compact ? "" : "Get my next essays in your inbox:",
+  trustText = "",
+} = Astro.props;
+---
+
+<section class="signup">
+  {!compact && title && <h2>{title}</h2>}
+  {!compact && subtext && <p class="subtext">{subtext}</p>}
+
+  <form
+    id="substack-form"
+    class:list={["signup-box", compact && "compact"]}
+    action="https://avoidboringpeople.substack.com/api/v1/free"
+    method="post"
+    target="_blank"
+    rel="noopener"
+  >
+    <input type="hidden" id="first_url" name="first_url" value="" />
+    <input
+      type="hidden"
+      name="source"
+      value={compact ? "blog-inline" : "blog-footer"}
+    />
+
+    <label for="email" class="sr-only">Email address</label>
+    <input
+      id="email"
+      type="email"
+      name="email"
+      placeholder="Enter your email"
+      required
+    />
+    <button type="submit" id="subscribe-btn">Subscribe</button>
+  </form>
+
+  <p id="subscribe-message" class="subscribe-message" aria-live="polite"></p>
+
+  {!compact && trustText && <p class="trust-text">{trustText}</p>}
+</section>
+
+<script is:inline>
+  const form = document.getElementById("substack-form");
+  const msg = document.getElementById("subscribe-message");
+  const firstUrl = document.getElementById("first_url");
+  firstUrl.value = location.href;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const isCompact = form.classList.contains("compact");
+    msg.textContent = isCompact
+      ? "✅ Check inbox!"
+      : "✅ Thanks! Check your inbox to confirm.";
+    msg.className = "subscribe-message success";
+
+    setTimeout(() => {
+      form.submit();
+    }, 1200);
+  });
+</script>
+
+<style>
+  /* Compact adjustments only */
+  .signup-box.compact {
+    padding: var(--space-xs) var(--space-sm);
+    max-width: 360px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+  .signup-box.compact input {
+    font-size: var(--text-sm);
+    padding: var(--space-xs) var(--space-sm);
+  }
+  .signup-box.compact button {
+    font-size: var(--text-sm);
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  /* Accessibility helper */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+</style>
