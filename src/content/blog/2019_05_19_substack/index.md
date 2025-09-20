@@ -7,7 +7,7 @@ tags: ["newsletter", "writing"]
 heroImage: "./s_8.webp"
 ---
 
-I've [previously described](https://www.leonlinsx.com/why-i-write/ "why write") my reasons for starting a public blog. In addition to this website, I also recently signed up for Substack to publish my [monthly newsletters](https://avoidboringpeople.substack.com/ "substack"). Before Substack, I'd been directly emailing my distribution list.
+I've [previously described](https://leonlins.com/writing/2019_03_10_write/ "why write") my reasons for starting a public blog. In addition to this website, I also recently signed up for Substack to publish my [monthly newsletters](https://avoidboringpeople.substack.com/ "substack"). Before Substack, I'd been directly emailing my distribution list.
 
 In this post I go over:
 

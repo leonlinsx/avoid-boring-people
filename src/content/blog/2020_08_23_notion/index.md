@@ -222,7 +222,7 @@ We've covered some problems, let's look at some ideas. I'll split these into com
 
 If templates are critical for Notion now, the company should ensure their quality. Some tactics:
 
-- Have a rating system, though these are subject to a lot of caveats, per my [older article](https://www.leonlinsx.com/fluctuat-nec-mergitur/ "rating")
+- Have a rating system, though these are subject to a lot of caveats
 - Host a template competition like [Kaggle](https://www.kaggle.com/ "Kaggle") or [ProductHunt](https://www.producthunt.com/ "PH") where top templates get rewarded
 - Buy out the best templates online and make them available to everyone
 

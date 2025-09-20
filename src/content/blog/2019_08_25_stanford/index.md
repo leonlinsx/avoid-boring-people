@@ -7,7 +7,7 @@ tags: ["behaviour", "science",]
 heroImage: "./s_1.webp"
 ---
 
-[I've previously written about the replicability crisis in science](https://www.leonlinsx.com/replicability-crisis/ "replicability"). I recently learnt about criticisms of the infamous [Stanford Prison Experiment](https://en.wikipedia.org/wiki/Stanford_prison_experiment "wiki") that I hadn't seen when I was first reading about it. The criticisms invalidate the conclusions of the experiment for me, and I'll highlight excerpts from [this paper by Thibault Le Texier](https://psyarxiv.com/mjhnp/ "paper") below:
+[I've previously written about the replicability crisis in science](https://leonlins.com/writing/2019_02_23_replicability/ "replicability"). I recently learnt about criticisms of the infamous [Stanford Prison Experiment](https://en.wikipedia.org/wiki/Stanford_prison_experiment "wiki") that I hadn't seen when I was first reading about it. The criticisms invalidate the conclusions of the experiment for me, and I'll highlight excerpts from [this paper by Thibault Le Texier](https://psyarxiv.com/mjhnp/ "paper") below:
 
 > Based on the first detailed published account of the experiment (Zimbardo, 1972a), Erich Fromm pointed out (1) the unethical nature of the harsh conditions imposed on the prisoners, (2) the fact that the personality pretests administered to the volunteers might not have detected a predisposition among some of the subjects for sadistic or masochistic behavior, and (3) the confusing situation for participants created by mixing realistic prison elements with unrealistic ones.
 
@@ -31,7 +31,7 @@ This also explains why the guards were so willing to go along. If the guards bel
 
 > During the debriefing that took place on the last day of the experiment, Eshleman confessed for example to Jaffe: “I thought it would be better for the study if I presented what I thought to be a realistic relationship between guard and prisoner. \[...\] \[T\]hroughout the entire experiment I was an actor, and I was hamming it up. \[...\] I was role playing.” (Eshleman, 1971a, p.2) Terry Barnett, the second most zealous guard, explained his involvement in the same terms.
 
-It seems like the conclusion to draw from this is not that power corrupts, but instead that people will act in the way they feel incentivised to do so. [As I've always written, incentives matter!](https://www.leonlinsx.com/about-me/ "incentives") In this case, the prison guards acting abusive to get the results they thought were needed, the prisoners staying and acting their part to get paid, and the researchers making the experiment seem more dramatic than it actually was.
+It seems like the conclusion to draw from this is not that power corrupts, but instead that people will act in the way they feel incentivised to do so. [As I've always written, incentives matter!](https://leonlins.com/about "incentives") In this case, the prison guards acting abusive to get the results they thought were needed, the prisoners staying and acting their part to get paid, and the researchers making the experiment seem more dramatic than it actually was.
 
 Replicability has always been an issue in science, and I think we'll see more such cases of 'famous' old studies that were just conducted badly, and whose results should be questioned. It's a shame that there's less focus on confirming old studies vs publishing your own new one, again due to incentive misalignment in the scientific field. As the author of the paper, Thibault, notes:
 

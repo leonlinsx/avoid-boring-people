@@ -35,7 +35,7 @@ If conventional thought concludes that the US needs to bring in more capital to 
 
 ### Chinese influencer campaigns
 
-[I went to a tech conference recently](https://www.leonlinsx.com/Button-TAP-summit/ "TAP"), and it seems people have finally realised they should be copying Chinese app product features, rather than the other way around. We're now in an age in which new product features are as likely, if not more so, to come from China compared to the rest of world. Superapps, live streaming gifting, TikTok are just a few examples. [China Influencer Update](https://mailchi.mp/11ce91866af6/china-influencer-update-is-back "China") higlighted some recent case studies on Chinese influencers:
+I went to a tech conference recently, and it seems people have finally realised they should be copying Chinese app product features, rather than the other way around. We're now in an age in which new product features are as likely, if not more so, to come from China compared to the rest of world. Superapps, live streaming gifting, TikTok are just a few examples. [China Influencer Update](https://mailchi.mp/11ce91866af6/china-influencer-update-is-back "China") higlighted some recent case studies on Chinese influencers:
 
 > Essentially longtail KOLs (Key Opinion Leaders), KOCs (Key Opinion Consumers) are ordinary internet users who often leave reviews or share their opinions about products. \[...\] with KOCs feeling more peer to peer while KOLs more like an expert talking to a group of people. \[...\] As KOL costs rise and consumer’s desire for authenticity grows, brands (particularly those with lower budgets) are choosing to use private traffic and KOCs to promote their products.
 

@@ -29,7 +29,7 @@ He references [Philip Tetlock](https://www.sas.upenn.edu/tetlock/ "tetlock") and
 > I have to admit that over 30 years of research, I often think the correct answer to the question I’m asking you \[in a survey\] is, “I don’t know.” And people give me an answer \[other than “I don’t know”\]. 
 > How do you get people to say, “I don’t know”? I don’t know.
 
-I [try to avoid this](https://www.leonlinsx.com/about-me/ "About Me"), with debatable success. I find that people seem to lose confidence in you when you say you don't know, which is sad. This applies to both situations in which I say "I don't know but can find out" and "I don't know but that's un-knowable". If anyone has advice here I'm interested!
+I [try to avoid this](https://leonlins.com/about "About Me"), with debatable success. I find that people seem to lose confidence in you when you say you don't know, which is sad. This applies to both situations in which I say "I don't know but can find out" and "I don't know but that's un-knowable". If anyone has advice here I'm interested!
 
 It's up to you whether you think this attitude is worth adopting. I personally think too many people pretend they know about subjects they don't for fear of seeming dumb. On a related note, you start to notice how many errors there are when news covers a topic you actually know about. This is related to the [Gell-Mann amnesia effect](https://en.wikipedia.org/wiki/Gell-Mann_amnesia_effect "wiki") though I'm unsure how scientifically valid this has been proven.
 

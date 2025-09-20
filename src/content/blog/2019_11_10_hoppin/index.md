@@ -174,7 +174,7 @@ I loved the experience spending a day with someone working at a marketplace comp
 [^2]: I forgot to take screenshots during my actual booking, so these are mostly a re-creation
 [^3]: Might have been a bug during my booking as I didn't get my receipt. Hoppin told me they're looking into it.
 [^4]: I've edited out details in the agenda for confidentiality
-[^5]: You can read more about her background [here](https://www.swaay.com/how-this-co-founder-is-building-the-airbnb-for-work "swaay"). And obviously you can read more about me [here](https://www.leonlinsx.com/about-me/ "me")
+[^5]: You can read more about her background [here](https://www.swaay.com/how-this-co-founder-is-building-the-airbnb-for-work "swaay"). And obviously you can read more about me [here](https://leonlins.com/about "me")
 [^6]: The investor also didn't get too in the weeds about how to operate the business, which is in my opinion a sign of a good investor. Unlike someone who might offer advice on where to combine parts of your booking flow.
 [^7]: a16z just invested in [Lunchclub](https://techcrunch.com/2019/09/18/lunchclub-raises-4m-from-a16z-for-its-ai-warm-intro-service/ "lunch") for example
 [^8]: Not mentioning these for confidentiality since they're still building them out

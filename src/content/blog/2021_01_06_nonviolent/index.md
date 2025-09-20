@@ -26,7 +26,7 @@ The NVC process has four main steps, focused around making people feel less thre
 
 **First step:** we need to separate the observation of a fact from the evaluation of a person. When we include an evaluation, it usually sounds like criticism. When it sounds like criticism, people start tuning out. For example, saying "Jerry hasn't scored in 10 games" is an observation, whereas "Jerry is a poor player" is an evaluation.
 
-If you recall my summary of [Thanks for the feedback](https://www.leonlinsx.com/thanks-for-the-feedback/ "feedback"), a book on how to get better at taking feedback, this should sound familiar. Getting evaluated can easily result in self-doubt about your competence. For example, someone making a suggestion at work might make you over-think and believe they're saying you're incompetent at your job.
+If you recall my summary of [Thanks for the feedback](https://leonlins.com/writing/2020_01_11_feedback/ "feedback"), a book on how to get better at taking feedback, this should sound familiar. Getting evaluated can easily result in self-doubt about your competence. For example, someone making a suggestion at work might make you over-think and believe they're saying you're incompetent at your job.
 
 And you've probably experienced this before - once you feel you've been criticised, you're not receptive to any other comments, making that entire conversation pretty pointless. It's like being ["on tilt"](https://en.wikipedia.org/wiki/Tilt_(poker) "tilt") when in poker and therefore making bad decisions.  
 

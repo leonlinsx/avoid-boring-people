@@ -119,7 +119,7 @@ We like to think we ourselves well; our likes, dislikes, and biases. After all, 
 
 > Our results show that the operational validities of FFM traits based on observer ratings are higher than those based on self-report ratings.
 
-FFM in the above refers to the [Five Factor Model of personality](https://www.psychologistworld.com/personality/five-factor-model-big-five-personality "FFM"), which is [usually better regarded than the popular MBTI test.](https://www.leonlinsx.com/Moloch-judger-of-social-credit/ "MBTI") The meta-analysis claims that others rate our personality more accurately than we rate ourselves. I can't access the full paper, but there's a similar [older study](https://home.ubalt.edu/NTYGMITC/641/barrick%20mount%20strauss%20big%20five%20obs%20ratings%20JAP%2094.pdf "old test") making the similar claim that other people's ratings of you have better validity.
+FFM in the above refers to the [Five Factor Model of personality](https://www.psychologistworld.com/personality/five-factor-model-big-five-personality "FFM"), which is [usually better regarded than the popular MBTI test.](https://leonlins.com/writing/2019_03_03_moloch/ "MBTI") The meta-analysis claims that others rate our personality more accurately than we rate ourselves. I can't access the full paper, but there's a similar [older study](https://home.ubalt.edu/NTYGMITC/641/barrick%20mount%20strauss%20big%20five%20obs%20ratings%20JAP%2094.pdf "old test") making the similar claim that other people's ratings of you have better validity.
 
 The Atlantic article goes on:
 
@@ -154,7 +154,7 @@ Knowing that we don't know ourselves well is the first step. Unfortunately, just
     
     > Social Credit Is Becoming a Reality in China
     
-    I agree with the first (and have for a while), but think the other three trends might be over exaggerated. [I've written about social credit misunderstandings before](https://www.leonlinsx.com/Moloch-judger-of-social-credit/ "social")
+    I agree with the first (and have for a while), but think the other three trends might be over exaggerated. [I've written about social credit misunderstandings before](https://leonlins.com/writing/2019_03_03_moloch/ "social")
 5. [Wait but why writes about why we do what we do](https://waitbutwhy.com/2019/08/fire-light.html "wait but why"). If you like this topic, [Behave](https://www.goodreads.com/book/show/31170723-behave "Behave") is a more comprehensive take on it.
 
 **Footnotes**

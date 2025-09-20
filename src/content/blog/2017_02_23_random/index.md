@@ -32,7 +32,7 @@ I'm not sure how the math works, but I think the broader point is more important
 > No precise game plan ahead of time on what to do in event of losses.  
 > Absence of critical thinking when revising their stance or denial
 
-This is why I like [process and lists](https://www.leonlinsx.com/about-me/ "About Me"). Having a plan and being able to revise it critically is important.
+This is why I like [process and lists](https://leonlins.com/about "About Me"). Having a plan and being able to revise it critically is important.
 
 > The longer you go without experiencing a rare event, the more vulnerable you will be to it
 

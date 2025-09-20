@@ -55,7 +55,7 @@ We've established the case for demand, and the case for supply, seeing that ther
 
 To better understand the platform economics, I'd want to look at three things [^7]:
 
-- The [take rate](https://www.leonlinsx.com/additional-marketplace-rake-factors/ "take"), or fee that Cameo charges
+- The [take rate](https://leonlins.com/writing/2019_04_27_rake/ "take"), or fee that Cameo charges
 - The likely cost structure of Cameo
 - Total addressable market size (TAM)
 

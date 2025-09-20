@@ -25,7 +25,7 @@ In other words, Shannon published not just one but two foundational papers for t
 
 > There are plenty of mathematicians and engineers who write great papers. There are fewer of them who, like Shannon, are also jugglers, unicyclists, gadgeteers, first-rate chess players, codebreakers, expert stock-pickers, and amateur poets.
 
-He was intellectually curious, and adopted a similar mindset discussed in my other post [here](https://www.leonlinsx.com/specialists-vs-generalists/ "spec vs general")
+He was intellectually curious, and adopted a similar mindset discussed in my other post [here](https://leonlins.com/writing/2017_12_01_specialist/ "spec vs general")
 
 > But distractions are a permanent feature of life, in any era, and Shannon shows us that shutting them out isn’t just a matter of achieving random bursts of focus. It’s about consciously designing one’s life and work habits to minimize them.
 

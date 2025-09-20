@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://leonlinsx.com/sitemap-index.xml
+Sitemap: https://leonlins.com/sitemap-index.xml

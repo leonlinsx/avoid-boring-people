@@ -21,7 +21,7 @@ First up is art history. I started spending more time learning about art this ye
 - I've always been curious about art, and believe it still has relevance today 
 - Art is much better when you have context for the piece
 
-I found [Smarthistory](https://smarthistory.org/) to be an approachable yet comprehensive website, and have been working through many of the pages. Reading about the intentions behind famous pieces has made understanding the works easier and more enjoyable. For example, finally understanding what Picasso's about [in an earlier article I wrote](https://www.leonlinsx.com/picasso/ "picasso") 
+I found [Smarthistory](https://smarthistory.org/) to be an approachable yet comprehensive website, and have been working through many of the pages. Reading about the intentions behind famous pieces has made understanding the works easier and more enjoyable. For example, finally understanding what Picasso's about [in an earlier article I wrote](https://leonlins.com/writing/2020_04_08_picasso/ "picasso") 
 
 With that in mind, let's take a look at three pieces with a similar theme, and see how the context of history can give us a better understanding of what the artist was trying to do.
 

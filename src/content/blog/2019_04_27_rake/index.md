@@ -8,7 +8,9 @@ heroImage: "./t_1.webp"
 ---
 
 
-I'm fascinated by marketplaces and network effects since so much of the internet is built on companies succeeding in them e.g. Facebook's network effects, Amazon's 3rd party marketplace, Google's ad marketplace. There are many great writers on these topics, some of which I've outlined under the tech section on my [resources page](https://www.leonlinsx.com/resources/ "resources"). This post details my thoughts on a marketplace rake factor fundamental analysis I saw Josh Breinlinger write about [here.](http://acrowdedspace.com/post/172383900012/marketplace-rake-factors "rake factors")
+I'm fascinated by marketplaces and network effects since so much of the internet is built on companies succeeding in them e.g. Facebook's network effects, Amazon's 3rd party marketplace, Google's ad marketplace. 
+
+This post details my thoughts on a marketplace rake factor fundamental analysis I saw Josh Breinlinger write about [here.](http://acrowdedspace.com/post/172383900012/marketplace-rake-factors "rake factors")
 
 I liked Josh’s rake factors article because it was the first I’ve seen that attempts to build up fundamental reasons for why a rake is set at a certain percentage, rather than just ‘because comps are at that rake’. Some (many?) markets are indeed just priced based on comps, but I still like having a framework.
  

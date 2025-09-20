@@ -211,7 +211,7 @@ In all the important decisions we make, we should:
 
 2. improve on our process to choose between them
 
-On the first, explicitly writing out what you're giving up, such as with a [decision journal,](https://fs.blog/2014/02/decision-journal/ "FS") can be helpful. So can doing [premortems](https://www.leonlinsx.com/premortems/ "pre"). The act of fully thinking through the scenario will usually highlight concerns you were only vaguely aware of.
+On the first, explicitly writing out what you're giving up, such as with a [decision journal,](https://fs.blog/2014/02/decision-journal/ "FS") can be helpful. So can doing [premortems](https://leonlins.com/writing/2019_11_23_premortem/ "pre"). The act of fully thinking through the scenario will usually highlight concerns you were only vaguely aware of.
 
 Another way would be to get advice from others, particularly those that have had a similar decision to make in a similar context. They'll be able to flag key concerns or regrets they had. Such advice is highly variable in nature though, and could range from useful to downright harmful. What can be risky for someone might be safe for another.
 

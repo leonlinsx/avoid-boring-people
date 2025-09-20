@@ -17,13 +17,13 @@ Some quotes below on why Farnam Street thinks that way:
 
 > Specialize most of the time, but spend time understanding the broader ideas of the world
 
-In other words, Farnam Street is advocating for being a "T shaped" generalist, where you're great at at least one thing, and then have broad knowledge of other areas. It's similar to the [hedgehog vs fox forecasting that Philip Tetlock has written about](https://www.leonlinsx.com/improve-forecasts-communists/ "forecast")
+In other words, Farnam Street is advocating for being a "T shaped" generalist, where you're great at at least one thing, and then have broad knowledge of other areas. It's similar to the hedgehog vs fox forecasting that Philip Tetlock has written about.
 
 I recall reading advice before about how **you should aim to be great in two or more skills.** Can't remember where it was from [^1], but the reasoning was that there are plenty of people who are experts in one, but having a combination makes you much more desirable. e.g. finance + communication vs just finance. 
 
 There's also the thought that **it's nearly impossible to #1 in an area, but being #50 in two or more is achievable with less effort given diminishing marginal returns.** Maybe not the case for some of you but something to think about.
 
-While others might also say that **being exposed to more areas will inspire creativity in your core competencies,** like how [Claude Shannon came up with information theory by connecting two areas previously thought separate.](https://www.leonlinsx.com/who-is-claude-shannon/ "shannon")
+While others might also say that **being exposed to more areas will inspire creativity in your core competencies,** like how [Claude Shannon came up with information theory by connecting two areas previously thought separate.](https://leonlins.com/writing/2017_07_20_claude/ "shannon")
 
 And personally, I just think **being curious and learning about random things is fun,** which is why I love [this comic](https://xkcd.com/1053/ "xkcd comic"). 
 

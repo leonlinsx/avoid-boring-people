@@ -72,7 +72,7 @@ I agree with Jana's point about trying rather than just thinking, though of cour
     > In addition to AI’s significance for economic growth and military security, the Chinese government sees AI as a tool to improve social governance, which makes public security applications a large driver of China’s AI development
     
     > It is perfectly reasonable to highlight differences in Chinese notions of AI ethics or the degree to which privacy is important to Chinese consumers, but it is absolutely dehumanizing to say Chinese people don’t care about privacy
-8. [Hong Kong share pledges](https://www.leonlinsx.com/hong-kong-pledges/ "pledges")
+8. [Hong Kong share pledges](https://leonlins.com/writing/2019_04_14_stock/ "pledges")
 
 [^1]: I can't recall the source of this anecdote and hope it wasn't something one of you told me... either way I'm assuming you've spotted the problem with this time saving 'hack'?
 [^2]: Nine word summary of Sapiens?
