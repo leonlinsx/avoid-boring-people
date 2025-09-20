@@ -16,3 +16,4 @@ Replace one-off values with variables. -->
 <!-- - related post on articles styling spacing too wide -->
 <!-- - related posts image vs title alignment -->
 - automated posting
+<!-- - search bar icon display floating outside of box -->

@@ -263,11 +263,17 @@ img.center { display: block; margin: var(--space-lg) auto; }
 .mobile-search.is-open .search-bar-mobile { display: flex; width: 100%; animation: slideDown 0.25s ease; }
 
 .search-bar-desktop {
-  display: flex; align-items: center; background: var(--color-bg);
-  border: 1.5px solid var(--color-border); border-radius: var(--radius-pill);
-  padding: 0.25rem 0.75rem 0.25rem 1rem; box-shadow: var(--shadow-xs);
-  min-width: 220px; max-width: 280px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-xs);
+  min-width: 220px;
+  max-width: 280px;
+
+  /* New: remove vertical padding so children define height */
+  padding: 0 0.25rem 0 1rem;
 }
 .search-bar-desktop:focus-within { border-color: var(--color-link); box-shadow: 0 2px 8px rgba(0,102,204,0.08); }
 
@@ -278,18 +284,30 @@ img.center { display: block; margin: var(--space-lg) auto; }
 }
 
 .search-input {
-  border: none; outline: none; background: transparent;
-  font-size: var(--text-base); flex: 1; padding: 0.4rem 0.2rem;
-  color: var(--color-text); font-family: inherit;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: var(--text-base);
+  flex: 1;
+  padding: 0.5rem 0; /* balanced vertical padding */
+  min-width: 0;      /* prevents overflow when flexing */
 }
 .search-input::placeholder { color: var(--color-text-subtle); opacity: 1; }
 
 .search-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
-  border: 0px solid var(--color-border); background: var(--color-bg);
-  color: var(--color-text); font-weight: 600; font-size: var(--text-base-sm);
-  line-height: 1; cursor: pointer; transition: background 0.2s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;   /* square padding so icon centers */
+  height: 100%;      /* match parent height */
+  aspect-ratio: 1;   /* keeps button square */
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;   /* adjust icon size */
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
 }
 .search-btn:hover { background: var(--color-accent-light, #f0f0f0); transform: translateY(-1px); }
 .search-btn:active { transform: translateY(0); opacity: 0.9; }
