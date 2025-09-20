@@ -38,6 +38,24 @@
   - Astro doesn’t use React’s diffing model, so `key` is not a valid prop.  
   - This eliminated the TS error: `Property 'key' does not exist on type 'IntrinsicAttributes & Props'` 
 
+### Linting & Code Quality
+- Fixed ESLint/Prettier integration:
+  - Migrated to `eslint.config.js` (flat config).
+  - Added Prettier plugin support with `plugin:prettier/recommended`.
+  - Configured `globals.browser` for browser APIs (document, window, etc.).
+- Resolved lint errors:
+  - Cleaned up structured data script in `BaseHead.astro`.
+  - Added type-safe handling for Astro image metadata.
+  - Removed unused variables and standardized single quotes.
+  - Suppressed false positives for `gtag`, `Response`, `fetch`, etc.
+
+### Link Checking
+- Integrated **Linkinator** with custom `link-report.js`:
+  - Generates `dist/link-report.html` summarizing broken links.
+  - Added timeout handling and flexible modes (`internal` vs `external`).
+  - Configurable via `.linkinatorrc.json` for whitelist/skip rules.
+- First full run found broken image paths (`heroImage` relative imports) that were due to dev env and some 403 external links.
+
 # 2025-09-18
 
 ## Table of Contents

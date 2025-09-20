@@ -17,7 +17,8 @@ Replace one-off values with variables. -->
 <!-- - related posts image vs title alignment -->
 - automated posting
 <!-- - search bar icon display floating outside of box -->
-- Enable Brotli/Gzip compression for text-based resources.
-- linkinator check
+<!-- - Enable Brotli/Gzip compression for text-based resources. -->
+<!-- - linkinator check -->
+<!-- - minify javascript check -->
 - font decision
 - colour scheme design decision
