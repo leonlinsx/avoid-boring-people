@@ -5,6 +5,7 @@ import tsParser from "@typescript-eslint/parser";
 import astroParser from "astro-eslint-parser";
 import pluginAstro from "eslint-plugin-astro";
 import prettierPlugin from "eslint-plugin-prettier";
+import globals from "globals";
 
 export default [
   // JavaScript rules
@@ -15,6 +16,9 @@ export default [
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
+      globals: {
+        ...globals.browser, // ✅ DOM types (document, fetch, etc.)
+      },
     },
     plugins: {
       "@typescript-eslint": tseslint,
@@ -35,8 +39,31 @@ export default [
       parserOptions: {
         parser: tsParser, // use TS parser inside <script>
       },
+      globals: {
+        ...globals.browser,
+        gtag: "readonly", // ✅ allow gtag without no-undef
+      },
     },
     plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      "prettier/prettier": "error",
+    },
+  },
+
+  // API routes (Node.js + Web APIs like Response, URLSearchParams)
+  {
+    files: ["src/pages/api/**/*.{js,ts}"],
+    languageOptions: {
+      parser: tsParser,
+      globals: {
+        ...globals.node,     // ✅ Node globals
+        ...globals.browser,  // ✅ fetch, Response, URLSearchParams
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tseslint,
       prettier: prettierPlugin,
     },
     rules: {

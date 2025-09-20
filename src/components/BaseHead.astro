@@ -1,10 +1,4 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
-// sets page-level metadata like <title>, <meta description>, Open Graph tags, preload links, favicons, etc.
-// you need it because every page (index, /writing, /about, /404, etc.) should share consistent metadata logic, 
-// while still allowing you to pass unique values
-
 import "../styles/global.css";
 import {
   SITE_TITLE,
@@ -16,13 +10,13 @@ import {
 interface Props {
   title: string;
   description?: string;
-  image?: string | { src: string }; // support string or image object
+  image?: string | { src: string };
 }
 
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 const { title, description, image } = Astro.props;
 
-// Resolve OG image safely with URL constructor
+// ✅ Resolve OG image safely
 let ogImage: string;
 if (image) {
   if (typeof image === "string") {
@@ -39,6 +33,9 @@ if (image) {
 }
 
 const metaDescription = description || SITE_DESCRIPTION;
+
+// ✅ Absolute URL for organization logo
+const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
 ---
 
 <!-- Global Metadata -->
@@ -56,8 +53,8 @@ const metaDescription = description || SITE_DESCRIPTION;
 
 <!-- Favicons -->
 <link rel="icon" href="/favicon.ico" sizes="any" />
-<link rel="icon" href="/logos/substack_logo.png" type="image/png" sizes="192x192" />
-<link rel="apple-touch-icon" href="/logos/substack_logo.png" />
+<link rel="icon" href={orgLogo} type="image/webp" sizes="192x192" />
+<link rel="apple-touch-icon" href={orgLogo} />
 
 <!-- Sitemap & RSS -->
 <link rel="sitemap" href={new URL("sitemap-index.xml", SITE_URL).toString()} />
@@ -97,10 +94,10 @@ const metaDescription = description || SITE_DESCRIPTION;
 
 <!-- Structured Data: Organization Logo -->
 <script is:inline type="application/ld+json">
-{JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "url": SITE_URL,
-  "logo": new URL("/logos/substack_logo.png", SITE_URL).toString()
-})}
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": SITE_URL,
+    "logo": new URL("/logos/substack_logo.webp", SITE_URL).toString()
+  })}
 </script>
