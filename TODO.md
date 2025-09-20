@@ -6,9 +6,12 @@
 Replace one-off values with variables. -->
 <!-- 6. table of contents -->
 <!-- 7. pagination ellipses too high -->
-8. substack embed in blogpost design 
+<!-- 8. substack embed in blogpost design  -->
 <!-- 9. related posts left aligned not center -->
 <!-- 10. easter egg mouse hover for longer befor reveal -->
 <!-- - share button for socials -->
 <!-- - use tags and new page for tag filters -->
 - dark mode toggle
+- share mobile close on tap fix
+- related post on articles styling spacing too wide
+- automated posting

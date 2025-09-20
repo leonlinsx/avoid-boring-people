@@ -98,6 +98,7 @@ const encodedURL = encodeURIComponent(url);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    const dropdown = document.querySelector(".dropdown");
     const toggle = document.querySelector(".dropdown-toggle");
     const menu = document.querySelector(".dropdown-menu");
 
@@ -111,10 +112,22 @@ const encodedURL = encodeURIComponent(url);
 
     // Mobile dropdown toggle
     if (toggle && menu) {
-      toggle.addEventListener("click", () => {
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent immediate close
         menu.classList.toggle("open");
       });
     }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        menu?.classList.contains("open") &&
+        dropdown &&
+        !dropdown.contains(e.target)
+      ) {
+        menu.classList.remove("open");
+      }
+    });
   });
 </script>
 
@@ -153,7 +166,9 @@ const encodedURL = encodeURIComponent(url);
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    transition: background 0.2s, transform 0.1s;
+    transition:
+      background 0.2s,
+      transform 0.1s;
     box-shadow: var(--shadow-xs);
   }
   .share-links a:hover {
@@ -190,8 +205,8 @@ const encodedURL = encodeURIComponent(url);
     flex-direction: column;
     position: absolute;
     top: 110%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0; /* ✅ align neatly with button */
+    transform: none; /* ✅ remove the centering shift */
     background: var(--color-bg);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
