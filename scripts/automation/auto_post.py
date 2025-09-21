@@ -7,22 +7,18 @@ from publishers.twitter import get_twitter_client, post_single
 DRY_RUN = os.getenv("DRY_RUN", "true").lower() == "true"
 
 def main():
-    # Step 1: Fetch all posts
     posts = fetch_posts()
     if not posts:
         print("❌ No posts found.")
         return
 
-    # Step 2: Select next post
     next_post = select_next_post(posts)
     if not next_post:
         print("❌ No eligible post to publish.")
         return
 
-    # Step 3: Format text
     text = f"{next_post['title']}\n\n{next_post['url']}"
 
-    # Step 4: Dry-run or live post
     if DRY_RUN:
         print("📝 Dry-run (not posting):")
         print(text)
@@ -30,8 +26,16 @@ def main():
         client = get_twitter_client()
         post_single(client, next_post)
 
-    # Step 5: Update state
+    # Update state
     mark_posted(next_post)
+
+    # Write GitHub Actions Summary if available
+    summary_file = os.getenv("GITHUB_STEP_SUMMARY")
+    if summary_file:
+        with open(summary_file, "a") as f:
+            f.write(f"### 📝 Next Post (Dry Run)\n")
+            f.write(f"- **Title:** {next_post['title']}\n")
+            f.write(f"- **URL:** {next_post['url']}\n")
 
 if __name__ == "__main__":
     main()

@@ -56,6 +56,31 @@
   - Configurable via `.linkinatorrc.json` for whitelist/skip rules.
 - First full run found broken image paths (`heroImage` relative imports) that were due to dev env and some 403 external links.
 
+### 🚀 Performance Improvements Changes
+- **Optimized Largest Contentful Paint (LCP)**
+  - Removed duplicate `<link rel="preload">` for banner image.
+  - Added `fetchpriority="high"` + explicit `width`/`height` to `<img>` to prevent CLS.
+  - Identified `<h1>` as the true LCP element on mobile and optimized font loading.
+
+- **Improved Font Loading**
+  - Added `@font-face` for Atkinson font with `woff2` + `woff` fallback.
+  - Configured `font-display: swap` to render text immediately.
+  - Added `<link rel="preload">` for `atkinson-regular.woff2` in `BaseHead.astro`.
+
+- **Confirmed Text Compression**
+  - Verified Brotli (`content-encoding: br`) is active in production.
+  - No further action needed for gzip/Brotli.
+
+- **JavaScript Optimization Prep**
+  - Traced `lucide-astro` imports (icons) to ensure no global imports.
+  - Next step: switch to per-icon imports or inline SVGs to cut bundle size (~271 KB in dev).
+
+#### 📊 Expected Impact
+- Faster LCP and FCP on mobile (2–2.5s vs 3.6–4.0s).
+- Reduced font render delay (no blank text before Atkinson loads).
+- Compression confirmed → smaller network payloads for real users.
+- Clear path to reduce JS bundle size and main-thread work.
+
 # 2025-09-18
 
 ## Table of Contents
