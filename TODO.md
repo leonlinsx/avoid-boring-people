@@ -15,10 +15,12 @@ Replace one-off values with variables. -->
 <!-- - share mobile close on tap fix -->
 <!-- - related post on articles styling spacing too wide -->
 <!-- - related posts image vs title alignment -->
-- automated posting
+<!-- - automated posting twitter -->
 <!-- - search bar icon display floating outside of box -->
 <!-- - Enable Brotli/Gzip compression for text-based resources. -->
 <!-- - linkinator check -->
 <!-- - minify javascript check -->
+- twitter thread analytics tracking
+- automated posting threads
 - font decision
 - colour scheme design decision

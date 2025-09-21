@@ -1,6 +1,8 @@
 
 # 2025-09-20
 
+## Formatting Bug fixes
+
 ### Related Posts & PostList
 - Refactored `PostList.astro` to support a `compact` variant for Related Posts.  
 - Moved overrides for spacing, title, summary, and meta into the compact variant (instead of `BlogPost.astro`).  
@@ -56,7 +58,7 @@
   - Configurable via `.linkinatorrc.json` for whitelist/skip rules.
 - First full run found broken image paths (`heroImage` relative imports) that were due to dev env and some 403 external links.
 
-### 🚀 Performance Improvements Changes
+## 🚀 Performance Improvements Changes
 - **Optimized Largest Contentful Paint (LCP)**
   - Removed duplicate `<link rel="preload">` for banner image.
   - Added `fetchpriority="high"` + explicit `width`/`height` to `<img>` to prevent CLS.
@@ -75,11 +77,42 @@
   - Traced `lucide-astro` imports (icons) to ensure no global imports.
   - Next step: switch to per-icon imports or inline SVGs to cut bundle size (~271 KB in dev).
 
-#### 📊 Expected Impact
-- Faster LCP and FCP on mobile (2–2.5s vs 3.6–4.0s).
-- Reduced font render delay (no blank text before Atkinson loads).
-- Compression confirmed → smaller network payloads for real users.
-- Clear path to reduce JS bundle size and main-thread work.
+- **📊 Expected Impact**
+  - Faster LCP and FCP on mobile (2–2.5s vs 3.6–4.0s).
+  - Reduced font render delay (no blank text before Atkinson loads).
+  - Compression confirmed → smaller network payloads for real users.
+  - Clear path to reduce JS bundle size and main-thread work.
+
+## Automated posting
+
+- **Core scripts added** under `scripts/automation/`:
+  - `fetch_post.py` → fetch posts from RSS/search index  
+  - `state_manager.py` → track and rotate posts via `posted.json`  
+  - `auto_post.py` → main driver with support for:
+    - `POST_MODE=single|thread`
+    - `THREAD_MODE=bullets|narrative`
+    - `USE_LLM=true|false`
+    - `DRY_RUN=true|false`
+
+- **Thread formatter**  
+  - First tweet = title + teaser + link  
+  - Follow-ups = bullet or narrative summary  
+
+- **Summarizers**  
+  - `llm_summarizer.py`: integrated DeepSeek API, robust JSON parsing, fallback to stub  
+  - `summarizer_stub.py`: upgraded to TextRank (Sumy + NLTK), smart truncation (≤200 chars), content cleaner  
+
+- **Secrets & config**  
+  - `.env` locally, GitHub Secrets for API keys (Twitter + DeepSeek)  
+
+- **GitHub Actions**  
+  - Workflow `.github/workflows/autopost.yml` created  
+  - Runs daily at 14:00 UTC ±30min jitter  
+  - Installs from `requirements.txt`  
+  - Commits `posted.json` back to `main` to persist state  
+  - Successfully tested in dry-run mode  
+
+- **Flipped `DRY_RUN: 'false'` in `autopost.yml` to enable live posting**
 
 # 2025-09-18
 

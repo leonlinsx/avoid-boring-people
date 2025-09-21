@@ -1,4 +1,5 @@
 
+/* global Response */
 // src/pages/search-index.json.js
 import { getCollection } from "astro:content";
 
