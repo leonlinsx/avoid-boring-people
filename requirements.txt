@@ -6,3 +6,4 @@ sumy
 setuptools
 nltk
 requests
+atproto

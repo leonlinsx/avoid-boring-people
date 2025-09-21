@@ -2,7 +2,10 @@ import os
 from scripts.automation import fetch_posts, select_next_post, mark_posted
 from scripts.automation.publishers import (
     get_twitter_client, post_single, post_thread,
-    post_single_to_threads, post_thread_to_threads
+    post_single_to_threads, post_thread_to_threads,
+)
+from scripts.automation.publishers.bluesky import (
+    post_single_to_bluesky, post_thread_to_bluesky,
 )
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.summarizers import llm_summarize, stub_summarize
@@ -12,11 +15,19 @@ DRY_RUN = os.getenv("DRY_RUN", "true").lower() == "true"
 POST_MODE = os.getenv("POST_MODE", "single")  # "single" or "thread"
 THREAD_MODE = os.getenv("THREAD_MODE", "bullets")  # "bullets" or "narrative"
 USE_LLM = os.getenv("USE_LLM", "false").lower() == "true"
-PLATFORM = os.getenv("PLATFORM", "twitter")  # twitter | threads | both
+PLATFORM = os.getenv("PLATFORM", "twitter")  # twitter | threads | bluesky | both
+
+SUMMARY_FILE = os.getenv("GITHUB_STEP_SUMMARY")
 
 # Summarizer selection
 summarize_post = llm_summarize if USE_LLM else stub_summarize
 
+def log_summary(message: str):
+    """Write to GitHub Actions summary if available, else print."""
+    if SUMMARY_FILE:
+        with open(SUMMARY_FILE, "a") as f:
+            f.write(message + "\n")
+    print(message)
 
 def main():
     # Step 1: Fetch posts
@@ -33,7 +44,7 @@ def main():
 
     # Step 3: Build content
     if POST_MODE == "single":
-        tweets = [f"{next_post['title']}\n\n{next_post['url']}"]
+        posts_out = [f"{next_post['title']}\n\n{next_post['url']}"]
 
     elif POST_MODE == "thread":
         summary = summarize_post(next_post, mode=THREAD_MODE, max_points=4)
@@ -42,7 +53,7 @@ def main():
         print(f"Teaser: {teaser}")
         for i, p in enumerate(points, 1):
             print(f"{i}. {p}")
-        tweets = format_as_thread(next_post, summary, mode=THREAD_MODE, max_tweets=5)
+        posts_out = format_as_thread(next_post, summary, mode=THREAD_MODE, max_tweets=5)
 
     else:
         print(f"❌ Unknown POST_MODE: {POST_MODE}")
@@ -50,24 +61,50 @@ def main():
 
     # Step 4: Dispatch
     if "twitter" in PLATFORM:
-        if DRY_RUN:
-            print("\n📝 Dry-run (Twitter):")
-            for i, t in enumerate(tweets, 1):
-                print(f"\nTweet {i}:\n{t}")
-        else:
-            client = get_twitter_client()
-            (post_single if POST_MODE == "single" else post_thread)(client, tweets if POST_MODE == "thread" else next_post)
-
-    if "threads" in PLATFORM:
-        if DRY_RUN:
-            print("\n📝 Dry-run (Threads):")
-            for i, t in enumerate(tweets, 1):
-                print(f"\nPost {i}:\n{t}")
-        else:
-            if POST_MODE == "single":
-                post_single_to_threads(tweets[0])
+        try:
+            if DRY_RUN:
+                print("\n📝 Dry-run (Twitter):")
+                for i, t in enumerate(posts_out, 1):
+                    print(f"\nTweet {i}:\n{t}")
             else:
-                post_thread_to_threads(tweets)
+                client = get_twitter_client()
+                if POST_MODE == "single":
+                    post_single(client, next_post)
+                else:
+                    post_thread(client, posts_out)
+            log_summary("✅ Twitter posting completed")
+        except Exception as e:
+            log_summary(f"❌ Twitter posting failed: {e}")
+
+    if "bluesky" in PLATFORM:
+        try:
+            if DRY_RUN:
+                print("\n📝 Dry-run (Bluesky):")
+                for i, t in enumerate(posts_out, 1):
+                    print(f"\nSkeet {i}:\n{t}")
+            else:
+                if POST_MODE == "single":
+                    post_single_to_bluesky(posts_out[0])
+                else:
+                    post_thread_to_bluesky(posts_out)
+            log_summary("✅ Bluesky posting completed")
+        except Exception as e:
+            log_summary(f"❌ Bluesky posting failed: {e}")
+            
+    if "threads" in PLATFORM:
+        try:
+            if DRY_RUN:
+                print("\n📝 Dry-run (Threads):")
+                for i, t in enumerate(posts_out, 1):
+                    print(f"\nPost {i}:\n{t}")
+            else:
+                if POST_MODE == "single":
+                    post_single_to_threads(posts_out[0])
+                else:
+                    post_thread_to_threads(posts_out)
+            log_summary("✅ Threads posting completed")
+        except Exception as e:
+            log_summary(f"❌ Threads posting failed: {e}")
 
     # Step 5: Update state
     mark_posted(next_post)

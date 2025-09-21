@@ -1,3 +1,26 @@
+# 2025-09-21
+
+## 🚀 Automation Updates (Twitter + Bluesky)
+
+### Enhancements
+- Added **Bluesky publisher** (`publishers/bluesky.py`) with support for single posts and threaded replies.
+- Updated **`auto_post.py`** to support multi-platform posting:
+  - `PLATFORM=twitter,bluesky` now posts the same content to both platforms in one run.
+  - Non-blocking logging per platform (`✅ success` / `❌ failure`) so one failure doesn’t stop others.
+- Added **GitHub Actions summary logging**:
+  - Results (`✅` or `❌`) for each platform are written to `$GITHUB_STEP_SUMMARY`.
+  - Visible at the top of the Actions run page, no need to scroll logs.
+
+### Configuration
+- Adjusted `autopost.yml`:
+  - Use `PLATFORM=twitter,bluesky` for cross-posting.
+  - Added Bluesky secrets
+
+### Testing & Reliability
+- Confirmed dry-run and live posting paths work for both Twitter and Bluesky.
+- Thread reply handling fixed on Bluesky (using proper `ReplyRef`).
+- Clearer logs for debugging partial failures across platforms.
+
 
 # 2025-09-20
 

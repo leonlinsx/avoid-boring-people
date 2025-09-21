@@ -20,6 +20,7 @@ Replace one-off values with variables. -->
 <!-- - Enable Brotli/Gzip compression for text-based resources. -->
 <!-- - linkinator check -->
 <!-- - minify javascript check -->
+<!-- - bluesky automated posting -->
 - twitter thread analytics tracking
 - automated posting threads
 - change substack welcome email
