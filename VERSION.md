@@ -15,6 +15,7 @@
 - Adjusted `autopost.yml`:
   - Use `PLATFORM=twitter,bluesky` for cross-posting.
   - Added Bluesky secrets
+- added post.json to gitignore to prevent future merge conflicts
 
 ### Testing & Reliability
 - Confirmed dry-run and live posting paths work for both Twitter and Bluesky.

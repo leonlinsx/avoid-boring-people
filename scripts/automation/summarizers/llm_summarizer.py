@@ -1,5 +1,6 @@
 from typing import Dict, Literal
-import os, json
+import os
+import json
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -7,11 +8,13 @@ load_dotenv()
 
 DEFAULT_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
 
+
 def _client() -> OpenAI:
     api_key = os.getenv("DEEPSEEK_API_KEY")
     if not api_key:
         raise RuntimeError("❌ DEEPSEEK_API_KEY is missing")
     return OpenAI(api_key=api_key, base_url="https://api.deepseek.com/v1")
+
 
 def _fallback_stub() -> Dict:
     return {
@@ -20,9 +23,10 @@ def _fallback_stub() -> Dict:
             "Fallback summary point 1",
             "Fallback summary point 2",
             "Fallback summary point 3",
-            "Fallback summary point 4"
-        ]
+            "Fallback summary point 4",
+        ],
     }
+
 
 def summarize_post(
     post: Dict,
@@ -48,7 +52,7 @@ def summarize_post(
                 "Mock summary point 2",
                 "Mock summary point 3",
                 "Mock summary point 4",
-            ][:max_points]
+            ][:max_points],
         }
 
     title = post.get("title", "")
@@ -86,11 +90,14 @@ BLOG CONTENT:
         response = client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that summarizes content for social media."},
-                {"role": "user", "content": prompt}
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant that summarizes content for social media.",
+                },
+                {"role": "user", "content": prompt},
             ],
             temperature=0.3,
-            max_tokens=1000
+            max_tokens=1000,
         )
         text = response.choices[0].message.content.strip()
         print(f"📥 API raw response (truncated): {text[:120]}...")
@@ -114,7 +121,8 @@ BLOG CONTENT:
 
         return {
             "teaser": teaser,
-            "points": points[:max_points] or ["[Summarizer returned no usable content]"]
+            "points": points[:max_points]
+            or ["[Summarizer returned no usable content]"],
         }
 
     except Exception as e:

@@ -10,7 +10,7 @@ import { enrichPost } from '../utils/text';
 import TableOfContents from '../components/TableOfContents.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import TagList from '../components/TagList.astro';
-import readingTime from 'reading-time';
+// Remove local readingTime calculation
 import SubscribeForm from '../components/SubscribeForm.astro';
 import type { MarkdownHeading } from 'astro';
 
@@ -21,6 +21,7 @@ type Props = {
 
 const { post, headings = [] } = Astro.props;
 
+const enrichedPost = enrichPost(post);
 const {
   title,
   description,
@@ -29,13 +30,9 @@ const {
   heroImage,
   category,
   tags = [],
-} = post.data;
+  readingTime,
+} = enrichedPost.data;
 
-// ✅ reading time
-const body = await Astro.slots.render('default');
-const rt = Math.max(1, Math.round(readingTime(body ?? '').minutes));
-
-// ✅ Use hero image or fallback
 const hero = heroImage ?? SITE_BANNER_IMAGE;
 
 // ✅ Related posts
@@ -92,7 +89,7 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
           <div class="meta">
             <FormattedDate date={pubDate} />
             {category && ` · ${category}`}
-            {rt && ` · ${rt} min read`}
+            {readingTime && ` · ${readingTime} min read`}
             {
               updatedDate && (
                 <div class="last-updated-on">

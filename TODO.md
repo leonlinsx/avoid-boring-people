@@ -1,6 +1,5 @@
 <!-- 1. email check -->
 <!-- 2. replace broken links -abp, leonlinsx -->
-3. event tracking when appropriate
 <!-- 4. change images to png -->
 <!-- 5. Create a small design tokens file (_tokens.css) with your radius, shadows, type scale, spacing.
 Replace one-off values with variables. -->
@@ -11,7 +10,6 @@ Replace one-off values with variables. -->
 <!-- 10. easter egg mouse hover for longer befor reveal -->
 <!-- - share button for socials -->
 <!-- - use tags and new page for tag filters -->
-- dark mode toggle
 <!-- - share mobile close on tap fix -->
 <!-- - related post on articles styling spacing too wide -->
 <!-- - related posts image vs title alignment -->
@@ -21,8 +19,14 @@ Replace one-off values with variables. -->
 <!-- - linkinator check -->
 <!-- - minify javascript check -->
 <!-- - bluesky automated posting -->
+- add substack disclaimer to welcome email
+- change substack welcome email
+3. event tracking when appropriate
+- dark mode toggle
+- comments
 - twitter thread analytics tracking
 - automated posting threads
-- change substack welcome email
 - font decision
 - colour scheme design decision
+- Hero section redesign: Rotating featured posts with background image/gradient.
+- Heatmaps or scroll depth analytics
