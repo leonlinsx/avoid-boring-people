@@ -22,5 +22,6 @@ Replace one-off values with variables. -->
 <!-- - minify javascript check -->
 - twitter thread analytics tracking
 - automated posting threads
+- change substack welcome email
 - font decision
 - colour scheme design decision

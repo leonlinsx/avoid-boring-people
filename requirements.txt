@@ -5,3 +5,4 @@ openai
 sumy
 setuptools
 nltk
+requests
