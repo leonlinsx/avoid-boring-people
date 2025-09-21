@@ -1,0 +1,7 @@
+feedparser
+tweepy
+python-dotenv
+openai
+sumy
+setuptools
+nltk

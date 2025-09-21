@@ -1,9 +1,12 @@
-name: Auto Post (Dry Run)
+name: Auto Post
 
 on:
   schedule:
-    - cron: "0 14 * * *"   # every day at 14:00 UTC
-  workflow_dispatch:        # allow manual trigger for testing
+    - cron: '0 14 * * *' # every day at 14:00 UTC
+  workflow_dispatch: # allow manual trigger for testing
+
+permissions:
+  contents: write # ✅ allow workflow to push commits
 
 jobs:
   autopost:
@@ -11,21 +14,41 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          ref: main # ✅ explicitly check out main branch
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
-          pip install feedparser tweepy python-dotenv
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
 
-      - name: Run auto_post.py (dry-run)
+      - name: Add random delay
+        run: |
+          DELAY=$((RANDOM % 1800))  # up to 1800 seconds (30 min)
+          echo "⏳ Sleeping for $DELAY seconds before posting..."
+          sleep $DELAY
+
+      - name: Run auto_post.py
         env:
-          DRY_RUN: "true"    # keep safe for now
+          DRY_RUN: 'false'
+          USE_LLM: 'true'
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
         run: python scripts/automation/auto_post.py
+
+      - name: Commit updated posted.json
+        if: github.ref == 'refs/heads/main' # ✅ safeguard: only commit on main
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add posted.json
+          git commit -m "chore: update posted.json [skip ci]" || echo "No changes to commit"
+          git push origin main
