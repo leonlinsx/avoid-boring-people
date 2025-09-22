@@ -11,12 +11,15 @@ def prepare_medium_post(file_path, dry_run=True):
     tags = post.get("tags", [])[:5]  # Medium allows max 5 tags
 
     # Use summary generator
-    content = post.content
+    # Wrap content in a dict since summarizers expect {"content": ...}
+    post_dict = {"content": post.content}
+
     summary = (
-        stub_summarize(content)
+        stub_summarize(post_dict)
         if dry_run
-        else llm_summarize(content, max_words=250)
+        else llm_summarize(post_dict, max_words=250)
     )
+
 
     # Slug = parent folder name (since filename is always index.md)
     slug = os.path.basename(os.path.dirname(file_path))
