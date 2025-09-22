@@ -1,3 +1,7 @@
+---
+import { Moon, Sun } from 'lucide-astro';
+---
+
 <footer class="site-footer">
   <div class="footer-container">
     <p>
@@ -18,10 +22,48 @@
       </a>
       ·
       <a href="/rss.xml">RSS Feed</a>
+      ·
+      <button
+        id="dark-mode-toggle"
+        aria-label="Toggle dark mode"
+        title="Toggle dark mode"
+        class="dark-mode-toggle"
+      >
+        <Moon class="icon moon" />
+        <Sun class="icon sun" />
+      </button>
     </p>
     <p>© {new Date().getFullYear()} Leon Lin</p>
   </div>
 </footer>
+
+<script is:inline>
+  const toggle = document.getElementById('dark-mode-toggle');
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  }
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const current =
+        document.documentElement.getAttribute('data-theme') || 'light';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  setTheme(getPreferredTheme());
+</script>
 
 <style>
   .site-footer {
@@ -31,23 +73,62 @@
   }
 
   .footer-container {
-    max-width: var(--max-content-width); /* consistent with layout */
+    max-width: var(--max-content-width);
     margin: 0 auto;
     padding: var(--space-lg) var(--space-md);
     text-align: center;
     font-size: 0.9rem;
-    color: var(--color-text-muted); /* theme-aware muted text */
+    color: var(--color-text-muted);
   }
 
   .footer-container a {
-    color: var(--color-text); /* theme-aware text */
+    color: var(--color-text);
     text-decoration: none;
     margin: 0 var(--space-sm);
     transition: color 0.2s;
   }
 
   .footer-container a:hover {
-    color: var(--color-link); /* matches global hover behavior */
+    color: var(--color-link);
     text-decoration: underline;
+  }
+
+  .dark-mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted); /* muted default */
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    margin-left: var(--space-xs);
+    transition: color 0.2s ease;
+  }
+
+  .dark-mode-toggle:hover {
+    color: var(--color-link);
+  }
+
+  /* icon sizing */
+  .dark-mode-toggle .icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+  }
+
+  /* default: hide both */
+  .dark-mode-toggle .icon {
+    display: none !important;
+  }
+
+  /* light mode shows moon */
+  html[data-theme='light'] .dark-mode-toggle .icon.moon {
+    display: inline-block !important;
+  }
+
+  /* dark mode shows sun */
+  html[data-theme='dark'] .dark-mode-toggle .icon.sun {
+    display: inline-block !important;
   }
 </style>

@@ -1,7 +1,6 @@
 ---
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
-import { Moon, Sun } from 'lucide-astro';
 
 interface Props {
   currentPath: string;
@@ -30,90 +29,10 @@ const { currentPath } = Astro.props;
       </HeaderLink>
     </nav>
 
-    <button
-      id="dark-mode-toggle"
-      aria-label="Toggle dark mode"
-      class="dark-mode-toggle"
-    >
-      <Moon class="icon moon" />
-      <Sun class="icon sun" />
-    </button>
   </div>
 </header>
 
-<script is:inline>
-  const toggle = document.getElementById('dark-mode-toggle');
-
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }
-
-  function getPreferredTheme() {
-    // 1. User-set theme
-    const stored = localStorage.getItem('theme');
-    if (stored) return stored;
-
-    // 2. System preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-
-    // 3. Default
-    return 'light';
-  }
-
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      const current =
-        document.documentElement.getAttribute('data-theme') || 'light';
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
-  }
-
-  // On load
-  setTheme(getPreferredTheme());
-</script>
-
 <style>
-  .dark-mode-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-left: var(--space-md);
-    color: var(--color-text);
-    transition: color 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .dark-mode-toggle:hover {
-    color: var(--color-link);
-  }
-
-  /* icons */
-  .icon {
-    width: 1.2em;
-    height: 1.2em;
-  }
-  .icon.sun {
-    display: none;
-  }
-
-  /* Show/hide based on theme */
-  [data-theme='light'] .icon.moon {
-    display: inline;
-  }
-  [data-theme='light'] .icon.sun {
-    display: none;
-  }
-  [data-theme='dark'] .icon.moon {
-    display: none;
-  }
-  [data-theme='dark'] .icon.sun {
-    display: inline;
-  }
-
   .site-header {
     width: 100%;
     background: var(--color-bg);
