@@ -8,3 +8,4 @@ nltk
 requests
 atproto
 python-frontmatter
+numpy
