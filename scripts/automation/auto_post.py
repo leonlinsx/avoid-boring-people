@@ -15,6 +15,7 @@ from scripts.automation.publishers.mastodon import (
     post_single_to_mastodon,
     post_thread_to_mastodon,
 )
+from scripts.automation.publishers.devto import post_to_devto
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.summarizers import llm_summarize, stub_summarize
 from dotenv import load_dotenv
@@ -136,6 +137,45 @@ def main():
             log_summary("✅ Mastodon posting completed")
         except Exception as e:
             log_summary(f"❌ Mastodon posting failed: {e}")
+
+    if "devto" in PLATFORM:
+        try:
+            category = (
+                next_post.get("category")
+                or next_post.get("data", {}).get("category")
+                or ""
+            ).strip().lower()
+
+            print(f"DEBUG next_post keys: {list(next_post.keys())}")
+            print(f"DEBUG next_post.data: {next_post.get('data')}")
+            print(f"DEBUG: category resolved as '{category}'")
+
+            if category != "tech":
+                print(f"ℹ️ Skipping Dev.to posting (category='{category}')")
+            else:
+                summary = summarize_post(next_post, mode="narrative", max_points=3)
+                teaser = summary.get("teaser", "")
+                points = summary.get("points", [])
+                body_md = f"## {next_post['title']}\n\n{teaser}\n\n"
+                if points:
+                    body_md += "\n".join(f"- {p}" for p in points)
+                body_md += f"\n\n👉 [Read full article]({next_post['url']})"
+
+                if DRY_RUN:
+                    print("\n📝 Dry-run (Dev.to):")
+                    print(body_md)
+                else:
+                    post_to_devto(
+                        title=next_post["title"],
+                        body_markdown=body_md,
+                        tags=next_post.get("tags", []) or next_post.get("data", {}).get("tags", []),
+                        canonical_url=next_post["url"],
+                    )
+                log_summary("✅ Dev.to posting completed")
+        except Exception as e:
+            log_summary(f"❌ Dev.to posting failed: {e}")
+
+
 
     # Step 5: Update state
     mark_posted(next_post)

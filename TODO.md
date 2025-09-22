@@ -23,12 +23,15 @@ Replace one-off values with variables. -->
 <!-- - google search console domain verification https://search.google.com/search-console?resource_id=https://www.leonlinsx.com/ -->
 <!-- - bing webmaster -->
 <!-- - cleaner url for posts -->
-- automated posting mastodon
+<!-- - automated posting mastodon -->
+<!-- - Auto-generate sitemap + submit to Google Search Console & Bing Webmaster Tools. -->
+<!-- - Periodically ping search engines when new posts go live. -->
+<!-- - publish0x -->
+<!-- - tealfeed; seems nonexistent -->
 - automated posting dev.to, tech category only
 - automated posting flipboard
 - automated tiktok posting
-<!-- - publish0x -->
-<!-- - tealfeed; seems nonexistent -->
+
 - post to reddit relevant subreddits
 - add substack disclaimer to welcome email
 - change substack welcome email
@@ -41,7 +44,5 @@ Replace one-off values with variables. -->
 - font decision
 - colour scheme design decision
 - Hero section redesign: Rotating featured posts with background image/gradient.
-<!-- - Auto-generate sitemap + submit to Google Search Console & Bing Webmaster Tools. -->
-<!-- - Periodically ping search engines when new posts go live. -->
 - Auto-post summaries on Medium/Dev.to/Hacker News with a canonical link pointing back to your site.
 - book consulting call calendly
