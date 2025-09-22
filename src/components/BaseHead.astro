@@ -11,10 +11,13 @@ interface Props {
   title: string;
   description?: string;
   image?: string | { src: string };
+  pubDate?: Date;
+  updatedDate?: Date;
+  authorName?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
-const { title, description, image } = Astro.props;
+const { title, description, image, pubDate, updatedDate, authorName } = Astro.props;
 
 // ✅ Resolve OG image safely
 let ogImage: string;
@@ -36,6 +39,45 @@ const metaDescription = description || SITE_DESCRIPTION;
 
 // ✅ Absolute URL for organization logo
 const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
+
+// ✅ Organization structured data
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  url: SITE_URL,
+  logo: orgLogo,
+  name: SITE_TITLE,
+};
+
+// ✅ Article structured data (only if pubDate provided → means it's a blog post)
+let articleSchema;
+if (pubDate) {
+  articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description: metaDescription,
+    image: [ogImage],
+    datePublished: pubDate.toISOString(),
+    dateModified: (updatedDate || pubDate).toISOString(),
+    author: {
+      "@type": "Person",
+      name: authorName || "Leon Lin",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_TITLE,
+      logo: {
+        "@type": "ImageObject",
+        url: orgLogo,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": canonicalURL,
+    },
+  };
+}
 ---
 
 <!-- Global Metadata -->
@@ -76,7 +118,6 @@ const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
 <meta name="title" content={title} />
 <meta name="description" content={metaDescription} />
 
-
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL} />
@@ -94,24 +135,26 @@ const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
 <meta name="twitter:creator" content="@leonlinsx" />
 <meta name="twitter:site" content="@leonlinsx" />
 
-<!-- Structured Data: Organization Logo -->
+<!-- Structured Data -->
 <script is:inline type="application/ld+json">
-  {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "url": SITE_URL,
-    "logo": new URL("/logos/substack_logo.webp", SITE_URL).toString()
-  })}
+  {JSON.stringify(orgSchema)}
 </script>
+{articleSchema && (
+  <script is:inline type="application/ld+json">
+    {JSON.stringify(articleSchema)}
+  </script>
+)}
 
 <!-- Microsoft Clarity -->
-{import.meta.env.PROD && (<script is:inline type="text/javascript">
+{import.meta.env.PROD && (
+  <script is:inline type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "tegwfukh6k");
-</script>)}
+  </script>
+)}
 
 <!-- Dark Mode Initialization -->
 <script is:inline>

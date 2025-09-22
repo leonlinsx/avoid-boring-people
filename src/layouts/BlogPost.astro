@@ -127,9 +127,60 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
             </section>
           )
         }
+
+        <!-- Comments -->
+        <section class="comments">
+          <h2>Comments</h2>
+          <script
+            id="giscus-script"
+            src="https://giscus.app/client.js"
+            data-repo="leonlinsx/avoid-boring-people"
+            data-repo-id="R_kgDOPvVo9Q"
+            data-category="Comments"
+            data-category-id="DIC_kwDOPvVo9c4CvwrO"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="top"
+            data-theme="light"
+            data-lang="en"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async></script>
+        </section>
       </div>
     </article>
   </main>
+
+  <!-- Dark mode sync for Giscus -->
+  <script is:inline>
+    function setGiscusTheme(theme) {
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (!iframe) return;
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme } } },
+        'https://giscus.app',
+      );
+    }
+
+    // Run once on page load
+    const initialTheme =
+      document.documentElement.getAttribute('data-theme') || 'light';
+    setGiscusTheme(initialTheme === 'dark' ? 'dark_dimmed' : 'light');
+
+    // Observe changes to <html data-theme="">
+    const observer = new MutationObserver(() => {
+      const newTheme =
+        document.documentElement.getAttribute('data-theme') || 'light';
+      setGiscusTheme(newTheme === 'dark' ? 'dark_dimmed' : 'light');
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  </script>
 </BaseLayout>
 
 <style>
@@ -172,15 +223,17 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
     height: 1px;
     background-color: #ddd;
   }
-  .newsletter-cta {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
-    text-align: center;
-  }
   .related-posts > h2 {
     margin-top: 0;
     margin-bottom: var(--space-lg);
     font-size: var(--text-xl);
+  }
+  .comments {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
+  .comments h2 {
+    margin-bottom: 1rem;
   }
 </style>

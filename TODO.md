@@ -33,19 +33,18 @@ Replace one-off values with variables. -->
 <!-- - add substack disclaimer to welcome email
 - change substack welcome email -->
 <!-- - automated posting flipboard; seems to not take rss feed -->
-
-- Auto-post summaries on Medium with a canonical link pointing back to your site.
-- automated tiktok posting
+<!-- - Auto-post summaries on Medium with a canonical link pointing back to your site. -->
+<!-- - automated substack rss posting -->
+<!-- - comments -->
+<!-- - font decision
+- colour scheme design decision -->
 
 - post to reddit relevant subreddits
-- automated substack rss posting
-- comments
-- font decision
-- colour scheme design decision
-- Hero section redesign: Rotating featured posts with background image/gradient.
 - book consulting call calendly
 - automated linkedin summaries
+- Hero section redesign: Rotating featured posts with background image/gradient.
 3. event tracking when appropriate
 - twitter thread analytics tracking
 - automated posting threads
 - automated posting publish0x; seems to not pick up cookies for login
+- automated tiktok posting

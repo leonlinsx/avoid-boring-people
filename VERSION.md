@@ -1,3 +1,19 @@
+# 2025-09-22
+
+## Automation updates
+
+### Medium Prep
+
+- Whenever you push a new blog post to src/content/blog/**/index.md,
+GitHub Actions runs medium_prep.py and outputs a ready-to-paste Medium snippet in the logs.
+- Use medium.com/p/import to cross-post with the canonical link set to leonlins.com.
+
+### publish0x
+- tried setting up but ran into cookies issues, dropping for now
+
+## comments
+- added comments with giscus
+
 # 2025-09-21
 
 ## 🚀 Automation Updates (Twitter + Bluesky)
