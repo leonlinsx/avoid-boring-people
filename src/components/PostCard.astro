@@ -56,12 +56,14 @@ const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;
 
     <p class="post-meta">
       {category}
-      {date && (
-        <>
-          {' '}
-          · <FormattedDate date={date} />
-        </>
-      )}
+      {
+        date && (
+          <>
+            {' '}
+            · <FormattedDate date={date} />
+          </>
+        )
+      }
       {rt && ` · ${rt} min read`}
     </p>
   </div>

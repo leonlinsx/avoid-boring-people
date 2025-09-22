@@ -14,7 +14,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 // ✅ page.data are enriched posts (with clean slug)
 const { page, categories = [], activeCategory = '' } = Astro.props;
-const pagedPosts = page.data as any[]; 
+const pagedPosts = page.data as any[];
 const currentPage = page.currentPage;
 const totalPages = page.lastPage;
 ---

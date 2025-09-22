@@ -3,6 +3,7 @@ import { writeFileSync } from "fs";
 import { exec } from "child_process";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
+import process from "node:process";
 
 // Ensure dist directory exists
 import { mkdirSync, existsSync } from "fs";

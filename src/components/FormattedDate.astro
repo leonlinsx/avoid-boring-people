@@ -24,8 +24,10 @@ const defaultFormat: Intl.DateTimeFormatOptions = {
 };
 ---
 
-{parsedDate ? (
-  <time datetime={parsedDate.toISOString()}>
-    {parsedDate.toLocaleDateString(locale, format || defaultFormat)}
-  </time>
-) : null}
+{
+  parsedDate ? (
+    <time datetime={parsedDate.toISOString()}>
+      {parsedDate.toLocaleDateString(locale, format || defaultFormat)}
+    </time>
+  ) : null
+}

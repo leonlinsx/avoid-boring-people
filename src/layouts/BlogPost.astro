@@ -56,33 +56,35 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
 >
   <main>
     <article>
-      {hero && (
-        <div class="hero-image">
-          {typeof hero === 'object' ? (
-            <Image
-              src={hero}
-              alt={`Hero for ${title}`}
-              format="webp"
-              width={1200}
-              height={630}
-              fit="cover"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          ) : (
-            <img
-              src={hero}
-              alt={`Hero for ${title}`}
-              width="1200"
-              height="630"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          )}
-        </div>
-      )}
+      {
+        hero && (
+          <div class="hero-image">
+            {typeof hero === 'object' ? (
+              <Image
+                src={hero}
+                alt={`Hero for ${title}`}
+                format="webp"
+                width={1200}
+                height={630}
+                fit="cover"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            ) : (
+              <img
+                src={hero}
+                alt={`Hero for ${title}`}
+                width="1200"
+                height="630"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            )}
+          </div>
+        )
+      }
 
       <div class="prose">
         <div class="title">
@@ -90,11 +92,13 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
             <FormattedDate date={pubDate} />
             {category && ` · ${category}`}
             {readingTime && ` · ${readingTime} min read`}
-            {updatedDate && (
-              <div class="last-updated-on">
-                Last updated on <FormattedDate date={updatedDate} />
-              </div>
-            )}
+            {
+              updatedDate && (
+                <div class="last-updated-on">
+                  Last updated on <FormattedDate date={updatedDate} />
+                </div>
+              )
+            }
           </div>
           <h1>{title}</h1>
         </div>
@@ -115,12 +119,14 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
         <SubscribeForm compact={false} />
 
         <!-- Related posts -->
-        {related.length > 0 && (
-          <section class="related-posts">
-            <h2>Related Posts</h2>
-            <PostList posts={related} variant="compact" />
-          </section>
-        )}
+        {
+          related.length > 0 && (
+            <section class="related-posts">
+              <h2>Related Posts</h2>
+              <PostList posts={related} variant="compact" />
+            </section>
+          )
+        }
       </div>
     </article>
   </main>

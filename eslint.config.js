@@ -8,6 +8,26 @@ import prettierPlugin from "eslint-plugin-prettier";
 import globals from "globals";
 
 export default [
+  {
+    ignores: [
+      "node_modules",
+      "dist",
+      ".astro",
+      ".astro/types",
+      ".build",
+      ".cache",
+      "out",
+      ".next",
+      ".vercel",
+      ".netlify",
+      "coverage",
+      "VERSION.md",
+      "CHANGELOG.md",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+    ],
+  },
   // JavaScript rules
   js.configs.recommended,
 

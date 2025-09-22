@@ -15,7 +15,7 @@ export async function getStaticPaths() {
     if (seen.has(slug)) {
       console.warn(
         `⚠️ Duplicate slug detected: "${slug}" from "${post.id}" conflicts with "${seen.get(slug)}".` +
-        ` Using "${slug}-${post.data.pubDate.getFullYear()}" instead.`
+          ` Using "${slug}-${post.data.pubDate.getFullYear()}" instead.`,
       );
       slug = `${slug}-${post.data.pubDate.getFullYear()}`;
     }

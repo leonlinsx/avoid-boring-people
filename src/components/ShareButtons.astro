@@ -90,6 +90,7 @@ const encodedURL = encodeURIComponent(url);
 <script is:inline>
   function trackShare(platform) {
     if (window.gtag) {
+      // eslint-disable-next-line no-undef
       gtag('event', 'share', {
         event_category: 'engagement',
         event_label: platform,

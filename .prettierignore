@@ -1,10 +1,5 @@
-# Node / package managers
+# Ignore node_modules and build outputs
 node_modules
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-# Build outputs
 dist
 .build
 .cache
@@ -28,11 +23,16 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 
-# Docs / versioning
+# Lockfiles (if you don’t want them formatted)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Versioning / docs
 VERSION.md
-CHANGELOG.md
 TODO.md
 README.md
+CHANGELOG.md  # optional, if you don’t want Prettier formatting changelogs
 
 # Git metadata
 .git
@@ -43,5 +43,6 @@ README.md
 .idea
 *.swp
 
-# Tests / coverage
+# Misc
 coverage
+*.svg   # optional, if you don’t want Prettier touching inline SVGs

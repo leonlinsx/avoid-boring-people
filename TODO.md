@@ -29,16 +29,17 @@ Replace one-off values with variables. -->
 <!-- - publish0x -->
 <!-- - tealfeed; seems nonexistent -->
 <!-- - automated posting dev.to, tech category only -->
+<!-- - dark mode toggle -->
+<!-- - add substack disclaimer to welcome email
+- change substack welcome email -->
+
 - Auto-post summaries on Medium with a canonical link pointing back to your site.
 - automated posting flipboard
 - automated tiktok posting
 
 - post to reddit relevant subreddits
-- add substack disclaimer to welcome email
-- change substack welcome email
 - automated substack rss posting
 3. event tracking when appropriate
-- dark mode toggle
 - comments
 - font decision
 - colour scheme design decision
