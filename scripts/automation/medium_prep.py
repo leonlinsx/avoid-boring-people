@@ -18,8 +18,8 @@ def prepare_medium_post(file_path, dry_run=True):
         else llm_summarize(content, max_words=250)
     )
 
-    # Blog URL (assuming your site structure: /writing/{slug}/)
-    slug = os.path.splitext(os.path.basename(file_path))[0]
+    # Slug = parent folder name (since filename is always index.md)
+    slug = os.path.basename(os.path.dirname(file_path))
     canonical_url = f"https://leonlins.com/writing/{slug}/"
 
     # Build Medium-ready snippet
@@ -43,7 +43,7 @@ def prepare_medium_post(file_path, dry_run=True):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python scripts/automation/medium_prep.py <path-to-blog-md>")
+        print("Usage: python scripts/automation/medium_prep.py <path-to-blog-index.md>")
         sys.exit(1)
 
     file_path = sys.argv[1]
