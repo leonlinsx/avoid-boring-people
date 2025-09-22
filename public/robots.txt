@@ -1,4 +1,22 @@
+# Allow all search and AI crawlers
 User-agent: *
 Allow: /
 
+# Explicitly allow AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Sitemap for faster discovery
 Sitemap: https://leonlins.com/sitemap-index.xml
