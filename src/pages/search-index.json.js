@@ -1,7 +1,6 @@
 
 /* global Response */
 // src/pages/search-index.json.js
-// src/pages/search-index.json.js
 import { getCollection } from "astro:content";
 
 export async function GET() {

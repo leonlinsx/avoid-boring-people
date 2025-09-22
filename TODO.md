@@ -28,7 +28,8 @@ Replace one-off values with variables. -->
 <!-- - Periodically ping search engines when new posts go live. -->
 <!-- - publish0x -->
 <!-- - tealfeed; seems nonexistent -->
-- automated posting dev.to, tech category only
+<!-- - automated posting dev.to, tech category only -->
+- Auto-post summaries on Medium/Dev.to/Hacker News with a canonical link pointing back to your site.
 - automated posting flipboard
 - automated tiktok posting
 
@@ -39,10 +40,10 @@ Replace one-off values with variables. -->
 3. event tracking when appropriate
 - dark mode toggle
 - comments
-- twitter thread analytics tracking
-- automated posting threads
 - font decision
 - colour scheme design decision
 - Hero section redesign: Rotating featured posts with background image/gradient.
-- Auto-post summaries on Medium/Dev.to/Hacker News with a canonical link pointing back to your site.
 - book consulting call calendly
+- automated linkedin summaries
+- twitter thread analytics tracking
+- automated posting threads
