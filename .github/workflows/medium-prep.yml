@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install python-frontmatter
+          pip install -r requirements.txt
 
       - name: Generate Medium summary
         run: |
