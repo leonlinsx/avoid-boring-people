@@ -1,0 +1,28 @@
+name: Medium Prep
+
+on:
+  push:
+    paths:
+      - "src/content/blog/**"   # only run when blog posts change
+
+jobs:
+  medium-prep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install python-frontmatter
+
+      - name: Generate Medium summary
+        run: |
+          latest_file=$(git diff --name-only HEAD~1 HEAD | grep '^src/content/blog/.*\.md$' | tail -n1)
+          echo "Latest blog file: $latest_file"
+          python scripts/automation/medium_prep.py "$latest_file"

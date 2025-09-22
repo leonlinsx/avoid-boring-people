@@ -48,4 +48,4 @@ Replace one-off values with variables. -->
 3. event tracking when appropriate
 - twitter thread analytics tracking
 - automated posting threads
-- automated posting publish0x
+- automated posting publish0x; seems to not pick up cookies for login
