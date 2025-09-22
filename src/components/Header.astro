@@ -1,6 +1,7 @@
 ---
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+import { Moon, Sun } from 'lucide-astro';
 
 interface Props {
   currentPath: string;
@@ -21,84 +22,146 @@ const { currentPath } = Astro.props;
     </a>
 
     <nav class="nav-links">
-      <HeaderLink href="/writing/1" currentPath={currentPath} class="nav-item"
-        >Writing</HeaderLink
-      >
-      <HeaderLink href="/about" currentPath={currentPath} class="nav-item"
-        >About</HeaderLink
-      >
+      <HeaderLink href="/writing/1" currentPath={currentPath} class="nav-item">
+        Writing
+      </HeaderLink>
+      <HeaderLink href="/about" currentPath={currentPath} class="nav-item">
+        About
+      </HeaderLink>
     </nav>
+
+    <button
+      id="dark-mode-toggle"
+      aria-label="Toggle dark mode"
+      class="dark-mode-toggle"
+    >
+      <Moon class="icon moon" />
+      <Sun class="icon sun" />
+    </button>
   </div>
 </header>
 
+<script is:inline>
+  const toggle = document.getElementById('dark-mode-toggle');
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+
+  function getPreferredTheme() {
+    // 1. User-set theme
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+
+    // 2. System preference
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+
+    // 3. Default
+    return 'light';
+  }
+
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const current =
+        document.documentElement.getAttribute('data-theme') || 'light';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // On load
+  setTheme(getPreferredTheme());
+</script>
+
 <style>
+  .dark-mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: var(--space-md);
+    color: var(--color-text);
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dark-mode-toggle:hover {
+    color: var(--color-link);
+  }
+
+  /* icons */
+  .icon {
+    width: 1.2em;
+    height: 1.2em;
+  }
+  .icon.sun {
+    display: none;
+  }
+
+  /* Show/hide based on theme */
+  [data-theme='light'] .icon.moon {
+    display: inline;
+  }
+  [data-theme='light'] .icon.sun {
+    display: none;
+  }
+  [data-theme='dark'] .icon.moon {
+    display: none;
+  }
+  [data-theme='dark'] .icon.sun {
+    display: inline;
+  }
+
   .site-header {
     width: 100%;
     background: var(--color-bg);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid var(--color-border); /* ✅ theme-aware cleanup */
+    border-bottom: 1px solid var(--color-border);
   }
-
   .nav-container {
     width: 100%;
-    max-width: var(--max-content-width); /* ✅ uses global variable */
+    max-width: var(--max-content-width);
     margin: 0 auto;
     padding: var(--space-sm) var(--space-md);
-
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-
-  .site-logo {
-    display: flex;
-    align-items: center;
-  }
-
   .site-logo img {
     height: 32px;
-    width: auto;
-    display: block;
-  }
-
-  .site-logo:hover img {
-    opacity: 0.85;
     transition: opacity 0.2s ease;
   }
-
+  .site-logo:hover img {
+    opacity: 0.85;
+  }
   .nav-links {
     display: flex;
     gap: var(--space-lg);
-    align-items: center;
     font-family: Georgia, 'Times New Roman', serif;
   }
-
   .nav-item {
     padding: 1em 0.3em;
     color: var(--color-text);
     border-bottom: 3px solid transparent;
-    text-decoration: none;
     font-weight: 500;
     transition:
       border-color 0.2s,
       color 0.2s;
   }
-
   .nav-item:hover {
     color: var(--color-link);
   }
-
   .nav-item.active {
     border-bottom-color: var(--color-link);
     font-weight: 600;
   }
-
   @media (max-width: 480px) {
     .nav-links {
       gap: var(--space-sm);
       font-size: 0.85rem;
     }
-
     .site-logo img {
       height: 28px;
     }

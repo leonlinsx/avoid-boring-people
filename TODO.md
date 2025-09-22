@@ -29,7 +29,7 @@ Replace one-off values with variables. -->
 <!-- - publish0x -->
 <!-- - tealfeed; seems nonexistent -->
 <!-- - automated posting dev.to, tech category only -->
-- Auto-post summaries on Medium/Dev.to/Hacker News with a canonical link pointing back to your site.
+- Auto-post summaries on Medium with a canonical link pointing back to your site.
 - automated posting flipboard
 - automated tiktok posting
 
