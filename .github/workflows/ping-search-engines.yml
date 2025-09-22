@@ -1,0 +1,15 @@
+name: Ping search engines
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/content/blog/**"   # ✅ only run if a blog post changes
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Google & Bing
+        run: |
+          curl "https://www.google.com/ping?sitemap=https://leonlins.com/sitemap-index.xml"
+          curl "https://www.bing.com/ping?sitemap=https://leonlins.com/sitemap-index.xml"

@@ -19,6 +19,9 @@ Replace one-off values with variables. -->
 <!-- - linkinator check -->
 <!-- - minify javascript check -->
 <!-- - bluesky automated posting -->
+<!-- - Heatmaps or scroll depth analytics -->
+<!-- - google search console domain verification https://search.google.com/search-console?resource_id=https://www.leonlinsx.com/ -->
+- bing webmaster
 - add substack disclaimer to welcome email
 - change substack welcome email
 3. event tracking when appropriate
@@ -29,4 +32,6 @@ Replace one-off values with variables. -->
 - font decision
 - colour scheme design decision
 - Hero section redesign: Rotating featured posts with background image/gradient.
-- Heatmaps or scroll depth analytics
+- Auto-generate sitemap + submit to Google Search Console & Bing Webmaster Tools.
+- Periodically ping search engines when new posts go live.
+- Auto-post summaries on Medium/Dev.to/Hacker News with a canonical link pointing back to your site.
