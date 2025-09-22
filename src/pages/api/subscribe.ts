@@ -48,3 +48,14 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 };
+
+// ✅ Add a simple GET handler to silence warnings
+export const GET: APIRoute = async () => {
+  return new Response(
+    JSON.stringify({ ok: false, message: 'Use POST to subscribe.' }),
+    {
+      status: 405, // Method Not Allowed
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+};
