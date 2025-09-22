@@ -1,26 +1,31 @@
 // scripts/automation/publish0x_runner.js
-import { firefox } from "playwright";
-import fs from "fs";
-import path from "path";
+import { firefox } from 'playwright';
+import fs from 'fs';
+import path from 'path';
 
 const COOKIES_FILE =
-  process.env.PUBLISH0X_COOKIES_FILE || path.resolve("./cookies/publish0x.json");
+  process.env.PUBLISH0X_COOKIES_FILE ||
+  path.resolve('./cookies/publish0x.json');
 
 async function autopostToPublish0x(post) {
   const browser = await firefox.launch({ headless: false });
   const context = await browser.newContext();
 
   if (!fs.existsSync(COOKIES_FILE)) {
-    throw new Error(`No Publish0x cookies found at ${COOKIES_FILE}. Run login first.`);
+    throw new Error(
+      `No Publish0x cookies found at ${COOKIES_FILE}. Run login first.`,
+    );
   }
-  const cookies = JSON.parse(fs.readFileSync(COOKIES_FILE, "utf-8"));
+  const cookies = JSON.parse(fs.readFileSync(COOKIES_FILE, 'utf-8'));
   await context.addCookies(cookies);
 
   const page = await context.newPage();
-  await page.goto("https://www.publish0x.com/newpost", { waitUntil: "domcontentloaded" });
+  await page.goto('https://www.publish0x.com/newpost', {
+    waitUntil: 'domcontentloaded',
+  });
 
-  if (page.url().includes("/login")) {
-    throw new Error("⚠️ Session expired. Please refresh cookies.");
+  if (page.url().includes('/login')) {
+    throw new Error('⚠️ Session expired. Please refresh cookies.');
   }
 
   // Fill Title
@@ -45,10 +50,10 @@ async function autopostToPublish0x(post) {
 
 async function main() {
   try {
-    const post = JSON.parse(fs.readFileSync(process.argv[2], "utf-8"));
+    const post = JSON.parse(fs.readFileSync(process.argv[2], 'utf-8'));
     await autopostToPublish0x(post);
   } catch (err) {
-    console.error("❌ Publish0x autopost failed:", err);
+    console.error('❌ Publish0x autopost failed:', err);
     process.exit(0);
   }
 }

@@ -1,15 +1,15 @@
 ---
-title: "Do IPOs leave money on the table?"
-description: "Walking through the IPO process"
+title: 'Do IPOs leave money on the table?'
+description: 'Walking through the IPO process'
 pubDate: 2019-07-31
 category: Finance
-tags: ["finance"]
-heroImage: "./ipo_1.webp"
+tags: ['finance']
+heroImage: './ipo_1.webp'
 ---
 
 ## What goes on behind the scenes of an IPO?
 
-People hear about IPOs frequently, but usually are less aware of what happens behind the scenes. a16z recently [wrote a post](https://a16z.com/2019/07/09/ipo-process-prices-behind-scenes-companies/ "a16z") about the process, and I'm following up with some of my experience. As a reminder, none of this is investment advice. Ever.
+People hear about IPOs frequently, but usually are less aware of what happens behind the scenes. a16z recently [wrote a post](https://a16z.com/2019/07/09/ipo-process-prices-behind-scenes-companies/ 'a16z') about the process, and I'm following up with some of my experience. As a reminder, none of this is investment advice. Ever.
 
 > \[The S1\] also serves as a marketing document positioning the company and its role in the marketplace, because the company has to avoid public promotion during the waiting period and follow strict rules around what they can and can’t say on behalf of the company. But behind closed doors during this time, the company does pre-pitch the company story and financials to potential investors.
 
@@ -25,13 +25,13 @@ The intent during this bookbuilding process is to determine what price the compa
 
 > People often assume an IPO means the entire company is going public — just because those companies are required to open their books and report their earnings on a quarterly basis — but actually no more than 10%-15% of the company is typically being sold. Such limited supply can have outsize impact in a short time frame, especially if there’s great demand.
 
-No company I know of has given 100% of the company away during an IPO. I suppose it's possible, but that would be strange and probably a red flag. The price is [usually set to have a first day "pop"](https://clutejournals.com/index.php/JBER/article/view/2412 "IPO pop") as a form of reward to the shareholders that supported the company and to also generate positive publicity and good vibes for the company employees.
+No company I know of has given 100% of the company away during an IPO. I suppose it's possible, but that would be strange and probably a red flag. The price is [usually set to have a first day "pop"](https://clutejournals.com/index.php/JBER/article/view/2412 'IPO pop') as a form of reward to the shareholders that supported the company and to also generate positive publicity and good vibes for the company employees.
 
-[Critics of the IPO process](https://markets.businessinsider.com/news/stocks/slacks-direct-listing-bill-gurley-says-startups-call-morgan-stanley-2019-6-1028298641 "Bill") think that this "pop" leaves money on the table, which is true, but **most employees would (irrationally) prefer to have the stock IPO and keep going up** rather than the reverse.
+[Critics of the IPO process](https://markets.businessinsider.com/news/stocks/slacks-direct-listing-bill-gurley-says-startups-call-morgan-stanley-2019-6-1028298641 'Bill') think that this "pop" leaves money on the table, which is true, but **most employees would (irrationally) prefer to have the stock IPO and keep going up** rather than the reverse.
 
 > So how to gauge the success of IPO after the “pop”? Beyond Meat is trading today above $100. Does that mean the company left money on the table? If you do the math, the company raised about $240 million from the IPO. Had the stock been priced at the first-trade price ($46), however, it could have raised nearly double that amount — and well more if it had priced at the closing stock price. Then again, people might not have invested as much at that price.
 
-To further explain the ["money on the table" issue](http://www.underpricing.de/Downloads/Louhgran_Why%20Dont%20Issuers.pdf "research"), BYND priced at $25, meaning institutional investors (not you and I) bought it at $25. When it started trading, someone (could be you or I now) put in an order at $46, and a holder of the share was willing to sell at $46, hence filling that order.
+To further explain the ["money on the table" issue](http://www.underpricing.de/Downloads/Louhgran_Why%20Dont%20Issuers.pdf 'research'), BYND priced at $25, meaning institutional investors (not you and I) bought it at $25. When it started trading, someone (could be you or I now) put in an order at $46, and a holder of the share was willing to sell at $46, hence filling that order.
 
 Some people would argue that if there was demand at $46, perhaps BYND should just have priced at $46 instead and gotten more cash from investors. Bill Gurley would argue to use a direct listing instead to match all demand and supply.
 

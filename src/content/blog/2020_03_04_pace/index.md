@@ -1,10 +1,10 @@
 ---
-title: "Wisely and slow, they stumble that run fast"
-description: "Using the pace layer framework to explain why businesses change quickly and governments change slowly"
+title: 'Wisely and slow, they stumble that run fast'
+description: 'Using the pace layer framework to explain why businesses change quickly and governments change slowly'
 pubDate: 2020-03-04
 category: Tech
-tags: ["frameworks", "pace layers"]
-heroImage: "./p_2.webp"
+tags: ['frameworks', 'pace layers']
+heroImage: './p_2.webp'
 ---
 
 ## Takeaway
@@ -15,23 +15,23 @@ The pace layer framework can be used to model civilisations, with each layer mov
 
 Imagine a building. Perhaps the office you work in, or the house you live in. **What parts of that building change over time? How quickly do they change?**
 
-The stuff in the rooms change all the time. You buy the new Amazon Echo, you [throw away the old lamp](https://www.youtube.com/watch?v=dBqhIVyfsRg "lamp"). Change is constant and frequent.
+The stuff in the rooms change all the time. You buy the new Amazon Echo, you [throw away the old lamp](https://www.youtube.com/watch?v=dBqhIVyfsRg 'lamp'). Change is constant and frequent.
 
-The space plan, or interior layout, changes less frequently. Perhaps your office finally puts up a wall between your desk and the bathroom, the day after you leave the company. Or you decide to [convert your yard into an arcade](https://www.reddit.com/r/mancave/comments/e58v6r/mancave_arcade_in_the_backyard/ "arcade"). Change here is intermittent and less frequent.
+The space plan, or interior layout, changes less frequently. Perhaps your office finally puts up a wall between your desk and the bathroom, the day after you leave the company. Or you decide to [convert your yard into an arcade](https://www.reddit.com/r/mancave/comments/e58v6r/mancave_arcade_in_the_backyard/ 'arcade'). Change here is intermittent and less frequent.
 
 The services within, your plumbing, electricity, gas, and more, change even less frequently. As does the skin, or exterior of the building. Neither of those might change before you move out of the place.
 
-The structure, or [skeleton](https://www.designingbuildings.co.uk/wiki/Skeleton_frame "skeleton"), rarely changes unless part of a renovation or deconstruction.
+The structure, or [skeleton](https://www.designingbuildings.co.uk/wiki/Skeleton_frame 'skeleton'), rarely changes unless part of a renovation or deconstruction.
 
 And the site of the building itself, that geography essentially stays the same.
 
-In 1994, [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand "Stewart") of the [Long Now Foundation](http://longnow.org/ "Long Now") proposed the above model as a way to think about how buildings learn and evolve [^1]. A building can be thought of as having multiple layers, all changing at different rates. **A healthy building will allow for controlled interactions between layers, all moving at their own pace.**
+In 1994, [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand 'Stewart') of the [Long Now Foundation](http://longnow.org/ 'Long Now') proposed the above model as a way to think about how buildings learn and evolve [^1]. A building can be thought of as having multiple layers, all changing at different rates. **A healthy building will allow for controlled interactions between layers, all moving at their own pace.**
 
 ![post](./p_1.webp)
 
 In 1999, Stewart further extended the framework to apply to civilisations. **What parts of civilisation change over time? How quickly do they change? How do they interact?**
 
-He called this framework **pace layering,** and proposed ["six significant levels of pace and size in the working structure of a robust and adaptable civilization."](https://jods.mitpress.mit.edu/pub/issue3-brand "pace")
+He called this framework **pace layering,** and proposed ["six significant levels of pace and size in the working structure of a robust and adaptable civilization."](https://jods.mitpress.mit.edu/pub/issue3-brand 'pace')
 
 In order of the fastest moving level to the slowest, these levels are:
 
@@ -64,7 +64,7 @@ The above are all examples of how **we shouldn't push slow layers to move more q
 
 Is there a case where we shouldn't push fast layers to move more slowly? Put another way, when do we want to accelerate change in the faster layers of fashion, commerce, or infrastructure? Or should we always aim to reduce our velocity? There doesn't seem to be a clear answer from the article.
 
-Separately, Stewart points out how "as people get older, their interests tend to migrate to the slower parts of the continuum." Fashion is less of a concern compared to the culture you want to pass on to your grandkids. This seems true anecdotally, though the research on this seems [mixed](https://www.journals.uchicago.edu/doi/abs/10.1086/706889?mobileUi=0&journalCode=jop "research") [^3].
+Separately, Stewart points out how "as people get older, their interests tend to migrate to the slower parts of the continuum." Fashion is less of a concern compared to the culture you want to pass on to your grandkids. This seems true anecdotally, though the research on this seems [mixed](https://www.journals.uchicago.edu/doi/abs/10.1086/706889?mobileUi=0&journalCode=jop 'research') [^3].
 
 Stewart describes how each pace layer affects the other:
 
@@ -74,7 +74,7 @@ Commerce absorbs that shock and influences infrastructure. New wireless tech is 
 
 Infrastructure often can't be funded entirely by commerce, and gets governmental support [^4]. Governments allocate capital to fund construction of the systems needed to support the new tech.
 
-Governments then craft the culture of a country over time. Their implicit or explicit incentives shape how society should feel about phone usage, ranging from nonchalance to [mobile game time restrictions.](https://www.scmp.com/news/china/society/article/3036444/chinas-minors-face-new-limits-mobile-games-war-gaming-addiction "china")
+Governments then craft the culture of a country over time. Their implicit or explicit incentives shape how society should feel about phone usage, ranging from nonchalance to [mobile game time restrictions.](https://www.scmp.com/news/china/society/article/3036444/chinas-minors-face-new-limits-mobile-games-war-gaming-addiction 'china')
 
 Culture then nudges nature. Given the scale of nature though, we need to be careful what we're disturbing here.
 
@@ -84,7 +84,7 @@ Stewart concludes:
 
 > The division of powers among the layers of civilization lets us relax about a few of our worries. We don't have to deplore technology and business changing rapidly while government controls, cultural mores, and "wisdom" change slowly. That's their job
 
-Each layer has a natural speed, and we need to work at that speed within the layer. Rushing something will be counterproductive. [Wisely and slow, they stumble that run fast.](https://www.bbc.co.uk/bitesize/guides/zw7nk7h/revision/8 "Romeo")
+Each layer has a natural speed, and we need to work at that speed within the layer. Rushing something will be counterproductive. [Wisely and slow, they stumble that run fast.](https://www.bbc.co.uk/bitesize/guides/zw7nk7h/revision/8 'Romeo')
 
 Again, what I wonder is if there’s ever a case to be made to make change quicker in faster layers. There are historical government controls and cultural mores that we deplore today with the benefit of hindsight. Could we have learnt quicker?
 
@@ -92,7 +92,10 @@ Again, what I wonder is if there’s ever a case to be made to make change quick
 
 **The layers interact with each other, both reinforcing and destroying at alternate points in time.** A healthy civilisation allows for change within and between layers, but doesn’t force all of them to move at the same pace. To do otherwise results in destabilising feedback.
 
-[^1]: Full notes for the book How Buildings Learn: What Happens After They’re Built can be found [here](https://www.gyford.com/phil/writing/2004/10/24/how-buildings-le/ "notes"). Stewart is best known for the Whole Earth catalog. Also, I'm a member of the Long Now, and think it's worth checking out. They do cool stuff.
+[^1]: Full notes for the book How Buildings Learn: What Happens After They’re Built can be found [here](https://www.gyford.com/phil/writing/2004/10/24/how-buildings-le/ 'notes'). Stewart is best known for the Whole Earth catalog. Also, I'm a member of the Long Now, and think it's worth checking out. They do cool stuff.
+
 [^2]: Stewart gave time ranges for the building components, but not for the civilisation unfortunately
-[^3]: [Other ](https://academic.oup.com/gerontologist/article-abstract/21/6/580/819080?redirectedFrom=PDF "1") [papers](https://www.jstor.org/stable/1041104?seq=1 "2") seem to find a small effect or other factors to explain the perception that older people are more conservative.
+
+[^3]: [Other ](https://academic.oup.com/gerontologist/article-abstract/21/6/580/819080?redirectedFrom=PDF '1') [papers](https://www.jstor.org/stable/1041104?seq=1 '2') seem to find a small effect or other factors to explain the perception that older people are more conservative.
+
 [^4]: Stewart's point here is that "The payback period for things such as transportation and communication systems is too long for standard investment, so you get government-guaranteed instruments like bonds or government-guaranteed monopolies. Governance and culture have to be willing to take on the huge costs and prolonged disruption of constructing sewer systems, roads, and communication systems, all the while bearing in mind the health of even slower "natural" infrastructure—water, climate, etc."

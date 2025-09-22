@@ -1,10 +1,10 @@
 ---
 title: "LVMH's contrasts of chaos and control"
-description: "How Bernard Arnault views creativity"
+description: 'How Bernard Arnault views creativity'
 pubDate: 2020-08-05
 category: Lifestyle
-tags: ["fashion", "art", "business"]
-heroImage: "./l_3.webp"
+tags: ['fashion', 'art', 'business']
+heroImage: './l_3.webp'
 featured: false
 ---
 
@@ -14,19 +14,19 @@ As the CEO of LVMH, Bernard Arnault believes that star brands require creativity
 
 ## Top of the luxury chain
 
-[LVMH](https://en.wikipedia.org/wiki/LVMH "LVMH") is the parent company of many luxury brands we're familiar with. [Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ "1987") through the merger of "Louis Vuitton" and "Moët et Chandon and Hennessy", it now houses more than 70 brands across wine, fashion, jewellery, and more. Compared to its nearest competitor, Kering [^1], [LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html "rev")
+[LVMH](https://en.wikipedia.org/wiki/LVMH 'LVMH') is the parent company of many luxury brands we're familiar with. [Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ '1987') through the merger of "Louis Vuitton" and "Moët et Chandon and Hennessy", it now houses more than 70 brands across wine, fashion, jewellery, and more. Compared to its nearest competitor, Kering [^1], [LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html 'rev')
 
 ![post](./l_1.webp)
 
-And at the top of it all is [Bernard Arnault](https://en.wikipedia.org/wiki/Bernard_Arnault "Bernard"), who has been head of the group ever since 1990. It's paid off well for him, making him one of the richest men in the world.
+And at the top of it all is [Bernard Arnault](https://en.wikipedia.org/wiki/Bernard_Arnault 'Bernard'), who has been head of the group ever since 1990. It's paid off well for him, making him one of the richest men in the world.
 
 ![post](./l_2.webp)
 
-[Brett Bivens tweeted this HBR interview of Bernard a while back](https://twitter.com/brettbivens/status/1251505408960794624?s=20 "Brett"), and today I want to build on that article with a few more sources. We'll get a better understanding of **how Bernard views creativity - where he allows chaos and where he restricts control.**
+[Brett Bivens tweeted this HBR interview of Bernard a while back](https://twitter.com/brettbivens/status/1251505408960794624?s=20 'Brett'), and today I want to build on that article with a few more sources. We'll get a better understanding of **how Bernard views creativity - where he allows chaos and where he restricts control.**
 
-Bernard often recounts the story of his first visit to the US. He'd asked a taxi driver what he knew of France. [The driver couldn't name France's president, but could name Dior.](https://www.ft.com/content/21f64410-9117-11e9-aea1-2b1d33ac3271 "FT") Since then, Bernard has always remembered **the power a brand can have.**
+Bernard often recounts the story of his first visit to the US. He'd asked a taxi driver what he knew of France. [The driver couldn't name France's president, but could name Dior.](https://www.ft.com/content/21f64410-9117-11e9-aea1-2b1d33ac3271 'FT') Since then, Bernard has always remembered **the power a brand can have.**
 
-Bernard built his brand by buying. From his [first takeover of the textile company Boussac](https://www.forbes.com/sites/susanadams/2019/10/31/the-100-billion-man-how-bernard-arnault-stitched-together-the-worlds-third-biggest-fortune-with-louis-vuitton-dior-and-77-other-brandsand-why-hes-not-done-yet/#22a97e114efb "Boussac") to [the many deals done since taking over LVMH,](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ "LVMH") Bernard has brought LVMH to its current status with a series of acquisitions, sometimes controversially [^2]. There's a reason he's known as the "wolf in cashmere."
+Bernard built his brand by buying. From his [first takeover of the textile company Boussac](https://www.forbes.com/sites/susanadams/2019/10/31/the-100-billion-man-how-bernard-arnault-stitched-together-the-worlds-third-biggest-fortune-with-louis-vuitton-dior-and-77-other-brandsand-why-hes-not-done-yet/#22a97e114efb 'Boussac') to [the many deals done since taking over LVMH,](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ 'LVMH') Bernard has brought LVMH to its current status with a series of acquisitions, sometimes controversially [^2]. There's a reason he's known as the "wolf in cashmere."
 
 However, the Frenchman is far from just a financier. Bernard also has strong opinions on creativity, mostly applied to the fashion industry. My reading turned up a few recurring themes, and I'll go over them in turn:
 
@@ -42,13 +42,13 @@ Bernard understands the importance of letting his designers do their work, givin
 
 > The important point is, you cannot compromise creativity at its birth.
 
-This is in contrast to the [A/B testing](https://www.crazyegg.com/blog/ab-testing/ "AB") that most tech companies do today, which Bernard claims is not appropriate for his business:
+This is in contrast to the [A/B testing](https://www.crazyegg.com/blog/ab-testing/ 'AB') that most tech companies do today, which Bernard claims is not appropriate for his business:
 
 > Some companies are very marketing driven; they follow the consumer. And they succeed with that strategy. They go out, they test what people want, and then they make it. But that approach has nothing to do with innovation \[...\] You can’t charge a premium price for giving people what they expect, and you won’t ever have break-out products that way—the kinds of products that people line up around the block for. We have those, but only because we give our artists freedom.
 
 > we won’t launch a product if the tests clearly show it is going to be a failure, but we won’t use tests to modify products, either.
 
-This is reminiscent of the Steve Jobs quote, "that customers don't know what they want until you show it to them [^3]." If we recall that fashion sits on the top of [the pace layer diagram](https://leonlins.com/writing/2020_03_04_pace/ "pace"), it makes sense that Bernard would think this way, given the quick pace of change in the industry. He's always looking for something new for the season, and needs to dictate consumer taste rather than be directed by it.
+This is reminiscent of the Steve Jobs quote, "that customers don't know what they want until you show it to them [^3]." If we recall that fashion sits on the top of [the pace layer diagram](https://leonlins.com/writing/2020_03_04_pace/ 'pace'), it makes sense that Bernard would think this way, given the quick pace of change in the industry. He's always looking for something new for the season, and needs to dictate consumer taste rather than be directed by it.
 
 However, Bernard draws the line on the production and operations processes. Here, he looks to control as much of the action as possible. You can be creative in ideas but not in execution:
 
@@ -56,7 +56,7 @@ However, Bernard draws the line on the production and operations processes. Here
 
 > Our products have unbelievably high quality; they have to. But their production is organized in such a way that we also have unbelievably high productivity.
 
-And he walks the talk too, literally. [Bernard does weekly store visits, and will flag concerns to his brand CEOs:](https://www.forbes.com/sites/susanadams/2019/10/31/the-100-billion-man-how-bernard-arnault-stitched-together-the-worlds-third-biggest-fortune-with-louis-vuitton-dior-and-77-other-brandsand-why-hes-not-done-yet/#22a97e114efb "Bernard")
+And he walks the talk too, literally. [Bernard does weekly store visits, and will flag concerns to his brand CEOs:](https://www.forbes.com/sites/susanadams/2019/10/31/the-100-billion-man-how-bernard-arnault-stitched-together-the-worlds-third-biggest-fortune-with-louis-vuitton-dior-and-77-other-brandsand-why-hes-not-done-yet/#22a97e114efb 'Bernard')
 
 > Every Saturday, he prowls his retail stores, rearranging bag displays and making suggestions to clerks.
 
@@ -114,27 +114,30 @@ This is the third duality: past vs present. Bernard believes that consumers look
 
 We've covered 3 dualities that Bernard deals with, arising from the experience he's had building the brand. By allowing creativity with control, execution of ideas, and blending tradition and modernity, Bernard believes he's building LVMH for the long term:
 
-> [When we discuss a brand, I always tell them my real concern is what the brand will be in five or ten years, not the profitability in the next six months.](https://www.forbes.com/sites/luisakroll/2017/09/26/business-icon-bernard-arnault-reveals-his-most-important-mentor-biggest-mistake-in-qa/#4e8836af2ccc "Forbes")
+> [When we discuss a brand, I always tell them my real concern is what the brand will be in five or ten years, not the profitability in the next six months.](https://www.forbes.com/sites/luisakroll/2017/09/26/business-icon-bernard-arnault-reveals-his-most-important-mentor-biggest-mistake-in-qa/#4e8836af2ccc 'Forbes')
 
 And that so far has worked for him, at least based on the stock price and the market share of LVMH:
 
 ![post](./l_4.webp)
 
-How much of his framework is applicable to other businesses? I mostly agree on the emphasis of creativity but also operational excellence. As per the recent note on [why companies are bad at innovating](https://leonlins.com/writing/2020_07_15_turtle/ "turtle") though, I’m unsure if most companies are willing to accept the volatility implied with accepting more creativity. I’m unsure if the past vs present duality is easily implemented, beyond some marketing campaign just for show.
+How much of his framework is applicable to other businesses? I mostly agree on the emphasis of creativity but also operational excellence. As per the recent note on [why companies are bad at innovating](https://leonlins.com/writing/2020_07_15_turtle/ 'turtle') though, I’m unsure if most companies are willing to accept the volatility implied with accepting more creativity. I’m unsure if the past vs present duality is easily implemented, beyond some marketing campaign just for show.
 
-With all Bernard's achieved, you'd think he'd be ready to retire. He's not done empire building though. Even now, Bernard still believes [it's day 1:](https://www.forbes.com/sites/quora/2017/04/21/what-is-jeff-bezos-day-1-philosophy/#1867a2be1052 "Day")
+With all Bernard's achieved, you'd think he'd be ready to retire. He's not done empire building though. Even now, Bernard still believes [it's day 1:](https://www.forbes.com/sites/quora/2017/04/21/what-is-jeff-bezos-day-1-philosophy/#1867a2be1052 'Day')
 
 > We are still small. We’re just getting started. This is very fun. We are number one, but we can go further.
 
 ## Sources
 
-1. [HBR interview](https://hbr.org/2001/10/the-perfect-paradox-of-star-brands-an-interview-with-bernard-arnault-of-lvmh "HBR")
-2. [FT interview](https://www.ft.com/content/21f64410-9117-11e9-aea1-2b1d33ac3271 "FT")
-3. [Forbes interview](https://www.forbes.com/sites/luisakroll/2017/09/26/business-icon-bernard-arnault-reveals-his-most-important-mentor-biggest-mistake-in-qa/#4e8836af2ccc "Forbes")
-4. [NYT interview](https://www.nytimes.com/2019/11/25/fashion/bernard-arnault-tiffany-lvmh.html "NYT")
-5. [Reuters coverage of LVMH/Tiffany deal](https://www.reuters.com/article/us-tiffany-m-a-lvmh-deal/how-lvmhs-whirlwind-courtship-sealed-16-billion-tiffany-deal-idUSKBN1XZ2F7 "LVMH")
+1. [HBR interview](https://hbr.org/2001/10/the-perfect-paradox-of-star-brands-an-interview-with-bernard-arnault-of-lvmh 'HBR')
+2. [FT interview](https://www.ft.com/content/21f64410-9117-11e9-aea1-2b1d33ac3271 'FT')
+3. [Forbes interview](https://www.forbes.com/sites/luisakroll/2017/09/26/business-icon-bernard-arnault-reveals-his-most-important-mentor-biggest-mistake-in-qa/#4e8836af2ccc 'Forbes')
+4. [NYT interview](https://www.nytimes.com/2019/11/25/fashion/bernard-arnault-tiffany-lvmh.html 'NYT')
+5. [Reuters coverage of LVMH/Tiffany deal](https://www.reuters.com/article/us-tiffany-m-a-lvmh-deal/how-lvmhs-whirlwind-courtship-sealed-16-billion-tiffany-deal-idUSKBN1XZ2F7 'LVMH')
 
-[^1]: [Kering owns Gucci, Saint Laurent, Bottega Veneta, Balenciaga, Alexander McQueen, Brioni, and more](https://www.kering.com/en/talent/who-we-are/our-houses/ "Kering")
-[^2]: His [firing of workers at Boussac](https://www.nytimes.com/1989/12/17/magazine/a-luxury-fight-to-the-finish.html "Bossac"), [ouster of LVMH leadership](https://www.forbes.com/sites/susanadams/2019/10/31/the-100-billion-man-how-bernard-arnault-stitched-together-the-worlds-third-biggest-fortune-with-louis-vuitton-dior-and-77-other-brandsand-why-hes-not-done-yet/#22a97e114efb "LVMH"), and hostile bid for Hermes have attracted much criticism, to name a few.
-[^3]: Supposedly misunderstood, according to [this article](https://www.businessinsider.com/steve-jobs-quote-misunderstood-katie-dill-2019-4 "katie")
+[^1]: [Kering owns Gucci, Saint Laurent, Bottega Veneta, Balenciaga, Alexander McQueen, Brioni, and more](https://www.kering.com/en/talent/who-we-are/our-houses/ 'Kering')
+
+[^2]: His [firing of workers at Boussac](https://www.nytimes.com/1989/12/17/magazine/a-luxury-fight-to-the-finish.html 'Bossac'), [ouster of LVMH leadership](https://www.forbes.com/sites/susanadams/2019/10/31/the-100-billion-man-how-bernard-arnault-stitched-together-the-worlds-third-biggest-fortune-with-louis-vuitton-dior-and-77-other-brandsand-why-hes-not-done-yet/#22a97e114efb 'LVMH'), and hostile bid for Hermes have attracted much criticism, to name a few.
+
+[^3]: Supposedly misunderstood, according to [this article](https://www.businessinsider.com/steve-jobs-quote-misunderstood-katie-dill-2019-4 'katie')
+
 [^4]: Bernard also says that sometimes, there's just something inexplicable "Many brands have the potential to be stars, but they are poorly managed. That’s too bad for them. But there are more brands that are as well managed as can be, and they will never be stars. They will never be successful the world over. They don’t have that something—that magic that you really can’t explain."

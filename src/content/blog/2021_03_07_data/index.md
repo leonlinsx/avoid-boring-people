@@ -1,10 +1,10 @@
 ---
-title: "Data analysis industry landscape"
-description: "Market overview, risks, and competitive landscape"
+title: 'Data analysis industry landscape'
+description: 'Market overview, risks, and competitive landscape'
 pubDate: 2021-03-07
 category: Tech
-tags: ["business"]
-heroImage: "./d_1.webp"
+tags: ['business']
+heroImage: './d_1.webp'
 ---
 
 ## Takeaway
@@ -60,8 +60,13 @@ Putting it all together:
 Thanks to Paul Tune, Recurse Center participants Shae Matijs Erisson, Ori Dean Bernstein, Mikkel Paulson, Steven Li, Ryan Prior, Luke Barone-Adesi, Chirag Davé, Nathan Goldbaum, and Locally Optimistic members Jacob Matson, Arpit Choudhury, Gordon Wong, Kevin Hu, Itto Kornecki for taking a look at this.
 
 [^1]: I was required to provide TAM for my analyses, which imo are usually made up numbers. Anyway, here are mine: Snowflake (SNOW) alone trades at $70bn mkt cap on $200mm rev. Data visualisation is $10bn rev, data analysis $40bn, data warehousing $20bn, ELT/ETL $10bn, and database $50bn per industry press releases
+
 [^2]: Past a certain scale it's no longer feasible to store data in free personal plan spreadsheet software
+
 [^3]: AWS is likely worth hundreds of billions on $10bn rev; I've excluded it and the other main providers from the analysis for simplicity
+
 [^4]: The data can then be sold online, used for fraud, or held for ransom. For most companies it's a matter of when they're hacked, not if.
+
 [^5]: Given the competition at most layers, there has usually been cost deflation on the whole, rather than inflation
+
 [^6]: As Paul Tune points out, you can have both relational (Postgres, MySQL) and non-relational databases, like MongoDB and DynamoDB (an AWS product). The unstructured nature of the latter creates challenges for businesses trying to perform analysis.

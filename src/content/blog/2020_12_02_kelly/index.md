@@ -1,10 +1,10 @@
 ---
-title: "Having faith in the Kelly Criterion for angel investing"
-description: "Using math to estimate optimal portfolio sizing"
+title: 'Having faith in the Kelly Criterion for angel investing'
+description: 'Using math to estimate optimal portfolio sizing'
 pubDate: 2020-12-02
 category: Finance
-tags: ["investing", "risk", "math"]
-heroImage: "./kel_7.webp"
+tags: ['investing', 'risk', 'math']
+heroImage: './kel_7.webp'
 featured: true
 ---
 
@@ -19,9 +19,9 @@ Sarah is an aspiring angel investor. Her friends Nicholas, Alyson, and Chase hav
 
 Sarah was about to invest three lifetime's worth of her savings into this business, when her other group of friends [^1] Seth, Marc, Emma, and Amber pitch her an equally exciting idea involving bunnies.
 
-It dawns on Sarah that she has multiple choices, and she isn't sure what to do. She goes to consult with her older friend Anthony, who watches the investing space closely. Anthony says she's on the right path - portfolio allocation and risk/reward payoffs are the key to becoming a successful investor. He also adds that she might want to read about the [Kelly criterion,](https://www.princeton.edu/~wbialek/rome/refs/kelly_56.pdf "Kelly") a formula for bet sizing.
+It dawns on Sarah that she has multiple choices, and she isn't sure what to do. She goes to consult with her older friend Anthony, who watches the investing space closely. Anthony says she's on the right path - portfolio allocation and risk/reward payoffs are the key to becoming a successful investor. He also adds that she might want to read about the [Kelly criterion,](https://www.princeton.edu/~wbialek/rome/refs/kelly_56.pdf 'Kelly') a formula for bet sizing.
 
-The Kelly formula was developed by John Kelly at Bell Labs. It takes a few inputs and returns you the **optimal percentage of your capital to bet on something,** assuming you want to maximise long term returns. I've posted a simplified derivation in the appendix, and you can also find it [here](https://blogs.cfainstitute.org/investor/2018/06/14/the-kelly-criterion-you-dont-know-the-half-of-it/ "derive") or in the original paper.
+The Kelly formula was developed by John Kelly at Bell Labs. It takes a few inputs and returns you the **optimal percentage of your capital to bet on something,** assuming you want to maximise long term returns. I've posted a simplified derivation in the appendix, and you can also find it [here](https://blogs.cfainstitute.org/investor/2018/06/14/the-kelly-criterion-you-dont-know-the-half-of-it/ 'derive') or in the original paper.
 
 ![post](./kel_1.webp)
 
@@ -39,7 +39,7 @@ Now, imagine instead that the same coin toss paid you 11x return (1000%) on your
 
 Kelly says that you should bet 45% of your total capital. Notice that even with such attractive odds, you're not betting all your money [^2]. You can also see that in games where you can lose all your bet, you never go all in unless you believe you have a 100% chance of winning.
 
-[Michael Mauboussin and Ed Thorp elaborate on the attractive features of the Kelly system:](http://www.capatcolumbia.com/MM%20LMCM%20reports/Size%20Matters.pdf "Michael")
+[Michael Mauboussin and Ed Thorp elaborate on the attractive features of the Kelly system:](http://www.capatcolumbia.com/MM%20LMCM%20reports/Size%20Matters.pdf 'Michael')
 
 1. The chance of ruin is “small.” Because the Kelly system is based on proportional bets, losing all of your capital is theoretically impossible, though there will still be volatility spikes
 2. The Kelly system is highly likely to grow a bankroll faster than other systems
@@ -47,7 +47,7 @@ Kelly says that you should bet 45% of your total capital. Notice that even with 
 
 How can this help us on the angel investing side? We'll have to make some highly simplifying assumptions [^3], but Kelly can help give us some idea of how much to allocate per investment.
 
-We know that Kelly takes three inputs - our belief of what the winning probability is, the percentage loss, and the percentage profit. [Correlation Ventures and Seth Levine](https://www.sethlevine.com/archives/2020/10/vc-fund-returns-are-more-skewed-than-you-think.html "Seth") have a nice chart below showing VC returns over time, and I'll use that as the basis for my assumptions.
+We know that Kelly takes three inputs - our belief of what the winning probability is, the percentage loss, and the percentage profit. [Correlation Ventures and Seth Levine](https://www.sethlevine.com/archives/2020/10/vc-fund-returns-are-more-skewed-than-you-think.html 'Seth') have a nice chart below showing VC returns over time, and I'll use that as the basis for my assumptions.
 
 ![post](./kel_4.webp)
 
@@ -65,7 +65,7 @@ In other words, we'll ignore all of that <1x part on the graph, and assume our u
 
 Which is at least something we can work with. Bear with the assumptions for now and we'll revisit them later.
 
-To see what our returns could look like, let's also assume we make 100 such investments in a row. We'll run 1,000 simulations of what such a portfolio could look like i.e. imagine 1,000 universes where we invest in 100 companies under the assumptions above. [I'm using this Colab file here if you want to follow along](https://colab.research.google.com/drive/1YeMnl2QOQdCAGGxCDr2pfDk_HFgCh02D?usp=sharing "Colab")
+To see what our returns could look like, let's also assume we make 100 such investments in a row. We'll run 1,000 simulations of what such a portfolio could look like i.e. imagine 1,000 universes where we invest in 100 companies under the assumptions above. [I'm using this Colab file here if you want to follow along](https://colab.research.google.com/drive/1YeMnl2QOQdCAGGxCDr2pfDk_HFgCh02D?usp=sharing 'Colab')
 
 Unsurprisingly, our rigged game shows us making a lot of money:
 
@@ -97,7 +97,7 @@ And if we zoom into the "safer," Half Kelly approach, we see that most of the ti
 
 None of these are what real life is like; the above is a vast oversimplification. That said, **we can at least use Kelly to reduce the risk of ruin.**
 
-If you want to dig further, there's a paper by Vasily Nekrasov [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2259133 "paper") that has a much better model, but the math is beyond me. The python colab file is [here](https://colab.research.google.com/drive/1YeMnl2QOQdCAGGxCDr2pfDk_HFgCh02D?usp=sharing "colab") if you want to play around with the base simulation assumptions [^6].
+If you want to dig further, there's a paper by Vasily Nekrasov [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2259133 'paper') that has a much better model, but the math is beyond me. The python colab file is [here](https://colab.research.google.com/drive/1YeMnl2QOQdCAGGxCDr2pfDk_HFgCh02D?usp=sharing 'colab') if you want to play around with the base simulation assumptions [^6].
 
 ### For more on the Kelly criterion:
 
@@ -109,7 +109,7 @@ If you want to dig further, there's a paper by Vasily Nekrasov [here](https://pa
 
 ## 2. Using HASH.ai to simulate company survival rates
 
-We'll move on from one model full of assumptions, to another model full of assumptions. I recently heard of the company [HASH.ai](https://hash.ai/ "hash"), which lets you "build multi-agent simulations in minutes." By that, they mean creating multiple objects that can interact with each other, and then seeing what happens. You can read more about agent-based modeling [here](https://hash.ai/blog/what-is-agent-based-modeling "hash")
+We'll move on from one model full of assumptions, to another model full of assumptions. I recently heard of the company [HASH.ai](https://hash.ai/ 'hash'), which lets you "build multi-agent simulations in minutes." By that, they mean creating multiple objects that can interact with each other, and then seeing what happens. You can read more about agent-based modeling [here](https://hash.ai/blog/what-is-agent-based-modeling 'hash')
 
 ![post](./kel_10.webp)
 
@@ -135,26 +135,34 @@ HASH.ai also lets you graph stats over time. My current model shows a steady sta
 
 ![post](./kel_13.webp)
 
-Again, this was just for fun, and most of the assumptions need to be adjusted. The final model is [here](https://core.hash.ai/@leonlinsx/wildfires-regrowth-3/main "model") if you want to play around with it. Would be interested in seeing someone create a more sophisticated model of startup growth.
+Again, this was just for fun, and most of the assumptions need to be adjusted. The final model is [here](https://core.hash.ai/@leonlinsx/wildfires-regrowth-3/main 'model') if you want to play around with it. Would be interested in seeing someone create a more sophisticated model of startup growth.
 
 ## Other
 
-1. [Unit economics of vending machines](https://thehustle.co/the-economics-of-vending-machines/ "econs")
-2. [Online game networking explained](https://www.pcgamer.com/netcode-explained/ "netcode")
-3. [What we can learn from War and Peace and a napkin about risk.](https://refractor.substack.com/p/the-story-range? "refractor")
-4. [American PhDs are failing at start-ups](https://marginalrevolution.com/marginalrevolution/2020/12/american-ph-ds-are-failing-at-start-ups.html "phd")
-5. [This isn't Sparta](https://acoup.blog/2019/08/16/collections-this-isnt-sparta-part-i-spartan-school/ "sparta")
+1. [Unit economics of vending machines](https://thehustle.co/the-economics-of-vending-machines/ 'econs')
+2. [Online game networking explained](https://www.pcgamer.com/netcode-explained/ 'netcode')
+3. [What we can learn from War and Peace and a napkin about risk.](https://refractor.substack.com/p/the-story-range? 'refractor')
+4. [American PhDs are failing at start-ups](https://marginalrevolution.com/marginalrevolution/2020/12/american-ph-ds-are-failing-at-start-ups.html 'phd')
+5. [This isn't Sparta](https://acoup.blog/2019/08/16/collections-this-isnt-sparta-part-i-spartan-school/ 'sparta')
 
 ## Appendix
 
 ![post](./kel_14.webp)
 
 [^1]: Sarah's killing it in the friend department
+
 [^2]: There's also the unrelated point that if you ever see such attractive odds, you're probably being scammed
+
 [^3]: I want to re-emphasise how much we're simplifying here. For one, the illiquidity of angel investments is a huge problem since you don't have a repeated, continuous bet nature that we run later in the simulations. Also, sidenote that I could have easily gotten any of the math wrong, please correct me if you see mistakes.
+
 [^4]: Plan ahead, they say...
+
 [^5]: 5% divided by (100% minus 64%)
+
 [^6]: You'll notice that small tweaks to the winning probability from where it currently is will dramatically change the suggested bet percentage and predicted returns
+
 [^7]: Emphasis on play. My final model is super janky.
+
 [^8]: You'll notice references to trees, fires, and more in the code, which is leftover from the original model simulating wildfires.
+
 [^9]: I want to say this was intentional; I couldn't figure out how to change a lot of the features.

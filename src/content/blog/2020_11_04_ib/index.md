@@ -1,10 +1,10 @@
 ---
-title: "Do investment bankers add value?"
-description: "What do investment banks actually do?"
+title: 'Do investment bankers add value?'
+description: 'What do investment banks actually do?'
 pubDate: 2020-11-04
 category: Finance
-tags: ["investment banking"]
-heroImage: "./i_2.webp"
+tags: ['investment banking']
+heroImage: './i_2.webp'
 ---
 
 ## Takeaway
@@ -23,7 +23,7 @@ A "full service" bank like JP Morgan is enormous. You can think about it as four
 
 ![post](./i_2.webp)
 
-When I refer to investment banking or banking in this article, I'm specifically talking about the blue business on the right. And to make my life easier, I'll focus just on the "Banker" box, excluding discussion of the equity research and sales and trading arms for simplicity. I've mentioned equity research [here](https://leonlins.com/writing/2020_02_26_sellside/ "er") before when discussing the impact of roboadvisors.
+When I refer to investment banking or banking in this article, I'm specifically talking about the blue business on the right. And to make my life easier, I'll focus just on the "Banker" box, excluding discussion of the equity research and sales and trading arms for simplicity. I've mentioned equity research [here](https://leonlins.com/writing/2020_02_26_sellside/ 'er') before when discussing the impact of roboadvisors.
 
 So now that we know our scope, what does the investment banking group do?
 
@@ -49,7 +49,7 @@ Industry coverage is easier to understand, so I'll just explain the various fina
 
 **Debt capital markets** usually deals with investment grade debt products. If you don't know what "grade" refers to, we'll come back to that in a minute. For example, if you're a company looking to issue debt for an acquisition, you'll be working with a DCM team to understand what interest rates etc you'll be able to get, based on investor demand.
 
-**Leveraged finance** usually deals with non-investment grade debt. Historically, LevFin was considered more risky and exotic, until [Michael Milken](https://en.wikipedia.org/wiki/Michael_Milken "Mike") kickstarted the sector with the use of "risky" debt in private equity leveraged buyouts. That's why there's a different team for it, as the types of investors could be different and desiring different types of terms. For example, a company issuing non-investment grade instead of investment grade debt might have to accept higher interest rates, in exchange for weaker debt covenants.
+**Leveraged finance** usually deals with non-investment grade debt. Historically, LevFin was considered more risky and exotic, until [Michael Milken](https://en.wikipedia.org/wiki/Michael_Milken 'Mike') kickstarted the sector with the use of "risky" debt in private equity leveraged buyouts. That's why there's a different team for it, as the types of investors could be different and desiring different types of terms. For example, a company issuing non-investment grade instead of investment grade debt might have to accept higher interest rates, in exchange for weaker debt covenants.
 
 **Mergers and acquisitions** deals with whenever companies want to buy or sell each other. For example, if you were looking to buy a smaller competitor, you'd work with an M&A banking team to get a valuation and discuss bidding strategy.
 
@@ -67,7 +67,7 @@ Also note that most of banking money is made when an actual deal happens, so ban
 
 So, now that we know what banking is, **do bankers actually add value?**
 
-It's become more popular to hate on bankers the past decade, with the average person thinking bankers spend most of their time [midget tossing](https://www.youtube.com/watch?v=EQlgrw31St0 "midget") and the average company executive thinking bankers don't know their industry as well as the company does.
+It's become more popular to hate on bankers the past decade, with the average person thinking bankers spend most of their time [midget tossing](https://www.youtube.com/watch?v=EQlgrw31St0 'midget') and the average company executive thinking bankers don't know their industry as well as the company does.
 
 As with all things, it depends. Everyone hates middlemen until they have to try making a market for themselves.
 
@@ -79,7 +79,10 @@ Additionally, there's always the "cover my ass" factor, where bankers form a sup
 
 There's a popular narrative of bankers being disintermediated by tech or the latest financial innovation. While I agree that bankers do need to keep up and continue finding better ways to add value, I don't see investment banks disappearing any time soon. If I had to make a prediction, I'd say with 90% certainty that the "investment bank" role is still around in 20 years, with its essential service still being a financial middleman, even if the companies change. Cynically, even if all of debt and equity issuances take place on some sort of tech platform, companies still need someone to blame when things go wrong.
 
-[^1]: [Prof Maillet of McIntire](https://www.commerce.virginia.edu/faculty/pam5x "prof")
+[^1]: [Prof Maillet of McIntire](https://www.commerce.virginia.edu/faculty/pam5x 'prof')
+
 [^2]: Sometimes human capital too, but that's usually unintentional and rarer
+
 [^3]: I can't actually remember anymore which ones have which structure. The alternative is to have a single group of industry coverage that does both functions.
+
 [^4]: Banks do cover competitors, but there's usually some form of "conflicts" process to try and prevent a banker covering two competitors at the same time, particularly for actual deals

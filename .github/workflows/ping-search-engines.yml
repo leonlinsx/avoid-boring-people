@@ -1,9 +1,9 @@
 name: Ping search engines
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - "src/content/blog/**"   # ✅ only run if a blog post changes
+      - 'src/content/blog/**' # ✅ only run if a blog post changes
 
 jobs:
   ping:

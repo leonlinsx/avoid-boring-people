@@ -1,10 +1,10 @@
 ---
-title: "City hunter"
-description: "How picking a city to live in is like picking a restaurant"
+title: 'City hunter'
+description: 'How picking a city to live in is like picking a restaurant'
 pubDate: 2020-08-19
 category: Lifestyle
-tags: ["predictions"]
-heroImage: "./c_3.png"
+tags: ['predictions']
+heroImage: './c_3.png'
 ---
 
 ## Takeaway
@@ -13,9 +13,9 @@ The predictions of the death of large cities are overblown and I expect most to 
 
 ## NYC is dead, long live NYC
 
-An article recently proclaimed that [NYC is dead forever.](https://www.linkedin.com/pulse/nyc-dead-forever-heres-why-james-altucher/ "NYC") Because of the internet, the loss of business, culture, dining, commercial real estate, and colleges in the city has turned from a temporary situation to a permanent outcome. As a result, the article concludes that people are leaving NYC and never coming back.
+An article recently proclaimed that [NYC is dead forever.](https://www.linkedin.com/pulse/nyc-dead-forever-heres-why-james-altucher/ 'NYC') Because of the internet, the loss of business, culture, dining, commercial real estate, and colleges in the city has turned from a temporary situation to a permanent outcome. As a result, the article concludes that people are leaving NYC and never coming back.
 
-Similar articles have been written about other large cities, [such as SF.](https://www.sfgate.com/sf-locals/slideshow/I-m-finally-leaving-Stories-of-Bay-Area-203670.php "SF") A couple of people I've talked to have also reflected the same sentiment of wanting to leave the city they're in. I'm not an expert in urban mobility, and this will be more speculative. Let's take a look at some points that matter regarding the death of large cities.
+Similar articles have been written about other large cities, [such as SF.](https://www.sfgate.com/sf-locals/slideshow/I-m-finally-leaving-Stories-of-Bay-Area-203670.php 'SF') A couple of people I've talked to have also reflected the same sentiment of wanting to leave the city they're in. I'm not an expert in urban mobility, and this will be more speculative. Let's take a look at some points that matter regarding the death of large cities.
 
 I'm more optimistic that large cities will survive this. As a way of quantifying that statement - I have 80% confidence that NYC will have a higher population in 5 years than it does today [^1]. For context, up until recently NYC has been growing at 0.30% yearly.
 
@@ -29,7 +29,7 @@ People have their own unique priorities when evaluating cities. The person's pri
 
 Usually, the pace at which the person's priority changes has been faster than the pace at which a city's ability changes. You move to a city for your first job after graduating college, and then stay there for a while until you need more space for a family. The city stayed the same, you changed.
 
-Recently though, cities have lost nearly everything that attracted people to them. You may have stayed the same and want the same things, but the city changed. If you recall our [pace layer](https://leonlins.com/writing/2020_03_04_pace/ "pace") discussion, in this case the "governance", "infrastructure", and "commerce" layers all moved more quickly than expected.
+Recently though, cities have lost nearly everything that attracted people to them. You may have stayed the same and want the same things, but the city changed. If you recall our [pace layer](https://leonlins.com/writing/2020_03_04_pace/ 'pace') discussion, in this case the "governance", "infrastructure", and "commerce" layers all moved more quickly than expected.
 
 ![post](./c_2.webp)
 
@@ -41,7 +41,7 @@ It's like going to a restaurant. If you no longer like that style of food, you'r
 
 ### City factors
 
-Let's look at some factors that make cities attractive, and see what has happened. I'll be drawing from this [1970 paper on urban mobility](https://www.jstor.org/stable/490436?seq=5#metadata_info_tab_contents "urban") but mostly adding my own commentary [^2]. The main theme is that people's base desires don't change that much.
+Let's look at some factors that make cities attractive, and see what has happened. I'll be drawing from this [1970 paper on urban mobility](https://www.jstor.org/stable/490436?seq=5#metadata_info_tab_contents 'urban') but mostly adding my own commentary [^2]. The main theme is that people's base desires don't change that much.
 
 A few of the top factors:
 
@@ -65,7 +65,7 @@ The type of work also matters. More physical work can't be done remotely, so tho
 
 And one important factor, sometimes missed, is how most of these companies allowing fully remote options have clearly stated they intend to adjust salaries according to the cost of living of the city you relocate to. This is without considering the decreased perks you have working remotely - snacks, meals, other services. Some people will be ok with this, and others will balk.
 
-I do think we'll see many more remote-first or remote-only companies. [Zapier, for example,](https://zapier.com/about/ "Zapier") has been remote-only for a while now. They still hold in person company events though. For now, I still think remote work is temporary for most. And the styles of remote work that will stick are still beneficial for cities.
+I do think we'll see many more remote-first or remote-only companies. [Zapier, for example,](https://zapier.com/about/ 'Zapier') has been remote-only for a while now. They still hold in person company events though. For now, I still think remote work is temporary for most. And the styles of remote work that will stick are still beneficial for cities.
 
 ### Education
 
@@ -107,7 +107,8 @@ There'll be continued tension from city folks seeing suburban folks enjoy a more
 
 And that's the crux of the issue - living in a city is always going to be a tradeoff, made consciously or subconsciously by everyone. There's no right or wrong answer, just the one more appropriate for that particular person's situation.
 
-The trend of urbanisation is not a decade long one, nor even a century long one. It's something that has continued happening [for 5,000 years](http://metrocosm.com/history-of-cities/ "5k"). And while the largest city in the world [has changed over time](https://en.wikipedia.org/wiki/List_of_largest_cities_throughout_history "city"), what's also interesting is how so many cities have remained large throughout the years.
+The trend of urbanisation is not a decade long one, nor even a century long one. It's something that has continued happening [for 5,000 years](http://metrocosm.com/history-of-cities/ '5k'). And while the largest city in the world [has changed over time](https://en.wikipedia.org/wiki/List_of_largest_cities_throughout_history 'city'), what's also interesting is how so many cities have remained large throughout the years.
 
 [^1]: I'd compare Aug 2025 vs Aug 2020 if possible, but more likely we'd have to compare Dec 2019 vs Dec 2024 or Dec 2020 vs Dec 2025.
+
 [^2]: I skimmed the paper and didn't fully read it. It's cited by many, and provides a framework for why people move. There's a discussion of what leads people to move, and then how they find and evaluate a new home.

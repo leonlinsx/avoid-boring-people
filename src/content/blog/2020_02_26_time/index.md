@@ -1,15 +1,15 @@
 ---
-title: "About time"
+title: 'About time'
 description: "You don't find quality time by looking for it"
 pubDate: 2020-02-26
 category: Lifestyle
-tags: ["behaviour"]
-heroImage: "./q_3.webp"
+tags: ['behaviour']
+heroImage: './q_3.webp'
 ---
 
-[About Time](<https://en.wikipedia.org/wiki/About_Time_(2013_film)> "About") is one of my favourite movies ever, and not just because it features Rachel McAdams in yet another time travel movie [^1]. One of the messages it bludgeons your head with at the end of the movie is to treasure every moment of life. Which, despite coming from a rom-com, is actually an important takeaway I believe in.
+[About Time](<https://en.wikipedia.org/wiki/About_Time_(2013_film)> 'About') is one of my favourite movies ever, and not just because it features Rachel McAdams in yet another time travel movie [^1]. One of the messages it bludgeons your head with at the end of the movie is to treasure every moment of life. Which, despite coming from a rom-com, is actually an important takeaway I believe in.
 
-If we should treasure every moment, what about the concept of quality time then? [Ryan Holiday recently wrote about how he disagrees with the concept entirely:](https://forge.medium.com/theres-no-such-thing-as-quality-time-58db618c099d "Ryan")
+If we should treasure every moment, what about the concept of quality time then? [Ryan Holiday recently wrote about how he disagrees with the concept entirely:](https://forge.medium.com/theres-no-such-thing-as-quality-time-58db618c099d 'Ryan')
 
 > It’s one of those lines we throw out casually: “I want to spend more ‘quality time'"
 
@@ -23,7 +23,7 @@ Quality time is a concept that has been around a while, with interest in it grow
 
 ![post](./q_1.webp)
 
-It's [even one of the love languages.](https://www.5lovelanguages.com/ "love")
+It's [even one of the love languages.](https://www.5lovelanguages.com/ 'love')
 
 ![post](./q_2.webp)
 

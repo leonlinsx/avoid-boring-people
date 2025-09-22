@@ -1,10 +1,10 @@
 ---
-title:  "Tips From 15 Newsletter Writers On How To Build Your Own"  
-description: "What to write and how to promote"
+title: 'Tips From 15 Newsletter Writers On How To Build Your Own'
+description: 'What to write and how to promote'
 pubDate: 2020-11-25
 category: Tech
-tags: ["writing"]
-heroImage: "./n_1.webp"
+tags: ['writing']
+heroImage: './n_1.webp'
 ---
 
 Newsletters continue to rise in popularity, driven by [trends in cost, convenience, and control of the audience](https://leonlins.com/writing/2019_07_31_news/). Both amateur and professional writers are publishing independently in order to benefit from the high leverage of working in public. Writing publicly is like buying an option, with capped downside and potentially unlimited upside.
@@ -33,7 +33,7 @@ Hopefully we can inspire some of you to join us in the content creator journey.
 
 > "Clear thinking = clear writing. Before you write, ask yourself, 'What am I trying to say?' Then write as if you're talking to a friend." - [Brad Wolverton of Trends.co](https://twitter.com/bradwolverton/status/1246504862948483073)
 
-> "The newsletter guides usually tell you how to do the easy stuff. What's hard is to consistently write very high quality stuff. When someone subscribes to your newsletter, you enter into a contractual obligation with your readers. Your #1 job is to honor your readers' time and write like nobody wants to read your sh*t." - [Sari Azout of Check your Pulse ](https://sariazout.substack.com/)
+> "The newsletter guides usually tell you how to do the easy stuff. What's hard is to consistently write very high quality stuff. When someone subscribes to your newsletter, you enter into a contractual obligation with your readers. Your #1 job is to honor your readers' time and write like nobody wants to read your sh\*t." - [Sari Azout of Check your Pulse ](https://sariazout.substack.com/)
 
 ### Have a differentiated opinion
 
@@ -114,7 +114,7 @@ Hopefully we can inspire some of you to join us in the content creator journey.
 ### Make the Welcome email special
 
 > "Our attention is our most precious resource. Over the course of writing Snapshots, I've realized that I'm not competing with other newsletters for it. I'm competing with your favorite influencer's Instagram stories, your friend group's juicy messages, and the latest fortune cookie wisdom on Twitter. Billions of dollars are spent on making these platform algorithmically perfect to maximize engagement. These are tough enemies to fight in the battle for attention. I'm grateful that you think that I'm good enough to defeat them at least once a week for a few minutes.\
->\
+> \
 > I absolutely love getting to know my subscribers, so I want to hear from you! Just reply to this email to send me a note. If you're in the Washington D.C. area or are visiting soon, I would love to chat in person -- coffee is on me :)" - [Sid Jha of Sunday Snapshots](https://sss.substack.com/)
 
 > "I'm thrilled to be invited into your inbox ---  time is scarce and content is plentiful, so I am deeply honored that you chose to read my newsletter. 
@@ -143,20 +143,20 @@ Write now.
 
 ## Contributors
 
--   Leon Lin writes to help you [Avoid Boring People](https://leonlins.com/)
--   Lenny Rachitsky of [Lenny's Newsletter](https://www.lennyrachitsky.com/)
--   Nathan Baschez of [Divinations](https://divinations.substack.com/)
--   Nikhil Basu Trivedi [of next big thing](https://nbt.substack.com/)
--   Jacob Donnelly of [A Media Operator](https://www.amediaoperator.com/)
--   Brett Goldstein [of Social Studies](https://techtwittertldr.substack.com/)
--   Alex Taussig - Partner at [Lightspeed](http://www.lsvp.com/); writes [Drinking from the Firehose](http://www.firehose.vc/). 
--   Sarah Noeckel of [Femstreet](https://www.femstreet.com/)
--   Sari Azout of [Check your Pulse](https://sariazout.substack.com/)
--   Li Jin of [Li's Newsletter](https://li.substack.com/)
--   Sid Jha writes [Sunday Snapshots](http://sss.substack.com/)
--   Dru Riley, Founder at [Trends.vc](https://join.trends.vc/)
--   Alex Kantrowitz at [Big Technology](https://bigtechnology.substack.com/)
--   Turner Novak of [Turner's Blog](https://turner.substack.com/)
--   Ian Kar of [Fintech Today](https://fintechtoday.substack.com/)
--   Brad Wolverton of [Trends.co](https://trends.co/)
--   [Kate Lee](https://mobile.twitter.com/katelaurielee) of Stripe Press
+- Leon Lin writes to help you [Avoid Boring People](https://leonlins.com/)
+- Lenny Rachitsky of [Lenny's Newsletter](https://www.lennyrachitsky.com/)
+- Nathan Baschez of [Divinations](https://divinations.substack.com/)
+- Nikhil Basu Trivedi [of next big thing](https://nbt.substack.com/)
+- Jacob Donnelly of [A Media Operator](https://www.amediaoperator.com/)
+- Brett Goldstein [of Social Studies](https://techtwittertldr.substack.com/)
+- Alex Taussig - Partner at [Lightspeed](http://www.lsvp.com/); writes [Drinking from the Firehose](http://www.firehose.vc/). 
+- Sarah Noeckel of [Femstreet](https://www.femstreet.com/)
+- Sari Azout of [Check your Pulse](https://sariazout.substack.com/)
+- Li Jin of [Li's Newsletter](https://li.substack.com/)
+- Sid Jha writes [Sunday Snapshots](http://sss.substack.com/)
+- Dru Riley, Founder at [Trends.vc](https://join.trends.vc/)
+- Alex Kantrowitz at [Big Technology](https://bigtechnology.substack.com/)
+- Turner Novak of [Turner's Blog](https://turner.substack.com/)
+- Ian Kar of [Fintech Today](https://fintechtoday.substack.com/)
+- Brad Wolverton of [Trends.co](https://trends.co/)
+- [Kate Lee](https://mobile.twitter.com/katelaurielee) of Stripe Press

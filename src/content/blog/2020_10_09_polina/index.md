@@ -1,10 +1,10 @@
 ---
-title:  "Profile of The Profile"  
-description: "What Polina Marinova thinks good writing requires"
+title: 'Profile of The Profile'
+description: 'What Polina Marinova thinks good writing requires'
 pubDate: 2020-10-09
 category: Lifestyle
-tags: ["writing"]
-heroImage: "./p_1.webp"
+tags: ['writing']
+heroImage: './p_1.webp'
 ---
 
 ## Takeaway
@@ -27,7 +27,7 @@ If you want to know Polina's most important writing tip, the types of people she
 
 ## 1. On writing
 
-**Good writing requires good editing** 
+**Good writing requires good editing**
 
 In Polina's first ever profile piece for Fortune, three out of five pages in her draft were completely cancelled by her editor [Pattie Sellers.](https://www.sellerseaston.com/team/pattiesellers) [^1] After she overcame her shock and rewrote it though, the piece was indeed significantly better.
 
@@ -140,8 +140,10 @@ Here's a few other points that came up during the discussion:
 
 Here's something Polina would like to know about you: **Who is the person you've learnt the most from?** Continue the conversation [here](https://twitter.com/highlightideas/status/1309307318174056448?s=20) on twitter!
 
-
 [^1]: Pattie Sellers is an award-winning writer, producer, and multimedia journalist who wrote for Fortune for 32 years.
+
 [^2]: As long as it's constructive and not a trolling attempt
+
 [^3]: Type House, which full disclosure I'm also a part of and is how I know Polina.
+
 [^4]: I do the same, and have heard similar ideas from others e.g. a "swipe list" where you put down quotes or sentences you really like, to reference for the future.
