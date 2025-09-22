@@ -78,6 +78,9 @@ if (pubDate) {
     },
   };
 }
+
+// ✅ Merge schemas into one JSON-LD array
+const structuredData = articleSchema ? [orgSchema, articleSchema] : [orgSchema];
 ---
 
 <!-- Global Metadata -->
@@ -135,15 +138,10 @@ if (pubDate) {
 <meta name="twitter:creator" content="@leonlinsx" />
 <meta name="twitter:site" content="@leonlinsx" />
 
-<!-- Structured Data -->
+<!-- ✅ Combined Structured Data -->
 <script is:inline type="application/ld+json">
-  {JSON.stringify(orgSchema)}
+  {JSON.stringify(structuredData)}
 </script>
-{articleSchema && (
-  <script is:inline type="application/ld+json">
-    {JSON.stringify(articleSchema)}
-  </script>
-)}
 
 <!-- Microsoft Clarity -->
 {import.meta.env.PROD && (
