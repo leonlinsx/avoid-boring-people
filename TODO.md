@@ -19,11 +19,19 @@ Replace one-off values with variables. -->
 <!-- - linkinator check -->
 <!-- - minify javascript check -->
 <!-- - bluesky automated posting -->
-<!-- - Heatmaps or scroll depth analytics -->
+<!-- - Heatmaps or scroll depth analytics https://clarity.microsoft.com/projects/view/tegwfukh6k/gettingstarted --> 
 <!-- - google search console domain verification https://search.google.com/search-console?resource_id=https://www.leonlinsx.com/ -->
-- bing webmaster
+<!-- - bing webmaster -->
+- automated posting mastodon
+- automated posting dev.to, tech category only
+- automated posting flipboard
+- automated tiktok posting
+- publish0x
+<!-- - tealfeed; seems nonexistent -->
+- post to reddit relevant subreddits
 - add substack disclaimer to welcome email
 - change substack welcome email
+- automated substack rss posting
 3. event tracking when appropriate
 - dark mode toggle
 - comments
@@ -32,6 +40,7 @@ Replace one-off values with variables. -->
 - font decision
 - colour scheme design decision
 - Hero section redesign: Rotating featured posts with background image/gradient.
-- Auto-generate sitemap + submit to Google Search Console & Bing Webmaster Tools.
-- Periodically ping search engines when new posts go live.
+<!-- - Auto-generate sitemap + submit to Google Search Console & Bing Webmaster Tools. -->
+<!-- - Periodically ping search engines when new posts go live. -->
 - Auto-post summaries on Medium/Dev.to/Hacker News with a canonical link pointing back to your site.
+- book consulting call calendly
