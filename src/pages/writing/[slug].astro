@@ -1,15 +1,27 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { getCleanSlug } from '../../utils/slug'; // ✅ centralize slug logic
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => {
-    // Clean slug: strip both `/index.md` and `.md`
-    const slug =
-      post.slug ?? post.id.replace(/\/index\.md$/, '').replace(/\.md$/, '');
+  const seen = new Map(); // slug -> post.id
 
-    // ✅ attach slug to post before passing as props
+  return posts.map((post) => {
+    // ✅ always use centralized slug function
+    let slug = getCleanSlug(post);
+
+    // Handle collisions with warning
+    if (seen.has(slug)) {
+      console.warn(
+        `⚠️ Duplicate slug detected: "${slug}" from "${post.id}" conflicts with "${seen.get(slug)}".` +
+        ` Using "${slug}-${post.data.pubDate.getFullYear()}" instead.`
+      );
+      slug = `${slug}-${post.data.pubDate.getFullYear()}`;
+    }
+
+    seen.set(slug, post.id);
+
     return {
       params: { slug },
       props: { ...post, slug },
@@ -20,8 +32,6 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'> & { slug: string };
 
 const post = Astro.props;
-
-// render(post) returns { Content, headings }
 const { Content, headings } = await render(post);
 ---
 

@@ -10,17 +10,18 @@ import WritingHeader from '../../components/WritingHeader.astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const { pages, categories } = await getAllPostsPaginated(paginate, 8);
+
   return pages.map((pg) => ({
     ...pg,
     props: {
       ...(pg.props || {}),
-      categories,
+      categories, // ✅ pass categories along for Filters
     },
   }));
 }) satisfies GetStaticPaths;
 
 const { page, categories = [] } = Astro.props;
-const pagedPosts = page.data;
+const pagedPosts = page.data as any[]; // enriched posts with `slug`
 const currentPage = page.currentPage;
 const totalPages = page.lastPage;
 
@@ -41,6 +42,7 @@ const activeCategory = ''; // "All" page
   <Filters categories={categories} activeCategory={activeCategory} />
 
   <!-- Posts -->
+  <!-- ✅ pagedPosts already has clean slugs -->
   <PostList posts={pagedPosts} />
 
   <!-- Pagination -->

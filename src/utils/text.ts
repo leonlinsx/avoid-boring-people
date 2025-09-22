@@ -1,15 +1,17 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import readingTime from 'reading-time';
 import type { ImageMetadata } from 'astro';
+import { getCleanSlug } from './slug';
 
 export type BlogPost = CollectionEntry<'blog'> & {
   slug: string;
   data: CollectionEntry<'blog'>['data'] & {
-    category: string; // display
-    categoryNormalized: string; // for filtering
+    category: string;
+    categoryNormalized: string;
     readingTime: number;
     tags: string[];
-    heroImage?: ImageMetadata; // ✅ use Astro’s built-in type;
+    // ✅ supports both Astro-processed images and string paths
+    heroImage?: ImageMetadata | string;
   };
 };
 
@@ -39,26 +41,32 @@ export const normalizeCategory = (s: string) =>
  * Ensure every post has slug, normalized category, and readingTime.
  */
 export function enrichPost(p: CollectionEntry<'blog'>): BlogPost {
-  const slug = p.id.replace(/\/index\.md$/, '').replace(/\.md$/, '');
+  const slug = getCleanSlug(p);
 
   return {
     ...p,
     slug,
     data: {
       ...p.data,
-      category: p.data.category?.trim() || '', // ✅ preserve original case
-      categoryNormalized: normalizeCategory(p.data.category ?? ''), // ✅ safe for filters
+      category: p.data.category?.trim() || '',
+      categoryNormalized: normalizeCategory(p.data.category ?? ''),
       readingTime: Math.max(1, Math.round(readingTime(p.body ?? '').minutes)),
       tags: Array.isArray(p.data.tags) ? p.data.tags : [],
-      heroImage: normalizeHeroImage(p.data.heroImage),
+      heroImage: normalizeHeroImage(p.data.heroImage, p.id),
     },
   };
 }
 
-// ✅ heroImage is either an Astro ImageMetadata object or undefined
-function normalizeHeroImage(heroImage: unknown): ImageMetadata | undefined {
+/**
+ * Normalize heroImage field to either ImageMetadata or string URL
+ */
+function normalizeHeroImage(
+  heroImage: unknown,
+  postId: string,
+): ImageMetadata | string | undefined {
   if (!heroImage) return undefined;
 
+  // If it's already an Astro ImageMetadata object
   if (
     typeof heroImage === 'object' &&
     heroImage !== null &&
@@ -68,6 +76,18 @@ function normalizeHeroImage(heroImage: unknown): ImageMetadata | undefined {
     'format' in heroImage
   ) {
     return heroImage as ImageMetadata;
+  }
+
+  // If it's a string path (e.g., "./ergo_5.webp")
+  if (typeof heroImage === 'string') {
+    // Resolve relative paths against the post folder
+    if (heroImage.startsWith('./') || heroImage.startsWith('../')) {
+      // Example: "blog/2021_04_03_ergodicity/index.md" → "blog/2021_04_03_ergodicity/"
+      const baseDir = postId.replace(/\/index\.md$/, '').replace(/\.md$/, '');
+      return `/${baseDir}/${heroImage.replace(/^\.\//, '')}`;
+    }
+    // Otherwise assume it's already a valid path (e.g., "/images/foo.webp")
+    return heroImage;
   }
 
   return undefined;

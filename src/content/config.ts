@@ -9,11 +9,11 @@ const blog = defineCollection({
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       category: z.string().optional(),
-      tags: z.array(z.string()).default([]), // ✅ always an array
+      tags: z.array(z.string()).default([]),
       featured: z.boolean().optional(),
-      heroImage: image().optional(),
-      // readingTime is computed in utils, not here
+      heroImage: z.union([image(), z.string()]).optional(),
       readingTime: z.number().optional(),
+      slug: z.string().optional(), // ✅ new override field
     }),
 });
 

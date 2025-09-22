@@ -22,11 +22,12 @@ Replace one-off values with variables. -->
 <!-- - Heatmaps or scroll depth analytics https://clarity.microsoft.com/projects/view/tegwfukh6k/gettingstarted --> 
 <!-- - google search console domain verification https://search.google.com/search-console?resource_id=https://www.leonlinsx.com/ -->
 <!-- - bing webmaster -->
+<!-- - cleaner url for posts -->
 - automated posting mastodon
 - automated posting dev.to, tech category only
 - automated posting flipboard
 - automated tiktok posting
-- publish0x
+<!-- - publish0x -->
 <!-- - tealfeed; seems nonexistent -->
 - post to reddit relevant subreddits
 - add substack disclaimer to welcome email

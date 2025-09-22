@@ -1,21 +1,18 @@
 ---
 // PostList.astro
 import PostCard from './PostCard.astro';
-import { enrichPost } from '../utils/text';
-import type { CollectionEntry } from 'astro:content';
 import type { BlogPost } from '../utils/text';
 
 interface Props {
-  posts: (CollectionEntry<'blog'> | BlogPost)[];
+  posts: BlogPost[]; // ✅ expect enriched posts
   variant?: 'list' | 'grid' | 'compact';
 }
 
 const { posts = [], variant = 'list' } = Astro.props;
-const enrichedPosts: BlogPost[] = posts.map((p) => enrichPost(p as any));
 ---
 
 <section class:list={['writing-post-list', variant]}>
-  {enrichedPosts.map((post) => <PostCard post={post} />)}
+  {posts.map((post) => <PostCard post={post} />)}
 </section>
 
 <style>

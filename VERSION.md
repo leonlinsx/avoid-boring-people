@@ -22,6 +22,9 @@
 - Thread reply handling fixed on Bluesky (using proper `ReplyRef`).
 - Clearer logs for debugging partial failures across platforms.
 
+## Social
+- heatmap vis analytics js embed support
+- 
 
 # 2025-09-20
 

@@ -10,17 +10,17 @@ import { enrichPost } from '../utils/text';
 import TableOfContents from '../components/TableOfContents.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import TagList from '../components/TagList.astro';
-// Remove local readingTime calculation
 import SubscribeForm from '../components/SubscribeForm.astro';
 import type { MarkdownHeading } from 'astro';
 
 type Props = {
-  post: CollectionEntry<'blog'>;
+  post: CollectionEntry<'blog'> & { slug: string };
   headings?: MarkdownHeading[];
 };
 
 const { post, headings = [] } = Astro.props;
 
+// ✅ Enrich once, then destructure from .data
 const enrichedPost = enrichPost(post);
 const {
   title,
@@ -32,19 +32,21 @@ const {
   tags = [],
   readingTime,
 } = enrichedPost.data;
+const slug = enrichedPost.slug;
 
+// ✅ Use normalized hero (string or ImageMetadata)
 const hero = heroImage ?? SITE_BANNER_IMAGE;
 
-// ✅ Related posts
+// ✅ Related posts (exclude by id)
 const allPosts = await getCollection('blog');
 const related = allPosts
-  .filter((p) => p.data.category === category && p.data.title !== title)
+  .filter((p) => p.data.category === category && p.id !== post.id)
   .map(enrichPost)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-// ✅ Canonical URL
-const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
+// ✅ Canonical URL from clean slug
+const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
 ---
 
 <BaseLayout
@@ -54,35 +56,33 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
 >
   <main>
     <article>
-      {
-        hero && (
-          <div class="hero-image">
-            {typeof hero === 'object' ? (
-              <Image
-                src={hero}
-                alt={title}
-                format="webp"
-                width={1200}
-                height={630}
-                fit="cover"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            ) : (
-              <img
-                src={hero}
-                alt={title}
-                width="1200"
-                height="630"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-              />
-            )}
-          </div>
-        )
-      }
+      {hero && (
+        <div class="hero-image">
+          {typeof hero === 'object' ? (
+            <Image
+              src={hero}
+              alt={`Hero for ${title}`}
+              format="webp"
+              width={1200}
+              height={630}
+              fit="cover"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          ) : (
+            <img
+              src={hero}
+              alt={`Hero for ${title}`}
+              width="1200"
+              height="630"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          )}
+        </div>
+      )}
 
       <div class="prose">
         <div class="title">
@@ -90,13 +90,11 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
             <FormattedDate date={pubDate} />
             {category && ` · ${category}`}
             {readingTime && ` · ${readingTime} min read`}
-            {
-              updatedDate && (
-                <div class="last-updated-on">
-                  Last updated on <FormattedDate date={updatedDate} />
-                </div>
-              )
-            }
+            {updatedDate && (
+              <div class="last-updated-on">
+                Last updated on <FormattedDate date={updatedDate} />
+              </div>
+            )}
           </div>
           <h1>{title}</h1>
         </div>
@@ -117,14 +115,12 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
         <SubscribeForm compact={false} />
 
         <!-- Related posts -->
-        {
-          related.length > 0 && (
-            <section class="related-posts">
-              <h2>Related Posts</h2>
-              <PostList posts={related} variant="compact" />
-            </section>
-          )
-        }
+        {related.length > 0 && (
+          <section class="related-posts">
+            <h2>Related Posts</h2>
+            <PostList posts={related} variant="compact" />
+          </section>
+        )}
       </div>
     </article>
   </main>
@@ -177,7 +173,7 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
     text-align: center;
   }
   .related-posts > h2 {
-    margin-top: 0; /* don’t add extra gap above heading */
+    margin-top: 0;
     margin-bottom: var(--space-lg);
     font-size: var(--text-xl);
   }

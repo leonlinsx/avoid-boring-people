@@ -12,11 +12,11 @@ const { post } = Astro.props;
 const title = post.data.title ?? 'Untitled';
 const desc = post.data.description ?? '';
 const category = post.data.category ?? '';
-const date = post.data.pubDate ? new Date(post.data.pubDate) : null;
+const date = post.data.pubDate ?? null; // already Date from schema
 const rt = post.data.readingTime;
 
-// ✅ slug is guaranteed by enrichPost
-const slug = post.slug;
+// ✅ slug is guaranteed by enrichPost, but fallback just in case
+const slug = post.slug ?? post.id.replace(/\/index\.md$/, '');
 const href = `/writing/${slug}/`;
 
 // ✅ Thumbnail: heroImage (object) or SITE_OG_IMAGE (string fallback)
@@ -29,7 +29,7 @@ const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;
       typeof thumbnail === 'object' ? (
         <Image
           src={thumbnail}
-          alt={title}
+          alt={`Thumbnail for ${title}`}
           width={120}
           height={80}
           class="post-thumb"
@@ -37,7 +37,7 @@ const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;
       ) : (
         <img
           src={thumbnail}
-          alt={title}
+          alt={`Thumbnail for ${title}`}
           width="120"
           height="80"
           class="post-thumb"
@@ -56,14 +56,12 @@ const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;
 
     <p class="post-meta">
       {category}
-      {
-        date && (
-          <>
-            {' '}
-            · <FormattedDate date={date} />
-          </>
-        )
-      }
+      {date && (
+        <>
+          {' '}
+          · <FormattedDate date={date} />
+        </>
+      )}
       {rt && ` · ${rt} min read`}
     </p>
   </div>
