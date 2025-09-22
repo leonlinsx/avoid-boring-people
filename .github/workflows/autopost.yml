@@ -59,6 +59,9 @@ jobs:
           # Mastodon
           MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+
+          # Dev.to
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: python -m scripts.automation.auto_post
 
       - name: Commit updated posted.json

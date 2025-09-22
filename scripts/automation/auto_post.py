@@ -146,10 +146,6 @@ def main():
                 or ""
             ).strip().lower()
 
-            print(f"DEBUG next_post keys: {list(next_post.keys())}")
-            print(f"DEBUG next_post.data: {next_post.get('data')}")
-            print(f"DEBUG: category resolved as '{category}'")
-
             if category != "tech":
                 print(f"ℹ️ Skipping Dev.to posting (category='{category}')")
             else:
