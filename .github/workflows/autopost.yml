@@ -37,7 +37,7 @@ jobs:
         env:
           DRY_RUN: 'false' # flip to true for testing
           USE_LLM: 'true'
-          PLATFORM: 'twitter, bluesky, mastodon' # or "threads" or "bluesky" or "mastodon" or combo
+          PLATFORM: 'twitter, bluesky, mastodon, devto' # or "threads" or "bluesky" or "mastodon" or combo
           POST_MODE: 'thread'
           THREAD_MODE: 'bullets'
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
