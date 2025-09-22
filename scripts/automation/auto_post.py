@@ -1,26 +1,41 @@
 import os
 from scripts.automation import fetch_posts, select_next_post, mark_posted
 from scripts.automation.publishers import (
-    get_twitter_client, post_single, post_thread,
-    post_single_to_threads, post_thread_to_threads,
+    get_twitter_client,
+    post_single,
+    post_thread,
+    post_single_to_threads,
+    post_thread_to_threads,
 )
 from scripts.automation.publishers.bluesky import (
-    post_single_to_bluesky, post_thread_to_bluesky,
+    post_single_to_bluesky,
+    post_thread_to_bluesky,
+)
+from scripts.automation.publishers.mastodon import (
+    post_single_to_mastodon,
+    post_thread_to_mastodon,
 )
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.summarizers import llm_summarize, stub_summarize
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Toggles
 DRY_RUN = os.getenv("DRY_RUN", "true").lower() == "true"
 POST_MODE = os.getenv("POST_MODE", "single")  # "single" or "thread"
 THREAD_MODE = os.getenv("THREAD_MODE", "bullets")  # "bullets" or "narrative"
 USE_LLM = os.getenv("USE_LLM", "false").lower() == "true"
-PLATFORM = os.getenv("PLATFORM", "twitter")  # twitter | threads | bluesky | both
+# Comma-separated list of platforms → normalize to list of lowercase strings
+PLATFORM = [
+    p.strip().lower() for p in os.getenv("PLATFORM", "twitter").split(",") if p.strip()
+]
 
 SUMMARY_FILE = os.getenv("GITHUB_STEP_SUMMARY")
 
 # Summarizer selection
 summarize_post = llm_summarize if USE_LLM else stub_summarize
+
 
 def log_summary(message: str):
     """Write to GitHub Actions summary if available, else print."""
@@ -28,6 +43,7 @@ def log_summary(message: str):
         with open(SUMMARY_FILE, "a") as f:
             f.write(message + "\n")
     print(message)
+
 
 def main():
     # Step 1: Fetch posts
@@ -90,7 +106,7 @@ def main():
             log_summary("✅ Bluesky posting completed")
         except Exception as e:
             log_summary(f"❌ Bluesky posting failed: {e}")
-            
+
     if "threads" in PLATFORM:
         try:
             if DRY_RUN:
@@ -105,6 +121,21 @@ def main():
             log_summary("✅ Threads posting completed")
         except Exception as e:
             log_summary(f"❌ Threads posting failed: {e}")
+
+    if "mastodon" in PLATFORM:
+        try:
+            if DRY_RUN:
+                print("\n📝 Dry-run (Mastodon):")
+                for i, t in enumerate(posts_out, 1):
+                    print(f"\nToot {i}:\n{t}")
+            else:
+                if POST_MODE == "single":
+                    post_single_to_mastodon(posts_out[0])
+                else:
+                    post_thread_to_mastodon(posts_out)
+            log_summary("✅ Mastodon posting completed")
+        except Exception as e:
+            log_summary(f"❌ Mastodon posting failed: {e}")
 
     # Step 5: Update state
     mark_posted(next_post)

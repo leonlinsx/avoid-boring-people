@@ -11,6 +11,16 @@
   - Results (`✅` or `❌`) for each platform are written to `$GITHUB_STEP_SUMMARY`.
   - Visible at the top of the Actions run page, no need to scroll logs.
 
+### Mastodon Autopost Integration
+- Added `mastodon.py` publisher with `post_single_to_mastodon` and `post_thread_to_mastodon`.
+- Updated `auto_post.py`:
+  - Loads `.env` automatically with `dotenv`.
+  - Supports multiple platforms via comma-separated `PLATFORM` env var (e.g. `twitter,mastodon`).
+  - Added Mastodon dispatch block with dry-run support.
+- Fixed 401 error by generating proper Mastodon **Access Token** with `write:statuses` scope.
+- Cleaned up debug prints in `mastodon.py`; now logs only successful authentication and post URLs.
+
+
 ### Configuration
 - Adjusted `autopost.yml`:
   - Use `PLATFORM=twitter,bluesky` for cross-posting.
@@ -24,7 +34,8 @@
 
 ## Social
 - heatmap vis analytics js embed support
-- 
+
+
 
 # 2025-09-20
 

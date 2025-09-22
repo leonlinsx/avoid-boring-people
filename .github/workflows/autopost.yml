@@ -33,20 +33,32 @@ jobs:
           echo "⏳ Sleeping for $DELAY seconds before posting..."
           sleep $DELAY
 
-      - name: Run auto_post.py
+            - name: Run auto_post.py
         env:
           DRY_RUN: 'false' # flip to true for testing
           USE_LLM: 'true'
-          PLATFORM: 'twitter' # or "threads" or "both"
-          POST_MODE: 'thread' # ✅ ensure threads instead of single posts
-          THREAD_MODE: 'bullets' # ✅ explicit even if default
+          PLATFORM: 'twitter, bluesky, mastodon' # or "threads" or "bluesky" or "mastodon" or combo
+          POST_MODE: 'thread'
+          THREAD_MODE: 'bullets'
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+          # Twitter
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
           TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+
+          # Threads
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+
+          # Bluesky
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+
+          # Mastodon
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
         run: python -m scripts.automation.auto_post
 
       - name: Commit updated posted.json
