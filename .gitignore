@@ -45,3 +45,6 @@ README.md
 
 # Tests / coverage
 coverage
+
+# Auth cookies for automation
+/cookies/*.json

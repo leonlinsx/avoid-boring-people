@@ -1,4 +1,5 @@
 import os
+import re
 from scripts.automation import fetch_posts, select_next_post, mark_posted
 from scripts.automation.publishers import (
     get_twitter_client,
@@ -16,6 +17,7 @@ from scripts.automation.publishers.mastodon import (
     post_thread_to_mastodon,
 )
 from scripts.automation.publishers.devto import post_to_devto
+from scripts.automation.publishers.publish0x import post_to_publish0x  # ✅ NEW
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.summarizers import llm_summarize, stub_summarize
 from dotenv import load_dotenv
@@ -44,6 +46,18 @@ def log_summary(message: str):
         with open(SUMMARY_FILE, "a") as f:
             f.write(message + "\n")
     print(message)
+
+
+def sanitize_tags(tags):
+    """Convert tags into Dev.to-friendly format (lowercase, alphanumeric/dash only)."""
+    clean_tags = []
+    for tag in tags:
+        t = tag.lower().strip()
+        t = re.sub(r"[^a-z0-9]+", "-", t)  # replace spaces/invalid chars with dash
+        t = t.strip("-")
+        if t and t not in clean_tags:
+            clean_tags.append(t)
+    return clean_tags[:4]  # Dev.to max 4 tags
 
 
 def main():
@@ -141,10 +155,14 @@ def main():
     if "devto" in PLATFORM:
         try:
             category = (
-                next_post.get("category")
-                or next_post.get("data", {}).get("category")
-                or ""
-            ).strip().lower()
+                (
+                    next_post.get("category")
+                    or next_post.get("data", {}).get("category")
+                    or ""
+                )
+                .strip()
+                .lower()
+            )
 
             if category != "tech":
                 print(f"ℹ️ Skipping Dev.to posting (category='{category}')")
@@ -157,21 +175,41 @@ def main():
                     body_md += "\n".join(f"- {p}" for p in points)
                 body_md += f"\n\n👉 [Read full article]({next_post['url']})"
 
+                # ✅ sanitize + dedupe tags
+                raw_tags = next_post.get("tags", []) or next_post.get("data", {}).get(
+                    "tags", []
+                )
+                safe_tags = sanitize_tags(raw_tags)
+
+                if not safe_tags:
+                    print("⚠️ No valid tags found, posting without tags")
+
                 if DRY_RUN:
                     print("\n📝 Dry-run (Dev.to):")
                     print(body_md)
+                    print("Tags:", safe_tags)
                 else:
                     post_to_devto(
                         title=next_post["title"],
                         body_markdown=body_md,
-                        tags=next_post.get("tags", []) or next_post.get("data", {}).get("tags", []),
+                        tags=safe_tags,
                         canonical_url=next_post["url"],
                     )
                 log_summary("✅ Dev.to posting completed")
         except Exception as e:
             log_summary(f"❌ Dev.to posting failed: {e}")
 
-
+    if "publish0x" in PLATFORM:  # ✅ NEW
+        try:
+            if DRY_RUN:
+                print("\n📝 Dry-run (Publish0x):")
+                print(f"Title: {next_post['title']}")
+                print(f"Tags: {next_post.get('tags', [])}")
+            else:
+                post_to_publish0x(next_post)
+            log_summary("✅ Publish0x posting attempted")
+        except Exception as e:
+            log_summary(f"❌ Publish0x posting failed: {e}")
 
     # Step 5: Update state
     mark_posted(next_post)

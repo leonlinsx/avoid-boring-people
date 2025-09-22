@@ -38,6 +38,7 @@ export default [
       parser: tsParser,
       globals: {
         ...globals.browser, // ✅ DOM types (document, fetch, etc.)
+        ...globals.node,    // ✅ Node.js types (process, Buffer, etc.)
       },
     },
     plugins: {

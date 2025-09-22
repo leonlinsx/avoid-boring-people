@@ -32,19 +32,20 @@ Replace one-off values with variables. -->
 <!-- - dark mode toggle -->
 <!-- - add substack disclaimer to welcome email
 - change substack welcome email -->
+<!-- - automated posting flipboard; seems to not take rss feed -->
 
 - Auto-post summaries on Medium with a canonical link pointing back to your site.
-- automated posting flipboard
 - automated tiktok posting
 
 - post to reddit relevant subreddits
 - automated substack rss posting
-3. event tracking when appropriate
 - comments
 - font decision
 - colour scheme design decision
 - Hero section redesign: Rotating featured posts with background image/gradient.
 - book consulting call calendly
 - automated linkedin summaries
+3. event tracking when appropriate
 - twitter thread analytics tracking
 - automated posting threads
+- automated posting publish0x
