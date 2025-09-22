@@ -3,7 +3,7 @@ name: Medium Prep
 on:
   push:
     paths:
-      - "src/content/blog/**/index.md"   # ✅ match nested post folders
+      - "src/content/blog/**/index.md"
 
 jobs:
   medium-prep:
@@ -23,6 +23,9 @@ jobs:
 
       - name: Generate Medium summary
         run: |
-          latest_file=$(git diff --name-only HEAD~1 HEAD | grep '^src/content/blog/.*/index.md$' | tail -n1)
+          latest_file=$(git ls-files -m src/content/blog/*/index.md | tail -n1)
+          if [ -z "$latest_file" ]; then
+            latest_file=$(git log -n 1 --pretty=format: --name-only -- src/content/blog/*/index.md | tail -n1)
+          fi
           echo "Latest blog file: $latest_file"
-          python scripts/automation/medium_prep.py "$latest_file"
+          PYTHONPATH=. python scripts/automation/medium_prep.py "$latest_file"
