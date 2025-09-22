@@ -3,9 +3,11 @@ tweepy
 python-dotenv
 openai
 sumy
-setuptools
 nltk
+numpy
+scipy        
+pycountry    
 requests
 atproto
 python-frontmatter
-numpy
+setuptools
