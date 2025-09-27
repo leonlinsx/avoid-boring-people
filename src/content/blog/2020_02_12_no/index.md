@@ -1,5 +1,5 @@
 ---
-title: 'Things I’ve learnt organising event'
+title: 'Things I’ve learnt organising events'
 description: 'Not replying is not no, and why you should let people go'
 pubDate: 2020-02-12
 category: Lifestyle
