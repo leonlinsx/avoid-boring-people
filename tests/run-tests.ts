@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import { computeCleanSlug } from '../src/utils/slug-helpers.ts';
 import { searchPosts, normalizeQuery } from '../src/utils/search.ts';
+import { extractHeadings } from '../src/utils/toc.ts';
+import {
+  normalizeHeroImage,
+  stripIndexSuffix,
+  normalizeRelativePath,
+} from '../src/utils/hero-image.ts';
 
 function makePost(overrides: Record<string, any> = {}) {
   const base = {
@@ -128,10 +134,66 @@ function testNormalizeQuery() {
   assert.equal(normalizeQuery('\n\t  MIXED Case  '), 'mixed case');
 }
 
+function testExtractHeadings() {
+  const html = `
+    <h2 class="section" data-level="2" id="intro">Intro <em>text</em></h2>
+    <h3 id='details' class="sub" data-role="anchor">Detailed <code>insights</code></h3>
+    <h4 id="ignore">Ignore</h4>
+  `;
+
+  const headings = extractHeadings(html);
+
+  assert.deepEqual(headings, [
+    { level: 2, id: 'intro', text: 'Intro text' },
+    { level: 3, id: 'details', text: 'Detailed insights' },
+  ]);
+}
+
+function testNormalizeHeroImage() {
+  const metadataLike = {
+    src: '/optimized/image.webp',
+    width: 800,
+    height: 600,
+    format: 'webp',
+  };
+  assert.equal(normalizeHeroImage(undefined, 'blog/post.md'), undefined);
+  assert.strictEqual(
+    normalizeHeroImage(metadataLike, 'blog/post.md'),
+    metadataLike,
+  );
+
+  assert.equal(
+    normalizeHeroImage('./cover.webp', 'blog/2024_02_03_new-idea/index.mdx'),
+    '/blog/2024_02_03_new-idea/cover.webp',
+  );
+
+  assert.equal(
+    normalizeHeroImage('../shared.webp', 'blog/2024_02_03_new-idea/index.mdx'),
+    '/blog/shared.webp',
+  );
+
+  assert.equal(
+    normalizeHeroImage('/images/custom.webp', 'blog/post.md'),
+    '/images/custom.webp',
+  );
+
+  assert.equal(stripIndexSuffix('blog/slug/index.md'), 'blog/slug');
+  assert.equal(stripIndexSuffix('blog/slug/index.mdx'), 'blog/slug');
+  assert.equal(stripIndexSuffix('blog/slug.md'), 'blog/slug');
+  assert.equal(stripIndexSuffix('blog/slug.mdx'), 'blog/slug');
+
+  assert.equal(
+    normalizeRelativePath('./cover.webp', 'blog/slug/index.mdx'),
+    '/blog/slug/cover.webp',
+  );
+}
+
 try {
   testSearchPosts();
   testComputeCleanSlug();
   testNormalizeQuery();
+  testExtractHeadings();
+  testNormalizeHeroImage();
   console.log('✅ All custom tests passed');
 } catch (error) {
   console.error('❌ Test failure', error);
