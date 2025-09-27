@@ -1,7 +1,7 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import readingTime from 'reading-time';
 import type { ImageMetadata } from 'astro';
-import { getCleanSlug } from './slug';
+import { getCleanSlug } from './slug.ts';
 
 export type BlogPost = CollectionEntry<'blog'> & {
   slug: string;
@@ -19,6 +19,10 @@ export type PaginateFn = <T>(
   items: T[],
   options: { pageSize: number; params?: Record<string, any> },
 ) => Array<any>;
+
+type GetCollectionFn = <CollectionName extends string = string>(
+  collection: CollectionName,
+) => Promise<CollectionEntry<CollectionName>[]>;
 
 /**
  * Convert a string to Title Case.
@@ -96,8 +100,40 @@ function normalizeHeroImage(
 /**
  * Paginate all posts, with categories list.
  */
+let getCollectionImpl: GetCollectionFn | null = null;
+
+async function resolveGetCollection(): Promise<GetCollectionFn> {
+  if (getCollectionImpl) {
+    return getCollectionImpl;
+  }
+
+  try {
+    const mod = await import('astro:content');
+    const actual = (mod as { getCollection?: GetCollectionFn }).getCollection;
+    if (actual) {
+      getCollectionImpl = actual;
+      return actual;
+    }
+  } catch (error) {
+    // Ignore, we'll throw a more helpful message below.
+  }
+
+  throw new Error(
+    'Unable to load astro:content getCollection. Provide a test implementation using setGetCollectionImplementation.',
+  );
+}
+
+/**
+ * Allow tests to swap out the getCollection implementation.
+ * In production this stays pointed at Astro's runtime implementation.
+ */
+export function setGetCollectionImplementation(replacement: GetCollectionFn | null) {
+  getCollectionImpl = replacement;
+}
+
 export async function getAllPostsPaginated(paginate: PaginateFn, pageSize = 8) {
-  const allPosts = await getCollection('blog');
+  const getter = await resolveGetCollection();
+  const allPosts = await getter('blog');
 
   const categories = Array.from(
     new Set(allPosts.map((p) => normalizeCategory(p.data.category ?? ''))),
@@ -121,7 +157,8 @@ export async function getCategoryPostsPaginated(
   paginate: PaginateFn,
   pageSize = 8,
 ) {
-  const all = await getCollection('blog');
+  const getter = await resolveGetCollection();
+  const all = await getter('blog');
 
   const categories = Array.from(
     new Set(all.map((p) => normalizeCategory(p.data.category ?? ''))),
