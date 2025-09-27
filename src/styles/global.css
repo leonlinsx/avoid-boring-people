@@ -12,6 +12,7 @@
   /* Colors */
   --color-bg: #ffffff;
   --color-text: #222222;
+  --color-text-subtle: #666666;
   --color-link: #0066cc;
   --color-link-hover: #005bb5;
   --color-border: #e0e0e0;
@@ -63,6 +64,7 @@
 [data-theme='dark'] {
   --color-bg: #111111;
   --color-text: #f5f5f5;
+  --color-text-subtle: rgba(245, 245, 245, 0.64);
   --color-link: #4ea1ff;
   --color-link-hover: #80c2ff;
   --color-border: #333333;
@@ -485,6 +487,8 @@ img.center {
   border: none;
   outline: none;
   background: transparent;
+  color: var(--color-text);
+  caret-color: var(--color-text);
   font-size: var(--text-base);
   flex: 1;
   padding: 0.5rem 0; /* balanced vertical padding */
