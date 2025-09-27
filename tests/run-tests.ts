@@ -11,6 +11,7 @@ import {
   type BlogPost,
 } from '../src/utils/text.ts';
 import { extractHeadings } from '../src/utils/toc.ts';
+import { normalizeHeroImage } from '../src/utils/hero.ts';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -213,7 +214,7 @@ function testEnrichPost() {
   assert.ok(enriched.data.readingTime >= 1);
 
   const relativeEntry = makeCollectionEntry({
-    id: '2024_05_02_custom/index.md',
+    id: '2024_05_02_custom/index.mdx',
     data: {
       category: 'Notes',
       tags: 'not-array',
@@ -237,6 +238,44 @@ function testEnrichPost() {
   const absoluteHero = enrichPost(absoluteEntry as any);
 
   assert.equal(absoluteHero.data.heroImage, '/images/custom.png');
+
+  const nestedRelative = makeCollectionEntry({
+    id: '2024_05_04_nested/post.mdx',
+    data: {
+      heroImage: '../shared/banner.png',
+    },
+  });
+
+  const nestedHero = enrichPost(nestedRelative as any);
+
+  assert.equal(
+    nestedHero.data.heroImage,
+    '/2024_05_04_nested/shared/banner.png',
+  );
+}
+
+function testNormalizeHeroImageHelper() {
+  const meta = {
+    src: '/images/hero.webp',
+    width: 100,
+    height: 100,
+    format: 'webp',
+  } as const;
+
+  assert.equal(normalizeHeroImage(meta, '2024_05_01_meta/index.md'), meta);
+  assert.equal(
+    normalizeHeroImage('./cover.webp', '2024_05_02_custom/index.mdx'),
+    '/2024_05_02_custom/cover.webp',
+  );
+  assert.equal(
+    normalizeHeroImage('../shared/cover.webp', 'blog/2024/post.mdx'),
+    '/blog/2024/shared/cover.webp',
+  );
+  assert.equal(
+    normalizeHeroImage('/images/direct.png', '2024_05_03_absolute.mdx'),
+    '/images/direct.png',
+  );
+  assert.equal(normalizeHeroImage(null, '2024_05_04.md'), undefined);
 }
 
 async function testGetAllPostsPaginated() {
@@ -383,15 +422,19 @@ async function testGetCategoryPostsPaginated() {
 function testExtractHeadings() {
   const html = `
     <h1 id="title">Main</h1>
-    <h2 id="intro">Intro <em>section</em></h2>
-    <h3 id="details">Details <code>code</code></h3>
+    <h2 class="lead" data-info="intro" id='intro'>Intro <em>section</em></h2>
+    <h3 data-extra="1" class="sub" id="details">Details <code>code</code></h3>
+    <h3 class="loose" id=unquoted>Loose <strong>quotes</strong></h3>
     <h4 id="ignore">Ignore</h4>
+    <h2 data-test="x" id="closing">Closing</h2>
   `;
 
   const headings = extractHeadings(html);
   assert.deepEqual(headings, [
     { level: 2, id: 'intro', text: 'Intro section' },
     { level: 3, id: 'details', text: 'Details code' },
+    { level: 3, id: 'unquoted', text: 'Loose quotes' },
+    { level: 2, id: 'closing', text: 'Closing' },
   ]);
 }
 
@@ -405,6 +448,7 @@ async function run() {
     testEnrichPost();
     await testGetAllPostsPaginated();
     await testGetCategoryPostsPaginated();
+    testNormalizeHeroImageHelper();
     testExtractHeadings();
     console.log('✅ All custom tests passed');
   } catch (error) {
