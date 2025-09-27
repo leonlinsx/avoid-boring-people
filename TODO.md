@@ -39,12 +39,12 @@ Replace one-off values with variables. -->
 <!-- - font decision
 - colour scheme design decision -->
 
+- automated linkedin summaries
 - post to reddit relevant subreddits
 - book consulting call calendly
-- automated linkedin summaries
-- Hero section redesign: Rotating featured posts with background image/gradient.
 3. event tracking when appropriate
 - twitter thread analytics tracking
 - automated posting threads
-- automated posting publish0x; seems to not pick up cookies for login
 - automated tiktok posting
+- automated posting publish0x; seems to not pick up cookies for login
+- Hero section redesign: Rotating featured posts with background image/gradient.
