@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PostList from '../components/PostList.astro';
-import { SITE_BANNER_IMAGE, SITE_URL } from '../consts';
+import { SITE_AUTHOR, SITE_BANNER_IMAGE, SITE_URL } from '../consts';
 import { enrichPost } from '../utils/text';
 import TableOfContents from '../components/TableOfContents.astro';
 import ShareButtons from '../components/ShareButtons.astro';
@@ -53,6 +53,11 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
   title={title}
   description={description}
   image={typeof hero === 'object' ? hero.src : hero}
+  pubDate={pubDate}
+  updatedDate={updatedDate}
+  authorName={SITE_AUTHOR}
+  ogType="article"
+  tags={tags}
 >
   <main>
     <article>

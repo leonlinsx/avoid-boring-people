@@ -26,11 +26,23 @@ const currentPage = page.currentPage;
 const totalPages = page.lastPage;
 
 const activeCategory = ''; // "All" page
+const canonical = currentPage === 1 ? '/writing/' : undefined;
+const relPrev =
+  currentPage > 1
+    ? currentPage === 2
+      ? '/writing/'
+      : `/writing/${currentPage - 1}`
+    : undefined;
+const relNext =
+  currentPage < totalPages ? `/writing/${currentPage + 1}` : undefined;
 ---
 
 <BaseLayout
   title={`Writing | ${SITE_TITLE}`}
   description="All essays, notes, and more."
+  canonical={canonical}
+  relPrev={relPrev}
+  relNext={relNext}
 >
   <WritingHeader
     title="Essays, Notes, and More"

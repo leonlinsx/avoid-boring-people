@@ -5,19 +5,59 @@ import {
   SITE_DESCRIPTION,
   SITE_URL,
   SITE_OG_IMAGE,
+  SITE_AUTHOR,
 } from "../consts";
 
-interface Props {
+const {
+  title,
+  description,
+  image,
+  pubDate,
+  updatedDate,
+  authorName,
+  ogType = "website",
+  tags = [],
+  canonical,
+  relPrev,
+  relNext,
+} = Astro.props as {
   title: string;
   description?: string;
   image?: string | { src: string };
   pubDate?: Date;
   updatedDate?: Date;
   authorName?: string;
-}
+  ogType?: string;
+  tags?: string[];
+  canonical?: string;
+  relPrev?: string;
+  relNext?: string;
+};
 
-const canonicalURL = new URL(Astro.url.pathname, SITE_URL).toString();
-const { title, description, image, pubDate, updatedDate, authorName } = Astro.props;
+const resolveAbsoluteURL = (maybeRelative?: string) => {
+  if (!maybeRelative) return undefined;
+  if (maybeRelative.startsWith("http")) return maybeRelative;
+  try {
+    return new URL(maybeRelative, SITE_URL).toString();
+  } catch (error) {
+    return undefined;
+  }
+};
+
+const canonicalURL =
+  resolveAbsoluteURL(canonical) ?? new URL(Astro.url.pathname, SITE_URL).toString();
+const prevURL = resolveAbsoluteURL(relPrev);
+const nextURL = resolveAbsoluteURL(relNext);
+
+const normalizedTags = Array.isArray(tags)
+  ? tags.map((tag) => tag?.toString().trim()).filter(Boolean)
+  : [];
+const resolvedAuthor = authorName || SITE_AUTHOR;
+const isoPubDate = pubDate instanceof Date ? pubDate.toISOString() : undefined;
+const isoUpdatedDate =
+  updatedDate instanceof Date
+    ? updatedDate.toISOString()
+    : isoPubDate;
 
 // ✅ Resolve OG image safely
 let ogImage: string;
@@ -62,7 +102,7 @@ if (pubDate) {
     dateModified: (updatedDate || pubDate).toISOString(),
     author: {
       "@type": "Person",
-      name: authorName || "Leon Lin",
+      name: resolvedAuthor,
     },
     publisher: {
       "@type": "Organization",
@@ -80,7 +120,12 @@ if (pubDate) {
 }
 
 // ✅ Merge schemas into one JSON-LD array
+if (articleSchema && normalizedTags.length > 0) {
+  articleSchema.keywords = normalizedTags.join(", ");
+}
+
 const structuredData = articleSchema ? [orgSchema, articleSchema] : [orgSchema];
+const ogImageAlt = `Preview image for ${title}`;
 ---
 
 <!-- Global Metadata -->
@@ -115,19 +160,37 @@ const structuredData = articleSchema ? [orgSchema, articleSchema] : [orgSchema];
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+{prevURL && <link rel="prev" href={prevURL} />}
+{nextURL && <link rel="next" href={nextURL} />}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={metaDescription} />
+<meta name="author" content={resolvedAuthor} />
 
 <!-- Open Graph -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
+<meta property="og:locale" content="en_US" />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={ogImageAlt} />
 <meta property="og:site_name" content={SITE_TITLE} />
+{ogType === "article" && isoPubDate && (
+  <meta property="article:published_time" content={isoPubDate} />
+)}
+{ogType === "article" && isoUpdatedDate && (
+  <meta property="article:modified_time" content={isoUpdatedDate} />
+)}
+{ogType === "article" && (
+  <meta property="article:author" content={resolvedAuthor} />
+)}
+{ogType === "article" &&
+  normalizedTags.map((tag) => (
+    <meta property="article:tag" content={tag} key={tag} />
+  ))}
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
@@ -135,6 +198,7 @@ const structuredData = articleSchema ? [orgSchema, articleSchema] : [orgSchema];
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
 <meta name="twitter:creator" content="@leonlinsx" />
 <meta name="twitter:site" content="@leonlinsx" />
 
