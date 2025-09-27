@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import SearchBar from '../../components/SearchBar.astro';
 import { enrichPost } from '../../utils/text'; // ✅ reuse helper
+import { searchPosts } from '../../utils/search';
 
 // Extract query param `q` from the URL
 const url = new URL(Astro.request.url);
@@ -16,6 +17,9 @@ const allPosts = await getCollection('blog');
 const posts = allPosts
   .map(enrichPost)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const filteredPosts = q ? searchPosts(posts, q) : posts;
+const visibleIds = new Set(filteredPosts.map((post) => post.id));
 ---
 
 <BaseLayout
@@ -28,8 +32,19 @@ const posts = allPosts
   </div>
 
   <div id="post-list">
-    {posts.map((post) => <PostCard post={post} />)}
+    {posts.map((post) => (
+      <PostCard post={post} hidden={!visibleIds.has(post.id)} />
+    ))}
   </div>
+
+  <p
+    id="search-empty"
+    class:list={['search-empty', filteredPosts.length === 0 && q ? 'is-visible' : '']}
+    role="status"
+    aria-live="polite"
+  >
+    No posts found for “{q}”. Try a different keyword.
+  </p>
 
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"
   ></script>
@@ -37,6 +52,7 @@ const posts = allPosts
     const input = document.getElementById('client-search-input');
     const postList = document.getElementById('post-list');
     const allPosts = Array.from(postList.children);
+    const emptyState = document.getElementById('search-empty');
 
     const postsData = allPosts.map((el) => ({
       el,
@@ -64,12 +80,29 @@ const posts = allPosts
 
     function runSearch(query) {
       if (!query) {
-        allPosts.forEach((el) => (el.style.display = ''));
+        allPosts.forEach(showPost);
+        updateEmptyState(true);
         return;
       }
       const found = fuse.search(query).map((r) => r.item.el);
-      allPosts.forEach((el) => (el.style.display = 'none'));
-      found.forEach((el) => (el.style.display = ''));
+      allPosts.forEach(hidePost);
+      found.forEach(showPost);
+      updateEmptyState(found.length > 0);
+    }
+
+    function showPost(el) {
+      el.style.display = '';
+      el.removeAttribute('data-initially-hidden');
+    }
+
+    function hidePost(el) {
+      el.style.display = 'none';
+      el.setAttribute('data-initially-hidden', 'true');
+    }
+
+    function updateEmptyState(hasResults) {
+      if (!emptyState) return;
+      emptyState.classList.toggle('is-visible', !hasResults);
     }
   </script>
 </BaseLayout>
@@ -121,5 +154,14 @@ const posts = allPosts
     display: grid;
     gap: 1.5rem;
     width: 100%;
+  }
+  .search-empty {
+    display: none;
+    margin-top: 1.5rem;
+    font-style: italic;
+    color: var(--color-text-dimmed);
+  }
+  .search-empty.is-visible {
+    display: block;
   }
 </style>

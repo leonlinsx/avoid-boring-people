@@ -1,6 +1,7 @@
 /* global Response */
 // src/pages/search-index.json.js
 import { getCollection } from 'astro:content';
+import { getCleanSlug } from '../utils/slug';
 
 export async function GET() {
   const posts = await getCollection('blog');
@@ -8,7 +9,7 @@ export async function GET() {
   const index = posts.map((post) => ({
     id: post.id,
     title: post.data.title,
-    url: `/writing/${post.slug}/`,
+    url: `/writing/${getCleanSlug(post)}/`,
     date: post.data.pubDate ? post.data.pubDate.toISOString() : null,
     content: post.body, // raw markdown
     category: post.data.category, // ✅ include category
