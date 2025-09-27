@@ -3,14 +3,38 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BaseHead from '../components/BaseHead.astro';
 
-const { title, description, image } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  pubDate,
+  updatedDate,
+  authorName,
+  ogType,
+  tags,
+  canonical,
+  relPrev,
+  relNext,
+} = Astro.props;
 const GA_ID = import.meta.env.PUBLIC_GA_ID;
 const isProd = import.meta.env.PROD;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      pubDate={pubDate}
+      updatedDate={updatedDate}
+      authorName={authorName}
+      ogType={ogType}
+      tags={tags}
+      canonical={canonical}
+      relPrev={relPrev}
+      relNext={relNext}
+    />
 
     {
       isProd && GA_ID && (
