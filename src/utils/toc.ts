@@ -9,14 +9,25 @@ export interface Heading {
  * Returns an array of { level, id, text } objects.
  */
 export function extractHeadings(html: string): Heading[] {
-  const regex = /<h([2-3])\s+id="([^"]+)">(.*?)<\/h\1>/g;
+  const regex = /<h([2-3])\b([^>]*)>([\s\S]*?)<\/h\1>/gi;
   const headings: Heading[] = [];
-  let match;
+  let match: RegExpExecArray | null;
 
   while ((match = regex.exec(html))) {
+    const attributes = match[2];
+    const idMatch = attributes.match(
+      /\bid\s*=\s*("([^"]+)"|'([^']+)'|([^\s'">]+))/i,
+    );
+
+    if (!idMatch) continue;
+
+    const id = idMatch[2] ?? idMatch[3] ?? idMatch[4] ?? '';
+
+    if (!id) continue;
+
     headings.push({
       level: Number(match[1]),
-      id: match[2],
+      id,
       text: stripTags(match[3]),
     });
   }
