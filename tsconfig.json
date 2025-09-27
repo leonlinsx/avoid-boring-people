@@ -6,6 +6,6 @@
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "types": ["@astrojs/preact"]
+    "types": ["@astrojs/preact", "node"]
   }
 }

@@ -10,7 +10,8 @@
     "start": "npm run build && npm run preview",
     "debug:tags": "astro run scripts/debug-tags.ts",
     "linkcheck:internal": "node scripts/link-report.js internal",
-    "linkcheck:external": "node scripts/link-report.js external"
+    "linkcheck:external": "node scripts/link-report.js external",
+    "test": "node --loader ts-node/esm tests/run-tests.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

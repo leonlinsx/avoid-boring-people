@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '../consts';
+import { getCleanSlug } from '../utils/slug';
 
 export async function GET() {
   const posts = await getCollection('blog');
@@ -11,7 +12,7 @@ export async function GET() {
     site: SITE_URL,
     items: posts.map((post) => {
       // fallback to post.id if slug isn’t available
-      const slug = post.slug ?? post.id.replace(/\.md$/, '');
+      const slug = getCleanSlug(post);
       return {
         title: post.data.title,
         description: post.data.description,
