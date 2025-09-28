@@ -47,4 +47,4 @@ Replace one-off values with variables. -->
 - automated posting threads
 - automated tiktok posting
 - automated posting publish0x; seems to not pick up cookies for login
-- Hero section redesign: Rotating featured posts with background image/gradient.
+- Hero section redesign: Rotating featured posts with background image/gradient?

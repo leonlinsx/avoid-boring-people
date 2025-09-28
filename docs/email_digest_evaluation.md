@@ -36,5 +36,5 @@
   - Normalized summary text sanitation, deduplication, and truncation to avoid runtime surprises when pushing to character-limited channels. 【F:scripts/automation/summarizers/llm_summarizer.py†L21-L37】【F:scripts/automation/summarizers/llm_summarizer.py†L95-L116】
   - Added a dedicated ranking module with dataclass-backed configuration to keep heuristics isolated and testable. 【F:scripts/automation/ranking.py†L1-L88】
 - **Roadmap**:
-  - Write unit tests around `filter_posts` and `score_posts` to lock in behavior.
+  <!-- - Write unit tests around `filter_posts` and `score_posts` to lock in behavior. -->
   - Move sensitive API configuration into typed settings objects shared across scripts.
