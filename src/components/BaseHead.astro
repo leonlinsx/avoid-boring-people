@@ -76,6 +76,8 @@ if (image) {
 }
 
 const metaDescription = description || SITE_DESCRIPTION;
+const keywordsContent =
+  normalizedTags.length > 0 ? normalizedTags.join(', ') : undefined;
 
 // ✅ Absolute URL for organization logo
 const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
@@ -133,6 +135,11 @@ const ogImageAlt = `Preview image for ${title}`;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="color-scheme" content="light dark" />
 
+<!-- Performance hints for third-party scripts -->
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+<link rel="preconnect" href="https://www.clarity.ms" crossorigin />
+<link rel="preconnect" href="https://giscus.app" crossorigin />
+
 <!-- ✅ Preload Fonts -->
 <link
   rel="preload"
@@ -168,6 +175,7 @@ const ogImageAlt = `Preview image for ${title}`;
 <meta name="title" content={title} />
 <meta name="description" content={metaDescription} />
 <meta name="author" content={resolvedAuthor} />
+{keywordsContent && <meta name="keywords" content={keywordsContent} />}
 
 <!-- Open Graph -->
 <meta property="og:type" content={ogType} />

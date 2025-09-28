@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import { getCategoryPostsPaginated, titleCase } from '../../../../utils/text';
+import {
+  getCategoryPostsPaginated,
+  titleCase,
+} from '../../../../utils/text';
 import { SITE_TITLE } from '../../../../consts';
 import type { GetStaticPaths } from 'astro';
 import Pagination from '../../../../components/Pagination.astro';
@@ -17,11 +20,25 @@ const { page, categories = [], activeCategory = '' } = Astro.props;
 const pagedPosts = page.data as any[];
 const currentPage = page.currentPage;
 const totalPages = page.lastPage;
+
+const canonicalBase = `/writing/category/${encodeURIComponent(activeCategory)}`;
+const canonical = currentPage === 1 ? canonicalBase : undefined;
+const relPrev =
+  currentPage > 1
+    ? currentPage === 2
+      ? canonicalBase
+      : `${canonicalBase}/${currentPage - 1}`
+    : undefined;
+const relNext =
+  currentPage < totalPages ? `${canonicalBase}/${currentPage + 1}` : undefined;
 ---
 
 <BaseLayout
   title={`Writing | ${SITE_TITLE}`}
   description={`Essays and posts in category "${titleCase(activeCategory)}"`}
+  canonical={canonical}
+  relPrev={relPrev}
+  relNext={relNext}
 >
   <WritingHeader
     title={`Category: ${titleCase(activeCategory)}`}
