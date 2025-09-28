@@ -12,7 +12,9 @@ const { headings = [] } = Astro.props as Props;
 <aside class="toc-desktop">
   <!-- collapsed: mini segments -->
   <div class="toc-mini">
-    {headings.map((h) => <div class="toc-bar-segment" data-id={h.slug} />)}
+    {headings.map((h) => (
+      <div class="toc-bar-segment" data-id={h.slug} aria-hidden="true" />
+    ))}
   </div>
 
   <!-- expanded: flyout -->
@@ -31,7 +33,14 @@ const { headings = [] } = Astro.props as Props;
 
 <!-- ================= MOBILE ================= -->
 <div class="toc-mobile">
-  <button id="toc-toggle" class="toc-button">☰ Contents</button>
+  <button
+    id="toc-toggle"
+    class="toc-button"
+    aria-expanded="false"
+    aria-controls="toc-drawer"
+  >
+    ☰ Contents
+  </button>
   <div id="toc-drawer" class="toc-drawer">
     <ul>
       {
@@ -271,12 +280,19 @@ const { headings = [] } = Astro.props as Props;
           : null);
 
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+        const prefersReducedMotion = window.matchMedia
+          ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          : false;
+        target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       }
 
       // Close mobile drawer/backdrop if open
-      document.getElementById('toc-drawer')?.classList.remove('open');
-      document.getElementById('toc-backdrop')?.classList.remove('visible');
+      const drawerEl = document.getElementById('toc-drawer');
+      const backdropEl = document.getElementById('toc-backdrop');
+      const toggleBtn = document.getElementById('toc-toggle');
+      drawerEl?.classList.remove('open');
+      backdropEl?.classList.remove('visible');
+      toggleBtn?.setAttribute('aria-expanded', 'false');
     });
   });
 
@@ -286,14 +302,23 @@ const { headings = [] } = Astro.props as Props;
   const backdrop = document.getElementById('toc-backdrop');
 
   if (btn && drawer && backdrop) {
+    const updateButtonState = () => {
+      const expanded = drawer.classList.contains('open');
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    };
+
+    updateButtonState();
+
     btn.addEventListener('click', () => {
       drawer.classList.toggle('open');
       backdrop.classList.toggle('visible');
+      updateButtonState();
     });
 
     backdrop.addEventListener('click', () => {
       drawer.classList.remove('open');
       backdrop.classList.remove('visible');
+      updateButtonState();
     });
   }
 </script>
