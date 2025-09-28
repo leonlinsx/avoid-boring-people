@@ -11,8 +11,10 @@ const { headings = [] } = Astro.props as Props;
 <!-- ================= DESKTOP ================= -->
 <aside class="toc-desktop">
   <!-- collapsed: mini segments -->
-  <div class="toc-mini">
-    {headings.map((h) => <div class="toc-bar-segment" data-id={h.slug} />)}
+  <div class="toc-mini" aria-hidden="true">
+    {headings.map((h) => (
+      <div class="toc-bar-segment" data-id={h.slug} aria-hidden="true" />
+    ))}
   </div>
 
   <!-- expanded: flyout -->
@@ -31,8 +33,17 @@ const { headings = [] } = Astro.props as Props;
 
 <!-- ================= MOBILE ================= -->
 <div class="toc-mobile">
-  <button id="toc-toggle" class="toc-button">☰ Contents</button>
-  <div id="toc-drawer" class="toc-drawer">
+  <button
+    id="toc-toggle"
+    class="toc-button"
+    type="button"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls="toc-drawer"
+  >
+    ☰ Contents
+  </button>
+  <div id="toc-drawer" class="toc-drawer" role="menu" hidden>
     <ul>
       {
         headings.map((h) => (
@@ -230,9 +241,12 @@ const { headings = [] } = Astro.props as Props;
 
 <script>
   // ===== Scroll spy (unchanged logic; matches IDs as-is) =====
-  const segments = document.querySelectorAll('.toc-bar-segment');
-  const links = document.querySelectorAll('.toc-flyout a, .toc-drawer a');
-  const sections = document.querySelectorAll('h2[id], h3[id]');
+const segments = document.querySelectorAll('.toc-bar-segment');
+const links = document.querySelectorAll('.toc-flyout a, .toc-drawer a');
+const sections = document.querySelectorAll('h2[id], h3[id]');
+const prefersReducedMotion = window.matchMedia(
+  '(prefers-reduced-motion: reduce)',
+).matches;
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -271,12 +285,17 @@ const { headings = [] } = Astro.props as Props;
           : null);
 
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+        target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       }
 
       // Close mobile drawer/backdrop if open
-      document.getElementById('toc-drawer')?.classList.remove('open');
-      document.getElementById('toc-backdrop')?.classList.remove('visible');
+      const drawerEl = document.getElementById('toc-drawer');
+      const backdropEl = document.getElementById('toc-backdrop');
+      const toggleEl = document.getElementById('toc-toggle');
+      drawerEl?.classList.remove('open');
+      drawerEl?.setAttribute('hidden', '');
+      backdropEl?.classList.remove('visible');
+      toggleEl?.setAttribute('aria-expanded', 'false');
     });
   });
 
@@ -287,13 +306,18 @@ const { headings = [] } = Astro.props as Props;
 
   if (btn && drawer && backdrop) {
     btn.addEventListener('click', () => {
-      drawer.classList.toggle('open');
-      backdrop.classList.toggle('visible');
+      const willOpen = !drawer.classList.contains('open');
+      drawer.classList.toggle('open', willOpen);
+      drawer.toggleAttribute('hidden', !willOpen);
+      backdrop.classList.toggle('visible', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
     });
 
     backdrop.addEventListener('click', () => {
       drawer.classList.remove('open');
+      drawer.setAttribute('hidden', '');
       backdrop.classList.remove('visible');
+      btn.setAttribute('aria-expanded', 'false');
     });
   }
 </script>

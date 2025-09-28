@@ -5,7 +5,7 @@ export async function GET(): Promise<Response> {
 
   // Map down to just what Fuse.js needs
   const index = posts.map((post) => ({
-    slug: post.slug ?? post.id.replace(/\.md$/, ''),
+    slug: post.slug ?? post.id.replace(/\.(md|mdx)$/, ''),
     title: post.data.title,
     description: post.data.description || '',
     category: post.data.category || '',

@@ -57,30 +57,40 @@ const encodedURL = encodeURIComponent(url);
 
   <!-- Mobile dropdown -->
   <div class="mobile-only dropdown">
-    <button type="button" class="dropdown-toggle">
+    <button
+      type="button"
+      class="dropdown-toggle"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-controls="share-menu"
+    >
       <Share2 class="icon" /> Share
     </button>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu" id="share-menu" role="menu" hidden>
       <a
         href={`https://www.threads.net/intent/post?text=${encodedTitle}%20${encodedURL}`}
         target="_blank"
         rel="noopener noreferrer"
+        role="menuitem"
         data-share="Threads">Threads</a
       >
       <a
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`}
         target="_blank"
         rel="noopener noreferrer"
+        role="menuitem"
         data-share="Twitter">Twitter</a
       >
       <a
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`}
         target="_blank"
         rel="noopener noreferrer"
+        role="menuitem"
         data-share="LinkedIn">LinkedIn</a
       >
       <a
         href={`mailto:?subject=${encodedTitle}&body=${encodedURL}`}
+        role="menuitem"
         data-share="Email">Email</a
       >
     </div>
@@ -102,12 +112,14 @@ const encodedURL = encodeURIComponent(url);
     const dropdown = document.querySelector('.dropdown');
     const toggle = document.querySelector('.dropdown-toggle');
     const menu = document.querySelector('.dropdown-menu');
+    const menuItems = menu?.querySelectorAll('a') ?? [];
+    let isOpen = false;
 
     // Track clicks on all share links
     document.querySelectorAll('[data-share]').forEach((el) => {
       el.addEventListener('click', () => {
         trackShare(el.dataset.share);
-        if (menu?.classList.contains('open')) menu.classList.remove('open');
+        if (menu?.classList.contains('open')) closeMenu();
       });
     });
 
@@ -115,20 +127,44 @@ const encodedURL = encodeURIComponent(url);
     if (toggle && menu) {
       toggle.addEventListener('click', (e) => {
         e.stopPropagation(); // prevent immediate close
-        menu.classList.toggle('open');
+        isOpen = !isOpen;
+        menu.classList.toggle('open', isOpen);
+        menu.toggleAttribute('hidden', !isOpen);
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        if (isOpen && menuItems.length > 0) {
+          const firstItem = menuItems[0];
+          if (firstItem instanceof HTMLElement) {
+            firstItem.focus();
+          }
+        }
       });
     }
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
       if (
-        menu?.classList.contains('open') &&
+        isOpen &&
         dropdown &&
         !dropdown.contains(e.target)
       ) {
-        menu.classList.remove('open');
+        closeMenu();
       }
     });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeMenu();
+        toggle?.focus();
+      }
+    });
+
+    function closeMenu() {
+      if (!menu || !toggle) return;
+      isOpen = false;
+      menu.classList.remove('open');
+      menu.setAttribute('hidden', '');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
   });
 </script>
 

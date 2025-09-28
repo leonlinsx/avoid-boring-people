@@ -10,10 +10,10 @@ const { currentPage, totalPages, activeCategory = '' } = Astro.props;
 const pageHref = (page: number) => {
   if (activeCategory) {
     return page === 1
-      ? `/writing/category/${encodeURIComponent(activeCategory)}`
+      ? `/writing/category/${encodeURIComponent(activeCategory)}/1`
       : `/writing/category/${encodeURIComponent(activeCategory)}/${page}`;
   } else {
-    return page === 1 ? `/writing` : `/writing/${page}`;
+    return page === 1 ? `/writing/1` : `/writing/${page}`;
   }
 };
 

@@ -6,10 +6,9 @@ import type { BlogPost } from '../utils/text';
 
 interface Props {
   post: BlogPost;
-  hidden?: boolean;
 }
 
-const { post, hidden = false } = Astro.props;
+const { post } = Astro.props;
 const title = post.data.title ?? 'Untitled';
 const desc = post.data.description ?? '';
 const category = post.data.category ?? '';
@@ -24,11 +23,7 @@ const href = `/writing/${slug}/`;
 const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;
 ---
 
-<article
-  class="post-card"
-  style={hidden ? 'display: none;' : undefined}
-  data-initially-hidden={hidden ? 'true' : undefined}
->
+<article class="post-card" data-post-id={post.id}>
   <a href={href} class="thumb-link">
     {
       typeof thumbnail === 'object' ? (

@@ -1,5 +1,4 @@
 ---
-import SearchBarToggle from './SearchBarToggle.tsx';
 import SearchBar from './SearchBar.astro';
 
 interface Props {
@@ -16,7 +15,17 @@ const { title, subtitle = '', showSearch = false } = Astro.props;
     <h1>{title}</h1>
     <div class="subtitle-row">
       <p class="subtext">{subtitle}</p>
-      {showSearch && <SearchBarToggle client:load />}
+      {showSearch && (
+        <details class="mobile-search">
+          <summary class="search-toggle" aria-controls="mobile-search-panel">
+            <span aria-hidden="true">🔍</span>
+            <span class="search-toggle-label">Search</span>
+          </summary>
+          <div class="search-disclosure" id="mobile-search-panel">
+            <SearchBar className="search-bar-mobile" variant="compact" />
+          </div>
+        </details>
+      )}
     </div>
   </div>
 

@@ -2,9 +2,6 @@
    Global Styles (src/styles/global.css)
    ========================================================= */
 
-/* Fonts must be imported first */
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600;700&display=swap');
-
 /* -------------------------------
    0. Design Tokens (Refined)
 ---------------------------------*/
@@ -78,9 +75,7 @@
 /* Atkinson (accessible sans, body) */
 @font-face {
   font-family: 'Atkinson';
-  src:
-    url('/fonts/atkinson-regular.woff2') format('woff2'),
-    url('/fonts/atkinson-regular.woff') format('woff');
+  src: url('/fonts/atkinson-regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -89,17 +84,14 @@
 /* Apply fonts */
 body {
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Atkinson',
-    Helvetica, Arial, sans-serif;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Merriweather', Georgia, serif;
+    'Atkinson',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
 }
 
 /* -------------------------------
@@ -116,9 +108,6 @@ html {
 }
 
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
   line-height: 1.7;
   font-size: var(--text-base);
   color: var(--color-text);
@@ -152,7 +141,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
   line-height: 1.3;
   margin-top: var(--space-lg);
   margin-bottom: var(--space-sm);
@@ -408,50 +397,59 @@ img.center {
   grid-column: 1 / 2;
   grid-row: 1;
 }
-.subtitle-row astro-island {
-  display: contents;
-}
-
 .mobile-search {
   grid-column: 2;
   grid-row: 1;
-  display: flex;
-  align-items: center;
-}
-.search-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.3rem;
-  color: var(--color-link);
   display: inline-flex;
   align-items: center;
 }
-.search-bar-mobile {
+.mobile-search summary {
+  list-style: none;
+}
+.mobile-search summary::-webkit-details-marker {
   display: none;
-  width: 100%;
+}
+.search-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--color-link);
+}
+.search-toggle:focus-visible {
+  outline: none;
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-link) 25%, transparent);
+}
+.search-toggle-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.search-disclosure {
+  display: none;
   margin-top: var(--space-sm);
+}
+.mobile-search[open] {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: block;
+  margin-top: var(--space-sm);
+}
+.mobile-search[open] .search-disclosure {
+  display: block;
+}
+.search-bar-mobile {
+  width: 100%;
   background: var(--color-bg);
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-pill);
   padding: 0.25rem 0.75rem 0.25rem 1rem;
   box-shadow: var(--shadow-xs);
-}
-.mobile-search.is-open {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-top: var(--space-sm);
-}
-.mobile-search.is-open .search-toggle {
-  display: none;
-}
-.mobile-search.is-open .search-bar-mobile {
-  display: flex;
-  width: 100%;
-  animation: slideDown 0.25s ease;
 }
 
 .search-bar-desktop {
@@ -541,17 +539,6 @@ img.center {
 @media (min-width: 641px) {
   .mobile-search {
     display: none;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 

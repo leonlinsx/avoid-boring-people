@@ -11,9 +11,15 @@ export async function GET(): Promise<Response> {
     title: post.data.title,
     url: `/writing/${getCleanSlug(post)}/`,
     date: post.data.pubDate ? post.data.pubDate.toISOString() : null,
-    content: post.body, // raw markdown
-    category: post.data.category, // ✅ include category
-    tags: post.data.tags || [], // ✅ include tags
+    excerpt:
+      post.data.description?.slice(0, 200) ??
+      post.body
+        .replace(/[#*_`>\-]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 200),
+    category: post.data.category,
+    tags: post.data.tags || [],
   }));
 
   return new Response(JSON.stringify(index), {

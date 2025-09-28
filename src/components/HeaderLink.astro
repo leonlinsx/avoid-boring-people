@@ -24,7 +24,12 @@ const hrefTop = '/' + (href.split('/').filter(Boolean)[0] ?? '');
 const isActive = pathname === href || pathTop === hrefTop;
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a
+  href={href}
+  aria-current={isActive ? 'page' : undefined}
+  class:list={[className, { active: isActive }]}
+  {...props}
+>
   <slot />
 </a>
 
