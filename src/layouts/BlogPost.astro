@@ -12,6 +12,8 @@ import ShareButtons from '../components/ShareButtons.astro';
 import TagList from '../components/TagList.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
 import type { MarkdownHeading } from 'astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { titleCase } from '../utils/text';
 
 type Props = {
   post: CollectionEntry<'blog'> & { slug: string };
@@ -29,6 +31,7 @@ const {
   updatedDate,
   heroImage,
   category,
+  categoryNormalized,
   tags = [],
   readingTime,
 } = enrichedPost.data;
@@ -47,6 +50,20 @@ const related = allPosts
 
 // ✅ Canonical URL from clean slug
 const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Writing', href: '/writing/' },
+];
+
+if (categoryNormalized) {
+  breadcrumbItems.push({
+    label: titleCase(categoryNormalized),
+    href: `/writing/category/${encodeURIComponent(categoryNormalized)}`,
+  });
+}
+
+breadcrumbItems.push({ label: title });
 ---
 
 <BaseLayout
@@ -61,6 +78,7 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
 >
   <main>
     <article>
+      <Breadcrumbs items={breadcrumbItems} />
       {
         hero && (
           <div class="hero-image">

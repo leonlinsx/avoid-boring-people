@@ -43,7 +43,12 @@ const pages = getPageNumbers(currentPage, totalPages);
     {
       currentPage > 1 && (
         <li>
-          <a href={pageHref(currentPage - 1)} class="pagination-link">
+          <a
+            href={pageHref(currentPage - 1)}
+            class="pagination-link"
+            rel="prev"
+            aria-label="Previous page"
+          >
             ← Prev
           </a>
         </li>
@@ -74,7 +79,12 @@ const pages = getPageNumbers(currentPage, totalPages);
     {
       currentPage < totalPages && (
         <li>
-          <a href={pageHref(currentPage + 1)} class="pagination-link">
+          <a
+            href={pageHref(currentPage + 1)}
+            class="pagination-link"
+            rel="next"
+            aria-label="Next page"
+          >
             Next →
           </a>
         </li>

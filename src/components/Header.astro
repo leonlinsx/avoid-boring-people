@@ -21,9 +21,12 @@ const { currentPath } = Astro.props;
       />
     </a>
 
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Primary">
       <HeaderLink href="/writing/1" currentPath={currentPath} class="nav-item">
         Writing
+      </HeaderLink>
+      <HeaderLink href="/#topics" currentPath={currentPath} class="nav-item">
+        Topics
       </HeaderLink>
       <HeaderLink href="/about" currentPath={currentPath} class="nav-item">
         About

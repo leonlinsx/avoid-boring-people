@@ -3,16 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from '../components/PostList.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../consts';
-import { enrichPost } from '../utils/text'; // ✅ import enrichment
+import { enrichPost } from '../utils/text'; // ✅ import enrichment + helpers
 import SubscribeForm from '../components/SubscribeForm.astro';
 
 const allPosts = await getCollection('blog');
 
+// Enrich all posts once for reuse below
+const enrichedPosts = allPosts.map(enrichPost);
+
 // Pick featured posts, enriched
-const featured = allPosts
+const featured = enrichedPosts
   .filter((post) => post.data.featured)
-  .map(enrichPost) // ✅ ensures slug + readingTime exist
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
 ---
 
 <BaseLayout
@@ -37,8 +40,8 @@ const featured = allPosts
         src="/logos/substack_banner.webp"
         alt="Avoid Boring People newsletter banner"
         class="banner-img"
-        height="120"
-        width="100%"
+        height="400"
+        width="1600"
         fetchpriority="high"
       />
       <span class="tooltip">
@@ -78,9 +81,9 @@ const featured = allPosts
   <section class="featured">
     <h2>As featured in</h2>
     <div class="logo-row">
-      <img src="/logos/hacker_news_logo.webp" alt="Hacker News logo" />
-      <img src="/logos/failory_logo.webp" alt="Failory logo" />
-      <img src="/logos/finextra_logo.webp" alt="Finextra logo" />
+      <img src="/logos/hacker_news_logo.webp" alt="Hacker News logo" loading="lazy" />
+      <img src="/logos/failory_logo.webp" alt="Failory logo" loading="lazy" />
+      <img src="/logos/finextra_logo.webp" alt="Finextra logo" loading="lazy" />
     </div>
   </section>
 </BaseLayout>
@@ -89,6 +92,14 @@ const featured = allPosts
   .banner-wrapper {
     position: relative; /* anchor for absolute tooltip */
     display: inline-block;
+  }
+
+  .banner-img {
+    display: block;
+    width: min(100%, 960px);
+    height: auto;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.16);
   }
 
   .tooltip {
