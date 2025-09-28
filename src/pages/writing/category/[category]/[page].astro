@@ -10,6 +10,7 @@ import Pagination from '../../../../components/Pagination.astro';
 import Filters from '../../../../components/Filters.astro';
 import PostList from '../../../../components/PostList.astro';
 import WritingHeader from '../../../../components/WritingHeader.astro';
+import { buildPaginationHref } from '../../../../utils/pagination.ts';
 
 export const getStaticPaths = (async ({ paginate }) => {
   return await getCategoryPostsPaginated(paginate, 8);
@@ -21,16 +22,14 @@ const pagedPosts = page.data as any[];
 const currentPage = page.currentPage;
 const totalPages = page.lastPage;
 
-const canonicalBase = `/writing/category/${encodeURIComponent(activeCategory)}`;
-const canonical = currentPage === 1 ? canonicalBase : undefined;
+const canonical =
+  currentPage === 1 ? buildPaginationHref(1, activeCategory) : undefined;
 const relPrev =
-  currentPage > 1
-    ? currentPage === 2
-      ? canonicalBase
-      : `${canonicalBase}/${currentPage - 1}`
-    : undefined;
+  currentPage > 1 ? buildPaginationHref(currentPage - 1, activeCategory) : undefined;
 const relNext =
-  currentPage < totalPages ? `${canonicalBase}/${currentPage + 1}` : undefined;
+  currentPage < totalPages
+    ? buildPaginationHref(currentPage + 1, activeCategory)
+    : undefined;
 ---
 
 <BaseLayout

@@ -13,6 +13,7 @@ import {
 } from '../src/utils/text.ts';
 import { extractHeadings } from '../src/utils/toc.ts';
 import { normalizeHeroImage } from '../src/utils/hero.ts';
+import { buildPaginationHref } from '../src/utils/pagination.ts';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -175,6 +176,18 @@ function testComputeCleanSlug() {
 function testNormalizeQuery() {
   assert.equal(normalizeQuery('   Venture   Deals  '), 'venture deals');
   assert.equal(normalizeQuery('\n\t  MIXED Case  '), 'mixed case');
+}
+
+function testBuildPaginationHref() {
+  assert.equal(buildPaginationHref(1), '/writing/1');
+  assert.equal(buildPaginationHref(2), '/writing/2');
+  assert.equal(buildPaginationHref(1, 'finance'), '/writing/category/finance/1');
+  assert.equal(
+    buildPaginationHref(5, 'markets & money'),
+    '/writing/category/markets%20%26%20money/5',
+  );
+  assert.equal(buildPaginationHref(0, 'finance'), '/writing/category/finance/1');
+  assert.equal(buildPaginationHref(3.7), '/writing/3');
 }
 
 function testTitleCase() {
@@ -610,6 +623,7 @@ async function run() {
     testSearchPosts();
     testComputeCleanSlug();
     testNormalizeQuery();
+    testBuildPaginationHref();
     testTitleCase();
     testNormalizeCategory();
     testEnrichPost();
