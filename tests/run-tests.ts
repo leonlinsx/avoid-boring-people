@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { __setMockGetCollectionImplementation } from 'astro:content';
 import { computeCleanSlug } from '../src/utils/slug-helpers.ts';
 import { searchPosts, normalizeQuery } from '../src/utils/search.ts';
@@ -23,6 +24,169 @@ process.on('unhandledRejection', (reason) => {
   console.error('❌ Unhandled rejection', reason);
   process.exitCode = 1;
 });
+
+class FakeClassList {
+  private classes = new Set<string>();
+
+  constructor(private readonly element: FakeElement) {}
+
+  setFromString(value: string) {
+    this.classes = new Set(value.split(/\s+/).filter(Boolean));
+    this.commit();
+  }
+
+  add(...tokens: string[]) {
+    tokens.forEach((token) => this.classes.add(token));
+    this.commit();
+  }
+
+  remove(...tokens: string[]) {
+    tokens.forEach((token) => this.classes.delete(token));
+    this.commit();
+  }
+
+  toggle(token: string, force?: boolean) {
+    if (force === true) {
+      this.classes.add(token);
+    } else if (force === false) {
+      this.classes.delete(token);
+    } else if (this.classes.has(token)) {
+      this.classes.delete(token);
+    } else {
+      this.classes.add(token);
+    }
+    this.commit();
+    return this.classes.has(token);
+  }
+
+  contains(token: string) {
+    return this.classes.has(token);
+  }
+
+  toString() {
+    return Array.from(this.classes).join(' ');
+  }
+
+  private commit() {
+    this.element._syncClassName(this.toString());
+  }
+}
+
+class FakeFragment {
+  children: any[] = [];
+
+  appendChild(child: any) {
+    this.children.push(child);
+    if (child && typeof child === 'object') {
+      child.parent = this;
+    }
+    return child;
+  }
+}
+
+class FakeElement {
+  readonly tagName: string;
+  id = '';
+  children: any[] = [];
+  dataset: Record<string, string> = {};
+  textContent = '';
+  value = '';
+  type = '';
+  parent: any = null;
+  classList: FakeClassList;
+  private listeners = new Map<string, Set<(event: any) => void>>();
+  private _className = '';
+
+  constructor(tagName: string) {
+    this.tagName = tagName.toUpperCase();
+    this.classList = new FakeClassList(this);
+  }
+
+  appendChild(child: any) {
+    this.children.push(child);
+    if (child && typeof child === 'object') {
+      child.parent = this;
+    }
+    return child;
+  }
+
+  replaceChildren(...nodes: any[]) {
+    this.children = [];
+    nodes.forEach((node) => {
+      if (node instanceof FakeFragment) {
+        node.children.forEach((child) => this.appendChild(child));
+      } else {
+        this.appendChild(node);
+      }
+    });
+  }
+
+  addEventListener(type: string, handler: (event: any) => void) {
+    if (!this.listeners.has(type)) {
+      this.listeners.set(type, new Set());
+    }
+    this.listeners.get(type)!.add(handler);
+  }
+
+  removeEventListener(type: string, handler: (event: any) => void) {
+    this.listeners.get(type)?.delete(handler);
+  }
+
+  dispatchEvent(event: any) {
+    if (!event || typeof event.type !== 'string') {
+      throw new Error('Invalid event payload');
+    }
+    if (!event.target) {
+      event.target = this;
+    }
+    const handlers = this.listeners.get(event.type);
+    if (handlers) {
+      for (const handler of handlers) {
+        handler.call(this, event);
+      }
+    }
+    return true;
+  }
+
+  setAttribute(name: string, value: string) {
+    (this as any)[name] = value;
+  }
+
+  set className(value: string) {
+    this._className = value;
+    this.classList.setFromString(value);
+  }
+
+  get className() {
+    return this._className;
+  }
+
+  _syncClassName(value: string) {
+    this._className = value;
+  }
+}
+
+class FakeDocument {
+  private elements = new Map<string, FakeElement>();
+
+  createElement(tagName: string) {
+    return new FakeElement(tagName);
+  }
+
+  createDocumentFragment() {
+    return new FakeFragment();
+  }
+
+  getElementById(id: string) {
+    return this.elements.get(id) ?? null;
+  }
+
+  register(id: string, element: FakeElement) {
+    element.id = id;
+    this.elements.set(id, element);
+    return element;
+  }
+}
 
 function makePost(overrides: Record<string, any> = {}) {
   const base = {
@@ -279,6 +443,124 @@ function testNormalizeHeroImageHelper() {
   assert.equal(normalizeHeroImage(null, '2024_05_04.md'), undefined);
 }
 
+async function testSearchPageClient() {
+  const posts = [
+    {
+      id: '2024_01_01_alpha/index.md',
+      slug: 'alpha',
+      title: 'Alpha Insights',
+      description: 'Thoughts on markets',
+      category: 'Markets',
+      pubDate: '2024-01-01T00:00:00.000Z',
+      readingTime: 4,
+      heroImage: {
+        kind: 'asset',
+        src: '/images/alpha.webp',
+        width: 800,
+        height: 600,
+      },
+      fallbackImage: '/fallback.png',
+    },
+    {
+      id: '2024_01_02_beta/index.md',
+      slug: 'beta',
+      title: 'Weekly Markets',
+      description: 'Digest of weekly moves',
+      category: 'Finance',
+      pubDate: '2024-01-02T00:00:00.000Z',
+      readingTime: 6,
+      heroImage: null,
+      fallbackImage: '/fallback.png',
+    },
+  ];
+
+  const document = new FakeDocument();
+  const input = document.register('client-search-input', document.createElement('input'));
+  input.type = 'search';
+  const postList = document.register('post-list', document.createElement('div'));
+  const emptyState = document.register('search-empty', document.createElement('p'));
+  emptyState.className = 'search-empty';
+  const dataEl = document.register('search-data', document.createElement('script'));
+  dataEl.textContent = JSON.stringify(posts);
+
+  const baseLocation = new URL('https://example.com/writing/search/');
+  const windowStub: any = {
+    location: new URL(baseLocation.toString()),
+    history: {
+      replaceState(_state: unknown, _title: string, url: URL | string) {
+        const next = typeof url === 'string' ? new URL(url, baseLocation) : new URL(url.toString());
+        windowStub.location = next;
+      },
+    },
+  };
+
+  const previousWindow = (globalThis as any).window;
+  const previousDocument = (globalThis as any).document;
+  const previousHistory = (globalThis as any).history;
+
+  (globalThis as any).window = windowStub;
+  (globalThis as any).document = document;
+  (globalThis as any).history = windowStub.history;
+
+  try {
+    const { initSearchPage } = await import('../src/scripts/search-page.ts');
+    const controller = initSearchPage();
+    assert.ok(controller);
+
+    assert.deepEqual(
+      postList.children.map((child: any) => child.dataset.postId),
+      posts.map((post) => post.id),
+    );
+    assert.equal(emptyState.classList.contains('is-visible'), false);
+
+    input.value = 'weekly';
+    input.dispatchEvent({ type: 'input', target: input });
+
+    assert.deepEqual(
+      postList.children.map((child: any) => child.dataset.postId),
+      ['2024_01_02_beta/index.md'],
+    );
+    assert.equal(windowStub.location.search, '?q=weekly');
+    assert.equal(emptyState.classList.contains('is-visible'), false);
+
+    input.value = 'unmatched';
+    input.dispatchEvent({ type: 'input', target: input });
+
+    assert.equal(postList.children.length, 0);
+    assert.ok(emptyState.classList.contains('is-visible'));
+    assert.equal(windowStub.location.search, '?q=unmatched');
+
+    input.value = '';
+    input.dispatchEvent({ type: 'input', target: input });
+
+    assert.deepEqual(
+      postList.children.map((child: any) => child.dataset.postId),
+      posts.map((post) => post.id),
+    );
+    assert.equal(windowStub.location.search, '');
+
+    controller?.destroy();
+  } finally {
+    if (previousWindow === undefined) {
+      delete (globalThis as any).window;
+    } else {
+      (globalThis as any).window = previousWindow;
+    }
+
+    if (previousDocument === undefined) {
+      delete (globalThis as any).document;
+    } else {
+      (globalThis as any).document = previousDocument;
+    }
+
+    if (previousHistory === undefined) {
+      delete (globalThis as any).history;
+    } else {
+      (globalThis as any).history = previousHistory;
+    }
+  }
+}
+
 async function testGetAllPostsPaginated() {
   const posts = [
     makeCollectionEntry({
@@ -420,6 +702,7 @@ async function testGetCategoryPostsPaginated() {
   }
 }
 
+
 function testExtractHeadings() {
   const html = `
     <h1 id="title">Main</h1>
@@ -492,7 +775,7 @@ async function testSearchIndexEndpoint() {
         title: 'Custom Title',
         url: '/writing/custom/',
         date: '2024-01-01T00:00:00.000Z',
-        content: 'First body text',
+        excerpt: 'Custom description',
         category: 'Finance',
         tags: ['growth', 'markets'],
       },
@@ -501,7 +784,7 @@ async function testSearchIndexEndpoint() {
         title: 'Second Title',
         url: '/writing/second/',
         date: '2024-02-01T00:00:00.000Z',
-        content: 'Second body text',
+        excerpt: 'Second description',
         category: 'Markets',
         tags: ['trading'],
       },
@@ -605,6 +888,26 @@ async function testRssEndpoint() {
   });
 }
 
+function testSearchPageBundledScript() {
+  const source = readFileSync(
+    new URL('../src/pages/writing/search.astro', import.meta.url),
+    'utf8',
+  );
+
+  assert.ok(
+    source.includes("search-page-init.ts?url"),
+    'Search page should load bundled client script asset URL',
+  );
+  assert.ok(
+    source.includes('<script type="module" src={searchClientUrl}></script>'),
+    'Search page should reference the resolved client script',
+  );
+  assert.ok(
+    !source.includes("import Fuse from 'fuse.js'"),
+    'Search page should not inline Fuse imports',
+  );
+}
+
 async function run() {
   try {
     testSearchPosts();
@@ -620,6 +923,8 @@ async function run() {
     await testSearchIndexEndpoint();
     await testApiSearchIndexEndpoint();
     await testRssEndpoint();
+    await testSearchPageClient();
+    testSearchPageBundledScript();
     console.log('✅ All custom tests passed');
   } catch (error) {
     console.error('❌ Test failure', error);
