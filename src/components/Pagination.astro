@@ -1,4 +1,6 @@
 ---
+import { buildPaginationHref } from '../utils/pagination.ts';
+
 interface Props {
   currentPage: number;
   totalPages: number;
@@ -7,15 +9,7 @@ interface Props {
 
 const { currentPage, totalPages, activeCategory = '' } = Astro.props;
 
-const pageHref = (page: number) => {
-  if (activeCategory) {
-    return page === 1
-      ? `/writing/category/${encodeURIComponent(activeCategory)}`
-      : `/writing/category/${encodeURIComponent(activeCategory)}/${page}`;
-  } else {
-    return page === 1 ? `/writing` : `/writing/${page}`;
-  }
-};
+const pageHref = (page: number) => buildPaginationHref(page, activeCategory);
 
 // Ellipses pagination helper
 function getPageNumbers(current: number, total: number): (number | string)[] {
