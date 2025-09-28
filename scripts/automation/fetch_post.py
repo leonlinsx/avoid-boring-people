@@ -1,5 +1,7 @@
-import requests
-from typing import List, Dict
+import json
+from typing import Dict, List
+from urllib.error import URLError, HTTPError
+from urllib.request import Request, urlopen
 
 LOCAL_SEARCH_INDEX_URL = "http://localhost:4321/search-index.json"
 LIVE_SEARCH_INDEX_URL = "https://leonlins.com/search-index.json"
@@ -12,14 +14,19 @@ def load_search_index() -> List[Dict]:
 
     for url in urls:
         try:
-            resp = requests.get(url, timeout=10, headers={"Cache-Control": "no-cache"})
-            resp.raise_for_status()
-            data = resp.json()
-            print(f"✅ Loaded search index from {url}")
-            print("DEBUG first raw post:", data[0])
-            return data  # return full list of dicts with category, tags, etc.
-        except Exception as e:
+            request = Request(url, headers={"Cache-Control": "no-cache"})
+            with urlopen(request, timeout=10) as response:
+                if response.status != 200:
+                    raise HTTPError(url, response.status, response.reason, response.headers, None)
+                data = json.load(response)
+                print(f"✅ Loaded search index from {url}")
+                if data:
+                    print("DEBUG first raw post:", data[0])
+                return data  # return full list of dicts with category, tags, etc.
+        except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as e:
             print(f"⚠️ Could not load search index from {url}: {e}")
+        except Exception as e:  # pragma: no cover - unexpected errors logged for debugging
+            print(f"⚠️ Unexpected error loading search index from {url}: {e}")
 
     return []
 
