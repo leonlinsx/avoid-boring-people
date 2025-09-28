@@ -28,6 +28,17 @@ def _fallback_stub() -> Dict:
     }
 
 
+def _sanitize_text(value: str) -> str:
+    return " ".join(value.strip().split())
+
+
+def _truncate(value: str, limit: int) -> str:
+    if len(value) <= limit:
+        return value
+    trimmed = value[: limit - 1].rstrip(" ,;:.-")
+    return trimmed
+
+
 def summarize_post(
     post: Dict,
     mode: Literal["bullets", "narrative"] = "bullets",
@@ -62,26 +73,28 @@ def summarize_post(
     if not content:
         return {"teaser": "", "points": ["[No content available for this post]"]}
 
-    style = "bullet points" if mode == "bullets" else "short narrative sentences"
+    style = "bullet" if mode == "bullets" else "narrative"
 
     prompt = f"""
-You are a social-media editor. Summarize the blog post below for X (Twitter).
-Return a JSON object with:
-- "teaser": 1 hook sentence (≤200 chars) that entices readers to click.
-- "points": an array of {max_points} {style} for the thread.
+You are an editorial assistant preparing a {style} recap of a blog post for an email + social digest. Answer with JSON matching this schema:
+{{
+  "teaser": string,  # ≤200 characters, 1 sentence hook, factual and specific
+  "points": [string, ...]  # {max_points} {style} takeaways, each ≤{max_chars} characters
+}}
 
-Constraints:
-- Teaser must be engaging but not clickbait. Do not exaggerate.
-- Each point must be ≤ {max_chars} characters.
-- No markdown (#, *, [], () etc.), no emojis, no hashtags.
-- No URLs in teaser or points (the link will be in the first tweet).
-- Return ONLY valid JSON.
+Writing rules:
+- Capture the sharpest insight, metric, or quote in the teaser. Avoid clickbait or rhetorical questions.
+- Each point should deliver a standalone takeaway. Lead with the most concrete fact before context.
+- Use plain text only. Prohibit markdown, emojis, hashtags, and URLs.
+- Never repeat the teaser verbatim in the points.
+- If information is missing, acknowledge it instead of inventing details.
+- Respond with JSON only; do not wrap inside code fences.
 
-TITLE: {title}
-URL: {url}
+ARTICLE TITLE: {title}
+SOURCE URL: {url}
 
-BLOG CONTENT:
-\"\"\"{content}\"\"\"
+FULL TEXT (truncated):
+"""{content}"""
 """
 
     try:
@@ -114,8 +127,14 @@ BLOG CONTENT:
             print(f"⚠️ JSON parse failed: {e}")
             return _fallback_stub()
 
-        teaser = data.get("teaser", "").strip()
-        points = data.get("points", [])
+        teaser = _truncate(_sanitize_text(data.get("teaser", "")), 200)
+        raw_points = data.get("points", [])
+        points = []
+        if isinstance(raw_points, list):
+            for point in raw_points:
+                clean_point = _truncate(_sanitize_text(str(point)), max_chars)
+                if clean_point and clean_point not in points:
+                    points.append(clean_point)
         if not isinstance(points, list):
             points = []
 

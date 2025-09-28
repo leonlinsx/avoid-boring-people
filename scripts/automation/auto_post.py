@@ -19,6 +19,7 @@ from scripts.automation.publishers.mastodon import (
 from scripts.automation.publishers.devto import post_to_devto
 from scripts.automation.publishers.publish0x import post_to_publish0x  # ✅ NEW
 from scripts.automation.formatters import format_as_thread
+from scripts.automation.ranking import filter_posts, score_posts
 from scripts.automation.summarizers import llm_summarize, stub_summarize
 from dotenv import load_dotenv
 
@@ -67,8 +68,16 @@ def main():
         print("❌ No posts found.")
         return
 
+    # Step 1b: Apply hygiene filters + heuristic scoring for prioritisation
+    filtered_posts = filter_posts(posts)
+    if not filtered_posts:
+        print("❌ No posts passed digest filters (check DIGEST_* env vars).")
+        return
+
+    ranked_posts = score_posts(filtered_posts)
+
     # Step 2: Select next post
-    next_post = select_next_post(posts)
+    next_post = select_next_post(ranked_posts)
     if not next_post:
         print("❌ No eligible post to publish.")
         return

@@ -2,6 +2,8 @@ import json
 import os
 from typing import List, Dict
 
+PRIORITY_DEFAULT = 0.0
+
 STATE_FILE = "posted.json"
 
 def load_state() -> Dict[str, int]:
@@ -25,9 +27,17 @@ def select_next_post(posts: List[Dict]) -> Dict:
     # Assign count = 0 for posts not in state yet
     for post in posts:
         post["count"] = state.get(post["id"], 0)
+        post.setdefault("priority_score", PRIORITY_DEFAULT)
 
-    # Sort by count, then oldest first for fairness
-    sorted_posts = sorted(posts, key=lambda x: (x["count"], x.get("date", "")))
+    # Sort by lowest usage count, highest priority score, then oldest first
+    sorted_posts = sorted(
+        posts,
+        key=lambda x: (
+            x["count"],
+            -float(x.get("priority_score", PRIORITY_DEFAULT) or PRIORITY_DEFAULT),
+            x.get("date", ""),
+        ),
+    )
 
     return sorted_posts[0] if sorted_posts else None
 
