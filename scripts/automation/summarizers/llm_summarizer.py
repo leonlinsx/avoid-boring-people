@@ -1,6 +1,7 @@
 from typing import Dict, Literal
 import os
 import json
+from textwrap import dedent
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -75,27 +76,31 @@ def summarize_post(
 
     style = "bullet" if mode == "bullets" else "narrative"
 
-    prompt = f"""
-You are an editorial assistant preparing a {style} recap of a blog post for an email + social digest. Answer with JSON matching this schema:
-{{
-  "teaser": string,  # ≤200 characters, 1 sentence hook, factual and specific
-  "points": [string, ...]  # {max_points} {style} takeaways, each ≤{max_chars} characters
-}}
+    prompt = dedent(
+        f'''
+        You are an editorial assistant preparing a {style} recap of a blog post for an email + social digest. Answer with JSON matching
+        this schema:
+        {{
+          "teaser": string,  # ≤200 characters, 1 sentence hook, factual and specific
+          "points": [string, ...]  # {max_points} {style} takeaways, each ≤{max_chars} characters
+        }}
 
-Writing rules:
-- Capture the sharpest insight, metric, or quote in the teaser. Avoid clickbait or rhetorical questions.
-- Each point should deliver a standalone takeaway. Lead with the most concrete fact before context.
-- Use plain text only. Prohibit markdown, emojis, hashtags, and URLs.
-- Never repeat the teaser verbatim in the points.
-- If information is missing, acknowledge it instead of inventing details.
-- Respond with JSON only; do not wrap inside code fences.
+        Writing rules:
+        - Capture the sharpest insight, metric, or quote in the teaser. Avoid clickbait or rhetorical questions.
+        - Each point should deliver a standalone takeaway. Lead with the most concrete fact before context.
+        - Use plain text only. Prohibit markdown, emojis, hashtags, and URLs.
+        - Never repeat the teaser verbatim in the points.
+        - If information is missing, acknowledge it instead of inventing details.
+        - Respond with JSON only; do not wrap inside code fences.
 
-ARTICLE TITLE: {title}
-SOURCE URL: {url}
+        ARTICLE TITLE: {title}
+        SOURCE URL: {url}
 
-FULL TEXT (truncated):
-"""{content}"""
-"""
+        FULL TEXT (truncated):
+        """{content}"""
+        '''
+    ).strip()
+
 
     try:
         print("🤖 Calling DeepSeek API...")
