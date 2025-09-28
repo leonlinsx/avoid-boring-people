@@ -46,63 +46,26 @@ const visibleIds = new Set(filteredPosts.map((post) => post.id));
     No posts found for “{q}”. Try a different keyword.
   </p>
 
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"
-  ></script>
-  <script is:inline type="module">
+  <script type="module">
+    import { setupClientSearch } from '../../scripts/clientSearch.ts';
+
     const input = document.getElementById('client-search-input');
     const postList = document.getElementById('post-list');
-    const allPosts = Array.from(postList.children);
-    const emptyState = document.getElementById('search-empty');
 
-    const postsData = allPosts.map((el) => ({
-      el,
-      title: el.querySelector('.post-title')?.textContent || '',
-      summary: el.querySelector('.post-summary')?.textContent || '',
-      category: el.querySelector('.post-meta')?.textContent || '',
-    }));
+    if (input instanceof HTMLInputElement && postList instanceof HTMLElement) {
+      const emptyState = document.getElementById('search-empty');
+      const posts = Array.from(postList.children).filter(
+        (child): child is HTMLElement => child instanceof HTMLElement,
+      );
 
-    const fuse = new window.Fuse(postsData, {
-      keys: ['title', 'summary', 'category'],
-      threshold: 0.3,
-    });
+      const urlParams = new URLSearchParams(window.location.search);
 
-    // Run search immediately if query present in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialQuery = urlParams.get('q')?.trim() || '';
-    if (initialQuery) {
-      input.value = initialQuery;
-      runSearch(initialQuery);
-    }
-
-    input.addEventListener('input', (e) => {
-      runSearch(e.target.value.trim());
-    });
-
-    function runSearch(query) {
-      if (!query) {
-        allPosts.forEach(showPost);
-        updateEmptyState(true);
-        return;
-      }
-      const found = fuse.search(query).map((r) => r.item.el);
-      allPosts.forEach(hidePost);
-      found.forEach(showPost);
-      updateEmptyState(found.length > 0);
-    }
-
-    function showPost(el) {
-      el.style.display = '';
-      el.removeAttribute('data-initially-hidden');
-    }
-
-    function hidePost(el) {
-      el.style.display = 'none';
-      el.setAttribute('data-initially-hidden', 'true');
-    }
-
-    function updateEmptyState(hasResults) {
-      if (!emptyState) return;
-      emptyState.classList.toggle('is-visible', !hasResults);
+      setupClientSearch({
+        input,
+        posts,
+        emptyState: emptyState instanceof HTMLElement ? emptyState : null,
+        initialQuery: urlParams.get('q'),
+      });
     }
   </script>
 </BaseLayout>

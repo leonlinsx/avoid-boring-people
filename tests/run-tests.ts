@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { __setMockGetCollectionImplementation } from 'astro:content';
+import { setupClientSearch } from '../src/scripts/clientSearch.ts';
 import { computeCleanSlug } from '../src/utils/slug-helpers.ts';
 import { searchPosts, normalizeQuery } from '../src/utils/search.ts';
 import {
@@ -144,6 +145,175 @@ function testSearchPosts() {
     [detailedPosts[0]],
   );
   assert.equal(searchPosts(detailedPosts as any, 'nonexistent').length, 0);
+}
+
+class FakeClassList {
+  private classes = new Set<string>();
+
+  toggle(token: string, force?: boolean) {
+    if (force === undefined) {
+      if (this.classes.has(token)) {
+        this.classes.delete(token);
+      } else {
+        this.classes.add(token);
+      }
+      return this.classes.has(token);
+    }
+
+    if (force) {
+      this.classes.add(token);
+    } else {
+      this.classes.delete(token);
+    }
+
+    return this.classes.has(token);
+  }
+
+  contains(token: string) {
+    return this.classes.has(token);
+  }
+}
+
+function createFakeInput(): any {
+  const listeners: Record<string, Array<(event: any) => void>> = Object.create(null);
+
+  const element = {
+    value: '',
+    addEventListener(type: string, listener: (event: any) => void) {
+      (listeners[type] ??= []).push(listener);
+    },
+    removeEventListener(type: string, listener: (event: any) => void) {
+      const handlers = listeners[type];
+      if (!handlers) return;
+      const index = handlers.indexOf(listener);
+      if (index >= 0) {
+        handlers.splice(index, 1);
+      }
+    },
+    dispatchEvent(event: any) {
+      const handlers = listeners[event.type] ?? [];
+      handlers.forEach((listener) => listener({ ...event, target: element }));
+      return true;
+    },
+  };
+
+  return element;
+}
+
+function createFakePost(data: {
+  title: string;
+  summary: string;
+  category: string;
+}): any {
+  const attributes = new Map<string, string>();
+  const lookups: Record<string, { textContent: string }> = {
+    '.post-title': { textContent: data.title },
+    '.post-summary': { textContent: data.summary },
+    '.post-meta': { textContent: data.category },
+  };
+
+  return {
+    style: { display: '' },
+    classList: new FakeClassList(),
+    setAttribute(name: string, value: string) {
+      attributes.set(name, value);
+    },
+    removeAttribute(name: string) {
+      attributes.delete(name);
+    },
+    getAttribute(name: string) {
+      return attributes.get(name) ?? null;
+    },
+    querySelector(selector: string) {
+      return lookups[selector] ?? null;
+    },
+  };
+}
+
+function createFakeEmptyState(): any {
+  return {
+    classList: new FakeClassList(),
+  };
+}
+
+function createEvent(type: string) {
+  return { type };
+}
+
+function testClientSearchSetup() {
+  const input = createFakeInput() as unknown as HTMLInputElement;
+  const posts = [
+    createFakePost({
+      title: 'Growth Stocks',
+      summary: 'Deep dive on venture capital trends',
+      category: 'Markets',
+    }) as unknown as HTMLElement,
+    createFakePost({
+      title: 'Weekly Notes',
+      summary: 'Digest of the week',
+      category: 'Notes',
+    }) as unknown as HTMLElement,
+  ];
+  const emptyState = createFakeEmptyState() as unknown as HTMLElement;
+
+  const controller = setupClientSearch({
+    input,
+    posts,
+    emptyState,
+    initialQuery: '',
+  });
+
+  assert.equal(posts[0].style.display, '');
+  assert.equal(posts[1].style.display, '');
+  assert.equal((posts[0] as any).getAttribute('data-initially-hidden'), null);
+  assert.equal(emptyState.classList.contains('is-visible'), false);
+
+  input.value = 'venture capital';
+  input.dispatchEvent(createEvent('input') as unknown as Event);
+
+  assert.equal(posts[0].style.display, '');
+  assert.equal(posts[1].style.display, 'none');
+  assert.equal((posts[1] as any).getAttribute('data-initially-hidden'), 'true');
+  assert.equal(emptyState.classList.contains('is-visible'), false);
+
+  input.value = 'nonexistent';
+  input.dispatchEvent(createEvent('input') as unknown as Event);
+
+  assert.equal(posts[0].style.display, 'none');
+  assert.equal(posts[1].style.display, 'none');
+  assert.equal((posts[0] as any).getAttribute('data-initially-hidden'), 'true');
+  assert.equal(emptyState.classList.contains('is-visible'), true);
+
+  controller.destroy();
+
+  const inputWithInitial = createFakeInput() as unknown as HTMLInputElement;
+  const postsWithInitial = [
+    createFakePost({
+      title: 'Growth Stocks',
+      summary: 'Deep dive on venture capital trends',
+      category: 'Markets',
+    }) as unknown as HTMLElement,
+    createFakePost({
+      title: 'Weekly Notes',
+      summary: 'Digest of the week',
+      category: 'Notes',
+    }) as unknown as HTMLElement,
+  ];
+  const emptyStateWithInitial = createFakeEmptyState() as unknown as HTMLElement;
+
+  const controllerWithInitial = setupClientSearch({
+    input: inputWithInitial,
+    posts: postsWithInitial,
+    emptyState: emptyStateWithInitial,
+    initialQuery: 'notes',
+  });
+
+  assert.equal(inputWithInitial.value, 'notes');
+  assert.equal(postsWithInitial[0].style.display, 'none');
+  assert.equal(postsWithInitial[1].style.display, '');
+  assert.equal(emptyStateWithInitial.classList.contains('is-visible'), false);
+
+  controllerWithInitial.destroy();
 }
 
 function testComputeCleanSlug() {
@@ -621,6 +791,7 @@ async function testRssEndpoint() {
 async function run() {
   try {
     testSearchPosts();
+    testClientSearchSetup();
     testComputeCleanSlug();
     testNormalizeQuery();
     testBuildPaginationHref();
