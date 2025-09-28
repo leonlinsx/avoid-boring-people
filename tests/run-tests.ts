@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { __setMockGetCollectionImplementation } from 'astro:content';
 import { computeCleanSlug } from '../src/utils/slug-helpers.ts';
 import { searchPosts, normalizeQuery } from '../src/utils/search.ts';
 import {
@@ -438,6 +439,172 @@ function testExtractHeadings() {
   ]);
 }
 
+async function withMockGetCollection(
+  posts: Array<Record<string, any>>,
+  callback: () => Promise<void> | void,
+) {
+  __setMockGetCollectionImplementation(async () => posts as any);
+
+  try {
+    await callback();
+  } finally {
+    __setMockGetCollectionImplementation(null);
+  }
+}
+
+async function testSearchIndexEndpoint() {
+  const posts = [
+    makeCollectionEntry({
+      id: '2024_01_01_custom/index.md',
+      data: {
+        title: 'Custom Title',
+        description: 'Custom description',
+        slug: '  //custom// ',
+        category: 'Finance',
+        tags: ['growth', 'markets'],
+        pubDate: new Date('2024-01-01T00:00:00Z'),
+      },
+      body: 'First body text',
+    }),
+    makeCollectionEntry({
+      id: '2024_02_01_second/index.md',
+      data: {
+        title: 'Second Title',
+        description: 'Second description',
+        category: 'Markets',
+        tags: ['trading'],
+        pubDate: new Date('2024-02-01T00:00:00Z'),
+      },
+      body: 'Second body text',
+    }),
+  ];
+
+  await withMockGetCollection(posts, async () => {
+    const { GET } = await import('../src/pages/search-index.json.ts');
+    const response = await GET();
+
+    assert.equal(response.headers.get('Content-Type'), 'application/json');
+    const payload = (await response.json()) as Array<Record<string, any>>;
+
+    assert.deepEqual(payload, [
+      {
+        id: '2024_01_01_custom/index.md',
+        title: 'Custom Title',
+        url: '/writing/custom/',
+        date: '2024-01-01T00:00:00.000Z',
+        content: 'First body text',
+        category: 'Finance',
+        tags: ['growth', 'markets'],
+      },
+      {
+        id: '2024_02_01_second/index.md',
+        title: 'Second Title',
+        url: '/writing/second/',
+        date: '2024-02-01T00:00:00.000Z',
+        content: 'Second body text',
+        category: 'Markets',
+        tags: ['trading'],
+      },
+    ]);
+  });
+}
+
+async function testApiSearchIndexEndpoint() {
+  const posts = [
+    makeCollectionEntry({
+      id: '2024_01_01_first/index.md',
+      slug: 'first-post',
+      data: {
+        title: 'First Title',
+        description: 'Detailed first post',
+        category: 'Finance',
+        tags: ['money'],
+        pubDate: new Date('2024-01-01T00:00:00Z'),
+        heroImage: '/images/first.png',
+      },
+    }),
+    makeCollectionEntry({
+      id: '2024_02_01_second/index.md',
+      slug: undefined,
+      data: {
+        title: 'Second Title',
+        description: '',
+        category: 'Markets',
+        tags: ['stocks'],
+        pubDate: new Date('2024-02-01T00:00:00Z'),
+        heroImage: {
+          src: '/images/hero.webp',
+          width: 1200,
+          height: 630,
+        },
+      },
+    }),
+  ];
+
+  await withMockGetCollection(posts, async () => {
+    const { GET } = await import('../src/pages/api/search-index.json.ts');
+    const response = await GET();
+
+    assert.equal(response.headers.get('Content-Type'), 'application/json');
+    const payload = (await response.json()) as Array<Record<string, any>>;
+
+    assert.deepEqual(payload, [
+      {
+        slug: 'first-post',
+        title: 'First Title',
+        description: 'Detailed first post',
+        category: 'Finance',
+        tags: ['money'],
+        pubDate: '2024-01-01T00:00:00.000Z',
+        heroImage: '/images/first.png',
+      },
+      {
+        slug: '2024_02_01_second/index',
+        title: 'Second Title',
+        description: '',
+        category: 'Markets',
+        tags: ['stocks'],
+        pubDate: '2024-02-01T00:00:00.000Z',
+        heroImage: '/images/hero.webp',
+      },
+    ]);
+  });
+}
+
+async function testRssEndpoint() {
+  const posts = [
+    makeCollectionEntry({
+      id: '2024_01_01_alpha/index.md',
+      slug: 'alpha',
+      data: {
+        title: 'Alpha',
+        description: 'Alpha description',
+        pubDate: new Date('2024-01-01T00:00:00Z'),
+      },
+    }),
+    makeCollectionEntry({
+      id: '2024_02_01_beta/index.md',
+      slug: 'beta',
+      data: {
+        title: 'Beta',
+        description: 'Beta description',
+        pubDate: new Date('2024-02-01T00:00:00Z'),
+      },
+    }),
+  ];
+
+  await withMockGetCollection(posts, async () => {
+    const { GET } = await import('../src/pages/rss.xml.ts');
+    const response = await GET();
+    const xml = await response.text();
+
+    assert.match(xml, /<title>Alpha<\/title>/);
+    assert.match(xml, /<link>https:\/\/leonlins.com\/writing\/alpha\/<\/link>/);
+    assert.match(xml, /<title>Beta<\/title>/);
+    assert.match(xml, /<link>https:\/\/leonlins.com\/writing\/beta\/<\/link>/);
+  });
+}
+
 async function run() {
   try {
     testSearchPosts();
@@ -450,6 +617,9 @@ async function run() {
     await testGetCategoryPostsPaginated();
     testNormalizeHeroImageHelper();
     testExtractHeadings();
+    await testSearchIndexEndpoint();
+    await testApiSearchIndexEndpoint();
+    await testRssEndpoint();
     console.log('✅ All custom tests passed');
   } catch (error) {
     console.error('❌ Test failure', error);

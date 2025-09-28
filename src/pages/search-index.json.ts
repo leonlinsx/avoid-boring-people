@@ -1,9 +1,9 @@
 /* global Response */
-// src/pages/search-index.json.js
+// src/pages/search-index.json.ts
 import { getCollection } from 'astro:content';
-import { getCleanSlug } from '../utils/slug';
+import { getCleanSlug } from '../utils/slug.ts';
 
-export async function GET() {
+export async function GET(): Promise<Response> {
   const posts = await getCollection('blog');
 
   const index = posts.map((post) => ({

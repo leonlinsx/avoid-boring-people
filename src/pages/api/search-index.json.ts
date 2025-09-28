@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 
-export async function GET() {
+export async function GET(): Promise<Response> {
   const posts = await getCollection('blog');
 
   // Map down to just what Fuse.js needs
