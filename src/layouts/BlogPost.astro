@@ -51,7 +51,12 @@ const related = allPosts
 // ✅ Canonical URL from clean slug
 const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
 
-const breadcrumbItems = [
+type BreadcrumbItem = {
+  label: string;
+  href?: string;
+};
+
+const breadcrumbItems: BreadcrumbItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Writing', href: '/writing/' },
 ];

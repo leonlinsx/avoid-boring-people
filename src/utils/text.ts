@@ -21,9 +21,9 @@ export type PaginateFn = <T>(
   options: { pageSize: number; params?: Record<string, any> },
 ) => Array<any>;
 
-type GetCollectionFn = <CollectionName extends string = string>(
-  collection: CollectionName,
-) => Promise<CollectionEntry<CollectionName>[]>;
+type GetCollectionFn = (
+  collection: 'blog',
+) => Promise<CollectionEntry<'blog'>[]>;
 
 /**
  * Convert a string to Title Case.

@@ -457,11 +457,13 @@ async function withMockGetCollection(
   callback: () => Promise<void> | void,
 ) {
   __setMockGetCollectionImplementation(async () => posts as any);
+  setGetCollectionImplementation(async () => posts as any);
 
   try {
     await callback();
   } finally {
     __setMockGetCollectionImplementation(null);
+    setGetCollectionImplementation(null);
   }
 }
 

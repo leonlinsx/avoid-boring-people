@@ -33,7 +33,7 @@ async function autopostToPublish0x(post) {
   await page.fill('input[name="postTitle"]', post.title);
 
   // Switch into TinyMCE iframe for content
-  const frame = await page.frameLocator('#postText_ifr');
+  const frame = page.frameLocator('#postText_ifr');
   await frame.locator('body#tinymce').click();
   await frame.locator('body#tinymce').fill(post.content);
 

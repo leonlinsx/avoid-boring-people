@@ -8,6 +8,41 @@ import {
   SITE_AUTHOR,
 } from "../consts";
 
+type OrganizationSchema = {
+  "@context": "https://schema.org";
+  "@type": "Organization";
+  url: string;
+  logo: string;
+  name: string;
+};
+
+type ArticleSchema = {
+  "@context": "https://schema.org";
+  "@type": "BlogPosting";
+  headline: string;
+  description: string;
+  image: string[];
+  datePublished: string;
+  dateModified: string;
+  author: {
+    "@type": string;
+    name: string;
+  };
+  publisher: {
+    "@type": string;
+    name: string;
+    logo: {
+      "@type": string;
+      url: string;
+    };
+  };
+  mainEntityOfPage: {
+    "@type": string;
+    "@id": string | undefined;
+  };
+  keywords?: string;
+};
+
 const {
   title,
   description,
@@ -83,7 +118,7 @@ const keywordsContent =
 const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
 
 // ✅ Organization structured data
-const orgSchema = {
+const orgSchema: OrganizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   url: SITE_URL,
@@ -92,7 +127,7 @@ const orgSchema = {
 };
 
 // ✅ Article structured data (only if pubDate provided → means it's a blog post)
-let articleSchema;
+let articleSchema: ArticleSchema | undefined;
 if (pubDate) {
   articleSchema = {
     "@context": "https://schema.org",
@@ -123,7 +158,10 @@ if (pubDate) {
 
 // ✅ Merge schemas into one JSON-LD array
 if (articleSchema && normalizedTags.length > 0) {
-  articleSchema.keywords = normalizedTags.join(", ");
+  articleSchema = {
+    ...articleSchema,
+    keywords: normalizedTags.join(", "),
+  };
 }
 
 const structuredData = articleSchema ? [orgSchema, articleSchema] : [orgSchema];
@@ -211,7 +249,7 @@ const ogImageAlt = `Preview image for ${title}`;
 )}
 {ogType === "article" &&
   normalizedTags.map((tag) => (
-    <meta property="article:tag" content={tag} key={tag} />
+    <meta property="article:tag" content={tag} />
   ))}
 
 <!-- Twitter -->
