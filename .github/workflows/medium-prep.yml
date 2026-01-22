@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r scripts/automation/requirements.txt
 
       - name: Generate Medium summary
         run: |
