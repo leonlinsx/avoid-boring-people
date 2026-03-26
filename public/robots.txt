@@ -1,22 +1,74 @@
-# Allow all search and AI crawlers
+# robots.txt for leonlins.com
+# Goal: maximize SEO + AEO visibility while protecting private and non-public areas.
+
+# Default policy for all crawlers:
+# - Allow public content for indexing/citation.
+# - Block private, admin, login, draft, and staging paths.
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
 
-# Explicitly allow AI crawlers
+# Explicit allow for major search crawlers.
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
+
+# Explicit allow for AI crawlers and dataset crawlers commonly used by LLM systems.
 User-agent: GPTBot
 Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
 
-User-agent: anthropic-ai
+User-agent: PerplexityBot
 Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
 
-# Sitemap for faster discovery
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /staging/
+
+# Sitemap helps search engines and AI crawlers discover canonical URLs faster.
 Sitemap: https://leonlins.com/sitemap-index.xml
