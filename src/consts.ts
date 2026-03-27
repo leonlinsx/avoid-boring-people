@@ -6,6 +6,19 @@ export const SITE_DESCRIPTION =
   'Writing on finance, tech, and other ideas by Leon Lin';
 export const SITE_URL = 'https://leonlins.com/';
 export const SITE_AUTHOR = 'Leon Lin';
+export const SITE_AUTHOR_URL = 'https://leonlins.com/about/';
+
+// Social profiles for structured data sameAs
+export const SITE_AUTHOR_SAME_AS = [
+  'https://twitter.com/leonlinsx',
+  'https://github.com/leonlinsx',
+  'https://avoidboringpeople.substack.com',
+];
+
+export const SITE_ORG_SAME_AS = [
+  'https://twitter.com/leonlinsx',
+  'https://avoidboringpeople.substack.com',
+];
 
 // ✅ Default Open Graph image (used if no heroImage is set in frontmatter)
 // Place this file in `public/logos/` so it's accessible at /logos/substack_logo.png

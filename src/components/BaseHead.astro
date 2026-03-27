@@ -6,6 +6,9 @@ import {
   SITE_URL,
   SITE_OG_IMAGE,
   SITE_AUTHOR,
+  SITE_AUTHOR_URL,
+  SITE_AUTHOR_SAME_AS,
+  SITE_ORG_SAME_AS,
 } from "../consts";
 
 const {
@@ -20,6 +23,8 @@ const {
   canonical,
   relPrev,
   relNext,
+  includePerson = false,
+  noindex = false,
 } = Astro.props as {
   title: string;
   description?: string;
@@ -32,6 +37,8 @@ const {
   canonical?: string;
   relPrev?: string;
   relNext?: string;
+  includePerson?: boolean;
+  noindex?: boolean;
 };
 
 const resolveAbsoluteURL = (maybeRelative?: string) => {
@@ -82,14 +89,62 @@ const keywordsContent =
 // ✅ Absolute URL for organization logo
 const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
 
-// ✅ Organization structured data
+// ✅ Organization structured data (improved: description + sameAs)
 const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": `${SITE_URL}#organization`,
   url: SITE_URL,
-  logo: orgLogo,
   name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  logo: {
+    "@type": "ImageObject",
+    url: orgLogo,
+  },
+  sameAs: SITE_ORG_SAME_AS,
 };
+
+// ✅ WebSite schema with SearchAction (always included)
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}#website`,
+  url: SITE_URL,
+  name: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  publisher: { "@id": `${SITE_URL}#organization` },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}writing/search?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
+// ✅ Person schema (included on About page via includePerson prop)
+const personSchema = includePerson
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": `${SITE_URL}#person`,
+      name: SITE_AUTHOR,
+      url: SITE_AUTHOR_URL,
+      jobTitle: "Writer, Investor, and Advisor",
+      worksFor: { "@id": `${SITE_URL}#organization` },
+      knowsAbout: [
+        "Finance",
+        "Technology",
+        "Investing",
+        "Decision-Making",
+        "Investment Banking",
+        "Startups",
+        "Venture Capital",
+      ],
+      sameAs: SITE_AUTHOR_SAME_AS,
+    }
+  : null;
 
 // ✅ Article structured data (only if pubDate provided → means it's a blog post)
 let articleSchema;
@@ -105,19 +160,14 @@ if (pubDate) {
     author: {
       "@type": "Person",
       name: resolvedAuthor,
+      url: SITE_AUTHOR_URL,
     },
-    publisher: {
-      "@type": "Organization",
-      name: SITE_TITLE,
-      logo: {
-        "@type": "ImageObject",
-        url: orgLogo,
-      },
-    },
+    publisher: { "@id": `${SITE_URL}#organization` },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalURL,
     },
+    isPartOf: { "@id": `${SITE_URL}#website` },
   };
 }
 
@@ -126,7 +176,12 @@ if (articleSchema && normalizedTags.length > 0) {
   articleSchema.keywords = normalizedTags.join(", ");
 }
 
-const structuredData = articleSchema ? [orgSchema, articleSchema] : [orgSchema];
+const structuredData = [
+  orgSchema,
+  websiteSchema,
+  ...(articleSchema ? [articleSchema] : []),
+  ...(personSchema ? [personSchema] : []),
+];
 const ogImageAlt = `Preview image for ${title}`;
 ---
 
@@ -190,6 +245,7 @@ const ogImageAlt = `Preview image for ${title}`;
 <meta name="description" content={metaDescription} />
 <meta name="author" content={resolvedAuthor} />
 {keywordsContent && <meta name="keywords" content={keywordsContent} />}
+{noindex && <meta name="robots" content="noindex, follow" />}
 
 <!-- Open Graph -->
 <meta property="og:type" content={ogType} />
