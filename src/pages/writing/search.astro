@@ -25,6 +25,7 @@ const visibleIds = new Set(filteredPosts.map((post) => post.id));
 <BaseLayout
   title={`Search | ${SITE_TITLE}`}
   description={`Search results for "${q}"`}
+  noindex={true}
 >
   <div class="search-header">
     <h1>Search Results</h1>
