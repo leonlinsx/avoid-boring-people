@@ -47,6 +47,10 @@ function buildBlogLastmodMap() {
 const blogLastmod = buildBlogLastmodMap();
 // Stable fallback date for non-blog static pages (site launch / last major update)
 const STATIC_LASTMOD = '2025-01-01T00:00:00.000Z';
+const normalizePathname = (pathname) => {
+  if (!pathname || pathname === '/') return '/';
+  return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+};
 
 export default defineConfig({
   site: SITE_URL,
@@ -64,9 +68,12 @@ export default defineConfig({
         );
       },
       serialize(item) {
-        const pathname = new URL(item.url).pathname;
+        const url = new URL(item.url);
+        const pathname = normalizePathname(url.pathname);
+        url.pathname = pathname;
         return {
           ...item,
+          url: url.toString(),
           lastmod: blogLastmod[pathname] ?? STATIC_LASTMOD,
         };
       },
