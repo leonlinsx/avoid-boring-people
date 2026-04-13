@@ -1,5 +1,6 @@
 ---
 import { SITE_URL } from '../consts';
+import { sanitizeJsonLd } from '../utils/jsonld';
 
 interface BreadcrumbItem {
   label: string;
@@ -14,6 +15,12 @@ const breadcrumbList = items.map((item, index) => ({
   name: item.label,
   item: item.href ? new URL(item.href, SITE_URL).toString() : undefined,
 }));
+
+const breadcrumbSchema = sanitizeJsonLd({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbList,
+});
 ---
 
 {items.length > 1 && (
@@ -32,13 +39,10 @@ const breadcrumbList = items.map((item, index) => ({
         );
       })}
     </ol>
-    <script is:inline type="application/ld+json">
-      {JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: breadcrumbList,
-      })}
-    </script>
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumbSchema)}
+    ></script>
   </nav>
 )}
 
