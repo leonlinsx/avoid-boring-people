@@ -9,6 +9,7 @@ import {
   SITE_AUTHOR_URL,
   SITE_AUTHOR_SAME_AS,
 } from "../consts";
+import { sanitizeJsonLd } from '../utils/jsonld';
 
 const {
   title,
@@ -156,12 +157,23 @@ if (articleSchema && normalizedTags.length > 0) {
   articleSchema.keywords = normalizedTags.join(", ");
 }
 
-const structuredData = [
+const structuredDataGraph = [
   orgSchema,
   personSchema,
   websiteSchema,
   ...(articleSchema ? [articleSchema] : []),
 ];
+
+const structuredData = sanitizeJsonLd({
+  '@context': 'https://schema.org',
+  '@graph': structuredDataGraph.map((entry) => {
+    if (entry && typeof entry === 'object' && '@context' in entry) {
+      const { ['@context']: _context, ...rest } = entry as Record<string, unknown>;
+      return rest;
+    }
+    return entry;
+  }),
+});
 const ogImageAlt = `Preview image for ${title}`;
 ---
 
