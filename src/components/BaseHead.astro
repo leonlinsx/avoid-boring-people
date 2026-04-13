@@ -8,7 +8,6 @@ import {
   SITE_AUTHOR,
   SITE_AUTHOR_URL,
   SITE_AUTHOR_SAME_AS,
-  SITE_ORG_SAME_AS,
 } from "../consts";
 
 const {
@@ -23,7 +22,6 @@ const {
   canonical,
   relPrev,
   relNext,
-  includePerson = false,
   noindex = false,
 } = Astro.props as {
   title: string;
@@ -37,22 +35,33 @@ const {
   canonical?: string;
   relPrev?: string;
   relNext?: string;
-  includePerson?: boolean;
   noindex?: boolean;
+};
+
+const normalizePathname = (pathname: string) => {
+  if (!pathname || pathname === '/') return '/';
+  return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
 };
 
 const resolveAbsoluteURL = (maybeRelative?: string) => {
   if (!maybeRelative) return undefined;
-  if (maybeRelative.startsWith("http")) return maybeRelative;
+  if (maybeRelative.startsWith("http")) {
+    const parsed = new URL(maybeRelative);
+    parsed.pathname = normalizePathname(parsed.pathname);
+    return parsed.toString();
+  }
   try {
-    return new URL(maybeRelative, SITE_URL).toString();
+    const parsed = new URL(maybeRelative, SITE_URL);
+    parsed.pathname = normalizePathname(parsed.pathname);
+    return parsed.toString();
   } catch (error) {
     return undefined;
   }
 };
 
 const canonicalURL =
-  resolveAbsoluteURL(canonical) ?? new URL(Astro.url.pathname, SITE_URL).toString();
+  resolveAbsoluteURL(canonical) ??
+  new URL(normalizePathname(Astro.url.pathname), SITE_URL).toString();
 const prevURL = resolveAbsoluteURL(relPrev);
 const nextURL = resolveAbsoluteURL(relNext);
 
@@ -89,22 +98,26 @@ const keywordsContent =
 // ✅ Absolute URL for organization logo
 const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
 
-// ✅ Organization structured data (improved: description + sameAs)
+// Keep organization minimal and secondary to the person entity.
 const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${SITE_URL}#organization`,
   url: SITE_URL,
   name: SITE_TITLE,
-  description: SITE_DESCRIPTION,
-  logo: {
-    "@type": "ImageObject",
-    url: orgLogo,
-  },
-  sameAs: SITE_ORG_SAME_AS,
 };
 
-// ✅ WebSite schema with SearchAction (always included)
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${SITE_URL}#person`,
+  name: SITE_AUTHOR,
+  url: SITE_AUTHOR_URL,
+  jobTitle: "Writer, Investor, and Advisor",
+  sameAs: SITE_AUTHOR_SAME_AS,
+};
+
+// WebSite schema (SearchAction removed because search page is noindex)
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -112,39 +125,8 @@ const websiteSchema = {
   url: SITE_URL,
   name: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  publisher: { "@id": `${SITE_URL}#organization` },
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: `${SITE_URL}writing/search?q={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
-  },
+  publisher: { "@id": `${SITE_URL}#person` },
 };
-
-// ✅ Person schema (included on About page via includePerson prop)
-const personSchema = includePerson
-  ? {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": `${SITE_URL}#person`,
-      name: SITE_AUTHOR,
-      url: SITE_AUTHOR_URL,
-      jobTitle: "Writer, Investor, and Advisor",
-      worksFor: { "@id": `${SITE_URL}#organization` },
-      knowsAbout: [
-        "Finance",
-        "Technology",
-        "Investing",
-        "Decision-Making",
-        "Investment Banking",
-        "Startups",
-        "Venture Capital",
-      ],
-      sameAs: SITE_AUTHOR_SAME_AS,
-    }
-  : null;
 
 // ✅ Article structured data (only if pubDate provided → means it's a blog post)
 let articleSchema;
@@ -158,11 +140,9 @@ if (pubDate) {
     datePublished: pubDate.toISOString(),
     dateModified: (updatedDate || pubDate).toISOString(),
     author: {
-      "@type": "Person",
-      name: resolvedAuthor,
-      url: SITE_AUTHOR_URL,
+      "@id": `${SITE_URL}#person`,
     },
-    publisher: { "@id": `${SITE_URL}#organization` },
+    publisher: { "@id": `${SITE_URL}#person` },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalURL,
@@ -178,9 +158,9 @@ if (articleSchema && normalizedTags.length > 0) {
 
 const structuredData = [
   orgSchema,
+  personSchema,
   websiteSchema,
   ...(articleSchema ? [articleSchema] : []),
-  ...(personSchema ? [personSchema] : []),
 ];
 const ogImageAlt = `Preview image for ${title}`;
 ---
@@ -281,9 +261,10 @@ const ogImageAlt = `Preview image for ${title}`;
 <meta name="twitter:site" content="@leonlinsx" />
 
 <!-- ✅ Combined Structured Data -->
-<script is:inline type="application/ld+json">
-  {JSON.stringify(structuredData)}
-</script>
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(structuredData)}
+></script>
 
 <!-- Microsoft Clarity -->
 {import.meta.env.PROD && (
