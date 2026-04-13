@@ -1,9 +1,6 @@
 # robots.txt for leonlins.com
-# Goal: maximize SEO + AEO visibility while protecting private and non-public areas.
+# SEO + answer-engine discovery enabled; private paths and AI training blocked.
 
-# Default policy for all crawlers:
-# - Allow public content for indexing/citation.
-# - Block private, admin, login, draft, staging, and build artifact paths.
 User-agent: *
 Allow: /
 Disallow: /admin/
@@ -14,77 +11,22 @@ Disallow: /staging/
 Disallow: /api/
 Disallow: /stats.html
 
-# Explicit allow for major search crawlers.
 User-agent: Googlebot
 Allow: /
-Disallow: /admin/
-Disallow: /login/
-Disallow: /drafts/
-Disallow: /private/
-Disallow: /staging/
-Disallow: /api/
-Disallow: /stats.html
 
 User-agent: Bingbot
 Allow: /
-Disallow: /admin/
-Disallow: /login/
-Disallow: /drafts/
-Disallow: /private/
-Disallow: /staging/
-Disallow: /api/
-Disallow: /stats.html
 
-# Explicit allow for AI crawlers and dataset crawlers commonly used by LLM systems.
-User-agent: GPTBot
+User-agent: OAI-SearchBot
 Allow: /
-Disallow: /admin/
-Disallow: /login/
-Disallow: /drafts/
-Disallow: /private/
-Disallow: /staging/
-Disallow: /api/
-Disallow: /stats.html
-
-User-agent: ClaudeBot
-Allow: /
-Disallow: /admin/
-Disallow: /login/
-Disallow: /drafts/
-Disallow: /private/
-Disallow: /staging/
-Disallow: /api/
-Disallow: /stats.html
 
 User-agent: PerplexityBot
 Allow: /
-Disallow: /admin/
-Disallow: /login/
-Disallow: /drafts/
-Disallow: /private/
-Disallow: /staging/
-Disallow: /api/
-Disallow: /stats.html
+
+User-agent: GPTBot
+Disallow: /
 
 User-agent: Google-Extended
-Allow: /
-Disallow: /admin/
-Disallow: /login/
-Disallow: /drafts/
-Disallow: /private/
-Disallow: /staging/
-Disallow: /api/
-Disallow: /stats.html
+Disallow: /
 
-User-agent: CCBot
-Allow: /
-Disallow: /admin/
-Disallow: /login/
-Disallow: /drafts/
-Disallow: /private/
-Disallow: /staging/
-Disallow: /api/
-Disallow: /stats.html
-
-# Sitemap helps search engines and AI crawlers discover canonical URLs faster.
 Sitemap: https://leonlins.com/sitemap-index.xml
