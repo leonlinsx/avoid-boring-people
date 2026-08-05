@@ -39,6 +39,7 @@ Replace one-off values with variables. -->
 <!-- - font decision
 - colour scheme design decision -->
 
+- update automated posting
 - automated linkedin summaries
 - post to reddit relevant subreddits
 - book consulting call calendly
