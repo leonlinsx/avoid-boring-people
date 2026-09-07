@@ -19,6 +19,8 @@ This status file is the handoff record for the current newsletter migration phas
 - Created a portable initial Postgres migration for subscribers, campaigns, campaign recipients, database-backed rate-limit buckets, and event-receipt deduplication.
 - Added pure subscriber status, email normalization, and Substack-row mapping rules with tests.
 - Added a CSV dry-run inspection command. It reports source rows, Author exclusions, active/suppressed outcomes, and duplicate normalized emails without connecting to a database or changing subscriber data.
+- Linked the Neon `leonlins.com` project production branch and initialized `neon.ts`; its deploy plan and deploy were no-ops because the policy declares no new infrastructure.
+- The Neon connection values are in ignored `.env.local`; the SQL migration has not been applied to production.
 - No endpoint, current subscription flow, deployment configuration, external resource, or email behavior has changed yet.
 
 ## Not started
@@ -40,7 +42,7 @@ This status file is the handoff record for the current newsletter migration phas
 
 Before applying the migration or testing database-backed Phase 1 routes, obtain or confirm:
 
-1. A Neon project and `DATABASE_URL`, stored outside Git, for applying/testing the migration and routes.
+1. A disposable Neon child branch, created from production, to test the SQL migration before any production application.
 2. An SES sandbox identity plus verified test recipient before sending any confirmation email.
 3. The Substack export when importer validation begins.
 

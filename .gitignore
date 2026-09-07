@@ -48,3 +48,4 @@ coverage
 
 # Auth cookies for automation
 /cookies/*.json
+.neon
