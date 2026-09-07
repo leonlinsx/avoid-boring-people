@@ -27,8 +27,8 @@
 - Article source is `src/content/blog`; `/writing/[slug]` renders articles through `src/layouts/BlogPost.astro`, and `/writing/[page]` provides pagination.
 - Shared UI includes `src/components/SubscribeForm.astro`; the home page and article layout use it.
 - The current production signup remains Substack: the form posts to `https://avoidboringpeople.substack.com/api/v1/free`, and `src/pages/api/subscribe.ts` proxies that same integration. `/newsletter` redirects to `/#subscribe`.
-- Search, RSS, sitemap, and static publishing are already implemented. There is no Vercel adapter, database, owned newsletter route, or newsletter CLI yet.
-- The target newsletter architecture is Neon managed Postgres, short Vercel/Astro on-demand endpoints under `/api/newsletter/*`, Amazon SES, and an explicitly run local sender CLI. Normal site pages stay static.
+- Search, RSS, sitemap, and static publishing are already implemented. Phase 1 adds the Vercel adapter, Neon schema, and isolated `/api/newsletter/*` lifecycle routes, while normal site pages remain static. No current UI routes to those endpoints, confirmation delivery is disabled by default, and there is no newsletter CLI yet.
+- The target newsletter architecture is Neon managed Postgres, short Vercel/Astro on-demand endpoints under `/api/newsletter/*`, Amazon SES, and an explicitly run local sender CLI.
 
 ## Important invariants
 

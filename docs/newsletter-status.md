@@ -21,7 +21,7 @@ This status file is the handoff record for the current newsletter migration phas
 - Added a CSV dry-run inspection command. It reports source rows, Author exclusions, active/suppressed outcomes, and duplicate normalized emails without connecting to a database or changing subscriber data.
 - Linked the Neon `leonlins.com` project production branch and initialized `neon.ts`; its deploy plan and deploy were no-ops because the policy declares no new infrastructure.
 - The Neon connection values are in ignored `.env.local`; they are not committed.
-- Created disposable Neon branch `newsletter-phase1-validation` from production, applied `001_initial.sql` using a direct connection, and completed read-only schema validation there. The branch expires on 2026-09-14.
+- Created disposable Neon branch `newsletter-phase1-validation` from production. It did not initially contain the newsletter schema, so applied the committed `001_initial.sql` there using a direct connection and verified the resulting schema. The branch expires on 2026-09-14.
 - Applied the validated `001_initial.sql` to Neon production and verified the expected newsletter tables. No subscriber records were imported or created.
 - Inspected the existing SES setup in `us-east-2`: `leonlins.com` and `contact@leonlins.com` are verified; Easy DKIM (RSA-2048) and the custom `mail.leonlins.com` MAIL FROM domain are successful. The account is healthy but remains in the SES sandbox (200 emails per 24 hours; 1 email per second).
 - Created the non-console IAM user `newsletter-local-sender` and group `newsletter-ses-senders`. Its sole inline policy permits `ses:SendEmail` only through the `leonlins.com` SES identity and only when `ses:FromAddress` is `newsletter@leonlins.com`. It has no permissions to manage AWS resources, no console access, and no credentials in the repository.
@@ -31,7 +31,8 @@ This status file is the handoff record for the current newsletter migration phas
 - Confirmation delivery is disabled unless both `NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED=true` and the recipient is in the explicit local `NEWSLETTER_TEST_RECIPIENTS` allowlist. This prevents arbitrary-recipient or production sends during Phase 1.
 - Added retry-safe database-backed rate limiting: five subscription attempts per normalized email and twenty per hashed client IP in a rolling one-hour window. The route still returns the same generic response when the limit is exceeded.
 - Added focused tests for token hashing and rate-limit decisions; `npm test` and `npm run build` pass after the route and rate-limit changes.
-- No endpoint, current subscription flow, deployment behavior, or email behavior has changed yet.
+- Ran the full pending → active → unsubscribed lifecycle against the disposable branch with a generated `example.test` address and confirmation delivery explicitly disabled. A second confirmation was rejected, a second unsubscribe was safe, and a subsequent subscription request did not reactivate the suppressed record. No email was sent.
+- No current subscription flow, production email behavior, or public signup UI has changed. The isolated owned endpoints are present in source but are not linked from the site.
 
 ## Not started
 
@@ -53,9 +54,8 @@ This status file is the handoff record for the current newsletter migration phas
 Before testing database-backed Phase 1 routes that deliver confirmation email, obtain or confirm:
 
 1. Download and securely store the newly created IAM access key secret, then configure it locally without committing it. The local sender policy intentionally lacks quota-read permission because that is not needed for Phase 1 confirmation sends; add it only with the Phase 3 CLI.
-2. Validate the database-backed subscribe, confirm, and unsubscribe lifecycle on the disposable Neon branch before enabling any test confirmation delivery.
-3. Explicit approval for a no-recipient SES mailbox-simulator send from `newsletter@leonlins.com`, then inspect the result. A real inbox test requires a separately verified sandbox recipient and explicit approval at send time.
-4. The Substack export when importer validation begins.
+2. Explicit approval for a no-recipient SES mailbox-simulator send from `newsletter@leonlins.com`, then inspect the result. A real inbox test requires a separately verified sandbox recipient and explicit approval at send time.
+3. The Substack export when importer validation begins.
 
 DNS authority, production SES access, a compliant postal address, mailbox confirmation, and privacy-policy approval remain later launch gates; they do not block local Phase 1 development.
 
