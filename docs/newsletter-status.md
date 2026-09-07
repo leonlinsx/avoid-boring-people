@@ -22,7 +22,8 @@ This status file is the handoff record for the current newsletter migration phas
 - Linked the Neon `leonlins.com` project production branch and initialized `neon.ts`; its deploy plan and deploy were no-ops because the policy declares no new infrastructure.
 - The Neon connection values are in ignored `.env.local`; the SQL migration has not been applied to production.
 - Created disposable Neon branch `newsletter-phase1-validation` from production, applied `001_initial.sql` using a direct connection, and completed read-only schema validation there. The branch expires on 2026-09-14.
-- No endpoint, current subscription flow, production database, deployment behavior, or email behavior has changed yet.
+- Applied the validated `001_initial.sql` to Neon production and verified the expected newsletter tables. No subscriber records were imported or created.
+- No endpoint, current subscription flow, deployment behavior, or email behavior has changed yet.
 
 ## Not started
 
@@ -43,9 +44,8 @@ This status file is the handoff record for the current newsletter migration phas
 
 Before applying the migration or testing database-backed Phase 1 routes, obtain or confirm:
 
-1. Review the validated schema and explicitly authorize its production application when ready; production remains empty and unchanged.
-2. An SES sandbox identity plus verified test recipient before sending any confirmation email.
-3. The Substack export when importer validation begins.
+1. An SES sandbox identity plus verified test recipient and local AWS SDK credentials/profile before sending any confirmation email.
+2. The Substack export when importer validation begins.
 
 DNS authority, production SES access, a compliant postal address, mailbox confirmation, and privacy-policy approval remain later launch gates; they do not block local Phase 1 development.
 
