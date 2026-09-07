@@ -29,6 +29,8 @@ This status file is the handoff record for the current newsletter migration phas
 - Added isolated on-demand routes under `/api/newsletter/*` for a generic-response subscription request, one-time confirmation, and idempotent GET/POST unsubscribe. They use hashed tokens and retain suppressed subscribers as suppressed. `src/pages/api/subscribe.ts` and `SubscribeForm.astro` remain untouched.
 - Configured Astro's Vercel adapter while retaining static output. Only the new newsletter routes opt out of prerendering.
 - Confirmation delivery is disabled unless both `NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED=true` and the recipient is in the explicit local `NEWSLETTER_TEST_RECIPIENTS` allowlist. This prevents arbitrary-recipient or production sends during Phase 1.
+- Added retry-safe database-backed rate limiting: five subscription attempts per normalized email and twenty per hashed client IP in a rolling one-hour window. The route still returns the same generic response when the limit is exceeded.
+- Added focused tests for token hashing and rate-limit decisions; `npm test` and `npm run build` pass after the route and rate-limit changes.
 - No endpoint, current subscription flow, deployment behavior, or email behavior has changed yet.
 
 ## Not started
@@ -51,7 +53,7 @@ This status file is the handoff record for the current newsletter migration phas
 Before testing database-backed Phase 1 routes that deliver confirmation email, obtain or confirm:
 
 1. Download and securely store the newly created IAM access key secret, then configure it locally without committing it. The local sender policy intentionally lacks quota-read permission because that is not needed for Phase 1 confirmation sends; add it only with the Phase 3 CLI.
-2. Add and validate database-backed route tests and bounded IP/email rate limiting before enabling any test confirmation delivery.
+2. Validate the database-backed subscribe, confirm, and unsubscribe lifecycle on the disposable Neon branch before enabling any test confirmation delivery.
 3. Explicit approval for a no-recipient SES mailbox-simulator send from `newsletter@leonlins.com`, then inspect the result. A real inbox test requires a separately verified sandbox recipient and explicit approval at send time.
 4. The Substack export when importer validation begins.
 

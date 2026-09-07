@@ -19,6 +19,8 @@ import {
   mapSubstackRow,
   normalizeEmail,
 } from '../src/lib/newsletter/domain.ts';
+import { hashToken } from '../src/lib/newsletter/tokens.ts';
+import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/rate-limit.ts';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -236,6 +238,15 @@ function testNewsletterDomain() {
     mapSubstackRow({ Email: 'cancelled@example.com', 'Cancel date': '2024-01-01' })?.status,
     'unsubscribed',
   );
+}
+
+function testNewsletterSafetyHelpers() {
+  assert.equal(hashToken('confirmation-token'), hashToken('confirmation-token'));
+  assert.notEqual(hashToken('confirmation-token'), 'confirmation-token');
+  assert.equal(hashRateLimitSubject('reader@example.com'), hashRateLimitSubject('reader@example.com'));
+  assert.notEqual(hashRateLimitSubject('reader@example.com'), 'reader@example.com');
+  assert.equal(isRateLimitAllowed(5, 5), true);
+  assert.equal(isRateLimitAllowed(6, 5), false);
 }
 
 function testEnrichPost() {
@@ -663,6 +674,7 @@ async function run() {
     testTitleCase();
     testNormalizeCategory();
     testNewsletterDomain();
+    testNewsletterSafetyHelpers();
     testEnrichPost();
     await testGetAllPostsPaginated();
     await testGetCategoryPostsPaginated();

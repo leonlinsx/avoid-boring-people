@@ -2,6 +2,7 @@ import { SendEmailCommand, SESv2Client } from '@aws-sdk/client-sesv2';
 import { newsletterDb } from './db';
 import { normalizeEmail } from './domain';
 import { createToken, hashToken } from './tokens';
+import { EMAIL_ATTEMPTS_PER_HOUR, IP_ATTEMPTS_PER_HOUR, takeRateLimit } from './rate-limit';
 
 const generic = { ok: true, message: 'If this address can receive this newsletter, check your inbox.' };
 const from = 'newsletter@leonlins.com';
@@ -25,9 +26,14 @@ async function sendConfirmation(email: string, token: string) {
   }));
 }
 
-export async function requestSubscription(input: { email: string; source?: string; honeypot?: string }) {
+export async function requestSubscription(input: { email: string; source?: string; honeypot?: string; ip?: string }) {
   const email = normalizeEmail(input.email);
   if (!email || input.honeypot) return generic;
+  const [emailAllowed, ipAllowed] = await Promise.all([
+    takeRateLimit('email', email, EMAIL_ATTEMPTS_PER_HOUR),
+    takeRateLimit('ip', input.ip ?? 'unknown', IP_ATTEMPTS_PER_HOUR),
+  ]);
+  if (!emailAllowed || !ipAllowed) return generic;
   const db = newsletterDb();
   const rows = await db`SELECT status FROM subscribers WHERE email_normalized = ${email}`;
   const status = rows[0]?.status as string | undefined;
