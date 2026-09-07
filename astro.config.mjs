@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import remarkFootnotes from 'remark-footnotes';
 import { SITE_URL } from './src/consts.ts';
 import preact from '@astrojs/preact';
+import vercel from '@astrojs/vercel';
 import { visualizer } from 'rollup-plugin-visualizer';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -54,6 +55,7 @@ const normalizePathname = (pathname) => {
 
 export default defineConfig({
   site: SITE_URL,
+  adapter: vercel(),
   integrations: [
     sitemap({
       filter(page) {
