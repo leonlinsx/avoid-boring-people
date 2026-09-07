@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 0 — Audit, repository contract, and implementation plan: complete.**
+**Phase 1 — Subscriber ownership: in progress.**
 
 This status file is the handoff record for the current newsletter migration phase. Update it at the end of every phase or when an external/human gate prevents safe progress. Do not advance phases by implication.
 
@@ -14,9 +14,15 @@ This status file is the handoff record for the current newsletter migration phas
 - Confirmed there is no existing Vercel adapter, managed database, owned newsletter endpoint, newsletter CLI, privacy-policy page, or deployment configuration in the repository.
 - Identified co-located relative article image assets as an email-rendering risk that must be designed before Phase 2 implementation.
 
+## Phase 1 progress
+
+- Created a portable initial Postgres migration for subscribers, campaigns, campaign recipients, database-backed rate-limit buckets, and event-receipt deduplication.
+- Added pure subscriber status, email normalization, and Substack-row mapping rules with tests.
+- Added a CSV dry-run inspection command. It reports source rows, Author exclusions, active/suppressed outcomes, and duplicate normalized emails without connecting to a database or changing subscriber data.
+- No endpoint, current subscription flow, deployment configuration, external resource, or email behavior has changed yet.
+
 ## Not started
 
-- Phase 1 — Subscriber ownership.
 - Phase 2 — Email renderer.
 - Phase 3 — SES/AWS production plumbing.
 - Phase 4 — Controlled infrastructure validation.
@@ -32,14 +38,13 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Before beginning Phase 1, obtain or confirm:
+Before applying the migration or testing database-backed Phase 1 routes, obtain or confirm:
 
-1. DNS provider and permission to create TXT, CNAME, and MX records; current SPF, DKIM, DMARC, `mail.leonlins.com` availability, and inbound-mail conflicts.
-2. That `contact@leonlins.com` exists and is monitored.
-3. New AWS account ownership/security, SES region, sandbox constraints, and eventual production-access process.
-4. A compliant physical postal address or PO box for the production footer.
-5. Privacy-policy content approval and publication approach.
-6. The Substack export, only when the Phase 1 importer is ready to be developed and tested.
+1. A Neon project and `DATABASE_URL`, stored outside Git, for applying/testing the migration and routes.
+2. An SES sandbox identity plus verified test recipient before sending any confirmation email.
+3. The Substack export when importer validation begins.
+
+DNS authority, production SES access, a compliant postal address, mailbox confirmation, and privacy-policy approval remain later launch gates; they do not block local Phase 1 development.
 
 ## Locked decisions
 

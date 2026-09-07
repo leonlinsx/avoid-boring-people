@@ -14,6 +14,11 @@ import {
 import { extractHeadings } from '../src/utils/toc.ts';
 import { normalizeHeroImage } from '../src/utils/hero.ts';
 import { buildPaginationHref } from '../src/utils/pagination.ts';
+import {
+  canAutomaticallyTransition,
+  mapSubstackRow,
+  normalizeEmail,
+} from '../src/lib/newsletter/domain.ts';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -200,6 +205,37 @@ function testTitleCase() {
 function testNormalizeCategory() {
   assert.equal(normalizeCategory(' Finance '), 'finance');
   assert.equal(normalizeCategory(undefined as any), '');
+}
+
+function testNewsletterDomain() {
+  assert.equal(normalizeEmail('  Reader@Example.COM '), 'reader@example.com');
+  assert.equal(normalizeEmail('not-an-email'), null);
+  assert.equal(canAutomaticallyTransition('pending', 'active'), true);
+  assert.equal(canAutomaticallyTransition('unsubscribed', 'active'), false);
+  assert.equal(canAutomaticallyTransition('bounced', 'active'), false);
+
+  assert.equal(mapSubstackRow({ Email: 'author@example.com', Type: 'Author' }), null);
+  assert.deepEqual(
+    mapSubstackRow({
+      Email: ' Reader@Example.com ',
+      Name: 'Reader',
+      Type: 'Free',
+      'Expiration date': 'Paused',
+    }),
+    {
+      email: 'reader@example.com',
+      name: 'Reader',
+      status: 'active',
+      originalSubscribedAt: null,
+      legacySubstackType: 'Free',
+      legacySubstackCancelDate: null,
+      consentProvenance: 'substack_export',
+    },
+  );
+  assert.equal(
+    mapSubstackRow({ Email: 'cancelled@example.com', 'Cancel date': '2024-01-01' })?.status,
+    'unsubscribed',
+  );
 }
 
 function testEnrichPost() {
@@ -626,6 +662,7 @@ async function run() {
     testBuildPaginationHref();
     testTitleCase();
     testNormalizeCategory();
+    testNewsletterDomain();
     testEnrichPost();
     await testGetAllPostsPaginated();
     await testGetCategoryPostsPaginated();
