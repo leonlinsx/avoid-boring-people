@@ -21,7 +21,8 @@ This status file is the handoff record for the current newsletter migration phas
 - Added a CSV dry-run inspection command. It reports source rows, Author exclusions, active/suppressed outcomes, and duplicate normalized emails without connecting to a database or changing subscriber data.
 - Linked the Neon `leonlins.com` project production branch and initialized `neon.ts`; its deploy plan and deploy were no-ops because the policy declares no new infrastructure.
 - The Neon connection values are in ignored `.env.local`; the SQL migration has not been applied to production.
-- No endpoint, current subscription flow, deployment configuration, external resource, or email behavior has changed yet.
+- Created disposable Neon branch `newsletter-phase1-validation` from production, applied `001_initial.sql` using a direct connection, and completed read-only schema validation there. The branch expires on 2026-09-14.
+- No endpoint, current subscription flow, production database, deployment behavior, or email behavior has changed yet.
 
 ## Not started
 
@@ -42,7 +43,7 @@ This status file is the handoff record for the current newsletter migration phas
 
 Before applying the migration or testing database-backed Phase 1 routes, obtain or confirm:
 
-1. A disposable Neon child branch, created from production, to test the SQL migration before any production application.
+1. Review the validated schema and explicitly authorize its production application when ready; production remains empty and unchanged.
 2. An SES sandbox identity plus verified test recipient before sending any confirmation email.
 3. The Substack export when importer validation begins.
 
