@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+import { categoryLabels } from '../utils/taxonomy';
 
 const blog = defineCollection({
   type: 'content',
@@ -8,7 +9,7 @@ const blog = defineCollection({
       description: z.string().optional(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
-      category: z.string().optional(),
+      category: z.enum(categoryLabels),
       tags: z.array(z.string()).default([]),
       featured: z.boolean().optional(),
       heroImage: z.union([image(), z.string()]).optional(),

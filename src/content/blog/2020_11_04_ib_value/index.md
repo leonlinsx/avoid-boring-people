@@ -2,7 +2,7 @@
 title: 'Do investment bankers add value?'
 description: 'What do investment banks actually do?'
 pubDate: 2020-11-04
-category: Finance
+category: Culture
 tags: ['investment banking']
 heroImage: './i_2.webp'
 ---

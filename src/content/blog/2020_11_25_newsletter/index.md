@@ -2,7 +2,7 @@
 title: 'Tips From 15 Newsletter Writers On How To Build Your Own'
 description: 'What to write and how to promote'
 pubDate: 2020-11-25
-category: Tech
+category: Culture
 tags: ['writing']
 heroImage: './n_1.webp'
 ---

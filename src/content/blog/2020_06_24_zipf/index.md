@@ -2,7 +2,7 @@
 title: 'War of the words'
 description: "Using Zipf's law and information entropy in the search for aliens"
 pubDate: 2020-06-24
-category: Tech
+category: Technology
 tags: ['information']
 heroImage: './z_3.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'Are robo-analysts the future of equity research?'
 description: 'What value does sellside equity research provide?'
 pubDate: 2020-02-26
-category: Finance
+category: Investing
 tags: ['equity research', 'investment banking', 'AI', 'investing']
 heroImage: './s_3.webp'
 ---

@@ -173,7 +173,7 @@ def main():
                 .lower()
             )
 
-            if category != "tech":
+            if category != "technology":
                 print(f"ℹ️ Skipping Dev.to posting (category='{category}')")
             else:
                 summary = summarize_post(next_post, mode="narrative", max_points=3)

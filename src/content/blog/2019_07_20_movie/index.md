@@ -2,7 +2,7 @@
 title: '100 year old movie'
 description: 'Would you watch a film released only after 100 years?'
 pubDate: 2019-07-20
-category: Lifestyle
+category: Culture
 tags: ['movie']
 heroImage: './m_1.webp'
 ---

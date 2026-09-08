@@ -2,7 +2,7 @@
 title: 'Book Review: How the internet happened'
 description: 'Stories about the founding of the internet'
 pubDate: 2017-12-01
-category: Book Review
+category: Technology
 tags: ['tech']
 heroImage: './i_1.webp'
 ---

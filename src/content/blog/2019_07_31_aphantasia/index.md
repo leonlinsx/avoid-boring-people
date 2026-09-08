@@ -2,7 +2,7 @@
 title: 'Can you see things in a different way?'
 description: 'Aphantasia and visualisation differences'
 pubDate: 2019-07-31
-category: Lifestyle
+category: Culture
 tags: ['science']
 heroImage: './a_2.png'
 ---

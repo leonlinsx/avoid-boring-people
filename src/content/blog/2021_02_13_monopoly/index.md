@@ -2,7 +2,7 @@
 title: 'Monopoly - I know it when I see it'
 description: 'Are there really that many monopolies?'
 pubDate: 2021-02-13
-category: Finance
+category: Investing
 tags: ['business']
 heroImage: './m_4.png'
 ---

@@ -2,7 +2,7 @@
 title: "It's turtles all the way down"
 description: 'Why most companies, even in tech, are bad at innovating'
 pubDate: 2020-07-15
-category: Tech
+category: Technology
 tags: ['business', 'startups']
 heroImage: './t_3.webp'
 ---

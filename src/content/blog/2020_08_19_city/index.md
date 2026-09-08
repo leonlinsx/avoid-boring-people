@@ -2,7 +2,7 @@
 title: 'City hunter'
 description: 'How picking a city to live in is like picking a restaurant'
 pubDate: 2020-08-19
-category: Lifestyle
+category: Culture
 tags: ['predictions']
 heroImage: './c_3.png'
 ---

@@ -2,7 +2,7 @@
 title: 'Review of Hoppin platform'
 description: 'Job shadowing the job shadowing people at Hoppin'
 pubDate: 2019-11-10
-category: Tech
+category: Technology
 tags: ['business', 'marketplace']
 heroImage: './h_11.webp'
 ---

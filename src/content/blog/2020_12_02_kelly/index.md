@@ -2,7 +2,7 @@
 title: 'Having faith in the Kelly Criterion for angel investing'
 description: 'Using math to estimate optimal portfolio sizing'
 pubDate: 2020-12-02
-category: Finance
+category: Risk & Decision Making
 tags: ['investing', 'risk', 'math']
 heroImage: './kel_7.webp'
 featured: true

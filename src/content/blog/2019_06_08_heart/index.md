@@ -2,7 +2,7 @@
 title: 'Broken heart syndrome'
 description: 'Can you really die from a broken heart?'
 pubDate: 2019-06-08
-category: Lifestyle
+category: Culture
 tags: ['science']
 heroImage: './broken_1.png'
 ---

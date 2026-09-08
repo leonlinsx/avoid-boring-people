@@ -2,7 +2,7 @@
 title: 'Will IPOs still be around in 10 years?'
 description: 'What companies benefit from IPOs vs direct listings'
 pubDate: 2020-02-02
-category: Finance
+category: Investing
 tags: ['finance']
 heroImage: './i_4.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'Does value add value?'
 description: 'AQR investigates why value investing is the way it is'
 pubDate: 2020-11-18
-category: Finance
+category: Investing
 tags: ['investing']
 heroImage: './v_3.webp'
 ---

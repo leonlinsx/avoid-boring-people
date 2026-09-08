@@ -2,7 +2,7 @@
 title: 'Manet and modernity'
 description: "What's stayed the same and what's changed in art history"
 pubDate: 2020-12-09
-category: Lifestyle
+category: Culture
 tags: ['art']
 heroImage: './a_2.webp'
 ---

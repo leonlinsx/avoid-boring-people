@@ -2,7 +2,7 @@
 title: 'We wanted Her, instead we got Tinder'
 description: 'The margin trap of AI companies, value investing concepts, and tradeoffs'
 pubDate: 2020-04-29
-category: Tech
+category: Technology
 tags: ['AI', 'business', 'investing']
 heroImage: './her_1.webp'
 ---

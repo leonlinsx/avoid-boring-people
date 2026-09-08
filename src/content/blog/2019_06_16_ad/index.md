@@ -2,7 +2,7 @@
 title: 'Ad targeting myths'
 description: 'Ad targeting is not as powerful as you might think'
 pubDate: 2019-06-16
-category: Tech
+category: Technology
 tags: ['business']
 heroImage: './a_1.png'
 ---

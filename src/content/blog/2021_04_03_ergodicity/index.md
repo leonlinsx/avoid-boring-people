@@ -2,7 +2,7 @@
 title: 'Ergodicity: What Does It Mean?'
 description: 'Why the difference between ensemble and time averages matters for investing and risk'
 pubDate: 2021-04-03
-category: 'Finance'
+category: Risk & Decision Making
 tags: ['finance', 'math', 'ergodicity', 'risk']
 heroImage: './ergo_5.webp'
 featured: true

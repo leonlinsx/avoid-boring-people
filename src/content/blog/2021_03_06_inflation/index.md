@@ -2,7 +2,7 @@
 title: 'What do we really know about inflation'
 description: 'Causation, measurement, and adjustments'
 pubDate: 2021-03-06
-category: Finance
+category: Investing
 tags: ['inflation']
 heroImage: './i_3.webp'
 ---

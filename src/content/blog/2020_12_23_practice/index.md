@@ -2,7 +2,7 @@
 title: 'Getting better at getting better'
 description: 'How to improve your improvement process'
 pubDate: 2020-12-23
-category: Lifestyle
+category: Culture
 tags: ['behaviour']
 heroImage: './p_1.webp'
 ---

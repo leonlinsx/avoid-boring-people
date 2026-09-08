@@ -2,7 +2,7 @@
 title: 'Would you buy the Libra Neopet Kin token?'
 description: 'Centralised decentralised finance'
 pubDate: 2019-06-30
-category: Finance
+category: Technology
 tags: ['finance', 'crypto', 'career']
 heroImage: './f_4.png'
 ---

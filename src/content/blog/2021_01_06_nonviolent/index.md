@@ -2,7 +2,7 @@
 title: 'Book Review: Nonviolent Communication'
 description: 'How to improve relationships and get what everyone wants'
 pubDate: 2021-01-06
-category: Book Review
+category: Culture
 tags: ['behaviour']
 heroImage: './n_1.webp'
 ---

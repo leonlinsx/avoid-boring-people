@@ -2,7 +2,7 @@
 title: 'Community as a Concept'
 description: 'CAC to lower your CAC'
 pubDate: 2021-04-17
-category: Tech
+category: Culture
 tags: ['community']
 heroImage: './c_1.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'Book Review: Thanks for the Feedback'
 description: "We suck at taking feedback, here's how to get better"
 pubDate: 2020-01-11
-category: Book Review
+category: Culture
 tags: ['feedback', 'behaviour']
 heroImage: './t_3.webp'
 ---

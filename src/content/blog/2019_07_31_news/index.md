@@ -2,7 +2,7 @@
 title: 'Newsletters for everyone and everything'
 description: "What's behind the rise in popularity of newsletters"
 pubDate: 2019-07-31
-category: Tech
+category: Technology
 tags: ['newsletter']
 heroImage: './n_1.webp'
 ---

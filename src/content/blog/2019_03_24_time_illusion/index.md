@@ -2,7 +2,7 @@
 title: 'Temporal illusions'
 description: 'Does time slow down in dangerous situations?'
 pubDate: 2019-03-24
-category: Lifestyle
+category: Culture
 tags: ['science', 'time']
 heroImage: './t_1.webp'
 ---

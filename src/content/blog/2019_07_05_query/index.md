@@ -2,7 +2,7 @@
 title: 'Review of the Query News in 2019'
 description: 'Questions and suggestions about this newly launched product'
 pubDate: 2019-07-05
-category: Tech
+category: Technology
 tags: ['startups']
 heroImage: './q_7.webp'
 ---

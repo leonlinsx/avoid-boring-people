@@ -2,7 +2,7 @@
 title: "How likely would you accept grandma's friend request in a video game?"
 description: 'Video games, portfolio rebalancing, and probabilities'
 pubDate: 2019-11-30
-category: Tech
+category: Technology
 tags: ['finance', 'tech', 'vr', 'behaviour']
 heroImage: './g_3.webp'
 ---

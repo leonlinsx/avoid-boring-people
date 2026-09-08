@@ -2,7 +2,7 @@
 title: 'Do IPOs leave money on the table?'
 description: 'Walking through the IPO process'
 pubDate: 2019-07-31
-category: Finance
+category: Investing
 tags: ['finance']
 heroImage: './ipo_1.webp'
 ---

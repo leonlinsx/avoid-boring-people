@@ -2,7 +2,7 @@
 title: "Relatively speaking, the billionaire isn't rich"
 description: 'On why investing, technology, and society are all games of relatives, not absolutes.'
 pubDate: 2020-05-07
-category: Finance
+category: Risk & Decision Making
 tags: ['investing', 'luck', 'skill']
 heroImage: './rel_4.webp'
 featured: false

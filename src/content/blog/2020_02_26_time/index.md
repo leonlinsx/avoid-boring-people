@@ -2,7 +2,7 @@
 title: 'About time'
 description: "You don't find quality time by looking for it"
 pubDate: 2020-02-26
-category: Lifestyle
+category: Culture
 tags: ['behaviour']
 heroImage: './q_3.webp'
 ---

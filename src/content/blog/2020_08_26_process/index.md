@@ -2,7 +2,7 @@
 title: 'Often overlooked, process improvement is central to progress'
 description: 'Understanding the types of process improvement'
 pubDate: 2020-08-26
-category: Tech
+category: System Design
 tags: ['business']
 heroImage: './p_6.webp'
 ---

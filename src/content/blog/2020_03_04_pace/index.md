@@ -2,7 +2,7 @@
 title: 'Wisely and slow, they stumble that run fast'
 description: 'Using the pace layer framework to explain why businesses change quickly and governments change slowly'
 pubDate: 2020-03-04
-category: Tech
+category: System Design
 tags: ['frameworks', 'pace layers']
 heroImage: './p_2.webp'
 ---

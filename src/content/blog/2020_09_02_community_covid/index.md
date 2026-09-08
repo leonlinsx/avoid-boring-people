@@ -2,7 +2,7 @@
 title: "There's more to communities than Facebook goat groups"
 description: 'Community vs individuality in events, newsletters, and investing'
 pubDate: 2020-09-02
-category: Lifestyle
+category: Culture
 tags: ['newsletter', 'investing', 'community']
 heroImage: './c_9.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'The next machine learning startup is in your front yard'
 description: 'Explaining neural networks'
 pubDate: 2020-06-10
-category: Tech
+category: Technology
 tags: ['AI']
 heroImage: './m_13.webp'
 ---

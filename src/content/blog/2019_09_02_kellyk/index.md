@@ -2,7 +2,7 @@
 title: "Kevin Kelly's thousand true fans framework"
 description: 'How many fans do you need?'
 pubDate: 2019-09-02
-category: Tech
+category: Technology
 tags: ['scale']
 heroImage: './t_1.webp'
 ---

@@ -2,7 +2,7 @@
 title: "Cameo's long long tail of creators and platforms"
 description: "One man's trashy is another man's treasure"
 pubDate: 2020-07-29
-category: Tech
+category: Technology
 tags: ['startups', 'business']
 heroImage: './c_2.webp'
 ---
