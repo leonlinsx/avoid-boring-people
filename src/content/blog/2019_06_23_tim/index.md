@@ -2,7 +2,7 @@
 title: "The controversy around Tim's Vermeer is missing the point"
 description: 'Whether Vermeer really used Tim’s process is not the point'
 pubDate: 2019-06-23
-category: Tech
+category: Culture
 tags: ['art']
 heroImage: './t_1.webp'
 ---

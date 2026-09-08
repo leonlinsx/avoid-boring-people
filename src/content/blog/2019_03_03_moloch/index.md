@@ -2,7 +2,7 @@
 title: Moloch the judger of social credit
 description: 'AI, MBTI, XI'
 pubDate: 2019-03-03
-category: Tech
+category: Culture
 heroImage: './m_1.png'
 tags: ['AI', 'China']
 ---

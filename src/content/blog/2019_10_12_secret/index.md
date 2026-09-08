@@ -2,7 +2,7 @@
 title: 'Public secrets'
 description: "What other people know that you don't"
 pubDate: 2019-10-12
-category: Finance
+category: Culture
 tags: ['investing']
 heroImage: './s_1.webp'
 ---

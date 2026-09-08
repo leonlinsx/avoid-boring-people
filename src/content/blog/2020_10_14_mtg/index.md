@@ -2,7 +2,7 @@
 title: 'MTG: Magic: The Gathering; Meta Gaming'
 description: 'Monetisation and community problems in the oldest trading card game'
 pubDate: 2020-10-14
-category: Lifestyle
+category: Culture
 tags: ['business', 'games']
 heroImage: './m_1.webp'
 featured: false

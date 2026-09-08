@@ -2,7 +2,7 @@
 title: 'Who is Claude Shannon?'
 description: 'The father of information theory'
 pubDate: 2017-07-20
-category: Tech
+category: Technology
 tags: ['entropy']
 heroImage: './c_1.jpg'
 ---

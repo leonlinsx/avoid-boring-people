@@ -2,7 +2,7 @@
 title: 'Book Review: Misunderstanding Financial Crises'
 description: 'Financial crises are about liquidity and not capital'
 pubDate: 2020-04-01
-category: Finance
+category: Investing
 tags: ['liquidity', 'risk']
 heroImage: './m_1.webp'
 ---

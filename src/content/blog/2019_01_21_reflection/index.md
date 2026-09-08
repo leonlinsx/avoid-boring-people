@@ -2,7 +2,7 @@
 title: '2018 year end reflection questions'
 description: 'How I thought about 2018'
 pubDate: 2019-02-21
-category: Lifestyle
+category: Culture
 tags: ['behaviour', 'reflection']
 heroImage: './r_1.webp'
 ---

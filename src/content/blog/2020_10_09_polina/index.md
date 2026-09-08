@@ -2,7 +2,7 @@
 title: 'Profile of The Profile'
 description: 'What Polina Marinova thinks good writing requires'
 pubDate: 2020-10-09
-category: Lifestyle
+category: Culture
 tags: ['writing']
 heroImage: './p_1.webp'
 ---

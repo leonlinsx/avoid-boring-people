@@ -2,7 +2,7 @@
 title: 'Book Review: Algorithms to live by'
 description: 'How can we apply algorithms to improve decision making in real life?'
 pubDate: 2021-04-10
-category: Book Review
+category: Risk & Decision Making
 tags: ['behaviour', 'tech']
 heroImage: './a_3.webp'
 ---

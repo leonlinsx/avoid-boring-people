@@ -2,7 +2,7 @@
 title: 'The benefits of friendships'
 description: 'Disclosure, supportiveness, interaction, and positivity to maintain friendships'
 pubDate: 2019-08-18
-category: Lifestyle
+category: Culture
 tags: ['behaviour']
 heroImage: './f_1.webp'
 ---

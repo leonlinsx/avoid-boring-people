@@ -2,7 +2,7 @@
 title: 'Fluctuat Nec Mergitur'
 description: 'You can make a larger difference than you think'
 pubDate: 2020-04-01
-category: Lifestyle
+category: Culture
 tags: ['behaviour']
 heroImage: './f_1.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'P values - you (and I) are getting it wrong'
 description: 'What does a p value mean actually'
 pubDate: 2019-09-04
-category: Lifestyle
+category: Risk & Decision Making
 tags: ['math']
 heroImage: './p_1.webp'
 ---

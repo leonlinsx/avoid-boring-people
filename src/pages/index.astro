@@ -15,12 +15,11 @@ const enrichedPosts = allPosts.map(enrichPost);
 const featured = enrichedPosts
   .filter((post) => post.data.featured)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
 ---
 
 <BaseLayout
   title={SITE_TITLE}
-  description="Writing on finance, tech, and other ideas by Leon Lin"
+  description="Writing by Leon Lin on investing, technology, systems, and how things work."
 >
   <!-- Hero -->
   <section class="hero">
@@ -32,7 +31,7 @@ const featured = enrichedPosts
     <p class="hero-credentials">
       I've spent my career across finance and technology — investment banking,
       fundamental long/short investing, quantitative finance, startups, and
-      large technology companies. These days I also build software and systems
+      large technology companies. These days I also build systems and software
       to help me research, analyze, and make better decisions.
     </p>
   </section>
@@ -56,7 +55,11 @@ const featured = enrichedPosts
   <section class="featured">
     <h2>As featured in</h2>
     <div class="logo-row">
-      <img src="/logos/hacker_news_logo.webp" alt="Hacker News logo" loading="lazy" />
+      <img
+        src="/logos/hacker_news_logo.webp"
+        alt="Hacker News logo"
+        loading="lazy"
+      />
       <img src="/logos/failory_logo.webp" alt="Failory logo" loading="lazy" />
       <img src="/logos/finextra_logo.webp" alt="Finextra logo" loading="lazy" />
     </div>
@@ -80,7 +83,7 @@ const featured = enrichedPosts
     max-width: 50ch;
     margin-bottom: var(--space-md);
     font-size: var(--text-xl);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.4;
   }
 

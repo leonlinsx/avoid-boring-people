@@ -2,7 +2,7 @@
 title: 'Dunning on Dunning Kruger'
 description: 'David Dunning explains the effect he popularised'
 pubDate: 2019-02-02
-category: Lifestyle
+category: Risk & Decision Making
 tags: ['behaviour']
 heroImage: './d_1.webp'
 ---

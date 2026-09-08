@@ -2,7 +2,7 @@
 title: 'Excel calculation efficiency'
 description: 'Notes about excel speed tips'
 pubDate: 2016-03-17
-category: Tech
+category: System Design
 tags: ['investment banking']
 heroImage: './e_1.png'
 ---

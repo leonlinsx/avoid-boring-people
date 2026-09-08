@@ -2,7 +2,7 @@
 title: "Gambling is fine as long as you've sized the risk appropriately"
 description: 'The difficulty of behavioural edge'
 pubDate: 2021-02-06
-category: Finance
+category: Risk & Decision Making
 tags: ['finance', 'games', 'risk']
 heroImage: './g_3.png'
 featured: false

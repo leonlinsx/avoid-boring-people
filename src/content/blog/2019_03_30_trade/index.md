@@ -2,7 +2,7 @@
 title: 'Always be raising'
 description: 'Raising taxes, tariffs, and ambitions'
 pubDate: 2019-03-30
-category: Finance
+category: Investing
 tags: ['finance', 'tariff', 'behaviour']
 heroImage: './r_2.png'
 ---

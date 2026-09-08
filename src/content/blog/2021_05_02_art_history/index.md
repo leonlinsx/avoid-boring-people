@@ -2,7 +2,7 @@
 title: 'What is art'
 description: 'Different definitions of art over history'
 pubDate: 2021-05-02
-category: Lifestyle
+category: Culture
 tags: ['art']
 heroImage: './a_1.webp'
 ---

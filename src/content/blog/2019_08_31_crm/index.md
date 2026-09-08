@@ -2,7 +2,7 @@
 title: 'Set a reminder in your personal CRM to read this'
 description: 'Pair trades, personal CRMs, and self awareness'
 pubDate: 2019-08-31
-category: Tech
+category: System Design
 tags: ['software', 'investing']
 heroImage: './c_4.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'Book Review: Secrets of Sand Hill Road'
 description: 'What founders should know about venture capital'
 pubDate: 2020-02-06
-category: Book Review
+category: Investing
 tags: ['startups', 'vc', 'investing']
 heroImage: './v_1.webp'
 ---

@@ -3,7 +3,7 @@ title: 'Your Post Title'
 description: 'A short summary for SEO, previews, and RSS.'
 pubDate: 2025-01-15
 updatedDate: 2025-01-20 # optional, only if updated after pubDate
-category: Finance
+category: Investing
 tags: ['finance', 'example', 'optional']
 heroImage: './ergo_5.webp' # put hero image in /public/images/<slug>/
 featured: false

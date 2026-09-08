@@ -13,7 +13,7 @@ import TagList from '../components/TagList.astro';
 import SubscribeForm from '../components/SubscribeForm.astro';
 import type { MarkdownHeading } from 'astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { titleCase } from '../utils/text';
+import { categoryLabel } from '../utils/taxonomy';
 
 type Props = {
   post: CollectionEntry<'blog'> & { slug: string };
@@ -58,8 +58,8 @@ const breadcrumbItems = [
 
 if (categoryNormalized) {
   breadcrumbItems.push({
-    label: titleCase(categoryNormalized),
-    href: `/writing/category/${encodeURIComponent(categoryNormalized)}`,
+    label: categoryLabel(categoryNormalized),
+    href: `/writing/category/${encodeURIComponent(categoryNormalized)}/1`,
   });
 }
 

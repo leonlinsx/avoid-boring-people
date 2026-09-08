@@ -3,6 +3,7 @@ import readingTime from 'reading-time';
 import { getCleanSlug } from './slug.ts';
 import type { ImageMetadata } from 'astro';
 import { normalizeHeroImage } from './hero.ts';
+import { categorySlug, orderedCategorySlugs } from './taxonomy.ts';
 
 export type BlogPost = CollectionEntry<'blog'> & {
   slug: string;
@@ -37,10 +38,10 @@ export const titleCase = (s: string) =>
     );
 
 /**
- * Normalize categories to lowercase, trimmed.
+ * Normalize category labels to their stable route slugs.
  */
 export const normalizeCategory = (s: string) =>
-  (s ?? '').toString().trim().toLowerCase();
+  categorySlug((s ?? '').toString());
 
 /**
  * Ensure every post has slug, normalized category, and readingTime.
@@ -53,7 +54,7 @@ export function enrichPost(p: CollectionEntry<'blog'>): BlogPost {
     slug,
     data: {
       ...p.data,
-      category: p.data.category?.trim() || '',
+      category: p.data.category.trim() as typeof p.data.category,
       categoryNormalized: normalizeCategory(p.data.category ?? ''),
       readingTime: Math.max(1, Math.round(readingTime(p.body ?? '').minutes)),
       tags: Array.isArray(p.data.tags) ? p.data.tags : [],
@@ -100,11 +101,9 @@ export async function getAllPostsPaginated(paginate: PaginateFn, pageSize = 8) {
   const getter = await resolveGetCollection();
   const allPosts = await getter('blog');
 
-  const categories = Array.from(
-    new Set(allPosts.map((p) => normalizeCategory(p.data.category ?? ''))),
-  )
-    .filter(Boolean)
-    .sort((a, b) => a.localeCompare(b));
+  const categories = orderedCategorySlugs(
+    allPosts.map((p) => p.data.category ?? ''),
+  );
 
   const posts: BlogPost[] = allPosts
     .map(enrichPost)
@@ -125,11 +124,7 @@ export async function getCategoryPostsPaginated(
   const getter = await resolveGetCollection();
   const all = await getter('blog');
 
-  const categories = Array.from(
-    new Set(all.map((p) => normalizeCategory(p.data.category ?? ''))),
-  )
-    .filter(Boolean)
-    .sort((a, b) => a.localeCompare(b));
+  const categories = orderedCategorySlugs(all.map((p) => p.data.category ?? ''));
 
   const routes: any[] = [];
 

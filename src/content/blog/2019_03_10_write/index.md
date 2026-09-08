@@ -2,7 +2,7 @@
 title: 'Why I write'
 description: 'Why I started the original blog'
 pubDate: 2019-03-10
-category: Lifestyle
+category: Culture
 tags: ['writing']
 heroImage: './w_3.png'
 ---

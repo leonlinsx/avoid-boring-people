@@ -2,7 +2,7 @@
 title: 'Book Review: Fooled by Randomness'
 description: 'Randomness does not look random'
 pubDate: 2017-02-23
-category: Book Review
+category: Risk & Decision Making
 tags: ['risk', 'math']
 heroImage: './f_1.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'Review of the Substack platform in 2019'
 description: 'What I like and dislike, as well as product suggestions'
 pubDate: 2019-05-19
-category: Tech
+category: Technology
 tags: ['newsletter', 'writing']
 heroImage: './s_8.webp'
 ---

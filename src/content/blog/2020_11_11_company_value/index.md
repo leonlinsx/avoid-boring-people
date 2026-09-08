@@ -2,7 +2,7 @@
 title: 'Do companies add value?'
 description: 'Choose the people, not the company'
 pubDate: 2020-11-11
-category: Lifestyle
+category: Culture
 tags: ['generalists']
 heroImage: './c_1.webp'
 ---

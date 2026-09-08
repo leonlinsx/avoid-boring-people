@@ -2,7 +2,7 @@
 title: 'Set a microwave timer for 13.7bn yrs'
 description: 'What beliefs stand the test of time'
 pubDate: 2019-05-04
-category: Lifestyle
+category: Culture
 tags: ['behaviour']
 heroImage: './m_2.webp'
 ---

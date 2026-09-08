@@ -2,7 +2,7 @@
 title: 'Information speed and investing alpha'
 description: 'The declining profitability of many information-dependent business models'
 pubDate: 2019-12-21
-category: Finance
+category: Investing
 tags: ['investing', 'information']
 heroImage: './i_1.webp'
 ---

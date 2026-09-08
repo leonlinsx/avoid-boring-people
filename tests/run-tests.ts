@@ -11,6 +11,7 @@ import {
   titleCase,
   type BlogPost,
 } from '../src/utils/text.ts';
+import { categoryLabel } from '../src/utils/taxonomy.ts';
 import { extractHeadings } from '../src/utils/toc.ts';
 import { normalizeHeroImage } from '../src/utils/hero.ts';
 import { buildPaginationHref } from '../src/utils/pagination.ts';
@@ -48,8 +49,8 @@ function makePost(overrides: Record<string, any> = {}) {
       description: 'Base description about finance',
       pubDate: new Date('2024-01-01T00:00:00Z'),
       updatedDate: undefined,
-      category: 'Finance',
-      categoryNormalized: 'finance',
+      category: 'Investing',
+      categoryNormalized: 'investing',
       readingTime: 3,
       tags: ['compounding'],
       heroImage: undefined,
@@ -77,7 +78,7 @@ function makeCollectionEntry(overrides: Record<string, any> = {}) {
       description: 'Sample description',
       pubDate: new Date('2024-01-01T00:00:00Z'),
       updatedDate: undefined,
-      category: 'Finance',
+      category: 'Investing',
       tags: ['markets'],
       heroImage: undefined,
     },
@@ -210,8 +211,10 @@ function testTitleCase() {
 }
 
 function testNormalizeCategory() {
-  assert.equal(normalizeCategory(' Finance '), 'finance');
+  assert.equal(normalizeCategory('Investing'), 'investing');
+  assert.equal(normalizeCategory('Risk & Decision Making'), 'risk-decision-making');
   assert.equal(normalizeCategory(undefined as any), '');
+  assert.equal(categoryLabel('system-design'), 'System Design');
 }
 
 function testNewsletterDomain() {
@@ -328,7 +331,7 @@ function testEnrichPost() {
 
   const baseEntry = makeCollectionEntry({
     data: {
-      category: '  Markets  ',
+      category: '  Investing  ',
       tags: ['macro', 'rates'],
       heroImage: heroMeta,
     },
@@ -337,8 +340,8 @@ function testEnrichPost() {
   const enriched = enrichPost(baseEntry as any);
 
   assert.equal(enriched.slug, computeCleanSlug(baseEntry as any));
-  assert.equal(enriched.data.category, 'Markets');
-  assert.equal(enriched.data.categoryNormalized, 'markets');
+  assert.equal(enriched.data.category, 'Investing');
+  assert.equal(enriched.data.categoryNormalized, 'investing');
   assert.deepEqual(enriched.data.tags, ['macro', 'rates']);
   assert.equal(enriched.data.heroImage, heroMeta);
   assert.ok(enriched.data.readingTime >= 1);
@@ -346,7 +349,7 @@ function testEnrichPost() {
   const relativeEntry = makeCollectionEntry({
     id: '2024_05_02_custom/index.mdx',
     data: {
-      category: 'Notes',
+      category: 'Technology',
       tags: 'not-array',
       heroImage: './cover.webp',
     },
@@ -414,7 +417,7 @@ async function testGetAllPostsPaginated() {
       id: '2024_06_01_first/index.md',
       data: {
         title: 'First',
-        category: ' Finance ',
+        category: 'Investing',
         pubDate: new Date('2024-06-01T00:00:00Z'),
       },
     }),
@@ -422,7 +425,7 @@ async function testGetAllPostsPaginated() {
       id: '2024_06_10_second/index.md',
       data: {
         title: 'Second',
-        category: 'Markets',
+        category: 'Technology',
         pubDate: new Date('2024-06-10T00:00:00Z'),
       },
     }),
@@ -430,7 +433,7 @@ async function testGetAllPostsPaginated() {
       id: '2024_05_01_third/index.md',
       data: {
         title: 'Third',
-        category: 'finance',
+        category: 'Investing',
         pubDate: new Date('2024-05-01T00:00:00Z'),
       },
     }),
@@ -459,7 +462,7 @@ async function testGetAllPostsPaginated() {
 
     const { pages, categories } = await getAllPostsPaginated(paginate, 2);
 
-    assert.deepEqual(categories, ['finance', 'markets']);
+    assert.deepEqual(categories, ['investing', 'technology']);
     assert.equal(paginateCalls.length, 1);
     assert.equal(paginateCalls[0].options.pageSize, 2);
     assert.deepEqual(
@@ -480,7 +483,7 @@ async function testGetCategoryPostsPaginated() {
       id: '2024_01_01_alpha/index.md',
       data: {
         title: 'Alpha',
-        category: 'Finance',
+        category: 'Investing',
         pubDate: new Date('2024-01-01T00:00:00Z'),
       },
     }),
@@ -488,7 +491,7 @@ async function testGetCategoryPostsPaginated() {
       id: '2024_02_01_beta/index.md',
       data: {
         title: 'Beta',
-        category: 'Finance',
+        category: 'Investing',
         pubDate: new Date('2024-02-01T00:00:00Z'),
       },
     }),
@@ -496,7 +499,7 @@ async function testGetCategoryPostsPaginated() {
       id: '2024_03_01_gamma/index.md',
       data: {
         title: 'Gamma',
-        category: 'Markets',
+        category: 'Technology',
         pubDate: new Date('2024-03-01T00:00:00Z'),
       },
     }),
@@ -528,21 +531,21 @@ async function testGetCategoryPostsPaginated() {
       })),
       [
         {
-          activeCategory: 'finance',
+          activeCategory: 'investing',
           titles: ['Beta', 'Alpha'],
-          categories: ['finance', 'markets'],
+          categories: ['investing', 'technology'],
         },
         {
-          activeCategory: 'markets',
+          activeCategory: 'technology',
           titles: ['Gamma'],
-          categories: ['finance', 'markets'],
+          categories: ['investing', 'technology'],
         },
       ],
     );
 
     assert.deepEqual(
       paginateHistory.map((call) => call.options.params.category),
-      ['finance', 'markets'],
+      ['investing', 'technology'],
     );
   } finally {
     setGetCollectionImplementation(null);

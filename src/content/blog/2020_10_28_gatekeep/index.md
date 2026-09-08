@@ -2,7 +2,7 @@
 title: 'Who gatekeeps the gatekeepers'
 description: 'Does the gatekeeper of gatekeepers gatekeep himself?'
 pubDate: 2020-10-28
-category: Finance
+category: Culture
 tags: ['finance', 'behaviour']
 heroImage: './g_5.webp'
 ---

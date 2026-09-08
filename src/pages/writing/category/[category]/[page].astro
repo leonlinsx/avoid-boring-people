@@ -2,8 +2,8 @@
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import {
   getCategoryPostsPaginated,
-  titleCase,
 } from '../../../../utils/text';
+import { categoryLabel } from '../../../../utils/taxonomy';
 import { SITE_TITLE } from '../../../../consts';
 import type { GetStaticPaths } from 'astro';
 import Pagination from '../../../../components/Pagination.astro';
@@ -34,13 +34,13 @@ const relNext =
 
 <BaseLayout
   title={`Writing | ${SITE_TITLE}`}
-  description={`Essays and posts in category "${titleCase(activeCategory)}"`}
+  description={`Essays and posts in category "${categoryLabel(activeCategory)}"`}
   canonical={canonical}
   relPrev={relPrev}
   relNext={relNext}
 >
   <WritingHeader
-    title={`Category: ${titleCase(activeCategory)}`}
+    title={`Category: ${categoryLabel(activeCategory)}`}
     subtitle=""
     showSearch={false}
   />

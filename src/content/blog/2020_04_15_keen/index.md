@@ -2,7 +2,7 @@
 title: 'Review of Google Keen product'
 description: 'Walkthrough and questions about the beta'
 pubDate: 2020-04-15
-category: Tech
+category: Technology
 tags: ['business']
 heroImage: './k_2.webp'
 ---

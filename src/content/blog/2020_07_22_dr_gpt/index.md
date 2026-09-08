@@ -2,7 +2,7 @@
 title: 'Doctor GPT-3'
 description: 'or: How I Learned to Stop Worrying and Love the Artificial Intelligence'
 pubDate: 2020-07-22
-category: Tech
+category: Technology
 tags: ['AI', 'computer science', 'math']
 heroImage: './gpt_28.webp'
 featured: true

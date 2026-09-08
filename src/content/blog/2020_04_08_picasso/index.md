@@ -2,7 +2,7 @@
 title: 'Picasso as the earliest instagram influencer'
 description: 'Has Picasso influenced anything relevant to us today?'
 pubDate: 2020-04-08
-category: Lifestyle
+category: Culture
 tags: ['art']
 heroImage: './p_8.webp'
 ---

@@ -2,7 +2,7 @@
 title: 'Inception, Nolan, and Notion'
 description: 'How Notion is literally trying to get everyone on the same page'
 pubDate: 2020-08-23
-category: Tech
+category: Technology
 tags: ['business', 'startups']
 heroImage: './n_5.webp'
 ---

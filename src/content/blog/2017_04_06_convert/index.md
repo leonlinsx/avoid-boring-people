@@ -2,7 +2,7 @@
 title: 'Convertible arbitrage and short exposure'
 description: 'Why companies make it easier to short the stock'
 pubDate: 2017-04-06
-category: Finance
+category: Investing
 tags: ['investment banking']
 heroImage: './c_1.webp'
 ---

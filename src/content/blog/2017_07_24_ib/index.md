@@ -2,7 +2,7 @@
 title: "What I'd want to learn in investment banking"
 description: 'A checklist of concepts to cover when starting out'
 pubDate: 2017-07-24
-category: Finance
+category: Culture
 tags: ['investment banking']
 heroImage: './i_1.webp'
 ---

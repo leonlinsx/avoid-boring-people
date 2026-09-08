@@ -2,7 +2,7 @@
 title: 'Procrastinate another way another day'
 description: 'Structuring your procrastination for success'
 pubDate: 2019-02-05
-category: Lifestyle
+category: Culture
 tags: ['behaviour']
 heroImage: './pro_1.png'
 ---

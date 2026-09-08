@@ -2,7 +2,7 @@
 title: 'How to conduct effective premortems'
 description: "Don't ask the group what can go wrong"
 pubDate: 2019-11-23
-category: Lifestyle
+category: Risk & Decision Making
 tags: ['behaviour']
 heroImage: './p_1.webp'
 ---

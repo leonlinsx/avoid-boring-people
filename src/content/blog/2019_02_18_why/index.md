@@ -2,7 +2,7 @@
 title: 'Tell me why'
 description: 'Lizard people made the large hadron collider'
 pubDate: 2019-02-18
-category: Lifestyle
+category: Culture
 tags: ['behaviour']
 heroImage: './b_1.png'
 ---

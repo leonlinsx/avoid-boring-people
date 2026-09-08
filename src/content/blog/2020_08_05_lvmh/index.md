@@ -2,7 +2,7 @@
 title: "LVMH's contrasts of chaos and control"
 description: 'How Bernard Arnault views creativity'
 pubDate: 2020-08-05
-category: Lifestyle
+category: Culture
 tags: ['fashion', 'art', 'business']
 heroImage: './l_3.webp'
 featured: false
