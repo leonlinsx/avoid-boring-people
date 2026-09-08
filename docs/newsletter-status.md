@@ -62,7 +62,7 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Phase 2 has the approved newsletter footer address. Before completing its preview configuration or moving toward public owned signup, configure it in the appropriate local/Vercel environment and provide:
+Phase 2 has the approved newsletter footer address. Before completing its preview configuration or moving toward public owned signup, configure it only in the local sending environment and provide:
 
 1. The Substack export when importer validation begins.
 2. Explicit approval at send time for any future real-inbox sandbox confirmation test; the simulator validation is complete.
