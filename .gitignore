@@ -27,6 +27,8 @@ pnpm-debug.log*
 .env
 .env.local
 .env.*.local
+/.agents/
+/skills-lock.json
 
 # Docs / versioning
 VERSION.md
@@ -48,3 +50,4 @@ coverage
 
 # Auth cookies for automation
 /cookies/*.json
+.neon
