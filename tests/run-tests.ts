@@ -25,7 +25,8 @@ import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/
 import { NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
 import { assertAllowedTestRecipient } from '../src/lib/newsletter/test-send.ts';
 import { canDeliverConfirmation } from '../src/lib/newsletter/subscriptions.ts';
-import { parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
+import { confirmSnsSubscription, parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
+import { requiresOriginRejection } from '../src/lib/newsletter/request-origin.ts';
 import { createSign, generateKeyPairSync } from 'node:crypto';
 
 process.on('uncaughtException', (error) => {
@@ -303,6 +304,18 @@ function testNewsletterConfirmationBoundary() {
 }
 
 async function testSnsValidation() {
+  for (const path of ['/api/newsletter/subscribe', '/api/newsletter/unsubscribe', '/api/subscribe', '/api/newsletter/ses-events/']) {
+    for (const type of ['text/plain; charset=UTF-8', 'multipart/form-data', 'application/x-www-form-urlencoded']) {
+      const request = new Request(`https://leonlins.com${path}`, { method: 'POST', headers: { 'content-type': type } });
+      assert.equal(requiresOriginRejection(request, false), true);
+      request.headers.set('origin', 'https://leonlins.com');
+      assert.equal(requiresOriginRejection(request, false), false);
+    }
+  }
+  const snsRequest = new Request('https://leonlins.com/api/newsletter/ses-events', { method: 'POST', headers: { 'content-type': 'text/plain' } });
+  assert.equal(requiresOriginRejection(snsRequest, false), false);
+  assert.equal(requiresOriginRejection(new Request(snsRequest.url, { method: 'PUT' }), false), true);
+  assert.equal(requiresOriginRejection(new Request('https://leonlins.com/api/newsletter/subscribe', { method: 'POST' }), false), true);
   const topic = 'arn:aws:sns:us-east-2:123456789012:newsletter-events';
   const envelope = parseSnsEnvelope({
     Type: 'Notification', MessageId: 'event-1', TopicArn: topic, Message: '{"eventType":"Delivery"}',
@@ -316,6 +329,24 @@ async function testSnsValidation() {
   envelope.Signature = signer.sign(pair.privateKey, 'base64');
   const publicKey = pair.publicKey.export({ type: 'pkcs1', format: 'pem' }).toString();
   await verifySnsEnvelope(envelope, topic, async () => new Response(publicKey, { status: 200 }));
+  await assert.rejects(() => verifySnsEnvelope({ ...envelope, Message: 'tampered' }, topic, async () => new Response(publicKey)), /signature is invalid/);
+  const confirmation = { ...envelope, Type: 'SubscriptionConfirmation' as const, Token: 'test-token', SubscribeURL: `https://sns.us-east-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=${encodeURIComponent(topic)}&Token=test-token` };
+  const confirmationSigner = createSign('RSA-SHA256');
+  confirmationSigner.update(signingString(confirmation));
+  confirmation.Signature = confirmationSigner.sign(pair.privateKey, 'base64');
+  await verifySnsEnvelope(confirmation, topic, async () => new Response(publicKey));
+  await confirmSnsSubscription(confirmation, topic, async (_url, options) => {
+    assert.equal(options?.redirect, 'error');
+    assert.ok(options?.signal);
+    return new Response(null, { status: 200 });
+  });
+  await assert.rejects(() => confirmSnsSubscription({ ...confirmation, Token: 'wrong' }, topic), /not for the expected topic/);
+  await assert.rejects(() => verifySnsEnvelope({ ...envelope, SigningCertURL: 'https://sns.us-east-2.amazonaws.com:444/SimpleNotificationService-test.pem' }, topic), /not from the expected/);
+  const expired = AbortSignal.abort();
+  await assert.rejects(() => verifySnsEnvelope(envelope, topic, async (_url, options) => {
+    options?.signal?.throwIfAborted();
+    return new Response(publicKey);
+  }, expired), /abort/i);
   await assert.rejects(() => verifySnsEnvelope(envelope, 'arn:aws:sns:us-east-2:123456789012:other', async () => new Response('')),
     /not expected/);
   assert.throws(() => parseSnsEnvelope({ Type: 'Notification' }), /missing/);

@@ -56,6 +56,8 @@ const normalizePathname = (pathname) => {
 
 export default defineConfig({
   site: SITE_URL,
+  // Replaced by src/middleware.ts with equivalent checks except the signed SNS POST.
+  security: { checkOrigin: false },
   adapter: vercel(),
   integrations: [
     sitemap({

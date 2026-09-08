@@ -80,6 +80,8 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
+2026-09-08 fix update: replaced Astro's global built-in origin middleware with equivalent project middleware except for exact `POST /api/newsletter/ses-events`. Signature and exact-topic verification remain mandatory. Certificate and confirmation requests each have a four-second absolute timeout under a shared eight-second deadline; confirmation URL tokens must match the signed envelope. Tests/build pass; local HTTP checks return 400 for an invalid SNS POST and 403 for a non-exempt PUT. Latest `main` site changes were merged and preserved. Deployment/real SNS confirmation verification is pending; the AWS browser session is no longer open. Production rollback baseline: `dpl_5Lj4BLR9bCiaDFUzEUASr152hpZH`. No SES attachment or email authorized in this fix verification.
+
 Sequential transport tests are complete; see `docs/newsletter-sns-diagnostics.md`. The external capture received SNS's confirmation; the custom-domain probe produced a correlated Vercel 403 before route execution. Astro's origin check rejects SNS-style `text/plain` POSTs without Origin. The exact deployment-hostname test has a Vercel sign-in gate and limited delivery visibility. The temporary probe has been removed from source and hosting; the public homepage returns 200 and probe GET returns 404. Next: implement a narrowly scoped webhook origin-check solution and a bounded total confirmation deadline, preserving all SNS authentication and other routes' origin checks. No such fix, SES attachment, or email sending was performed under the diagnostics-only request. Before moving toward public owned signup, provide:
 
 1. The Substack export when importer validation begins.

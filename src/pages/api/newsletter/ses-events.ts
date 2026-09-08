@@ -5,15 +5,17 @@ import { confirmSnsSubscription, parseSnsEnvelope, verifySnsEnvelope } from '../
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
+  const started = performance.now();
+  const deadline = AbortSignal.timeout(8_000);
   try {
     const expectedTopicArn = process.env.NEWSLETTER_SNS_TOPIC_ARN;
     if (!expectedTopicArn) throw new Error('SNS topic is not configured.');
     const envelope = parseSnsEnvelope(JSON.parse(await request.text()));
-    await verifySnsEnvelope(envelope, expectedTopicArn);
+    await verifySnsEnvelope(envelope, expectedTopicArn, undefined, deadline);
     if (envelope.Type === 'SubscriptionConfirmation') {
       console.info('Newsletter SNS subscription confirmation signature verified.');
-      await confirmSnsSubscription(envelope, expectedTopicArn);
-      console.info('Newsletter SNS subscription confirmation completed.');
+      await confirmSnsSubscription(envelope, expectedTopicArn, undefined, deadline);
+      console.info('Newsletter SNS subscription confirmation completed.', { elapsedMs: Math.round(performance.now() - started) });
     }
     else if (envelope.Type === 'Notification') await recordSesEvent(envelope);
     return new Response(null, { status: 204 });
