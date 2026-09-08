@@ -58,6 +58,10 @@ This status file is the handoff record for the current newsletter migration phas
 - Created the normal Neon validation branch `newsletter-phase3-validation`, expiring 2026-09-14. Direct `psql` connections from this workspace stalled, so validation used the repository's Neon serverless driver instead: the committed Phase 1 schema plus the additive Phase 3 migration applied cleanly and all four recipient-event columns were verified.
 - With explicit approval, applied the same migrations to linked Neon production and verified `campaign_recipients`, `campaigns`, `newsletter_event_receipts`, `newsletter_rate_limits`, and `subscribers`; `campaign_recipients` has all four new event columns and `subscribers` has zero rows. No email, import, or Substack data was touched.
 - Focused tests and `npm run build` pass for the new route and signature-validation path.
+- Deployed the Phase 3 event-ingestion code to Vercel production, including bounded (10-second) HTTPS retrieval for SNS signing certificates and confirmation URLs. Deployment `dpl_DroP7y3bUsrJsMmuygLCddsH4BRc` is Ready and aliases `leonlins.com`; the deploy was made from a clean worktree and did not include unrelated homepage changes.
+- Created the dedicated standard SNS topic `newsletter-ses-events` in `us-east-2` and configured the production `NEWSLETTER_SNS_TOPIC_ARN` and `DATABASE_URL` as Vercel secrets. No Vercel SES send credentials or confirmation-delivery switches are set.
+- Created the HTTPS subscription from that topic to `https://leonlins.com/api/newsletter/ses-events`. SNS confirmation requests succeed at the AWS control plane, but the subscription remains `Pending confirmation`; do not attach it as an SES event destination until it shows `Confirmed`.
+- Verified the live route rejects both an empty request and an intentionally invalid signed-event-shaped request with HTTP 400. The latter completed in 0.25 seconds after attempting a permitted SNS certificate URL; it could not confirm a subscription, store an event, or send mail.
 
 ## Not started
 
@@ -75,7 +79,7 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Phase 3 code is in progress. The database schema is applied; next, review/deploy the Phase 3 code, then configure the dedicated SES/SNS event destination using `docs/newsletter-aws-runbook.md`. Before moving toward public owned signup, provide:
+Phase 3 code is deployed and the dedicated SNS topic/subscription exists, but the HTTPS subscription is still pending confirmation. Resolve and verify that authentication handshake before adding the SNS topic to `my-first-configuration-set`; until then, no SES event destination is configured. Before moving toward public owned signup, provide:
 
 1. The Substack export when importer validation begins.
 2. Explicit approval to broaden the IAM recipient restriction beyond `contact@leonlins.com`; until then the local sender cannot mail any other address.
