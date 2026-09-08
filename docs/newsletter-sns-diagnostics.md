@@ -10,25 +10,29 @@ Scope: diagnose only. No SES destination attachment, email, confirmation-token l
 - At 12:23:45 UTC, an unauthenticated control POST to the staged deployment hostname returned 302 to Vercel sign-in. The deployment hostname has an additional access gate, separate from Astro. Protection was not disabled.
 - An authenticated CLI control at 12:24:12 UTC reached the staged probe and returned 204 for an eight-byte non-JSON body under `application/json`. The runtime log contained exactly content-type, user-agent, the two allowed SNS headers (null for this control), and bodyBytes=8. No body was logged. The CLI automatically generated a deployment-protection bypass token; its value was not printed or committed. A further authenticated control was blocked by automatic approval review; no retry or workaround was attempted.
 
-These are controlled HTTP requests, not evidence of actual SNS POST delivery. Absence of handler logs does not prove an AWS-side delivery failure. Do not open AWS Support on the strength of the earlier diagnosis alone.
+The controls above are distinguished from actual SNS tests below. Absence of handler logs does not prove an AWS-side delivery failure. The external capture and custom-domain request record establish SNS delivery; Astro's pre-route origin check explains the custom-domain rejection.
 
 ## Temporary probe
 
 - Source: `src/pages/api/newsletter/sns-probe.ts`. Streams and counts bytes, performs no parsing, logs only the five requested metadata fields with bounded header values, and returns 204. It has no database or SNS confirmation dependencies.
 - Staged deployment: `dpl_8dD7cLGS9BiHZYmox37asC2TvxEA`, Ready, normal remote build, deployed with `--prod --skip-domain`.
 - Host: `https://avoid-boring-people-6btq9sdj8-leons-projects-b248d9a2.vercel.app`.
-- The live custom domain was not promoted to this probe deployment. Its baseline is `dpl_AhSw3dofJejuQ995JZs2AQs1VzmT`.
+- The probe was temporarily promoted for test 3, then baseline `dpl_AhSw3dofJejuQ995JZs2AQs1VzmT` was successfully restored. The probe source and disposable deployment have now been removed. After the usage-limit pause, production had independently advanced to Ready deployment `dpl_5Lj4BLR9bCiaDFUzEUASr152hpZH`; it was left untouched. Final public checks: homepage 200, probe GET 404.
 - Full tests, build, diff check, and a focused direct probe invocation passed. The focused check covered non-JSON input, multibyte body length, 204, and exclusion of the body and Authorization header from logs.
 
 ## Sequential SNS tests
 
 | Test | State | Actual SNS POST generated/received | Provider observation |
 | --- | --- | --- | --- |
-| 1. Controlled external request capture | Not run: AWS session expired | Unknown | A disposable Webhook.site capture was created at 12:22:39 UTC with one-hour expiration, ten-request history, 204 response, and actions disabled. Recreate if expired. Never follow captured confirmation URLs. |
-| 2. Exact Vercel deployment hostname `/api/newsletter/sns-probe` | Not run; must follow test 1 | Unknown | Unauthenticated control gets Vercel sign-in redirect. Do not disable protection or put bypass credentials in SNS URLs. |
-| 3. `leonlins.com/api/newsletter/sns-probe` | Not run; must follow test 2 | Unknown | Probe is not promoted. Existing real-handler control reaches Cloudflare and Vercel and gets Astro 403. |
+| 1. Controlled external request capture | Subscribed 12:33:27 UTC | Yes: captured POST at 12:33:28 UTC | 1,614 bytes; `text/plain; charset=UTF-8`; user-agent `Amazon Simple Notification Service Agent`; message type `SubscriptionConfirmation`; expected topic ARN. Neither Vercel nor Cloudflare site routing is involved. |
+| 2. Exact Vercel deployment hostname `/api/newsletter/sns-probe` | Subscribed 12:34:04 UTC | Actual delivery not independently visible in available records | No application/request log found in the subsequent query. Public control returned 302 to Vercel sign-in. This establishes an access gate, but does not prove SNS's exact response or absence of delivery. No protection bypass was used for SNS. |
+| 3. `leonlins.com/api/newsletter/sns-probe` | Subscribed 12:35:13 UTC | Yes, strongly correlated: Vercel recorded POST at 12:35:14.037 UTC before any control POST | Request `cklq7-1788870914037-f5e711dfbc01`, domain `leonlins.com`, path `/api/newsletter/sns-probe`, serverless response 403, no route logs. A separate 12:35:40 control returned Astro's exact origin-check error and both Cloudflare/Vercel headers. Cloudflare transit for the SNS request is inferred from the domain path; a separate Cloudflare security-event record was not retrieved. |
 
-The browser is left at AWS sign-in. Resume after login, record UTC timestamps and safe metadata for each actual subscription attempt in order, and distinguish application logs from edge/provider receipt. Keep pending probe subscriptions unconfirmed. Remove the temporary probe and dispose of the external capture after the requested tests isolate the cause; do not leave the probe on the public site.
+All three subscription requests were executed sequentially. None was confirmed by this diagnostic workflow. Their ARN suffixes are respectively `1e5bd3ee-b46b-4d81-933c-c6cd78737fdb`, `d14514df-3b19-4e45-ae5d-b6377669ccf9`, and `4f591dc5-36bc-4702-84d5-507c82644f16`. Pending SNS subscriptions cannot be removed with Unsubscribe; they were not confirmed merely to clean them up. No SES destination was attached and no email was sent.
+
+Capture cleanup was initially blocked because automatic approval review hit a usage limit. After reset, its deletion API returned 404, consistent with the configured one-hour expiry. The disposable Vercel deployment was successfully deleted using `remove --safe`, after it no longer held a live alias. The original probe code remains recoverable in commit `41f01ff`; the disposable deployment is deleted.
+
+The diagnostic objective is complete, with the visibility limitation for test 2 recorded above. The next implementation step is a narrowly scoped solution for the SNS text/plain webhook that preserves origin checks for browser-facing routes and all certificate/topic/signature checks. Do not globally disable origin checks as a shortcut. That fix was not implemented under the diagnostics-only authorization.
 
 ## Real-handler latency gate
 

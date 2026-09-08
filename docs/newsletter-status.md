@@ -80,7 +80,7 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Resume the sequential transport tests once the owner signs back into AWS. See `docs/newsletter-sns-diagnostics.md` for staged probe details and reproducible evidence: Astro rejects SNS-style `text/plain` POSTs without Origin before the real handler executes. No AWS-side delivery fault has been established. The current request prohibits attaching SES to SNS or sending email. Before moving toward public owned signup, provide:
+Sequential transport tests are complete; see `docs/newsletter-sns-diagnostics.md`. The external capture received SNS's confirmation; the custom-domain probe produced a correlated Vercel 403 before route execution. Astro's origin check rejects SNS-style `text/plain` POSTs without Origin. The exact deployment-hostname test has a Vercel sign-in gate and limited delivery visibility. The temporary probe has been removed from source and hosting; the public homepage returns 200 and probe GET returns 404. Next: implement a narrowly scoped webhook origin-check solution and a bounded total confirmation deadline, preserving all SNS authentication and other routes' origin checks. No such fix, SES attachment, or email sending was performed under the diagnostics-only request. Before moving toward public owned signup, provide:
 
 1. The Substack export when importer validation begins.
 2. Explicit approval to broaden the IAM recipient restriction beyond `contact@leonlins.com`; until then the local sender cannot mail any other address.
