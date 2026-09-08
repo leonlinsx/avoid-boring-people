@@ -10,7 +10,11 @@ export const POST: APIRoute = async ({ request }) => {
     if (!expectedTopicArn) throw new Error('SNS topic is not configured.');
     const envelope = parseSnsEnvelope(JSON.parse(await request.text()));
     await verifySnsEnvelope(envelope, expectedTopicArn);
-    if (envelope.Type === 'SubscriptionConfirmation') await confirmSnsSubscription(envelope, expectedTopicArn);
+    if (envelope.Type === 'SubscriptionConfirmation') {
+      console.info('Newsletter SNS subscription confirmation signature verified.');
+      await confirmSnsSubscription(envelope, expectedTopicArn);
+      console.info('Newsletter SNS subscription confirmation completed.');
+    }
     else if (envelope.Type === 'Notification') await recordSesEvent(envelope);
     return new Response(null, { status: 204 });
   } catch (error) {
