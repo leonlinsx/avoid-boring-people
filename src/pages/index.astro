@@ -22,58 +22,33 @@ const featured = enrichedPosts
   title={SITE_TITLE}
   description="Writing on finance, tech, and other ideas by Leon Lin"
 >
-  <head>
-    <!-- ✅ Only preload on index page -->
-    <link
-      rel="preload"
-      as="image"
-      href="/logos/substack_banner.webp"
-      imagesrcset="/logos/substack_banner.webp"
-      imagesizes="100vw"
-    />
-  </head>
-
   <!-- Hero -->
   <section class="hero">
-    <div class="banner-wrapper">
-      <img
-        src="/logos/substack_banner.webp"
-        alt="Avoid Boring People newsletter banner"
-        class="banner-img"
-        height="400"
-        width="1600"
-        fetchpriority="high"
-      />
-      <span class="tooltip">
-        I chose the name because of the double meaning. People always default to
-        one interpretation of it, but I promise I'm not as intimidating as I
-        sound.
-      </span>
-    </div>
-
-    <h1>I write to think clearly about finance, tech, and strange ideas</h1>
-    <p>
-      Sharing my writing helps my ideas compound and helps me connect with
-      curious people.
+    <h1>Leon Lin</h1>
+    <p class="hero-hook">
+      I write to understand how investing, technology, and systems actually
+      work, plus whatever else catches my attention.
     </p>
-    <p>
-      Start with a few favourites below, or
-      <a href="#subscribe">join 5,000+ readers</a> who get updates by email.
+    <p class="hero-credentials">
+      I've spent my career across finance and technology — investment banking,
+      fundamental long/short investing, quantitative finance, startups, and
+      large technology companies. These days I also build software and systems
+      to help me research, analyze, and make better decisions.
     </p>
   </section>
 
   <!-- Start Here -->
-  <section class="content-section">
-    <h2>Best Of</h2>
-    <p class="subtext">Essays that highlight what my writing is about</p>
+  <section id="selected-work" class="content-section">
+    <h2>Selected Work</h2>
+    <p class="subtext">A few things that best represent how I think.</p>
     <PostList posts={featured} />
   </section>
 
   <!-- Newsletter Signup -->
   <section id="subscribe" class="signup">
     <SubscribeForm
-      title="Join the Newsletter"
-      subtext="Irregular essays on finance, tech, and life. Delivered directly to your inbox."
+      title="Join 5,000+ readers"
+      subtext="Mostly investing, technology, and how things work. Occasionally something completely different."
     />
   </section>
 
@@ -89,40 +64,29 @@ const featured = enrichedPosts
 </BaseLayout>
 
 <style>
-  .banner-wrapper {
-    position: relative; /* anchor for absolute tooltip */
-    display: inline-block;
+  .hero {
+    max-width: none;
+    margin: var(--space-lg) 0;
+    text-align: left;
   }
 
-  .banner-img {
-    display: block;
-    width: min(100%, 960px);
-    height: auto;
-    border-radius: 18px;
-    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.16);
+  .hero h1 {
+    margin-bottom: var(--space-md);
+    font-size: var(--text-lg);
+    font-weight: 600;
   }
 
-  .tooltip {
-    position: absolute;
-    bottom: 100%; /* place it above the banner */
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 0.5rem;
-
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    max-width: 480px;
-    text-align: center;
+  .hero-hook {
+    max-width: 50ch;
+    margin-bottom: var(--space-md);
+    font-size: var(--text-xl);
+    font-weight: 600;
     line-height: 1.4;
-
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    white-space: normal; /* allow wrapping if long */
   }
 
-  .banner-wrapper:hover .tooltip {
-    opacity: 1;
-    transition-delay: 3.1415s; /* only appears if you linger */
+  .hero-credentials {
+    max-width: 70ch;
+    margin-bottom: 0;
+    color: var(--color-text-muted);
   }
 </style>
