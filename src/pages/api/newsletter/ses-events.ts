@@ -13,8 +13,10 @@ export const POST: APIRoute = async ({ request }) => {
     if (envelope.Type === 'SubscriptionConfirmation') await confirmSnsSubscription(envelope, expectedTopicArn);
     else if (envelope.Type === 'Notification') await recordSesEvent(envelope);
     return new Response(null, { status: 204 });
-  } catch {
+  } catch (error) {
     // Do not disclose endpoint configuration or trust decisions to an unauthenticated sender.
+    // Retain only the reason in server logs; never log the signed SNS body or its token.
+    console.error('Newsletter SNS event rejected:', error instanceof Error ? error.message : 'unknown error');
     return new Response(null, { status: 400 });
   }
 };
