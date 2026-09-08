@@ -23,6 +23,9 @@ import { hashToken } from '../src/lib/newsletter/tokens.ts';
 import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/rate-limit.ts';
 import { NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
 import { assertAllowedTestRecipient } from '../src/lib/newsletter/test-send.ts';
+import { canDeliverConfirmation } from '../src/lib/newsletter/subscriptions.ts';
+import { parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
+import { createSign, generateKeyPairSync } from 'node:crypto';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -279,6 +282,40 @@ function testNewsletterSafetyHelpers() {
   assert.notEqual(hashRateLimitSubject('reader@example.com'), 'reader@example.com');
   assert.equal(isRateLimitAllowed(5, 5), true);
   assert.equal(isRateLimitAllowed(6, 5), false);
+}
+
+function testNewsletterConfirmationBoundary() {
+  const original = { ...process.env };
+  try {
+    process.env.NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED = 'true';
+    process.env.NEWSLETTER_TEST_RECIPIENTS = 'contact@leonlins.com';
+    delete process.env.NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED;
+    assert.equal(canDeliverConfirmation('contact@leonlins.com'), true);
+    assert.equal(canDeliverConfirmation('reader@example.com'), false);
+    process.env.NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED = 'true';
+    assert.equal(canDeliverConfirmation('reader@example.com'), true);
+  } finally {
+    process.env = original;
+  }
+}
+
+async function testSnsValidation() {
+  const topic = 'arn:aws:sns:us-east-2:123456789012:newsletter-events';
+  const envelope = parseSnsEnvelope({
+    Type: 'Notification', MessageId: 'event-1', TopicArn: topic, Message: '{"eventType":"Delivery"}',
+    Timestamp: '2026-09-07T00:00:00.000Z', SignatureVersion: '2', Signature: 'placeholder',
+    SigningCertURL: 'https://sns.us-east-2.amazonaws.com/SimpleNotificationService-test.pem',
+  });
+  const pair = generateKeyPairSync('rsa', { modulusLength: 2048 });
+  const signer = createSign('RSA-SHA256');
+  signer.update(signingString(envelope), 'utf8');
+  signer.end();
+  envelope.Signature = signer.sign(pair.privateKey, 'base64');
+  const publicKey = pair.publicKey.export({ type: 'pkcs1', format: 'pem' }).toString();
+  await verifySnsEnvelope(envelope, topic, async () => new Response(publicKey, { status: 200 }));
+  await assert.rejects(() => verifySnsEnvelope(envelope, 'arn:aws:sns:us-east-2:123456789012:other', async () => new Response('')),
+    /not expected/);
+  assert.throws(() => parseSnsEnvelope({ Type: 'Notification' }), /missing/);
 }
 
 function testEnrichPost() {
@@ -709,6 +746,8 @@ async function run() {
     testNewsletterRenderer();
     testNewsletterTestSendSafeguard();
     testNewsletterSafetyHelpers();
+    testNewsletterConfirmationBoundary();
+    await testSnsValidation();
     testEnrichPost();
     await testGetAllPostsPaginated();
     await testGetCategoryPostsPaginated();

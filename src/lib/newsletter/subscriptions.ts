@@ -15,14 +15,22 @@ function testRecipients(): Set<string> {
   return new Set((process.env.NEWSLETTER_TEST_RECIPIENTS ?? '').split(',').map(normalizeEmail).filter(Boolean) as string[]);
 }
 
+export function canDeliverConfirmation(email: string): boolean {
+  if (process.env.NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED !== 'true') return false;
+  return process.env.NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED === 'true' || testRecipients().has(email);
+}
+
 async function sendConfirmation(email: string, token: string) {
-  if (process.env.NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED !== 'true' || !testRecipients().has(email)) return;
+  if (!canDeliverConfirmation(email)) return;
+  const configurationSet = process.env.SES_CONFIGURATION_SET;
+  if (!configurationSet) throw new Error('SES configuration set is not configured.');
   const url = new URL('/api/newsletter/confirm', siteOrigin());
   url.searchParams.set('token', token);
   await new SESv2Client({ region: process.env.AWS_REGION }).send(new SendEmailCommand({
     FromEmailAddress: NEWSLETTER_FROM_EMAIL,
     ReplyToAddresses: [NEWSLETTER_REPLY_TO],
     Destination: { ToAddresses: [email] },
+    ConfigurationSetName: configurationSet,
     Content: { Simple: { Subject: { Data: 'Confirm your subscription' }, Body: { Text: { Data: `Confirm your subscription: ${url}` } } } },
   }));
 }

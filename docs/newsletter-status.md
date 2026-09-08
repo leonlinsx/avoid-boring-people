@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 2 — Email renderer: complete.**
+**Phase 3 — SES/AWS production plumbing: in progress.**
 
 This status file is the handoff record for the current newsletter migration phase. Update it at the end of every phase or when an external/human gate prevents safe progress. Do not advance phases by implication.
 
@@ -22,7 +22,7 @@ This status file is the handoff record for the current newsletter migration phas
 - Linked the Neon `leonlins.com` project production branch and initialized `neon.ts`; its deploy plan and deploy were no-ops because the policy declares no new infrastructure.
 - The Neon connection values are in ignored `.env.local`; they are not committed.
 - Created disposable Neon branch `newsletter-phase1-validation` from production. It did not initially contain the newsletter schema, so applied the committed `001_initial.sql` there using a direct connection and verified the resulting schema. The branch expires on 2026-09-14.
-- Applied the validated `001_initial.sql` to Neon production and verified the expected newsletter tables. No subscriber records were imported or created.
+- Applied the validated `001_initial.sql` to Neon production and verified the expected newsletter tables. On Phase 3 revalidation, the linked production branch was found to have no public tables, so the same validated initial schema was applied again together with `002_event_and_campaign_state.sql`; the expected five tables and four event columns are now present, with zero subscriber records. No subscriber records were imported or created.
 - Inspected the existing SES setup in `us-east-2`: `leonlins.com` and `contact@leonlins.com` are verified; Easy DKIM (RSA-2048) and the custom `mail.leonlins.com` MAIL FROM domain are successful. The account is healthy but remains in the SES sandbox (200 emails per 24 hours; 1 email per second).
 - Created the non-console IAM user `newsletter-local-sender` and group `newsletter-ses-senders`. Its sole inline policy permits `ses:SendEmail` only through the `leonlins.com` SES identity, only when `ses:FromAddress` is `newsletter@leonlins.com`, and only with `my-first-configuration-set`; it has no permissions to manage AWS resources, no console access, and no credentials in the repository.
 - Created one local CLI access key for that user. Its secret is shown by AWS once and must be downloaded and stored by the account owner; this migration does not read, log, or store it.
@@ -47,9 +47,20 @@ This status file is the handoff record for the current newsletter migration phas
 - Added a local `npm run newsletter:test -- <article-id> <allowlisted-recipient> --confirm-test` workflow. It never queries subscribers, campaigns, or Substack data; it requires the exact recipient in ignored `NEWSLETTER_TEST_RECIPIENTS`, an explicit confirmation argument, local footer/configuration-set settings, and emits a clearly marked test subject. It is the only Phase 2 path that may call SES.
 - Exercised the test-send recipient guard with a non-allowlisted address; it failed before an SES call. SES then accepted one explicitly authorized, clearly marked article-rendering test to `contact@leonlins.com`, and the human recipient confirmed receipt. The local sender IAM policy is now stricter: it permits `ses:SendEmail` only from `newsletter@leonlins.com`, only using `my-first-configuration-set`, and only when every recipient is `contact@leonlins.com`. No Substack export, subscriber, campaign, or recipient-list data was read or changed.
 
+## Phase 3 progress
+
+- Added the isolated `POST /api/newsletter/ses-events` endpoint. It parses the SNS envelope, requires an exact configured TopicArn, validates the AWS SNS signing-certificate URL, verifies the RSA signature before acting on the body, and returns a generic 400 for every invalid request.
+- Valid SNS subscription confirmations may be automatically confirmed, but only after signature and exact-topic validation. This is the approved narrow automatic-confirmation exception; it cannot subscribe the endpoint to an arbitrary topic or URL.
+- Added idempotent SNS receipt recording and SES delivery, permanent-bounce, and complaint processing. Replayed SNS MessageIds are no-ops. Only active subscribers can move to `bounced` or `complained`; missing/redacted complaint recipients are deliberately not suppressed.
+- Added the additive `002_event_and_campaign_state.sql` migration for recipient event timestamps and indexed SES provider message IDs. It does not alter subscriber records or the Phase 1 schema behavior.
+- Confirmation email now requires an SES configuration set. The existing local test allowlist remains the default. The separate `NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED=true` switch is required before automatic confirmations can go to arbitrary addresses, and remains unset for now.
+- Created `docs/newsletter-aws-runbook.md`, including the separate Vercel confirmation identity, the exact SES/SNS setup, environment-secret boundary, verification, and stop/rollback actions. The existing local sender remains restricted to `contact@leonlins.com`.
+- Created the normal Neon validation branch `newsletter-phase3-validation`, expiring 2026-09-14. Direct `psql` connections from this workspace stalled, so validation used the repository's Neon serverless driver instead: the committed Phase 1 schema plus the additive Phase 3 migration applied cleanly and all four recipient-event columns were verified.
+- With explicit approval, applied the same migrations to linked Neon production and verified `campaign_recipients`, `campaigns`, `newsletter_event_receipts`, `newsletter_rate_limits`, and `subscribers`; `campaign_recipients` has all four new event columns and `subscribers` has zero rows. No email, import, or Substack data was touched.
+- Focused tests and `npm run build` pass for the new route and signature-validation path.
+
 ## Not started
 
-- Phase 3 — SES/AWS production plumbing.
 - Phase 4 — Controlled infrastructure validation.
 - Phase 4.5 — Warm-up.
 - Phase 5 — Cutover.
@@ -64,7 +75,7 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Phase 2 is complete. The next work is Phase 3 — production plumbing, and must not start without an explicit Phase 3 prompt. Before moving toward public owned signup, provide:
+Phase 3 code is in progress. The database schema is applied; next, review/deploy the Phase 3 code, then configure the dedicated SES/SNS event destination using `docs/newsletter-aws-runbook.md`. Before moving toward public owned signup, provide:
 
 1. The Substack export when importer validation begins.
 2. Explicit approval to broaden the IAM recipient restriction beyond `contact@leonlins.com`; until then the local sender cannot mail any other address.
