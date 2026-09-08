@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 1 — Subscriber ownership: in progress.**
+**Phase 1 — Subscriber ownership: complete.**
 
 This status file is the handoff record for the current newsletter migration phase. Update it at the end of every phase or when an external/human gate prevents safe progress. Do not advance phases by implication.
 
@@ -24,7 +24,7 @@ This status file is the handoff record for the current newsletter migration phas
 - Created disposable Neon branch `newsletter-phase1-validation` from production. It did not initially contain the newsletter schema, so applied the committed `001_initial.sql` there using a direct connection and verified the resulting schema. The branch expires on 2026-09-14.
 - Applied the validated `001_initial.sql` to Neon production and verified the expected newsletter tables. No subscriber records were imported or created.
 - Inspected the existing SES setup in `us-east-2`: `leonlins.com` and `contact@leonlins.com` are verified; Easy DKIM (RSA-2048) and the custom `mail.leonlins.com` MAIL FROM domain are successful. The account is healthy but remains in the SES sandbox (200 emails per 24 hours; 1 email per second).
-- Created the non-console IAM user `newsletter-local-sender` and group `newsletter-ses-senders`. Its sole inline policy permits `ses:SendEmail` only through the `leonlins.com` SES identity and only when `ses:FromAddress` is `newsletter@leonlins.com`. It has no permissions to manage AWS resources, no console access, and no credentials in the repository.
+- Created the non-console IAM user `newsletter-local-sender` and group `newsletter-ses-senders`. Its sole inline policy permits `ses:SendEmail` only through the `leonlins.com` SES identity, only when `ses:FromAddress` is `newsletter@leonlins.com`, and only with `my-first-configuration-set`; it has no permissions to manage AWS resources, no console access, and no credentials in the repository.
 - Created one local CLI access key for that user. Its secret is shown by AWS once and must be downloaded and stored by the account owner; this migration does not read, log, or store it.
 - Added isolated on-demand routes under `/api/newsletter/*` for a generic-response subscription request, one-time confirmation, and idempotent GET/POST unsubscribe. They use hashed tokens and retain suppressed subscribers as suppressed. `src/pages/api/subscribe.ts` and `SubscribeForm.astro` remain untouched.
 - Configured Astro's Vercel adapter while retaining static output. Only the new newsletter routes opt out of prerendering.
@@ -32,6 +32,7 @@ This status file is the handoff record for the current newsletter migration phas
 - Added retry-safe database-backed rate limiting: five subscription attempts per normalized email and twenty per hashed client IP in a rolling one-hour window. The route still returns the same generic response when the limit is exceeded.
 - Added focused tests for token hashing and rate-limit decisions; `npm test` and `npm run build` pass after the route and rate-limit changes.
 - Ran the full pending → active → unsubscribed lifecycle against the disposable branch with a generated `example.test` address and confirmation delivery explicitly disabled. A second confirmation was rejected, a second unsubscribe was safe, and a subsequent subscription request did not reactivate the suppressed record. No email was sent.
+- Sent one authorized mailbox-simulator validation message from `newsletter@leonlins.com` to `success@simulator.amazonses.com`; SES accepted it. No human recipient or subscriber data was involved.
 - No current subscription flow, production email behavior, or public signup UI has changed. The isolated owned endpoints are present in source but are not linked from the site.
 
 ## Not started
@@ -51,11 +52,11 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Before testing database-backed Phase 1 routes that deliver confirmation email, obtain or confirm:
+Phase 1 is complete. Before public owned signup or any production campaign, obtain or confirm:
 
-1. Download and securely store the newly created IAM access key secret, then configure it locally without committing it. The local sender policy intentionally lacks quota-read permission because that is not needed for Phase 1 confirmation sends; add it only with the Phase 3 CLI.
-2. Explicit approval for a no-recipient SES mailbox-simulator send from `newsletter@leonlins.com`, then inspect the result. A real inbox test requires a separately verified sandbox recipient and explicit approval at send time.
-3. The Substack export when importer validation begins.
+1. A compliant physical postal address and privacy-policy approval, which Phase 2 will need for its mandatory email footer.
+2. The Substack export when importer validation begins.
+3. Explicit approval at send time for any future real-inbox sandbox confirmation test; the simulator validation is complete.
 
 DNS authority, production SES access, a compliant postal address, mailbox confirmation, and privacy-policy approval remain later launch gates; they do not block local Phase 1 development.
 
