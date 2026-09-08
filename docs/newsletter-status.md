@@ -44,6 +44,8 @@ This status file is the handoff record for the current newsletter migration phas
 - Added focused renderer tests, including asset URL conversion, inline image styling, one-click headers, required footer configuration, unsupported relative links, and raw HTML rejection. No SES send capability or production campaign workflow was added or changed in Phase 2.
 - Added the public `/privacy/` notice, linked from the site footer but intentionally omitted from the primary navigation. It accurately distinguishes the current Substack sign-up path from the planned Neon/SES migration and documents newsletter data, providers, unsubscribe/suppression, and contact choices.
 - Recorded the fixed newsletter identity for all owned email: visible From `Leon Lin <newsletter@leonlins.com>` and Reply-To `contact@leonlins.com`.
+- Added a local `npm run newsletter:test -- <article-id> <allowlisted-recipient> --confirm-test` workflow. It never queries subscribers, campaigns, or Substack data; it requires the exact recipient in ignored `NEWSLETTER_TEST_RECIPIENTS`, an explicit confirmation argument, local footer/configuration-set settings, and emits a clearly marked test subject. It is the only Phase 2 path that may call SES.
+- Exercised the test-send recipient guard with a non-allowlisted address; it failed before an SES call. SES then accepted one explicitly authorized, clearly marked article-rendering test to `contact@leonlins.com`. The local sender IAM policy is now stricter: it permits `ses:SendEmail` only from `newsletter@leonlins.com`, only using `my-first-configuration-set`, and only when every recipient is `contact@leonlins.com`. No Substack export, subscriber, campaign, or recipient-list data was read or changed.
 
 ## Not started
 
@@ -62,10 +64,10 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Phase 2 has the approved newsletter footer address. Before completing its preview configuration or moving toward public owned signup, configure it only in the local sending environment and provide:
+Phase 2 is awaiting human inbox verification. Confirm the controlled test at `contact@leonlins.com` was received and verify the visible sender, Reply-To, responsive article/images, compact footer, privacy link, and unsubscribe link. Before moving toward public owned signup, provide:
 
 1. The Substack export when importer validation begins.
-2. Explicit approval at send time for any future real-inbox sandbox confirmation test; the simulator validation is complete.
+2. Explicit approval to broaden the IAM recipient restriction beyond `contact@leonlins.com`; until then the local sender cannot mail any other address.
 
 DNS authority, production SES access, a compliant postal address, mailbox confirmation, and privacy-policy approval remain later launch gates; they do not block local Phase 1 development.
 

@@ -22,6 +22,7 @@ import {
 import { hashToken } from '../src/lib/newsletter/tokens.ts';
 import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/rate-limit.ts';
 import { NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
+import { assertAllowedTestRecipient } from '../src/lib/newsletter/test-send.ts';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -259,6 +260,17 @@ function testNewsletterRenderer() {
   assert.throws(() => renderNewsletterEmail({ ...input, postalAddress: '' }), NewsletterRenderError);
   assert.throws(() => renderNewsletterEmail({ ...input, markdown: '[relative](./private)' }), NewsletterRenderError);
   assert.throws(() => renderNewsletterEmail({ ...input, markdown: '<iframe src="https://example.com"></iframe>' }), NewsletterRenderError);
+}
+
+function testNewsletterTestSendSafeguard() {
+  assert.equal(
+    assertAllowedTestRecipient(' Contact@LeonLins.com ', 'contact@leonlins.com'),
+    'contact@leonlins.com',
+  );
+  assert.throws(
+    () => assertAllowedTestRecipient('reader@example.com', 'contact@leonlins.com'),
+    /No email was sent/,
+  );
 }
 
 function testNewsletterSafetyHelpers() {
@@ -696,6 +708,7 @@ async function run() {
     testNormalizeCategory();
     testNewsletterDomain();
     testNewsletterRenderer();
+    testNewsletterTestSendSafeguard();
     testNewsletterSafetyHelpers();
     testEnrichPost();
     await testGetAllPostsPaginated();
