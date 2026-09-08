@@ -1,4 +1,5 @@
 import { createVerify } from 'node:crypto';
+import { get } from 'node:https';
 
 export type SnsEnvelope = {
   Type: 'Notification' | 'SubscriptionConfirmation' | 'UnsubscribeConfirmation';
@@ -15,6 +16,19 @@ export type SnsEnvelope = {
 };
 
 type FetchLike = typeof fetch;
+
+function getHttps(url: URL): Promise<{ status: number; body: string }> {
+  return new Promise((resolve, reject) => {
+    const request = get(url, { timeout: 10_000 }, (response) => {
+      let body = '';
+      response.setEncoding('utf8');
+      response.on('data', (chunk) => { body += chunk; });
+      response.on('end', () => resolve({ status: response.statusCode ?? 0, body }));
+    });
+    request.on('timeout', () => request.destroy(new Error('SNS HTTPS request timed out.')));
+    request.on('error', reject);
+  });
+}
 
 function text(value: unknown, field: string): string {
   if (typeof value !== 'string' || !value) throw new Error(`SNS message is missing ${field}.`);
@@ -82,26 +96,37 @@ function snsUrl(value: string, region: string, certificate: boolean): URL {
 export async function verifySnsEnvelope(
   message: SnsEnvelope,
   expectedTopicArn: string,
-  fetchImpl: FetchLike = fetch,
+  fetchImpl?: FetchLike,
 ): Promise<void> {
   if (!expectedTopicArn || message.TopicArn !== expectedTopicArn) throw new Error('SNS TopicArn is not expected.');
   const region = topicRegion(expectedTopicArn);
   const certificateUrl = snsUrl(message.SigningCertURL, region, true);
-  const response = await fetchImpl(certificateUrl, { signal: AbortSignal.timeout(10_000) });
-  if (!response.ok) throw new Error('SNS signing certificate could not be retrieved.');
-  const certificate = await response.text();
+  const certificate = fetchImpl
+    ? await fetchImpl(certificateUrl, { signal: AbortSignal.timeout(10_000) }).then(async (response) => {
+      if (!response.ok) throw new Error('SNS signing certificate could not be retrieved.');
+      return response.text();
+    })
+    : await getHttps(certificateUrl).then((response) => {
+      if (response.status < 200 || response.status >= 300) throw new Error('SNS signing certificate could not be retrieved.');
+      return response.body;
+    });
   const verifier = createVerify(message.SignatureVersion === '2' ? 'RSA-SHA256' : 'RSA-SHA1');
   verifier.update(signingString(message), 'utf8');
   verifier.end();
   if (!verifier.verify(certificate, message.Signature, 'base64')) throw new Error('SNS signature is invalid.');
 }
 
-export async function confirmSnsSubscription(message: SnsEnvelope, expectedTopicArn: string, fetchImpl: FetchLike = fetch): Promise<void> {
+export async function confirmSnsSubscription(message: SnsEnvelope, expectedTopicArn: string, fetchImpl?: FetchLike): Promise<void> {
   if (message.Type !== 'SubscriptionConfirmation' || !message.SubscribeURL) return;
   const url = snsUrl(message.SubscribeURL, topicRegion(expectedTopicArn), false);
   if (url.searchParams.get('Action') !== 'ConfirmSubscription' || url.searchParams.get('TopicArn') !== expectedTopicArn) {
     throw new Error('SNS subscription confirmation URL is not for the expected topic.');
   }
-  const response = await fetchImpl(url, { signal: AbortSignal.timeout(10_000) });
-  if (!response.ok) throw new Error('SNS subscription confirmation failed.');
+  if (fetchImpl) {
+    const response = await fetchImpl(url, { signal: AbortSignal.timeout(10_000) });
+    if (!response.ok) throw new Error('SNS subscription confirmation failed.');
+    return;
+  }
+  const response = await getHttps(url);
+  if (response.status < 200 || response.status >= 300) throw new Error('SNS subscription confirmation failed.');
 }
