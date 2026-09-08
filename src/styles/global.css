@@ -84,11 +84,13 @@
   font-display: swap;
 }
 
-/* Apply fonts */
-body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Atkinson',
-    Helvetica, Arial, sans-serif;
+@font-face {
+  font-family: 'Atkinson';
+  src:
+    url('/fonts/atkinson-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 h1,
@@ -115,8 +117,8 @@ html {
 
 body {
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
+    'Atkinson', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
   line-height: 1.7;
   font-size: var(--text-base);
   color: var(--color-text);
