@@ -38,14 +38,14 @@ Replace one-off values with variables. -->
 <!-- - comments -->
 <!-- - font decision
 - colour scheme design decision -->
+<!-- - dropped: Hero section redesign: Rotating featured posts with background image/gradient? -->
+<!-- - dropped: book consulting call calendly -->
 
 - update automated posting
 - automated linkedin summaries
 - post to reddit relevant subreddits
-- book consulting call calendly
 3. event tracking when appropriate
 - twitter thread analytics tracking
 - automated posting threads
 - automated tiktok posting
 - automated posting publish0x; seems to not pick up cookies for login
-- Hero section redesign: Rotating featured posts with background image/gradient?

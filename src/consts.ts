@@ -1,9 +1,9 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'Avoid Boring People';
+export const SITE_TITLE = 'Leon Lin — Avoid Boring People';
 export const SITE_DESCRIPTION =
-  'Writing on finance, tech, and other ideas by Leon Lin';
+  'Writing by Leon Lin on investing, technology, systems, and how things work.';
 export const SITE_URL = 'https://leonlins.com/';
 export const SITE_AUTHOR = 'Leon Lin';
 export const SITE_AUTHOR_URL = 'https://leonlins.com/about/';
