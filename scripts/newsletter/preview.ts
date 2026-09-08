@@ -15,14 +15,13 @@ if (!articleId) {
 
 const markdown = readNewsletterArticle(articleId);
 const title = frontmatterValue(markdown, 'title');
-const postalAddress = process.env.NEWSLETTER_POSTAL_ADDRESS;
 const privacyUrl = process.env.NEWSLETTER_PRIVACY_URL ?? NEWSLETTER_PRIVACY_URL;
 const unsubscribeUrl = process.env.NEWSLETTER_PREVIEW_UNSUBSCRIBE_URL;
-if (!title || !postalAddress || !unsubscribeUrl) {
-  throw new Error('Preview requires article title plus NEWSLETTER_POSTAL_ADDRESS and NEWSLETTER_PREVIEW_UNSUBSCRIBE_URL.');
+if (!title || !unsubscribeUrl) {
+  throw new Error('Preview requires an article title and NEWSLETTER_PREVIEW_UNSUBSCRIBE_URL.');
 }
 
-const rendered = renderNewsletterEmail({ articleId, title, markdown, postalAddress, privacyUrl, unsubscribeUrl });
+const rendered = renderNewsletterEmail({ articleId, title, markdown, privacyUrl, unsubscribeUrl });
 const destination = resolve(output);
 writeFileSync(destination, rendered.html, 'utf8');
 console.log(`Newsletter preview written to ${destination}`);

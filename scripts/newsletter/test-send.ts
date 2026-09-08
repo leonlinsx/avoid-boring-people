@@ -14,10 +14,9 @@ if (!articleId || !recipient || confirmation !== '--confirm-test') {
 }
 
 const testRecipient = assertAllowedTestRecipient(recipient, process.env.NEWSLETTER_TEST_RECIPIENTS);
-const postalAddress = process.env.NEWSLETTER_POSTAL_ADDRESS;
 const configurationSet = process.env.SES_CONFIGURATION_SET;
-if (!postalAddress || !configurationSet || !process.env.AWS_REGION) {
-  throw new Error('Test send requires NEWSLETTER_POSTAL_ADDRESS, SES_CONFIGURATION_SET, and AWS_REGION. No email was sent.');
+if (!configurationSet || !process.env.AWS_REGION) {
+  throw new Error('Test send requires SES_CONFIGURATION_SET and AWS_REGION. No email was sent.');
 }
 
 const markdown = readNewsletterArticle(articleId);
@@ -28,7 +27,6 @@ const rendered = renderNewsletterEmail({
   articleId,
   title: `[TEST] ${title}`,
   markdown,
-  postalAddress,
   privacyUrl: NEWSLETTER_PRIVACY_URL,
   unsubscribeUrl,
 });

@@ -249,7 +249,6 @@ function testNewsletterRenderer() {
     markdown: '---\ntitle: Newsletter test\n---\n\n[Site](/writing/test/)\n\n![Post](./n_1.webp)',
     unsubscribeUrl: 'https://leonlins.com/api/newsletter/unsubscribe?token=preview',
     privacyUrl: 'https://leonlins.com/privacy/',
-    postalAddress: '123 Example Street, New York, NY 10001',
   };
   const rendered = renderNewsletterEmail(input);
   assert.match(rendered.html, /https:\/\/leonlins\.com\/writing\/test\//);
@@ -257,7 +256,7 @@ function testNewsletterRenderer() {
   assert.match(rendered.html, /max-width:100%/);
   assert.equal(rendered.headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
   assert.match(rendered.text, /Newsletter test/);
-  assert.throws(() => renderNewsletterEmail({ ...input, postalAddress: '' }), NewsletterRenderError);
+  assert.doesNotMatch(rendered.html, /123 Example Street/);
   assert.throws(() => renderNewsletterEmail({ ...input, markdown: '[relative](./private)' }), NewsletterRenderError);
   assert.throws(() => renderNewsletterEmail({ ...input, markdown: '<iframe src="https://example.com"></iframe>' }), NewsletterRenderError);
 }

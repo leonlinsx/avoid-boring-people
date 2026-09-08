@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 2 — Email renderer: in progress.**
+**Phase 2 — Email renderer: complete.**
 
 This status file is the handoff record for the current newsletter migration phase. Update it at the end of every phase or when an external/human gate prevents safe progress. Do not advance phases by implication.
 
@@ -39,13 +39,13 @@ This status file is the handoff record for the current newsletter migration phas
 
 - Added a constrained Markdown-to-email renderer that produces HTML and plain text, preserves public HTTP(S) article links, converts site-relative links to `https://leonlins.com`, and rejects relative article links, localhost/private URLs, raw HTML, MDX imports/exports/components, unsupported images, missing assets, and email HTML at or above the approximate Gmail 100 KB clipping threshold.
 - Added a stable newsletter-asset build step. It copies only supported co-located blog images (`gif`, `jpeg`, `jpg`, `png`, `webp`) to public `/newsletter-assets/<article>/...` URLs; the renderer refuses unsupported or missing local assets rather than emitting broken mail. The normal Astro hashed-asset pipeline is unchanged.
-- Added conservative inline email styles, a compact required postal-address footer, privacy/unsubscribe links, and `List-Unsubscribe` plus RFC one-click headers. Rendering cannot proceed without an explicit postal address.
-- Added `npm run newsletter:preview -- <article-id> [output-file]`. It loads ignored `.env.local`, writes HTML only, and never sends mail. It requires local `NEWSLETTER_POSTAL_ADDRESS` and `NEWSLETTER_PREVIEW_UNSUBSCRIBE_URL`; the default privacy URL is the published `/privacy/` page. A preview of the existing Nonviolent Communication article and the deployed static newsletter asset path were validated locally.
-- Added focused renderer tests, including asset URL conversion, inline image styling, one-click headers, required footer configuration, unsupported relative links, and raw HTML rejection. No SES send capability or production campaign workflow was added or changed in Phase 2.
+- Added conservative inline email styles, a compact footer, privacy/unsubscribe links, and `List-Unsubscribe` plus RFC one-click headers. At the author's direction, the renderer intentionally omits the physical postal address and is limited to editorial editions; commercial or promotional editions require a fresh compliance decision.
+- Added `npm run newsletter:preview -- <article-id> [output-file]`. It loads ignored `.env.local`, writes HTML only, and never sends mail. It requires local `NEWSLETTER_PREVIEW_UNSUBSCRIBE_URL`; the default privacy URL is the published `/privacy/` page. A preview of the existing Nonviolent Communication article and the deployed static newsletter asset path were validated locally.
+- Added focused renderer tests, including asset URL conversion, inline image styling, one-click headers, footer behavior, unsupported relative links, and raw HTML rejection. No SES send capability or production campaign workflow was added or changed in Phase 2.
 - Added the public `/privacy/` notice, linked from the site footer but intentionally omitted from the primary navigation. It accurately distinguishes the current Substack sign-up path from the planned Neon/SES migration and documents newsletter data, providers, unsubscribe/suppression, and contact choices.
 - Recorded the fixed newsletter identity for all owned email: visible From `Leon Lin <newsletter@leonlins.com>` and Reply-To `contact@leonlins.com`.
 - Added a local `npm run newsletter:test -- <article-id> <allowlisted-recipient> --confirm-test` workflow. It never queries subscribers, campaigns, or Substack data; it requires the exact recipient in ignored `NEWSLETTER_TEST_RECIPIENTS`, an explicit confirmation argument, local footer/configuration-set settings, and emits a clearly marked test subject. It is the only Phase 2 path that may call SES.
-- Exercised the test-send recipient guard with a non-allowlisted address; it failed before an SES call. SES then accepted one explicitly authorized, clearly marked article-rendering test to `contact@leonlins.com`. The local sender IAM policy is now stricter: it permits `ses:SendEmail` only from `newsletter@leonlins.com`, only using `my-first-configuration-set`, and only when every recipient is `contact@leonlins.com`. No Substack export, subscriber, campaign, or recipient-list data was read or changed.
+- Exercised the test-send recipient guard with a non-allowlisted address; it failed before an SES call. SES then accepted one explicitly authorized, clearly marked article-rendering test to `contact@leonlins.com`, and the human recipient confirmed receipt. The local sender IAM policy is now stricter: it permits `ses:SendEmail` only from `newsletter@leonlins.com`, only using `my-first-configuration-set`, and only when every recipient is `contact@leonlins.com`. No Substack export, subscriber, campaign, or recipient-list data was read or changed.
 
 ## Not started
 
@@ -64,7 +64,7 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-Phase 2 is awaiting human inbox verification. Confirm the controlled test at `contact@leonlins.com` was received and verify the visible sender, Reply-To, responsive article/images, compact footer, privacy link, and unsubscribe link. Before moving toward public owned signup, provide:
+Phase 2 is complete. The next work is Phase 3 — production plumbing, and must not start without an explicit Phase 3 prompt. Before moving toward public owned signup, provide:
 
 1. The Substack export when importer validation begins.
 2. Explicit approval to broaden the IAM recipient restriction beyond `contact@leonlins.com`; until then the local sender cannot mail any other address.
