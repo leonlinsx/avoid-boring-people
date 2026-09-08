@@ -3,9 +3,9 @@ import { newsletterDb } from './db.ts';
 import { normalizeEmail } from './domain.ts';
 import { createToken, hashToken } from './tokens.ts';
 import { EMAIL_ATTEMPTS_PER_HOUR, IP_ATTEMPTS_PER_HOUR, takeRateLimit } from './rate-limit.ts';
+import { NEWSLETTER_FROM_EMAIL, NEWSLETTER_REPLY_TO } from './email.ts';
 
 const generic = { ok: true, message: 'If this address can receive this newsletter, check your inbox.' };
-const from = 'newsletter@leonlins.com';
 
 function siteOrigin(): string {
   return process.env.SITE_URL ?? 'https://leonlins.com';
@@ -20,7 +20,8 @@ async function sendConfirmation(email: string, token: string) {
   const url = new URL('/api/newsletter/confirm', siteOrigin());
   url.searchParams.set('token', token);
   await new SESv2Client({ region: process.env.AWS_REGION }).send(new SendEmailCommand({
-    FromEmailAddress: from,
+    FromEmailAddress: NEWSLETTER_FROM_EMAIL,
+    ReplyToAddresses: [NEWSLETTER_REPLY_TO],
     Destination: { ToAddresses: [email] },
     Content: { Simple: { Subject: { Data: 'Confirm your subscription' }, Body: { Text: { Data: `Confirm your subscription: ${url}` } } } },
   }));

@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<BaseLayout
+  title={`Privacy Policy | ${SITE_TITLE}`}
+  description="How leonlins.com and Avoid Boring People handle personal information."
+>
+  <article class="privacy-policy">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Effective September 7, 2026</p>
+
+    <p>
+      This policy explains how Leon Lin operates leonlins.com and the Avoid
+      Boring People newsletter. Questions can be sent to
+      <a href="mailto:contact@leonlins.com">contact@leonlins.com</a>.
+    </p>
+
+    <h2>Information collected</h2>
+    <p>
+      If you subscribe to the newsletter, the information involved is your
+      email address, subscription and consent records, confirmation and
+      unsubscribe records, and limited security information used to prevent
+      abusive sign-up attempts. The website may also receive standard technical
+      information from your browser and hosting providers, such as IP address,
+      device/browser details, and pages requested.
+    </p>
+
+    <h2>How information is used</h2>
+    <p>
+      Information is used to operate the site and newsletter, confirm a
+      subscription, deliver requested writing, honour unsubscribe requests,
+      prevent abuse, and maintain the security and reliability of the service.
+      Newsletter data is not sold.
+    </p>
+
+    <h2>Newsletter providers and legacy subscriptions</h2>
+    <p>
+      The current public newsletter sign-up form is operated by Substack. If
+      you subscribe through it, Substack also processes your information under
+      its own terms and privacy practices. The planned owned newsletter uses
+      Neon for subscriber records and Amazon Web Services Simple Email Service
+      (SES) for delivery and delivery-event processing. The site is hosted on
+      Vercel. These providers process information only as needed to provide
+      their services.
+    </p>
+    <p>
+      If legacy Substack subscribers are migrated in the future, the retained
+      information will be limited to the subscription, consent, and suppression
+      history needed to provide the newsletter and prevent accidental
+      resubscription of people who opted out.
+    </p>
+
+    <h2>Choices and retention</h2>
+    <p>
+      Every newsletter will include an unsubscribe link. You can also contact
+      <a href="mailto:contact@leonlins.com">contact@leonlins.com</a> for
+      help with your subscription or privacy questions. Suppression records may
+      be retained after an unsubscribe request as needed to honour that request
+      and avoid sending you future newsletter email by mistake.
+    </p>
+
+    <h2>Analytics and third-party content</h2>
+    <p>
+      The site may use privacy-conscious Google Analytics configuration when
+      enabled and embeds third-party services such as Giscus for article
+      comments. Those services may collect information under their own privacy
+      policies. This site does not currently use newsletter engagement tracking
+      or behavioural advertising.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+      Depending on where you live, privacy law may give you rights to request
+      access, correction, deletion, restriction, or objection to certain uses
+      of personal information. Contact
+      <a href="mailto:contact@leonlins.com">contact@leonlins.com</a> to make
+      a request. You may also have the right to complain to the privacy
+      regulator where you live.
+    </p>
+
+    <h2>Changes to this policy</h2>
+    <p>
+      This policy may be updated when the site or newsletter changes. The
+      effective date above will be updated when material changes are published.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .privacy-policy {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .updated {
+    color: rgb(var(--color-text-muted));
+    margin-top: -1rem;
+  }
+
+  h2 {
+    margin-top: 2.5rem;
+  }
+</style>
