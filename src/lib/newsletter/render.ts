@@ -147,7 +147,7 @@ export function renderNewsletterEmail(input: NewsletterRenderInput): NewsletterR
     })
     .use(rehypeStringify);
   const articleHtml = String(processor.processSync(markdown));
-  const html = `<!doctype html><html><body style="margin:0;background:#ffffff;color:#111827;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:680px;margin:0 auto;padding:32px 20px"><h1 style="font-size:28px;line-height:1.2">${escapeHtml(input.title)}</h1><article>${articleHtml}</article><footer style="margin-top:40px;padding-top:20px;border-top:1px solid #d1d5db;font-size:13px;color:#4b5563"><p>You are receiving this because you subscribed to Avoid Boring People by Leon Lin.</p><p><a href="${escapeHtml(unsubscribeUrl)}">Unsubscribe</a> · <a href="${escapeHtml(privacyUrl)}">Privacy policy</a></p><p>${escapeHtml(postalAddress)}</p></footer></main></body></html>`;
+  const html = `<!doctype html><html><body style="margin:0;background:#ffffff;color:#111827;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:680px;margin:0 auto;padding:32px 20px"><h1 style="font-size:28px;line-height:1.2">${escapeHtml(input.title)}</h1><article>${articleHtml}</article><footer style="margin-top:40px;padding-top:20px;border-top:1px solid #d1d5db;font-size:13px;color:#4b5563"><p>You received this because you subscribed to Avoid Boring People by Leon Lin. <a href="${escapeHtml(unsubscribeUrl)}">Unsubscribe</a> · <a href="${escapeHtml(privacyUrl)}">Privacy</a> · ${escapeHtml(postalAddress)}</p></footer></main></body></html>`;
   if (Buffer.byteLength(html, 'utf8') > GMAIL_CLIP_LIMIT_BYTES) {
     throw new NewsletterRenderError('Rendered email exceeds the 100 KB Gmail clipping threshold.');
   }
