@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 1 — Subscriber ownership: complete.**
+**Phase 2 — Email renderer: in progress.**
 
 This status file is the handoff record for the current newsletter migration phase. Update it at the end of every phase or when an external/human gate prevents safe progress. Do not advance phases by implication.
 
@@ -35,9 +35,16 @@ This status file is the handoff record for the current newsletter migration phas
 - Sent one authorized mailbox-simulator validation message from `newsletter@leonlins.com` to `success@simulator.amazonses.com`; SES accepted it. No human recipient or subscriber data was involved.
 - No current subscription flow, production email behavior, or public signup UI has changed. The isolated owned endpoints are present in source but are not linked from the site.
 
+## Phase 2 progress
+
+- Added a constrained Markdown-to-email renderer that produces HTML and plain text, preserves public HTTP(S) article links, converts site-relative links to `https://leonlins.com`, and rejects relative article links, localhost/private URLs, raw HTML, MDX imports/exports/components, unsupported images, missing assets, and email HTML at or above the approximate Gmail 100 KB clipping threshold.
+- Added a stable newsletter-asset build step. It copies only supported co-located blog images (`gif`, `jpeg`, `jpg`, `png`, `webp`) to public `/newsletter-assets/<article>/...` URLs; the renderer refuses unsupported or missing local assets rather than emitting broken mail. The normal Astro hashed-asset pipeline is unchanged.
+- Added conservative inline email styles, a required postal-address footer, privacy/unsubscribe links, and `List-Unsubscribe` plus RFC one-click headers. Rendering cannot proceed without an explicit postal address.
+- Added `npm run newsletter:preview -- <article-id> [output-file]`. It writes HTML only and never sends mail. It requires local `NEWSLETTER_POSTAL_ADDRESS`, `NEWSLETTER_PRIVACY_URL`, and `NEWSLETTER_PREVIEW_UNSUBSCRIBE_URL` values; none are committed. A preview of the existing Nonviolent Communication article and the deployed static newsletter asset path were validated locally.
+- Added focused renderer tests, including asset URL conversion, inline image styling, one-click headers, required footer configuration, unsupported relative links, and raw HTML rejection. No SES send capability or production campaign workflow was added or changed in Phase 2.
+
 ## Not started
 
-- Phase 2 — Email renderer.
 - Phase 3 — SES/AWS production plumbing.
 - Phase 4 — Controlled infrastructure validation.
 - Phase 4.5 — Warm-up.
@@ -48,15 +55,17 @@ This status file is the handoff record for the current newsletter migration phas
 - Substack remains the only production signup and newsletter-sending system.
 - The current form posts to `https://avoidboringpeople.substack.com/api/v1/free`.
 - `src/pages/api/subscribe.ts` remains untouched.
-- No owned newsletter endpoint, DNS change, or email send has occurred during this migration work.
+- The owned lifecycle endpoints exist but are not linked from the public site; Substack remains the only production signup path.
+- No owned production campaign send, public owned-signup cutover, or DNS change has occurred during this migration work.
 
 ## Next human/external gate
 
-Phase 1 is complete. Before public owned signup or any production campaign, obtain or confirm:
+Phase 2 is paused at the legal/content gate. Before completing its privacy/footer work or moving toward public owned signup, provide:
 
-1. A compliant physical postal address and privacy-policy approval, which Phase 2 will need for its mandatory email footer.
-2. The Substack export when importer validation begins.
-3. Explicit approval at send time for any future real-inbox sandbox confirmation test; the simulator validation is complete.
+1. A compliant physical postal address (or PO box) authorized for the newsletter footer.
+2. Approval of the factual privacy-policy content and its intended public URL.
+3. The Substack export when importer validation begins.
+4. Explicit approval at send time for any future real-inbox sandbox confirmation test; the simulator validation is complete.
 
 DNS authority, production SES access, a compliant postal address, mailbox confirmation, and privacy-policy approval remain later launch gates; they do not block local Phase 1 development.
 

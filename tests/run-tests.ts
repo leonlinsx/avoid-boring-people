@@ -21,6 +21,7 @@ import {
 } from '../src/lib/newsletter/domain.ts';
 import { hashToken } from '../src/lib/newsletter/tokens.ts';
 import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/rate-limit.ts';
+import { NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -238,6 +239,26 @@ function testNewsletterDomain() {
     mapSubstackRow({ Email: 'cancelled@example.com', 'Cancel date': '2024-01-01' })?.status,
     'unsubscribed',
   );
+}
+
+function testNewsletterRenderer() {
+  const input = {
+    articleId: '2021_01_06_nonviolent/index.md',
+    title: 'Newsletter test',
+    markdown: '---\ntitle: Newsletter test\n---\n\n[Site](/writing/test/)\n\n![Post](./n_1.webp)',
+    unsubscribeUrl: 'https://leonlins.com/api/newsletter/unsubscribe?token=preview',
+    privacyUrl: 'https://leonlins.com/privacy/',
+    postalAddress: '123 Example Street, New York, NY 10001',
+  };
+  const rendered = renderNewsletterEmail(input);
+  assert.match(rendered.html, /https:\/\/leonlins\.com\/writing\/test\//);
+  assert.match(rendered.html, /https:\/\/leonlins\.com\/newsletter-assets\/2021_01_06_nonviolent\/n_1\.webp/);
+  assert.match(rendered.html, /max-width:100%/);
+  assert.equal(rendered.headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
+  assert.match(rendered.text, /Newsletter test/);
+  assert.throws(() => renderNewsletterEmail({ ...input, postalAddress: '' }), NewsletterRenderError);
+  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '[relative](./private)' }), NewsletterRenderError);
+  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '<iframe src="https://example.com"></iframe>' }), NewsletterRenderError);
 }
 
 function testNewsletterSafetyHelpers() {
@@ -674,6 +695,7 @@ async function run() {
     testTitleCase();
     testNormalizeCategory();
     testNewsletterDomain();
+    testNewsletterRenderer();
     testNewsletterSafetyHelpers();
     testEnrichPost();
     await testGetAllPostsPaginated();

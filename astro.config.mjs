@@ -7,6 +7,7 @@ import { SITE_URL } from './src/consts.ts';
 import preact from '@astrojs/preact';
 import vercel from '@astrojs/vercel';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { newsletterAssets } from './src/integrations/newsletter-assets.ts';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -82,6 +83,7 @@ export default defineConfig({
     }),
     mdx(),
     preact(),
+    newsletterAssets(),
   ],
   markdown: {
     // @ts-expect-error - remarkFootnotes typing mismatch

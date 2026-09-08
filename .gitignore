@@ -29,6 +29,7 @@ pnpm-debug.log*
 .env.*.local
 /.agents/
 /skills-lock.json
+/newsletter-preview.html
 
 # Docs / versioning
 VERSION.md

@@ -10,6 +10,7 @@
     "start": "npm run build && npm run preview",
     "debug:tags": "astro run scripts/debug-tags.ts",
     "newsletter:import:dry-run": "node --import ts-node/esm scripts/newsletter/inspect-substack-export.ts",
+    "newsletter:preview": "node --import ts-node/esm scripts/newsletter/preview.ts",
     "linkcheck:internal": "node scripts/link-report.js internal",
     "linkcheck:external": "node scripts/link-report.js external",
     "test": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/run-tests.ts"
@@ -34,8 +35,14 @@
     "preact": "^10.27.2",
     "puppeteer": "^24.22.0",
     "reading-time": "^1.5.0",
+    "rehype-stringify": "10.0.1",
     "remark-footnotes": "^4.0.1",
-    "sharp": "^0.34.3"
+    "remark-gfm": "4.0.1",
+    "remark-parse": "11.0.0",
+    "remark-rehype": "11.1.2",
+    "sharp": "^0.34.3",
+    "unified": "11.0.5",
+    "unist-util-visit": "5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
