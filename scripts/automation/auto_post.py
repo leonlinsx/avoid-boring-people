@@ -1,26 +1,7 @@
 import os
 import re
 from scripts.automation import fetch_posts, select_next_post, mark_posted
-from scripts.automation.publishers import (
-    get_twitter_client,
-    post_single,
-    post_thread,
-    post_single_to_threads,
-    post_thread_to_threads,
-)
-from scripts.automation.publishers.bluesky import (
-    post_single_to_bluesky,
-    post_thread_to_bluesky,
-)
-from scripts.automation.publishers.mastodon import (
-    post_single_to_mastodon,
-    post_thread_to_mastodon,
-)
-from scripts.automation.publishers.devto import post_to_devto
-from scripts.automation.publishers.publish0x import post_to_publish0x  # ✅ NEW
-from scripts.automation.formatters import format_as_thread
 from scripts.automation.ranking import filter_posts, score_posts
-from scripts.automation.summarizers import llm_summarize, stub_summarize
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -34,12 +15,9 @@ USE_LLM = os.getenv("USE_LLM", "false").lower() == "true"
 PLATFORM = [
     p.strip().lower() for p in os.getenv("PLATFORM", "twitter").split(",") if p.strip()
 ]
+DISTRIBUTION_MODE = os.getenv("DISTRIBUTION_MODE", "new").strip().lower()
 
 SUMMARY_FILE = os.getenv("GITHUB_STEP_SUMMARY")
-
-# Summarizer selection
-summarize_post = llm_summarize if USE_LLM else stub_summarize
-
 
 def log_summary(message: str):
     """Write to GitHub Actions summary if available, else print."""
@@ -61,7 +39,30 @@ def sanitize_tags(tags):
     return clean_tags[:4]  # Dev.to max 4 tags
 
 
+def _remote_id(response):
+    """Extract a cheap stable identifier from the publishers' existing return values."""
+    if isinstance(response, list):
+        response = response[-1] if response else None
+    if isinstance(response, dict):
+        return response.get("id") or response.get("uri")
+    if response is not None:
+        data = getattr(response, "data", None)
+        if isinstance(data, dict) and data.get("id") is not None:
+            return data["id"]
+        return getattr(response, "uri", None)
+    return None
+
+
+def _record_success(post, platform, response):
+    """Persist only after the platform publisher returned successfully."""
+    mark_posted(post["id"], platform, DISTRIBUTION_MODE, _remote_id(response))
+
+
 def main():
+    if DISTRIBUTION_MODE not in {"new", "evergreen"}:
+        print(f"❌ Unknown DISTRIBUTION_MODE: {DISTRIBUTION_MODE}")
+        return
+
     # Step 1: Fetch posts
     posts = fetch_posts()
     if not posts:
@@ -77,7 +78,7 @@ def main():
     ranked_posts = score_posts(filtered_posts)
 
     # Step 2: Select next post
-    next_post = select_next_post(ranked_posts)
+    next_post = select_next_post(ranked_posts, PLATFORM, DISTRIBUTION_MODE)
     if not next_post:
         print("❌ No eligible post to publish.")
         return
@@ -87,6 +88,12 @@ def main():
         posts_out = [f"{next_post['title']}\n\n{next_post['url']}"]
 
     elif POST_MODE == "thread":
+        from scripts.automation.formatters import format_as_thread
+        if USE_LLM:
+            from scripts.automation.summarizers import llm_summarize as summarize_post
+        else:
+            from scripts.automation.summarizers.summarizer_stub import summarize_post
+
         summary = summarize_post(next_post, mode=THREAD_MODE, max_points=4)
         teaser, points = summary.get("teaser", ""), summary.get("points", [])
         print("\n🔍 Generated summary:")
@@ -100,33 +107,39 @@ def main():
         return
 
     # Step 4: Dispatch
-    if "twitter" in PLATFORM:
+    if "twitter" in next_post["eligible_platforms"]:
         try:
             if DRY_RUN:
                 print("\n📝 Dry-run (Twitter):")
                 for i, t in enumerate(posts_out, 1):
                     print(f"\nTweet {i}:\n{t}")
             else:
+                from scripts.automation.publishers import get_twitter_client, post_single, post_thread
+
                 client = get_twitter_client()
                 if POST_MODE == "single":
-                    post_single(client, next_post)
+                    response = post_single(client, next_post)
                 else:
-                    post_thread(client, posts_out)
+                    response = post_thread(client, posts_out)
+                _record_success(next_post, "twitter", response)
             log_summary("✅ Twitter posting completed")
         except Exception as e:
             log_summary(f"❌ Twitter posting failed: {e}")
 
-    if "bluesky" in PLATFORM:
+    if "bluesky" in next_post["eligible_platforms"]:
         try:
             if DRY_RUN:
                 print("\n📝 Dry-run (Bluesky):")
                 for i, t in enumerate(posts_out, 1):
                     print(f"\nSkeet {i}:\n{t}")
             else:
+                from scripts.automation.publishers.bluesky import post_single_to_bluesky, post_thread_to_bluesky
+
                 if POST_MODE == "single":
-                    post_single_to_bluesky(posts_out[0])
+                    response = post_single_to_bluesky(posts_out[0])
                 else:
-                    post_thread_to_bluesky(posts_out)
+                    response = post_thread_to_bluesky(posts_out)
+                _record_success(next_post, "bluesky", response)
             log_summary("✅ Bluesky posting completed")
         except Exception as e:
             log_summary(f"❌ Bluesky posting failed: {e}")
@@ -138,6 +151,8 @@ def main():
                 for i, t in enumerate(posts_out, 1):
                     print(f"\nPost {i}:\n{t}")
             else:
+                from scripts.automation.publishers import post_single_to_threads, post_thread_to_threads
+
                 if POST_MODE == "single":
                     post_single_to_threads(posts_out[0])
                 else:
@@ -146,22 +161,25 @@ def main():
         except Exception as e:
             log_summary(f"❌ Threads posting failed: {e}")
 
-    if "mastodon" in PLATFORM:
+    if "mastodon" in next_post["eligible_platforms"]:
         try:
             if DRY_RUN:
                 print("\n📝 Dry-run (Mastodon):")
                 for i, t in enumerate(posts_out, 1):
                     print(f"\nToot {i}:\n{t}")
             else:
+                from scripts.automation.publishers.mastodon import post_single_to_mastodon, post_thread_to_mastodon
+
                 if POST_MODE == "single":
-                    post_single_to_mastodon(posts_out[0])
+                    response = post_single_to_mastodon(posts_out[0])
                 else:
-                    post_thread_to_mastodon(posts_out)
+                    response = post_thread_to_mastodon(posts_out)
+                _record_success(next_post, "mastodon", response)
             log_summary("✅ Mastodon posting completed")
         except Exception as e:
             log_summary(f"❌ Mastodon posting failed: {e}")
 
-    if "devto" in PLATFORM:
+    if "devto" in next_post["eligible_platforms"]:
         try:
             category = (
                 (
@@ -176,6 +194,11 @@ def main():
             if category != "technology":
                 print(f"ℹ️ Skipping Dev.to posting (category='{category}')")
             else:
+                if USE_LLM:
+                    from scripts.automation.summarizers import llm_summarize as summarize_post
+                else:
+                    from scripts.automation.summarizers.summarizer_stub import summarize_post
+
                 summary = summarize_post(next_post, mode="narrative", max_points=3)
                 teaser = summary.get("teaser", "")
                 points = summary.get("points", [])
@@ -198,12 +221,15 @@ def main():
                     print(body_md)
                     print("Tags:", safe_tags)
                 else:
-                    post_to_devto(
+                    from scripts.automation.publishers.devto import post_to_devto
+
+                    response = post_to_devto(
                         title=next_post["title"],
                         body_markdown=body_md,
                         tags=safe_tags,
                         canonical_url=next_post["url"],
                     )
+                    _record_success(next_post, "devto", response)
                 log_summary("✅ Dev.to posting completed")
         except Exception as e:
             log_summary(f"❌ Dev.to posting failed: {e}")
@@ -215,14 +241,12 @@ def main():
                 print(f"Title: {next_post['title']}")
                 print(f"Tags: {next_post.get('tags', [])}")
             else:
+                from scripts.automation.publishers.publish0x import post_to_publish0x
+
                 post_to_publish0x(next_post)
             log_summary("✅ Publish0x posting attempted")
         except Exception as e:
             log_summary(f"❌ Publish0x posting failed: {e}")
-
-    # Step 5: Update state
-    mark_posted(next_post)
-
 
 if __name__ == "__main__":
     main()

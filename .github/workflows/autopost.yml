@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write # ✅ allow workflow to push commits
 
+concurrency:
+  group: autopost-state-writer
+  cancel-in-progress: false
+
 jobs:
   autopost:
     runs-on: ubuntu-latest
@@ -43,6 +47,7 @@ jobs:
           PLATFORM: 'twitter,bluesky,mastodon,devto' # ✅ removed spaces in CSV
           POST_MODE: 'thread'
           THREAD_MODE: 'bullets'
+          DISTRIBUTION_MODE: 'new'
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
 
           # Twitter
