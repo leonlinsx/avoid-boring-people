@@ -14,6 +14,7 @@ export async function GET(): Promise<Response> {
     content: post.body, // raw markdown
     category: post.data.category, // ✅ include category
     tags: post.data.tags || [], // ✅ include tags
+    evergreen: post.data.evergreen,
   }));
 
   return new Response(JSON.stringify(index), {

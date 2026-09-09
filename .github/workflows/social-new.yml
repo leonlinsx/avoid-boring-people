@@ -1,0 +1,92 @@
+name: Social New Article
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/**/index.md'
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: 'Deployed search-index id to retry'
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: social-distribution-state
+  cancel-in-progress: false
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Detect newly added articles
+        id: added
+        env:
+          BEFORE: ${{ github.event.before }}
+          MANUAL_POST_ID: ${{ inputs.post_id }}
+        run: |
+          if [ -n "$MANUAL_POST_ID" ]; then
+            echo "$MANUAL_POST_ID" > "$RUNNER_TEMP/post_ids"
+          elif [ "$BEFORE" = '0000000000000000000000000000000000000000' ]; then
+            : > "$RUNNER_TEMP/post_ids"
+          else
+            git diff --name-only --diff-filter=A "$BEFORE" "$GITHUB_SHA" -- 'src/content/blog/**/index.md' |
+              sed 's#^src/content/blog/##' > "$RUNNER_TEMP/post_ids"
+          fi
+          if [ -s "$RUNNER_TEMP/post_ids" ]; then echo 'found=true' >> "$GITHUB_OUTPUT"; else echo 'found=false' >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        if: steps.added.outputs.found == 'true'
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        if: steps.added.outputs.found == 'true'
+        run: |
+          python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
+          python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+      - name: Wait for deployment and distribute added articles
+        id: publish
+        if: steps.added.outputs.found == 'true'
+        continue-on-error: true
+        env:
+          DRY_RUN: 'false'
+          DISTRIBUTION_MODE: new
+          USE_LLM: 'true'
+          PLATFORM: twitter,bluesky,mastodon,devto
+          POST_MODE: thread
+          THREAD_MODE: bullets
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          sleep 90
+          while IFS= read -r post_id; do TARGET_POST_ID="$post_id" python -m scripts.automation.auto_post; done < "$RUNNER_TEMP/post_ids"
+      - name: Commit state
+        if: steps.added.outputs.found == 'true'
+        env:
+          PUSH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          git add posted.json
+          git diff --cached --quiet || git commit -m 'chore: update posted.json [skip ci]'
+          git pull --rebase origin main
+          git push origin main
+      - name: Report retryable publication failure
+        if: steps.added.outputs.found == 'true' && steps.publish.outcome == 'failure'
+        run: exit 1
