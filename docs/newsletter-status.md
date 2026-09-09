@@ -5,7 +5,7 @@
 **Phase 3 — SES/AWS production plumbing: in progress.**
 
 - Production `main` includes the newsletter code at merge commit `b8e941c`; rollback tag `newsletter-pre-main-integration-20260909` preserves pre-integration main `a20c5f6`. Main's site and autopost changes were preserved, and the separate distribution-refactor worktree was not modified.
-- The current ready production deployment is `dpl_5zmyAXMB568fbsWz7ntcyeMpPhHt`. Homepage is healthy; invalid SNS POST is rejected with 400 and non-exempt form-style requests retain origin protection.
+- End-to-end validation ran on ready production deployment `dpl_5zmyAXMB568fbsWz7ntcyeMpPhHt`; subsequent documentation/distribution merges retain the same newsletter runtime. Homepage is healthy; invalid SNS POST is rejected with 400 and non-exempt form-style requests retain origin protection.
 - SNS subscription confirmation is complete (`PendingConfirmation: false`) and completed in 175 ms. The canonical `https://leonlins.com/api/newsletter/ses-events` endpoint is the only confirmed topic subscription.
 - SES event destination `newsletter-ses-events` is enabled for DELIVERY, BOUNCE, and COMPLAINT only. Its topic policy permits `ses.amazonaws.com` to publish only from account 079415246848 and configuration set `my-first-configuration-set`.
 - End-to-end delivery validation passed: a fresh marked test sent only to allowlisted `contact@leonlins.com` was accepted by SES; SNS invoked the production handler; Vercel returned 204; and Neon recorded the authenticated receipt. Subscriber count remains zero and no Substack data was read.
