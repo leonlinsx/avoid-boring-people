@@ -114,7 +114,7 @@ def platform_is_eligible(post: Dict, platform: str, mode: str, state: Optional[D
     if platform not in PLATFORMS:
         return False
     if mode == "new":
-        return True
+        return should_publish_new(post["id"], platform, state)
     if mode != "evergreen" or not post.get("evergreen", False):
         return False
     if platform == "devto":
@@ -125,6 +125,11 @@ def platform_is_eligible(post: Dict, platform: str, mode: str, state: Optional[D
         return True
     cooldown = timedelta(days=EVERGREEN_COOLDOWN_DAYS[platform])
     return previous <= (now or datetime.now(timezone.utc)) - cooldown
+
+
+def should_publish_new(post_id: str, platform: str, state: Optional[Dict] = None) -> bool:
+    """New distribution is one successful publication per article and platform."""
+    return platform_post_count(post_id, platform, state) == 0
 
 
 def select_next_post(posts: Iterable[Dict], platforms: Iterable[str], mode: str) -> Optional[Dict]:

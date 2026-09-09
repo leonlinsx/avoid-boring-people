@@ -1,6 +1,7 @@
 import os
 import re
 from scripts.automation import fetch_posts, select_next_post, mark_posted
+from scripts.automation.state_manager import platform_is_eligible
 from scripts.automation.ranking import filter_posts, score_posts
 from dotenv import load_dotenv
 
@@ -16,6 +17,7 @@ PLATFORM = [
     p.strip().lower() for p in os.getenv("PLATFORM", "twitter").split(",") if p.strip()
 ]
 DISTRIBUTION_MODE = os.getenv("DISTRIBUTION_MODE", "new").strip().lower()
+TARGET_POST_ID = os.getenv("TARGET_POST_ID", "").strip()
 
 SUMMARY_FILE = os.getenv("GITHUB_STEP_SUMMARY")
 
@@ -66,6 +68,10 @@ def main():
     # Step 1: Fetch posts
     posts = fetch_posts()
     if not posts:
+        if TARGET_POST_ID:
+            raise RuntimeError(
+                f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes."
+            )
         print("❌ No posts found.")
         return
 
@@ -78,9 +84,26 @@ def main():
     ranked_posts = score_posts(filtered_posts)
 
     # Step 2: Select next post
-    next_post = select_next_post(ranked_posts, PLATFORM, DISTRIBUTION_MODE)
+    if TARGET_POST_ID:
+        next_post = next((post for post in ranked_posts if post.get("id") == TARGET_POST_ID), None)
+        if next_post is None:
+            raise RuntimeError(
+                f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes."
+            )
+        next_post = dict(next_post)
+        next_post["eligible_platforms"] = [
+            platform
+            for platform in PLATFORM
+            if platform_is_eligible(next_post, platform, DISTRIBUTION_MODE)
+        ]
+    else:
+        next_post = select_next_post(ranked_posts, PLATFORM, DISTRIBUTION_MODE)
     if not next_post:
         print("❌ No eligible post to publish.")
+        return
+
+    if not next_post["eligible_platforms"]:
+        print(f"ℹ️ No eligible platforms for {next_post['id']}; nothing to publish.")
         return
 
     # Step 3: Build content

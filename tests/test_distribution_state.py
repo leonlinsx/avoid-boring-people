@@ -140,6 +140,34 @@ def test_selection_keeps_first_publication_eligible_per_platform(monkeypatch, tm
     assert selected["eligible_platforms"] == ["twitter", "bluesky"]
 
 
+def test_new_distribution_does_not_repeat_a_successful_platform(monkeypatch, tmp_path):
+    _use_temp_state(monkeypatch, tmp_path)
+    state_manager.mark_posted("post", "twitter", "new")
+
+    state = state_manager.load_state()
+    assert not state_manager.should_publish_new("post", "twitter", state)
+    assert state_manager.should_publish_new("post", "bluesky", state)
+    assert not state_manager.platform_is_eligible({"id": "post"}, "twitter", "new", state)
+
+
+def test_target_post_must_exist_in_deployed_index(monkeypatch):
+    monkeypatch.setattr(auto_post, "TARGET_POST_ID", "2026_09_09_example/index.md")
+    monkeypatch.setattr(auto_post, "DRY_RUN", True)
+    monkeypatch.setattr(auto_post, "POST_MODE", "single")
+    monkeypatch.setattr(auto_post, "PLATFORM", ["twitter"])
+    monkeypatch.setattr(auto_post, "DISTRIBUTION_MODE", "new")
+    monkeypatch.setattr(auto_post, "fetch_posts", lambda: [])
+    monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+
+    try:
+        auto_post.main()
+    except RuntimeError as error:
+        assert "not present in the deployed search index" in str(error)
+    else:
+        raise AssertionError("missing deployed target must fail clearly")
+
+
 def test_state_round_trip_preserves_v2_schema(monkeypatch, tmp_path):
     path = _use_temp_state(monkeypatch, tmp_path)
     state_manager.mark_posted("post", "mastodon", "evergreen", "status-1")
