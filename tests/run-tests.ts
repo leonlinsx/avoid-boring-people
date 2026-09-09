@@ -24,6 +24,12 @@ import { hashToken } from '../src/lib/newsletter/tokens.ts';
 import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/rate-limit.ts';
 import { NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
 import { assertAllowedTestRecipient } from '../src/lib/newsletter/test-send.ts';
+import {
+  assertRecipientScope,
+  assertSesAccountReady,
+  productionSendConfig,
+  subscriberUnsubscribeToken,
+} from '../src/lib/newsletter/production-send.ts';
 import { canDeliverConfirmation } from '../src/lib/newsletter/subscriptions.ts';
 import { confirmSnsSubscription, parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
 import { requiresOriginRejection } from '../src/lib/newsletter/request-origin.ts';
@@ -277,6 +283,34 @@ function testNewsletterTestSendSafeguard() {
     () => assertAllowedTestRecipient('reader@example.com', 'contact@leonlins.com'),
     /No email was sent/,
   );
+}
+
+function testNewsletterProductionSendSafeguards() {
+  const env = {
+    NEWSLETTER_ENVIRONMENT: 'production',
+    AWS_REGION: 'us-east-2',
+    SES_CONFIGURATION_SET: 'newsletter-events',
+    NEWSLETTER_MAX_PRODUCTION_RECIPIENTS: '250',
+    NEWSLETTER_UNSUBSCRIBE_SECRET: 'a-secure-test-secret-with-32-bytes-minimum',
+  } as NodeJS.ProcessEnv;
+  assert.deepEqual(productionSendConfig(env), {
+    awsRegion: 'us-east-2',
+    configurationSet: 'newsletter-events',
+    maxRecipients: 250,
+    unsubscribeSecret: env.NEWSLETTER_UNSUBSCRIBE_SECRET,
+  });
+  assert.throws(() => productionSendConfig({ ...env, NEWSLETTER_ENVIRONMENT: 'preview' }), /No email was sent/);
+  assert.throws(() => productionSendConfig({ ...env, NEWSLETTER_UNSUBSCRIBE_SECRET: 'short' }), /No email was sent/);
+  assert.doesNotThrow(() => assertRecipientScope(25, 25, 250));
+  assert.throws(() => assertRecipientScope(25, 26, 250), /No email was sent/);
+  assert.throws(() => assertRecipientScope(251, 251, 250), /No email was sent/);
+  assert.throws(() => assertSesAccountReady({ productionAccessEnabled: false, sendingEnabled: true }, 1), /production access/);
+  assert.throws(() => assertSesAccountReady({ productionAccessEnabled: true, sendingEnabled: true, max24HourSend: 100, sentLast24Hours: 99, maxSendRate: 1 }, 2), /quota/);
+  assert.deepEqual(assertSesAccountReady({ productionAccessEnabled: true, sendingEnabled: true, max24HourSend: 100, sentLast24Hours: 1, maxSendRate: 2 }, 2), { delayMs: 500 });
+  const first = subscriberUnsubscribeToken('subscriber-id', env.NEWSLETTER_UNSUBSCRIBE_SECRET!);
+  assert.equal(first, subscriberUnsubscribeToken('subscriber-id', env.NEWSLETTER_UNSUBSCRIBE_SECRET!));
+  assert.notEqual(first, subscriberUnsubscribeToken('other-id', env.NEWSLETTER_UNSUBSCRIBE_SECRET!));
+  assert.doesNotMatch(first, /subscriber-id/);
 }
 
 function testNewsletterSafetyHelpers() {
@@ -779,6 +813,7 @@ async function run() {
     testNewsletterDomain();
     testNewsletterRenderer();
     testNewsletterTestSendSafeguard();
+    testNewsletterProductionSendSafeguards();
     testNewsletterSafetyHelpers();
     testNewsletterConfirmationBoundary();
     await testSnsValidation();

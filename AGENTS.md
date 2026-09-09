@@ -50,7 +50,8 @@
 | Preview built site | `npm run preview` |
 | Newsletter preview | `npm run newsletter:preview -- <article-id> [output-file]` |
 | Allowlisted newsletter test | `npm run newsletter:test -- <article-id> <recipient> --confirm-test` |
-| Production newsletter send | Not implemented; never substitute the test command. |
+| Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <count> --confirm-snapshot` |
+| Production newsletter send | `npm run newsletter:send -- <campaign-id> --expect-recipients <count> --confirm-production`; never invoke without explicit approval. |
 
 ## Change policy
 
