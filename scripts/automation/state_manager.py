@@ -10,11 +10,13 @@ from typing import Dict, Iterable, Optional
 
 STATE_FILE = Path("posted.json")
 STATE_VERSION = 2
-PLATFORMS = ("twitter", "bluesky", "mastodon", "devto")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit")
 EVERGREEN_COOLDOWN_DAYS = {
     "twitter": int(os.getenv("TWITTER_EVERGREEN_COOLDOWN_DAYS", "60")),
+    "linkedin": int(os.getenv("LINKEDIN_EVERGREEN_COOLDOWN_DAYS", "60")),
     "bluesky": int(os.getenv("BLUESKY_EVERGREEN_COOLDOWN_DAYS", "60")),
     "mastodon": int(os.getenv("MASTODON_EVERGREEN_COOLDOWN_DAYS", "90")),
+    "farcaster": int(os.getenv("FARCASTER_EVERGREEN_COOLDOWN_DAYS", "60")),
 }
 
 
@@ -67,7 +69,7 @@ def get_platform_state(post_id: str, platform: str, state: Optional[Dict] = None
     return platform_state if isinstance(platform_state, dict) else None
 
 
-def mark_posted(post_id: str, platform: str, mode: str, remote_id: Optional[str] = None) -> Dict:
+def mark_posted(post_id: str, platform: str, mode: str, remote_id: Optional[str] = None, remote_url: Optional[str] = None) -> Dict:
     if platform not in PLATFORMS:
         raise ValueError(f"Unknown distribution platform: {platform}")
     if mode not in {"new", "evergreen"}:
@@ -85,6 +87,10 @@ def mark_posted(post_id: str, platform: str, mode: str, remote_id: Optional[str]
         platform_state["remote_id"] = str(remote_id)
     elif current.get("remote_id") is not None:
         platform_state["remote_id"] = current["remote_id"]
+    if remote_url is not None:
+        platform_state["remote_url"] = str(remote_url)
+    elif current.get("remote_url") is not None:
+        platform_state["remote_url"] = current["remote_url"]
     post_state[platform] = platform_state
     save_state(state)
     return platform_state
@@ -117,7 +123,7 @@ def platform_is_eligible(post: Dict, platform: str, mode: str, state: Optional[D
         return should_publish_new(post["id"], platform, state)
     if mode != "evergreen" or not post.get("evergreen", False):
         return False
-    if platform == "devto":
+    if platform in {"devto", "reddit"}:
         return False
 
     previous = _parse_timestamp(last_posted_at(post["id"], platform, state))

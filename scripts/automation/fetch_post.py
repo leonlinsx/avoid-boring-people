@@ -52,6 +52,7 @@ def fetch_posts() -> List[Dict]:
                 "category": (entry.get("category") or "").strip(),
                 "tags": entry.get("tags", []),
                 "evergreen": bool(entry.get("evergreen", False)),
+                "devto": bool(entry.get("devto", False)),
                 "count": len(entry.get("content", "").split()),
             }
         )

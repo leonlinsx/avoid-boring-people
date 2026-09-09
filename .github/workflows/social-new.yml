@@ -10,6 +10,10 @@ on:
       post_id:
         description: 'Deployed search-index id to retry'
         required: false
+      dry_run:
+        description: 'Render and route only; do not publish or update state'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -56,10 +60,10 @@ jobs:
         if: steps.added.outputs.found == 'true'
         continue-on-error: true
         env:
-          DRY_RUN: 'false'
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          FAIL_ON_PUBLISH_ERROR: 'true'
           DISTRIBUTION_MODE: new
           USE_LLM: 'true'
-          PLATFORM: twitter,bluesky,mastodon,devto
           POST_MODE: thread
           THREAD_MODE: bullets
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -72,6 +76,14 @@ jobs:
           MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
+          NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_REFRESH_TOKEN: ${{ secrets.REDDIT_REFRESH_TOKEN }}
+          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
         run: |
           sleep 90
           while IFS= read -r post_id; do TARGET_POST_ID="$post_id" python -m scripts.automation.auto_post; done < "$RUNNER_TEMP/post_ids"

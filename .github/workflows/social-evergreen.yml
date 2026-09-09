@@ -28,11 +28,13 @@ jobs:
           python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
           python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
       - name: Publish one eligible evergreen article
+        id: publish
+        continue-on-error: true
         env:
           DRY_RUN: 'false'
+          FAIL_ON_PUBLISH_ERROR: 'true'
           DISTRIBUTION_MODE: evergreen
           USE_LLM: 'true'
-          PLATFORM: twitter,bluesky,mastodon,devto
           POST_MODE: thread
           THREAD_MODE: bullets
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -45,6 +47,14 @@ jobs:
           MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
+          NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_REFRESH_TOKEN: ${{ secrets.REDDIT_REFRESH_TOKEN }}
+          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
         run: python -m scripts.automation.auto_post
       - name: Commit state
         env:
@@ -57,3 +67,6 @@ jobs:
           git diff --cached --quiet || git commit -m 'chore: update posted.json [skip ci]'
           git pull --rebase origin main
           git push origin main
+      - name: Report retryable publication failure
+        if: steps.publish.outcome == 'failure'
+        run: exit 1
