@@ -1,93 +1,460 @@
-{
-  "2016_03_17_excel/index.md": 2,
-  "2017_02_23_random/index.md": 3,
-  "2017_04_06_convert/index.md": 2,
-  "2017_07_20_claude/index.md": 3,
-  "2017_07_24_ib/index.md": 2,
-  "2017_12_01_specialist/index.md": 2,
-  "2021_03_13_internet/index.md": 2,
-  "2019_02_02_dunning/index.md": 2,
-  "2019_02_05_procrastinate/index.md": 2,
-  "2019_02_18_why/index.md": 2,
-  "2019_02_23_replicability/index.md": 2,
-  "2019_03_03_moloch/index.md": 2,
-  "2019_03_10_write/index.md": 2,
-  "2019_03_24_time_illusion/index.md": 2,
-  "2019_03_30_trade/index.md": 2,
-  "2019_04_14_stock/index.md": 2,
-  "2019_04_18_investing/index.md": 2,
-  "2019_04_27_rake/index.md": 2,
-  "2019_05_04_microwave/index.md": 2,
-  "2019_05_19_substack/index.md": 2,
-  "2019_06_08_heart/index.md": 2,
-  "2019_06_16_ad/index.md": 2,
-  "2019_06_23_tim/index.md": 2,
-  "2019_06_30_libra/index.md": 2,
-  "2019_07_05_query/index.md": 2,
-  "2019_07_20_movie/index.md": 2,
-  "2019_07_31_news/index.md": 2,
-  "2019_07_31_ipo_process/index.md": 2,
-  "2019_08_18_friends/index.md": 2,
-  "2019_08_25_stanford/index.md": 2,
-  "2019_08_31_crm/index.md": 2,
-  "2019_09_02_kellyk/index.md": 2,
-  "2019_04_09_pvalue/index.md": 2,
-  "2019_11_10_hoppin/index.md": 2,
-  "2019_11_23_premortem/index.md": 2,
-  "2019_11_30_vr/index.md": 2,
-  "2019_12_21_info/index.md": 2,
-  "2020_01_11_feedback/index.md": 2,
-  "2020_02_02_ipo/index.md": 2,
-  "2020_02_06_vc/index.md": 2,
-  "2020_02_12_no/index.md": 2,
-  "2020_02_26_sellside/index.md": 2,
-  "2020_02_26_time/index.md": 2,
-  "2020_03_04_pace/index.md": 2,
-  "2020_03_25_striking/index.md": 2,
-  "2020_04_01_liquidity/index.md": 2,
-  "2020_04_08_picasso/index.md": 2,
-  "2020_04_15_keen/index.md": 2,
-  "2020_04_22_kegan/index.md": 2,
-  "2020_04_29_her/index.md": 2,
-  "2020_05_07_relative_billionaire/index.md": 2,
-  "2020_06_10_ml/index.md": 2,
-  "2020_06_17_data/index.md": 2,
-  "2020_06_24_zipf/index.md": 2,
-  "2020_07_01_stories/index.md": 2,
-  "2020_07_08_dividend/index.md": 2,
-  "2020_07_15_turtle/index.md": 2,
-  "2020_07_22_dr_gpt/index.md": 2,
-  "2020_07_29_cameo/index.md": 2,
-  "2020_08_05_lvmh/index.md": 2,
-  "2020_08_19_city/index.md": 2,
-  "2020_08_23_notion/index.md": 2,
-  "2020_08_26_process/index.md": 2,
-  "2020_09_02_community_covid/index.md": 2,
-  "2020_09_16_capital/index.md": 2,
-  "2020_10_09_polina/index.md": 2,
-  "2020_10_14_mtg/index.md": 2,
-  "2020_10_21_disney/index.md": 2,
-  "2020_10_28_gatekeep/index.md": 2,
-  "2020_11_04_ib_value/index.md": 2,
-  "2020_11_11_company_value/index.md": 2,
-  "2020_11_18_value/index.md": 2,
-  "2020_11_25_newsletter/index.md": 2,
-  "2020_12_02_kelly/index.md": 2,
-  "2020_12_09_art/index.md": 2,
-  "2020_12_23_practice/index.md": 2,
-  "2021_01_06_nonviolent/index.md": 2,
-  "2021_01_30_plaid/index.md": 2,
-  "2021_02_06_gambling_size/index.md": 2,
-  "2021_02_07_minmax/index.md": 2,
-  "2021_02_13_monopoly/index.md": 2,
-  "2021_03_06_inflation/index.md": 2,
-  "2021_03_07_data_landscape/index.md": 2,
-  "2021_04_03_ergodicity/index.md": 2,
-  "2021_04_10_algo/index.md": 2,
-  "2021_04_17_community/index.md": 2,
-  "2021_05_02_art_history/index.md": 2,
-  "2020_04_01_fluctuat/index.md": 2,
-  "2019_07_31_aphantasia/index.md": 2,
-  "2019_01_21_reflection/index.md": 2,
-  "2019_10_12_secret/index.md": 2
++{
+  "version": 2,
+  "posts": {
+    "2016_03_17_excel/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2017_02_23_random/index.md": {
+      "_legacy": {
+        "global_count": 3
+      }
+    },
+    "2017_04_06_convert/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2017_07_20_claude/index.md": {
+      "_legacy": {
+        "global_count": 3
+      }
+    },
+    "2017_07_24_ib/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2017_12_01_specialist/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_01_21_reflection/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_02_02_dunning/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_02_05_procrastinate/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_02_18_why/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_02_23_replicability/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_03_03_moloch/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_03_10_write/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_03_24_time_illusion/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_03_30_trade/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_04_09_pvalue/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_04_14_stock/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_04_18_investing/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_04_27_rake/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_05_04_microwave/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_05_19_substack/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_06_08_heart/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_06_16_ad/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_06_23_tim/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_06_30_libra/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_07_05_query/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_07_20_movie/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_07_31_aphantasia/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_07_31_ipo_process/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_07_31_news/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_08_18_friends/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_08_25_stanford/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_08_31_crm/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_09_02_kellyk/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_10_12_secret/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_11_10_hoppin/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_11_23_premortem/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_11_30_vr/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2019_12_21_info/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_01_11_feedback/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_02_02_ipo/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_02_06_vc/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_02_12_no/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_02_26_sellside/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_02_26_time/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_03_04_pace/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_03_25_striking/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_04_01_fluctuat/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_04_01_liquidity/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_04_08_picasso/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_04_15_keen/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_04_22_kegan/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_04_29_her/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_05_07_relative_billionaire/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_06_10_ml/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_06_17_data/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_06_24_zipf/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_07_01_stories/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_07_08_dividend/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_07_15_turtle/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_07_22_dr_gpt/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_07_29_cameo/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_08_05_lvmh/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_08_19_city/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_08_23_notion/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_08_26_process/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_09_02_community_covid/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_09_16_capital/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_10_09_polina/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_10_14_mtg/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_10_21_disney/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_10_28_gatekeep/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_11_04_ib_value/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_11_11_company_value/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_11_18_value/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_11_25_newsletter/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_12_02_kelly/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_12_09_art/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2020_12_23_practice/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_01_06_nonviolent/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_01_30_plaid/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_02_06_gambling_size/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_02_07_minmax/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_02_13_monopoly/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_03_06_inflation/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_03_07_data_landscape/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_03_13_internet/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_04_03_ergodicity/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_04_10_algo/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_04_17_community/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    },
+    "2021_05_02_art_history/index.md": {
+      "_legacy": {
+        "global_count": 2
+      }
+    }
+  }
 }

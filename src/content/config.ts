@@ -12,6 +12,7 @@ const blog = defineCollection({
       category: z.enum(categoryLabels),
       tags: z.array(z.string()).default([]),
       featured: z.boolean().optional(),
+      evergreen: z.boolean().default(false),
       heroImage: z.union([image(), z.string()]).optional(),
       readingTime: z.number().optional(),
       slug: z.string().optional(), // ✅ new override field
