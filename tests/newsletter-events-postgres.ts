@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { execFile, execFileSync } from 'node:child_process';
 import { promisify } from 'node:util';
 import { readFileSync } from 'node:fs';
-import { recordSesEvent } from '../src/lib/newsletter/events.ts';
+import { reconcileSesMessage, recordSesEvent } from '../src/lib/newsletter/events.ts';
 import type { SnsEnvelope } from '../src/lib/newsletter/sns.ts';
 import type { newsletterDb } from '../src/lib/newsletter/db.ts';
 
@@ -38,6 +38,7 @@ sql('CREATE SCHEMA newsletter_event_test');
 try {
   sql(readFileSync(new URL('../migrations/newsletter/001_initial.sql', import.meta.url), 'utf8'));
   sql(readFileSync(new URL('../migrations/newsletter/002_event_and_campaign_state.sql', import.meta.url), 'utf8'));
+  sql(readFileSync(new URL('../migrations/newsletter/003_production_send_safety.sql', import.meta.url), 'utf8'));
   sql(`INSERT INTO subscribers (email,email_normalized,status,source,unsubscribe_token_hash,consent_provenance)
     VALUES ('person@example.com','person@example.com','active','manual','test','synthetic test');
     INSERT INTO campaigns (article_slug,subject,status) VALUES ('test','test','draft');
@@ -74,7 +75,13 @@ try {
   sql("UPDATE subscribers SET status='active'; UPDATE campaign_recipients SET status='sent'");
   await Promise.all([recordSesEvent(bounce('concurrent-bounce'), db), recordSesEvent(delivery('concurrent-delivery'), db)]);
   assert.equal(state(), 'bounced:bounced');
-  console.log('Newsletter Postgres integration checks passed (rollback, retry, concurrent replay/events, late delivery, redaction, suppression).');
+  sql("UPDATE subscribers SET status='active'; UPDATE campaign_recipients SET status='sending', provider_message_id=NULL");
+  await recordSesEvent(event('early-complaint', 'Complaint', { complaint: { timestamp: '2026-09-08T12:30:00Z' } }), db);
+  assert.equal(state(), 'active:sending');
+  sql("UPDATE campaign_recipients SET status='sent', provider_message_id='test-message'");
+  await reconcileSesMessage('test-message', db);
+  assert.equal(state(), 'complained:complained');
+  console.log('Newsletter Postgres integration checks passed (rollback, retry, concurrent replay/events, late/early events, redaction, suppression).');
 } finally {
   sql('DROP SCHEMA newsletter_event_test CASCADE');
 }

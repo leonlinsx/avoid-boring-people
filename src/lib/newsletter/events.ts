@@ -40,7 +40,8 @@ export async function recordSesEvent(envelope: SnsEnvelope, db = newsletterDb())
   // One atomic statement: failed updates roll back the deduplication receipt too.
   // Every mutation depends on the newly inserted receipt, including concurrent retries.
   await db`WITH receipt AS (
-    INSERT INTO newsletter_event_receipts (provider, event_id) VALUES ('sns', ${envelope.MessageId})
+    INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at)
+    VALUES ('sns', ${envelope.MessageId}, ${messageId}, ${status}, ${at}::timestamptz)
     ON CONFLICT DO NOTHING RETURNING event_id
   ), recipients AS (
     UPDATE campaign_recipients SET
@@ -55,6 +56,40 @@ export async function recordSesEvent(envelope: SnsEnvelope, db = newsletterDb())
   )
   UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, updated_at = now()
     WHERE status = 'active' AND ${status}::text IN ('bounced', 'complained')
-      AND email_normalized = ANY(${emails}::text[])
+      AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
       AND EXISTS (SELECT 1 FROM receipt)`;
+}
+
+export async function reconcileSesMessage(messageId: string, db = newsletterDb()): Promise<void> {
+  await db`WITH event_state AS (
+    SELECT CASE
+        WHEN bool_or(event_status = 'complained') THEN 'complained'
+        WHEN bool_or(event_status = 'bounced') THEN 'bounced'
+        WHEN bool_or(event_status = 'sent') THEN 'sent'
+        ELSE NULL
+      END AS status,
+      min(event_at) FILTER (WHERE event_status = 'sent') AS delivered_at,
+      min(event_at) FILTER (WHERE event_status = 'bounced') AS bounced_at,
+      min(event_at) FILTER (WHERE event_status = 'complained') AS complained_at
+    FROM newsletter_event_receipts WHERE provider_message_id = ${messageId}
+  ), recipients AS (
+    UPDATE campaign_recipients SET
+      status = CASE
+        WHEN campaign_recipients.status = 'complained' OR event_state.status = 'complained' THEN 'complained'
+        WHEN campaign_recipients.status = 'bounced' OR event_state.status = 'bounced' THEN 'bounced'
+        WHEN event_state.status = 'sent' THEN 'sent'
+        ELSE campaign_recipients.status
+      END,
+      delivered_at = COALESCE(campaign_recipients.delivered_at, event_state.delivered_at),
+      bounced_at = COALESCE(campaign_recipients.bounced_at, event_state.bounced_at),
+      complained_at = COALESCE(campaign_recipients.complained_at, event_state.complained_at),
+      last_event_at = CASE WHEN event_state.status IS NULL THEN campaign_recipients.last_event_at ELSE now() END
+    FROM event_state
+    WHERE campaign_recipients.provider_message_id = ${messageId} AND event_state.status IS NOT NULL
+    RETURNING campaign_recipients.subscriber_id, campaign_recipients.status
+  )
+  UPDATE subscribers SET status = recipients.status::newsletter_subscriber_status, updated_at = now()
+  FROM recipients
+  WHERE subscribers.id = recipients.subscriber_id AND subscribers.status = 'active'
+    AND recipients.status IN ('bounced', 'complained')`;
 }
