@@ -52,7 +52,9 @@ jobs:
           python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
           python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
       - name: Wait for deployment and distribute added articles
+        id: publish
         if: steps.added.outputs.found == 'true'
+        continue-on-error: true
         env:
           DRY_RUN: 'false'
           DISTRIBUTION_MODE: new
@@ -85,3 +87,6 @@ jobs:
           git diff --cached --quiet || git commit -m 'chore: update posted.json [skip ci]'
           git pull --rebase origin main
           git push origin main
+      - name: Report retryable publication failure
+        if: steps.added.outputs.found == 'true' && steps.publish.outcome == 'failure'
+        run: exit 1
