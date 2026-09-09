@@ -4,6 +4,8 @@
 
 **Phase 3 — SES/AWS production plumbing: in progress.**
 
+Latest verified state: the canonical SNS subscription is confirmed (`PendingConfirmation: false`, suffix `e07d2dc4-e685-490a-a820-2b98d1df6503`). The signed confirmation completed in 175 ms in Vercel logs. Event-safety commit `8912f8b` is now deployed as `dpl_3KMzrse1Z2LV5FTkWGRANcEymfuE`; homepage 200, invalid SNS POST 400, non-exempt PUT 403. No schema change or email. Immediate rollback is promotion of `dpl_4fepkTj5cPvAFn7EXDWB5J7UJLSk`. Next authorization gate: SES event attachment and controlled validation; SES remains disconnected. Inspect confirmed subscriptions before attachment and never confirm the old diagnostic destinations. Earlier pending/deployment notes below are historical and superseded by this verification.
+
 This status file is the handoff record for the current newsletter migration phase. Update it at the end of every phase or when an external/human gate prevents safe progress. Do not advance phases by implication.
 
 ## Completed in Phase 0
