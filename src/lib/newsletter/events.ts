@@ -25,50 +25,36 @@ function parseEvent(value: string): SesEvent {
   return event;
 }
 
-async function updateCampaignRecipients(messageId: string, status: 'sent' | 'bounced' | 'complained', column: 'delivered_at' | 'bounced_at' | 'complained_at', at: string | null) {
-  const db = newsletterDb();
-  if (column === 'delivered_at') {
-    await db`UPDATE campaign_recipients SET status = ${status}, delivered_at = COALESCE(${at}::timestamptz, delivered_at), last_event_at = now()
-      WHERE provider_message_id = ${messageId}`;
-  } else if (column === 'bounced_at') {
-    await db`UPDATE campaign_recipients SET status = ${status}, bounced_at = COALESCE(${at}::timestamptz, bounced_at), last_event_at = now()
-      WHERE provider_message_id = ${messageId}`;
-  } else {
-    await db`UPDATE campaign_recipients SET status = ${status}, complained_at = COALESCE(${at}::timestamptz, complained_at), last_event_at = now()
-      WHERE provider_message_id = ${messageId}`;
-  }
-}
-
-async function suppressActiveSubscribers(emails: string[], status: 'bounced' | 'complained') {
-  if (!emails.length) return;
-  const db = newsletterDb();
-  await db`UPDATE subscribers SET status = ${status}, updated_at = now()
-    WHERE status = 'active' AND email_normalized = ANY(${emails})`;
-}
-
-export async function recordSesEvent(envelope: SnsEnvelope): Promise<void> {
+export async function recordSesEvent(envelope: SnsEnvelope, db = newsletterDb()): Promise<void> {
   const event = parseEvent(envelope.Message);
-  const db = newsletterDb();
-  const receipt = await db`INSERT INTO newsletter_event_receipts (provider, event_id) VALUES ('sns', ${envelope.MessageId})
-    ON CONFLICT DO NOTHING RETURNING event_id`;
-  if (!receipt.length) return;
-
   const messageId = typeof event.mail?.messageId === 'string' ? event.mail.messageId : null;
-  if (!messageId) return;
-  if (event.eventType === 'Delivery') {
-    await updateCampaignRecipients(messageId, 'sent', 'delivered_at', isoDate(event.delivery?.timestamp));
-    return;
-  }
-  if (event.eventType === 'Bounce' && event.bounce?.bounceType === 'Permanent') {
-    const emails = recipientEmails(event.bounce.bouncedRecipients);
-    await updateCampaignRecipients(messageId, 'bounced', 'bounced_at', isoDate(event.bounce.timestamp));
-    await suppressActiveSubscribers(emails, 'bounced');
-    return;
-  }
-  if (event.eventType === 'Complaint') {
-    // SES may redact complaint recipients. An absent address is deliberately a no-op.
-    const emails = recipientEmails(event.complaint?.complainedRecipients);
-    await updateCampaignRecipients(messageId, 'complained', 'complained_at', isoDate(event.complaint?.timestamp));
-    await suppressActiveSubscribers(emails, 'complained');
-  }
+  const status = !messageId ? null : event.eventType === 'Delivery' ? 'sent'
+    : event.eventType === 'Bounce' && event.bounce?.bounceType === 'Permanent' ? 'bounced'
+    : event.eventType === 'Complaint' ? 'complained' : null;
+  const at = isoDate(status === 'sent' ? event.delivery?.timestamp
+    : status === 'bounced' ? event.bounce?.timestamp : event.complaint?.timestamp);
+  // Redacted complaint recipients must never fall back to mail.destination.
+  const emails = recipientEmails(status === 'bounced' ? event.bounce?.bouncedRecipients
+    : status === 'complained' ? event.complaint?.complainedRecipients : []);
+
+  // One atomic statement: failed updates roll back the deduplication receipt too.
+  // Every mutation depends on the newly inserted receipt, including concurrent retries.
+  await db`WITH receipt AS (
+    INSERT INTO newsletter_event_receipts (provider, event_id) VALUES ('sns', ${envelope.MessageId})
+    ON CONFLICT DO NOTHING RETURNING event_id
+  ), recipients AS (
+    UPDATE campaign_recipients SET
+      status = CASE WHEN status IN ('bounced', 'complained') THEN status ELSE ${status} END,
+      delivered_at = CASE WHEN ${status} = 'sent' THEN COALESCE(delivered_at, ${at}::timestamptz) ELSE delivered_at END,
+      bounced_at = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounced_at, ${at}::timestamptz) ELSE bounced_at END,
+      complained_at = CASE WHEN ${status} = 'complained' THEN COALESCE(complained_at, ${at}::timestamptz) ELSE complained_at END,
+      last_event_at = now()
+    WHERE provider_message_id = ${messageId} AND ${status}::text IS NOT NULL
+      AND EXISTS (SELECT 1 FROM receipt)
+    RETURNING subscriber_id
+  )
+  UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, updated_at = now()
+    WHERE status = 'active' AND ${status}::text IN ('bounced', 'complained')
+      AND email_normalized = ANY(${emails}::text[])
+      AND EXISTS (SELECT 1 FROM receipt)`;
 }
