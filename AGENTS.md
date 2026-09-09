@@ -27,7 +27,7 @@
 - Article source is `src/content/blog`; `/writing/[slug]` renders articles through `src/layouts/BlogPost.astro`, and `/writing/[page]` provides pagination.
 - Shared UI includes `src/components/SubscribeForm.astro`; the home page and article layout use it.
 - The current production signup remains Substack: the form posts to `https://avoidboringpeople.substack.com/api/v1/free`, and `src/pages/api/subscribe.ts` proxies that same integration. `/newsletter` redirects to `/#subscribe`.
-- Search, RSS, sitemap, and static publishing are already implemented. Phases 1–3 added the Vercel adapter, Neon schema, isolated `/api/newsletter/*` lifecycle routes, constrained email rendering, and authenticated SES/SNS event ingestion, while normal site pages remain static. No current UI routes to the owned signup endpoints, confirmation delivery is disabled by default, and the local tooling supports preview and allowlisted test sends only—there is no production campaign sender yet.
+- Search, RSS, sitemap, and static publishing are already implemented. Phases 1–3 added the Vercel adapter, Neon schema, isolated `/api/newsletter/*` lifecycle routes, constrained email rendering, authenticated SES/SNS event ingestion, and guarded local-only campaign tooling, while normal site pages remain static. No current UI routes to the owned signup endpoints, confirmation delivery is disabled by default, and no production campaign can send without explicit local confirmation and exact recipient counts.
 - The target newsletter architecture is Neon managed Postgres, short Vercel/Astro on-demand endpoints under `/api/newsletter/*`, Amazon SES, and an explicitly run local sender CLI.
 
 ## Important invariants
@@ -48,6 +48,8 @@
 | Build | `npm run build` |
 | Run locally | `npm run dev` |
 | Preview built site | `npm run preview` |
+| Inspect Substack import | `npm run newsletter:import:dry-run -- <substack-export.csv>` |
+| Apply verified Substack import | `npm run newsletter:import -- <substack-export.csv> --expect-active <count> --expect-suppressed <count> --confirm-import`; requires ignored production environment values and never sends email. |
 | Newsletter preview | `npm run newsletter:preview -- <article-id> [output-file]` |
 | Allowlisted newsletter test | `npm run newsletter:test -- <article-id> <recipient> --confirm-test` |
 | Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <count> --confirm-snapshot` |

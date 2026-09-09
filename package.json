@@ -10,6 +10,7 @@
     "start": "npm run build && npm run preview",
     "debug:tags": "astro run scripts/debug-tags.ts",
     "newsletter:import:dry-run": "node --import ts-node/esm scripts/newsletter/inspect-substack-export.ts",
+    "newsletter:import": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/import-substack-export.ts",
     "newsletter:campaign": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/create-campaign.ts",
     "newsletter:preview": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/preview.ts",
     "newsletter:send": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/send-campaign.ts",
