@@ -52,3 +52,7 @@ coverage
 # Auth cookies for automation
 /cookies/*.json
 .neon
+
+
+__pycache__/
+*.py[cod]
