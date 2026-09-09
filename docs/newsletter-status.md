@@ -2,10 +2,10 @@
 
 ## Current phase
 
-**Phase 3 — SES/AWS production plumbing: in progress.**
+**Phase 3 — SES/AWS production plumbing: complete. Phase 4 is blocked by SES production access.**
 
-- Production `main` includes the newsletter code at merge commit `b8e941c`; rollback tag `newsletter-pre-main-integration-20260909` preserves pre-integration main `a20c5f6`. Main's site and autopost changes were preserved, and the separate distribution-refactor worktree was not modified.
-- End-to-end validation ran on ready production deployment `dpl_5zmyAXMB568fbsWz7ntcyeMpPhHt`; subsequent documentation/distribution merges retain the same newsletter runtime. Homepage is healthy; invalid SNS POST is rejected with 400 and non-exempt form-style requests retain origin protection.
+- Production `main` includes the crash-safe campaign sender at merge commit `f443477`; rollback tag `newsletter-pre-main-integration-20260909` preserves pre-integration main `a20c5f6`. Main's site and autopost changes were preserved, and the separate distribution-refactor worktree was not modified.
+- Validation ran against successful GitHub/Vercel production deployment record `6351004359` at `https://avoid-boring-people-m387l3f23-leons-projects-b248d9a2.vercel.app`. Post-deployment checks returned homepage 200, invalid SNS POST 400, and non-exempt form-style PUT 403; later documentation-only deployments do not change that runtime.
 - SNS subscription confirmation is complete (`PendingConfirmation: false`) and completed in 175 ms. The canonical `https://leonlins.com/api/newsletter/ses-events` endpoint is the only confirmed topic subscription.
 - SES event destination `newsletter-ses-events` is enabled for DELIVERY, BOUNCE, and COMPLAINT only. Its topic policy permits `ses.amazonaws.com` to publish only from account 079415246848 and configuration set `my-first-configuration-set`.
 - End-to-end delivery validation passed: a fresh marked test sent only to allowlisted `contact@leonlins.com` was accepted by SES; SNS invoked the production handler; Vercel returned 204; and Neon recorded the authenticated receipt. Subscriber count remains zero and no Substack data was read.
@@ -13,8 +13,9 @@
 - AWS identity readiness is healthy: `leonlins.com` is verified, DKIM succeeds with 2048-bit keys, `mail.leonlins.com` MAIL FROM succeeds, and account suppression covers bounces and complaints. Public SPF records exist and DMARC is monitoring-only (`p=none`).
 - **External blocker:** SES production access is false and the latest access review is DENIED. Sandbox quota is 200 messages/day at 1 message/second, so arbitrary-recipient and warm-up sends cannot begin.
 - Controlled SES event validation is complete. With explicit approval, exactly two synthetic messages were sent from `newsletter@leonlins.com`: one to AWS's bounce simulator (SES message `010f01a086400e5c-fe3e2a52-ab32-4c69-82be-db00ae14bb20-000000`) and one to AWS's complaint simulator (SES message `010f01a086400edf-79a5402a-ce4f-4241-8d8c-9bcbddd767ad-000000`). The production endpoint stored three new authenticated SNS receipts, consistent with the enabled delivery plus terminal-event notifications. Subscriber and suppression counts remain zero; no Substack data was read.
-- **Phase 3 code awaiting production migration/deployment:** local exact-count campaign snapshot and production-send commands, SES production-access/quota/rate checks, active-status rechecks, stable hashed unsubscribe tokens, one campaign per article, and a conservative indeterminate `sending` state that never retries automatically. Early SNS events are retained and reconciled after the provider message ID is recorded.
-- **Next controlled gate:** approve additive migration `003_production_send_safety.sql` on Neon production, then deploy and repeat the signed SNS route regression check. This migration changes no subscriber status or email and has already passed synthetic checks on the disposable validation branch. SES production access remains denied, and the real-list IAM restriction remains locked.
+- Migration `003_production_send_safety.sql` is applied to Neon production and the matching code is deployed. Production has zero subscribers, campaigns, and campaign recipients; it has five authenticated event receipts.
+- A post-deployment, non-email SNS validation publish (`20d0ec84-4e72-56d4-a8d3-8f9f2d5e2aba`) was authenticated and stored exactly once with provider message `phase3-deploy-validation-f443477`, normalized `sent` state, and the supplied event timestamp. It matched no recipient and changed no subscriber data.
+- **Next controlled gate:** obtain SES production access before Phase 4 arbitrary-recipient validation. The latest request remains denied, and the real-list IAM recipient restriction remains locked.
 
 This status file is the handoff record for the current newsletter migration phase. Update it at the end of every phase or when an external/human gate prevents safe progress. Do not advance phases by implication.
 
@@ -77,7 +78,8 @@ This status file is the handoff record for the current newsletter migration phas
 - Verified the live route rejects both an empty request and an intentionally invalid signed-event-shaped request with HTTP 400. The latter completed in 0.25 seconds after attempting a permitted SNS certificate URL; it could not confirm a subscription, store an event, or send mail.
 - Connected SES delivery, bounce, and complaint events to the confirmed SNS endpoint and validated the authenticated path first with the allowlisted human test and then with exactly two explicitly approved AWS mailbox-simulator messages. Neon recorded the events and still contains zero subscribers.
 - Added migration `003_production_send_safety.sql` and local-only campaign tooling. The migration adds a recipient `sending` state and timestamp, one-campaign-per-article uniqueness, and minimal event reconciliation fields. The CLI requires an exact recipient count twice, a hard local ceiling, an explicit production environment, a 32-byte unsubscribe secret, SES production access/quota, and explicit snapshot/send confirmation flags. It sends sequentially within the account rate and never automatically retries an indeterminate outcome.
-- Validated migration 003 and the exact-count snapshot on the disposable Neon Phase 3 branch. A synthetic early redacted complaint was safely retained before recipient/message association, then applied after reconciliation. Synthetic rows were removed. No email was sent by these checks. Production migration and deployment are intentionally pending approval.
+- Validated migration 003 and the exact-count snapshot on a fresh short-lived Neon branch created from production. A synthetic early redacted complaint was safely retained before recipient/message association, then applied after reconciliation. Synthetic rows were removed. No email was sent by these checks.
+- With explicit approval, applied migration 003 atomically to Neon production, verified its four columns and two indexes, and confirmed zero subscribers/campaigns/recipients before and after. PR #31 merged as `f443477`, Vercel production deployed successfully, public route/security checks passed, and one non-email signed SNS notification exercised the new receipt fields end to end.
 
 ## Not started
 
@@ -95,9 +97,9 @@ This status file is the handoff record for the current newsletter migration phas
 
 ## Next human/external gate
 
-1. Approve the already validated additive migration `003_production_send_safety.sql` for Neon production. Deploy the matching code only after the schema is present, then repeat the production SNS rejection/health checks.
-2. Appeal or resubmit the denied SES production-access request with accurate use-case and consent details. Do not submit it or broaden IAM recipient permissions without explicit approval.
-3. Supply the Substack export when the applied importer work begins. The importer remains dry-run-only, and no legacy subscriber has been loaded.
+1. Appeal or resubmit the denied SES production-access request with accurate use-case and consent details. Do not submit it or broaden IAM recipient permissions without explicit approval.
+2. Supply the Substack export when applied importer validation begins. The importer remains dry-run-only, and no legacy subscriber has been loaded.
+3. Before any Phase 4 confirmation/delivery tests, explicitly approve each controlled recipient and configure the required local/Vercel credentials without committing them.
 4. Before any warm-up, explicitly approve the cohort and broaden the current `contact@leonlins.com` IAM recipient restriction only to that cohort. Full-list delivery remains prohibited.
 
 ## Locked decisions
