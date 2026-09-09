@@ -22,8 +22,9 @@ import {
 } from '../src/lib/newsletter/domain.ts';
 import { hashToken } from '../src/lib/newsletter/tokens.ts';
 import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/rate-limit.ts';
-import { NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
+import { GMAIL_CLIP_LIMIT_BYTES, NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
 import { assertAllowedTestRecipient } from '../src/lib/newsletter/test-send.ts';
+import { importTimestamp, planSubstackImport } from '../src/lib/newsletter/importer.ts';
 import {
   assertRecipientScope,
   assertSesAccountReady,
@@ -255,6 +256,29 @@ function testNewsletterDomain() {
   );
 }
 
+function testNewsletterImporter() {
+  const csv = `Email,Name,Type,Subscribed at,Cancel date,Expiration date
+author@example.test,Author,Author,2020-01-01,,
+active@example.test,Active,Free,2021-01-01,,
+duplicate@example.test,Duplicate,Free,2021-03-01,,
+Duplicate@Example.Test,Duplicate,Free,2021-03-01,2022-03-01,
+paused@example.test,Paused,Free,2021-04-01,,Paused`;
+  const plan = planSubstackImport(csv);
+  assert.deepEqual(plan.summary, {
+    sourceRows: 5,
+    excludedRows: 1,
+    mappedRows: 4,
+    uniqueEmails: 3,
+    duplicateEmails: 1,
+    active: 2,
+    suppressed: 1,
+  });
+  assert.equal(plan.subscribers.find((subscriber) => subscriber.email === 'duplicate@example.test')?.status, 'unsubscribed');
+  assert.equal(plan.subscribers.find((subscriber) => subscriber.email === 'paused@example.test')?.status, 'active');
+  assert.equal(importTimestamp('2021-01-01'), '2021-01-01T00:00:00.000Z');
+  assert.equal(importTimestamp('not-a-date'), null);
+}
+
 function testNewsletterRenderer() {
   const input = {
     articleId: '2021_01_06_nonviolent/index.md',
@@ -270,8 +294,15 @@ function testNewsletterRenderer() {
   assert.equal(rendered.headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
   assert.match(rendered.text, /Newsletter test/);
   assert.doesNotMatch(rendered.html, /123 Example Street/);
+  assert.equal(rendered.headers['List-Unsubscribe'], '<https://leonlins.com/api/newsletter/unsubscribe?token=preview>');
+  const external = renderNewsletterEmail({ ...input, markdown: '[External](https://example.com/path)' });
+  assert.match(external.html, /href="https:\/\/example\.com\/path"/);
   assert.throws(() => renderNewsletterEmail({ ...input, markdown: '[relative](./private)' }), NewsletterRenderError);
+  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '![Missing](./does-not-exist.webp)' }), /does not exist/);
+  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '<NewsletterWidget />' }), /MDX/);
+  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '![Local](https://localhost/private.png)' }), /public HTTPS/);
   assert.throws(() => renderNewsletterEmail({ ...input, markdown: '<iframe src="https://example.com"></iframe>' }), NewsletterRenderError);
+  assert.throws(() => renderNewsletterEmail({ ...input, markdown: 'x'.repeat(GMAIL_CLIP_LIMIT_BYTES) }), /100 KB/);
 }
 
 function testNewsletterTestSendSafeguard() {
@@ -338,7 +369,7 @@ function testNewsletterConfirmationBoundary() {
 }
 
 async function testSnsValidation() {
-  for (const path of ['/api/newsletter/subscribe', '/api/newsletter/unsubscribe', '/api/subscribe', '/api/newsletter/ses-events/']) {
+  for (const path of ['/api/newsletter/subscribe', '/api/subscribe', '/api/newsletter/ses-events/']) {
     for (const type of ['text/plain; charset=UTF-8', 'multipart/form-data', 'application/x-www-form-urlencoded']) {
       const request = new Request(`https://leonlins.com${path}`, { method: 'POST', headers: { 'content-type': type } });
       assert.equal(requiresOriginRejection(request, false), true);
@@ -348,6 +379,9 @@ async function testSnsValidation() {
   }
   const snsRequest = new Request('https://leonlins.com/api/newsletter/ses-events', { method: 'POST', headers: { 'content-type': 'text/plain' } });
   assert.equal(requiresOriginRejection(snsRequest, false), false);
+  const oneClickRequest = new Request('https://leonlins.com/api/newsletter/unsubscribe?token=secret', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: 'List-Unsubscribe=One-Click' });
+  assert.equal(requiresOriginRejection(oneClickRequest, false), false);
+  assert.equal(requiresOriginRejection(new Request(oneClickRequest.url, { method: 'PUT', headers: oneClickRequest.headers }), false), true);
   assert.equal(requiresOriginRejection(new Request(snsRequest.url, { method: 'PUT' }), false), true);
   assert.equal(requiresOriginRejection(new Request('https://leonlins.com/api/newsletter/subscribe', { method: 'POST' }), false), true);
   const topic = 'arn:aws:sns:us-east-2:123456789012:newsletter-events';
@@ -811,6 +845,7 @@ async function run() {
     testTitleCase();
     testNormalizeCategory();
     testNewsletterDomain();
+    testNewsletterImporter();
     testNewsletterRenderer();
     testNewsletterTestSendSafeguard();
     testNewsletterProductionSendSafeguards();

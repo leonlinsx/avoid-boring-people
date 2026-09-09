@@ -16,7 +16,7 @@ The future public runtime surface is intentionally isolated:
 
 - `POST /api/newsletter/subscribe`: accepts normalized email, honeypot, and bounded source metadata; applies IP and email rate limits; always returns a generic response.
 - `GET /api/newsletter/confirm`: validates a one-time confirmation token and transitions a pending subscriber to active.
-- `GET` and `POST /api/newsletter/unsubscribe`: the visible flow and RFC one-click flow; both are idempotent and do not require login.
+- `GET /api/newsletter/unsubscribe`: renders a non-mutating confirmation page so mailbox link scanners cannot suppress a subscriber. `POST` performs the idempotent visible or RFC one-click action using the bearer token and does not require login.
 - `POST /api/newsletter/ses-events`: validates SNS signatures and the expected TopicArn before idempotently recording delivery, bounce, and complaint state.
 
 ## Data and consent design
@@ -33,7 +33,7 @@ The renderer consumes content from `src/content/blog/<article>/index.md` and pro
 
 Every mail includes the visible From `Leon Lin <newsletter@leonlins.com>`, Reply-To `contact@leonlins.com`, a human-readable unsubscribe link, privacy-policy link, and `List-Unsubscribe` plus `List-Unsubscribe-Post: List-Unsubscribe=One-Click` headers. The current renderer intentionally omits a physical postal address at the author's direction and is limited to editorial editions. Do not use it for editions whose primary purpose is commercial advertising or promotion without revisiting this compliance decision; never hard-code a guessed address.
 
-The local CLI will eventually provide `newsletter:preview`, `newsletter:test`, and `newsletter:send --confirm-production`. Preview never sends; test sends use only configured test recipients; production runs locally and defaults to no send. Before sending, it checks explicit production environment selection, campaign state/idempotency, eligible/suppressed counts, legal footer, generated unsubscribe URLs, SES configuration set, production access, quota/rate/capacity, and rate limits/batches. A crash or retry must not resend an existing campaign recipient.
+The local CLI provides `newsletter:preview`, `newsletter:test`, and guarded campaign snapshot/send commands. Preview never sends; test sends use only configured test recipients; production runs locally and defaults to no send. Before sending, it checks explicit production environment selection, campaign state/idempotency, eligible/suppressed counts, legal footer, generated unsubscribe URLs, SES configuration set, production access, quota/rate/capacity, and rate limits/batches. A crash or retry must not resend an existing campaign recipient.
 
 SES uses a configuration set and SNS event destination. SNS handling verifies certificate/signature per AWS guidance before trusting the body, restricts processing to the expected TopicArn, safely handles `SubscriptionConfirmation`, validates message structure, deduplicates SNS MessageId values, and only then updates subscriber/campaign state. The database is canonical for mailing eligibility; SES account suppression is an additional guard.
 

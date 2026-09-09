@@ -1,6 +1,6 @@
 import { SendEmailCommand, SESv2Client } from '@aws-sdk/client-sesv2';
 import { readNewsletterArticle, renderNewsletterEmail } from '../../src/lib/newsletter/render.ts';
-import { NEWSLETTER_FROM_EMAIL, NEWSLETTER_REPLY_TO, NEWSLETTER_PRIVACY_URL } from '../../src/lib/newsletter/email.ts';
+import { NEWSLETTER_FROM, NEWSLETTER_REPLY_TO, NEWSLETTER_PRIVACY_URL } from '../../src/lib/newsletter/email.ts';
 import { assertAllowedTestRecipient } from '../../src/lib/newsletter/test-send.ts';
 
 function frontmatterTitle(markdown: string): string | null {
@@ -32,7 +32,7 @@ const rendered = renderNewsletterEmail({
 });
 
 const result = await new SESv2Client({ region: process.env.AWS_REGION }).send(new SendEmailCommand({
-  FromEmailAddress: NEWSLETTER_FROM_EMAIL,
+  FromEmailAddress: NEWSLETTER_FROM,
   ReplyToAddresses: [NEWSLETTER_REPLY_TO],
   Destination: { ToAddresses: [testRecipient] },
   ConfigurationSetName: configurationSet,
@@ -43,6 +43,7 @@ const result = await new SESv2Client({ region: process.env.AWS_REGION }).send(ne
         Html: { Data: rendered.html, Charset: 'UTF-8' },
         Text: { Data: rendered.text, Charset: 'UTF-8' },
       },
+      Headers: Object.entries(rendered.headers).map(([Name, Value]) => ({ Name, Value })),
     },
   },
 }));

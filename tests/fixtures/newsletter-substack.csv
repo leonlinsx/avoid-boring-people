@@ -1,0 +1,9 @@
+Email,Name,Type,Subscribed at,Cancel date,Expiration date
+author@example.test,Author,Author,2020-01-01,,
+active@example.test,Active Reader,Free,2021-01-01,,
+pending@example.test,Pending Reader,Free,2021-01-15,,
+cancelled@example.test,Cancelled Reader,Free,2021-02-01,2022-02-01,
+duplicate@example.test,Duplicate Reader,Free,2021-03-01,,
+duplicate@example.test,Duplicate Reader,Free,2021-03-01,2022-03-01,
+paused@example.test,Paused Reader,Free,2021-04-01,,Paused
+invalid-cancel@example.test,Invalid Cancel,Free,2021-05-01,not-a-date,
