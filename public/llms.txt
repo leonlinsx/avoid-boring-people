@@ -1,0 +1,20 @@
+# Leon Lin — Avoid Boring People
+
+Leon Lin's personal writing site. It publishes public essays on investing, technology, systems, risk, decision-making, and culture.
+
+## Canonical resources
+
+- Homepage: https://leonlins.com/
+- About Leon Lin: https://leonlins.com/about/
+- Writing archive: https://leonlins.com/writing/1/
+- RSS feed: https://leonlins.com/rss.xml
+- Sitemap: https://leonlins.com/sitemap-index.xml
+
+## Start here
+
+- [Ergodicity: What Does It Mean?](https://leonlins.com/writing/ergodicity/) — Why ensemble and time averages matter for investing and risk.
+- [Having faith in the Kelly Criterion for angel investing](https://leonlins.com/writing/kelly/) — Using math to estimate portfolio sizing.
+- [Doctor GPT-3](https://leonlins.com/writing/dr_gpt/) — An early exploration of artificial intelligence and its implications.
+- [A story is a lie and a story is true](https://leonlins.com/writing/stories/) — How narratives shape investing, startups, and decisions.
+
+Articles are publicly readable at their canonical leonlins.com URLs. The canonical source is Markdown/MDX in the site repository.
