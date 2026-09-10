@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 
+export const prerender = false;
+
 const SUBSTACK_BASE = 'https://avoidboringpeople.substack.com';
 
 export const POST: APIRoute = async ({ request }) => {
