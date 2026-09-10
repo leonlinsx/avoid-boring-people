@@ -10,7 +10,7 @@ from typing import Dict, Iterable, Optional
 
 STATE_FILE = Path("posted.json")
 STATE_VERSION = 2
-PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr")
 EVERGREEN_COOLDOWN_DAYS = {
     "twitter": int(os.getenv("TWITTER_EVERGREEN_COOLDOWN_DAYS", "60")),
     "linkedin": int(os.getenv("LINKEDIN_EVERGREEN_COOLDOWN_DAYS", "60")),

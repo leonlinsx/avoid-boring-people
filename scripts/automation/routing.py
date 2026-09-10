@@ -1,11 +1,13 @@
 """Category-based distribution policy, kept separate from provider code."""
 from __future__ import annotations
 
-PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit")
-SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr")
+SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr")
 
 # The normal automation destinations. Keep disabled or unapproved providers out
 # of this list; PLATFORM remains available as an explicit local/test override.
+# Weibo stays out until its open-platform app gains write scope; Nostr stays
+# out until its relays accept a live note from our key.
 DEFAULT_PLATFORMS = ("twitter", "bluesky", "mastodon", "devto", "farcaster")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,

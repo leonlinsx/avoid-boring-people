@@ -101,6 +101,15 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
     if platform == "reddit":
         from scripts.automation.publishers.reddit import post_to_reddit
         return post_to_reddit(community.title, community.url)
+    if platform == "weibo":
+        from scripts.automation.publishers.weibo import post_to_weibo
+        from scripts.automation.summarizers.llm_summarizer import localize_zh_cn
+        point = social.thread[1] if len(social.thread) > 1 else social.body
+        return post_to_weibo(localize_zh_cn(article.title, social.hook, point, article.canonical_url))
+    if platform == "nostr":
+        from scripts.automation.publishers.nostr import post_to_nostr
+        rendered = render_thread(social)
+        return post_to_nostr(rendered[0] if len(rendered) == 1 else "\n\n".join(rendered))
     raise ValueError(f"Unknown platform: {platform}")
 
 def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article: ArticleSyndication) -> None:
@@ -112,6 +121,8 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
         elif platform == "farcaster": print(f"  format: social_post\n  would publish: {render_farcaster(social)}")
         elif platform == "devto": print(f"  format: article syndication\n  canonical URL: {article.canonical_url}")
         elif platform == "reddit": print("  format: link post\n  subreddit: r/" + os.getenv("REDDIT_SUBREDDIT", "AvoidBoringPeople"))
+        elif platform == "weibo": print("  format: Simplified-Chinese localized post")
+        elif platform == "nostr": print("  format: signed NIP-01 note")
         else: print(f"  format: {'thread' if POST_MODE == 'thread' else 'single'}")
 
 def main() -> None:

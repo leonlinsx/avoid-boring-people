@@ -1,6 +1,6 @@
 # Social distribution
 
-The automated distribution job publishes a canonical leonlins.com article to X, Bluesky, Mastodon, Farcaster, and DEV (when category policy permits). Reddit is deferred while API approval is pending, and LinkedIn, Threads, and Publish0x are inactive; their dormant adapters must not appear in default production workflows.
+The automated distribution job publishes a canonical leonlins.com article to X, Bluesky, Mastodon, Farcaster, and DEV (when category policy permits). Reddit is deferred while API approval is pending, LinkedIn, Threads, and Publish0x are inactive, and Weibo and Nostr are implemented but unverified; their dormant adapters must not appear in default production workflows.
 
 The job generates one summary per article where required, then deterministically renders it per platform. DEV receives the full source-index article content with the canonical leonlins.com URL. `posted.json` is updated only after a platform confirms success, so retrying a failed run attempts only destinations that have not already succeeded. Transient failures (429, timeouts/connections, 500/502/503/504) are retried with backoff; permanent errors (400/401/403/422, validation failures) are not.
 
@@ -12,14 +12,18 @@ X, Bluesky, Mastodon, DEV, DeepSeek, and Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNE
 
 - `LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR_URN` (`urn:li:person:…` or organization URN)
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REFRESH_TOKEN`
+- `WEIBO_ACCESS_TOKEN` plus `WEIBO_APP_KEY`, `WEIBO_APP_SECRET`, and `WEIBO_REFRESH_TOKEN` for token refresh (all require a manually approved Weibo open-platform app with write scope)
+- `NOSTR_NSEC` (the publishing private key, `nsec1...` or hex; optional `NOSTR_RELAYS` overrides the default relay list)
 - `REDDIT_USER_AGENT` (a descriptive, stable API user agent)
 
 `REDDIT_SUBREDDIT` defaults to `AvoidBoringPeople`; set it as a repository variable or workflow environment value only if that changes. The Reddit adapter refreshes its OAuth token at run time; do not use a short-lived access token in GitHub secrets.
 
 The default destinations are versioned in `scripts/automation/routing.py` as
-`DEFAULT_PLATFORMS`: X, Bluesky, Mastodon, DEV, and Farcaster. LinkedIn and
-Reddit remain out of the defaults until their setup is verified. For a local
-one-off override, set `PLATFORM` explicitly.
+`DEFAULT_PLATFORMS`: X, Bluesky, Mastodon, DEV, and Farcaster. LinkedIn,
+Reddit, Weibo, and Nostr remain out of the defaults until their setup is
+verified. For a local one-off override, set `PLATFORM` explicitly. Weibo posts
+a Simplified-Chinese DeepSeek localization of the article, never the English
+text; the localizer raises rather than falling back.
 
 ## Local review
 
