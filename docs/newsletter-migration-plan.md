@@ -8,7 +8,7 @@ The owned system is deliberately narrow: Neon managed Postgres for subscriber an
 
 ## Current state and target runtime
 
-The repository runs Astro 5.13.7 with static output. Phase 1 added the compatible Vercel adapter only to support isolated on-demand newsletter lifecycle routes; all normal pages remain static. `src/pages/newsletter.astro` is presently superseded by the `/newsletter -> /#subscribe` redirect, while `SubscribeForm.astro` and `src/pages/api/subscribe.ts` use the production Substack endpoint. Do not change either in Phases 0–4.5.
+The repository runs Astro 5.13.7 with static output. Phase 1 added the compatible Vercel adapter only to support isolated on-demand newsletter lifecycle routes; all normal pages remain static. `src/pages/newsletter.astro` is presently superseded by the `/newsletter -> /#subscribe` redirect, while `SubscribeForm.astro` and `src/pages/api/subscribe.ts` use the production Substack endpoint. Do not change signup behavior in Phases 0–4.5. One exception is recorded: `src/pages/api/subscribe.ts` carries `export const prerender = false` so the Substack fallback route deploys on the static-default site; this changes no signup behavior.
 
 When owned endpoints are introduced, install and configure the current compatible `@astrojs/vercel` adapter, retain static output, and add `export const prerender = false` only to dynamic newsletter endpoints. Do not use Astro's removed `output: 'hybrid'` mode or convert the full site to server output without a documented framework requirement.
 

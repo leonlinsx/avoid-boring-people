@@ -275,7 +275,7 @@ def test_weibo_refresh_failure_raises(monkeypatch):
         weibo.post_to_weibo("hello")
 
 
-def test_new_platforms_join_routing_but_not_defaults():
+def test_new_platforms_routing_and_default_membership():
     assert "weibo" in PLATFORMS and "nostr" in PLATFORMS
     assert "weibo" in SOCIAL_PLATFORMS and "nostr" in SOCIAL_PLATFORMS
     assert "weibo" not in DEFAULT_PLATFORMS

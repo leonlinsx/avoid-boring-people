@@ -41,7 +41,7 @@ Replace one-off values with variables. -->
 <!-- - dropped: Hero section redesign: Rotating featured posts with background image/gradient? -->
 <!-- - dropped: book consulting call calendly -->
 
-- update automated posting
+<!-- - update automated posting -->
 - automated linkedin summaries
 - post to reddit relevant subreddits
 3. event tracking when appropriate

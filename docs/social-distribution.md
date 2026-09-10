@@ -4,16 +4,15 @@ The automated distribution job publishes a canonical leonlins.com article to X, 
 
 The job generates one summary per article where required, then deterministically renders it per platform. DEV receives the full source-index article content with the canonical leonlins.com URL. `posted.json` is updated only after a platform confirms success, so retrying a failed run attempts only destinations that have not already succeeded. Transient failures (429, timeouts/connections, 500/502/503/504) are retried with backoff; permanent errors (400/401/403/422, validation failures) are not.
 
-New articles can use all eligible destinations. Evergreen distribution is limited to X, Bluesky, Mastodon, and Farcaster; DEV is never recycled.
+New articles can use all eligible destinations. Evergreen distribution is limited to X, Bluesky, Mastodon, Farcaster, and Nostr; DEV is never recycled.
 
 ## Required GitHub secrets
 
-X, Bluesky, Mastodon, DEV, DeepSeek, and Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`) secrets are the active production set. Add the following only when the corresponding deferred destination is approved for production:
+X, Bluesky, Mastodon, DEV, DeepSeek, Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`), and Nostr (`NOSTR_NSEC`, the publishing private key) secrets are the active production set. An optional `NOSTR_RELAYS` value overrides the default relay list. Add the following only when the corresponding deferred destination is approved for production:
 
 - `LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR_URN` (`urn:li:person:…` or organization URN)
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REFRESH_TOKEN`
 - `WEIBO_ACCESS_TOKEN` plus `WEIBO_APP_KEY`, `WEIBO_APP_SECRET`, and `WEIBO_REFRESH_TOKEN` for token refresh (all require a manually approved Weibo open-platform app with write scope)
-- `NOSTR_NSEC` (the publishing private key, `nsec1...` or hex; optional `NOSTR_RELAYS` overrides the default relay list)
 - `REDDIT_USER_AGENT` (a descriptive, stable API user agent)
 
 `REDDIT_SUBREDDIT` defaults to `AvoidBoringPeople`; set it as a repository variable or workflow environment value only if that changes. The Reddit adapter refreshes its OAuth token at run time; do not use a short-lived access token in GitHub secrets.
