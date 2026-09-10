@@ -403,6 +403,12 @@
     "2021_01_30_plaid/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-09-10T04:11:48Z",
+        "remote_id": "a46ec256cfe92dafe00eb3c6fa049a5d93f6c7dadd55d363523b7911bc94fc3e"
       }
     },
     "2021_02_06_gambling_size/index.md": {
