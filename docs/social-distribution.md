@@ -1,24 +1,23 @@
 # Social distribution
 
-The automated distribution job publishes a canonical leonlins.com article to X, Bluesky, Mastodon, and DEV (when category policy permits). Farcaster joins the defaults once its signer is approved. Reddit is deferred while API approval is pending, and LinkedIn, Threads, and Publish0x are inactive; their dormant adapters must not appear in default production workflows.
+The automated distribution job publishes a canonical leonlins.com article to X, Bluesky, Mastodon, Farcaster, and DEV (when category policy permits). Reddit is deferred while API approval is pending, and LinkedIn, Threads, and Publish0x are inactive; their dormant adapters must not appear in default production workflows.
 
 The job generates one summary per article where required, then deterministically renders it per platform. DEV receives the full source-index article content with the canonical leonlins.com URL. `posted.json` is updated only after a platform confirms success, so retrying a failed run attempts only destinations that have not already succeeded. Transient failures (429, timeouts/connections, 500/502/503/504) are retried with backoff; permanent errors (400/401/403/422, validation failures) are not.
 
-New articles can use all eligible destinations. Evergreen distribution is limited to X, Bluesky, Mastodon, and Farcaster (once enabled); DEV is never recycled.
+New articles can use all eligible destinations. Evergreen distribution is limited to X, Bluesky, Mastodon, and Farcaster; DEV is never recycled.
 
 ## Required GitHub secrets
 
-X, Bluesky, Mastodon, DEV, and DeepSeek secrets are the active production set. Add the following only when the corresponding deferred destination is approved for production:
+X, Bluesky, Mastodon, DEV, DeepSeek, and Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`) secrets are the active production set. Add the following only when the corresponding deferred destination is approved for production:
 
 - `LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR_URN` (`urn:li:person:…` or organization URN)
-- `NEYNAR_API_KEY` and `NEYNAR_SIGNER_UUID` (required before Farcaster rejoins the defaults)
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REFRESH_TOKEN`
 - `REDDIT_USER_AGENT` (a descriptive, stable API user agent)
 
 `REDDIT_SUBREDDIT` defaults to `AvoidBoringPeople`; set it as a repository variable or workflow environment value only if that changes. The Reddit adapter refreshes its OAuth token at run time; do not use a short-lived access token in GitHub secrets.
 
 The default destinations are versioned in `scripts/automation/routing.py` as
-`DEFAULT_PLATFORMS`: X, Bluesky, Mastodon, and DEV. Farcaster, LinkedIn, and
+`DEFAULT_PLATFORMS`: X, Bluesky, Mastodon, DEV, and Farcaster. LinkedIn and
 Reddit remain out of the defaults until their setup is verified. For a local
 one-off override, set `PLATFORM` explicitly.
 

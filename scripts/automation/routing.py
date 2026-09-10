@@ -6,10 +6,7 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster")
 
 # The normal automation destinations. Keep disabled or unapproved providers out
 # of this list; PLATFORM remains available as an explicit local/test override.
-# Farcaster stays out of the production defaults until the Neynar signer is
-# approved and NEYNAR_API_KEY/NEYNAR_SIGNER_UUID are verified; re-add it here
-# once `setup_farcaster_signer --status` reports the signer as approved.
-DEFAULT_PLATFORMS = ("twitter", "bluesky", "mastodon", "devto")
+DEFAULT_PLATFORMS = ("twitter", "bluesky", "mastodon", "devto", "farcaster")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,
 # per-article opt-in through the `devto` frontmatter flag.
