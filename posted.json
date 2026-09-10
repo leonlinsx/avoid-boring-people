@@ -453,6 +453,19 @@
     "2021_05_02_art_history/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-09-10T03:21:40Z",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mv53vq5opv2b",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mv53vq5opv2b"
+      },
+      "twitter": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-09-10T03:21:38Z",
+        "remote_id": "2097888195849412797"
       }
     }
   },
