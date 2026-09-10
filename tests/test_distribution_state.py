@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.automation import state_manager
 from scripts.automation import auto_post
+from scripts.automation import retry as retry_module
 
 
 def _use_temp_state(monkeypatch, tmp_path):
@@ -62,6 +63,7 @@ def test_dry_run_does_not_call_the_state_writer(monkeypatch, tmp_path):
 
 def test_partial_platform_failure_only_persists_success(monkeypatch, tmp_path):
     _use_temp_state(monkeypatch, tmp_path)
+    monkeypatch.setattr(retry_module, "BASE_DELAY_SECONDS", 0)
     post = {"id": "post", "title": "Title", "url": "https://example.test", "content": "word " * 200}
     twitter = types.ModuleType("scripts.automation.publishers")
     twitter.get_twitter_client = lambda: object()

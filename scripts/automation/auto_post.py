@@ -9,6 +9,7 @@ from scripts.automation.content import ArticleSyndication, CommunityPost, Publis
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.ranking import filter_posts, score_posts
 from scripts.automation.renderers import render_farcaster, render_linkedin, render_mastodon, render_thread
+from scripts.automation.retry import run_with_retries
 from scripts.automation.routing import DEFAULT_PLATFORMS, eligible_for_category
 from scripts.automation.state_manager import platform_is_eligible
 
@@ -38,14 +39,20 @@ def sanitize_tags(tags: list[str]) -> list[str]:
         if value and value not in clean: clean.append(value)
     return clean[:4]
 
+def _thread_root(response):
+    """Thread state must reference the root post, not the final reply."""
+    if isinstance(response, list): return response[0] if response else None
+    return response
+
 def _remote_id(response) -> str | None:
+    response = _thread_root(response)
     if isinstance(response, PublishResult): return response.remote_id
-    if isinstance(response, list): response = response[-1] if response else None
     if isinstance(response, dict): return response.get("id") or response.get("uri")
     data = getattr(response, "data", None)
     return data.get("id") if isinstance(data, dict) else getattr(response, "uri", None)
 
 def _remote_url(response) -> str | None:
+    response = _thread_root(response)
     if isinstance(response, PublishResult): return response.remote_url
     if isinstance(response, dict): return response.get("url")
     return getattr(response, "uri", None)
@@ -77,7 +84,10 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
         return post_thread_to_bluesky(render_thread(social)) if POST_MODE == "thread" else post_single_to_bluesky(render_thread(social)[0])
     if platform == "mastodon":
         from scripts.automation.publishers.mastodon import post_single_to_mastodon, post_thread_to_mastodon
-        rendered = render_mastodon(social); return post_thread_to_mastodon(rendered) if POST_MODE == "thread" else post_single_to_mastodon(rendered[0])
+        rendered = render_mastodon(social)
+        if POST_MODE == "thread" and len(rendered) > 1:
+            return post_thread_to_mastodon(rendered)
+        return post_single_to_mastodon(rendered[0])
     if platform == "linkedin":
         from scripts.automation.publishers.linkedin import post_to_linkedin
         return post_to_linkedin(render_linkedin(social))
@@ -125,7 +135,11 @@ def main() -> None:
     failures = []
     for platform in selected["eligible_platforms"]:
         try:
-            _record_success(selected, platform, _publish(platform, social, article, community, selected["id"]))
+            # Each platform is independent: transient failures are retried with
+            # backoff, state is written only after confirmed API success, and a
+            # failed platform never stops the remaining platforms from running.
+            response = run_with_retries(lambda p=platform: _publish(p, social, article, community, selected["id"]))
+            _record_success(selected, platform, response)
             log_summary(f"✅ {platform} posting completed")
         except Exception as error:
             failures.append(platform)

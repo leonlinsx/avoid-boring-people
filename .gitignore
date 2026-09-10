@@ -49,6 +49,9 @@ README.md
 # Tests / coverage
 coverage
 
+# Python environments
+.venv/
+
 # Auth cookies for automation
 /cookies/*.json
 .neon

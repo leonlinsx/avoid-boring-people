@@ -6,8 +6,21 @@ import requests
 
 from scripts.automation.content import PublishResult
 
+FARCASTER_CAST_LIMIT = 320
+
+
+def validate_cast(text: str) -> None:
+    if not text.strip():
+        raise ValueError("Farcaster cast text must not be empty")
+    if len(text) > FARCASTER_CAST_LIMIT:
+        raise ValueError(
+            f"Farcaster cast exceeds its {FARCASTER_CAST_LIMIT}-character limit "
+            f"({len(text)} characters)"
+        )
+
 
 def post_to_farcaster(text: str, idempotency_key: str | None = None) -> PublishResult:
+    validate_cast(text)
     api_key = os.getenv("NEYNAR_API_KEY")
     signer_uuid = os.getenv("NEYNAR_SIGNER_UUID")
     if not api_key or not signer_uuid:

@@ -4,6 +4,16 @@ from atproto import Client, models
 BLUESKY_HANDLE = os.getenv("BLUESKY_HANDLE")       # e.g. yourname.bsky.social
 BLUESKY_PASSWORD = os.getenv("BLUESKY_PASSWORD")   # app password, not account password
 
+BLUESKY_POST_LIMIT = 300
+
+
+def _validate_post(text: str) -> None:
+    if len(text) > BLUESKY_POST_LIMIT:
+        raise ValueError(
+            f"Bluesky post exceeds the {BLUESKY_POST_LIMIT}-character limit ({len(text)} characters)"
+        )
+
+
 def _get_client() -> Client:
     if not BLUESKY_HANDLE or not BLUESKY_PASSWORD:
         raise RuntimeError("❌ BLUESKY_HANDLE or BLUESKY_PASSWORD missing")
@@ -12,12 +22,15 @@ def _get_client() -> Client:
     return client
 
 def post_single_to_bluesky(text: str):
+    _validate_post(text)
     client = _get_client()
     resp = client.send_post(text)
     print(f"✅ Bluesky post created: {resp.uri}")
     return resp
 
 def post_thread_to_bluesky(posts: list[str]):
+    for text in posts:
+        _validate_post(text)
     client = _get_client()
     root = None
     reply_ref = None
