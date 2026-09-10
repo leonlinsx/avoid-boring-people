@@ -6,9 +6,9 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "
 
 # The normal automation destinations. Keep disabled or unapproved providers out
 # of this list; PLATFORM remains available as an explicit local/test override.
-# Weibo stays out until its open-platform app gains write scope; Nostr stays
-# out until its relays accept a live note from our key.
-DEFAULT_PLATFORMS = ("twitter", "bluesky", "mastodon", "devto", "farcaster")
+# Weibo stays out until its open-platform app gains write scope, which needs a
+# Chinese mobile-verified account and is parked as a TODO.
+DEFAULT_PLATFORMS = ("twitter", "bluesky", "mastodon", "devto", "farcaster", "nostr")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,
 # per-article opt-in through the `devto` frontmatter flag.

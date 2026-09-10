@@ -1,6 +1,6 @@
 # Social distribution
 
-The automated distribution job publishes a canonical leonlins.com article to X, Bluesky, Mastodon, Farcaster, and DEV (when category policy permits). Reddit is deferred while API approval is pending, LinkedIn, Threads, and Publish0x are inactive, and Weibo and Nostr are implemented but unverified; their dormant adapters must not appear in default production workflows.
+The automated distribution job publishes a canonical leonlins.com article to X, Bluesky, Mastodon, Farcaster, Nostr, and DEV (when category policy permits). Reddit is deferred while API approval is pending, LinkedIn, Threads, and Publish0x are inactive, and Weibo is implemented but unverified; their dormant adapters must not appear in default production workflows.
 
 The job generates one summary per article where required, then deterministically renders it per platform. DEV receives the full source-index article content with the canonical leonlins.com URL. `posted.json` is updated only after a platform confirms success, so retrying a failed run attempts only destinations that have not already succeeded. Transient failures (429, timeouts/connections, 500/502/503/504) are retried with backoff; permanent errors (400/401/403/422, validation failures) are not.
 
@@ -19,9 +19,10 @@ X, Bluesky, Mastodon, DEV, DeepSeek, and Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNE
 `REDDIT_SUBREDDIT` defaults to `AvoidBoringPeople`; set it as a repository variable or workflow environment value only if that changes. The Reddit adapter refreshes its OAuth token at run time; do not use a short-lived access token in GitHub secrets.
 
 The default destinations are versioned in `scripts/automation/routing.py` as
-`DEFAULT_PLATFORMS`: X, Bluesky, Mastodon, DEV, and Farcaster. LinkedIn,
-Reddit, Weibo, and Nostr remain out of the defaults until their setup is
-verified. For a local one-off override, set `PLATFORM` explicitly. Weibo posts
+`DEFAULT_PLATFORMS`: X, Bluesky, Mastodon, DEV, Farcaster, and Nostr.
+LinkedIn, Reddit, and Weibo remain out of the defaults until their setup is
+verified (Weibo additionally needs a Chinese mobile-verified account and is
+parked). For a local one-off override, set `PLATFORM` explicitly. Weibo posts
 a Simplified-Chinese DeepSeek localization of the article, never the English
 text; the localizer raises rather than falling back.
 

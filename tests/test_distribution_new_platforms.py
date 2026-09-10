@@ -278,7 +278,8 @@ def test_weibo_refresh_failure_raises(monkeypatch):
 def test_new_platforms_join_routing_but_not_defaults():
     assert "weibo" in PLATFORMS and "nostr" in PLATFORMS
     assert "weibo" in SOCIAL_PLATFORMS and "nostr" in SOCIAL_PLATFORMS
-    assert "weibo" not in DEFAULT_PLATFORMS and "nostr" not in DEFAULT_PLATFORMS
+    assert "weibo" not in DEFAULT_PLATFORMS
+    assert "nostr" in DEFAULT_PLATFORMS
     assert eligible_for_category({"category": "Technology"}, "weibo")
     assert eligible_for_category({"category": "Technology"}, "nostr")
     assert eligible_for_category({"category": "Investing"}, "weibo")
