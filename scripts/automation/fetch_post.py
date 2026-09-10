@@ -7,6 +7,10 @@ LOCAL_SEARCH_INDEX_URL = "http://localhost:4321/search-index.json"
 LIVE_SEARCH_INDEX_URL = "https://leonlins.com/search-index.json"
 SITE_URL = "https://leonlins.com"
 
+# The site's bot protection rejects bare urllib clients with 403, which made
+# every production run fail to load the index. Identify honestly instead.
+SEARCH_INDEX_USER_AGENT = "Mozilla/5.0 (compatible; avoid-boring-people/1.0; +https://leonlins.com)"
+
 
 def load_search_index() -> List[Dict]:
     """Load the search index JSON, preferring local dev server if running."""
@@ -14,7 +18,14 @@ def load_search_index() -> List[Dict]:
 
     for url in urls:
         try:
-            request = Request(url, headers={"Cache-Control": "no-cache"})
+            request = Request(
+                url,
+                headers={
+                    "Cache-Control": "no-cache",
+                    "Accept": "application/json",
+                    "User-Agent": SEARCH_INDEX_USER_AGENT,
+                },
+            )
             with urlopen(request, timeout=10) as response:
                 if response.status != 200:
                     raise HTTPError(url, response.status, response.reason, response.headers, None)

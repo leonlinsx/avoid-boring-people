@@ -454,6 +454,42 @@ def test_mastodon_thread_verifies_once_and_chains_replies(monkeypatch):
         mastodon_module.post_single_to_mastodon("x" * 501)
 
 
+# --- Search-index fetch ------------------------------------------------------
+
+def test_search_index_request_identifies_itself(monkeypatch):
+    from scripts.automation import fetch_post as fetch_post_module
+
+    seen = {}
+
+    class FakeResponse:
+        status = 200
+        def __init__(self, payload):
+            self._payload = payload
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            return False
+        def read(self):
+            import json as json_module
+            return json_module.dumps(self._payload).encode()
+
+    import json as json_module
+
+    def fake_urlopen(request, timeout=None):
+        seen.update(request.header_items())
+        if "localhost" in request.full_url:
+            raise Exception("no dev server")
+        return FakeResponse([{"id": "a", "title": "T", "url": "/writing/a/", "content": "x"}])
+
+    monkeypatch.setattr(fetch_post_module, "urlopen", fake_urlopen)
+    data = fetch_post_module.load_search_index()
+
+    assert data and data[0]["id"] == "a"
+    user_agent = seen.get("User-agent") or seen.get("User-Agent")
+    assert user_agent and "Python-urllib" not in user_agent
+    assert "avoid-boring-people" in user_agent
+
+
 # --- Publisher constraints ----------------------------------------------------
 
 def test_platform_constraints_reject_before_submission(monkeypatch):
