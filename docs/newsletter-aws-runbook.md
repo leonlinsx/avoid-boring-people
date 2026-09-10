@@ -16,8 +16,9 @@ Perform these steps in **Amazon SES, us-east-2**:
 1. Reuse the existing `my-first-configuration-set`; do not create a second configuration set without a reason.
 2. In Amazon SNS, also in `us-east-2`, create a dedicated standard topic named `newsletter-ses-events`. Do not use an existing unrelated topic.
 3. In the configuration set's event destinations, add the new SNS topic and select delivery, bounce, and complaint events. Do not enable open/click tracking.
-4. Deploy the Phase 3 code before creating the SNS HTTPS subscription, so `https://leonlins.com/api/newsletter/ses-events` exists.
-5. Create an HTTPS subscription from `newsletter-ses-events` to that endpoint. The endpoint automatically confirms only a valid, correctly signed confirmation for the exact topic ARN. Verify the subscription shows `Confirmed` in SNS.
+4. In the configuration set's Tracking options, keep open tracking and click tracking disabled (link wrappers contradict the published no-tracking privacy notice and look phishy). Verified off 2026-09-10; re-check after any console edits, since nearby settings screens (e.g. VDM engagement tracking) do not control link rewriting.
+5. Deploy the Phase 3 code before creating the SNS HTTPS subscription, so `https://leonlins.com/api/newsletter/ses-events` exists.
+6. Create an HTTPS subscription from `newsletter-ses-events` to that endpoint. The endpoint automatically confirms only a valid, correctly signed confirmation for the exact topic ARN. Verify the subscription shows `Confirmed` in SNS.
 
 Set these Vercel environment secrets for the production environment only:
 

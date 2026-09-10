@@ -21,18 +21,66 @@ export function canDeliverConfirmation(email: string): boolean {
 }
 
 async function sendConfirmation(email: string, token: string) {
-  if (!canDeliverConfirmation(email)) return;
+  if (!canDeliverConfirmation(email)) {
+    console.info('newsletter_confirmation_skipped');
+    return;
+  }
+
   const configurationSet = process.env.SES_CONFIGURATION_SET;
-  if (!configurationSet) throw new Error('SES configuration set is not configured.');
+
+  if (!configurationSet) {
+    console.error('newsletter_confirmation_configuration_error', {
+      message: 'SES configuration set is not configured.',
+    });
+
+    throw new Error('SES configuration set is not configured.');
+  }
+
   const url = new URL('/api/newsletter/confirm', siteOrigin());
   url.searchParams.set('token', token);
-  await new SESv2Client({ region: process.env.AWS_REGION }).send(new SendEmailCommand({
-    FromEmailAddress: NEWSLETTER_FROM,
-    ReplyToAddresses: [NEWSLETTER_REPLY_TO],
-    Destination: { ToAddresses: [email] },
-    ConfigurationSetName: configurationSet,
-    Content: { Simple: { Subject: { Data: 'Confirm your subscription' }, Body: { Text: { Data: `Confirm your subscription: ${url}` } } } },
-  }));
+
+  console.info('newsletter_confirmation_send_attempt', {
+    region: process.env.AWS_REGION ?? 'undefined',
+    hasConfigurationSet: true,
+  });
+
+  try {
+    const result = await new SESv2Client({
+      region: process.env.AWS_REGION,
+    }).send(
+      new SendEmailCommand({
+        FromEmailAddress: NEWSLETTER_FROM,
+        ReplyToAddresses: [NEWSLETTER_REPLY_TO],
+        Destination: {
+          ToAddresses: [email],
+        },
+        ConfigurationSetName: configurationSet,
+        Content: {
+          Simple: {
+            Subject: {
+              Data: 'Confirm your subscription',
+            },
+            Body: {
+              Text: {
+                Data: `Confirm your subscription: ${url}`,
+              },
+            },
+          },
+        },
+      }),
+    );
+
+    console.info('newsletter_confirmation_send_success', {
+      messageId: result.MessageId,
+    });
+  } catch (error) {
+    console.error('newsletter_confirmation_send_failure', {
+      name: error instanceof Error ? error.name : 'unknown',
+      message: error instanceof Error ? error.message : 'unknown',
+    });
+
+    throw error;
+  }
 }
 
 export async function requestSubscription(input: { email: string; source?: string; honeypot?: string; ip?: string }) {
