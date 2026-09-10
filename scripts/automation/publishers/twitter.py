@@ -4,6 +4,16 @@ from dotenv import load_dotenv
 
 load_dotenv()  # ✅ load .env if present
 
+TWEET_CHAR_LIMIT = 280
+
+
+def _validate_tweet(text: str) -> None:
+    if len(text) > TWEET_CHAR_LIMIT:
+        raise ValueError(
+            f"Tweet exceeds the {TWEET_CHAR_LIMIT}-character limit ({len(text)} characters)"
+        )
+
+
 def get_twitter_client():
     client = tweepy.Client(
         consumer_key=os.getenv("TWITTER_API_KEY"),
@@ -15,6 +25,7 @@ def get_twitter_client():
 
 def post_single(client, post):
     text = f"{post['title']}\n\n{post['url']}"
+    _validate_tweet(text)
     response = client.create_tweet(text=text)
     print("✅ Posted single tweet:", text)
     return response
@@ -23,6 +34,11 @@ def post_thread(client, tweets: list[str]):
     if not tweets:
         print("⚠️ No tweets to post.")
         return None
+
+    # Validate every tweet before the first API call so a late
+    # over-length tweet can never leave a partially posted thread.
+    for text in tweets:
+        _validate_tweet(text)
 
     responses = []
 

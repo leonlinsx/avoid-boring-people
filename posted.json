@@ -1,5 +1,4 @@
-+{
-  "version": 2,
+{
   "posts": {
     "2016_03_17_excel/index.md": {
       "_legacy": {
@@ -456,5 +455,6 @@
         "global_count": 2
       }
     }
-  }
+  },
+  "version": 2
 }

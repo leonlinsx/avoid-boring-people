@@ -14,6 +14,10 @@ on:
         description: 'Render and route only; do not publish or update state'
         type: boolean
         default: false
+      platforms:
+        description: 'Manual runs only: comma-separated platforms (e.g. twitter,bluesky); empty keeps production defaults'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -76,16 +80,11 @@ jobs:
           MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
-          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
-          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
           NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
           NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
-          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
-          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
-          REDDIT_REFRESH_TOKEN: ${{ secrets.REDDIT_REFRESH_TOKEN }}
-          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
         run: |
           sleep 90
+          if [ -n "${{ inputs.platforms }}" ]; then export PLATFORM="${{ inputs.platforms }}"; fi
           while IFS= read -r post_id; do TARGET_POST_ID="$post_id" python -m scripts.automation.auto_post; done < "$RUNNER_TEMP/post_ids"
       - name: Commit state
         if: steps.added.outputs.found == 'true'
