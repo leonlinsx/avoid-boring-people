@@ -31,6 +31,7 @@ import {
   productionSendConfig,
   subscriberUnsubscribeToken,
 } from '../src/lib/newsletter/production-send.ts';
+import { buildConfirmInvalidPage, buildConfirmSuccessPage } from '../src/lib/newsletter/confirm-pages.ts';
 import { buildConfirmationEmail, canDeliverConfirmation, CONFIRMATION_SUBJECT, confirmSubscription, requestSubscription } from '../src/lib/newsletter/subscriptions.ts';
 import { confirmSnsSubscription, parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
 import { requiresOriginRejection } from '../src/lib/newsletter/request-origin.ts';
@@ -369,7 +370,7 @@ function testNewsletterConfirmationBoundary() {
 }
 
 function testConfirmationEmailContent() {
-  assert.equal(CONFIRMATION_SUBJECT, 'Confirm your subscription');
+  assert.equal(CONFIRMATION_SUBJECT, 'Confirm your subscription to Avoid Boring People');
   const url = 'https://leonlins.com/api/newsletter/confirm?token=abc123';
   const { html, text } = buildConfirmationEmail(url);
   assert.match(html, />Confirm my subscription<\/a>/);
@@ -389,6 +390,28 @@ function testConfirmationEmailContent() {
   assert.doesNotMatch(html, /pixel/i);
   assert.doesNotMatch(html, /track/i);
   assert.doesNotMatch(html, /http:\/\//);
+}
+
+function testConfirmPages() {
+  const success = buildConfirmSuccessPage();
+  assert.match(success, /You’re subscribed\./);
+  assert.match(success, /investing, technology, systems/);
+  assert.match(success, /publish irregularly/);
+  assert.match(success, /newsletter@leonlins\.com to your contacts/);
+  assert.ok(success.includes('<a class="cta" href="/writing">'), 'success page links into the archive');
+  const invalid = buildConfirmInvalidPage();
+  assert.match(invalid, /no longer valid/);
+  assert.match(invalid, /work only once/);
+  assert.match(invalid, /subscribe again/);
+  assert.ok(invalid.includes('<a class="cta" href="/#subscribe">'), 'invalid page links back to signup');
+  for (const body of [success, invalid]) {
+    assert.match(body, /<!DOCTYPE html>/);
+    assert.match(body, /— Leon/);
+    assert.match(body, /leonlins\.com/);
+    assert.doesNotMatch(body, /token=/);
+    assert.doesNotMatch(body, /<script/i);
+    assert.doesNotMatch(body, /cadence|weekly|monthly/i);
+  }
 }
 
 function makeFakeNewsletterDb(handler: (query: { text: string; values: unknown[] }) => unknown[]) {
@@ -946,6 +969,7 @@ async function run() {
     testNewsletterSafetyHelpers();
     testNewsletterConfirmationBoundary();
     testConfirmationEmailContent();
+    testConfirmPages();
     await testSubscriptionLifecycleDb();
     await testSnsValidation();
     testEnrichPost();

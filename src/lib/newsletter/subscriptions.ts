@@ -7,7 +7,7 @@ import { NEWSLETTER_FROM, NEWSLETTER_REPLY_TO } from './email.ts';
 
 const generic = { ok: true, message: 'If this address can receive this newsletter, check your inbox.' };
 
-export const CONFIRMATION_SUBJECT = 'Confirm your subscription';
+export const CONFIRMATION_SUBJECT = 'Confirm your subscription to Avoid Boring People';
 
 function escapeHtml(value: string): string {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
