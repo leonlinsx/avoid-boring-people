@@ -2,14 +2,14 @@
 
 ## Current phase
 
-**Phase 3 — SES/AWS production plumbing: complete. SES production access granted 2026-09-10 (50,000 messages/day, 14/second, out of sandbox, us-east-2). Phase 4 controlled validation may proceed with test accounts only; the Substack list stays untouched without explicit approval.**
+**Phase 4 — controlled validation: in progress, controlled-test-only. SES production access granted 2026-09-10 (50,000 messages/day, 14/second, out of sandbox, us-east-2). The Substack list stays untouched without explicit approval; no real Substack import, no warm-up cohort, and public signup remains on Substack.**
 
 - Production `main` includes the crash-safe campaign sender at merge commit `f443477`; rollback tag `newsletter-pre-main-integration-20260909` preserves pre-integration main `a20c5f6`. Main's site and autopost changes were preserved, and the separate distribution-refactor worktree was not modified.
 - Validation ran against successful GitHub/Vercel production deployment record `6351004359` at `https://avoid-boring-people-m387l3f23-leons-projects-b248d9a2.vercel.app`. Post-deployment checks returned homepage 200, invalid SNS POST 400, and non-exempt form-style PUT 403; later documentation-only deployments do not change that runtime.
 - SNS subscription confirmation is complete (`PendingConfirmation: false`) and completed in 175 ms. The canonical `https://leonlins.com/api/newsletter/ses-events` endpoint is the only confirmed topic subscription.
 - SES event destination `newsletter-ses-events` is enabled for DELIVERY, BOUNCE, and COMPLAINT only. Its topic policy permits `ses.amazonaws.com` to publish only from account 079415246848 and configuration set `my-first-configuration-set`.
 - End-to-end delivery validation passed: a fresh marked test sent only to allowlisted `contact@leonlins.com` was accepted by SES; SNS invoked the production handler; Vercel returned 204; and Neon recorded the authenticated receipt. Subscriber count remains zero and no Substack data was read.
-- Production Vercel has only `DATABASE_URL` and `NEWSLETTER_SNS_TOPIC_ARN` newsletter secrets. It has no email-send credentials or confirmation-delivery flags.
+- Production Vercel now carries confirmation-send configuration: `DATABASE_URL`, `NEWSLETTER_SNS_TOPIC_ARN`, the Vercel confirmation SES credentials (`AWS_REGION`, `SES_CONFIGURATION_SET`, access key), `NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED=true`, and an explicit `NEWSLETTER_TEST_RECIPIENTS` allowlist. `NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED` remains absent/false, so arbitrary-recipient confirmation delivery stays disabled.
 - AWS identity readiness is healthy: `leonlins.com` is verified, DKIM succeeds with 2048-bit keys, `mail.leonlins.com` MAIL FROM succeeds, and account suppression covers bounces and complaints. Public SPF records exist and DMARC is monitoring-only (`p=none`).
 - **Former external blocker, cleared 2026-09-10:** SES production access granted — 50,000 messages/day at 14 messages/second, account out of the sandbox in us-east-2, effective immediately. Test-account validation may begin; warm-up and any real-list sending still require explicit per-step approval.
 - Controlled SES event validation is complete. With explicit approval, exactly two synthetic messages were sent from `newsletter@leonlins.com`: one to AWS's bounce simulator (SES message `010f01a086400e5c-fe3e2a52-ab32-4c69-82be-db00ae14bb20-000000`) and one to AWS's complaint simulator (SES message `010f01a086400edf-79a5402a-ce4f-4241-8d8c-9bcbddd767ad-000000`). The production endpoint stored three new authenticated SNS receipts, consistent with the enabled delivery plus terminal-event notifications. Subscriber and suppression counts remain zero; no Substack data was read.
@@ -85,9 +85,19 @@ This status file is the handoff record for the current newsletter migration phas
 - Validated migration 003 and the exact-count snapshot on a fresh short-lived Neon branch created from production. A synthetic early redacted complaint was safely retained before recipient/message association, then applied after reconciliation. Synthetic rows were removed. No email was sent by these checks.
 - With explicit approval, applied migration 003 atomically to Neon production, verified its four columns and two indexes, and confirmed zero subscribers/campaigns/recipients before and after. PR #31 merged as `f443477`, Vercel production deployed successfully, public route/security checks passed, and one non-email signed SNS notification exercised the new receipt fields end to end.
 
+## Phase 4 progress (controlled-test-only)
+
+- Controlled owned signup reached production for an explicit test recipient: Neon created/updated a `pending` subscriber, Vercel reached the `sendConfirmation()` path, and SES `SendEmail` succeeded with a returned MessageId.
+- Gmail received the confirmation message, and SES → SNS → `POST /api/newsletter/ses-events` completed with HTTP 204, confirming the live event-ingestion transport.
+- The initial sparse confirmation email (text-only `Confirm your subscription: <url>`) was flagged by Gmail with a red “This message might be dangerous” warning.
+- The confirmation email is now a normal transactional message with both HTML and plain-text bodies: subject `Confirm your subscription`, From `Leon Lin <newsletter@leonlins.com>`, Reply-To `contact@leonlins.com`, a direct `https://leonlins.com/api/newsletter/confirm?token=...` destination rendered as an email-safe button in HTML and printed in full in the plain-text alternative. No tracking, pixels, shorteners, redirect domains, or remote images. The SES configuration set and all delivery safety gates are retained.
+- Lifecycle review (no new states): valid subscription creates/retains `pending`; only a matching token hash transitions `pending -> active` with `confirmed_at` set and `confirmation_token_hash` cleared, so reuse is a no-op; `unsubscribed`/`bounced`/`complained` rows are never reactivated; raw tokens are hashed before storage and never logged. New focused unit tests cover the confirmation content and these lifecycle queries.
+- SES event review: DELIVERY/BOUNCE/COMPLAINT notifications still pass SNS signature plus exact-topic validation before any state change, are deduplicated on `(provider, event_id)`, persist provider message IDs and event state, correlate to campaign recipients where possible, suppress only `active` subscribers, and retain pre-association events for later reconciliation. No open/click tracking was added. No implementation or test changes were needed.
+- Phase 4 remains controlled-test-only: no real Substack subscriber import, no warm-up cohort, public signup still on Substack.
+- SPF/DKIM/DMARC authentication is NOT yet verified — pending a manual Gmail Show Original check after the improved email deploys. No inbox-placement claim is made.
+
 ## Not started
 
-- Phase 4 — Controlled infrastructure validation.
 - Phase 4.5 — Warm-up.
 - Phase 5 — Cutover.
 

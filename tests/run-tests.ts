@@ -31,7 +31,7 @@ import {
   productionSendConfig,
   subscriberUnsubscribeToken,
 } from '../src/lib/newsletter/production-send.ts';
-import { canDeliverConfirmation } from '../src/lib/newsletter/subscriptions.ts';
+import { buildConfirmationEmail, canDeliverConfirmation, CONFIRMATION_SUBJECT, confirmSubscription, requestSubscription } from '../src/lib/newsletter/subscriptions.ts';
 import { confirmSnsSubscription, parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
 import { requiresOriginRejection } from '../src/lib/newsletter/request-origin.ts';
 import { createSign, generateKeyPairSync } from 'node:crypto';
@@ -363,6 +363,100 @@ function testNewsletterConfirmationBoundary() {
     assert.equal(canDeliverConfirmation('reader@example.com'), false);
     process.env.NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED = 'true';
     assert.equal(canDeliverConfirmation('reader@example.com'), true);
+  } finally {
+    process.env = original;
+  }
+}
+
+function testConfirmationEmailContent() {
+  assert.equal(CONFIRMATION_SUBJECT, 'Confirm your subscription');
+  const url = 'https://leonlins.com/api/newsletter/confirm?token=abc123';
+  const { html, text } = buildConfirmationEmail(url);
+  assert.match(html, />Confirm my subscription<\/a>/);
+  assert.ok(html.includes(`<a href="${url}"`), 'HTML button links directly to the confirmation URL');
+  assert.match(text, /whatever else I’m exploring\.\nhttps:\/\/leonlins\.com\/api\/newsletter\/confirm\?token=abc123/);
+  for (const body of [html, text]) {
+    assert.match(body, /Confirm your subscription/);
+    assert.match(body, /Thanks for subscribing to Avoid Boring People\./);
+    assert.match(body, /If you didn’t subscribe, you can ignore this email\./);
+    assert.match(body, /— Leon/);
+    assert.match(body, /leonlins\.com/);
+  }
+  const hrefs = [...html.matchAll(/href="([^"]*)"/g)].map((match) => match[1]);
+  assert.ok(hrefs.length > 0);
+  for (const href of hrefs) assert.ok(href.startsWith('https://leonlins.com/'), `unexpected confirmation link target: ${href}`);
+  assert.doesNotMatch(html, /<img/i);
+  assert.doesNotMatch(html, /pixel/i);
+  assert.doesNotMatch(html, /track/i);
+  assert.doesNotMatch(html, /http:\/\//);
+}
+
+function makeFakeNewsletterDb(handler: (query: { text: string; values: unknown[] }) => unknown[]) {
+  const queries: Array<{ text: string; values: unknown[] }> = [];
+  const db: any = async (parts: TemplateStringsArray, ...values: unknown[]) => {
+    const query = { text: parts.join('\n'), values };
+    queries.push(query);
+    return handler(query);
+  };
+  return { db, queries };
+}
+
+async function testSubscriptionLifecycleDb() {
+  const original = { ...process.env };
+  try {
+    delete process.env.NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED;
+    delete process.env.NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED;
+
+    // Valid pending confirmation activates exactly once and never stores the raw token.
+    const pendingHash = hashToken('good-token');
+    let confirmations = 0;
+    const confirmDb = makeFakeNewsletterDb((query) => {
+      assert.match(query.text, /status = 'pending'/);
+      assert.match(query.text, /confirmed_at/);
+      assert.match(query.text, /confirmation_token_hash = NULL/);
+      if (query.values.includes(pendingHash) && confirmations === 0) {
+        confirmations += 1;
+        return [{ id: 'subscriber-1' }];
+      }
+      return [];
+    });
+    assert.equal(await confirmSubscription('good-token', confirmDb.db), true);
+    assert.equal(await confirmSubscription('good-token', confirmDb.db), false);
+    assert.equal(await confirmSubscription('wrong-token', confirmDb.db), false);
+    assert.equal(await confirmSubscription('', confirmDb.db), false);
+    for (const query of confirmDb.queries) {
+      assert.ok(!query.values.includes('good-token'), 'raw confirmation token must never reach the database');
+    }
+
+    // Suppressed subscribers are never reactivated or rewritten by a new request.
+    for (const status of ['active', 'unsubscribed', 'bounced', 'complained']) {
+      const suppressedDb = makeFakeNewsletterDb((query) => {
+        if (query.text.includes('newsletter_rate_limits')) return [{ attempt_count: 1 }];
+        if (query.text.includes('SELECT status FROM subscribers')) return [{ status }];
+        throw new Error(`unexpected query for ${status} subscriber: ${query.text}`);
+      });
+      const response = await requestSubscription({ email: 'person@example.com' }, suppressedDb.db);
+      assert.deepEqual(response, { ok: true, message: 'If this address can receive this newsletter, check your inbox.' });
+      assert.ok(suppressedDb.queries.every((query) => !query.text.includes('INSERT INTO subscribers')), `${status} must not be rewritten`);
+    }
+
+    // A new address creates pending with hashed tokens only.
+    const newDb = makeFakeNewsletterDb((query) => {
+      if (query.text.includes('newsletter_rate_limits')) return [{ attempt_count: 1 }];
+      if (query.text.includes('SELECT status FROM subscribers')) return [];
+      if (query.text.includes('INSERT INTO subscribers')) {
+        assert.match(query.text, /'pending'/);
+        return [];
+      }
+      throw new Error(`unexpected query for new subscriber: ${query.text}`);
+    });
+    await requestSubscription({ email: 'New@Example.com' }, newDb.db);
+    const insert = newDb.queries.find((query) => query.text.includes('INSERT INTO subscribers'));
+    assert.ok(insert);
+    assert.ok(insert.values.includes('new@example.com'));
+    const hashes = insert.values.filter((value) => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value));
+    assert.equal(hashes.length, 2);
+    assert.notEqual(hashes[0], hashes[1]);
   } finally {
     process.env = original;
   }
@@ -851,6 +945,8 @@ async function run() {
     testNewsletterProductionSendSafeguards();
     testNewsletterSafetyHelpers();
     testNewsletterConfirmationBoundary();
+    testConfirmationEmailContent();
+    await testSubscriptionLifecycleDb();
     await testSnsValidation();
     testEnrichPost();
     await testGetAllPostsPaginated();

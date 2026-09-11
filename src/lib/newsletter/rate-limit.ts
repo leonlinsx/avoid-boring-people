@@ -12,8 +12,7 @@ export function isRateLimitAllowed(attemptCount: number, limit: number): boolean
   return attemptCount <= limit;
 }
 
-export async function takeRateLimit(scope: 'ip' | 'email', subject: string, limit: number): Promise<boolean> {
-  const db = newsletterDb();
+export async function takeRateLimit(scope: 'ip' | 'email', subject: string, limit: number, db = newsletterDb()): Promise<boolean> {
   const rows = await db`INSERT INTO newsletter_rate_limits (scope, subject, window_started_at, attempt_count)
     VALUES (${scope}, ${hashRateLimitSubject(subject)}, now(), 1)
     ON CONFLICT (scope, subject) DO UPDATE SET
