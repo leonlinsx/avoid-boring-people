@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { EMAIL_ATTEMPTS_PER_HOUR, IP_ATTEMPTS_PER_HOUR, takeRateLimit } from '../../lib/newsletter/rate-limit.ts';
 
 export const prerender = false;
 
@@ -12,6 +13,27 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify({ ok: false, message: 'Invalid email' }),
         { status: 400 },
       );
+    }
+
+    // Unauthenticated relay to Substack: throttle per address and per IP so
+    // this endpoint cannot be used for subscription bombing. A rate-store
+    // outage fails open (logged) so legitimate signups keep working.
+    try {
+      const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+      const [emailAllowed, ipAllowed] = await Promise.all([
+        takeRateLimit('email', String(email).toLowerCase(), EMAIL_ATTEMPTS_PER_HOUR),
+        takeRateLimit('ip', forwarded ?? 'unknown', IP_ATTEMPTS_PER_HOUR),
+      ]);
+      if (!emailAllowed || !ipAllowed) {
+        return new Response(
+          JSON.stringify({ ok: false, message: 'Too many attempts. Please try again later.' }),
+          { status: 429 },
+        );
+      }
+    } catch (error) {
+      console.error('newsletter_subscribe_rate_limit_unavailable', {
+        name: error instanceof Error ? error.name : 'unknown',
+      });
     }
 
     // Try JSON first
@@ -38,9 +60,12 @@ export const POST: APIRoute = async ({ request }) => {
     if (res.ok)
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
 
-    const text = await res.text();
+    // Do not reflect the upstream body: log the status server-side and
+    // return a generic failure instead.
+    console.error('newsletter_subscribe_upstream_failure', { status: res.status });
+    await res.text().catch(() => null);
     return new Response(
-      JSON.stringify({ ok: false, status: res.status, message: text }),
+      JSON.stringify({ ok: false, message: 'Subscription failed. Please try again later.' }),
       { status: 502 },
     );
   } catch (err: any) {

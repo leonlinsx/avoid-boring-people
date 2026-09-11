@@ -59,3 +59,5 @@ coverage
 
 __pycache__/
 *.py[cod]
+# Autopost runtime payload (public content, must never be committed)
+/post_payload.json

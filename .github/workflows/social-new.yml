@@ -89,7 +89,19 @@ jobs:
           NOSTR_NSEC: ${{ secrets.NOSTR_NSEC }}
         run: |
           sleep 90
-          if [ -n "${{ inputs.platforms }}" ]; then export PLATFORM="${{ inputs.platforms }}"; fi
+          if [ -n "${{ inputs.platforms }}" ]; then
+            allowed="twitter linkedin bluesky mastodon farcaster weibo nostr reddit devto publish0x"
+            valid=""
+            IFS=',' read -ra requested <<< "${{ inputs.platforms }}"
+            for item in "${requested[@]}"; do
+              item="$(echo "$item" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')"
+              case " $allowed " in
+                *" $item "*) valid="${valid:+$valid,}$item" ;;
+                *) echo "Unknown platform: $item" >&2; exit 1 ;;
+              esac
+            done
+            export PLATFORM="$valid"
+          fi
           while IFS= read -r post_id; do TARGET_POST_ID="$post_id" python -m scripts.automation.auto_post; done < "$RUNNER_TEMP/post_ids"
       - name: Commit state
         if: steps.added.outputs.found == 'true'

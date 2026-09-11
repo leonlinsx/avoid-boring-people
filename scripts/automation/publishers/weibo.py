@@ -99,8 +99,10 @@ def post_to_weibo(text: str) -> PublishResult:
         if not _looks_like_expired_token(error):
             raise
         fresh_token = refresh_access_token()
-        print("Weibo access token refreshed; update WEIBO_ACCESS_TOKEN to:")
-        print(fresh_token)
+        # Never print the token: CI stdout is retained in workflow logs.
+        # This run publishes with the fresh token; rotate WEIBO_ACCESS_TOKEN
+        # out of band before the next run.
+        print(f"Weibo access token refreshed for this run (ends …{fresh_token[-4:]}); rotate WEIBO_ACCESS_TOKEN before the next run.")
         data = _publish(fresh_token, text)
     remote_id = str(data["id"])
     print(f"✅ Weibo post created: id {remote_id}")
