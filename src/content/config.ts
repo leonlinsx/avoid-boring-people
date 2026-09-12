@@ -12,7 +12,9 @@ const blog = defineCollection({
       category: z.enum(categoryLabels),
       tags: z.array(z.string()).default([]),
       featured: z.boolean().optional(),
-      evergreen: z.boolean().default(false),
+      // Evergreen redistribution is the default: articles are eligible unless
+      // they are explicitly marked `evergreen: false` (time-sensitive pieces).
+      evergreen: z.boolean().default(true),
       heroImage: z.union([image(), z.string()]).optional(),
       readingTime: z.number().optional(),
       slug: z.string().optional(), // ✅ new override field

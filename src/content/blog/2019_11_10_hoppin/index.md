@@ -4,6 +4,7 @@ description: 'Job shadowing the job shadowing people at Hoppin'
 pubDate: 2019-11-10
 category: Technology
 tags: ['business', 'marketplace']
+evergreen: false
 heroImage: './h_11.webp'
 ---
 

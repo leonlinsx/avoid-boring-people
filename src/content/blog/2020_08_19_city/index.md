@@ -4,6 +4,7 @@ description: 'How picking a city to live in is like picking a restaurant'
 pubDate: 2020-08-19
 category: Culture
 tags: ['predictions']
+evergreen: false
 heroImage: './c_3.png'
 ---
 

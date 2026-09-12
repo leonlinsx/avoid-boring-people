@@ -4,6 +4,7 @@ description: 'What companies benefit from IPOs vs direct listings'
 pubDate: 2020-02-02
 category: Investing
 tags: ['finance']
+evergreen: false
 heroImage: './i_4.webp'
 ---
 

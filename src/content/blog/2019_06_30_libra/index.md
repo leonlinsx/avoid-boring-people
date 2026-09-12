@@ -4,6 +4,7 @@ description: 'Centralised decentralised finance'
 pubDate: 2019-06-30
 category: Technology
 tags: ['finance', 'crypto', 'career']
+evergreen: false
 heroImage: './f_4.png'
 ---
 

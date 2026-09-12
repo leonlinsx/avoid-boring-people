@@ -6,6 +6,8 @@ The job generates one summary per article where required, then deterministically
 
 New articles can use all eligible destinations. Evergreen distribution is limited to X, Bluesky, Mastodon, Farcaster, and Nostr; DEV is never recycled.
 
+Articles are eligible for evergreen redistribution by default. Mark a time-sensitive piece with `evergreen: false` in its frontmatter to exclude it. The summarizer receives the article's publication date so historical facts are framed as belonging to the original publication period rather than as current facts.
+
 ## Required GitHub secrets
 
 X, Bluesky, Mastodon, DEV, DeepSeek, Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`), and Nostr (`NOSTR_NSEC`, the publishing private key) secrets are the active production set. An optional `NOSTR_RELAYS` value overrides the default relay list. Add the following only when the corresponding deferred destination is approved for production:

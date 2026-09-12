@@ -4,6 +4,7 @@ description: 'Walkthrough and questions about the beta'
 pubDate: 2020-04-15
 category: Technology
 tags: ['business']
+evergreen: false
 heroImage: './k_2.webp'
 ---
 

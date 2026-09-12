@@ -4,6 +4,7 @@ description: 'Questions and suggestions about this newly launched product'
 pubDate: 2019-07-05
 category: Technology
 tags: ['startups']
+evergreen: false
 heroImage: './q_7.webp'
 ---
 

@@ -89,7 +89,7 @@ def test_partial_platform_failure_only_persists_success(monkeypatch, tmp_path):
     assert state_manager.get_platform_state("post", "bluesky", state) is None
 
 
-def test_evergreen_requires_opt_in_and_has_per_platform_cooldowns(monkeypatch, tmp_path):
+def test_explicit_evergreen_exclusion_and_per_platform_cooldowns(monkeypatch, tmp_path):
     _use_temp_state(monkeypatch, tmp_path)
     post = {"id": "post", "evergreen": True}
     state = {

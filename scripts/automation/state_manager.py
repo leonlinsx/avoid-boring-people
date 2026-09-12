@@ -17,6 +17,11 @@ EVERGREEN_COOLDOWN_DAYS = {
     "bluesky": int(os.getenv("BLUESKY_EVERGREEN_COOLDOWN_DAYS", "60")),
     "mastodon": int(os.getenv("MASTODON_EVERGREEN_COOLDOWN_DAYS", "90")),
     "farcaster": int(os.getenv("FARCASTER_EVERGREEN_COOLDOWN_DAYS", "60")),
+    # Weibo and Nostr can also be evergreen targets (only DEV and Reddit are
+    # excluded), so their cooldowns must exist or a previously-posted article
+    # raises KeyError the first time the scheduler considers it.
+    "weibo": int(os.getenv("WEIBO_EVERGREEN_COOLDOWN_DAYS", "60")),
+    "nostr": int(os.getenv("NOSTR_EVERGREEN_COOLDOWN_DAYS", "60")),
 }
 
 

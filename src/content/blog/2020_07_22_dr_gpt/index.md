@@ -4,6 +4,7 @@ description: 'or: How I Learned to Stop Worrying and Love the Artificial Intelli
 pubDate: 2020-07-22
 category: Technology
 tags: ['AI', 'computer science', 'math']
+evergreen: false
 heroImage: './gpt_28.webp'
 featured: true
 ---

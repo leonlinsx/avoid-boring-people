@@ -4,6 +4,7 @@ description: 'What I like and dislike, as well as product suggestions'
 pubDate: 2019-05-19
 category: Technology
 tags: ['newsletter', 'writing']
+evergreen: false
 heroImage: './s_8.webp'
 ---
 

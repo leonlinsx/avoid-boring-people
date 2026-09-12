@@ -4,6 +4,7 @@ description: 'Why you should take more risk today'
 pubDate: 2020-09-16
 category: Investing
 tags: ['investing', 'risk']
+evergreen: false
 heroImage: './c_8.webp'
 ---
 

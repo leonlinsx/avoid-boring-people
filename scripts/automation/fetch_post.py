@@ -62,7 +62,11 @@ def fetch_posts() -> List[Dict]:
                 "content": entry.get("content", ""),
                 "category": (entry.get("category") or "").strip(),
                 "tags": entry.get("tags", []),
-                "evergreen": bool(entry.get("evergreen", False)),
+                # The Astro content schema resolves the evergreen default, so the
+                # index already contains a concrete boolean. This fallback only
+                # covers a missing key and must mirror the schema default (true)
+                # rather than silently excluding an article.
+                "evergreen": bool(entry.get("evergreen", True)),
                 "devto": bool(entry.get("devto", False)),
                 "count": len(entry.get("content", "").split()),
             }

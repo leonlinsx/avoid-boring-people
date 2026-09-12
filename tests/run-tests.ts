@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { __setMockGetCollectionImplementation } from 'astro:content';
+import { __setMockGetCollectionImplementation, z } from 'astro:content';
 import { computeCleanSlug } from '../src/utils/slug-helpers.ts';
 import { searchPosts, normalizeQuery } from '../src/utils/search.ts';
 import {
@@ -800,6 +800,24 @@ async function withMockGetCollection(
   }
 }
 
+async function testContentSchemaEvergreenDefault() {
+  const { collections } = await import('../src/content/config.ts');
+  const schema = (collections.blog as any).schema({ image: () => z.any() });
+  const base = {
+    title: 'Evergreen default',
+    pubDate: new Date('2020-07-22T00:00:00Z'),
+    category: 'Technology',
+  };
+
+  assert.equal(
+    schema.parse({ ...base }).evergreen,
+    true,
+    'omitted evergreen must resolve to true so articles opt out instead of opting in',
+  );
+  assert.equal(schema.parse({ ...base, evergreen: true }).evergreen, true);
+  assert.equal(schema.parse({ ...base, evergreen: false }).evergreen, false);
+}
+
 async function testSearchIndexEndpoint() {
   const posts = [
     makeCollectionEntry({
@@ -811,6 +829,7 @@ async function testSearchIndexEndpoint() {
         category: 'Finance',
         tags: ['growth', 'markets'],
         pubDate: new Date('2024-01-01T00:00:00Z'),
+        evergreen: false,
       },
       body: 'First body text',
     }),
@@ -822,6 +841,7 @@ async function testSearchIndexEndpoint() {
         category: 'Markets',
         tags: ['trading'],
         pubDate: new Date('2024-02-01T00:00:00Z'),
+        evergreen: true,
       },
       body: 'Second body text',
     }),
@@ -843,6 +863,7 @@ async function testSearchIndexEndpoint() {
         content: 'First body text',
         category: 'Finance',
         tags: ['growth', 'markets'],
+        evergreen: false,
       },
       {
         id: '2024_02_01_second/index.md',
@@ -852,6 +873,7 @@ async function testSearchIndexEndpoint() {
         content: 'Second body text',
         category: 'Markets',
         tags: ['trading'],
+        evergreen: true,
       },
     ]);
   });
@@ -977,6 +999,7 @@ async function run() {
     await testGetCategoryPostsPaginated();
     testNormalizeHeroImageHelper();
     testExtractHeadings();
+    await testContentSchemaEvergreenDefault();
     await testSearchIndexEndpoint();
     await testApiSearchIndexEndpoint();
     await testRssEndpoint();
