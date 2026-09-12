@@ -17,3 +17,15 @@ def test_social_renderers_adapt_one_argument_without_losing_the_canonical_url():
     post = SocialPost("A useful hook", "A longer explanation.", "https://example.test/article", ("A useful hook", "Supporting point"))
     assert "Full piece: https://example.test/article" in render_linkedin(post)
     assert render_farcaster(post).endswith("https://example.test/article")
+
+
+def test_farcaster_rendering_stays_within_the_cast_limit():
+    url = "https://leonlins.com/writing/long/"
+    # Mirrors a real LLM summary: a 200-character hook plus a 240-character point.
+    long_post = SocialPost("H" * 200, "B" * 240, url, ("H" * 200, "P" * 240))
+
+    rendered = render_farcaster(long_post)
+
+    assert len(rendered) <= 320
+    assert rendered.startswith("H" * 200)
+    assert rendered.endswith(url)

@@ -4,6 +4,7 @@ from __future__ import annotations
 from scripts.automation.content import SocialPost
 
 MASTODON_STATUS_LIMIT = 500
+FARCASTER_CAST_LIMIT = 320
 
 
 def render_thread(post: SocialPost) -> list[str]:
@@ -38,5 +39,20 @@ def render_mastodon(post: SocialPost) -> list[str]:
 
 
 def render_farcaster(post: SocialPost) -> str:
-    supporting_thought = post.thread[1] if len(post.thread) > 1 else post.body
-    return f"{post.hook}\n\n{supporting_thought}\n\n{post.url}".strip()
+    """Render one self-contained Farcaster cast within the 320-character limit.
+
+    A long LLM hook plus supporting thought can exceed the cast limit. Keep the
+    hook and canonical URL and shorten the supporting thought, rather than
+    letting the publisher reject the whole cast.
+    """
+    supporting = post.thread[1] if len(post.thread) > 1 else post.body
+    candidate = f"{post.hook}\n\n{supporting}\n\n{post.url}".strip()
+    if len(candidate) <= FARCASTER_CAST_LIMIT:
+        return candidate
+    ellipsis = "…"
+    fixed = f"{post.hook}\n\n\n\n{post.url}"
+    budget = FARCASTER_CAST_LIMIT - len(fixed) - len(ellipsis)
+    if budget < 0:
+        trimmed_hook = post.hook[: FARCASTER_CAST_LIMIT - len(post.url) - len("\n\n…\n\n")]
+        return f"{trimmed_hook}…\n\n{post.url}".strip()
+    return f"{post.hook}\n\n{supporting[:budget].rstrip()}{ellipsis}\n\n{post.url}".strip()
