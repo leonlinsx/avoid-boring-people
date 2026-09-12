@@ -4,11 +4,15 @@ from __future__ import annotations
 PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr")
 SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr")
 
-# The normal automation destinations. Keep disabled or unapproved providers out
-# of this list; PLATFORM remains available as an explicit local/test override.
+# The normal automation destinations. Keep disabled, unapproved, or unusable
+# providers out of this list; PLATFORM remains available as an explicit
+# local/test override.
+# X is excluded until its API credit balance is restored: X API v2 posting is
+# credit-based, and a depleted balance returns 402 "credits depleted" for the
+# whole destination, which fails the run. Re-add it once credits exist.
 # Weibo stays out until its open-platform app gains write scope, which needs a
 # Chinese mobile-verified account and is parked as a TODO.
-DEFAULT_PLATFORMS = ("twitter", "bluesky", "mastodon", "devto", "farcaster", "nostr")
+DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,
 # per-article opt-in through the `devto` frontmatter flag.

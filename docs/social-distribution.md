@@ -1,16 +1,16 @@
 # Social distribution
 
-The automated distribution job publishes a canonical leonlins.com article to X, Bluesky, Mastodon, Farcaster, Nostr, and DEV (when category policy permits). Reddit is deferred while API approval is pending, LinkedIn, Threads, and Publish0x are inactive, and Weibo is implemented but unverified; their dormant adapters must not appear in default production workflows.
+The automated distribution job publishes a canonical leonlins.com article to Bluesky, Mastodon, Farcaster, Nostr, and DEV (when category policy permits). X is excluded from the defaults while its API credit balance is depleted, but stays available through an explicit `PLATFORM` override. Reddit is deferred while API approval is pending, LinkedIn, Threads, and Publish0x are inactive, and Weibo is implemented but unverified; their dormant adapters must not appear in default production workflows.
 
 The job generates one summary per article where required, then deterministically renders it per platform. DEV receives the full source-index article content with the canonical leonlins.com URL. `posted.json` is updated only after a platform confirms success, so retrying a failed run attempts only destinations that have not already succeeded. Transient failures (429, timeouts/connections, 500/502/503/504) are retried with backoff; permanent errors (400/401/403/422, validation failures) are not.
 
-New articles can use all eligible destinations. Evergreen distribution is limited to X, Bluesky, Mastodon, Farcaster, and Nostr; DEV is never recycled.
+New articles can use all eligible destinations. Evergreen distribution is limited to Bluesky, Mastodon, Farcaster, and Nostr; DEV is never recycled and X is out of the defaults while its API credits are depleted.
 
 Articles are eligible for evergreen redistribution by default. Mark a time-sensitive piece with `evergreen: false` in its frontmatter to exclude it. The summarizer receives the article's publication date so historical facts are framed as belonging to the original publication period rather than as current facts.
 
 ## Required GitHub secrets
 
-X, Bluesky, Mastodon, DEV, DeepSeek, Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`), and Nostr (`NOSTR_NSEC`, the publishing private key) secrets are the active production set. An optional `NOSTR_RELAYS` value overrides the default relay list. Add the following only when the corresponding deferred destination is approved for production:
+Bluesky, Mastodon, DEV, DeepSeek, Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`), and Nostr (`NOSTR_NSEC`, the publishing private key) secrets are the active production set. The `TWITTER_*` secrets are retained for an explicit `PLATFORM=twitter` run, but X API v2 posting is credit-based and returns `402 credits depleted` at a zero balance, so X is not a default destination. An optional `NOSTR_RELAYS` value overrides the default relay list. Add the following only when the corresponding deferred destination is approved for production:
 
 - `LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR_URN` (`urn:li:person:…` or organization URN)
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REFRESH_TOKEN`
@@ -20,10 +20,11 @@ X, Bluesky, Mastodon, DEV, DeepSeek, Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UU
 `REDDIT_SUBREDDIT` defaults to `AvoidBoringPeople`; set it as a repository variable or workflow environment value only if that changes. The Reddit adapter refreshes its OAuth token at run time; do not use a short-lived access token in GitHub secrets.
 
 The default destinations are versioned in `scripts/automation/routing.py` as
-`DEFAULT_PLATFORMS`: X, Bluesky, Mastodon, DEV, Farcaster, and Nostr.
+`DEFAULT_PLATFORMS`: Bluesky, Mastodon, DEV, Farcaster, and Nostr.
 LinkedIn, Reddit, and Weibo remain out of the defaults until their setup is
 verified (Weibo additionally needs a Chinese mobile-verified account and is
-parked). For a local one-off override, set `PLATFORM` explicitly. Weibo posts
+parked). X stays out of the defaults until its API credits are restored.
+For a local one-off override, set `PLATFORM` explicitly. Weibo posts
 a Simplified-Chinese DeepSeek localization of the article, never the English
 text; the localizer raises rather than falling back.
 
