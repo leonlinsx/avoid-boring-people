@@ -8,6 +8,26 @@
     "2017_02_23_random/index.md": {
       "_legacy": {
         "global_count": 3
+      },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-12T11:32:07Z",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mvcyakadys2k",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mvcyakadys2k"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-12T11:32:08Z",
+        "remote_id": "117257845371607127",
+        "remote_url": "https://mastodon.social/@leonlins/117257845371607127"
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-12T11:32:25Z",
+        "remote_id": "1ef04ab57f3379be36ef7836739b192e7ea9be593bf924a21c00cacfabfd5cbe"
       }
     },
     "2017_04_06_convert/index.md": {
