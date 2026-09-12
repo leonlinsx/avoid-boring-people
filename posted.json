@@ -16,6 +16,12 @@
         "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mvcyakadys2k",
         "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mvcyakadys2k"
       },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-12T11:51:21Z",
+        "remote_id": "0x5d4f466e1d52d473a026725d83c0ff00255e1fd7"
+      },
       "mastodon": {
         "count": 1,
         "last_mode": "evergreen",
