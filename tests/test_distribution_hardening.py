@@ -17,6 +17,7 @@ import pytest
 from scripts.automation import auto_post, state_manager
 from scripts.automation import retry as retry_module
 from scripts.automation.content import PublishResult, SocialPost
+from scripts.automation.formatters import format_as_thread
 from scripts.automation.renderers import render_farcaster, render_mastodon, render_thread
 from scripts.automation.routing import DEFAULT_PLATFORMS, PLATFORMS, eligible_for_category
 
@@ -201,6 +202,21 @@ def test_dry_run_never_modifies_state(monkeypatch, tmp_path):
     auto_post.main()
 
     assert not path.exists()
+
+
+def test_dry_run_prints_the_exact_copy_each_channel_would_publish(monkeypatch, tmp_path, capsys):
+    _use_temp_state(monkeypatch, tmp_path)
+    summary = {"teaser": "Hook", "points": ["Point one", "Point two"]}
+    monkeypatch.setattr(auto_post, "_summarize", lambda post: summary)
+    _drive_main(monkeypatch, _post(), ["twitter", "bluesky", "mastodon"], {}, post_mode="thread", dry_run=True)
+
+    auto_post.main()
+
+    output = capsys.readouterr().out
+    social = SocialPost(summary["teaser"], "\n\n".join(summary["points"]), _post()["url"], tuple(format_as_thread(_post(), summary, mode="bullets", max_tweets=5)))
+    for part in render_thread(social):
+        assert part in output
+    assert render_mastodon(social)[0] in output
 
 
 # --- Retry behavior ----------------------------------------------------------

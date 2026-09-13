@@ -137,7 +137,10 @@ def test_storyboard_has_cover_body_and_final_slides_within_limits():
     assert storyboard.slides[-1].kind == "final"
     assert MIN_SLIDES <= len(storyboard.slides) <= MAX_SLIDES
     assert all(slide.kind == "body" for slide in storyboard.slides[1:-1])
-    assert storyboard.slides[0].title == "Tell me why"
+    # The cover leads with the sharpest social hook and treats the literal
+    # article title as secondary context.
+    assert storyboard.slides[0].title == "A short teaser about belief."
+    assert storyboard.slides[0].body == "Tell me why"
     assert storyboard.slides[0].index == 1
     assert [slide.index for slide in storyboard.slides] == list(range(1, len(storyboard.slides) + 1))
     assert len(storyboard.slides[0].title) <= COVER_TITLE_MAX
@@ -216,6 +219,172 @@ def test_point_too_short_to_split_stays_whole_on_one_slide():
     for slide in storyboard.slides[1:-1]:
         assert slide.title
         assert slide.body == ""
+
+
+# --- Body-slide headline/detail boundaries -----------------------------------
+#
+# Splitting a point into a headline and its detail is text layout, not
+# generation: it must land on a boundary the point already has rather than
+# wherever the headline limit happens to fall, and it must not rewrite a word.
+
+def _body_slides(points):
+    return _storyboard(summary={"teaser": "A short teaser.", "points": points}).slides[1:-1]
+
+
+def _words(text):
+    """Words only, so a dropped clause delimiter is not read as a rewrite."""
+    return "".join(char if char.isalnum() else " " for char in text.lower()).split()
+
+
+def test_body_slide_breaks_at_a_readable_boundary_not_the_character_limit():
+    """A point must not be cut at whatever word reaches the headline limit."""
+    points = [
+        "Professional analysts spend billions on data because raw SEC filings require hours of manual downloading and cleaning to compare trends across companies.",
+        "Management conferences and expert networks are not insider trading; they are standard channels where pros discuss strategy openly with large groups of investors.",
+        "Alternative data like app downloads or credit card records is often already aggregated and sold by firms, removing the advantage of seeing it first on social media.",
+    ]
+    slides = _body_slides(points)
+
+    assert slides[0].title == "Professional analysts spend billions on data"
+    assert slides[0].body.startswith("because raw SEC filings require hours of manual downloading")
+    # The previous word-boundary split produced exactly this fragment pair.
+    assert not slides[0].title.endswith("because raw SEC")
+    assert not slides[0].body.startswith("filings require")
+
+    assert slides[1].title == "Management conferences and expert networks"
+    assert slides[1].body.startswith("are not insider trading;")
+    assert not slides[1].title.endswith("are not insider")
+
+    # No clause or phrase boundary fits here, so the headline stays a word-level
+    # split of the point rather than losing its subject.
+    assert slides[2].title == "Alternative data like app downloads or credit card records"
+    assert slides[2].body.startswith("is often already aggregated and sold by firms")
+
+
+def test_body_slide_headline_never_ends_on_a_dangling_connector():
+    points = [
+        "Momentum screens reward patience and discipline over forecasting brilliance.",
+        "Retail investors should stop chasing edges against professionals because the professionals already own the data.",
+        "Your only realistic edge lies in finding small companies that sell no data to investors or performing manual grunt work pros avoid.",
+    ]
+    dangling = {
+        "because", "that", "which", "and", "or", "but",
+        "with", "of", "to", "for", "by", "from", "not",
+    }
+
+    slides = _body_slides(points)
+
+    for slide in slides:
+        assert slide.title.split()[-1].strip(",;:").lower() not in dangling
+    # A preposition opens the detail instead of closing the headline.
+    assert slides[0].title == "Momentum screens reward patience and discipline"
+    assert slides[0].body == "over forecasting brilliance."
+    assert slides[1].title == "Retail investors should stop chasing edges"
+    assert slides[1].body.startswith("against professionals because")
+    # The relative clause belongs to the detail, so the detail no longer starts
+    # mid-sentence with "that".
+    assert slides[2].title == "Your only realistic edge lies"
+    assert slides[2].body.startswith("in finding small companies that sell no data")
+    assert not slides[2].body.startswith("that sell no data")
+
+
+def test_body_slide_does_not_let_an_auxiliary_continue_the_headline_clause():
+    """A detail may open on a verb only while the headline is still the subject."""
+    points = [
+        "Management conferences and expert networks are not insider trading; they are standard channels where pros discuss strategy openly with large groups of investors.",
+        "The point is that markets are efficient and everyone already knows it by now.",
+        "Nobody knows what will happen is a claim that sounds humble but is not.",
+    ]
+
+    slides = _body_slides(points)
+
+    # The headline is a bare subject, so the detail opening on "are" reads well.
+    assert slides[0].title == "Management conferences and expert networks"
+    assert slides[0].body.startswith("are not insider trading;")
+    # These headlines already carry a verb, so resuming them would strand a
+    # fragment on the headline and an incomplete clause on the detail.
+    assert not slides[1].body.startswith("are efficient")
+    assert not slides[2].body.startswith("is a claim that sounds humble")
+    for slide, point in zip(slides, points):
+        assert _words(f"{slide.title} {slide.body}") == _words(point)
+
+
+def test_body_slide_does_not_strand_a_subject_on_the_headline():
+    """A negated reason becomes the detail, not a subject left hanging."""
+    point = (
+        "Platforms like Bloomberg and FactSet exist not because they have secret data, "
+        "but because extracting raw filings from the SEC requires hours of manual cleaning "
+        "that these tools automate."
+    )
+    slides = _body_slides(
+        [point, "Momentum screens reward patience and discipline over forecasting brilliance.", _summary()["points"][2]]
+    )
+    slide = slides[0]
+
+    assert slide.title == "Platforms like Bloomberg and FactSet exist"
+    assert slide.body.startswith("not because they have secret data")
+    # The previous split stranded the pronoun subject at the headline's end.
+    assert not slide.title.endswith("they")
+    assert not slide.body.startswith("have secret data")
+    assert _words(f"{slide.title} {slide.body}") == _words(point)
+
+
+def test_body_slide_prefers_a_complete_first_sentence_over_a_clause_break():
+    points = [
+        "Most beliefs are social, not empirical. Evidence rarely changes them on its own.",
+        "There are many beliefs the mainstream would laugh at now. Flat earthers.",
+        "However, while some experiments are easily replicable, others are not.",
+    ]
+
+    slides = _body_slides(points)
+
+    assert slides[0].title == "Most beliefs are social, not empirical."
+    assert slides[0].body == "Evidence rarely changes them on its own."
+    # The comma inside the first sentence is not a stronger boundary than its end.
+    assert slides[0].title != "Most beliefs are social"
+    assert slides[1].title == "There are many beliefs the mainstream would laugh at now."
+    assert slides[1].body == "Flat earthers."
+    # A single sentence has no sentence break to use, so the comma carries the split.
+    assert slides[2].title == "However, while some experiments are easily replicable"
+    assert slides[2].body == "others are not."
+
+
+def test_body_slide_keeps_a_short_point_whole_and_splits_long_unstructured_text():
+    points = [
+        "Beliefs shift as the people around you shift",
+        "Systematic screens reward patience diversification discipline temperament conviction attribution persistence",
+        "Momentum quality valuation catalysts positioning discipline temperament conviction attribution persistence",
+    ]
+
+    slides = _body_slides(points)
+
+    # No punctuation and no phrase boundary, and it already fits a headline.
+    assert slides[0].title == "Beliefs shift as the people around you shift"
+    assert slides[0].body == ""
+    # Long unstructured text still falls back to a whole-word split.
+    assert slides[1].title == "Systematic screens reward patience diversification"
+    assert slides[1].body == "discipline temperament conviction attribution persistence"
+    assert slides[2].title == "Momentum quality valuation catalysts positioning discipline"
+    assert slides[2].body == "temperament conviction attribution persistence"
+    for slide in slides[1:]:
+        assert len(slide.title) <= 60
+        assert len(slide.body) <= 200
+
+
+def test_body_slide_split_contains_the_original_words_in_order():
+    points = [
+        "Professional analysts spend billions on data because raw SEC filings require hours of manual downloading and cleaning to compare trends across companies.",
+        "Management conferences and expert networks are not insider trading; they are standard channels where pros discuss strategy openly with large groups of investors.",
+        "However, while some experiments are easily replicable, others are not.",
+        "Systematic screens reward patience diversification discipline temperament conviction attribution persistence",
+    ]
+
+    slides = _body_slides(points)
+
+    for slide, point in zip(slides, points):
+        assert _words(f"{slide.title} {slide.body}") == _words(point)
+        # None of these points needs the last-resort truncation.
+        assert "…" not in f"{slide.title}{slide.body}"
 
 
 # --- Renderer ----------------------------------------------------------------
@@ -1331,7 +1500,7 @@ def test_manual_run_publishes_a_carousel_and_records_state(monkeypatch, tmp_path
 
     auto_post.main()
 
-    assert captured["storyboard"].slides[0].title == "Tell me why"
+    assert captured["storyboard"].slides[0].title == "A short teaser about belief."
     stored = state_manager.get_platform_state("2019_02_18_why", "instagram")
     assert stored["remote_id"] == "media-9"
     assert stored["last_mode"] == "new"
@@ -1363,6 +1532,39 @@ def test_instagram_dry_run_renders_locally_without_publishing_or_writing_state(m
     assert "media host: unconfigured" in output
     assert "would publish: nothing until a media host is configured" in output
     assert not path.exists(), "a dry run must never create distribution state"
+
+
+def test_instagram_dry_run_prints_every_slide_in_full(monkeypatch, tmp_path, capsys):
+    monkeypatch.delenv(ENV_UPLOAD_URL, raising=False)
+    monkeypatch.delenv(ENV_UPLOAD_SECRET, raising=False)
+    storyboard = _storyboard()
+
+    _run_instagram_dry_run(monkeypatch, tmp_path)
+
+    output = capsys.readouterr().out
+    assert storyboard.caption in output
+    for slide in storyboard.slides:
+        assert f"Slide {slide.index} [{slide.kind}]" in output
+        assert f"    Title: {slide.title}" in output
+        assert f"    Body: {slide.body}" in output
+    # Every field in this fixture is populated, so the output must show the real
+    # text with no placeholder anywhere.
+    assert "(empty)" not in output
+
+
+def test_instagram_dry_run_names_an_empty_slide_field(monkeypatch, tmp_path, capsys):
+    storyboard = _storyboard()
+    slides = list(storyboard.slides)
+    slides[1] = replace(slides[1], body="")
+    monkeypatch.setattr(
+        auto_post, "_build_storyboard", lambda post, summary: replace(storyboard, slides=tuple(slides))
+    )
+    monkeypatch.delenv(ENV_UPLOAD_URL, raising=False)
+    monkeypatch.delenv(ENV_UPLOAD_SECRET, raising=False)
+
+    _run_instagram_dry_run(monkeypatch, tmp_path)
+
+    assert "    Body: (empty)" in capsys.readouterr().out
 
 
 def test_instagram_dry_run_reports_an_unavailable_renderer(monkeypatch, tmp_path, capsys):

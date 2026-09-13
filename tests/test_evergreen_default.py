@@ -183,9 +183,11 @@ def test_summary_prompt_forbids_presenting_historical_facts_as_current():
         "do not present historical or time-sensitive facts as current facts",
         "do not invent current conditions",
         "do not need to be date-stamped",
-        "in this 2020 analysis",
+        # Anchoring belongs to the underlying claim, never to the article itself.
+        "in 2020",
     ):
         assert expected in lowered
+    assert "this 2020 article argued" not in lowered
 
 
 def test_missing_publication_date_is_marked_unknown():

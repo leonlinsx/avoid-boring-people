@@ -1,31 +1,64 @@
 import textwrap
 from typing import List, Dict, Literal
 
-# Max characters per tweet (leave some buffer for safety)
-MAX_TWEET_LEN = 200  
+# One shared thread representation serves both X (280) and Bluesky (300), so the
+# formatter must fit the tighter platform. Publishers keep their own validation
+# as defense in depth.
+MAX_TWEET_LEN = 280
 
-def format_as_thread(post, summary, mode="bullets", max_tweets=5):
+
+def _one_line(value) -> str:
+    return " ".join(str(value or "").split())
+
+
+def _clip(text: str, limit: int) -> str:
+    """Shorten a single idea at a word boundary.
+
+    Used only where a reply cannot be dropped: the hook and the canonical link.
     """
-    Format a blog post + summary (teaser + points) into a Twitter thread.
+    if len(text) <= limit:
+        return text
+    return textwrap.shorten(text, width=limit, placeholder="…", break_long_words=False) or text[:limit]
+
+
+def format_as_thread(post: Dict, summary: Dict, mode: Literal["bullets", "narrative"] = "bullets",
+                     max_tweets: int = 5) -> List[str]:
+    """Compose the shared X/Bluesky thread from an article and its social copy.
+
+    The root states the hook, plus the strongest supporting point when both fit,
+    so the thread delivers an idea even if nobody clicks. Later replies carry
+    whole standalone points, and the canonical link is always the final reply.
+    Nothing is ever split mid-sentence; a point that cannot stand as its own
+    reply is skipped instead. `mode` is accepted for callers that still pass it.
     """
-    title = post.get("title", "")
-    url = post.get("url", "")
+    if max_tweets < 2:
+        raise ValueError(f"A thread needs room for its canonical link: max_tweets={max_tweets}")
 
-    teaser = summary.get("teaser", "")
-    points = summary.get("points", [])
+    url = _one_line(post.get("url"))
+    if not url:
+        raise ValueError("Thread mode requires a canonical article URL")
+    if len(url) > MAX_TWEET_LEN:
+        raise ValueError(f"Canonical URL exceeds {MAX_TWEET_LEN} characters: {url}")
 
-    tweets = []
+    hook = _clip(_one_line(summary.get("teaser") or post.get("title", "")), MAX_TWEET_LEN)
+    if not hook:
+        raise ValueError("Thread mode requires a teaser or article title to open with")
 
-    # First tweet: title + teaser + link
-    first_tweet = f"{title}\n\n{teaser}\n\n{url}".strip()
-    tweets.append(first_tweet)
+    points = [_one_line(point) for point in summary.get("points", []) if _one_line(point)]
 
-    # Following tweets from points
-    for i, point in enumerate(points, start=2):
-        tweets.append(f"{point} ({i}/{max_tweets})")
-        if len(tweets) >= max_tweets:
+    tweets = [hook]
+    if points and len(f"{hook}\n\n{points[0]}") <= MAX_TWEET_LEN:
+        tweets[0] = f"{hook}\n\n{points.pop(0)}"
+
+    # Reserve the last slot for the canonical link.
+    for point in points:
+        if len(tweets) >= max_tweets - 1:
             break
+        if len(point) > MAX_TWEET_LEN:
+            continue
+        tweets.append(point)
 
+    tweets.append(url)
     return tweets
 
 def split_into_tweets(text: str) -> List[str]:
@@ -38,19 +71,22 @@ def split_into_tweets(text: str) -> List[str]:
 # Debug example
 if __name__ == "__main__":
     post = {"title": "Specialists vs Generalists", "url": "https://example.com"}
-    summary_points = [
-        "Being a generalist gives you adaptability.",
-        "Specialists can go deeper in one domain.",
-        "The best careers often blend both approaches.",
-        "Choose based on your goals, not just trends."
-    ]
+    summary = {
+        "teaser": "Specialization has a hidden cost.",
+        "points": [
+            "Being a generalist gives you adaptability across problems.",
+            "Specialists go deeper, but into an increasingly narrow class of problems.",
+            "The best careers often blend both approaches over time.",
+            "Choose based on your goals, not just trends.",
+        ],
+    }
 
-    bullets_thread = format_as_thread(post, summary_points, mode="bullets")
+    bullets_thread = format_as_thread(post, summary, mode="bullets")
     print("\n--- Bullets Mode ---")
     for t in bullets_thread:
         print(t, "\n")
 
-    narrative_thread = format_as_thread(post, summary_points, mode="narrative")
+    narrative_thread = format_as_thread(post, summary, mode="narrative")
     print("\n--- Narrative Mode ---")
     for t in narrative_thread:
         print(t, "\n")

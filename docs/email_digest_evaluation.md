@@ -2,7 +2,7 @@
 
 ## 1. Prompting & Narrative
 
-- **Current state**: DeepSeek summarization in `scripts/automation/summarizers/llm_summarizer.py` (`summarize_post`, L43) returns a teaser plus up to four points as JSON, with whitespace normalization and character limits enforced in post-processing (`_sanitize_text`/`_truncate`, L32-40). Dry runs substitute mock content by design. A second entry point, `localize_zh_cn` (L157), adapts an article into Simplified-Chinese microblog copy for Weibo and raises rather than falling back to English.
+- **Current state**: DeepSeek author-voice summarization in `scripts/automation/summarizers/llm_summarizer.py` (`summarize_post`, L235) returns a teaser plus up to four points as JSON, with whitespace normalization and character limits enforced in post-processing (`_sanitize_text`/`_truncate`, L126-138). The module fails closed: a failed call, unusable JSON, or copy that trips the `validate_social_copy` gate (L97) raises `SocialCopyError` instead of substituting fallback text. Dry runs substitute mock content by design. A second entry point, `localize_zh_cn` (L323), adapts an article into Simplified-Chinese microblog copy for Weibo and raises rather than falling back to English.
 - **Working as intended**: JSON schema enforcement, factuality guardrails, de-duplication, per-point character caps.
 - **Next opportunities**:
   - Extend the prompt with audience-specific tone controls (e.g., "operator", "founder") driven by metadata.
@@ -34,6 +34,6 @@
 - **Shipped**:
   - Normalized summary text sanitation, deduplication, and truncation to avoid runtime surprises when pushing to character-limited channels.
   - A dedicated ranking module with dataclass-backed configuration to keep heuristics isolated and testable.
-  - Shared OpenAI-compatible client construction (`_client`, L13) reused by both the social summarizer and the Weibo localizer.
+  - Shared OpenAI-compatible client construction (`_client`, L78) reused by both the social summarizer and the Weibo localizer.
 - **Roadmap**:
   - Move sensitive API configuration into typed settings objects shared across scripts.

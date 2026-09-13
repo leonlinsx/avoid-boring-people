@@ -1,6 +1,28 @@
-from typing import Dict, Literal
+"""Author-voice social distillation for one article, via DeepSeek or local Ollama.
+
+A single model call rewrites the author's own long-form writing into the
+author's own voice: one teaser (the sharpest standalone hook) plus standalone
+supporting points. Every platform renderer then adapts that one shared result
+rather than generating its own copy.
+
+The module fails closed. A production generation that fails, returns unusable
+JSON, or produces copy that fails the deterministic quality gate raises instead
+of handing fallback text to a publisher, because these posts go out under the
+author's own name.
+
+`SOCIAL_LLM_PROVIDER` selects the inference backend and defaults to DeepSeek, so
+production is unchanged. `ollama` is an explicit local-development option for
+inspecting real generated copy without spending API credit; it is never an
+automatic fallback, and both backends feed the same prompt, contract, parser,
+and quality gate. The local backend is called through Ollama's native endpoint
+because only that endpoint can be told how much context the article needs.
+"""
+from typing import Dict, Literal, Sequence
 import os
+import re
 import json
+import urllib.error
+import urllib.request
 from datetime import datetime
 from textwrap import dedent
 from openai import OpenAI
@@ -8,26 +30,284 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DEFAULT_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+# `deepseek-flash` is the DeepSeek API alias for DeepSeek-V4.1-Flash and the
+# current replacement for the retired `deepseek-chat` identifier. This is the
+# hosted API model name, not the Hugging Face repository id (`deepseek-ai/...`).
+DEFAULT_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-flash")
+
+# Provider selection. `deepseek` is the production default and the only possible
+# value unless someone sets `SOCIAL_LLM_PROVIDER` deliberately.
+PROVIDER_DEEPSEEK = "deepseek"
+PROVIDER_OLLAMA = "ollama"
+SUPPORTED_PROVIDERS = (PROVIDER_DEEPSEEK, PROVIDER_OLLAMA)
+PROVIDER_LABELS = {PROVIDER_DEEPSEEK: "DeepSeek", PROVIDER_OLLAMA: "Ollama"}
+
+DEFAULT_OLLAMA_BASE_URL = "http://localhost:11434"
+# Ollama's server-side context default is only 4k tokens on a 16 GB GPU, and it
+# then drops the *oldest* tokens of an over-long prompt -- which is exactly where
+# the instructions live. The full article (up to MAX_ARTICLE_CHARS) needs far
+# more than that, so the local request states its own window.
+DEFAULT_OLLAMA_NUM_CTX = 32768
+OLLAMA_TIMEOUT_SECONDS = 600
+
+# The search index is a single JSON document fetched over the network, so a
+# pathological entry must not be able to build an unbounded request. The longest
+# article currently on leonlins.com is ~43,000 characters, so this bound never
+# truncates real writing; it exists only as a safety net.
+MAX_ARTICLE_CHARS = 60_000
+
+TEASER_MAX = 200
+POINT_MAX = 240
+
+# Non-thinking mode supports sampling. 0.5 keeps editorial rewrites natural
+# without drifting away from the source.
+TEMPERATURE = 0.5
+MAX_TOKENS = 1000
+
+
+class SocialCopyError(RuntimeError):
+    """Generated social copy is unpublishable, so the run must fail closed."""
+
+
+# Framing that describes the article from the outside instead of stating the
+# author's own ideas. Phrases ending in a word get a trailing boundary so
+# "the author" does not also reject a legitimate "the authors of the study".
+META_SUMMARY_PHRASES = (
+    "the author",
+    "the writer",
+    "the reader",
+    "this article",
+    "this essay",
+    "this piece",
+    "this post",
+    "the article argues",
+    "the essay explains",
+    "the author writes",
+    "i wrote about",
+    "new post:",
+    "check out",
+    "here are my thoughts on",
+)
+META_SUMMARY_PATTERN = re.compile(
+    "|".join(
+        rf"\b{re.escape(phrase)}\b" if phrase[-1].isalnum() else rf"\b{re.escape(phrase)}"
+        for phrase in META_SUMMARY_PHRASES
+    ),
+    re.IGNORECASE,
+)
+URL_PATTERN = re.compile(r"(?:https?://|www\.)\S", re.IGNORECASE)
+MARKDOWN_PATTERN = re.compile(r"!?\[[^\]\n]*\]\(|^#{1,6}\s|\*\*|__|`")
+
+
+def llm_provider() -> str:
+    """Selected inference backend, defaulting to DeepSeek.
+
+    The provider is chosen only by configuration. It is never inferred from
+    which credentials happen to be present, so an absent `DEEPSEEK_API_KEY`
+    keeps failing closed instead of quietly switching to a local model.
+    """
+    provider = os.getenv("SOCIAL_LLM_PROVIDER", "").strip().lower() or PROVIDER_DEEPSEEK
+    if provider not in SUPPORTED_PROVIDERS:
+        raise SocialCopyError(
+            f"❌ Unknown SOCIAL_LLM_PROVIDER {provider!r}; expected one of "
+            + " or ".join(SUPPORTED_PROVIDERS)
+        )
+    return provider
+
+
+def llm_model(provider: str | None = None) -> str:
+    """Model name for the selected provider."""
+    provider = provider or llm_provider()
+    if provider == PROVIDER_OLLAMA:
+        model = os.getenv("OLLAMA_MODEL", "").strip()
+        if not model:
+            raise SocialCopyError(
+                "❌ OLLAMA_MODEL is not set; name an installed local model "
+                "(see `ollama list`) when using SOCIAL_LLM_PROVIDER=ollama"
+            )
+        return model
+    return os.getenv("DEEPSEEK_MODEL", "").strip() or DEFAULT_MODEL
+
+
+def llm_identity(provider: str | None = None) -> str:
+    """`provider/model` for logs. Contains no credential material."""
+    provider = provider or llm_provider()
+    return f"{provider}/{llm_model(provider)}"
+
+
+def _request_options(provider: str, json_mode: bool = True) -> dict:
+    """Extra chat-completion options for the DeepSeek request.
+
+    Both backends are asked for JSON. DeepSeek additionally needs its `thinking`
+    field disabled: this task is a rewrite, not a reasoning problem, and thinking
+    tokens only add latency and cost here.
+    """
+    options: dict = {}
+    if json_mode:
+        options["response_format"] = {"type": "json_object"}
+    options["extra_body"] = {"thinking": {"type": "disabled"}}
+    return options
+
+
+def ollama_base_url() -> str:
+    """Ollama server root, without a trailing slash."""
+    return (os.getenv("OLLAMA_BASE_URL", "").strip() or DEFAULT_OLLAMA_BASE_URL).rstrip("/")
+
+
+def ollama_num_ctx() -> int:
+    """Context window requested from the local server."""
+    raw = os.getenv("OLLAMA_NUM_CTX", "").strip()
+    if not raw:
+        return DEFAULT_OLLAMA_NUM_CTX
+    try:
+        value = int(raw)
+    except ValueError as error:
+        raise SocialCopyError(
+            f"❌ OLLAMA_NUM_CTX must be an integer number of tokens, got {raw!r}"
+        ) from error
+    if value < 2048:
+        raise SocialCopyError(f"❌ OLLAMA_NUM_CTX must be at least 2048, got {value}")
+    return value
 
 
 def _client() -> OpenAI:
+    """OpenAI-compatible client for the DeepSeek production backend."""
     api_key = os.getenv("DEEPSEEK_API_KEY")
     if not api_key:
         raise RuntimeError("❌ DEEPSEEK_API_KEY is missing")
     return OpenAI(api_key=api_key, base_url="https://api.deepseek.com/v1")
 
 
-def _fallback_stub() -> Dict:
-    return {
-        "teaser": "⚠️ Fallback teaser (LLM unavailable).",
-        "points": [
-            "Fallback summary point 1",
-            "Fallback summary point 2",
-            "Fallback summary point 3",
-            "Fallback summary point 4",
+def _ollama_chat(
+    prompt: str,
+    model: str,
+    *,
+    system: str,
+    temperature: float,
+    max_tokens: int,
+    json_mode: bool = True,
+) -> str:
+    """One completion from the local Ollama server, using its native endpoint.
+
+    The OpenAI-compatible `/v1` endpoint of Ollama 0.33.2 does not accept a
+    context window per request, and the server default silently drops the oldest
+    tokens -- including the instructions -- once the article is long enough. The
+    native endpoint takes `num_ctx` per request, so the local preview really does
+    see the whole article, exactly like the hosted model does.
+    """
+    payload = {
+        "model": model,
+        "stream": False,
+        # Local thinking models otherwise spend the whole reply budget on
+        # reasoning and return an empty answer.
+        "think": False,
+        "options": {
+            "num_ctx": ollama_num_ctx(),
+            "temperature": temperature,
+            "num_predict": max_tokens,
+        },
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
         ],
     }
+    if json_mode:
+        payload["format"] = "json"
+
+    request = urllib.request.Request(
+        f"{ollama_base_url()}/api/chat",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=OLLAMA_TIMEOUT_SECONDS) as response:
+            data = json.loads(response.read().decode("utf-8"))
+    except urllib.error.URLError as error:
+        raise RuntimeError(
+            f"❌ Ollama is not reachable at {ollama_base_url()} ({error}); "
+            "start it with `ollama serve`"
+        ) from error
+    except ValueError as error:
+        raise RuntimeError(f"❌ Ollama returned a non-JSON response: {error}") from error
+
+    if data.get("error"):
+        raise RuntimeError(f"❌ Ollama rejected the request: {data['error']}")
+    return (data.get("message") or {}).get("content") or ""
+
+
+def _complete(
+    prompt: str,
+    model: str,
+    *,
+    system: str,
+    temperature: float,
+    max_tokens: int,
+    json_mode: bool = True,
+) -> str:
+    """Raw assistant text from the selected provider. Shared by every caller."""
+    provider = llm_provider()
+    if provider == PROVIDER_OLLAMA:
+        return _ollama_chat(
+            prompt,
+            model,
+            system=system,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            json_mode=json_mode,
+        )
+
+    response = _client().chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=temperature,
+        max_tokens=max_tokens,
+        **_request_options(provider, json_mode),
+    )
+    return response.choices[0].message.content or ""
+
+
+def _quality_violations(text: str) -> list[str]:
+    violations = []
+    meta = META_SUMMARY_PATTERN.search(text)
+    if meta:
+        violations.append(f"outside-summary framing ({meta.group(0)!r})")
+    if URL_PATTERN.search(text):
+        violations.append("a URL")
+    if MARKDOWN_PATTERN.search(text):
+        violations.append("markdown")
+    return violations
+
+
+def validate_social_copy(teaser: str, points: Sequence[str], max_chars: int = POINT_MAX) -> None:
+    """Refuse generated copy that must never reach the author's social accounts.
+
+    Deterministic and cheap: no second model call, no scoring, no repair. The
+    gate covers the framing the prompt forbids, URLs, leaked markdown, empty
+    output, and the configured character limits.
+    """
+    usable_points = [point for point in points if point.strip()]
+    problems: list[str] = []
+    if not teaser.strip():
+        problems.append("the teaser is empty")
+    if not usable_points:
+        problems.append("no usable points were generated")
+    labelled = [("teaser", teaser)] + [
+        (f"point {index}", point) for index, point in enumerate(usable_points, start=1)
+    ]
+    for label, value in labelled:
+        problems.extend(f"{label} contains {violation}" for violation in _quality_violations(value))
+    if len(teaser) > TEASER_MAX:
+        problems.append(f"the teaser exceeds {TEASER_MAX} characters ({len(teaser)})")
+    for index, point in enumerate(usable_points, start=1):
+        if len(point) > max_chars:
+            problems.append(f"point {index} exceeds {max_chars} characters ({len(point)})")
+    if problems:
+        raise SocialCopyError(
+            "❌ Generated social copy failed the quality gate: " + "; ".join(problems)
+        )
 
 
 def _sanitize_text(value: str) -> str:
@@ -68,47 +348,75 @@ def build_summary_prompt(
     max_points: int = 4,
     max_chars: int = 240,
 ) -> str:
-    """Build the deterministic DeepSeek prompt for a post's social summary."""
+    """Build the deterministic DeepSeek prompt that rewrites an article as social copy."""
     title = post.get("title", "")
     url = post.get("url", "")
     published = _format_publication_date(post)
-    content = (post.get("content") or "")[:6000]
+    content = (post.get("content") or "")[:MAX_ARTICLE_CHARS]
     style = "bullet" if mode == "bullets" else "narrative"
+    year = published[:4] if re.fullmatch(r"\d{4}-\d{2}-\d{2}", published) else ""
+    anchor = f'"In {year}..." or "At the time..."' if year else '"At the time..."'
 
     return dedent(
         f'''
-        You are an editorial assistant preparing a {style} recap of a blog post for an email + social digest. Answer with JSON matching
+        You are the author of the article below, adapting your own long-form writing into social copy for your own accounts. Write as though you personally extracted the strongest ideas from your draft, in your own first-person voice, never as an outside summarizer of someone else's work. Answer with JSON matching
         this schema:
         {{
-          "teaser": string,  # ≤200 characters, 1 sentence hook, factual and specific
-          "points": [string, ...]  # {max_points} {style} takeaways, each ≤{max_chars} characters
+          "teaser": string,  # ≤{TEASER_MAX} characters, one sentence: the sharpest claim, tension, or number in the piece
+          "points": [string, ...]  # up to {max_points} {style} ideas, each ≤{max_chars} characters and each standalone
         }}
 
-        Writing rules:
-        - Capture the sharpest insight, metric, or quote in the teaser. Avoid clickbait or rhetorical questions.
-        - Each point should deliver a standalone takeaway. Lead with the most concrete fact before context.
-        - Use plain text only. Prohibit markdown, emojis, hashtags, and URLs.
-        - Never repeat the teaser verbatim in the points.
-        - If information is missing, acknowledge it instead of inventing details.
+        Voice and framing rules:
+        - State your ideas directly, the way you would explain them to a smart friend. Never describe the article from the outside: no "the author argues", "this essay explains", "this piece covers", "the reader", "I wrote about", "new post", "check out".
+        - The teaser must stand alone in a feed with no context, and it must not merely announce the topic.
+        - Each point must be a complete standalone idea that makes sense without the teaser, the article title, or earlier points, and to someone who never opens the article. Never split or continue a sentence across points.
+        - Order the points strongest first: the first one is the point most likely to make someone stop scrolling.
+        - Prefer your own phrasing and the concrete specifics already in the article: numbers, names, and examples.
+        - Keep your actual argument, uncertainty, and nuance; do not flatten caveats into confident claims, and do not invent controversy.
+        - Do not invent facts, metrics, quotes, or conclusions the article does not support.
+        - Avoid academic-summary language, marketing language, clickbait, fake enthusiasm, and generic filler; do not ask rhetorical questions or issue calls to action.
+        - Plain text only. Prohibit markdown, URLs, emojis, hashtags, and bullet characters.
+        - Never repeat the teaser verbatim in the points, and do not open with the article title.
         - Respond with JSON only; do not wrap inside code fences.
 
         Publication-date awareness:
         - This article was published on {published}. Treat its facts, metrics, valuations, prices, product capabilities, market conditions, regulations, personnel references, and forecasts as belonging to that publication period, not to today.
         - Do not present historical or time-sensitive facts as current facts, and do not rewrite them using outside knowledge.
         - Do not blindly repeat the source's relative time words ("today", "currently", "recently", "now", "this year"); when one referred to the original publication period, drop it or anchor it in time instead.
-        - When a time-sensitive fact is important, anchor it naturally, for example "In this 2020 analysis...", "At the time...", or "The 2020 article argued...".
+        - When a time-sensitive fact is important, anchor it naturally in time instead of implying it is happening now, for example {anchor}.
         - Durable conceptual claims (frameworks, book reviews, decision-making ideas) do not need to be date-stamped and should stay concise.
         - Do not invent current conditions, and do not fact-check or update the article against newer events.
-        - The summary must still read naturally as a social post.
+        - The copy must still read naturally as a social post.
 
         ARTICLE TITLE: {title}
         SOURCE URL: {url}
         PUBLICATION DATE: {published}
 
-        FULL TEXT (truncated):
+        FULL TEXT:
         """{content}"""
         '''
     ).strip()
+
+
+def _extract_json(text: str, label: str = "DeepSeek") -> Dict:
+    """Parse the model's JSON reply, tolerating a code fence but nothing else."""
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        cleaned = cleaned.strip("`")
+        if cleaned.lower().startswith("json"):
+            cleaned = cleaned[4:]
+        cleaned = cleaned.strip()
+    try:
+        data = json.loads(cleaned)
+    except ValueError as error:
+        raise SocialCopyError(
+            f"❌ {label} returned unusable JSON ({error}); refusing to publish fallback copy"
+        ) from error
+    if not isinstance(data, dict):
+        raise SocialCopyError(
+            f"❌ {label} returned JSON of type {type(data).__name__}, expected an object"
+        )
+    return data
 
 
 def summarize_post(
@@ -116,18 +424,21 @@ def summarize_post(
     mode: Literal["bullets", "narrative"] = "bullets",
     max_points: int = 4,
     max_chars: int = 240,
-    model: str = DEFAULT_MODEL,
+    model: str | None = None,
 ) -> Dict:
-    """
-    Use DeepSeek API to summarize a blog post into:
-    - teaser (str)
-    - points (list[str])
-    Falls back to stub on errors.
+    """Distill one article into the author's own social copy.
+
+    Returns {"teaser": str, "points": [str, ...]}. Raises SocialCopyError when
+    the model call fails, the response is unusable, or the generated copy fails
+    the quality gate: publishing fabricated or third-person fallback text under
+    the author's own name is worse than not publishing.
+
+    `model` overrides the selected provider's configured model.
     """
     use_real_api = os.getenv("TEST_API", "false").lower() == "true"
 
     if os.getenv("DRY_RUN", "").lower() == "true" and not use_real_api:
-        print("🚫 DRY_RUN enabled - using mock teaser/points")
+        print("🚫 DRY_RUN enabled - using mock teaser/points (set TEST_API=true to review real LLM copy)")
         return {
             "teaser": "Mock teaser for testing",
             "points": [
@@ -138,72 +449,68 @@ def summarize_post(
             ][:max_points],
         }
 
-    content = (post.get("content") or "")[:6000]
+    content = (post.get("content") or "")[:MAX_ARTICLE_CHARS]
 
-    if not content:
-        return {"teaser": "", "points": ["[No content available for this post]"]}
+    if not content.strip():
+        raise SocialCopyError(
+            "❌ The article has no content to distill; refusing to publish fallback copy"
+        )
 
+    provider = llm_provider()
+    model = model or llm_model(provider)
+    label = PROVIDER_LABELS[provider]
     prompt = build_summary_prompt(post, mode=mode, max_points=max_points, max_chars=max_chars)
 
+    print(f"🤖 LLM provider: {provider}")
+    print(f"🤖 LLM model: {model}")
     try:
-        print("🤖 Calling DeepSeek API...")
-        client = _client()
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a helpful assistant that summarizes content for social media.",
-                },
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0.3,
-            max_tokens=1000,
+        text = _complete(
+            prompt,
+            model,
+            system=(
+                "You are the author of the article, writing your own social posts. "
+                "You never summarize your own work in the third person."
+            ),
+            temperature=TEMPERATURE,
+            max_tokens=MAX_TOKENS,
+        ).strip()
+    except Exception as error:
+        raise SocialCopyError(f"❌ {label} summarizer failed: {error}") from error
+
+    if not text:
+        raise SocialCopyError(
+            f"❌ {label} returned an empty response; refusing to publish fallback copy"
         )
-        text = response.choices[0].message.content.strip()
-        print(f"📥 API raw response (truncated): {text[:120]}...")
+    print(f"📥 API raw response (truncated): {text[:120]}...")
 
-        # Remove code fences if present
-        if text.startswith("```"):
-            text = text.strip("`")
-            if text.lower().startswith("json"):
-                text = text[4:].strip()
+    data = _extract_json(text, label)
+    raw_points = data.get("points")
+    if not isinstance(raw_points, list):
+        raise SocialCopyError(
+            f"❌ {label} returned malformed points ({type(raw_points).__name__}), expected a list"
+        )
 
-        try:
-            data = json.loads(text)
-        except Exception as e:
-            print(f"⚠️ JSON parse failed: {e}")
-            return _fallback_stub()
+    teaser = _truncate(_sanitize_text(str(data.get("teaser", ""))), TEASER_MAX)
+    points: list[str] = []
+    for point in raw_points:
+        clean_point = _truncate(_sanitize_text(str(point)), max_chars)
+        if clean_point and clean_point not in points:
+            points.append(clean_point)
+    points = points[:max_points]
 
-        teaser = _truncate(_sanitize_text(data.get("teaser", "")), 200)
-        raw_points = data.get("points", [])
-        points = []
-        if isinstance(raw_points, list):
-            for point in raw_points:
-                clean_point = _truncate(_sanitize_text(str(point)), max_chars)
-                if clean_point and clean_point not in points:
-                    points.append(clean_point)
-        if not isinstance(points, list):
-            points = []
-
-        return {
-            "teaser": teaser,
-            "points": points[:max_points]
-            or ["[Summarizer returned no usable content]"],
-        }
-
-    except Exception as e:
-        print(f"❌ DeepSeek summarizer failed: {e}")
-        return _fallback_stub()
+    validate_social_copy(teaser, points, max_chars=max_chars)
+    return {"teaser": teaser, "points": points}
 
 
 def localize_zh_cn(title: str, teaser: str, point: str, url: str, max_chars: int = 1800,
-                   model: str = DEFAULT_MODEL) -> str:
+                   model: str | None = None) -> str:
     """Adapt an English article into Simplified-Chinese microblog copy for Weibo.
 
     Raises instead of falling back: silently posting the English text (or a
     stub) to a Chinese-language audience would be worse than failing the run.
     """
+    provider = llm_provider()
+    model = model or llm_model(provider)
     hook = _sanitize_text(teaser or title)
     detail = _sanitize_text(point or "")
     prompt = dedent(
@@ -224,18 +531,17 @@ def localize_zh_cn(title: str, teaser: str, point: str, url: str, max_chars: int
         '''
     ).strip()
     try:
-        print("🤖 Localizing article into Simplified Chinese...")
-        client = _client()
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {"role": "system", "content": "你是一位面向中文读者的科技专栏作者，只返回微博正文。"},
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0.3,
-            max_tokens=1500,
+        print(f"🤖 Localizing article into Simplified Chinese ({llm_identity(provider)})...")
+        body = _sanitize_text(
+            _complete(
+                prompt,
+                model,
+                system="你是一位面向中文读者的科技专栏作者，只返回微博正文。",
+                temperature=0.3,
+                max_tokens=1500,
+                json_mode=False,
+            )
         )
-        body = _sanitize_text(response.choices[0].message.content or "")
         if not body:
             raise ValueError("Localization returned no usable content")
         text = f"{body}\n\n{url}".strip()

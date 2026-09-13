@@ -79,8 +79,10 @@ _EMPHASIS = re.compile(r"\*{1,3}")
 _MARKDOWN_CODE = re.compile(r"`{1,3}")
 _HTML_TAG = re.compile(r"<[^>]+>")
 _SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
-_CLAUSE_SPLIT = re.compile(r"\s*[,;:—]\s*")
+_CLAUSE_DELIMITER = re.compile(r"[;:—]")
+_COMMA_DELIMITER = re.compile(r",")
 _SPACE_BEFORE_PUNCTUATION = re.compile(r"\s+([,.;:!?])")
+_WORD = re.compile(r"[^\s]+")
 
 # A headline shorter than this reads like a fragment; a detail shorter than this
 # is not worth its own slide paragraph.
@@ -94,6 +96,68 @@ _TRAILING_STOPWORDS = frozenset(
         "on", "or", "our", "over", "so", "than", "that", "the", "their", "these",
         "then", "this", "those", "to", "was", "were", "when", "which", "while",
         "with", "your",
+    }
+)
+# Words that leave a headline reading as an unfinished phrase when the split
+# lands right after them. Structural connectors only, because a phrase or clause
+# boundary can legitimately close on a word that a bare word boundary cannot
+# (for example "priced in", where "in" belongs to the verb).
+_TRAILING_CONNECTORS = frozenset(
+    {
+        "and", "as", "because", "but", "by", "for", "from", "if", "nor", "not",
+        "of", "or", "so", "than", "that", "then", "to", "when", "which", "while",
+        "who", "whom", "whose", "with", "yet",
+    }
+)
+# Words that open a new clause or phrase inside a sentence, so breaking in front
+# of one leaves a headline that reads as a whole heading instead of a fragment
+# cut off at the character limit. Relative pronouns (that, which, who) and
+# coordinating conjunctions (and, or, but) are deliberately absent: a detail
+# starting with one of those continues the headline's own clause and reads as an
+# accidental cut. "of" is absent for the same reason, since it cannot open a
+# phrase that stands on its own ("of our identity?"). "not" is here because a
+# negated reason is a heading of its own ("...exist" | "not because X, but
+# because Y").
+_PHRASE_STARTERS = frozenset(
+    {
+        # subordinating conjunctions
+        "after", "although", "as", "because", "before", "if", "not", "once",
+        "since", "than", "though", "unless", "until", "when", "whenever",
+        "where", "whereas", "wherever", "whether", "while",
+        # prepositions
+        "about", "above", "across", "against", "along", "among", "around", "at",
+        "behind", "below", "beneath", "beside", "between", "beyond", "by",
+        "despite", "down", "during", "except", "for", "from", "in", "inside",
+        "into", "like", "near", "off", "on", "onto", "outside", "over", "past",
+        "per", "through", "throughout", "to", "toward", "towards", "under",
+        "underneath", "up", "upon", "via", "with", "within", "without",
+        # auxiliaries and modals
+        "am", "are", "be", "been", "being", "can", "could", "did", "do", "does",
+        "had", "has", "have", "is", "may", "might", "must", "shall", "should",
+        "was", "were", "will", "would",
+    }
+)
+# Copulas, auxiliaries and modals: a detail opening on one of these resumes the
+# headline's own clause, so it only reads as a heading break while the headline
+# is still the bare subject ("Management conferences and expert networks" | "are
+# not insider trading"). Once the headline has a verb of its own the break lands
+# mid-clause ("The point is that markets" | "are efficient"), which reads worse
+# than a plain word boundary.
+_PREDICATE_OPENERS = frozenset(
+    {
+        "am", "are", "be", "been", "being", "can", "could", "did", "do", "does",
+        "had", "has", "have", "is", "may", "might", "must", "shall", "should",
+        "was", "were", "will", "would",
+    }
+)
+# Pronouns that cannot close a headline: breaking in front of one strands the
+# subject of the next clause at the end of the headline ("...exist not because
+# they" | "have secret data"). Auxiliaries are excluded for the same reason on
+# the other side of the break ("...networks are" | "not insider trading").
+_STRANDED_SUBJECTS = frozenset(
+    {
+        "he", "her", "him", "i", "it", "she", "them", "these", "they", "this",
+        "those", "us", "we", "what", "who", "you",
     }
 )
 
@@ -169,17 +233,72 @@ def _key(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", text.lower())
 
 
+def _word_key(word: str) -> str:
+    return word.strip("\"“”'‘’.,;:!?—()").lower()
+
+
 def _is_stopword(word: str) -> bool:
-    return word.strip("\"“”'‘’.,;:!?—()").lower() in _TRAILING_STOPWORDS
+    return _word_key(word) in _TRAILING_STOPWORDS
+
+
+def _is_connector(word: str) -> bool:
+    return _word_key(word) in _TRAILING_CONNECTORS
+
+
+def _resumes_the_headline(headline: str, detail: str) -> bool:
+    """Whether a detail opening on an auxiliary continues a headline clause."""
+    if _word_key(detail.split()[0]) not in _PREDICATE_OPENERS:
+        return False
+    return any(_word_key(word) in _PREDICATE_OPENERS for word in headline.split())
+
+
+def _strands_a_clause(headline: str) -> bool:
+    """Whether a headline ends on the subject or verb owning the detail's clause."""
+    last = _word_key(headline.split()[-1])
+    return last in _STRANDED_SUBJECTS or last in _PREDICATE_OPENERS
+
+
+def _boundary_offsets(point: str, pattern: re.Pattern[str]) -> list[int]:
+    """Offsets just past each delimiter match, furthest into the point first."""
+    return sorted((match.end() for match in pattern.finditer(point)), reverse=True)
+
+
+def _phrase_offsets(point: str) -> list[int]:
+    """Offsets where a new clause or phrase starts, furthest into the point first."""
+    return sorted(
+        (
+            match.start()
+            for match in _WORD.finditer(point)
+            if _word_key(match.group()) in _PHRASE_STARTERS
+        ),
+        reverse=True,
+    )
+
+
+def _reads_as_a_whole_heading(headline: str, detail: str) -> bool:
+    """Whether a candidate boundary leaves two readable halves."""
+    words = headline.split()
+    return (
+        len(headline) <= BODY_TITLE_MAX
+        and len(words) >= _MIN_HEADLINE_WORDS
+        and len(detail.split()) >= _MIN_DETAIL_WORDS
+        and not _is_connector(words[-1])
+    )
 
 
 def _headline_and_detail(point: str) -> tuple[str, str]:
     """Split one summary point into a short headline and its supporting detail.
 
-    Both halves are verbatim slices of the point. Boundaries are preferred in
-    order: a sentence break, then a clause break, then a plain word boundary.
-    Word boundaries are chosen so the headline fits without a trailing
-    ellipsis whenever a suitable break exists; truncation is only a fallback.
+    Both halves are verbatim slices of the point, so no word is rewritten or
+    invented. Boundaries are preferred in order: a sentence break, then the last
+    clause delimiter that fits the headline limit (semicolon, colon and em dash
+    first, commas second because they are the weakest signal), then the last
+    word that opens a new clause or phrase, then a plain word boundary. The
+    clause and phrase passes exist so the headline ends where the point itself
+    changes direction rather than wherever the character limit happens to fall.
+    A phrase break is skipped when the detail would only resume the headline's
+    own clause: on an auxiliary verb, or on a verb whose subject would be left
+    stranded at the end of the headline. Truncation is only a fallback.
     """
     sentences = _sentences(point)
     if len(sentences) > 1 and len(sentences[0]) <= BODY_TITLE_MAX:
@@ -187,11 +306,24 @@ def _headline_and_detail(point: str) -> tuple[str, str]:
         # it is shorter than a full detail sentence.
         return sentences[0], " ".join(sentences[1:])
 
-    candidates = [clause for clause in _CLAUSE_SPLIT.split(point) if clause.strip()]
-    if len(candidates) >= 2:
-        remainder = " ".join(candidates[1:])
-        if len(candidates[0]) <= BODY_TITLE_MAX and len(remainder.split()) >= _MIN_DETAIL_WORDS:
-            return candidates[0], remainder
+    for pattern in (_CLAUSE_DELIMITER, _COMMA_DELIMITER):
+        for offset in _boundary_offsets(point, pattern):
+            headline, detail = point[:offset].rstrip(" ,;:—"), point[offset:].strip()
+            if _reads_as_a_whole_heading(headline, detail):
+                return headline, detail
+
+    if len(point) <= BODY_TITLE_MAX:
+        # The point already fits a headline on its own; breaking it in front of a
+        # phrase would only strand a fragment on the next line.
+        return point, ""
+
+    for offset in _phrase_offsets(point):
+        headline, detail = point[:offset].strip(), point[offset:].strip()
+        if not _reads_as_a_whole_heading(headline, detail):
+            continue
+        if _strands_a_clause(headline) or _resumes_the_headline(headline, detail):
+            continue
+        return headline, detail
 
     words = point.split()
     take = 0
@@ -304,15 +436,18 @@ def build_storyboard(post: dict, summary: dict) -> InstagramStoryboard:
         teaser = first[0] if first else ""
 
     slides: list[InstagramSlide] = []
-    cover_body = truncate_words(teaser, COVER_TEASER_MAX)
+    # The cover sells the idea rather than the article's metadata: the sharpest
+    # social hook leads, and the literal title becomes secondary context.
+    cover_title = truncate_words(teaser or title, COVER_TITLE_MAX)
+    cover_body = truncate_words(title, COVER_TEASER_MAX) if teaser else ""
     slides.append(
         InstagramSlide(
             index=1,
             kind="cover",
             kicker=_kicker(post),
-            title=truncate_words(title, COVER_TITLE_MAX),
+            title=cover_title,
             body=cover_body,
-            alt_text=_slide_alt_text("cover", "", truncate_words(title, COVER_TITLE_MAX), cover_body),
+            alt_text=_slide_alt_text("cover", "", cover_title, cover_body),
         )
     )
     for point in points:

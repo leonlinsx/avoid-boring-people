@@ -15,6 +15,7 @@ from scripts.automation.renderers import (
     render_mastodon,
     render_thread,
     render_threads,
+    supporting_point,
 )
 from scripts.automation.retry import run_with_retries
 from scripts.automation.routing import DEFAULT_PLATFORMS, eligible_for_category
@@ -127,7 +128,9 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
     if platform == "weibo":
         from scripts.automation.publishers.weibo import post_to_weibo
         from scripts.automation.summarizers.llm_summarizer import localize_zh_cn
-        point = social.thread[1] if len(social.thread) > 1 else social.body
+        # The shared argument body carries the ideas; the X/Bluesky thread ends
+        # with the canonical link and must never be localized as article copy.
+        point = supporting_point(social) or social.body
         return post_to_weibo(localize_zh_cn(article.title, social.hook, point, article.canonical_url))
     if platform == "nostr":
         from scripts.automation.publishers.nostr import post_to_nostr
@@ -154,11 +157,13 @@ def _print_instagram_dry_run(storyboard: InstagramStoryboard | None) -> None:
     if storyboard is None:
         print("  storyboard: unavailable for this article")
         return
-    print(f"  caption: {len(storyboard.caption)} chars")
+    print(f"  caption ({len(storyboard.caption)} chars):\n{storyboard.caption}")
     print(f"  hashtags: {' '.join(storyboard.hashtags) or '(none)'}")
     for slide in storyboard.slides:
-        print(f"  slide {slide.index} [{slide.kind}] title={len(slide.title)} chars body={len(slide.body)} chars")
-        print(f"    {slide.title}")
+        print(f"  Slide {slide.index} [{slide.kind}]")
+        print(f"    Title: {slide.title or '(empty)'}")
+        print(f"    Body: {slide.body or '(empty)'}")
+        print()
     try:
         from scripts.automation.renderers.instagram import render_storyboard
         carousel = render_storyboard(storyboard)
@@ -189,7 +194,18 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
     for platform in PLATFORM:
         print(f"\n{platform}\n  eligible: {'yes' if platform in eligible else 'no'}")
         if platform not in eligible: continue
-        if platform == "linkedin": print(f"  format: social_post\n  length: {len(render_linkedin(social))} chars")
+        if platform == "twitter":
+            if POST_MODE == "thread": print("  format: thread\n  would publish: " + "\n---\n".join(render_thread(social)))
+            else: print(f"  format: single\n  would publish: {social.hook} {social.url}")
+        elif platform == "bluesky":
+            rendered = render_thread(social)
+            if POST_MODE == "thread": print("  format: thread\n  would publish: " + "\n---\n".join(rendered))
+            else: print(f"  format: single\n  would publish: {rendered[0]}")
+        elif platform == "mastodon":
+            rendered = render_mastodon(social)
+            shape = "thread" if POST_MODE == "thread" and len(rendered) > 1 else "single"
+            print(f"  format: {shape}\n  would publish: " + "\n---\n".join(rendered))
+        elif platform == "linkedin": print(f"  format: social_post\n  length: {len(render_linkedin(social))} chars")
         elif platform == "farcaster": print(f"  format: social_post\n  would publish: {render_farcaster(social)}")
         elif platform == "devto": print(f"  format: article syndication\n  canonical URL: {article.canonical_url}")
         elif platform == "reddit": print("  format: link post\n  subreddit: r/" + os.getenv("REDDIT_SUBREDDIT", "AvoidBoringPeople"))
@@ -215,7 +231,13 @@ def main() -> None:
         selected = select_next_post(routed, PLATFORM, DISTRIBUTION_MODE)
         if selected: selected["eligible_platforms"] = [p for p in selected["eligible_platforms"] if eligible_for_category(selected, p)]
     if not selected or not selected["eligible_platforms"]: print("No eligible post to publish."); return
-    summary = _summary_for(selected)
+    try:
+        summary = _summary_for(selected)
+    except Exception as error:
+        # Generation happens before any platform is attempted, so failing here
+        # cannot duplicate a social post. Report it and let the run fail.
+        log_summary(f"❌ social copy generation failed: {error}")
+        raise
     social, article, community = _build_content(selected, summary)
     storyboard = _build_storyboard(selected, summary)
     if DRY_RUN: _print_dry_run(selected, selected["eligible_platforms"], social, article, storyboard); return

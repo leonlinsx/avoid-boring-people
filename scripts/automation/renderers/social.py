@@ -25,6 +25,17 @@ def render_linkedin(post: SocialPost) -> str:
     return text
 
 
+def supporting_point(post: SocialPost) -> str:
+    """The sharpest supporting idea, read from the shared argument.
+
+    Mastodon and Farcaster post one compressed status, so they must not read the
+    X/Bluesky thread: its later entries are optional replies and its final entry
+    is the canonical link.
+    """
+    points = _supporting_points(post)
+    return points[0] if points else post.body
+
+
 def render_mastodon(post: SocialPost) -> list[str]:
     """Render one self-contained Mastodon toot, not a copy of the X thread.
 
@@ -32,7 +43,7 @@ def render_mastodon(post: SocialPost) -> list[str]:
     hook plus the sharpest supporting thought plus the canonical URL, kept
     within the instance 500-character limit.
     """
-    supporting = post.thread[1] if len(post.thread) > 1 else post.body
+    supporting = supporting_point(post)
     candidate = f"{post.hook}\n\n{supporting}\n\n{post.url}".strip()
     if len(candidate) <= MASTODON_STATUS_LIMIT:
         return [candidate]
@@ -52,7 +63,7 @@ def render_farcaster(post: SocialPost) -> str:
     hook and canonical URL and shorten the supporting thought, rather than
     letting the publisher reject the whole cast.
     """
-    supporting = post.thread[1] if len(post.thread) > 1 else post.body
+    supporting = supporting_point(post)
     candidate = f"{post.hook}\n\n{supporting}\n\n{post.url}".strip()
     if len(candidate) <= FARCASTER_CAST_LIMIT:
         return candidate
