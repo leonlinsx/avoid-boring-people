@@ -29,7 +29,7 @@ CATEGORY_PLATFORM_RULES = {
     "technology": set(PLATFORMS),
     "system design": set(PLATFORMS),
     "risk & decision making": set(SOCIAL_PLATFORMS + ("reddit",)),
-    "culture": set(("twitter", "linkedin", "bluesky", "mastodon", "reddit", "instagram")),
+    "culture": set(SOCIAL_PLATFORMS + ("reddit",)),
 }
 
 
