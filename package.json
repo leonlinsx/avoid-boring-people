@@ -31,7 +31,7 @@
     "@neon/env": "^1.2.1",
     "@neondatabase/serverless": "^1.1.0",
     "@vercel/blob": "^2.8.0",
-    "astro": "^5.13.7",
+    "astro": "^5.18.2",
     "csv-parse": "^6.2.1",
     "fontkit": "^2.0.4",
     "fuse.js": "^7.1.0",
@@ -46,7 +46,7 @@
     "remark-gfm": "4.0.1",
     "remark-parse": "11.0.0",
     "remark-rehype": "11.1.2",
-    "sharp": "^0.34.3",
+    "sharp": "^0.34.5",
     "unified": "11.0.5",
     "unist-util-visit": "5.0.0"
   },

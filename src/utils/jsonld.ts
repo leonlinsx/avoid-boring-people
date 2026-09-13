@@ -46,3 +46,11 @@ export const sanitizeJsonLd = (value: unknown): unknown => {
 
   return undefined;
 };
+
+// JSON.stringify alone is unsafe inside a <script> element: a `</script>` in the
+// data (for example a headline or tag) terminates the element and turns the rest
+// of the payload into markup. Escaping `<` keeps the JSON-LD inert data.
+export const serializeJsonLd = (value: unknown): string => {
+  const json = JSON.stringify(sanitizeJsonLd(value));
+  return json === undefined ? 'null' : json.replace(/</g, '\\u003c');
+};

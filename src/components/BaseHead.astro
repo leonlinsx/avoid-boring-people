@@ -9,7 +9,7 @@ import {
   SITE_AUTHOR_URL,
   SITE_AUTHOR_SAME_AS,
 } from "../consts";
-import { sanitizeJsonLd } from '../utils/jsonld';
+import { sanitizeJsonLd, serializeJsonLd } from '../utils/jsonld';
 
 const {
   title,
@@ -267,7 +267,7 @@ const ogImageAlt = `Preview image for ${title}`;
 <!-- ✅ Combined Structured Data -->
 <script
   type="application/ld+json"
-  set:html={JSON.stringify(structuredData)}
+  set:html={serializeJsonLd(structuredData)}
 ></script>
 
 <!-- Microsoft Clarity -->

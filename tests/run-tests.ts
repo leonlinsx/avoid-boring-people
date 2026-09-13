@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { __setMockGetCollectionImplementation, z } from 'astro:content';
+import { SITE_URL } from '../src/consts.ts';
 import { computeCleanSlug } from '../src/utils/slug-helpers.ts';
 import { searchPosts, normalizeQuery } from '../src/utils/search.ts';
 import {
@@ -34,7 +35,8 @@ import {
 import { buildConfirmInvalidPage, buildConfirmSuccessPage } from '../src/lib/newsletter/confirm-pages.ts';
 import { buildConfirmationEmail, canDeliverConfirmation, CONFIRMATION_SUBJECT, confirmSubscription, requestSubscription } from '../src/lib/newsletter/subscriptions.ts';
 import { confirmSnsSubscription, parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
-import { requiresOriginRejection } from '../src/lib/newsletter/request-origin.ts';
+import { canonicalSiteOrigin, hasUntrustedPathOverride, requiresOriginRejection } from '../src/lib/newsletter/request-origin.ts';
+import { serializeJsonLd } from '../src/utils/jsonld.ts';
 import { createSign, generateKeyPairSync } from 'node:crypto';
 
 process.on('uncaughtException', (error) => {
@@ -1168,6 +1170,85 @@ async function testInstagramMediaUpload() {
   }
 }
 
+function testJsonLdSerialization() {
+  const payload = '</script><script>alert(1)</script>';
+  const serialized = serializeJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: payload,
+    datePublished: new Date('2026-01-01T00:00:00.000Z'),
+    nested: { description: `Tail --> ${payload}` },
+  });
+
+  assert.ok(!serialized.includes('<'), 'serialized JSON-LD must not contain a raw <');
+  assert.ok(!/<!--/.test(serialized), 'serialized JSON-LD must not open an HTML comment');
+  assert.ok(serialized.includes('\\u003c/script>'), 'the closing script tag must be escaped into data');
+
+  const parsed = JSON.parse(serialized);
+  assert.equal(parsed.headline, payload);
+  assert.equal(parsed.nested.description, `Tail --> ${payload}`);
+  assert.equal(parsed.datePublished, '2026-01-01T00:00:00.000Z');
+
+  // Embedded in the element the components emit, the payload cannot close it.
+  const html = `<script type="application/ld+json">${serialized}</script>`;
+  assert.equal(html.split('</script>').length, 2, 'only the tag the template wrote may close the script element');
+  assert.equal(JSON.parse(html.slice(html.indexOf('>') + 1, html.lastIndexOf('</script>'))).headline, payload);
+
+  assert.equal(serializeJsonLd(undefined), 'null');
+  assert.equal(serializeJsonLd({ ratio: Number.NaN, ok: true }), '{"ok":true}');
+}
+
+function testOriginTrust() {
+  const form = { 'content-type': 'application/x-www-form-urlencoded' };
+  const post = (url: string, headers: Record<string, string>) => new Request(url, { method: 'POST', headers: { ...form, ...headers } });
+
+  // The configured canonical origin is trusted, whatever URL the request arrived on.
+  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', { origin: 'https://leonlins.com' }), false), false);
+  assert.equal(requiresOriginRejection(post('https://internal-deployment.vercel.app/api/subscribe', { origin: 'https://leonlins.com' }), false), false);
+
+  // Foreign or absent origins are still rejected.
+  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', { origin: 'https://evil.example' }), false), true);
+  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', {}), false), true);
+
+  // A caller that controls the forwarded headers makes the request URL look like
+  // its own origin; the trusted origin must not move with it.
+  assert.equal(requiresOriginRejection(post('https://evil.example/api/subscribe', {
+    origin: 'https://evil.example', 'x-forwarded-host': 'evil.example', 'x-forwarded-proto': 'https',
+  }), false), true);
+  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', {
+    origin: 'https://evil.example', 'x-forwarded-host': 'leonlins.com', 'x-forwarded-proto': 'https',
+  }), false), true);
+  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', {
+    origin: 'https://leonlins.com', 'x-forwarded-host': 'evil.example', 'x-forwarded-proto': 'http',
+  }), false), false);
+
+  // Machine callers keep their exemptions.
+  assert.equal(requiresOriginRejection(new Request('https://evil.example/api/newsletter/ses-events', {
+    method: 'POST', headers: { 'content-type': 'text/plain', origin: 'https://evil.example' },
+  }), false), false);
+
+  // The trusted origin is the canonical site origin from `src/consts.ts`, so a
+  // deployment URL, a `Host` header, or a forwarded header cannot move it.
+  assert.equal(canonicalSiteOrigin(), 'https://leonlins.com');
+  assert.equal(canonicalSiteOrigin(), new URL(SITE_URL).origin);
+  process.env.SITE_URL = 'https://preview.example/';
+  try {
+    assert.equal(canonicalSiteOrigin(), 'https://leonlins.com');
+    assert.equal(requiresOriginRejection(post('https://preview.example/api/subscribe', { origin: 'https://preview.example' }), false), true);
+    assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', { origin: 'https://preview.example' }), false), true);
+  } finally {
+    delete process.env.SITE_URL;
+  }
+}
+
+function testPathOverrideGuard() {
+  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/_image?href=/a.png&f=png')), false);
+  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/api/newsletter/unsubscribe?token=x')), false);
+  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/_image?x_astro_path=/api/newsletter/unsubscribe')), true);
+  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/anything', { headers: { 'x-astro-path': '/api/social/instagram-media' } })), true);
+  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/anything', { headers: { 'x-astro-path': '' } })), true);
+}
+
 async function run() {
   try {
     testSearchPosts();
@@ -1187,6 +1268,9 @@ async function run() {
     testConfirmPages();
     await testSubscriptionLifecycleDb();
     await testSnsValidation();
+    testJsonLdSerialization();
+    testOriginTrust();
+    testPathOverrideGuard();
     testEnrichPost();
     await testGetAllPostsPaginated();
     await testGetCategoryPostsPaginated();

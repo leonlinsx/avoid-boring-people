@@ -1,6 +1,6 @@
 ---
 import { SITE_URL } from '../consts';
-import { sanitizeJsonLd } from '../utils/jsonld';
+import { sanitizeJsonLd, serializeJsonLd } from '../utils/jsonld';
 
 interface BreadcrumbItem {
   label: string;
@@ -41,7 +41,7 @@ const breadcrumbSchema = sanitizeJsonLd({
     </ol>
     <script
       type="application/ld+json"
-      set:html={JSON.stringify(breadcrumbSchema)}
+      set:html={serializeJsonLd(breadcrumbSchema)}
     ></script>
   </nav>
 )}
