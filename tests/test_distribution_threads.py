@@ -327,7 +327,7 @@ def test_threads_is_a_production_default():
     assert "threads" in SOCIAL_PLATFORMS
     assert "threads" in DEFAULT_PLATFORMS
     assert eligible_for_category({"category": "Technology"}, "threads")
-    assert not eligible_for_category({"category": "Culture"}, "threads")
+    assert eligible_for_category({"category": "Culture"}, "threads")
 
 
 def test_threads_runs_in_both_automatic_distribution_paths():

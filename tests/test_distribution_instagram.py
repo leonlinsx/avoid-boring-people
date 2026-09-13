@@ -1411,9 +1411,11 @@ def test_instagram_category_eligibility_did_not_widen_other_rules():
     for category in ("Investing", "Technology", "System Design", "Risk & Decision Making", "Culture", ""):
         assert eligible_for_category({"category": category}, "instagram"), category
 
-    # Promoting Instagram must not have changed any other category rule.
+    # Culture follows the general social rule, so it reaches Threads; DEV stays
+    # closed to it, and the technology categories are still the only ones that
+    # reach every destination.
     assert not eligible_for_category({"category": "Culture"}, "devto")
-    assert not eligible_for_category({"category": "Culture"}, "threads")
+    assert eligible_for_category({"category": "Culture"}, "threads")
     assert eligible_for_category({"category": "Technology"}, "devto")
     assert eligible_for_category({"category": "Culture"}, "twitter")
 
