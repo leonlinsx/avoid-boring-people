@@ -1,0 +1,79 @@
+name: Notify search engines (IndexNow)
+
+# Google's and Bing's sitemap ping endpoints are retired (404 and 410), so the
+# previous job curled them without `--fail` and reported success forever.
+# IndexNow is the remaining supported push mechanism. Google has no replacement
+# and relies on the sitemap plus Search Console.
+#
+# The key file lives in `public/` and is served at
+# https://leonlins.com/<key>.txt. Rotate the key and that file together: the
+# submission is verified against the deployed file before anything is sent.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/**'
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: 'Deployed search-index id to resubmit (e.g. 2016_03_17_excel/index.md)'
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Detect changed articles
+        id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+          MANUAL_POST_ID: ${{ inputs.post_id }}
+        run: |
+          ids="$RUNNER_TEMP/post_ids"
+          : > "$ids"
+          if [ -n "$MANUAL_POST_ID" ]; then
+            echo "$MANUAL_POST_ID" >> "$ids"
+          elif [ -n "$BEFORE" ] && [ "$BEFORE" != '0000000000000000000000000000000000000000' ]; then
+            # Only articles are notifiable: other files under the content
+            # directory are not published URLs.
+            git diff --name-only --diff-filter=AM "$BEFORE" "$GITHUB_SHA" -- 'src/content/blog/**' |
+              grep -E '\.(md|mdx)$' >> "$ids" || true
+          fi
+          echo "Articles to notify:"
+          cat "$ids"
+          if [ -s "$ids" ]; then echo 'found=true' >> "$GITHUB_OUTPUT"; else echo 'found=false' >> "$GITHUB_OUTPUT"; fi
+      - name: Wait for the deployment to publish the articles
+        if: steps.changed.outputs.found == 'true'
+        run: |
+          python -m scripts.automation.wait_for_deploy \
+            --post-id-file "$RUNNER_TEMP/post_ids" \
+            --urls-file "$RUNNER_TEMP/urls.tsv"
+      - name: Submit the published URLs to IndexNow
+        if: steps.changed.outputs.found == 'true'
+        run: |
+          python -m scripts.automation.submit_indexnow \
+            --key-file public/a84f78d24790ed123e7a736ea0abfe64.txt \
+            --urls-file "$RUNNER_TEMP/urls.tsv"
+      - name: Report that no article changed
+        if: steps.changed.outputs.found != 'true'
+        run: |
+          {
+            echo '### IndexNow'
+            echo
+            echo 'No article changed in this push, so nothing was submitted.'
+            echo 'Google is covered by the sitemap and Search Console.'
+          } >> "$GITHUB_STEP_SUMMARY"

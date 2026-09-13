@@ -1,0 +1,41 @@
+name: Token health
+
+# Threads and Instagram long-lived tokens expire silently: a lapse is only
+# noticed when a production post fails. This daily read-only probe asks both
+# APIs which account the stored token belongs to, so a lapse shows up as a
+# scheduled failure with rotation instructions. It never refreshes or rotates a
+# token, and a platform whose secrets are unset is reported as skipped.
+on:
+  schedule:
+    # Before the Tuesday/Friday evergreen cycle, so a lapse is caught first.
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: token-health
+  cancel-in-progress: false
+
+jobs:
+  check-tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
+          python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+      - name: Check long-lived social tokens
+        env:
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+        run: python -m scripts.automation.check_tokens

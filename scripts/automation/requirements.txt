@@ -11,3 +11,7 @@ requests
 atproto
 python-frontmatter
 setuptools
+
+# The test runner is deliberately not listed here: `requirements.lock` is what
+# the publishing workflows install, and a test framework must never be part of
+# a publish path. Tests install `requirements-test.lock` instead.

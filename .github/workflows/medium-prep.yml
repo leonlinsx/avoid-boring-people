@@ -1,31 +1,88 @@
 name: Medium Prep
 
+# Renders the article(s) in a push into a Medium-ready draft. The previous
+# version looked for the changed article with `git ls-files -m`, which is empty
+# on a fresh checkout, so it silently fell back to an arbitrary file from `git
+# log` and printed a snippet to the log. Drafts are now derived from the push
+# diff and uploaded as an artifact, because Medium has no API to publish to.
+
 on:
   push:
+    branches: [main]
     paths:
-      - 'src/content/blog/**/index.md'
+      - 'src/content/blog/**'
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: 'Article path to render (e.g. src/content/blog/2017_02_23_random/index.md)'
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: medium-prep-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   medium-prep:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          python-version: '3.11'
-
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
       - name: Install dependencies
         run: |
-          pip install -r scripts/automation/requirements.txt
-
-      - name: Generate Medium summary
+          python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
+          python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+      - name: Detect changed articles
+        id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+          MANUAL_POST_ID: ${{ inputs.post_id }}
         run: |
-          latest_file=$(git ls-files -m src/content/blog/*/index.md | tail -n1)
-          if [ -z "$latest_file" ]; then
-            latest_file=$(git log -n 1 --pretty=format: --name-only -- src/content/blog/*/index.md | tail -n1)
+          articles="$RUNNER_TEMP/articles"
+          : > "$articles"
+          if [ -n "$MANUAL_POST_ID" ]; then
+            echo "$MANUAL_POST_ID" >> "$articles"
+          elif [ -n "$BEFORE" ] && [ "$BEFORE" != '0000000000000000000000000000000000000000' ]; then
+            git diff --name-only --diff-filter=AM "$BEFORE" "$GITHUB_SHA" -- 'src/content/blog/**' |
+              grep -E '\.(md|mdx)$' >> "$articles" || true
           fi
-          echo "Latest blog file: $latest_file"
-          PYTHONPATH=. python scripts/automation/medium_prep.py "$latest_file"
+          echo "Articles to prepare:"
+          cat "$articles"
+          if [ -s "$articles" ]; then echo 'found=true' >> "$GITHUB_OUTPUT"; else echo 'found=false' >> "$GITHUB_OUTPUT"; fi
+      - name: Render Medium drafts
+        if: steps.changed.outputs.found == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/medium-drafts"
+          {
+            echo '### Medium Prep'
+            echo
+            echo 'Paste a draft into Medium, then set the title, description, tags and canonical link listed in the file header.'
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+          while IFS= read -r article; do
+            draft="$RUNNER_TEMP/medium-drafts/$(basename "$(dirname "$article")").html"
+            PYTHONPATH=. python scripts/automation/medium_prep.py "$article" > "$draft"
+            echo "- \`$article\` → \`$(basename "$draft")\`" >> "$GITHUB_STEP_SUMMARY"
+          done < "$RUNNER_TEMP/articles"
+      - name: Upload drafts
+        if: steps.changed.outputs.found == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: medium-drafts
+          path: ${{ runner.temp }}/medium-drafts
+          if-no-files-found: error
+      - name: Report that no article changed
+        if: steps.changed.outputs.found != 'true'
+        run: |
+          {
+            echo '### Medium Prep'
+            echo
+            echo 'No article changed in this push, so no draft was rendered.'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -45,6 +45,7 @@
 | --- | --- |
 | Install | `npm install` |
 | Test | `npm test` |
+| Test (Python distribution suite) | `python -m pytest tests -q`; needs `npm ci` for the carousel renderer tests and `pip install -r scripts/automation/requirements-test.lock` for pytest |
 | Build | `npm run build` |
 | Run locally | `npm run dev` |
 | Preview built site | `npm run preview` |
