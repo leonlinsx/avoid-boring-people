@@ -47,7 +47,6 @@ Replace one-off values with variables. -->
 3. event tracking when appropriate
 - twitter thread analytics tracking
 <!-- - automated posting threads (done: verified live, enabled in DEFAULT_PLATFORMS) -->
-- automated instagram posting: storyboard, deterministic 1080x1350 JPEG renderer, media-host boundary, and carousel publisher are implemented and mock-tested (`tests/test_distribution_instagram.py`); review with `DRY_RUN=true PLATFORM=instagram TARGET_POST_ID=<id> python -m scripts.automation.auto_post`
-- automated instagram posting blocked on live publishing: the Graph API fetches slide images from public HTTPS URLs, and the site has no approved host for them. Host the rendered JPEGs, set `INSTAGRAM_MEDIA_BASE_URL`, then add `instagram` to `DEFAULT_PLATFORMS`
+- automated instagram posting (done: storyboard, deterministic 1080x1350 JPEG renderer, content-addressed Vercel Blob hosting through `src/pages/api/social/instagram-media.ts`, carousel publisher verified live end to end, and `instagram` enabled in `DEFAULT_PLATFORMS` for both new articles and evergreen cycles)
 - automated tiktok posting (the storyboard is renderer-independent: the same 1080-wide SVG-through-sharp path extends to 1080x1920 frames, then ffmpeg)
 - automated posting publish0x; seems to not pick up cookies for login

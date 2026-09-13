@@ -14,11 +14,13 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "
 # Chinese mobile-verified account and is parked as a TODO.
 # Threads is verified live and runs unattended, but its long-lived access token
 # expires after 60 days, so rotate THREADS_ACCESS_TOKEN before it lapses.
-# Instagram is registered but manual-only: the Graph API fetches carousel images
-# from public HTTPS URLs, and this site has no approved media host yet, so an
-# unattended run would fail closed every time. Add it here only once slide media
-# is hosted somewhere Meta can reach.
-DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads")
+# Instagram is verified live end to end (carousel render, upload to the public
+# Blob store, carousel publish) and is a normal production destination. It needs
+# Node plus the renderer dependencies, which both production workflows install,
+# and its 60-day evergreen cooldown stops a recycled article from repeating.
+# INSTAGRAM_ACCESS_TOKEN is a long-lived Instagram User token with the same
+# 60-day lifetime as Threads, so it needs the same rotation.
+DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads", "instagram")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,
 # per-article opt-in through the `devto` frontmatter flag.

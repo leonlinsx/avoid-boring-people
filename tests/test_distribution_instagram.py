@@ -3,14 +3,16 @@
 Exercises the pieces the slice adds, in the order the pipeline uses them:
 storyboard derivation and copy limits, the deterministic slide renderer, the
 media-host boundary, the Graph API publish flow, and the registration/routing
-that keeps Instagram manual-only.
+that makes Instagram a production default in both workflows.
 """
+import importlib
 import json
 import struct
 import subprocess
 import sys
 import types
 from dataclasses import replace
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -1227,13 +1229,80 @@ def test_container_building_failures_are_retryable():
 
 # --- Registration, routing, and workflow hygiene -----------------------------
 
-def test_instagram_is_registered_but_absent_from_automation_defaults():
+def test_instagram_is_registered_and_runs_as_a_production_default():
     assert "instagram" in PLATFORMS
     assert "instagram" in state_manager.PLATFORMS
-    assert "instagram" not in DEFAULT_PLATFORMS, "Instagram must stay manual-only until a live publish succeeds"
+    assert "instagram" in DEFAULT_PLATFORMS, "Instagram is verified live and must run unattended"
     assert state_manager.EVERGREEN_COOLDOWN_DAYS["instagram"] == 60
     assert eligible_for_category({"category": "Culture"}, "instagram")
     assert eligible_for_category({"category": "Technology"}, "instagram")
+
+
+def test_instagram_category_eligibility_did_not_widen_other_rules():
+    for category in ("Investing", "Technology", "System Design", "Risk & Decision Making", "Culture", ""):
+        assert eligible_for_category({"category": category}, "instagram"), category
+
+    # Promoting Instagram must not have changed any other category rule.
+    assert not eligible_for_category({"category": "Culture"}, "devto")
+    assert not eligible_for_category({"category": "Culture"}, "threads")
+    assert eligible_for_category({"category": "Technology"}, "devto")
+    assert eligible_for_category({"category": "Culture"}, "twitter")
+
+
+def test_unset_platform_expands_to_the_defaults_and_an_override_still_wins(monkeypatch):
+    """`PLATFORM` is the only override; unset means the production default list."""
+    monkeypatch.setattr("dotenv.load_dotenv", lambda *args, **kwargs: None)
+    monkeypatch.delenv("PLATFORM", raising=False)
+    reloaded = importlib.reload(auto_post)
+    try:
+        assert reloaded.PLATFORM == list(DEFAULT_PLATFORMS)
+        assert "instagram" in reloaded.PLATFORM
+
+        monkeypatch.setenv("PLATFORM", "threads")
+        assert importlib.reload(auto_post).PLATFORM == ["threads"]
+    finally:
+        monkeypatch.delenv("PLATFORM", raising=False)
+        importlib.reload(auto_post)
+
+
+def test_a_new_article_and_an_evergreen_cycle_both_reach_instagram(monkeypatch, tmp_path):
+    """The same default list feeds both modes, so Instagram is eligible in each."""
+    monkeypatch.setattr(state_manager, "STATE_FILE", tmp_path / "posted.json")
+    post = _post(date="2021-01-01")
+
+    fresh = state_manager.select_next_post([post], list(DEFAULT_PLATFORMS), "new")
+    recycled = state_manager.select_next_post([post], list(DEFAULT_PLATFORMS), "evergreen")
+
+    assert fresh is not None and recycled is not None
+    assert "instagram" in fresh["eligible_platforms"]
+    assert "instagram" in recycled["eligible_platforms"]
+    # Evergreen still never recycles DEV, and devto stays eligible for a new article.
+    assert "devto" in fresh["eligible_platforms"]
+    assert "devto" not in recycled["eligible_platforms"]
+
+
+def test_the_instagram_evergreen_cooldown_still_protects_a_recycled_article(monkeypatch, tmp_path):
+    monkeypatch.setattr(state_manager, "STATE_FILE", tmp_path / "posted.json")
+    fresh = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    state_manager.save_state(
+        {
+            "version": 2,
+            "posts": {
+                "2019_02_18_why": {
+                    "instagram": {"count": 1, "last_posted_at": fresh, "last_mode": "new"}
+                }
+            },
+        }
+    )
+    post = _post()
+
+    assert not state_manager.platform_is_eligible(post, "instagram", "evergreen")
+
+    selected = state_manager.select_next_post([post], list(DEFAULT_PLATFORMS), "evergreen")
+
+    assert selected is not None
+    assert "instagram" not in selected["eligible_platforms"]
+    assert "threads" in selected["eligible_platforms"], "only Instagram is cooling down"
 
 
 def test_manual_run_publishes_a_carousel_and_records_state(monkeypatch, tmp_path):
@@ -1318,13 +1387,30 @@ def test_instagram_dry_run_reports_an_unavailable_renderer(monkeypatch, tmp_path
     assert "renderer: unavailable" in capsys.readouterr().out
 
 
-def test_instagram_stays_out_of_the_scheduled_workflow_and_is_allowlisted_manually():
+def test_instagram_is_wired_into_both_production_workflows():
     new = (REPO_ROOT / ".github" / "workflows" / "social-new.yml").read_text(encoding="utf-8")
     evergreen = (REPO_ROOT / ".github" / "workflows" / "social-evergreen.yml").read_text(encoding="utf-8")
 
+    # Instagram is reachable from the manual allowlist and from the push-triggered
+    # run, where an empty `platforms` input means the production defaults.
     assert "instagram" in new.split("allowed=", 1)[1].splitlines()[0]
     assert "INSTAGRAM_ACCESS_TOKEN" in new
-    assert "instagram" not in evergreen.lower()
+    assert "inputs.platforms == ''" in new, "the automatic default path must install the renderer too"
+
+    # The evergreen schedule reaches Instagram through DEFAULT_PLATFORMS, so it
+    # needs the same credentials and the same renderer.
+    for name in (
+        "INSTAGRAM_USER_ID",
+        "INSTAGRAM_ACCESS_TOKEN",
+        "INSTAGRAM_MEDIA_UPLOAD_URL",
+        "INSTAGRAM_MEDIA_UPLOAD_SECRET",
+    ):
+        assert f"{name}: ${{{{ secrets.{name} }}}}" in evergreen
+    assert "npm ci" in evergreen
+    assert "node-version: '22'" in evergreen
+    # Cron cadence is unchanged.
+    assert "cron: '0 14 * * 2,5'" in evergreen
+    # Instagram never becomes an evergreen-only or schedule-specific override.
     assert "inputs.platforms" not in evergreen
 
 
@@ -1334,15 +1420,13 @@ def test_the_manual_workflow_can_host_media_without_touching_the_schedule():
 
     assert "INSTAGRAM_MEDIA_UPLOAD_URL: ${{ secrets.INSTAGRAM_MEDIA_UPLOAD_URL }}" in new
     assert "INSTAGRAM_MEDIA_UPLOAD_SECRET: ${{ secrets.INSTAGRAM_MEDIA_UPLOAD_SECRET }}" in new
-    # The Blob store is authenticated with OIDC inside Vercel, so GitHub Actions
-    # must not carry a Blob credential at all.
     assert "BLOB_READ_WRITE_TOKEN" not in new
+    assert "BLOB_READ_WRITE_TOKEN" not in evergreen
     # The carousel renderer needs Node and sharp, and must never download a
     # browser while doing it.
-    assert "npm ci" in new
-    assert "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD" in new
-    assert "INSTAGRAM_MEDIA_UPLOAD_SECRET" not in evergreen, "the unattended schedule must stay Instagram-free"
-    assert "BLOB_READ_WRITE_TOKEN" not in evergreen, "the unattended schedule must stay Instagram-free"
+    for workflow in (new, evergreen):
+        assert "npm ci" in workflow
+        assert "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD" in workflow
 
 
 # --- Instagram dry runs with media hosting -----------------------------------

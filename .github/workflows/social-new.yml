@@ -59,12 +59,15 @@ jobs:
         run: |
           python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
           python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+      # Instagram is a production default, so the automatic push-triggered run
+      # (no `platforms` input, meaning production defaults) needs the carousel
+      # renderer too. A manual run only installs it when it can target Instagram.
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        if: steps.added.outputs.found == 'true' && contains(inputs.platforms, 'instagram')
+        if: steps.added.outputs.found == 'true' && (inputs.platforms == '' || contains(inputs.platforms, 'instagram'))
         with:
           node-version: '22'
       - name: Install carousel renderer dependencies
-        if: steps.added.outputs.found == 'true' && contains(inputs.platforms, 'instagram')
+        if: steps.added.outputs.found == 'true' && (inputs.platforms == '' || contains(inputs.platforms, 'instagram'))
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
           PUPPETEER_SKIP_DOWNLOAD: 'true'
