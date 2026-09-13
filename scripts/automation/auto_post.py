@@ -174,9 +174,9 @@ def _print_instagram_dry_run(storyboard: InstagramStoryboard | None) -> None:
         print(f"  media host: {host.name}")
         if host.uploads:
             # A dry run never uploads, so an uploading host is asked only where
-            # its content-addressed objects would live.
-            for url in host.planned_urls(carousel.slides):
-                print(f"    would upload: {url}")
+            # its content-addressed objects would go.
+            for destination in host.upload_plan(carousel.slides):
+                print(f"    would upload: {destination}")
         else:
             for url in resolve_media_urls(carousel.slides, host=host):
                 print(f"    reachable: {url}")

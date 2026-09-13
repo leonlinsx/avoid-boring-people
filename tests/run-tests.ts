@@ -975,6 +975,192 @@ async function testRssEndpoint() {
   });
 }
 
+async function testInstagramMediaUpload() {
+  const { BLOB_PATH_HEADER, MAX_UPLOAD_BYTES, handleInstagramMediaUpload, setBlobUploader } = await import(
+    '../src/lib/social/instagram-media.ts'
+  );
+  const { POST, prerender } = await import('../src/pages/api/social/instagram-media.ts');
+  const { put } = await import('@vercel/blob');
+
+  const endpoint = 'https://leonlins.com/api/social/instagram-media';
+  const secret = 'test-media-upload-secret';
+  const pathname = 'instagram/2019_02_18_why/0123456789ab/slide-01.jpg';
+  const jpeg = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff, 0xe0]), Buffer.alloc(64, 1)]);
+  const previousSecret = process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
+
+  const calls: { pathname: string; body: Buffer; options: Record<string, unknown> }[] = [];
+  const uploader = async (path: string, body: Buffer, options: Record<string, unknown>) => {
+    calls.push({ pathname: path, body, options });
+    return { url: `https://store1.public.blob.vercel-storage.com/${path}`, pathname: path };
+  };
+
+  const request = (
+    options: { method?: string; headers?: Record<string, string | undefined>; body?: Buffer } = {},
+  ) => {
+    const headers = new Headers({
+      authorization: `Bearer ${secret}`,
+      'content-type': 'image/jpeg',
+      [BLOB_PATH_HEADER]: pathname,
+    });
+    for (const [key, value] of Object.entries(options.headers ?? {})) {
+      if (value === undefined) headers.delete(key);
+      else headers.set(key, value);
+    }
+    const method = options.method ?? 'POST';
+    const init: RequestInit = { method, headers };
+    // Node's Buffer is not part of the DOM BodyInit union, but undici accepts it.
+    if (method === 'POST') init.body = (options.body ?? jpeg) as unknown as BodyInit;
+    return new Request(endpoint, init);
+  };
+
+  const bodyOf = async (response: Response) => (await response.json()) as Record<string, unknown>;
+
+  // Collect what the endpoint logs so secret hygiene can be asserted, and so a
+  // rejected upload does not fill the test output with expected failures.
+  const logged: string[] = [];
+  const originalConsoleError = console.error;
+  console.error = (...args: unknown[]) => {
+    logged.push(args.map((arg) => String(arg)).join(' '));
+  };
+
+  try {
+    // The route is on-demand only, and it delegates to the shared handler.
+    assert.equal(prerender, false);
+    assert.equal(typeof POST, 'function');
+
+    process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET = secret;
+
+    const method = await handleInstagramMediaUpload(request({ method: 'GET' }), uploader);
+    assert.equal(method.status, 405);
+    assert.equal(method.headers.get('allow'), 'POST');
+
+    for (const [label, overrides] of [
+      ['missing', { authorization: undefined }],
+      ['wrong', { authorization: 'Bearer not-the-secret' }],
+      ['same length', { authorization: `Bearer ${'x'.repeat(secret.length)}` }],
+      ['not bearer', { authorization: `Basic ${secret}` }],
+      ['bare secret', { authorization: secret }],
+    ] as const) {
+      const rejected = await handleInstagramMediaUpload(request({ headers: { ...overrides } }), uploader);
+      assert.equal(rejected.status, 401, `an ${label} credential must be rejected`);
+      assert.equal(rejected.headers.get('www-authenticate'), 'Bearer');
+      assert.equal(String((await bodyOf(rejected)).error), 'unauthorized');
+    }
+
+    const wrongType = await handleInstagramMediaUpload(
+      request({ headers: { 'content-type': 'application/octet-stream' } }),
+      uploader,
+    );
+    assert.equal(wrongType.status, 415);
+
+    const notJpeg = await handleInstagramMediaUpload(
+      request({ body: Buffer.from('this is not a jpeg') }),
+      uploader,
+    );
+    assert.equal(notJpeg.status, 415);
+
+    const emptyBody = await handleInstagramMediaUpload(request({ body: Buffer.alloc(0) }), uploader);
+    assert.equal(emptyBody.status, 400);
+
+    for (const [label, badPath] of [
+      ['missing', undefined],
+      ['traversal', 'instagram/../../../etc/0123456789ab/slide-01.jpg'],
+      ['wrong prefix', 'media/2019_02_18_why/0123456789ab/slide-01.jpg'],
+      ['uppercase digest', 'instagram/2019_02_18_why/0123456789AB/slide-01.jpg'],
+      ['short digest', 'instagram/2019_02_18_why/0123456789a/slide-01.jpg'],
+      ['wrong file name', 'instagram/2019_02_18_why/0123456789ab/slide-1.jpg'],
+      ['extra segment', 'instagram/2019_02_18_why/0123456789ab/deeper/slide-01.jpg'],
+    ] as const) {
+      const rejected = await handleInstagramMediaUpload(
+        request({ headers: { [BLOB_PATH_HEADER]: badPath } }),
+        uploader,
+      );
+      assert.equal(rejected.status, 400, `a ${label} object path must be rejected`);
+    }
+
+    const declaredTooLarge = await handleInstagramMediaUpload(
+      request({ headers: { 'content-length': String(MAX_UPLOAD_BYTES + 1) } }),
+      uploader,
+    );
+    assert.equal(declaredTooLarge.status, 413);
+
+    const actuallyTooLarge = await handleInstagramMediaUpload(
+      request({ body: Buffer.concat([jpeg, Buffer.alloc(MAX_UPLOAD_BYTES + 1)]) }),
+      uploader,
+    );
+    assert.equal(actuallyTooLarge.status, 413);
+
+    assert.equal(calls.length, 0, 'a rejected request must not reach the Blob store');
+
+    const stored = await handleInstagramMediaUpload(request(), uploader);
+    assert.equal(stored.status, 200);
+    assert.equal(stored.headers.get('cache-control'), 'no-store');
+    assert.deepEqual(await bodyOf(stored), {
+      url: `https://store1.public.blob.vercel-storage.com/${pathname}`,
+      pathname,
+      bytes: jpeg.byteLength,
+    });
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].pathname, pathname);
+    assert.deepEqual([...calls[0].body], [...jpeg]);
+    assert.deepEqual(calls[0].options, {
+      access: 'public',
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      contentType: 'image/jpeg',
+    });
+
+    for (const [label, result] of [
+      ['no URL', {}],
+      ['insecure URL', { url: `http://store1.public.blob.vercel-storage.com/${pathname}`, pathname }],
+      ['a different object', { url: 'https://store1.public.blob.vercel-storage.com/other.jpg', pathname: 'instagram/2019_02_18_why/ffffffffffff/slide-01.jpg' }],
+    ] as const) {
+      const failed = await handleInstagramMediaUpload(request(), async () => result);
+      assert.equal(failed.status, 502, `a store answering with ${label} must fail closed`);
+    }
+
+    const failuresLogged = logged.length;
+    const thrown = await handleInstagramMediaUpload(request(), async () => {
+      throw new Error(`blob exploded with ${secret}`);
+    });
+    assert.equal(thrown.status, 502);
+    assert.equal(String((await bodyOf(thrown)).error), 'upload failed');
+    assert.equal(logged.length, failuresLogged + 1, 'a store failure must be logged exactly once');
+    assert.match(logged[logged.length - 1], /\[redacted\]/);
+
+    // The route's own wiring reaches the Blob SDK through the seam.
+    setBlobUploader(uploader);
+    try {
+      const viaRoute = await POST({ request: request() } as never);
+      assert.equal((viaRoute as Response).status, 200);
+      assert.equal(calls.at(-1)?.pathname, pathname);
+      const viaRouteUnauthorized = await POST({ request: request({ headers: { authorization: undefined } }) } as never);
+      assert.equal((viaRouteUnauthorized as Response).status, 401);
+    } finally {
+      setBlobUploader(put as never);
+    }
+
+    // A missing or blank secret makes the endpoint unusable rather than open.
+    const uploadsSoFar = calls.length;
+    for (const configured of [undefined, '   ']) {
+      if (configured === undefined) delete process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
+      else process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET = configured;
+      const unconfigured = await handleInstagramMediaUpload(request(), uploader);
+      assert.equal(unconfigured.status, 503);
+      assert.equal(calls.length, uploadsSoFar, 'an unconfigured endpoint must not upload');
+    }
+    assert.ok(
+      logged.every((line) => !line.includes(secret)),
+      'the upload secret must never reach the logs',
+    );
+  } finally {
+    console.error = originalConsoleError;
+    if (previousSecret === undefined) delete process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
+    else process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET = previousSecret;
+    setBlobUploader(put as never);
+  }
+}
+
 async function run() {
   try {
     testSearchPosts();
@@ -1003,6 +1189,7 @@ async function run() {
     await testSearchIndexEndpoint();
     await testApiSearchIndexEndpoint();
     await testRssEndpoint();
+    await testInstagramMediaUpload();
     console.log('✅ All custom tests passed');
   } catch (error) {
     console.error('❌ Test failure', error);

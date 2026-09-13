@@ -8,9 +8,11 @@ dependency of live publishing, so the boundary is deliberately explicit:
   message that says what would have to exist first.
 * `UrlMappingMediaHost` maps already-published files onto an HTTPS base URL and
   verifies that Meta can actually fetch them before a publish begins.
-* `VercelBlobMediaHost` is the one approved uploader: it PUTs each rendered
-  JPEG to Vercel Blob under a content-addressed path and returns the public
-  HTTPS URL Meta should fetch. It is selected by `BLOB_READ_WRITE_TOKEN` alone.
+* `UploadEndpointMediaHost` is the one approved uploader: it POSTs each
+  rendered JPEG to the site's authenticated media endpoint, which stores it in
+  the public Vercel Blob store and answers with the public HTTPS URL Meta
+  should fetch. It is selected by `INSTAGRAM_MEDIA_UPLOAD_URL` plus
+  `INSTAGRAM_MEDIA_UPLOAD_SECRET`.
 
 Every host verifies reachability before a publish begins, so a hosting mistake
 fails before the first Instagram container is created. Uploads are only ever
@@ -31,17 +33,17 @@ from .formatters.instagram_storyboard import MAX_IMAGE_BYTES
 from .renderers.instagram import RenderedSlide, post_slug
 
 ENV_BASE_URL = "INSTAGRAM_MEDIA_BASE_URL"
-ENV_BLOB_TOKEN = "BLOB_READ_WRITE_TOKEN"
-BLOB_API_BASE = "https://vercel.com/api/blob"
-BLOB_API_VERSION = "12"
-BLOB_PUBLIC_HOST_SUFFIX = ".public.blob.vercel-storage.com"
+ENV_UPLOAD_URL = "INSTAGRAM_MEDIA_UPLOAD_URL"
+ENV_UPLOAD_SECRET = "INSTAGRAM_MEDIA_UPLOAD_SECRET"
 BLOB_PATH_PREFIX = "instagram"
+BLOB_PATH_HEADER = "x-blob-path"
 DIGEST_LENGTH = 12
 REQUEST_TIMEOUT_SECONDS = 15
 UPLOAD_TIMEOUT_SECONDS = 60
 INSTALL_HINT = (
     f"set {ENV_BASE_URL} to an HTTPS base URL that already serves the rendered "
-    f"slide files, or set {ENV_BLOB_TOKEN} to upload them to Vercel Blob"
+    f"slide files, or set {ENV_UPLOAD_URL} and {ENV_UPLOAD_SECRET} to upload them "
+    "through the site's Instagram media endpoint"
 )
 
 
@@ -54,7 +56,7 @@ class MediaHostUnavailable(MediaHostError):
 
 
 class BlobUploadError(MediaHostError):
-    """A slide could not be stored on, or read back from, Vercel Blob."""
+    """A slide could not be stored on, or read back from, the public media host."""
 
 
 @dataclass(frozen=True)
@@ -71,8 +73,8 @@ class MediaHost:
     """Resolves rendered slides to the public URLs the Instagram API requires."""
 
     name = "media-host"
-    #: Whether resolving actually stores bytes somewhere. A dry run plans the
-    #: URLs of an uploading host instead of calling it.
+    #: Whether resolving actually stores bytes somewhere. A dry run plans where
+    #: an uploading host would put them instead of calling it.
     uploads = False
 
     def resolve(self, slide: RenderedSlide) -> str:
@@ -84,9 +86,12 @@ class MediaHost:
     def resolve_all(self, slides: Iterable[RenderedSlide]) -> tuple[str, ...]:
         return tuple(self.resolve(slide) for slide in slides)
 
-    def planned_urls(self, slides: Iterable[RenderedSlide]) -> tuple[str, ...]:
-        """Where the slides would live, without contacting the host."""
-        return self.resolve_all(slides)
+    def upload_plan(self, slides: Iterable[RenderedSlide]) -> tuple[str, ...]:
+        """Where a live upload would send each slide, without contacting the host.
+
+        Hosts that cannot describe a destination return nothing.
+        """
+        return ()
 
 
 def check_fetchable_jpeg(session: requests.Session, url: str) -> MediaCheck:
@@ -169,13 +174,14 @@ class UrlMappingMediaHost(MediaHost):
         return tuple(check_fetchable_jpeg(self.session, url) for url in urls)
 
 
-class VercelBlobMediaHost(MediaHost):
-    """Uploads rendered slides to Vercel Blob and returns their public URLs.
+class UploadEndpointMediaHost(MediaHost):
+    """Uploads rendered slides through the site's authenticated media endpoint.
 
-    `put` is called over the documented HTTP API with the read-write token in an
-    `Authorization` header, so the credential never appears in a URL, a query
-    string, or a log line. The token must belong to a store whose access is
-    public, since Meta fetches the images anonymously.
+    GitHub Actions holds no Vercel Blob credential: the store is authenticated
+    with OIDC inside the Vercel project that serves this site. So the uploader
+    POSTs each JPEG to that endpoint, which stores it with the Blob SDK and
+    answers with the public HTTPS URL Meta should fetch. The shared secret
+    travels in an `Authorization` header, never in the URL, and is never logged.
 
     Object paths embed the carousel's content digest:
 
@@ -187,45 +193,47 @@ class VercelBlobMediaHost(MediaHost):
     serving for an already-published carousel.
     """
 
-    name = "vercel-blob"
+    name = "upload-endpoint"
     uploads = True
 
     def __init__(
         self,
-        token: str | None = None,
+        endpoint_url: str | None = None,
+        secret: str | None = None,
         *,
         post_id: str | None = None,
         session: requests.Session | None = None,
-        api_base: str = BLOB_API_BASE,
     ) -> None:
-        configured = (token if token is not None else os.getenv(ENV_BLOB_TOKEN) or "").strip()
-        if not configured:
+        configured_url = (
+            endpoint_url if endpoint_url is not None else os.getenv(ENV_UPLOAD_URL) or ""
+        ).strip()
+        configured_secret = (
+            secret if secret is not None else os.getenv(ENV_UPLOAD_SECRET) or ""
+        ).strip()
+        if not configured_url or not configured_secret:
             raise MediaHostUnavailable(
-                f"no Vercel Blob token is configured; set {ENV_BLOB_TOKEN} to a "
-                "read-write token for the store that will serve the carousel images"
+                f"uploading carousel media needs both {ENV_UPLOAD_URL} and {ENV_UPLOAD_SECRET}; "
+                "set both to upload, or leave both unset to publish from an existing host"
             )
-        self._token = configured
-        self.store_id = blob_store_id(configured)
+        parsed = urlparse(configured_url)
+        if parsed.scheme != "https" or not parsed.netloc:
+            raise MediaHostUnavailable(
+                f"{ENV_UPLOAD_URL} must be an https:// URL, for example "
+                "https://leonlins.com/api/social/instagram-media"
+            )
+        self.endpoint_url = configured_url
+        self._secret = configured_secret
         self.post_id = (post_id or "").strip()
         self.session = session or requests.Session()
-        self.api_base = api_base.rstrip("/")
 
     def object_path(self, slide: RenderedSlide, digest: str) -> str:
-        """Content-addressed destination for one slide inside the store."""
+        """Content-addressed destination for one slide in the Blob store."""
         if not self.post_id:
             raise BlobUploadError(
-                f"{ENV_BLOB_TOKEN} media hosting needs the article id to build a "
+                f"{ENV_UPLOAD_URL} media hosting needs the article id to build a "
                 "stable, collision-safe object path"
             )
         return f"{BLOB_PATH_PREFIX}/{post_slug(self.post_id)}/{digest}/slide-{slide.index:02d}.jpg"
-
-    def public_url(self, pathname: str) -> str:
-        if not self.store_id:
-            raise BlobUploadError(
-                f"cannot derive the public Blob URL: {ENV_BLOB_TOKEN} is not in the "
-                "documented vercel_blob_rw_<store-id>_<secret> form"
-            )
-        return f"https://{self.store_id}{BLOB_PUBLIC_HOST_SUFFIX}/{pathname}"
 
     def resolve(self, slide: RenderedSlide) -> str:
         return self.upload(slide, content_digest((slide,)))
@@ -235,14 +243,16 @@ class VercelBlobMediaHost(MediaHost):
         digest = content_digest(ordered)
         return tuple(self.upload(slide, digest) for slide in ordered)
 
-    def planned_urls(self, slides: Iterable[RenderedSlide]) -> tuple[str, ...]:
-        """The URLs a live run would produce, without uploading anything."""
+    def upload_plan(self, slides: Iterable[RenderedSlide]) -> tuple[str, ...]:
+        """The objects a live run would create, without uploading anything."""
         ordered = tuple(slides)
         digest = content_digest(ordered)
-        return tuple(self.public_url(self.object_path(slide, digest)) for slide in ordered)
+        return tuple(
+            f"{self.object_path(slide, digest)} -> POST {self.endpoint_url}" for slide in ordered
+        )
 
     def verify(self, urls: Sequence[str]) -> tuple[MediaCheck, ...]:
-        """Confirm Blob serves each uploaded JPEG the way Meta needs it."""
+        """Confirm the endpoint's Blob URLs are fetchable JPEGs Meta can use."""
         return tuple(check_fetchable_jpeg(self.session, url) for url in urls)
 
     def upload(self, slide: RenderedSlide, digest: str) -> str:
@@ -254,56 +264,47 @@ class VercelBlobMediaHost(MediaHost):
             raise BlobUploadError(f"could not read rendered slide {slide.path}: {error}") from error
 
         headers = {
-            "authorization": f"Bearer {self._token}",
-            "x-api-version": BLOB_API_VERSION,
-            "x-content-type": "image/jpeg",
-            "x-vercel-blob-access": "public",
-            # The path is already unique and content-addressed, so a suffix
-            # would only break re-run idempotency, and overwriting is safe
-            # precisely because the same path always holds the same bytes.
-            "x-add-random-suffix": "0",
-            "x-allow-overwrite": "1",
+            "authorization": f"Bearer {self._secret}",
+            "content-type": "image/jpeg",
+            BLOB_PATH_HEADER: pathname,
         }
-        if self.store_id:
-            headers["x-vercel-blob-store-id"] = self.store_id
         try:
-            response = self.session.put(
-                f"{self.api_base}/{pathname}",
+            response = self.session.post(
+                self.endpoint_url,
                 data=payload,
                 headers=headers,
                 timeout=UPLOAD_TIMEOUT_SECONDS,
             )
         except requests.RequestException as error:
-            raise BlobUploadError(f"uploading {pathname} to Vercel Blob failed: {error}") from error
-        if response.status_code != 200:
             raise BlobUploadError(
-                f"Vercel Blob rejected {pathname} with HTTP {response.status_code}{self._rejection(response)}"
+                f"uploading {pathname} to {self.endpoint_url} failed: {error}"
+            ) from error
+        if not 200 <= response.status_code < 300:
+            raise BlobUploadError(
+                f"{self.endpoint_url} rejected {pathname} with "
+                f"HTTP {response.status_code}{self._rejection(response)}"
             )
 
-        url = _blob_url(response)
-        if not _is_public_blob_url(url):
+        stored = _upload_response(response)
+        url = str(stored.get("url") or "")
+        returned_path = str(stored.get("pathname") or "")
+        if not _is_usable_media_url(url, self.endpoint_url):
             raise BlobUploadError(
-                f"Vercel Blob returned {url or 'no URL'} for {pathname}, "
-                "which is not a public HTTPS blob URL"
+                f"{self.endpoint_url} returned {url or 'no URL'} for {pathname}, "
+                "which is not the public HTTPS URL Meta needs"
+            )
+        if returned_path and returned_path != pathname:
+            raise BlobUploadError(
+                f"{self.endpoint_url} stored {returned_path} instead of the requested {pathname}"
             )
         return url
 
     def _rejection(self, response: requests.Response) -> str:
-        """Server-side reason for a failed upload, with the token stripped."""
-        detail = ""
-        try:
-            payload = response.json()
-        except ValueError:
-            payload = None
-        if isinstance(payload, dict):
-            error = payload.get("error")
-            if isinstance(error, dict):
-                detail = str(error.get("message") or "")
-            elif error:
-                detail = str(error)
-            detail = detail or str(payload.get("message") or "")
+        """Server-side reason for a failed upload, with the secret stripped."""
+        stored = _upload_response(response)
+        detail = str(stored.get("error") or stored.get("message") or "")
         detail = detail or (getattr(response, "text", "") or "")
-        detail = " ".join(str(detail).split())[:200].replace(self._token, "[redacted]")
+        detail = " ".join(str(detail).split())[:200].replace(self._secret, "[redacted]")
         return f": {detail}" if detail else ""
 
 
@@ -315,27 +316,20 @@ def content_digest(slides: Sequence[RenderedSlide]) -> str:
     return hasher.hexdigest()[:DIGEST_LENGTH]
 
 
-def blob_store_id(token: str) -> str:
-    """Read the store id out of a Vercel read-write token, or an empty string."""
-    parts = token.split("_")
-    return parts[3] if len(parts) > 3 and parts[:3] == ["vercel", "blob", "rw"] else ""
-
-
-def _blob_url(response: requests.Response) -> str:
+def _upload_response(response: requests.Response) -> dict:
     try:
         payload = response.json()
     except ValueError:
-        return ""
-    if not isinstance(payload, dict):
-        return ""
-    return str(payload.get("url") or "")
+        return {}
+    return payload if isinstance(payload, dict) else {}
 
 
-def _is_public_blob_url(url: str) -> bool:
+def _is_usable_media_url(url: str, endpoint_url: str = "") -> bool:
+    """A stored slide must be a public HTTPS URL that is not the endpoint itself."""
     parsed = urlparse(url)
-    return parsed.scheme == "https" and parsed.hostname is not None and parsed.hostname.endswith(
-        BLOB_PUBLIC_HOST_SUFFIX.lstrip(".")
-    )
+    if parsed.scheme != "https" or not parsed.hostname:
+        return False
+    return url.split("#", 1)[0].rstrip("/") != endpoint_url.rstrip("/")
 
 
 def get_media_host(
@@ -346,16 +340,20 @@ def get_media_host(
 ) -> MediaHost:
     """Return the configured media host, or the refusing default.
 
-    An explicit `INSTAGRAM_MEDIA_BASE_URL` wins over an uploader because it is a
-    deliberate operator choice to serve the slides from somewhere else; the
-    uploader is used when only its token is present.
+    An explicit `INSTAGRAM_MEDIA_BASE_URL` wins over the upload endpoint because
+    it is a deliberate operator choice to serve the slides from somewhere else;
+    the uploader is used when its URL and secret are present.
     """
     configured = (base_url if base_url is not None else os.getenv(ENV_BASE_URL) or "").strip()
     if configured:
         return UrlMappingMediaHost(configured, session=session)
-    token = (os.getenv(ENV_BLOB_TOKEN) or "").strip()
-    if token:
-        return VercelBlobMediaHost(token, post_id=post_id, session=session)
+    endpoint_url = (os.getenv(ENV_UPLOAD_URL) or "").strip()
+    secret = (os.getenv(ENV_UPLOAD_SECRET) or "").strip()
+    if endpoint_url or secret:
+        # A half-configured uploader fails loudly instead of silently degrading.
+        return UploadEndpointMediaHost(
+            endpoint_url, secret, post_id=post_id, session=session
+        )
     return NullMediaHost()
 
 
