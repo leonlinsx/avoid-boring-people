@@ -6,10 +6,13 @@ content ids and URLs read from the deployed search index.
 
 import glob
 import re
+from pathlib import Path
 
+import nltk
 import pytest
 
 from scripts.automation import medium_prep
+from scripts.automation.summarizers import summarizer_stub
 
 # (content id, deployed URL slug) pairs taken from /search-index.json.
 DEPLOYED_SLUGS = [
@@ -184,3 +187,23 @@ def test_main_prints_the_draft(tmp_path, capsys, monkeypatch):
 def test_main_reports_a_missing_article(tmp_path, capsys):
     assert medium_prep.main([str(tmp_path / "missing" / "index.md")]) == 1
     assert "::error::Article not found" in capsys.readouterr().out
+
+
+def test_a_cold_nltk_cache_never_writes_to_stdout(monkeypatch, capsys):
+    """stdout is the draft itself in CI, so progress notices must go to stderr."""
+    stub_path = Path(summarizer_stub.__file__)
+
+    def missing(resource_name):
+        raise LookupError(resource_name)
+
+    monkeypatch.setattr(nltk.data, "find", missing)
+    monkeypatch.setattr(nltk, "download", lambda *args, **kwargs: True)
+
+    # Re-run the module body the way a cold CI cache would: find() raises, so the
+    # download branch executes while stdout is captured.
+    source = compile(stub_path.read_text(encoding="utf-8"), str(stub_path), "exec")
+    exec(source, {"__name__": "cold_cache_probe"})
+
+    captured = capsys.readouterr()
+    assert "Downloading NLTK resources" not in captured.out
+    assert "Downloading NLTK resources" in captured.err
