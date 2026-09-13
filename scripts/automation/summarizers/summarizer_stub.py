@@ -43,7 +43,7 @@ def summarize_post(
     sentences = [str(s).strip() for s in sentences if s and str(s).strip()]
     
     # Apply tweet character limit to all sentences
-    sentences = [s[:TWEET_CHAR_LIMIT] for s in sentences]
+    sentences = [truncate_to_tweet_limit(s, TWEET_CHAR_LIMIT) for s in sentences]
 
     teaser = sentences[0] if sentences else "Summary unavailable"
     points = sentences[1:max_points+1] if len(sentences) > 1 else sentences

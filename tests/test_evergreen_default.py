@@ -8,6 +8,7 @@ still work, new-article distribution is unaffected, and the summarizer receives
 the publication date instead of treating old facts as current.
 """
 from datetime import datetime, timezone
+import json
 import types
 
 from scripts.automation import fetch_post as fetch_post_module
@@ -221,3 +222,38 @@ def test_summarize_post_sends_the_date_to_the_model(monkeypatch):
     assert result == {"teaser": "Hook", "points": ["Point one"]}
     sent_prompt = captured["messages"][-1]["content"]
     assert "PUBLICATION DATE: 2020-07-22" in sent_prompt
+
+
+def test_overlong_summary_text_is_truncated_at_a_word_boundary(monkeypatch):
+    """A model that ignores its length budget must not yield half a word."""
+    monkeypatch.delenv("DRY_RUN", raising=False)
+    monkeypatch.delenv("TEST_API", raising=False)
+    words = [f"segment{index:02d}" for index in range(40)]
+
+    class _Completions:
+        def create(self, **kwargs):
+            return types.SimpleNamespace(
+                choices=[
+                    types.SimpleNamespace(
+                        message=types.SimpleNamespace(
+                            content=json.dumps(
+                                {"teaser": " ".join(words), "points": [" ".join(words)]}
+                            )
+                        )
+                    )
+                ]
+            )
+
+    class _FakeClient:
+        chat = types.SimpleNamespace(completions=_Completions())
+
+    monkeypatch.setattr(llm_summarizer, "_client", lambda: _FakeClient())
+
+    result = llm_summarizer.summarize_post(_social_post(), max_chars=120)
+
+    for text in (result["teaser"], result["points"][0]):
+        assert len(text) <= 200
+        assert text.endswith("…")
+        # Every retained token is a whole word from the model's reply.
+        assert text[:-1].rstrip().split()[-1] in words
+        assert words[-1] not in text

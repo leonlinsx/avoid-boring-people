@@ -1,10 +1,17 @@
 """Platform presentation rules for one underlying social argument."""
 from __future__ import annotations
 
+import re
+
 from scripts.automation.content import SocialPost
 
 MASTODON_STATUS_LIMIT = 500
 FARCASTER_CAST_LIMIT = 320
+THREADS_TEXT_LIMIT = 500
+
+# A blockquote marker at the start of a fragment or after a space, introducing a
+# capitalised quote. Comparisons such as `risk > return` keep their operator.
+_MARKDOWN_QUOTE_MARKER = re.compile(r"(?:^|(?<=\s))>\s+(?=[A-Z\"'“‘])")
 
 
 def render_thread(post: SocialPost) -> list[str]:
@@ -56,3 +63,67 @@ def render_farcaster(post: SocialPost) -> str:
         trimmed_hook = post.hook[: FARCASTER_CAST_LIMIT - len(post.url) - len("\n\n…\n\n")]
         return f"{trimmed_hook}…\n\n{post.url}".strip()
     return f"{post.hook}\n\n{supporting[:budget].rstrip()}{ellipsis}\n\n{post.url}".strip()
+
+
+def _supporting_points(post: SocialPost) -> list[str]:
+    """The summary arrives as blank-line separated takeaway points."""
+    points: list[str] = []
+    for chunk in post.body.split("\n\n"):
+        point = chunk.strip()
+        if point and point not in points:
+            points.append(point)
+    return points
+
+
+def _trim_to_word(text: str, budget: int) -> str:
+    """Cut to the last word boundary that fits so no word is split in half."""
+    clipped = text[:budget]
+    if len(text) > budget and clipped and not clipped[-1].isspace():
+        clipped = clipped.rsplit(" ", 1)[0]
+    return clipped.rstrip(" ,;:.-")
+
+
+def _strip_markdown_quotes(text: str) -> str:
+    """Remove leaked markdown blockquote markers from Threads text.
+
+    The summarizer is asked for plain text, but quote-heavy articles still leak
+    `>` markers, and Threads renders no markdown, so they reach readers as stray
+    characters. Only markers that introduce a capitalised fragment are removed,
+    which leaves comparisons such as `risk > return` intact.
+    """
+    return _MARKDOWN_QUOTE_MARKER.sub("", text)
+
+
+def render_threads(post: SocialPost) -> list[str]:
+    """Render one standalone Threads idea plus the canonical URL as a self-reply.
+
+    Threads reads as a conversational surface, so a link announcement performs
+    poorly there and the post must make sense without the click. The main post
+    therefore carries the argument only; the article URL moves to a reply, where
+    it stays the canonical pointer without framing the post as an advert.
+
+    Supporting points are only added whole, because a paragraph cut off
+    mid-sentence reads as a mistake on a conversational feed. The first point is
+    trimmed as a fallback so the post is never left with a bare hook. Under
+    POST_MODE=single the body is the article title, which the hook already
+    carries, so that duplicate point drops out here.
+    """
+    hook = _strip_markdown_quotes(post.hook.strip())
+    points = [_strip_markdown_quotes(point) for point in _supporting_points(post)]
+    points = [point for point in points if point and point != hook]
+    main = hook
+    for point in points:
+        candidate = f"{main}\n\n{point}"
+        if len(candidate) <= THREADS_TEXT_LIMIT:
+            main = candidate
+            continue
+        if main == hook:
+            budget = THREADS_TEXT_LIMIT - len(hook) - len("\n\n…")
+            if budget > 0:
+                main = f"{hook}\n\n{_trim_to_word(point, budget)}…"
+        break
+    if len(main) > THREADS_TEXT_LIMIT:
+        main = f"{_trim_to_word(hook, THREADS_TEXT_LIMIT - 1)}…"
+    if not post.url:
+        return [main]
+    return [main, f"Full piece: {post.url}"]

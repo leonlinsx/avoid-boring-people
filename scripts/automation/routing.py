@@ -1,8 +1,8 @@
 """Category-based distribution policy, kept separate from provider code."""
 from __future__ import annotations
 
-PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr")
-SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads")
+SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr", "threads")
 
 # The normal automation destinations. Keep disabled, unapproved, or unusable
 # providers out of this list; PLATFORM remains available as an explicit
@@ -12,6 +12,8 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "
 # whole destination, which fails the run. Re-add it once credits exist.
 # Weibo stays out until its open-platform app gains write scope, which needs a
 # Chinese mobile-verified account and is parked as a TODO.
+# Threads stays out until a verified live run confirms the access token, user id,
+# and publish flow. Post to it explicitly with PLATFORM=threads until then.
 DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,

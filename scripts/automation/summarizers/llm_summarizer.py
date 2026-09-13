@@ -37,8 +37,11 @@ def _sanitize_text(value: str) -> str:
 def _truncate(value: str, limit: int) -> str:
     if len(value) <= limit:
         return value
-    trimmed = value[: limit - 1].rstrip(" ,;:.-")
-    return trimmed
+    budget = limit - 1
+    clipped = value[:budget]
+    if clipped and not clipped[-1].isspace():
+        clipped = clipped.rsplit(" ", 1)[0] or clipped
+    return f"{clipped.rstrip(' ,;:.-')}…"
 
 
 def _format_publication_date(post: Dict) -> str:

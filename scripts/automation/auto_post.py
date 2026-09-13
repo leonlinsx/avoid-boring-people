@@ -8,7 +8,13 @@ from scripts.automation import fetch_posts, mark_posted, select_next_post
 from scripts.automation.content import ArticleSyndication, CommunityPost, PublishResult, SocialPost
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.ranking import filter_posts, score_posts
-from scripts.automation.renderers import render_farcaster, render_linkedin, render_mastodon, render_thread
+from scripts.automation.renderers import (
+    render_farcaster,
+    render_linkedin,
+    render_mastodon,
+    render_thread,
+    render_threads,
+)
 from scripts.automation.retry import run_with_retries
 from scripts.automation.routing import DEFAULT_PLATFORMS, eligible_for_category
 from scripts.automation.state_manager import platform_is_eligible
@@ -110,6 +116,11 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
         from scripts.automation.publishers.nostr import post_to_nostr
         rendered = render_thread(social)
         return post_to_nostr(rendered[0] if len(rendered) == 1 else "\n\n".join(rendered))
+    if platform == "threads":
+        from scripts.automation.publishers.threads import post_to_threads
+        # Threads is always a standalone idea plus a link reply, so POST_MODE
+        # does not change its shape.
+        return post_to_threads(render_threads(social))
     raise ValueError(f"Unknown platform: {platform}")
 
 def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article: ArticleSyndication) -> None:
@@ -123,6 +134,7 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
         elif platform == "reddit": print("  format: link post\n  subreddit: r/" + os.getenv("REDDIT_SUBREDDIT", "AvoidBoringPeople"))
         elif platform == "weibo": print("  format: Simplified-Chinese localized post")
         elif platform == "nostr": print("  format: signed NIP-01 note")
+        elif platform == "threads": print("  format: standalone post + link reply\n  would publish: " + "\n---\n".join(render_threads(social)))
         else: print(f"  format: {'thread' if POST_MODE == 'thread' else 'single'}")
 
 def main() -> None:

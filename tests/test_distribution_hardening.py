@@ -18,7 +18,7 @@ from scripts.automation import auto_post, state_manager
 from scripts.automation import retry as retry_module
 from scripts.automation.content import PublishResult, SocialPost
 from scripts.automation.renderers import render_farcaster, render_mastodon, render_thread
-from scripts.automation.routing import DEFAULT_PLATFORMS, eligible_for_category
+from scripts.automation.routing import DEFAULT_PLATFORMS, PLATFORMS, eligible_for_category
 
 # The real publisher package __init__ imports tweepy, and the Bluesky adapter
 # imports atproto; neither is installed in the test env, so provide import-time
@@ -522,6 +522,18 @@ def test_platform_constraints_reject_before_submission(monkeypatch):
         bluesky_module.post_single_to_bluesky("x" * 301)
 
 
+def test_local_summarizer_truncates_at_a_word_boundary():
+    """USE_LLM is unset locally, so the stub summarizer shapes local dry runs."""
+    from scripts.automation.summarizers import summarizer_stub
+
+    words = [f"segment{index:02d}" for index in range(60)]
+    text = summarizer_stub.truncate_to_tweet_limit(" ".join(words), 100)
+
+    assert len(text) <= 100
+    assert text.endswith("…")
+    assert text[:-1].rstrip().split()[-1] in words
+
+
 def test_summary_generated_once_then_rendered_per_platform(monkeypatch, tmp_path):
     _use_temp_state(monkeypatch, tmp_path)
     summaries = []
@@ -535,9 +547,25 @@ def test_summary_generated_once_then_rendered_per_platform(monkeypatch, tmp_path
     assert summaries == ["post"]
 
 
-def test_production_workflows_exclude_deferred_platforms():
+def test_deferred_platforms_are_manual_only_in_production_workflows():
+    """Deferred providers stay reachable only through an explicit manual run.
+
+    The manual `platforms` input is validated against a workflow allowlist, so
+    deferred names legitimately appear there; what must never happen is an
+    unattended run *selecting* them. The scheduled workflow has no manual
+    override, and `DEFAULT_PLATFORMS` is the only automatic path.
+    """
     root = Path(__file__).resolve().parent.parent
-    for name in ("social-new.yml", "social-evergreen.yml"):
-        text = (root / ".github" / "workflows" / name).read_text(encoding="utf-8").lower()
-        for token in ("reddit", "linkedin", "threads", "publish0x"):
-            assert token not in text, f"{name} must not reference deferred platform {token}"
+    new = (root / ".github" / "workflows" / "social-new.yml").read_text(encoding="utf-8").lower()
+    evergreen = (root / ".github" / "workflows" / "social-evergreen.yml").read_text(encoding="utf-8").lower()
+
+    for token in ("reddit", "linkedin", "publish0x"):
+        assert token not in evergreen, f"social-evergreen.yml must not reference deferred platform {token}"
+    assert "inputs.platforms" not in evergreen, "the scheduled workflow must not offer a platform override"
+
+    allowlist = new.split("allowed=", 1)[1].splitlines()[0]
+    assert "threads" in allowlist
+    assert 'if [ -n "${{ inputs.platforms }}" ]' in new, "the allowlist must only apply to manual runs"
+
+    assert "threads" in PLATFORMS
+    assert "threads" not in DEFAULT_PLATFORMS

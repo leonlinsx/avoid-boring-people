@@ -87,10 +87,12 @@ jobs:
           WEIBO_APP_SECRET: ${{ secrets.WEIBO_APP_SECRET }}
           WEIBO_REFRESH_TOKEN: ${{ secrets.WEIBO_REFRESH_TOKEN }}
           NOSTR_NSEC: ${{ secrets.NOSTR_NSEC }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
         run: |
           sleep 90
           if [ -n "${{ inputs.platforms }}" ]; then
-            allowed="twitter linkedin bluesky mastodon farcaster weibo nostr reddit devto publish0x"
+            allowed="twitter linkedin bluesky mastodon farcaster weibo nostr threads reddit devto publish0x"
             valid=""
             IFS=',' read -ra requested <<< "${{ inputs.platforms }}"
             for item in "${requested[@]}"; do
