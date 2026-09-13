@@ -501,6 +501,13 @@ async function testSnsValidation() {
   assert.equal(requiresOriginRejection(new Request(oneClickRequest.url, { method: 'PUT', headers: oneClickRequest.headers }), false), true);
   assert.equal(requiresOriginRejection(new Request(snsRequest.url, { method: 'PUT' }), false), true);
   assert.equal(requiresOriginRejection(new Request('https://leonlins.com/api/newsletter/subscribe', { method: 'POST' }), false), true);
+  // The Instagram media upload is a CI-only machine caller with no cookies, so a
+  // POST is exempt from the origin check; other methods and other paths are not.
+  const instagramMedia = 'https://leonlins.com/api/social/instagram-media';
+  assert.equal(requiresOriginRejection(new Request(instagramMedia, { method: 'POST' }), false), false);
+  assert.equal(requiresOriginRejection(new Request(instagramMedia, { method: 'POST', headers: { 'content-type': 'image/jpeg' } }), false), false);
+  assert.equal(requiresOriginRejection(new Request(instagramMedia, { method: 'PUT', headers: { 'content-type': 'text/plain' } }), false), true);
+  assert.equal(requiresOriginRejection(new Request('https://leonlins.com/api/social/instagram-media-preview', { method: 'POST' }), false), true);
   const topic = 'arn:aws:sns:us-east-2:123456789012:newsletter-events';
   const envelope = parseSnsEnvelope({
     Type: 'Notification', MessageId: 'event-1', TopicArn: topic, Message: '{"eventType":"Delivery"}',
