@@ -127,7 +127,7 @@ Two operational limits are worth knowing:
 
 Instagram is a content-production problem rather than a caption problem, so it does not have a caption-only adapter. One article becomes one carousel: a cover slide, three to six argument slides, and a closing slide that carries the canonical link. The caption repeats the article title, the summary teaser, the canonical URL, and up to four hashtags; it stays within 500 characters by choice, well inside Meta's 2,200-character cap.
 
-`instagram` is registered in `scripts/automation/routing.py` and `scripts/automation/state_manager.py` and it is in `DEFAULT_PLATFORMS`, so new articles and eligible evergreen cycles reach it with no override. Category eligibility is unchanged: investing, risk, technology, system design, and the uncategorized fallback all allow it, and `culture` lists it explicitly. Its evergreen cooldown is 60 days like the other channels, configurable through `INSTAGRAM_EVERGREEN_COOLDOWN_DAYS`, so a recycled article cannot repeat on Instagram inside that window. `PLATFORM=instagram` remains available for a one-off manual run.
+`instagram` is registered in `scripts/automation/routing.py` and `scripts/automation/state_manager.py` and it is in `DEFAULT_PLATFORMS`, so new articles and eligible evergreen cycles reach it with no override. Category eligibility is unchanged: investing, risk, technology, system design, culture, and the uncategorized fallback all allow it. Its evergreen cooldown is 60 days like the other channels, configurable through `INSTAGRAM_EVERGREEN_COOLDOWN_DAYS`, so a recycled article cannot repeat on Instagram inside that window. `PLATFORM=instagram` remains available for a one-off manual run.
 
 ### What is implemented and mock-tested
 
