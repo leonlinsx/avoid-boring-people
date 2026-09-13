@@ -4,6 +4,7 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.text_rank import TextRankSummarizer
 import nltk
 import re
+import sys
 
 # Global character cap for tweet safety (default 200)
 TWEET_CHAR_LIMIT = 200
@@ -13,7 +14,8 @@ try:
     nltk.data.find("tokenizers/punkt")
     nltk.data.find("tokenizers/punkt_tab")
 except LookupError:
-    print("📥 Downloading NLTK resources: punkt, punkt_tab...")
+    # stderr: stdout carries the rendered draft when the caller redirects it.
+    print("📥 Downloading NLTK resources: punkt, punkt_tab...", file=sys.stderr)
     nltk.download("punkt")
     nltk.download("punkt_tab")
 
