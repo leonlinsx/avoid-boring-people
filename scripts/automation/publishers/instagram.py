@@ -1,7 +1,8 @@
 """Meta Instagram adapter: carousel posts published through the Instagram Graph API.
 
 The carousel flow is three API steps (verified against Meta's Instagram
-Platform documentation for Graph API v26.0):
+Platform documentation for Graph API v26.0 under *Instagram API with Instagram
+Login*):
 
 1. one child container per slide:
    `POST /{ig-user-id}/media?image_url=...&is_carousel_item=true&alt_text=...`
@@ -12,6 +13,20 @@ Platform documentation for Graph API v26.0):
 Containers are created asynchronously, so a container is polled with
 `GET /{container-id}?fields=status_code` (one of `EXPIRED`, `ERROR`,
 `FINISHED`, `IN_PROGRESS`, `PUBLISHED`) before it is published.
+
+Credentials
+-----------
+`@avoidboringpeople` signs in through Instagram Login, so every call goes to
+`graph.instagram.com`. That host takes an *Instagram User access token* issued
+for the Instagram professional account, with `instagram_business_basic` and
+`instagram_business_content_publish` granted; no Facebook Page is involved. The
+Facebook Login alternative is a different credential pair (`instagram_basic`,
+`instagram_content_publish`, `pages_read_engagement` and a Page token) for
+`graph.facebook.com`, and that host answers an Instagram Login token with
+`401 Invalid OAuth access token - Cannot parse access token`. Because a
+credential mix-up is silent until the first network call, `verify_credentials`
+runs as a preflight before any container exists and says which of the two values
+is wrong.
 
 Failure policy
 --------------
@@ -42,7 +57,7 @@ from scripts.automation.formatters.instagram_storyboard import (
 from scripts.automation.media_host import MediaHostError, get_media_host, resolve_media_urls
 from scripts.automation.renderers.instagram import render_storyboard
 
-INSTAGRAM_API_BASE = "https://graph.facebook.com/v26.0"
+INSTAGRAM_API_BASE = "https://graph.instagram.com/v26.0"
 REQUEST_TIMEOUT_SECONDS = 30
 CONTAINER_POLL_SECONDS = 60
 CONTAINER_TIMEOUT_SECONDS = 5 * 60
@@ -88,7 +103,13 @@ def _auth_headers(token: str) -> dict:
 
 def _api_error(response) -> GraphApiError:
     """Build an error that carries the status code for retry classification."""
-    detail = ""
+    error = GraphApiError(f"❌ Instagram API error {response.status_code}: {_error_detail(response)}")
+    error.status_code = response.status_code
+    return error
+
+
+def _error_detail(response) -> str:
+    """Meta's own explanation for a failed call, without the request credentials."""
     try:
         body = response.json()
     except ValueError:
@@ -98,8 +119,45 @@ def _api_error(response) -> GraphApiError:
         detail = str(error.get("message") or error.get("type") or "")
         if error.get("error_user_msg"):
             detail = f"{detail} ({error['error_user_msg']})" if detail else str(error["error_user_msg"])
-    detail = detail or (response.text or "").strip()[:200]
-    error = GraphApiError(f"❌ Instagram API error {response.status_code}: {detail}")
+        return detail or (response.text or "").strip()[:200]
+    return (response.text or "").strip()[:200]
+
+
+TOKEN_FAILURE_HINTS = (
+    "access token",
+    "oauth",
+    "session has expired",
+    "token has expired",
+    "cannot parse",
+)
+
+
+def _credential_error(user_id: str, response) -> GraphApiError:
+    """Explain a failed preflight as a token problem or an account-id problem.
+
+    Both values are read from the environment, so a swap or a token issued by
+    the other login setup otherwise only shows up as a bare `401`, or as a
+    `400` about an object that does not exist.
+    """
+    detail = _error_detail(response)
+    lowered = detail.lower()
+    error_text = f"❌ Instagram preflight against {INSTAGRAM_API_BASE} failed with HTTP {response.status_code}: {detail}"
+    if response.status_code in {401, 403} or any(hint in lowered for hint in TOKEN_FAILURE_HINTS):
+        message = (
+            f"{error_text}. INSTAGRAM_ACCESS_TOKEN was rejected: the token has to be an Instagram User "
+            "access token minted by the app's 'Instagram API with Instagram Login' setup, with "
+            "instagram_business_basic and instagram_business_content_publish granted. A Facebook Login "
+            "Page token belongs to graph.facebook.com and cannot be used here."
+        )
+    elif response.status_code in {400, 404}:
+        message = (
+            f"{error_text}. INSTAGRAM_USER_ID was rejected: it has to be the Instagram professional "
+            f"account id the token was issued for. Read it with `GET {INSTAGRAM_API_BASE}/me?fields=id,username` "
+            "using the same token, and keep it separate from any Facebook Page id."
+        )
+    else:
+        return _api_error(response)
+    error = GraphApiError(message)
     error.status_code = response.status_code
     return error
 
@@ -124,7 +182,12 @@ def validate_alt_text(alt_text: str) -> None:
 
 
 def verify_credentials(user_id: str, token: str) -> dict:
-    """Confirm the token works before building containers for a carousel."""
+    """Confirm the token works before building containers for a carousel.
+
+    This is the credential preflight: it runs before the first container
+    exists, so a rejected token or a mismatched account id costs one read-only
+    request instead of a half-built carousel.
+    """
     response = requests.get(
         f"{INSTAGRAM_API_BASE}/{user_id}",
         params={"fields": "id,username"},
@@ -132,7 +195,7 @@ def verify_credentials(user_id: str, token: str) -> dict:
         timeout=REQUEST_TIMEOUT_SECONDS,
     )
     if response.status_code != 200:
-        raise _api_error(response)
+        raise _credential_error(user_id, response)
     profile = response.json()
     print(f"✅ Authenticated as Instagram account: {profile.get('username') or profile.get('id')}")
     return profile

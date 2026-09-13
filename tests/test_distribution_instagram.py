@@ -999,6 +999,106 @@ def test_access_token_is_sent_in_headers_only(monkeypatch, tmp_path):
         assert all("test-token" not in str(value) for key, value in kwargs.items() if key != "headers")
 
 
+def test_every_instagram_call_uses_the_instagram_login_host(monkeypatch, tmp_path):
+    """@avoidboringpeople signs in with Instagram Login, whose host is graph.instagram.com."""
+    assert instagram_module.INSTAGRAM_API_BASE == "https://graph.instagram.com/v26.0"
+
+    _, api, _ = _publish(monkeypatch, tmp_path, responses=carousel_api_responses())
+
+    assert api.calls, "the publish flow has to reach the API for this assertion to mean anything"
+    assert all(url.startswith("https://graph.instagram.com/") for _, url, _ in api.calls)
+    assert not any("graph.facebook.com" in url for _, url, _ in api.calls)
+
+
+def test_preflight_names_the_token_when_instagram_login_rejects_it(monkeypatch):
+    """The first live run failed with exactly this 401 from the Facebook Login host."""
+    api = _FakeGraphApi(
+        [
+            _FakeResponse(
+                401,
+                {
+                    "error": {
+                        "message": "Invalid OAuth access token - Cannot parse access token",
+                        "type": "OAuthException",
+                        "code": 190,
+                    }
+                },
+                text='{"error":{"message":"Invalid OAuth access token - Cannot parse access token"}}',
+            )
+        ]
+    )
+    monkeypatch.setattr(instagram_module, "requests", api)
+    token = "IGQVJnotarealtoken"
+
+    with pytest.raises(instagram_module.GraphApiError) as raised:
+        instagram_module.verify_credentials("28403452015960979", token)
+
+    message = str(raised.value)
+    assert "INSTAGRAM_ACCESS_TOKEN" in message
+    assert "Instagram API with Instagram Login" in message
+    assert "instagram_business_basic" in message
+    assert "instagram_business_content_publish" in message
+    assert "Cannot parse access token" in message
+    assert token not in message
+    assert getattr(raised.value, "status_code", None) == 401
+    assert not retry_module.is_transient(raised.value)
+    assert len(api.calls) == 1
+
+
+def test_preflight_names_the_account_id_when_the_id_is_wrong(monkeypatch):
+    api = _FakeGraphApi(
+        [
+            _FakeResponse(
+                400,
+                {
+                    "error": {
+                        "message": "Unsupported get request. Object with ID '999' does not exist",
+                        "type": "GraphMethodException",
+                        "code": 100,
+                    }
+                }
+            )
+        ]
+    )
+    monkeypatch.setattr(instagram_module, "requests", api)
+
+    with pytest.raises(instagram_module.GraphApiError) as raised:
+        instagram_module.verify_credentials("999", "test-token")
+
+    message = str(raised.value)
+    assert "INSTAGRAM_USER_ID" in message
+    assert "/me?fields=id,username" in message
+    assert "INSTAGRAM_ACCESS_TOKEN" not in message, "a bad account id must not be blamed on the token"
+
+
+def test_a_rejected_preflight_creates_no_container(monkeypatch, tmp_path):
+    storyboard = _storyboard()
+    slides = _fake_slides(tmp_path, count=3)
+    api = _FakeGraphApi(
+        [_FakeResponse(401, {"error": {"message": "Invalid OAuth access token", "type": "OAuthException"}})]
+    )
+    integration = _Integration(api, slides)
+    _install(monkeypatch, integration)
+
+    with pytest.raises(instagram_module.GraphApiError, match="INSTAGRAM_ACCESS_TOKEN"):
+        instagram_module.post_carousel(
+            storyboard, carousel=integration.carousel, media_host=integration.host
+        )
+
+    assert len(api.calls) == 1, "only the credential preflight may run before the first container"
+
+
+def test_a_preflight_service_error_stays_a_plain_transient_failure(monkeypatch):
+    api = _FakeGraphApi([_FakeResponse(503, text="Service Unavailable")])
+    monkeypatch.setattr(instagram_module, "requests", api)
+
+    with pytest.raises(instagram_module.GraphApiError, match="503") as raised:
+        instagram_module.verify_credentials("17841400000000000", "test-token")
+
+    assert "INSTAGRAM_ACCESS_TOKEN" not in str(raised.value)
+    assert retry_module.is_transient(raised.value)
+
+
 def test_publish_requires_credentials_before_any_container(monkeypatch, tmp_path):
     storyboard = _storyboard()
     slides = _fake_slides(tmp_path, count=3)
@@ -1113,6 +1213,8 @@ def test_ambiguous_publish_error_carries_reconciliation_ids(monkeypatch):
     assert error.container_id == "parent-1"
     assert error.child_ids == ("child-1", "child-2")
     assert "media?fields=id,caption,timestamp" in str(error)
+    assert "graph.instagram.com" in str(error)
+    assert "graph.facebook.com" not in str(error)
     assert not retry_module.is_transient(error)
 
 
