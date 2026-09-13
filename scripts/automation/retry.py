@@ -3,7 +3,9 @@
 Only transient signals are retried: HTTP 429, timeouts/connection errors, and
 HTTP 500/502/503/504. Permanent client errors (400/401/403/404/422 and other
 4xx) and local validation errors (ValueError) are raised immediately so a
-doomed request is never repeated.
+doomed request is never repeated. An error can also opt out explicitly with
+`retryable = False`, which is how an ambiguous publish outcome stays a single
+attempt instead of risking a duplicate post.
 """
 from __future__ import annotations
 
@@ -44,6 +46,11 @@ def status_code(error: BaseException) -> int | None:
 def is_transient(error: BaseException) -> bool:
     """Whether one failed attempt is worth retrying."""
     if isinstance(error, ValueError):
+        return False
+    # A provider can declare that repeating the call is unsafe (for example an
+    # ambiguous publish response that may already have created the post). That
+    # beats generic classification, which retries anything unrecognized.
+    if getattr(error, "retryable", None) is False:
         return False
     code = status_code(error)
     if code is not None:

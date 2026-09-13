@@ -10,7 +10,7 @@ from typing import Dict, Iterable, Optional
 
 STATE_FILE = Path("posted.json")
 STATE_VERSION = 2
-PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads", "instagram")
 EVERGREEN_COOLDOWN_DAYS = {
     "twitter": int(os.getenv("TWITTER_EVERGREEN_COOLDOWN_DAYS", "60")),
     "linkedin": int(os.getenv("LINKEDIN_EVERGREEN_COOLDOWN_DAYS", "60")),
@@ -23,6 +23,10 @@ EVERGREEN_COOLDOWN_DAYS = {
     "weibo": int(os.getenv("WEIBO_EVERGREEN_COOLDOWN_DAYS", "60")),
     "nostr": int(os.getenv("NOSTR_EVERGREEN_COOLDOWN_DAYS", "60")),
     "threads": int(os.getenv("THREADS_EVERGREEN_COOLDOWN_DAYS", "60")),
+    # Instagram publishes a multi-slide carousel and may have to rebuild it
+    # across attempts, so the cooldown must exist before the first evergreen
+    # run rather than raising KeyError.
+    "instagram": int(os.getenv("INSTAGRAM_EVERGREEN_COOLDOWN_DAYS", "60")),
 }
 
 

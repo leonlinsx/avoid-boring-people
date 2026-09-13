@@ -1,6 +1,6 @@
 # Social distribution
 
-The automated distribution job publishes a canonical leonlins.com article to Bluesky, Mastodon, Farcaster, Nostr, Threads, and DEV (when category policy permits). X is excluded from the defaults while its API credit balance is depleted, but stays available through an explicit `PLATFORM` override. Reddit is deferred while API approval is pending, LinkedIn and Publish0x are inactive, and Weibo is implemented but unverified; those dormant adapters must not appear in default production workflows.
+The automated distribution job publishes a canonical leonlins.com article to Bluesky, Mastodon, Farcaster, Nostr, Threads, and DEV (when category policy permits). X is excluded from the defaults while its API credit balance is depleted, but stays available through an explicit `PLATFORM` override. Reddit is deferred while API approval is pending, LinkedIn and Publish0x are inactive, and Weibo is implemented but unverified; those dormant adapters must not appear in default production workflows. Instagram is implemented and mock-tested but manual-only, because a live carousel needs a public HTTPS host for its slide images that this project does not have yet.
 
 The job generates one summary per article where required, then deterministically renders it per platform. DEV receives the full source-index article content with the canonical leonlins.com URL. `posted.json` is updated only after a platform confirms success, so retrying a failed run attempts only destinations that have not already succeeded. Transient failures (429, timeouts/connections, 500/502/503/504) are retried with backoff; permanent errors (400/401/403/422, validation failures) are not.
 
@@ -16,6 +16,7 @@ Bluesky, Mastodon, DEV, Threads (`THREADS_USER_ID` and `THREADS_ACCESS_TOKEN`, a
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REFRESH_TOKEN`
 - `WEIBO_ACCESS_TOKEN` plus `WEIBO_APP_KEY`, `WEIBO_APP_SECRET`, and `WEIBO_REFRESH_TOKEN` for token refresh (all require a manually approved Weibo open-platform app with write scope)
 - `REDDIT_USER_AGENT` (a descriptive, stable API user agent)
+- `INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN`, and `INSTAGRAM_MEDIA_BASE_URL` once a public HTTPS home for the rendered carousel slides exists; see [Instagram](#instagram-implemented-manual-only)
 
 `REDDIT_SUBREDDIT` defaults to `AvoidBoringPeople`; set it as a repository variable or workflow environment value only if that changes. The Reddit adapter refreshes its OAuth token at run time; do not use a short-lived access token in GitHub secrets.
 
@@ -23,7 +24,8 @@ The default destinations are versioned in `scripts/automation/routing.py` as
 `DEFAULT_PLATFORMS`: Bluesky, Mastodon, DEV, Farcaster, Nostr, and Threads.
 LinkedIn, Reddit, and Weibo remain out of the defaults until their
 setup is verified (Weibo additionally needs a Chinese mobile-verified account
-and is parked). X stays out of the defaults until its API credits are restored.
+and is parked). Instagram stays out until its slide media is hosted somewhere
+Meta can fetch. X stays out of the defaults until its API credits are restored.
 For a local one-off override, set `PLATFORM` explicitly. Weibo posts
 a Simplified-Chinese DeepSeek localization of the article, never the English
 text; the localizer raises rather than falling back.
@@ -77,12 +79,56 @@ Two operational limits are worth knowing:
 - The API allows 250 posts and 1,000 replies per 24 hours; one article spends one of each.
 - Threads has no idempotency key. A publish that the API accepts but reports without a media id is raised as a non-transient failure instead of being retried, so the retry loop can never turn a lost response into a duplicate post. If that error appears, check the profile before rerunning.
 
-## Instagram (planned, not implemented)
+## Instagram (implemented, manual only)
 
-Instagram is a content-production problem rather than a caption problem, so it will not get a caption-only adapter. The intended shape is carousel-first:
+Instagram is a content-production problem rather than a caption problem, so it does not have a caption-only adapter. One article becomes one carousel: a cover slide, three to six argument slides, and a closing slide that carries the canonical link. The caption repeats the article title, the summary teaser, the canonical URL, and up to four hashtags; it stays within 500 characters by choice, well inside Meta's 2,200-character cap.
 
-1. A storyboard renderer turns one article's argument into 4-7 slides (claim, supporting points, takeaway), reusing the constrained structured summary that already feeds the text platforms.
-2. Static HTML/CSS slide templates cover the three content shapes that actually recur: essay (text-led), framework (diagram-led), and data (chart-led). Slides render at 1080x1350.
-3. A publisher creates one Graph API container per slide, publishes the carousel, and puts the canonical link in the caption rather than on a slide.
+`instagram` is registered in `scripts/automation/routing.py` and `scripts/automation/state_manager.py`, but it is deliberately absent from `DEFAULT_PLATFORMS`, so it never runs unattended. Culture articles are eligible for it by category, and `PLATFORM=instagram` is the only way to reach it. Its evergreen cooldown is 60 days like the other channels, configurable through `INSTAGRAM_EVERGREEN_COOLDOWN_DAYS`.
 
-The renderer needs a headless browser to screenshot the slide templates, which is why this is deferred: it adds a Playwright dependency and an image pipeline that the current text-only adapters do not need. See `TODO.md`.
+### What is implemented, mock-tested, and blocked
+
+Implemented:
+
+- `scripts/automation/formatters/instagram_storyboard.py` builds the storyboard. It is deterministic, has no timestamps or randomness, and every slide is a verbatim slice of the article title, the generated summary, the tags, or the canonical URL, so no slide can invent a fact. It also strips the Markdown that leaks through the summarizer, including half-open links left behind when the local stub truncates a sentence mid-link.
+- `scripts/automation/renderers/instagram_slides.mjs` rasterizes each slide by building one deterministic SVG document per slide and passing it through `sharp`, at 1080x1350 (the 4:5 aspect ratio Instagram requires) and JPEG quality 92. There is no browser in this path: `sharp` is an ordinary project dependency, so a render needs nothing beyond `npm ci` and works in CI and headless containers without downloading Chromium. The palette is deliberately four colours (`#F7F7F5` background, `#111111` primary, `#555555` secondary, `#D9D9D4` rules) and the only slide kinds are `cover`, `body`, and `final`; the layout is left-aligned with a fixed padding, an understated kicker, slide number, and `leonlins.com` footer. Type is a short ladder per field: the largest size whose wrapped text still fits the field's line limit wins, so copy at the storyboard's character limits degrades in size rather than clipping. Wrapping is computed explicitly before the SVG is generated, and if no ladder size fits, the render fails with `content_overflow` (exit code 3) instead of writing a clipped image. After each JPEG is encoded the renderer decodes it and asserts the outer 40px band is still background, so "nothing is drawn off-canvas" is checked against the artefact, not the layout's own bookkeeping. `scripts/automation/renderers/instagram.py` is the Python facade: it checks the toolchain is available, sends the job on stdin, reads the manifest on stdout, and verifies every produced file is a JPEG at the expected size.
+- Fonts: the site ships Atkinson Hyperlegible as WOFF, which `sharp`'s bundled fontconfig cannot index (only a system fontconfig can) and which font measuring needs as sfnt. `instagram_slides.mjs` therefore converts both faces from WOFF to sfnt in memory, writes them (plus a generated `fonts.conf`) into an ignored scratch directory under `.tmp/social/instagram/.fonts/`, and points `FONTCONFIG_FILE` at that file before importing `sharp`. The family name used for lookup is the one inside the font (`Atkinson Hyperlegible`), not the `Atkinson` CSS alias the site uses. Text width is measured with `fontkit` against those same faces, so wrapping and rasterizing agree; a missing glyph fails the render rather than shipping a tofu box. There is no network access and no system font requirement.
+- `scripts/automation/media_host.py` is the hosting boundary. The Graph API accepts a public HTTPS URL, not image bytes, so `UrlMappingMediaHost` maps the rendered file names onto an existing HTTPS host and proves each URL is a fetchable `image/jpeg` within Meta's 8 MB limit before any container is created. Nothing in this module uploads a file.
+- `scripts/automation/publishers/instagram.py` publishes the carousel through the three Graph API steps documented in its module docstring, verified against Meta's Instagram Platform documentation for Graph API v26.0.
+- `scripts/automation/auto_post.py` builds the storyboard only when Instagram is targeted and prints the carousel in a dry run, including the rendered slide paths, sizes, and hashes.
+
+Mock-tested: the whole publish flow against scripted Graph API responses (child containers, parent container, status polling, publish, permalink), the credential and copy validation that runs before the first network call, the non-retryable ambiguity policy, the media-host verification and its failure messages, the storyboard limits, renderer determinism, exact 1080x1350 JPEG output, long-title and long-body wrapping, the absence of ink outside the canvas, stable slide ordering, and the workflow allowlist. `tests/test_distribution_instagram.py` covers this and touches no network.
+
+Blocked: live publishing. The rendered JPEGs have no public HTTPS home, and adding one (S3, a CDN, or a third-party uploader) is an infrastructure decision, not a code change. Setting `INSTAGRAM_MEDIA_BASE_URL` to an HTTPS base URL that already serves the rendered files is the only opt-in; without it, the publisher refuses with a message naming the variable. The Graph API path itself has never been exercised against Instagram: no carousel has been published live, so the three-step container flow is verified only against the documented API shape and scripted responses.
+
+### Credentials
+
+`INSTAGRAM_USER_ID` is the Instagram professional account id, and `INSTAGRAM_ACCESS_TOKEN` is a Facebook Page access token with `instagram_basic`, `instagram_content_publish`, and `pages_read_engagement`. The token travels in an `Authorization: Bearer` header, so it never appears in a request URL or in an error message. `INSTAGRAM_MEDIA_BASE_URL` is optional and only needed for a live publish.
+
+### Manual review and run
+
+Review the carousel locally first. This renders the real slides and then stops at the hosting boundary:
+
+```sh
+DRY_RUN=true POST_MODE=thread PLATFORM=instagram TARGET_POST_ID=2019_02_18_why/index.md python -m scripts.automation.auto_post
+```
+
+The dry run writes nothing: `posted.json` is not created or modified. Rendered slides land in the ignored `.tmp/social/instagram/<post-id>/` directory, and the dry run prints each slide's path, size, and hash.
+
+A live run is a manual `Social New Article` dispatch with `platforms=instagram` and a `post_id`, or a local `PLATFORM=instagram python -m scripts.automation.auto_post` with `INSTAGRAM_MEDIA_BASE_URL` pointing at a host that already serves the rendered files. Publishing to Instagram never happens from a push, a build, or an unattended evergreen cycle.
+
+### Failure policy
+
+Everything up to and including the parent container is retried normally: an unpublished container expires after 24 hours on its own, and a retry simply builds fresh ones. The containers are polled once a minute for up to five minutes, and a container that reports `ERROR` or `EXPIRED` fails that attempt.
+
+`media_publish` is the one call that is not retried blindly. If the response is lost, or returns 429 or a 5xx, or omits the media id, the carousel may already be live, and Instagram has no idempotency key, so a second call would publish a duplicate. That case raises `AmbiguousPublishError`, which is marked `retryable = False` and carries the parent and child container ids. When it appears, list the recent media with `GET https://graph.facebook.com/v26.0/{ig-user-id}/media?fields=id,caption,timestamp&limit=5` and check the profile before re-running.
+
+### Manual setup checklist
+
+1. Convert the target account to a professional account and link it to a Facebook Page.
+2. Create a Meta app with the Instagram Graph API, then generate a long-lived Page access token with the three permissions above.
+3. Store `INSTAGRAM_USER_ID` and `INSTAGRAM_ACCESS_TOKEN` as repository secrets.
+4. Run the local dry run above and review the rendered slides before any publish.
+5. Decide where the rendered JPEGs will live publicly, host them, and set `INSTAGRAM_MEDIA_BASE_URL`.
+6. Do the first live publish manually, then record the media id, permalink, and outcome here before adding Instagram to `DEFAULT_PLATFORMS`.
+
+The storyboard limits are editorial, not platform limits: 5-8 slides, 60 characters for a body headline, 200 for its supporting text, 40 for the kicker, 1,000 for alt text. Meta documents at most 10 carousel children and no minimum, so at least 2 is enforced where the platform requires it, and the renderer fails visibly rather than shipping a clipped slide: copy that does not fit exits with `content_overflow`, and a missing brand font stops the render instead of falling back to a system typeface.

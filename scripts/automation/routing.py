@@ -1,8 +1,8 @@
 """Category-based distribution policy, kept separate from provider code."""
 from __future__ import annotations
 
-PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads")
-SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr", "threads")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads", "instagram")
+SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr", "threads", "instagram")
 
 # The normal automation destinations. Keep disabled, unapproved, or unusable
 # providers out of this list; PLATFORM remains available as an explicit
@@ -14,6 +14,10 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "
 # Chinese mobile-verified account and is parked as a TODO.
 # Threads is verified live and runs unattended, but its long-lived access token
 # expires after 60 days, so rotate THREADS_ACCESS_TOKEN before it lapses.
+# Instagram is registered but manual-only: the Graph API fetches carousel images
+# from public HTTPS URLs, and this site has no approved media host yet, so an
+# unattended run would fail closed every time. Add it here only once slide media
+# is hosted somewhere Meta can reach.
 DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,
@@ -23,7 +27,7 @@ CATEGORY_PLATFORM_RULES = {
     "technology": set(PLATFORMS),
     "system design": set(PLATFORMS),
     "risk & decision making": set(SOCIAL_PLATFORMS + ("reddit",)),
-    "culture": set(("twitter", "linkedin", "bluesky", "mastodon", "reddit")),
+    "culture": set(("twitter", "linkedin", "bluesky", "mastodon", "reddit", "instagram")),
 }
 
 
