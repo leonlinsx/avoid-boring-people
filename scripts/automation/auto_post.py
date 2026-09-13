@@ -169,13 +169,19 @@ def _print_instagram_dry_run(storyboard: InstagramStoryboard | None) -> None:
     for slide in carousel.slides:
         print(f"    {slide.path} {slide.width}x{slide.height} {slide.size_bytes} bytes sha256:{slide.sha256[:12]}")
     from scripts.automation.media_host import get_media_host, resolve_media_urls
-    host = get_media_host()
-    print(f"  media host: {host.name}")
     try:
-        for url in resolve_media_urls(carousel.slides, host=host):
-            print(f"    reachable: {url}")
+        host = get_media_host(post_id=storyboard.post_id)
+        print(f"  media host: {host.name}")
+        if host.uploads:
+            # A dry run never uploads, so an uploading host is asked only where
+            # its content-addressed objects would live.
+            for url in host.planned_urls(carousel.slides):
+                print(f"    would upload: {url}")
+        else:
+            for url in resolve_media_urls(carousel.slides, host=host):
+                print(f"    reachable: {url}")
     except Exception as error:  # noqa: BLE001 - live publishing is what fails closed
-        print(f"  would publish: nothing until media hosting works ({error})")
+        print(f"  would publish: nothing until a media host is configured ({error})")
 
 
 def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article: ArticleSyndication, storyboard: InstagramStoryboard | None = None) -> None:

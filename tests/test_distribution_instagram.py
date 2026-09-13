@@ -25,6 +25,7 @@ _atproto_stub.models = types.SimpleNamespace()
 sys.modules.setdefault("atproto", _atproto_stub)
 
 from scripts.automation import auto_post, state_manager
+from scripts.automation import media_host as media_host_module
 from scripts.automation import retry as retry_module
 from scripts.automation.content import PublishResult
 from scripts.automation.formatters.instagram_storyboard import (
@@ -43,10 +44,14 @@ from scripts.automation.formatters.instagram_storyboard import (
 )
 from scripts.automation.media_host import (
     ENV_BASE_URL,
+    ENV_BLOB_TOKEN,
+    BlobUploadError,
     MediaHostError,
     MediaHostUnavailable,
     NullMediaHost,
     UrlMappingMediaHost,
+    VercelBlobMediaHost,
+    content_digest,
     get_media_host,
     resolve_media_urls,
 )
@@ -71,6 +76,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 @pytest.fixture(autouse=True)
 def _no_retry_delay(monkeypatch):
     monkeypatch.setattr(retry_module, "BASE_DELAY_SECONDS", 0)
+
+
+@pytest.fixture(autouse=True)
+def _isolate_media_host_env(monkeypatch):
+    """A developer's ambient hosting configuration must not change the suite."""
+    monkeypatch.delenv(ENV_BASE_URL, raising=False)
+    monkeypatch.delenv(ENV_BLOB_TOKEN, raising=False)
 
 
 def _post(**overrides):
@@ -535,6 +547,191 @@ def test_media_host_resolution_is_skipped_when_not_verifying(tmp_path):
     )
 
 
+# --- Vercel Blob uploads -----------------------------------------------------
+
+BLOB_TOKEN = "vercel_blob_rw_store1_secret-value"
+BLOB_PUBLIC_BASE = "https://store1.public.blob.vercel-storage.com"
+BLOB_API = "https://vercel.com/api/blob"
+
+
+class _FakeBlobSession:
+    """Records Blob uploads and answers them the way the documented API does."""
+
+    def __init__(self, *, status=200, payload=None, error=None, head=None):
+        self.status = status
+        self.payload = payload
+        self.error = error
+        self.head_response = head or _FakeResponse(
+            200, headers={"Content-Type": "image/jpeg", "Content-Length": "40"}
+        )
+        self.calls = []
+
+    def put(self, url, **kwargs):
+        self.calls.append(("PUT", url, kwargs))
+        if self.error is not None:
+            raise self.error
+        pathname = url.split("/api/blob/", 1)[-1]
+        stored = {"url": f"{BLOB_PUBLIC_BASE}/{pathname}", "pathname": pathname, "contentType": "image/jpeg"}
+        return _FakeResponse(self.status, self.payload if self.payload is not None else stored)
+
+    def head(self, url, **kwargs):
+        self.calls.append(("HEAD", url, kwargs))
+        return self.head_response
+
+    def get(self, url, **kwargs):
+        self.calls.append(("GET", url, kwargs))
+        return self.head_response
+
+    @property
+    def uploads(self):
+        return [call for call in self.calls if call[0] == "PUT"]
+
+
+def _blob_host(session, post_id="2019_02_18_why/index.md", **kwargs):
+    return VercelBlobMediaHost(BLOB_TOKEN, post_id=post_id, session=session, **kwargs)
+
+
+def test_blob_upload_uses_the_documented_put_request(tmp_path):
+    slide = _rendered_slide(tmp_path)
+    session = _FakeBlobSession()
+
+    urls = resolve_media_urls([slide], host=_blob_host(session))
+
+    pathname = f"instagram/2019_02_18_why/{content_digest((slide,))}/slide-01.jpg"
+    assert [call[0] for call in session.calls] == ["PUT", "HEAD"]
+    method, url, kwargs = session.calls[0]
+    assert (method, url) == ("PUT", f"{BLOB_API}/{pathname}")
+    assert kwargs["data"] == slide.path.read_bytes()
+    assert kwargs["headers"] == {
+        "authorization": f"Bearer {BLOB_TOKEN}",
+        "x-api-version": "12",
+        "x-content-type": "image/jpeg",
+        "x-vercel-blob-access": "public",
+        "x-add-random-suffix": "0",
+        "x-allow-overwrite": "1",
+        "x-vercel-blob-store-id": "store1",
+    }
+    assert urls == (f"{BLOB_PUBLIC_BASE}/{pathname}",)
+
+
+def test_blob_token_is_only_ever_sent_as_a_bearer_header(tmp_path, capsys):
+    session = _FakeBlobSession()
+
+    resolve_media_urls([_rendered_slide(tmp_path)], host=_blob_host(session))
+
+    for method, url, kwargs in session.calls:
+        assert BLOB_TOKEN not in url
+        assert BLOB_TOKEN not in str({key: value for key, value in kwargs.items() if key != "headers"})
+    assert BLOB_TOKEN not in capsys.readouterr().out
+
+
+def test_blob_host_requires_a_token_and_is_selected_by_it(monkeypatch):
+    monkeypatch.delenv(ENV_BLOB_TOKEN, raising=False)
+    monkeypatch.delenv(ENV_BASE_URL, raising=False)
+
+    with pytest.raises(MediaHostUnavailable, match=ENV_BLOB_TOKEN):
+        VercelBlobMediaHost("   ")
+    assert isinstance(get_media_host(), NullMediaHost)
+
+    monkeypatch.setenv(ENV_BLOB_TOKEN, BLOB_TOKEN)
+    assert isinstance(get_media_host(post_id="2019_02_18_why"), VercelBlobMediaHost)
+
+
+def test_an_explicit_media_base_url_wins_over_the_uploader(monkeypatch):
+    monkeypatch.setenv(ENV_BLOB_TOKEN, BLOB_TOKEN)
+
+    assert isinstance(get_media_host("https://leonlins.com/social"), UrlMappingMediaHost)
+
+    monkeypatch.setenv(ENV_BASE_URL, "https://leonlins.com/social")
+    assert isinstance(get_media_host(), UrlMappingMediaHost)
+
+
+@pytest.mark.parametrize(
+    "payload, expected",
+    [
+        ({"url": "http://store1.public.blob.vercel-storage.com/slide-01.jpg"}, "public HTTPS"),
+        ({"url": "https://files.example.com/slide-01.jpg"}, "public HTTPS"),
+        ({"url": ""}, "no URL"),
+        ({}, "no URL"),
+    ],
+)
+def test_blob_host_rejects_a_response_that_is_not_a_public_https_blob(tmp_path, payload, expected):
+    session = _FakeBlobSession(payload=payload)
+
+    with pytest.raises(BlobUploadError, match=expected):
+        resolve_media_urls([_rendered_slide(tmp_path)], host=_blob_host(session), verify=False)
+
+
+def test_blob_object_paths_are_deterministic_and_collision_safe(tmp_path):
+    slides = _fake_slides(tmp_path, count=3)
+    unused = _FakeBlobSession()
+    host = _blob_host(unused)
+
+    urls = host.planned_urls(slides)
+
+    digest = content_digest(slides)
+    assert unused.calls == [], "planning URLs must not touch the network"
+    assert urls == _blob_host(_FakeBlobSession()).planned_urls(slides)
+    assert [url.rsplit("/", 1)[-1] for url in urls] == ["slide-01.jpg", "slide-02.jpg", "slide-03.jpg"]
+    assert all(f"/instagram/2019_02_18_why/{digest}/" in url for url in urls)
+
+    changed = (slides[0], replace(slides[1], sha256="f" * 64), slides[2])
+    assert content_digest(changed) != digest
+    assert host.planned_urls(changed)[1] != urls[1]
+
+
+def test_blob_planned_urls_match_what_a_real_upload_returns(tmp_path):
+    slides = _fake_slides(tmp_path, count=2)
+    host = _blob_host(_FakeBlobSession())
+
+    assert host.planned_urls(slides) == resolve_media_urls(slides, host=host)
+
+
+def test_blob_host_uploads_every_carousel_slide_once_in_order(tmp_path):
+    slides = _fake_slides(tmp_path, count=3)
+    session = _FakeBlobSession()
+
+    urls = resolve_media_urls(slides, host=_blob_host(session))
+
+    uploads = session.uploads
+    assert len(uploads) == 3
+    assert [call[1].rsplit("/", 1)[-1] for call in uploads] == [
+        "slide-01.jpg",
+        "slide-02.jpg",
+        "slide-03.jpg",
+    ]
+    assert [call[2]["data"] for call in uploads] == [slide.path.read_bytes() for slide in slides]
+    assert urls == tuple(
+        f"{BLOB_PUBLIC_BASE}/{call[1].split('/api/blob/', 1)[-1]}" for call in uploads
+    )
+
+
+def test_blob_host_refuses_to_upload_without_an_article_id(tmp_path):
+    host = _blob_host(_FakeBlobSession(), post_id=None)
+
+    with pytest.raises(BlobUploadError, match="article id"):
+        host.resolve(_rendered_slide(tmp_path))
+
+
+def test_blob_rejection_is_reported_without_leaking_the_token(tmp_path):
+    session = _FakeBlobSession(status=403, payload={"error": {"message": f"Invalid token {BLOB_TOKEN}"}})
+
+    with pytest.raises(BlobUploadError, match="HTTP 403") as failure:
+        _blob_host(session).resolve(_rendered_slide(tmp_path))
+
+    message = str(failure.value)
+    assert "Invalid token" in message
+    assert BLOB_TOKEN not in message
+    assert "[redacted]" in message
+
+
+def test_blob_transport_failure_is_reported_as_an_upload_error(tmp_path):
+    session = _FakeBlobSession(error=requests.ConnectionError("connection reset"))
+
+    with pytest.raises(BlobUploadError, match="uploading"):
+        _blob_host(session).resolve(_rendered_slide(tmp_path))
+
+
 # --- Publish flow ------------------------------------------------------------
 
 class _FakeGraphApi:
@@ -559,6 +756,21 @@ class _FakeGraphApi:
     def get(self, url, **kwargs):
         self.calls.append(("GET", url, kwargs))
         return self._next(url)
+
+
+def carousel_api_responses(slides=3):
+    """Scripted Graph API replies for one full carousel publish."""
+    responses = [_FakeResponse(200, {"id": "17841400000000000"})]
+    for index in range(1, slides + 1):
+        responses.append(_FakeResponse(200, {"id": f"child-{index}"}))
+        responses.append(_FakeResponse(200, {"status_code": "FINISHED"}))
+    responses += [
+        _FakeResponse(200, {"id": "parent-1"}),
+        _FakeResponse(200, {"status_code": "FINISHED"}),
+        _FakeResponse(200, {"id": "media-9"}),
+        _FakeResponse(200, {"permalink": "https://www.instagram.com/p/abc/"}),
+    ]
+    return responses
 
 
 class _StubMediaHost:
@@ -676,20 +888,51 @@ def test_carousel_publishes_children_then_parent_then_media(monkeypatch, tmp_pat
     )
 
 
-def test_access_token_is_sent_in_headers_only(monkeypatch, tmp_path):
-    responses = [
-        _FakeResponse(200, {"id": "17841400000000000"}),
-        _FakeResponse(200, {"id": "child-1"}),
-        _FakeResponse(200, {"status_code": "FINISHED"}),
-        _FakeResponse(200, {"id": "child-2"}),
-        _FakeResponse(200, {"status_code": "FINISHED"}),
-        _FakeResponse(200, {"id": "child-3"}),
-        _FakeResponse(200, {"status_code": "FINISHED"}),
-        _FakeResponse(200, {"id": "parent-1"}),
-        _FakeResponse(200, {"status_code": "FINISHED"}),
-        _FakeResponse(200, {"id": "media-9"}),
-        _FakeResponse(200, {"permalink": "https://www.instagram.com/p/abc/"}),
+def test_carousel_publishes_the_urls_it_uploaded_to_blob(monkeypatch, tmp_path):
+    storyboard = _storyboard()
+    slides = _fake_slides(tmp_path, count=3)
+    api = _FakeGraphApi(carousel_api_responses())
+    monkeypatch.setenv("INSTAGRAM_USER_ID", "17841400000000000")
+    monkeypatch.setenv("INSTAGRAM_ACCESS_TOKEN", "test-token")
+    monkeypatch.setattr(instagram_module, "requests", api)
+    session = _FakeBlobSession()
+
+    result = instagram_module.post_carousel(
+        storyboard, carousel=_fake_carousel(slides), media_host=_blob_host(session)
+    )
+
+    digest = content_digest(slides)
+    child_payloads = [call[2]["data"] for call in api.calls if call[0] == "POST"][:3]
+    assert result.remote_id == "media-9"
+    assert len(session.uploads) == 3
+    assert [payload["image_url"] for payload in child_payloads] == [
+        f"{BLOB_PUBLIC_BASE}/instagram/2019_02_18_why/{digest}/slide-{index:02d}.jpg"
+        for index in (1, 2, 3)
     ]
+    assert [payload["alt_text"] for payload in child_payloads] == [
+        slide.alt_text for slide in storyboard.slides[:3]
+    ]
+
+
+def test_upload_failure_stops_before_the_first_instagram_call(monkeypatch, tmp_path):
+    storyboard = _storyboard()
+    slides = _fake_slides(tmp_path, count=3)
+    api = _FakeGraphApi()
+    monkeypatch.setenv("INSTAGRAM_USER_ID", "17841400000000000")
+    monkeypatch.setenv("INSTAGRAM_ACCESS_TOKEN", "test-token")
+    monkeypatch.setattr(instagram_module, "requests", api)
+    session = _FakeBlobSession(status=400, payload={"error": {"message": "Bad request"}})
+
+    with pytest.raises(BlobUploadError, match="HTTP 400"):
+        instagram_module.post_carousel(
+            storyboard, carousel=_fake_carousel(slides), media_host=_blob_host(session)
+        )
+
+    assert api.calls == [], "no container may be created before every slide is hosted"
+
+
+def test_access_token_is_sent_in_headers_only(monkeypatch, tmp_path):
+    responses = carousel_api_responses()
 
     _, api, _ = _publish(monkeypatch, tmp_path, responses=responses)
 
@@ -829,7 +1072,7 @@ def test_container_building_failures_are_retryable():
 def test_instagram_is_registered_but_absent_from_automation_defaults():
     assert "instagram" in PLATFORMS
     assert "instagram" in state_manager.PLATFORMS
-    assert "instagram" not in DEFAULT_PLATFORMS, "Instagram must stay manual-only until media hosting exists"
+    assert "instagram" not in DEFAULT_PLATFORMS, "Instagram must stay manual-only until a live publish succeeds"
     assert state_manager.EVERGREEN_COOLDOWN_DAYS["instagram"] == 60
     assert eligible_for_category({"category": "Culture"}, "instagram")
     assert eligible_for_category({"category": "Technology"}, "instagram")
@@ -891,7 +1134,7 @@ def test_instagram_dry_run_renders_locally_without_publishing_or_writing_state(m
     assert "format: carousel" in output
     assert f"{SLIDE_WIDTH}x{SLIDE_HEIGHT}" in output
     assert "media host: unconfigured" in output
-    assert "would publish: nothing until media hosting works" in output
+    assert "would publish: nothing until a media host is configured" in output
     assert not path.exists(), "a dry run must never create distribution state"
 
 
@@ -925,3 +1168,107 @@ def test_instagram_stays_out_of_the_scheduled_workflow_and_is_allowlisted_manual
     assert "INSTAGRAM_ACCESS_TOKEN" in new
     assert "instagram" not in evergreen.lower()
     assert "inputs.platforms" not in evergreen
+
+
+def test_the_manual_workflow_can_host_media_without_touching_the_schedule():
+    new = (REPO_ROOT / ".github" / "workflows" / "social-new.yml").read_text(encoding="utf-8")
+    evergreen = (REPO_ROOT / ".github" / "workflows" / "social-evergreen.yml").read_text(encoding="utf-8")
+
+    assert "BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}" in new
+    # The carousel renderer needs Node and sharp, and must never download a
+    # browser while doing it.
+    assert "npm ci" in new
+    assert "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD" in new
+    assert "BLOB_READ_WRITE_TOKEN" not in evergreen, "the unattended schedule must stay Instagram-free"
+
+
+# --- Instagram dry runs with media hosting -----------------------------------
+
+DRY_RUN_NETWORK_CALLS: list[str] = []
+
+
+class _RefusingSession:
+    """Any network use at all during a dry run is a test failure."""
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __getattr__(self, name):
+        def refuse(*args, **kwargs):
+            DRY_RUN_NETWORK_CALLS.append(name)
+            raise AssertionError(f"a dry run must never use the network ({name})")
+
+        return refuse
+
+
+def _run_instagram_dry_run(monkeypatch, tmp_path):
+    """Drive `auto_post.main()` for one Instagram dry run with the network sealed."""
+    DRY_RUN_NETWORK_CALLS.clear()
+    monkeypatch.setattr(state_manager, "STATE_FILE", tmp_path / "posted.json")
+    carousel = _fake_carousel(_fake_slides(tmp_path, count=3), output_dir=tmp_path)
+    monkeypatch.setattr(
+        "scripts.automation.renderers.instagram.render_storyboard", lambda storyboard: carousel
+    )
+    monkeypatch.delenv(ENV_BASE_URL, raising=False)
+    monkeypatch.setattr(
+        media_host_module,
+        "requests",
+        types.SimpleNamespace(Session=_RefusingSession, RequestException=requests.RequestException),
+    )
+    monkeypatch.setattr(
+        instagram_module,
+        "post_carousel",
+        lambda *args, **kwargs: pytest.fail("a dry run must never reach the publisher"),
+    )
+    monkeypatch.setattr(auto_post, "DRY_RUN", True)
+    monkeypatch.setattr(auto_post, "POST_MODE", "single")
+    monkeypatch.setattr(auto_post, "THREAD_MODE", "bullets")
+    monkeypatch.setattr(auto_post, "USE_LLM", False)
+    monkeypatch.setattr(auto_post, "PLATFORM", ["instagram"])
+    monkeypatch.setattr(auto_post, "DISTRIBUTION_MODE", "new")
+    monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
+    monkeypatch.setattr(auto_post, "fetch_posts", lambda: [_post()])
+    monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "_summarize", lambda post: _summary())
+
+    auto_post.main()
+    return carousel
+
+
+def test_instagram_dry_run_renders_locally_but_uploads_nothing(monkeypatch, tmp_path, capsys):
+    monkeypatch.setenv(ENV_BLOB_TOKEN, BLOB_TOKEN)
+
+    carousel = _run_instagram_dry_run(monkeypatch, tmp_path)
+
+    output = capsys.readouterr().out
+    digest = content_digest(carousel.slides)
+    assert "media host: vercel-blob" in output
+    assert f"would upload: {BLOB_PUBLIC_BASE}/instagram/2019_02_18_why/{digest}/slide-01.jpg" in output
+    assert "would publish: nothing" not in output
+    assert DRY_RUN_NETWORK_CALLS == [], "a dry run must not upload or call Instagram"
+
+
+def test_instagram_dry_run_leaves_existing_distribution_state_unchanged(monkeypatch, tmp_path, capsys):
+    state = tmp_path / "posted.json"
+    state.write_text('{"platforms": {"threads": {"remote_id": "kept"}}}', encoding="utf-8")
+    before = state.read_bytes()
+    monkeypatch.setenv(ENV_BLOB_TOKEN, BLOB_TOKEN)
+
+    _run_instagram_dry_run(monkeypatch, tmp_path)
+
+    capsys.readouterr()
+    assert state.read_bytes() == before
+    assert DRY_RUN_NETWORK_CALLS == []
+
+
+def test_instagram_dry_run_without_media_hosting_reports_nothing_to_publish(monkeypatch, tmp_path, capsys):
+    monkeypatch.delenv(ENV_BLOB_TOKEN, raising=False)
+
+    _run_instagram_dry_run(monkeypatch, tmp_path)
+
+    output = capsys.readouterr().out
+    assert "media host: unconfigured" in output
+    assert "would publish: nothing until a media host is configured" in output
+    assert DRY_RUN_NETWORK_CALLS == []
+

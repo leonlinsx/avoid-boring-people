@@ -39,7 +39,7 @@ from scripts.automation.formatters.instagram_storyboard import (
     InstagramStoryboard,
     validate_storyboard,
 )
-from scripts.automation.media_host import MediaHostError, resolve_media_urls
+from scripts.automation.media_host import MediaHostError, get_media_host, resolve_media_urls
 from scripts.automation.renderers.instagram import render_storyboard
 
 INSTAGRAM_API_BASE = "https://graph.facebook.com/v26.0"
@@ -301,8 +301,10 @@ def post_carousel(storyboard: InstagramStoryboard, *, carousel=None, media_host=
             )
 
     # Meta fetches the images itself, so the URLs have to be public and
-    # reachable before any container is created.
-    image_urls = resolve_media_urls(rendered.slides, host=media_host)
+    # reachable before any container is created. Uploading hosts get the
+    # article id so their object paths stay stable and content-addressed.
+    host = media_host or get_media_host(post_id=storyboard.post_id)
+    image_urls = resolve_media_urls(rendered.slides, host=host)
     if len(image_urls) != len(rendered.slides):
         raise MediaHostError(
             f"media host resolved {len(image_urls)} of {len(rendered.slides)} slide URLs"

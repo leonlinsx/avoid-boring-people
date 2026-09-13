@@ -88,17 +88,22 @@ def renderer_available() -> tuple[bool, str]:
     return True, ""
 
 
-def output_dir_for(post_id: str, base: Path | str | None = None) -> Path:
-    """Ignored working directory for one article's rendered slides."""
-    root = Path(base) if base is not None else Path(os.getenv("INSTAGRAM_OUTPUT_DIR") or DEFAULT_OUTPUT_ROOT)
+def post_slug(post_id: str) -> str:
+    """Filesystem- and URL-safe form of a search-index article id."""
     # Search-index ids look like `2019_02_18_why/index.md`; the suffix is noise
     # in a directory name and in the media URL derived from it later.
     stem = re.sub(r"(?:^|/)index\.md$", "", str(post_id))
     stem = re.sub(r"\.md$", "", stem)
     safe_id = "".join(character for character in stem if character.isalnum() or character in "-_")
     if not safe_id:
-        raise ValueError("Instagram renderer needs a filesystem-safe post id")
-    return root / safe_id
+        raise ValueError("Instagram needs a filesystem-safe post id")
+    return safe_id
+
+
+def output_dir_for(post_id: str, base: Path | str | None = None) -> Path:
+    """Ignored working directory for one article's rendered slides."""
+    root = Path(base) if base is not None else Path(os.getenv("INSTAGRAM_OUTPUT_DIR") or DEFAULT_OUTPUT_ROOT)
+    return root / post_slug(post_id)
 
 
 def _job_payload(storyboard: InstagramStoryboard, output_dir: Path, quality: int) -> dict:
