@@ -6,6 +6,8 @@ The job generates one summary per article where required, then deterministically
 
 New articles can use all eligible destinations. Evergreen distribution is limited to Bluesky, Mastodon, Farcaster, Nostr, Threads, and Instagram; DEV is never recycled and X is out of the defaults while its API credits are depleted.
 
+The push-triggered run reads the deployed `/search-index.json`, so it does not publish until the new article is actually live: `scripts/automation/wait_for_deploy.py` polls the deployed index and the article URL until both are present, and fails the job with a `::error::` annotation if the deployment never lands within the timeout. The previous version waited a fixed 90 seconds and then relied on `auto_post` to reject a post the deployed index did not contain yet, so a slower deployment turned into a red run whose only remedy was a manual re-run.
+
 Articles are eligible for evergreen redistribution by default. Mark a time-sensitive piece with `evergreen: false` in its frontmatter to exclude it. The summarizer receives the article's publication date so historical facts are framed as belonging to the original publication period rather than as current facts.
 
 ## Required GitHub secrets
@@ -28,6 +30,14 @@ and is parked). X stays out of the defaults until its API credits are restored.
 For a local one-off override, set `PLATFORM` explicitly. Weibo posts
 a Simplified-Chinese DeepSeek localization of the article, never the English
 text; the localizer raises rather than falling back.
+
+## Token health
+
+Threads and Instagram are the only destinations whose credentials expire on a calendar: both are Meta long-lived tokens valid for about 60 days. Every other secret either does not expire on a schedule or fails visibly in the publish run that uses it, and reading a Meta token's *remaining* lifetime needs an app access token the repository deliberately does not store.
+
+`.github/workflows/token-health.yml` runs daily at 08:00 UTC, before the Tuesday/Friday evergreen cycle, and reuses each publisher's own `verify_credentials` so the check exercises the same host, path, and header as a publish: `GET https://graph.threads.net/v1.0/me?fields=id,username` for Threads and `GET https://graph.instagram.com/v26.0/{ig-user-id}?fields=id,username` for Instagram. A refused token — or an account id that does not resolve — fails the run with the rotation step to perform, and only the HTTP status plus the platform's own message are reported, never the token. A platform whose secrets are unset is reported as `skipped` rather than failing, so a partially configured repository stays green and the job turns red only when a stored credential is actually rejected.
+
+The probe never refreshes or rotates anything: a refresh returns a new token that would have to be written back into repository secrets, so rotation remains a deliberate human step. The same check runs locally with `python -m scripts.automation.check_tokens`.
 
 ## Local review
 
@@ -71,7 +81,7 @@ The integration was verified live before promotion, and the same steps re-verify
 
 Before a manual run like that, review the rendered voice locally with `DRY_RUN=true POST_MODE=thread PLATFORM=threads python -m scripts.automation.auto_post`; the dry run prints the exact text of both posts. That run summarizes through the local TextRank stub; add `USE_LLM=true TEST_API=true` to review the DeepSeek summary that production actually uses, because `DRY_RUN` alone makes the summarizer return mock points.
 
-Long-lived Threads tokens expire after 60 days and are refreshed with `GET /refresh_access_token?grant_type=th_refresh_token`. Refresh out of band and rotate the secret on a calendar, because Threads now runs unattended; the adapter never refreshes on its own, so an expired token surfaces as a `401` that is reported as permanent rather than retried. The token travels in an `Authorization: Bearer` header, so it never appears in a request URL or in an error message.
+Long-lived Threads tokens expire after 60 days and are refreshed with `GET /refresh_access_token?grant_type=th_refresh_token`. Refresh out of band and rotate the secret on a calendar, because Threads now runs unattended; the adapter never refreshes on its own, so an expired token surfaces as a `401` that is reported as permanent rather than retried. The token travels in an `Authorization: Bearer` header, so it never appears in a request URL or in an error message. The daily [token health](#token-health) probe reports a lapse the morning it appears instead of at the next publish.
 
 Two operational limits are worth knowing:
 
@@ -101,7 +111,7 @@ Mock-tested: the whole publish flow against scripted Graph API responses (child 
 
 Verified live: the first manual carousel (`2021_04_03_ergodicity/index.md`) completed the whole path — slides rendered, uploaded through the OIDC endpoint into the public Blob store, child containers and the parent carousel created, `media_publish` accepted, and `posted.json` recorded the media id `17959614963213061` with permalink `https://www.instagram.com/p/DdO8qGjgcCm/` under `last_mode: new`. Promotion to `DEFAULT_PLATFORMS` followed that run, so the only behavior that changes afterwards is who triggers it, not the API path that was proven.
 
-Remaining risk: Instagram now publishes from the unattended runs, so the account receives one carousel per new article (subject to the category rules above) plus up to two a week from the schedule. `INSTAGRAM_ACCESS_TOKEN` is a long-lived Instagram User token that expires 60 days after issue or refresh, and both production workflows depend on it, so it needs the same calendar rotation as `THREADS_ACCESS_TOKEN`; the adapter never refreshes on its own, and an expired token surfaces as a `401` reported as a permanent failure rather than retried.
+Remaining risk: Instagram now publishes from the unattended runs, so the account receives one carousel per new article (subject to the category rules above) plus up to two a week from the schedule. `INSTAGRAM_ACCESS_TOKEN` is a long-lived Instagram User token that expires 60 days after issue or refresh, and both production workflows depend on it, so it needs the same calendar rotation as `THREADS_ACCESS_TOKEN`; the adapter never refreshes on its own, and an expired token surfaces as a `401` reported as a permanent failure rather than retried. The daily [token health](#token-health) probe reports a lapse the morning it appears.
 
 ### Credentials
 
@@ -142,6 +152,6 @@ Everything up to and including the parent container is retried normally: an unpu
 5. Generate one shared secret with `openssl rand -hex 32`, store it as the Vercel project environment variable `INSTAGRAM_MEDIA_UPLOAD_SECRET` (production), and store the same value as the `INSTAGRAM_MEDIA_UPLOAD_SECRET` repository secret. Store `INSTAGRAM_MEDIA_UPLOAD_URL=https://leonlins.com/api/social/instagram-media` as a repository secret too, and leave `INSTAGRAM_MEDIA_BASE_URL` unset unless the slides are served from another host.
 6. Run the local dry run above and review the rendered slides before any publish.
 7. Do one manual live publish with `platforms=instagram` (lowercase, because the renderer-install gate matches that literal value) and a `post_id` before relying on the unattended runs, then confirm the carousel on the profile and the media id in `posted.json`. That step is done: the first live carousel published successfully, and Instagram is in `DEFAULT_PLATFORMS`, so it also runs unattended now. Repeat this manual check after any token rotation or adapter change.
-8. Refresh `INSTAGRAM_ACCESS_TOKEN` before its 60-day lifetime lapses, with the `refresh_access_token` call in [Credentials](#credentials), and store the returned value as the new repository secret. Instagram is unattended, so an expired token fails the scheduled run rather than a manual one.
+8. Refresh `INSTAGRAM_ACCESS_TOKEN` before its 60-day lifetime lapses, with the `refresh_access_token` call in [Credentials](#credentials), and store the returned value as the new repository secret. Instagram is unattended, so an expired token fails the scheduled run rather than a manual one, and the daily [token health](#token-health) probe reports the lapse.
 
 The storyboard limits are editorial, not platform limits: 5-8 slides, 60 characters for a body headline, 200 for its supporting text, 40 for the kicker, 1,000 for alt text. Meta documents at most 10 carousel children and no minimum, so at least 2 is enforced where the platform requires it, and the renderer fails visibly rather than shipping a clipped slide: copy that does not fit exits with `content_overflow`, and a missing brand font stops the render instead of falling back to a system typeface.

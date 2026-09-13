@@ -12,39 +12,42 @@ SITE_URL = "https://leonlins.com"
 SEARCH_INDEX_USER_AGENT = "Mozilla/5.0 (compatible; avoid-boring-people/1.0; +https://leonlins.com)"
 
 
+def fetch_index_json(url: str, timeout: int = 10) -> List[Dict]:
+    """Read one search index URL, identifying honestly to the site's bot protection."""
+    request = Request(
+        url,
+        headers={
+            "Cache-Control": "no-cache",
+            "Accept": "application/json",
+            "User-Agent": SEARCH_INDEX_USER_AGENT,
+        },
+    )
+    with urlopen(request, timeout=timeout) as response:
+        if response.status != 200:
+            raise HTTPError(url, response.status, response.reason, response.headers, None)
+        return json.load(response)
+
+
 def load_search_index() -> List[Dict]:
     """Load the search index JSON, preferring local dev server if running."""
     urls = [LOCAL_SEARCH_INDEX_URL, LIVE_SEARCH_INDEX_URL]
 
     for url in urls:
         try:
-            request = Request(
-                url,
-                headers={
-                    "Cache-Control": "no-cache",
-                    "Accept": "application/json",
-                    "User-Agent": SEARCH_INDEX_USER_AGENT,
-                },
-            )
-            with urlopen(request, timeout=10) as response:
-                if response.status != 200:
-                    raise HTTPError(url, response.status, response.reason, response.headers, None)
-                data = json.load(response)
-                print(f"✅ Loaded search index from {url}")
-                if data:
-                    print("DEBUG first raw post:", data[0])
-                return data  # return full list of dicts with category, tags, etc.
+            data = fetch_index_json(url)
         except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as e:
             print(f"⚠️ Could not load search index from {url}: {e}")
         except Exception as e:  # pragma: no cover - unexpected errors logged for debugging
             print(f"⚠️ Unexpected error loading search index from {url}: {e}")
+        else:
+            print(f"✅ Loaded search index from {url}")
+            return data
 
     return []
 
 
-def fetch_posts() -> List[Dict]:
-    """Fetch posts directly from search index, keeping all metadata."""
-    data = load_search_index()
+def normalize_posts(data: List[Dict]) -> List[Dict]:
+    """Turn raw search index entries into the post dicts the automation consumes."""
     posts = []
 
     for entry in data:
@@ -73,6 +76,11 @@ def fetch_posts() -> List[Dict]:
         )
 
     return posts
+
+
+def fetch_posts() -> List[Dict]:
+    """Fetch posts directly from search index, keeping all metadata."""
+    return normalize_posts(load_search_index())
 
 
 if __name__ == "__main__":
