@@ -8,6 +8,8 @@ before any publish attempt.
 import json
 import sys
 import types
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import pytest
 
@@ -320,12 +322,44 @@ def test_threads_authentication_failure_is_permanent(monkeypatch):
 
 # --- Routing, state, and orchestration -------------------------------------
 
-def test_threads_is_opt_in_until_live_verification():
+def test_threads_is_a_production_default():
     assert "threads" in PLATFORMS
     assert "threads" in SOCIAL_PLATFORMS
-    assert "threads" not in DEFAULT_PLATFORMS
+    assert "threads" in DEFAULT_PLATFORMS
     assert eligible_for_category({"category": "Technology"}, "threads")
     assert not eligible_for_category({"category": "Culture"}, "threads")
+
+
+def test_threads_runs_in_both_automatic_distribution_paths():
+    """New-article and scheduled evergreen runs must both be able to publish Threads.
+
+    The credentials are the only difference a new channel needs, so assert the
+    secrets reach both workflows and that the manual dispatch allowlist still
+    accepts an explicit `threads` override.
+    """
+    root = Path(__file__).resolve().parent.parent
+    new = (root / ".github" / "workflows" / "social-new.yml").read_text(encoding="utf-8")
+    evergreen = (root / ".github" / "workflows" / "social-evergreen.yml").read_text(encoding="utf-8")
+
+    for name, workflow in (("social-new.yml", new), ("social-evergreen.yml", evergreen)):
+        assert "THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}" in workflow, f"{name} must pass the Threads user id"
+        assert "THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}" in workflow, f"{name} must pass the Threads token"
+
+    assert "src/content/blog/**/index.md" in new
+    assert "schedule:" in evergreen
+    assert "threads" in new.split("allowed=", 1)[1].splitlines()[0]
+
+
+def test_threads_evergreen_cooldown_is_sixty_days():
+    post = {"id": "post", "evergreen": True}
+    now = datetime.now(timezone.utc)
+
+    def state(posted_at):
+        stamp = posted_at.isoformat().replace("+00:00", "Z")
+        return {"version": 2, "posts": {"post": {"threads": {"count": 1, "last_posted_at": stamp, "last_mode": "evergreen"}}}}
+
+    assert not state_manager.platform_is_eligible(post, "threads", "evergreen", state(now - timedelta(days=59)))
+    assert state_manager.platform_is_eligible(post, "threads", "evergreen", state(now - timedelta(days=61)))
 
 
 def test_state_tracks_threads_and_evergreen_cooldown(monkeypatch, tmp_path):

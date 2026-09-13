@@ -247,7 +247,10 @@ def test_weibo_refreshes_an_expired_token_once(monkeypatch, capsys):
         weibo.WEIBO_UPDATE_URL,
     ]
     assert calls[2]["data"]["access_token"] == "fresh-token"
-    assert "fresh-token" in capsys.readouterr().out
+    output = capsys.readouterr().out
+    assert "fresh-token" not in output, "the refreshed token must never be printed to a retained log"
+    assert "Weibo access token refreshed for this run" in output
+    assert "ends …" in output
 
 
 def test_weibo_non_token_error_does_not_refresh(monkeypatch):

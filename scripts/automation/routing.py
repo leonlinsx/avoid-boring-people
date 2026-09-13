@@ -12,9 +12,9 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "
 # whole destination, which fails the run. Re-add it once credits exist.
 # Weibo stays out until its open-platform app gains write scope, which needs a
 # Chinese mobile-verified account and is parked as a TODO.
-# Threads stays out until a verified live run confirms the access token, user id,
-# and publish flow. Post to it explicitly with PLATFORM=threads until then.
-DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr")
+# Threads is verified live and runs unattended, but its long-lived access token
+# expires after 60 days, so rotate THREADS_ACCESS_TOKEN before it lapses.
+DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,
 # per-article opt-in through the `devto` frontmatter flag.

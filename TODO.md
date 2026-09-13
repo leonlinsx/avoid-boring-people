@@ -46,7 +46,7 @@ Replace one-off values with variables. -->
 - post to reddit relevant subreddits
 3. event tracking when appropriate
 - twitter thread analytics tracking
-- automated posting threads (implemented; stays opt-in via PLATFORM=threads until a live run verifies the token and publish flow, then add it to DEFAULT_PLATFORMS)
+<!-- - automated posting threads (done: verified live, enabled in DEFAULT_PLATFORMS) -->
 - automated instagram posting: carousel-first, not a caption generator. Needs a storyboard renderer that turns an article's argument into 4-7 slides.
 - automated instagram posting: slide templates for the essay, framework, and data shapes, rendered HTML/CSS to PNG at 1080x1350
 - automated instagram posting: carousel publisher through the Instagram Graph API, with the canonical link in the caption instead of on a slide

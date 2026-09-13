@@ -568,4 +568,4 @@ def test_deferred_platforms_are_manual_only_in_production_workflows():
     assert 'if [ -n "${{ inputs.platforms }}" ]' in new, "the allowlist must only apply to manual runs"
 
     assert "threads" in PLATFORMS
-    assert "threads" not in DEFAULT_PLATFORMS
+    assert "threads" in DEFAULT_PLATFORMS, "Threads is verified live and must run unattended"
