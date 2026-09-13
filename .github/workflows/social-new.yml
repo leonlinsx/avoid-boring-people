@@ -30,7 +30,7 @@ jobs:
   distribute:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           ref: main
           fetch-depth: 0
@@ -60,7 +60,7 @@ jobs:
       - name: Wait for the new articles to deploy
         if: steps.added.outputs.found == 'true'
         run: python3 -m scripts.automation.wait_for_deploy --post-id-file "$RUNNER_TEMP/post_ids"
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         if: steps.added.outputs.found == 'true'
         with:
           python-version: '3.12'
@@ -72,7 +72,7 @@ jobs:
       # Instagram is a production default, so the automatic push-triggered run
       # (no `platforms` input, meaning production defaults) needs the carousel
       # renderer too. A manual run only installs it when it can target Instagram.
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
         if: steps.added.outputs.found == 'true' && (inputs.platforms == '' || contains(inputs.platforms, 'instagram'))
         with:
           node-version: '22'
