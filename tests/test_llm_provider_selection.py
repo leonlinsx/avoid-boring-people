@@ -160,7 +160,7 @@ def test_deepseek_stays_the_default_request_shape(monkeypatch):
     assert captured["extra_body"] == {"thinking": {"type": "disabled"}}
     assert captured["response_format"] == {"type": "json_object"}
     assert "num_ctx" not in json.dumps(captured)
-    assert result == {"teaser": "A hook.", "points": ["A standalone point."]}
+    assert result == {"teaser": "A hook.", "points": ["A standalone point."], "teaser_candidates": ["A hook."]}
 
 
 def test_deepseek_client_keeps_the_hosted_endpoint(monkeypatch):
@@ -203,7 +203,7 @@ def test_ollama_request_uses_the_native_endpoint_with_its_own_context(monkeypatc
     assert payload["options"]["num_ctx"] == llm_summarizer.DEFAULT_OLLAMA_NUM_CTX
     assert payload["options"]["num_predict"] == llm_summarizer.MAX_TOKENS
     assert "json" in payload["messages"][-1]["content"].lower()
-    assert result == {"teaser": "A hook.", "points": ["A standalone point."]}
+    assert result == {"teaser": "A hook.", "points": ["A standalone point."], "teaser_candidates": ["A hook."]}
 
 
 def test_ollama_endpoint_and_context_can_be_pointed_elsewhere(monkeypatch):
@@ -319,6 +319,7 @@ def test_a_local_run_reaches_the_same_parser_and_gate(monkeypatch):
     assert llm_summarizer.summarize_post(_post()) == {
         "teaser": "A hook.",
         "points": ["A standalone point."],
+        "teaser_candidates": ["A hook."],
     }
 
 

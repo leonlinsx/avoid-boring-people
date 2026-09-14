@@ -221,7 +221,7 @@ def test_summarize_post_sends_the_date_to_the_model(monkeypatch):
 
     result = llm_summarizer.summarize_post(_social_post())
 
-    assert result == {"teaser": "Hook", "points": ["Point one"]}
+    assert result == {"teaser": "Hook", "points": ["Point one"], "teaser_candidates": ["Hook"]}
     sent_prompt = captured["messages"][-1]["content"]
     assert "PUBLICATION DATE: 2020-07-22" in sent_prompt
 

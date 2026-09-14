@@ -54,7 +54,7 @@ def test_dry_run_does_not_call_the_state_writer(monkeypatch, tmp_path):
     monkeypatch.setattr(auto_post, "DISTRIBUTION_MODE", "new")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [post])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
 
     auto_post.main()
 
@@ -80,7 +80,7 @@ def test_partial_platform_failure_only_persists_success(monkeypatch, tmp_path):
     monkeypatch.setattr(auto_post, "DISTRIBUTION_MODE", "new")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [post])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
 
     auto_post.main()
 
@@ -142,6 +142,113 @@ def test_selection_keeps_first_publication_eligible_per_platform(monkeypatch, tm
     assert selected["eligible_platforms"] == ["twitter", "bluesky"]
 
 
+def _evergreen_post(post_id, category="Investing", date="2020-01-01", score=0.0):
+    return {
+        "id": post_id,
+        "title": post_id,
+        "url": f"https://leonlins.com/writing/{post_id}/",
+        "date": date,
+        "content": "word " * 300,
+        "category": category,
+        "tags": [],
+        "evergreen": True,
+        "priority_score": score,
+    }
+
+
+def _posted_days_ago(days):
+    return (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+
+
+def test_evergreen_prefers_longest_ago_posted_over_fresh_score(monkeypatch, tmp_path):
+    _use_temp_state(monkeypatch, tmp_path)
+    state_manager.save_state(
+        {
+            "version": 2,
+            "posts": {
+                "old": {
+                    "bluesky": {
+                        "count": 1,
+                        "last_posted_at": _posted_days_ago(100),
+                        "last_mode": "evergreen",
+                    }
+                },
+                "recent": {
+                    "bluesky": {
+                        "count": 1,
+                        "last_posted_at": _posted_days_ago(61),
+                        "last_mode": "evergreen",
+                    }
+                },
+            },
+        }
+    )
+    posts = [
+        _evergreen_post("old", score=0.0),
+        _evergreen_post("recent", date="2024-01-01", score=5.0),
+    ]
+    selected = state_manager.select_next_post(posts, ["bluesky"], "evergreen")
+    assert selected["id"] == "old"
+
+
+def test_evergreen_rotates_away_from_last_posted_category(monkeypatch, tmp_path):
+    _use_temp_state(monkeypatch, tmp_path)
+    state_manager.save_state(
+        {
+            "version": 2,
+            "posts": {
+                "older-investing": {
+                    "bluesky": {
+                        "count": 1,
+                        "last_posted_at": _posted_days_ago(100),
+                        "last_mode": "evergreen",
+                    }
+                },
+                "newer-tech": {
+                    "bluesky": {
+                        "count": 1,
+                        "last_posted_at": _posted_days_ago(90),
+                        "last_mode": "evergreen",
+                    }
+                },
+                "just-posted": {
+                    "bluesky": {
+                        "count": 1,
+                        "last_posted_at": _posted_days_ago(0),
+                        "last_mode": "evergreen",
+                    }
+                },
+            },
+        }
+    )
+    posts = [
+        _evergreen_post("older-investing", category="Investing"),
+        _evergreen_post("newer-tech", category="Technology"),
+        _evergreen_post("just-posted", category="Investing"),
+    ]
+    selected = state_manager.select_next_post(posts, ["bluesky"], "evergreen")
+    assert selected["id"] == "newer-tech"
+
+
+def test_evergreen_prefers_unposted_articles_first(monkeypatch, tmp_path):
+    _use_temp_state(monkeypatch, tmp_path)
+    state_manager.save_state({"version": 2, "posts": {}})
+    posts = [_evergreen_post("fresh", date="2024-01-01", score=0.0)]
+    selected = state_manager.select_next_post(posts, ["bluesky"], "evergreen")
+    assert selected["id"] == "fresh"
+
+
+def test_new_mode_still_prefers_higher_score(monkeypatch, tmp_path):
+    _use_temp_state(monkeypatch, tmp_path)
+    state_manager.save_state({"version": 2, "posts": {}})
+    posts = [
+        {**_evergreen_post("low"), "priority_score": 1.0},
+        {**_evergreen_post("high", date="2020-01-01"), "priority_score": 9.0},
+    ]
+    selected = state_manager.select_next_post(posts, ["bluesky"], "new")
+    assert selected["id"] == "high"
+
+
 def test_new_distribution_does_not_repeat_a_successful_platform(monkeypatch, tmp_path):
     _use_temp_state(monkeypatch, tmp_path)
     state_manager.mark_posted("post", "twitter", "new")
@@ -160,7 +267,7 @@ def test_target_post_must_exist_in_deployed_index(monkeypatch):
     monkeypatch.setattr(auto_post, "DISTRIBUTION_MODE", "new")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
 
     try:
         auto_post.main()

@@ -40,9 +40,24 @@ def render_mastodon(post: SocialPost) -> list[str]:
     """Render one self-contained Mastodon toot, not a copy of the X thread.
 
     Mastodon readers see a single timeline post, so the preferred shape is one
-    hook plus the sharpest supporting thought plus the canonical URL, kept
-    within the instance 500-character limit.
+    hook plus supporting thought plus the canonical URL, kept within the
+    instance 500-character limit. Two whole points are preferred over one when
+    they fit, and deterministic hashtags ride along only when everything fits:
+    discovery never steals content space, and the trim fallback stays tagless.
     """
+    points = _supporting_points(post)
+    tags = hashtag_suffix(post.tags)
+    bodies: list[str] = []
+    if len(points) >= 2:
+        bodies.append("\n\n".join(points[:2]))
+    if points:
+        bodies.append(points[0])
+    for body in bodies:
+        base = f"{post.hook}\n\n{body}"
+        for suffix in (tags, ""):
+            candidate = f"{base}{suffix}\n\n{post.url}".strip()
+            if len(candidate) <= MASTODON_STATUS_LIMIT:
+                return [candidate]
     supporting = supporting_point(post)
     candidate = f"{post.hook}\n\n{supporting}\n\n{post.url}".strip()
     if len(candidate) <= MASTODON_STATUS_LIMIT:
@@ -61,8 +76,18 @@ def render_farcaster(post: SocialPost) -> str:
 
     A long LLM hook plus supporting thought can exceed the cast limit. Keep the
     hook and canonical URL and shorten the supporting thought, rather than
-    letting the publisher reject the whole cast.
+    letting the publisher reject the whole cast. Deterministic hashtags ride
+    along only when everything fits.
     """
+    points = _supporting_points(post)
+    tags = hashtag_suffix(post.tags)
+    bodies = [points[0]] if points else []
+    for body in bodies:
+        base = f"{post.hook}\n\n{body}"
+        for suffix in (tags, ""):
+            candidate = f"{base}{suffix}\n\n{post.url}".strip()
+            if len(candidate) <= FARCASTER_CAST_LIMIT:
+                return candidate
     supporting = supporting_point(post)
     candidate = f"{post.hook}\n\n{supporting}\n\n{post.url}".strip()
     if len(candidate) <= FARCASTER_CAST_LIMIT:
@@ -74,6 +99,27 @@ def render_farcaster(post: SocialPost) -> str:
         trimmed_hook = post.hook[: FARCASTER_CAST_LIMIT - len(post.url) - len("\n\n…\n\n")]
         return f"{trimmed_hook}…\n\n{post.url}".strip()
     return f"{post.hook}\n\n{supporting[:budget].rstrip()}{ellipsis}\n\n{post.url}".strip()
+
+
+HASHTAG_MAX = 3
+
+
+def hashtag_suffix(tags) -> str:
+    """Deterministic discovery suffix from sanitized article tags.
+
+    Returns `" #a #b"` (leading space, at most HASHTAG_MAX, deduplicated) or
+    `""`. Renderers try content with the suffix first and without as
+    fallback, so tags never steal content space and over-long tag sets simply
+    drop out instead of breaking limits.
+    """
+    picked: list[str] = []
+    for tag in tags or ():
+        name = str(tag).strip()
+        if name and f"#{name}" not in picked:
+            picked.append(f"#{name}")
+        if len(picked) >= HASHTAG_MAX:
+            break
+    return (" " + " ".join(picked)) if picked else ""
 
 
 def _supporting_points(post: SocialPost) -> list[str]:
@@ -135,6 +181,9 @@ def render_threads(post: SocialPost) -> list[str]:
         break
     if len(main) > THREADS_TEXT_LIMIT:
         main = f"{_trim_to_word(hook, THREADS_TEXT_LIMIT - 1)}…"
+    tags = hashtag_suffix(post.tags)
+    if tags and len(f"{main}{tags}") <= THREADS_TEXT_LIMIT:
+        main = f"{main}{tags}"
     if not post.url:
         return [main]
     return [main, f"Full piece: {post.url}"]

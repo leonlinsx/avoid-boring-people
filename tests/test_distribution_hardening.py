@@ -68,7 +68,7 @@ def _drive_main(monkeypatch, post, platforms, fakes, mode="new", post_mode="sing
     monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [dict(post)])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
     for name, module in fakes.items():
         monkeypatch.setitem(sys.modules, name, module)
 
@@ -213,7 +213,8 @@ def test_dry_run_prints_the_exact_copy_each_channel_would_publish(monkeypatch, t
     auto_post.main()
 
     output = capsys.readouterr().out
-    social = SocialPost(summary["teaser"], "\n\n".join(summary["points"]), _post()["url"], tuple(format_as_thread(_post(), summary, mode="bullets", max_tweets=5)))
+    tags = tuple(auto_post.sanitize_tags(_post()["tags"]))
+    social = SocialPost(summary["teaser"], "\n\n".join(summary["points"]), _post()["url"], tuple(format_as_thread(_post(), summary, mode="bullets", max_tweets=5, tags=tags)), tags)
     for part in render_thread(social):
         assert part in output
     assert render_mastodon(social)[0] in output

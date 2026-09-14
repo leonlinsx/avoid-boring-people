@@ -1497,7 +1497,7 @@ def test_manual_run_publishes_a_carousel_and_records_state(monkeypatch, tmp_path
     monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [_post()])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
     monkeypatch.setattr(auto_post, "_summarize", lambda post: _summary())
 
     auto_post.main()
@@ -1523,7 +1523,7 @@ def test_instagram_dry_run_renders_locally_without_publishing_or_writing_state(m
     monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [_post()])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
     monkeypatch.setattr(auto_post, "_summarize", lambda post: _summary())
 
     auto_post.main()
@@ -1583,7 +1583,7 @@ def test_instagram_dry_run_reports_an_unavailable_renderer(monkeypatch, tmp_path
     monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [_post()])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
     monkeypatch.setattr(auto_post, "_summarize", lambda post: _summary())
 
     auto_post.main()
@@ -1680,7 +1680,7 @@ def _run_instagram_dry_run(monkeypatch, tmp_path):
     monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [_post()])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
     monkeypatch.setattr(auto_post, "_summarize", lambda post: _summary())
 
     auto_post.main()

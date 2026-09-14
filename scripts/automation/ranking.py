@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from math import log10
 import os
 from typing import Dict, Iterable, List, Optional, Sequence, Set
 
@@ -77,14 +78,26 @@ def filter_posts(posts: Iterable[Dict], config: Optional[RankingConfig] = None) 
     return results
 
 
-def score_posts(posts: Iterable[Dict], config: Optional[RankingConfig] = None) -> List[Dict]:
+# Engagement informs but never dominates: past interactions add at most 0.75
+# (9 interactions ~= +0.25, 99 ~= +0.5), while freshness contributes up to
+# 2.0. Absent data contributes exactly 0, so new articles are never
+# penalized for having no history.
+ENGAGEMENT_MAX_BOOST = 0.75
+ENGAGEMENT_BOOST_RATE = 0.25
+
+
+def score_posts(posts: Iterable[Dict], config: Optional[RankingConfig] = None, engagement: Optional[Dict[str, int]] = None) -> List[Dict]:
     """Annotate posts with a priority score for downstream selection."""
     config = config or RankingConfig()
+    engagement = engagement or {}
     scored: List[Dict] = []
     now = datetime.now(timezone.utc)
 
     for post in posts:
         score = 0.0
+        total = engagement.get(post.get("id", ""), 0) or 0
+        if total > 0:
+            score += min(ENGAGEMENT_MAX_BOOST, ENGAGEMENT_BOOST_RATE * log10(1 + total))
 
         # Freshness decay: newer content gets more weight.
         published = _parse_date(post.get("date"))

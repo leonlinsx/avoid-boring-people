@@ -79,7 +79,7 @@ def get_platform_state(post_id: str, platform: str, state: Optional[Dict] = None
     return platform_state if isinstance(platform_state, dict) else None
 
 
-def mark_posted(post_id: str, platform: str, mode: str, remote_id: Optional[str] = None, remote_url: Optional[str] = None) -> Dict:
+def mark_posted(post_id: str, platform: str, mode: str, remote_id: Optional[str] = None, remote_url: Optional[str] = None, model: Optional[str] = None) -> Dict:
     if platform not in PLATFORMS:
         raise ValueError(f"Unknown distribution platform: {platform}")
     if mode not in {"new", "evergreen"}:
@@ -101,6 +101,12 @@ def mark_posted(post_id: str, platform: str, mode: str, remote_id: Optional[str]
         platform_state["remote_url"] = str(remote_url)
     elif current.get("remote_url") is not None:
         platform_state["remote_url"] = current["remote_url"]
+    # Which copy engine produced the post (LLM provider/model or the stub),
+    # so engagement observations stay attributable when copy changes.
+    if model:
+        platform_state["model"] = str(model)
+    elif current.get("model") is not None:
+        platform_state["model"] = current["model"]
     post_state[platform] = platform_state
     save_state(state)
     return platform_state
@@ -148,9 +154,48 @@ def should_publish_new(post_id: str, platform: str, state: Optional[Dict] = None
     return platform_post_count(post_id, platform, state) == 0
 
 
+def _oldest_eligible_posted_at(post_id: str, platforms: Iterable[str], state: Dict) -> Optional[datetime]:
+    """Earliest previous publication of one post on the eligible platforms."""
+    timestamps = [
+        _parse_timestamp(last_posted_at(post_id, platform, state))
+        for platform in platforms
+    ]
+    past = [stamp for stamp in timestamps if stamp is not None]
+    return min(past) if past else None
+
+
+def _last_posted_category(posts: Iterable[Dict], state: Dict) -> Optional[str]:
+    """Category of the most recently published post, for rotation.
+
+    Only entries written by the publisher carry `last_posted_at`; the most
+    recent one sets the theme to rotate away from. Returns None when nothing
+    has been published yet, in which case rotation does not apply.
+    """
+    latest: Optional[datetime] = None
+    latest_post_id: Optional[str] = None
+    for post_id, platforms in (state.get("posts") or {}).items():
+        if not isinstance(platforms, dict):
+            continue
+        for entry in platforms.values():
+            if not isinstance(entry, dict):
+                continue
+            stamp = _parse_timestamp(entry.get("last_posted_at"))
+            if stamp is not None and (latest is None or stamp > latest):
+                latest = stamp
+                latest_post_id = post_id
+    if latest_post_id is None:
+        return None
+    for post in posts:
+        if post.get("id") == latest_post_id:
+            return (post.get("category") or "").strip().lower() or None
+    return None
+
+
 def select_next_post(posts: Iterable[Dict], platforms: Iterable[str], mode: str) -> Optional[Dict]:
     """Choose the least-used eligible article, retaining the existing ranking tie-breakers."""
     state = load_state()
+    posts = list(posts)
+    rotate_from = _last_posted_category(posts, state) if mode == "evergreen" else None
     candidates = []
     active_platforms = tuple(platform for platform in platforms if platform in PLATFORMS)
     for post in posts:
@@ -163,8 +208,32 @@ def select_next_post(posts: Iterable[Dict], platforms: Iterable[str], mode: str)
         candidate["eligible_platforms"] = eligible_platforms
         candidate["platform_count"] = sum(platform_post_count(post["id"], platform, state) for platform in eligible_platforms)
         candidate.setdefault("priority_score", 0.0)
+        if mode == "evergreen":
+            # Redistribution serves the back catalog, not the freshest
+            # eligible article: prefer what was posted longest ago, and rotate
+            # away from the most recently published category so themes do not
+            # cluster week to week. Articles never posted sort first.
+            oldest = _oldest_eligible_posted_at(post["id"], eligible_platforms, state)
+            candidate["oldest_posted_at"] = oldest.isoformat() if oldest else ""
+            category = (post.get("category") or "").strip().lower()
+            candidate["same_category_as_last"] = bool(rotate_from and category and category == rotate_from)
         candidates.append(candidate)
 
+    if mode == "evergreen":
+        # Category rotation outranks recency: a same-theme repeat week to
+        # week is the visible failure; among rotated candidates the
+        # longest-unposted still wins, with score as the final tiebreak.
+        return min(
+            candidates,
+            key=lambda post: (
+                post["platform_count"],
+                post["same_category_as_last"],
+                post["oldest_posted_at"],
+                -float(post["priority_score"] or 0.0),
+                post.get("date", ""),
+            ),
+            default=None,
+        )
     return min(
         candidates,
         key=lambda post: (post["platform_count"], -float(post["priority_score"] or 0.0), post.get("date", "")),

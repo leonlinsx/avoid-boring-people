@@ -390,7 +390,7 @@ def test_auto_post_dispatches_threads_ignoring_post_mode(monkeypatch, tmp_path):
     monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [{"id": "post", "title": "T", "url": URL, "category": "Technology"}])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
 
     auto_post.main()
 
@@ -406,7 +406,7 @@ def test_auto_post_dry_run_describes_the_threads_format(monkeypatch, capsys):
     monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [{"id": "post", "title": "T", "url": URL, "category": "Technology"}])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
-    monkeypatch.setattr(auto_post, "score_posts", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
 
     auto_post.main()
 

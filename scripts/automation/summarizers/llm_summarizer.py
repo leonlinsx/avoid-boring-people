@@ -58,6 +58,16 @@ MAX_ARTICLE_CHARS = 60_000
 
 TEASER_MAX = 200
 POINT_MAX = 240
+TEASER_ALTERNATES_MAX = 2
+
+# Specificity is the structural opposite of clickbait ("this one trick..."):
+# a teaser naming a number, a proper noun, or a concrete claim earns the
+# feed slot over a vaguer one. Purely deterministic, never a second model
+# call, and ties keep the model's own first choice.
+_DIGIT_RE = re.compile(r"\d")
+_PROPER_NOUN_RE = re.compile(r"[a-zà-öø-ÿ]\s+[A-ZÀ-ÖØ-Þ][a-zà-öø-ÿ]+")
+SPECIFICITY_SWEET_MIN = 40
+SPECIFICITY_SWEET_MAX = 140
 
 # Non-thinking mode supports sampling. 0.5 keeps editorial rewrites natural
 # without drifting away from the source.
@@ -314,6 +324,45 @@ def _sanitize_text(value: str) -> str:
     return " ".join(value.strip().split())
 
 
+def _specificity_score(text: str) -> int:
+    """Deterministic concreteness score for choosing between teasers."""
+    score = 0
+    if _DIGIT_RE.search(text):
+        score += 2
+    if _PROPER_NOUN_RE.search(text):
+        score += 1
+    if SPECIFICITY_SWEET_MIN <= len(text) <= SPECIFICITY_SWEET_MAX:
+        score += 1
+    return score
+
+
+def _teaser_usable(text: str) -> bool:
+    """Whether one teaser candidate may reach a feed: non-empty, in length,
+    and free of the framing the quality gate forbids."""
+    if not text.strip() or len(text) > TEASER_MAX:
+        return False
+    return not _quality_violations(text)
+
+
+def select_teaser(teaser: str, alternates: Sequence[str]) -> str:
+    """Pick the most specific usable teaser; ties keep the model's first choice.
+
+    Every candidate already passed through sanitize/truncate upstream. An
+    unusable candidate is skipped, never repaired; when none is usable the
+    primary is returned so the strict validation downstream still fails
+    closed with its usual error.
+    """
+    candidates = [teaser] + [alt for alt in alternates if alt and alt != teaser]
+    usable = [text for text in candidates if _teaser_usable(text)]
+    if not usable:
+        return teaser
+    best = max(
+        range(len(usable)),
+        key=lambda i: (_specificity_score(usable[i]), -i),
+    )
+    return usable[best]
+
+
 def _truncate(value: str, limit: int) -> str:
     if len(value) <= limit:
         return value
@@ -363,6 +412,7 @@ def build_summary_prompt(
         this schema:
         {{
           "teaser": string,  # ≤{TEASER_MAX} characters, one sentence: the sharpest claim, tension, or number in the piece
+          "teaser_alternates": [string, ...],  # up to {TEASER_ALTERNATES_MAX} different angles (a number, a name, the sharpest sub-claim); same voice and length rules as the teaser
           "points": [string, ...]  # up to {max_points} {style} ideas, each ≤{max_chars} characters and each standalone
         }}
 
@@ -377,6 +427,7 @@ def build_summary_prompt(
         - Avoid academic-summary language, marketing language, clickbait, fake enthusiasm, and generic filler; do not ask rhetorical questions or issue calls to action.
         - Plain text only. Prohibit markdown, URLs, emojis, hashtags, and bullet characters.
         - Never repeat the teaser verbatim in the points, and do not open with the article title.
+        - Each alternate must take a genuinely different angle from the teaser and from each other, not a rephrasing of the same sentence.
         - Respond with JSON only; do not wrap inside code fences.
 
         Publication-date awareness:
@@ -447,6 +498,7 @@ def summarize_post(
                 "Mock summary point 3",
                 "Mock summary point 4",
             ][:max_points],
+            "teaser_candidates": ["Mock teaser for testing"],
         }
 
     content = (post.get("content") or "")[:MAX_ARTICLE_CHARS]
@@ -491,6 +543,19 @@ def summarize_post(
         )
 
     teaser = _truncate(_sanitize_text(str(data.get("teaser", ""))), TEASER_MAX)
+    raw_alternates = data.get("teaser_alternates")
+    alternates: list[str] = []
+    if isinstance(raw_alternates, list):
+        for alternate in raw_alternates:
+            clean_alternate = _truncate(_sanitize_text(str(alternate)), TEASER_MAX)
+            if (
+                clean_alternate
+                and clean_alternate != teaser
+                and clean_alternate not in alternates
+            ):
+                alternates.append(clean_alternate)
+    alternates = alternates[:TEASER_ALTERNATES_MAX]
+    selected = select_teaser(teaser, alternates)
     points: list[str] = []
     for point in raw_points:
         clean_point = _truncate(_sanitize_text(str(point)), max_chars)
@@ -498,8 +563,12 @@ def summarize_post(
             points.append(clean_point)
     points = points[:max_points]
 
-    validate_social_copy(teaser, points, max_chars=max_chars)
-    return {"teaser": teaser, "points": points}
+    validate_social_copy(selected, points, max_chars=max_chars)
+    return {
+        "teaser": selected,
+        "points": points,
+        "teaser_candidates": [teaser] + alternates,
+    }
 
 
 def localize_zh_cn(title: str, teaser: str, point: str, url: str, max_chars: int = 1800,

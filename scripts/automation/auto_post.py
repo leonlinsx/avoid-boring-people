@@ -5,6 +5,7 @@ import re
 from hashlib import sha256
 from dotenv import load_dotenv
 from scripts.automation import fetch_posts, mark_posted, select_next_post
+from scripts.automation.engagement import engagement_totals, load_engagement
 from scripts.automation.content import ArticleSyndication, CommunityPost, PublishResult, SocialPost
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.formatters.instagram_storyboard import InstagramStoryboard, build_storyboard
@@ -65,8 +66,8 @@ def _remote_url(response) -> str | None:
     if isinstance(response, dict): return response.get("url")
     return getattr(response, "uri", None)
 
-def _record_success(post: dict, platform: str, response) -> None:
-    mark_posted(post["id"], platform, DISTRIBUTION_MODE, _remote_id(response), _remote_url(response))
+def _record_success(post: dict, platform: str, response, model: str | None = None) -> None:
+    mark_posted(post["id"], platform, DISTRIBUTION_MODE, _remote_id(response), _remote_url(response), model=model)
 
 def _summarize(post: dict) -> dict:
     if USE_LLM:
@@ -86,8 +87,9 @@ def _summary_for(post: dict) -> dict:
 def _build_content(post: dict, summary: dict | None = None) -> tuple[SocialPost, ArticleSyndication, CommunityPost]:
     if POST_MODE not in {"single", "thread"}: raise ValueError(f"Unknown POST_MODE: {POST_MODE}")
     summary = _summary_for(post) if summary is None else summary
-    thread = tuple(format_as_thread(post, summary, mode=THREAD_MODE, max_tweets=5)) if POST_MODE == "thread" else ()
-    social = SocialPost(summary.get("teaser") or post["title"], "\n\n".join(summary.get("points", [])) or post["title"], post["url"], thread)
+    tags = tuple(sanitize_tags(post.get("tags", [])))
+    thread = tuple(format_as_thread(post, summary, mode=THREAD_MODE, max_tweets=5, tags=tags)) if POST_MODE == "thread" else ()
+    social = SocialPost(summary.get("teaser") or post["title"], "\n\n".join(summary.get("points", [])) or post["title"], post["url"], thread, tags)
     article = ArticleSyndication(post["title"], post.get("content", ""), tuple(sanitize_tags(post.get("tags", []))), post["url"])
     return social, article, CommunityPost(post["title"], post["url"])
 
@@ -189,8 +191,14 @@ def _print_instagram_dry_run(storyboard: InstagramStoryboard | None) -> None:
         print(f"  would publish: nothing until a media host is configured ({error})")
 
 
-def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article: ArticleSyndication, storyboard: InstagramStoryboard | None = None) -> None:
+def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article: ArticleSyndication, storyboard: InstagramStoryboard | None = None, summary: dict | None = None) -> None:
     print(f"\nArticle: {post['title']}\nCategory: {post.get('category') or 'Uncategorized'}\nMode: {DISTRIBUTION_MODE}")
+    candidates = (summary or {}).get("teaser_candidates") or []
+    if len(candidates) > 1:
+        print(f"Teaser: {social.hook}")
+        for candidate in candidates:
+            marker = "selected" if candidate == social.hook else "considered"
+            print(f"  [{marker}] {candidate}")
     for platform in PLATFORM:
         print(f"\n{platform}\n  eligible: {'yes' if platform in eligible else 'no'}")
         if platform not in eligible: continue
@@ -221,7 +229,7 @@ def main() -> None:
     if not posts:
         if TARGET_POST_ID: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
         print("No posts found."); return
-    ranked = score_posts(filter_posts(posts))
+    ranked = score_posts(filter_posts(posts), engagement=engagement_totals(load_engagement()))
     if TARGET_POST_ID:
         selected = next((p for p in ranked if p.get("id") == TARGET_POST_ID), None)
         if selected is None: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
@@ -240,7 +248,12 @@ def main() -> None:
         raise
     social, article, community = _build_content(selected, summary)
     storyboard = _build_storyboard(selected, summary)
-    if DRY_RUN: _print_dry_run(selected, selected["eligible_platforms"], social, article, storyboard); return
+    if DRY_RUN: _print_dry_run(selected, selected["eligible_platforms"], social, article, storyboard, summary); return
+    if USE_LLM:
+        from scripts.automation.summarizers.llm_summarizer import llm_identity
+        model_label: str | None = llm_identity()
+    else:
+        model_label = "textrank-stub"
     failures = []
     for platform in selected["eligible_platforms"]:
         try:
@@ -248,7 +261,7 @@ def main() -> None:
             # backoff, state is written only after confirmed API success, and a
             # failed platform never stops the remaining platforms from running.
             response = run_with_retries(lambda p=platform: _publish(p, social, article, community, selected["id"], storyboard))
-            _record_success(selected, platform, response)
+            _record_success(selected, platform, response, model_label)
             log_summary(f"✅ {platform} posting completed")
         except Exception as error:
             failures.append(platform)

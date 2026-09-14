@@ -249,6 +249,9 @@ def test_clean_generated_copy_still_passes(monkeypatch):
             "A positive expected return can still ruin you if the path holds a loss you can't survive.",
             "Survivability, not expected value, decides which strategies compound.",
         ],
+        "teaser_candidates": [
+            "Average outcomes mislead when you only live one path."
+        ],
     }
 
 

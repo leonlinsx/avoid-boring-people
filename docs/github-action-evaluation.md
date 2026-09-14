@@ -20,6 +20,7 @@ after confirmed success, a bounded deploy wait before the first publish).
 | `medium-prep.yml` | Push touching `src/content/blog/**`; manual dispatch (`post_id`) | Renders one Medium-ready HTML draft per newly added or modified article and uploads it as an artifact | Upload fails the job when no file is produced (`if-no-files-found: error`); the job summary lists the drafts |
 | `indexnow.yml` | Push to `main` touching `src/content/blog/**`; manual dispatch (`post_id`) | Submits changed article URLs to IndexNow after verifying the deployed key file | A rejected submission or a missing key file fails the run; Google has no replacement endpoint and relies on the sitemap plus Search Console |
 | `token-health.yml` | Daily 08:00 UTC; manual dispatch | Probes the Threads and Instagram long-lived tokens with a read-only request | Fails with rotation instructions when a stored token is rejected; a platform whose secrets are unset is reported as skipped |
+| `engagement.yml` | Schedule Mon 09:00 UTC; manual dispatch | Re-reads recorded remote posts (Bluesky keyless; Mastodon, Farcaster, DEV via existing read credentials) and commits public counts to `engagement.json` | Fails only when eligible targets existed but nothing was observed; per-post outages skip with a warning |
 
 ## Gaps worth knowing
 
