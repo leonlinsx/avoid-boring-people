@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
-import {
-  getCategoryPostsPaginated,
-} from '../../../../utils/text';
+import { getCategoryPostsPaginated } from '../../../../utils/text';
 import { categoryLabel } from '../../../../utils/taxonomy';
 import { SITE_TITLE } from '../../../../consts';
 import type { GetStaticPaths } from 'astro';
@@ -25,7 +23,9 @@ const totalPages = page.lastPage;
 const canonical =
   currentPage === 1 ? buildPaginationHref(1, activeCategory) : undefined;
 const relPrev =
-  currentPage > 1 ? buildPaginationHref(currentPage - 1, activeCategory) : undefined;
+  currentPage > 1
+    ? buildPaginationHref(currentPage - 1, activeCategory)
+    : undefined;
 const relNext =
   currentPage < totalPages
     ? buildPaginationHref(currentPage + 1, activeCategory)

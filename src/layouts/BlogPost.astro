@@ -53,7 +53,9 @@ const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
-  { label: 'Writing', href: '/writing/' },
+  // Link the canonical destination directly: the trailing-slash form 404s
+  // even in production, and the bare form costs a redirect hop.
+  { label: 'Writing', href: '/writing/1' },
 ];
 
 if (categoryNormalized) {

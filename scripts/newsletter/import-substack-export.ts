@@ -1,7 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { newsletterDb } from '../../src/lib/newsletter/db.ts';
-import { importTimestamp, planSubstackImport } from '../../src/lib/newsletter/importer.ts';
+import {
+  importTimestamp,
+  planSubstackImport,
+} from '../../src/lib/newsletter/importer.ts';
 import { subscriberUnsubscribeToken } from '../../src/lib/newsletter/production-send.ts';
 import { hashToken } from '../../src/lib/newsletter/tokens.ts';
 
@@ -12,36 +15,55 @@ function option(name: string): string | undefined {
 
 function expectedCount(name: string): number {
   const value = Number(option(name));
-  if (!Number.isSafeInteger(value) || value < 0) throw new Error(`${name} must be a non-negative integer. No subscribers were imported.`);
+  if (!Number.isSafeInteger(value) || value < 0)
+    throw new Error(
+      `${name} must be a non-negative integer. No subscribers were imported.`,
+    );
   return value;
 }
 
 const inputPath = process.argv[2];
 if (!inputPath || !process.argv.includes('--confirm-import')) {
-  throw new Error('Usage: npm run newsletter:import -- <substack-export.csv> --expect-active <count> --expect-suppressed <count> --confirm-import');
+  throw new Error(
+    'Usage: npm run newsletter:import -- <substack-export.csv> --expect-active <count> --expect-suppressed <count> --confirm-import',
+  );
 }
 if (process.env.NEWSLETTER_ENVIRONMENT !== 'production') {
-  throw new Error('NEWSLETTER_ENVIRONMENT must be exactly "production". No subscribers were imported.');
+  throw new Error(
+    'NEWSLETTER_ENVIRONMENT must be exactly "production". No subscribers were imported.',
+  );
 }
 const secret = process.env.NEWSLETTER_UNSUBSCRIBE_SECRET;
 if (!secret || Buffer.byteLength(secret) < 32) {
-  throw new Error('NEWSLETTER_UNSUBSCRIBE_SECRET must contain at least 32 bytes. No subscribers were imported.');
+  throw new Error(
+    'NEWSLETTER_UNSUBSCRIBE_SECRET must contain at least 32 bytes. No subscribers were imported.',
+  );
 }
 
 const plan = planSubstackImport(await readFile(inputPath, 'utf8'));
 const expectedActive = expectedCount('--expect-active');
 const expectedSuppressed = expectedCount('--expect-suppressed');
-if (plan.summary.active !== expectedActive || plan.summary.suppressed !== expectedSuppressed) {
-  throw new Error(`Import counts changed: expected ${expectedActive} active/${expectedSuppressed} suppressed, found ${plan.summary.active} active/${plan.summary.suppressed} suppressed. No subscribers were imported.`);
+if (
+  plan.summary.active !== expectedActive ||
+  plan.summary.suppressed !== expectedSuppressed
+) {
+  throw new Error(
+    `Import counts changed: expected ${expectedActive} active/${expectedSuppressed} suppressed, found ${plan.summary.active} active/${plan.summary.suppressed} suppressed. No subscribers were imported.`,
+  );
 }
 
 const db = newsletterDb();
-const batches = Array.from({ length: Math.ceil(plan.subscribers.length / 100) }, (_, index) => plan.subscribers.slice(index * 100, (index + 1) * 100));
+const batches = Array.from(
+  { length: Math.ceil(plan.subscribers.length / 100) },
+  (_, index) => plan.subscribers.slice(index * 100, (index + 1) * 100),
+);
 let processed = 0;
 for (const batch of batches) {
   const queries = batch.map((subscriber) => {
     const id = randomUUID();
-    const originalSubscribedAt = importTimestamp(subscriber.originalSubscribedAt);
+    const originalSubscribedAt = importTimestamp(
+      subscriber.originalSubscribedAt,
+    );
     const cancelDate = importTimestamp(subscriber.legacySubstackCancelDate);
     const sourceDetail = JSON.stringify({
       import: 'substack',
@@ -57,7 +79,7 @@ for (const batch of batches) {
         ${id}, ${subscriber.email}, ${subscriber.email}, ${subscriber.name},
         ${subscriber.status}::newsletter_subscriber_status, 'substack_import', ${sourceDetail},
         ${originalSubscribedAt}::timestamptz,
-        ${subscriber.status === 'unsubscribed' ? cancelDate ?? new Date().toISOString() : null}::timestamptz,
+        ${subscriber.status === 'unsubscribed' ? (cancelDate ?? new Date().toISOString()) : null}::timestamptz,
         NULL, ${unsubscribeHash}, ${subscriber.legacySubstackType}, ${cancelDate}::timestamptz,
         'substack_export', now()
       )
@@ -97,9 +119,15 @@ for (const batch of batches) {
   processed += batch.length;
 }
 
-console.log(JSON.stringify({
-  mode: 'applied',
-  processed,
-  ...plan.summary,
-  emailSent: false,
-}, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      mode: 'applied',
+      processed,
+      ...plan.summary,
+      emailSent: false,
+    },
+    null,
+    2,
+  ),
+);

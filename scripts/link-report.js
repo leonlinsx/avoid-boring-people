@@ -1,5 +1,11 @@
 // scripts/link-report.js
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import {
+  existsSync,
+  globSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'fs';
 import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
@@ -30,8 +36,12 @@ const processTimer = setTimeout(() => {
 
 let results;
 try {
+  // Linkinator only recurses into links nested under each seed path, so a
+  // single `index.html` seed never reaches article pages: seed every built
+  // page instead, so each page's outgoing links are status-checked.
+  const seedPaths = globSync('**/*.html', { cwd: siteDir });
   results = await checker.check({
-    path: 'index.html',
+    path: seedPaths,
     serverRoot: siteDir,
     port: linkcheckPort,
     recurse: config.recurse,

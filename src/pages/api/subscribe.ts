@@ -1,5 +1,9 @@
 import type { APIRoute } from 'astro';
-import { EMAIL_ATTEMPTS_PER_HOUR, IP_ATTEMPTS_PER_HOUR, takeRateLimit } from '../../lib/newsletter/rate-limit.ts';
+import {
+  EMAIL_ATTEMPTS_PER_HOUR,
+  IP_ATTEMPTS_PER_HOUR,
+  takeRateLimit,
+} from '../../lib/newsletter/rate-limit.ts';
 
 export const prerender = false;
 
@@ -19,14 +23,24 @@ export const POST: APIRoute = async ({ request }) => {
     // this endpoint cannot be used for subscription bombing. A rate-store
     // outage fails open (logged) so legitimate signups keep working.
     try {
-      const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+      const forwarded = request.headers
+        .get('x-forwarded-for')
+        ?.split(',')[0]
+        ?.trim();
       const [emailAllowed, ipAllowed] = await Promise.all([
-        takeRateLimit('email', String(email).toLowerCase(), EMAIL_ATTEMPTS_PER_HOUR),
+        takeRateLimit(
+          'email',
+          String(email).toLowerCase(),
+          EMAIL_ATTEMPTS_PER_HOUR,
+        ),
         takeRateLimit('ip', forwarded ?? 'unknown', IP_ATTEMPTS_PER_HOUR),
       ]);
       if (!emailAllowed || !ipAllowed) {
         return new Response(
-          JSON.stringify({ ok: false, message: 'Too many attempts. Please try again later.' }),
+          JSON.stringify({
+            ok: false,
+            message: 'Too many attempts. Please try again later.',
+          }),
           { status: 429 },
         );
       }
@@ -62,17 +76,22 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Do not reflect the upstream body: log the status server-side and
     // return a generic failure instead.
-    console.error('newsletter_subscribe_upstream_failure', { status: res.status });
+    console.error('newsletter_subscribe_upstream_failure', {
+      status: res.status,
+    });
     await res.text().catch(() => null);
     return new Response(
-      JSON.stringify({ ok: false, message: 'Subscription failed. Please try again later.' }),
+      JSON.stringify({
+        ok: false,
+        message: 'Subscription failed. Please try again later.',
+      }),
       { status: 502 },
     );
-  } catch (err: any) {
-    return new Response(
-      JSON.stringify({ ok: false, message: err?.message || 'Request failed' }),
-      { status: 500 },
-    );
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Request failed';
+    return new Response(JSON.stringify({ ok: false, message }), {
+      status: 500,
+    });
   }
 };
 

@@ -1,10 +1,17 @@
-import { readNewsletterArticle, renderNewsletterEmail } from '../../src/lib/newsletter/render.ts';
+import {
+  readNewsletterArticle,
+  renderNewsletterEmail,
+} from '../../src/lib/newsletter/render.ts';
 import { NEWSLETTER_PRIVACY_URL } from '../../src/lib/newsletter/email.ts';
 import { newsletterDb } from '../../src/lib/newsletter/db.ts';
-import { assertRecipientScope, parseExpectedRecipients, productionSendConfig } from '../../src/lib/newsletter/production-send.ts';
+import {
+  assertRecipientScope,
+  parseExpectedRecipients,
+  productionSendConfig,
+} from '../../src/lib/newsletter/production-send.ts';
 
 function frontmatterTitle(markdown: string): string | null {
-  return markdown.match(/^title:\s*['\"]?(.+?)['\"]?\s*$/m)?.[1]?.trim() ?? null;
+  return markdown.match(/^title:\s*['"]?(.+?)['"]?\s*$/m)?.[1]?.trim() ?? null;
 }
 
 function option(name: string): string | undefined {
@@ -14,7 +21,9 @@ function option(name: string): string | undefined {
 
 const articleId = process.argv[2];
 if (!articleId || !process.argv.includes('--confirm-snapshot')) {
-  throw new Error('Usage: npm run newsletter:campaign -- <article-id> --expect-recipients <count> --confirm-snapshot');
+  throw new Error(
+    'Usage: npm run newsletter:campaign -- <article-id> --expect-recipients <count> --confirm-snapshot',
+  );
 }
 const expected = parseExpectedRecipients(option('--expect-recipients'));
 const config = productionSendConfig(process.env);
@@ -22,13 +31,17 @@ assertRecipientScope(expected, expected, config.maxRecipients);
 
 const markdown = readNewsletterArticle(articleId);
 const subject = frontmatterTitle(markdown);
-if (!subject) throw new Error('The selected article has no title. No campaign was created.');
+if (!subject)
+  throw new Error(
+    'The selected article has no title. No campaign was created.',
+  );
 renderNewsletterEmail({
   articleId,
   title: subject,
   markdown,
   privacyUrl: NEWSLETTER_PRIVACY_URL,
-  unsubscribeUrl: 'https://leonlins.com/api/newsletter/unsubscribe?token=preflight-placeholder',
+  unsubscribeUrl:
+    'https://leonlins.com/api/newsletter/unsubscribe?token=preflight-placeholder',
 });
 
 const db = newsletterDb();
@@ -58,13 +71,27 @@ const rows = await db`
   FROM campaigns
   WHERE article_slug = ${articleId} AND NOT EXISTS (SELECT 1 FROM new_campaign)`;
 
-if (rows.length !== 1) throw new Error(`Active recipient count did not equal ${expected}; no campaign was created.`);
-const campaign = rows[0] as { id: string; status: string; recipient_count: number; created: boolean };
+if (rows.length !== 1)
+  throw new Error(
+    `Active recipient count did not equal ${expected}; no campaign was created.`,
+  );
+const campaign = rows[0] as {
+  id: string;
+  status: string;
+  recipient_count: number;
+  created: boolean;
+};
 assertRecipientScope(expected, campaign.recipient_count, config.maxRecipients);
-console.log(JSON.stringify({
-  campaignId: campaign.id,
-  status: campaign.status,
-  recipients: campaign.recipient_count,
-  created: campaign.created,
-  emailSent: false,
-}, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      campaignId: campaign.id,
+      status: campaign.status,
+      recipients: campaign.recipient_count,
+      created: campaign.created,
+      emailSent: false,
+    },
+    null,
+    2,
+  ),
+);

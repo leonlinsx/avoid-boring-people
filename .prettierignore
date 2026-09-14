@@ -46,3 +46,8 @@ CHANGELOG.md  # optional, if you don’t want Prettier formatting changelogs
 # Misc
 coverage
 *.svg   # optional, if you don’t want Prettier touching inline SVGs
+
+# BaseHead.astro embeds the vendor-minified Microsoft Clarity snippet, which
+# Prettier's parser cannot parse; excluding the file keeps `npm run lint`
+# green without hand-editing third-party code.
+src/components/BaseHead.astro

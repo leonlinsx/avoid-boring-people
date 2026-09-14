@@ -19,16 +19,15 @@ export const sanitizeJsonLd = (value: unknown): unknown => {
   }
 
   if (isPlainObject(value)) {
-    const sanitizedObject = Object.entries(value).reduce<Record<string, unknown>>(
-      (acc, [key, nestedValue]) => {
-        const sanitizedValue = sanitizeJsonLd(nestedValue);
-        if (sanitizedValue !== undefined) {
-          acc[key] = sanitizedValue;
-        }
-        return acc;
-      },
-      {},
-    );
+    const sanitizedObject = Object.entries(value).reduce<
+      Record<string, unknown>
+    >((acc, [key, nestedValue]) => {
+      const sanitizedValue = sanitizeJsonLd(nestedValue);
+      if (sanitizedValue !== undefined) {
+        acc[key] = sanitizedValue;
+      }
+      return acc;
+    }, {});
 
     return sanitizedObject;
   }
@@ -37,10 +36,7 @@ export const sanitizeJsonLd = (value: unknown): unknown => {
     return Number.isFinite(value) ? value : undefined;
   }
 
-  if (
-    typeof value === 'string' ||
-    typeof value === 'boolean'
-  ) {
+  if (typeof value === 'string' || typeof value === 'boolean') {
     return value;
   }
 

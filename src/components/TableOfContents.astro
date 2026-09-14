@@ -12,9 +12,11 @@ const { headings = [] } = Astro.props as Props;
 <aside class="toc-desktop">
   <!-- collapsed: mini segments -->
   <div class="toc-mini">
-    {headings.map((h) => (
-      <div class="toc-bar-segment" data-id={h.slug} aria-hidden="true" />
-    ))}
+    {
+      headings.map((h) => (
+        <div class="toc-bar-segment" data-id={h.slug} aria-hidden="true" />
+      ))
+    }
   </div>
 
   <!-- expanded: flyout -->
@@ -283,7 +285,9 @@ const { headings = [] } = Astro.props as Props;
         const prefersReducedMotion = window.matchMedia
           ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
           : false;
-        target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+        target.scrollIntoView({
+          behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        });
       }
 
       // Close mobile drawer/backdrop if open

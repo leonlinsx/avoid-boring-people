@@ -41,6 +41,15 @@ Threads and Instagram are the only destinations whose credentials expire on a ca
 
 The probe never refreshes or rotates anything: a refresh returns a new token that would have to be written back into repository secrets, so rotation remains a deliberate human step. The same check runs locally with `python -m scripts.automation.check_tokens`.
 
+## Token rotation
+
+Both Meta tokens live about 60 days, and their remaining lifetime cannot be read back (that needs an app access token the repository deliberately does not store), so rotation is calendar-driven with the daily probe as backstop:
+
+1. Refresh out of band: Threads via `GET /refresh_access_token?grant_type=th_refresh_token`; Instagram by refreshing the professional account's long-lived token.
+2. Replace the corresponding repository secret (`THREADS_ACCESS_TOKEN`, `INSTAGRAM_ACCESS_TOKEN`) — never commit a token, approval URL, or API key.
+3. Verify with a manual `token-health.yml` dispatch (`workflow_dispatch`); both platforms should report `ok`, not `skipped`.
+4. Note the new token's mint date where you track secrets and refresh again before day 60. A lapse otherwise surfaces as the probe's `::error::` failure at 08:00 UTC, ahead of the Tuesday/Friday evergreen cycle — rotate immediately, since an expired token fails the publish run as a permanent `401`, not a retry.
+
 ## Local review
 
 Run a no-side-effect inspection with:

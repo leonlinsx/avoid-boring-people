@@ -8,12 +8,21 @@ export function hashRateLimitSubject(value: string): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
-export function isRateLimitAllowed(attemptCount: number, limit: number): boolean {
+export function isRateLimitAllowed(
+  attemptCount: number,
+  limit: number,
+): boolean {
   return attemptCount <= limit;
 }
 
-export async function takeRateLimit(scope: 'ip' | 'email', subject: string, limit: number, db = newsletterDb()): Promise<boolean> {
-  const rows = await db`INSERT INTO newsletter_rate_limits (scope, subject, window_started_at, attempt_count)
+export async function takeRateLimit(
+  scope: 'ip' | 'email',
+  subject: string,
+  limit: number,
+  db = newsletterDb(),
+): Promise<boolean> {
+  const rows =
+    await db`INSERT INTO newsletter_rate_limits (scope, subject, window_started_at, attempt_count)
     VALUES (${scope}, ${hashRateLimitSubject(subject)}, now(), 1)
     ON CONFLICT (scope, subject) DO UPDATE SET
       window_started_at = CASE WHEN newsletter_rate_limits.window_started_at < now() - interval '1 hour' THEN now() ELSE newsletter_rate_limits.window_started_at END,

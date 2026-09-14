@@ -19,7 +19,8 @@ export type BlogPost = CollectionEntry<'blog'> & {
 
 export type PaginateFn = <T>(
   items: T[],
-  options: { pageSize: number; params?: Record<string, any> },
+  options: { pageSize: number; params?: Record<string, string> },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro's paginate page shape is untyped; callers only spread pages through.
 ) => Array<any>;
 
 type GetCollectionFn = <CollectionName extends string = string>(
@@ -80,7 +81,7 @@ async function resolveGetCollection(): Promise<GetCollectionFn> {
       getCollectionImpl = actual;
       return actual;
     }
-  } catch (error) {
+  } catch {
     // Ignore, we'll throw a more helpful message below.
   }
 
@@ -93,7 +94,9 @@ async function resolveGetCollection(): Promise<GetCollectionFn> {
  * Allow tests to swap out the getCollection implementation.
  * In production this stays pointed at Astro's runtime implementation.
  */
-export function setGetCollectionImplementation(replacement: GetCollectionFn | null) {
+export function setGetCollectionImplementation(
+  replacement: GetCollectionFn | null,
+) {
   getCollectionImpl = replacement;
 }
 
@@ -124,8 +127,11 @@ export async function getCategoryPostsPaginated(
   const getter = await resolveGetCollection();
   const all = await getter('blog');
 
-  const categories = orderedCategorySlugs(all.map((p) => p.data.category ?? ''));
+  const categories = orderedCategorySlugs(
+    all.map((p) => p.data.category ?? ''),
+  );
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro's paginate page shape is untyped; routes pass straight to getStaticPaths.
   const routes: any[] = [];
 
   for (const category of categories) {
@@ -140,6 +146,7 @@ export async function getCategoryPostsPaginated(
     });
 
     routes.push(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Astro's paginate page shape is untyped; pages are only spread through.
       ...pages.map((pg: any) => ({
         ...pg,
         props: {

@@ -21,6 +21,8 @@ export default [
       '.vercel',
       '.netlify',
       'coverage',
+      '.venv',
+      '.tmp',
       'VERSION.md',
       'CHANGELOG.md',
       'package-lock.json',
@@ -39,6 +41,7 @@ export default [
       globals: {
         ...globals.browser, // ✅ DOM types (document, fetch, etc.)
         ...globals.node, // ✅ Node.js types (process, Buffer, etc.)
+        NodeJS: 'readonly', // ✅ @types/node namespace used in signatures
       },
     },
     plugins: {
@@ -70,6 +73,39 @@ export default [
     },
     rules: {
       'prettier/prettier': 'error',
+      // Omit-pattern via rest siblings (`const { x: _x, ...rest }`) is idiomatic.
+      'no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    },
+  },
+
+  // Local scripts, test harnesses, and root configs run under Node, not the
+  // browser: without this block, `process`/`console`/`fetch` report as
+  // undefined in every newsletter CLI and automation helper.
+  {
+    files: [
+      'scripts/**/*.{js,mjs,cjs,ts}',
+      'tests/**/*.{js,mjs,cjs}',
+      '*.{js,mjs,cjs}',
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
+  // Test helpers deliberately use `any` for mock posts and payloads; keep the
+  // rule on for production code, where an explicit type is cheap.
+  {
+    files: ['tests/**/*.ts'],
+    languageOptions: {
+      globals: {
+        RequestInit: 'readonly', // ✅ DOM lib types used in fetch mocks
+        BodyInit: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 

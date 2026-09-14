@@ -22,20 +22,48 @@ import {
   normalizeEmail,
 } from '../src/lib/newsletter/domain.ts';
 import { hashToken } from '../src/lib/newsletter/tokens.ts';
-import { hashRateLimitSubject, isRateLimitAllowed } from '../src/lib/newsletter/rate-limit.ts';
-import { GMAIL_CLIP_LIMIT_BYTES, NewsletterRenderError, renderNewsletterEmail } from '../src/lib/newsletter/render.ts';
+import {
+  hashRateLimitSubject,
+  isRateLimitAllowed,
+} from '../src/lib/newsletter/rate-limit.ts';
+import {
+  GMAIL_CLIP_LIMIT_BYTES,
+  NewsletterRenderError,
+  renderNewsletterEmail,
+} from '../src/lib/newsletter/render.ts';
 import { assertAllowedTestRecipient } from '../src/lib/newsletter/test-send.ts';
-import { importTimestamp, planSubstackImport } from '../src/lib/newsletter/importer.ts';
+import {
+  importTimestamp,
+  planSubstackImport,
+} from '../src/lib/newsletter/importer.ts';
 import {
   assertRecipientScope,
   assertSesAccountReady,
   productionSendConfig,
   subscriberUnsubscribeToken,
 } from '../src/lib/newsletter/production-send.ts';
-import { buildConfirmInvalidPage, buildConfirmSuccessPage } from '../src/lib/newsletter/confirm-pages.ts';
-import { buildConfirmationEmail, canDeliverConfirmation, CONFIRMATION_SUBJECT, confirmSubscription, requestSubscription } from '../src/lib/newsletter/subscriptions.ts';
-import { confirmSnsSubscription, parseSnsEnvelope, signingString, verifySnsEnvelope } from '../src/lib/newsletter/sns.ts';
-import { canonicalSiteOrigin, hasUntrustedPathOverride, requiresOriginRejection } from '../src/lib/newsletter/request-origin.ts';
+import {
+  buildConfirmInvalidPage,
+  buildConfirmSuccessPage,
+} from '../src/lib/newsletter/confirm-pages.ts';
+import {
+  buildConfirmationEmail,
+  canDeliverConfirmation,
+  CONFIRMATION_SUBJECT,
+  confirmSubscription,
+  requestSubscription,
+} from '../src/lib/newsletter/subscriptions.ts';
+import {
+  confirmSnsSubscription,
+  parseSnsEnvelope,
+  signingString,
+  verifySnsEnvelope,
+} from '../src/lib/newsletter/sns.ts';
+import {
+  canonicalSiteOrigin,
+  hasUntrustedPathOverride,
+  requiresOriginRejection,
+} from '../src/lib/newsletter/request-origin.ts';
 import { serializeJsonLd } from '../src/utils/jsonld.ts';
 import { createSign, generateKeyPairSync } from 'node:crypto';
 
@@ -159,14 +187,21 @@ function testSearchPosts() {
     }),
   ];
 
-  assert.deepEqual(searchPosts(detailedPosts as any, 'venture'), [detailedPosts[0]]);
-  assert.deepEqual(searchPosts(detailedPosts as any, 'markets'), [detailedPosts[0]]);
-  assert.deepEqual(searchPosts(detailedPosts as any, 'equities'), [detailedPosts[0]]);
-  assert.deepEqual(searchPosts(detailedPosts as any, 'digest'), [detailedPosts[1]]);
-  assert.deepEqual(
-    searchPosts(detailedPosts as any, 'venture capital'),
-    [detailedPosts[0]],
-  );
+  assert.deepEqual(searchPosts(detailedPosts as any, 'venture'), [
+    detailedPosts[0],
+  ]);
+  assert.deepEqual(searchPosts(detailedPosts as any, 'markets'), [
+    detailedPosts[0],
+  ]);
+  assert.deepEqual(searchPosts(detailedPosts as any, 'equities'), [
+    detailedPosts[0],
+  ]);
+  assert.deepEqual(searchPosts(detailedPosts as any, 'digest'), [
+    detailedPosts[1],
+  ]);
+  assert.deepEqual(searchPosts(detailedPosts as any, 'venture capital'), [
+    detailedPosts[0],
+  ]);
   assert.equal(searchPosts(detailedPosts as any, 'nonexistent').length, 0);
 }
 
@@ -184,15 +219,11 @@ function testComputeCleanSlug() {
     'new-idea',
   );
   assert.equal(
-    computeCleanSlug(
-      makeEntry({ id: '2024_02_03_new-idea/index.mdx' }),
-    ),
+    computeCleanSlug(makeEntry({ id: '2024_02_03_new-idea/index.mdx' })),
     'new-idea',
   );
   assert.equal(
-    computeCleanSlug(
-      makeEntry({ data: { slug: '  /custom-slug/ ' } }),
-    ),
+    computeCleanSlug(makeEntry({ data: { slug: '  /custom-slug/ ' } })),
     'custom-slug',
   );
 }
@@ -205,12 +236,18 @@ function testNormalizeQuery() {
 function testBuildPaginationHref() {
   assert.equal(buildPaginationHref(1), '/writing/1');
   assert.equal(buildPaginationHref(2), '/writing/2');
-  assert.equal(buildPaginationHref(1, 'finance'), '/writing/category/finance/1');
+  assert.equal(
+    buildPaginationHref(1, 'finance'),
+    '/writing/category/finance/1',
+  );
   assert.equal(
     buildPaginationHref(5, 'markets & money'),
     '/writing/category/markets%20%26%20money/5',
   );
-  assert.equal(buildPaginationHref(0, 'finance'), '/writing/category/finance/1');
+  assert.equal(
+    buildPaginationHref(0, 'finance'),
+    '/writing/category/finance/1',
+  );
   assert.equal(buildPaginationHref(3.7), '/writing/3');
 }
 
@@ -223,7 +260,10 @@ function testTitleCase() {
 
 function testNormalizeCategory() {
   assert.equal(normalizeCategory('Investing'), 'investing');
-  assert.equal(normalizeCategory('Risk & Decision Making'), 'risk-decision-making');
+  assert.equal(
+    normalizeCategory('Risk & Decision Making'),
+    'risk-decision-making',
+  );
   assert.equal(normalizeCategory(undefined as any), '');
   assert.equal(categoryLabel('system-design'), 'System Design');
 }
@@ -235,7 +275,10 @@ function testNewsletterDomain() {
   assert.equal(canAutomaticallyTransition('unsubscribed', 'active'), false);
   assert.equal(canAutomaticallyTransition('bounced', 'active'), false);
 
-  assert.equal(mapSubstackRow({ Email: 'author@example.com', Type: 'Author' }), null);
+  assert.equal(
+    mapSubstackRow({ Email: 'author@example.com', Type: 'Author' }),
+    null,
+  );
   assert.deepEqual(
     mapSubstackRow({
       Email: ' Reader@Example.com ',
@@ -254,7 +297,10 @@ function testNewsletterDomain() {
     },
   );
   assert.equal(
-    mapSubstackRow({ Email: 'cancelled@example.com', 'Cancel date': '2024-01-01' })?.status,
+    mapSubstackRow({
+      Email: 'cancelled@example.com',
+      'Cancel date': '2024-01-01',
+    })?.status,
     'unsubscribed',
   );
 }
@@ -276,8 +322,18 @@ paused@example.test,Paused,Free,2021-04-01,,Paused`;
     active: 2,
     suppressed: 1,
   });
-  assert.equal(plan.subscribers.find((subscriber) => subscriber.email === 'duplicate@example.test')?.status, 'unsubscribed');
-  assert.equal(plan.subscribers.find((subscriber) => subscriber.email === 'paused@example.test')?.status, 'active');
+  assert.equal(
+    plan.subscribers.find(
+      (subscriber) => subscriber.email === 'duplicate@example.test',
+    )?.status,
+    'unsubscribed',
+  );
+  assert.equal(
+    plan.subscribers.find(
+      (subscriber) => subscriber.email === 'paused@example.test',
+    )?.status,
+    'active',
+  );
   assert.equal(importTimestamp('2021-01-01'), '2021-01-01T00:00:00.000Z');
   assert.equal(importTimestamp('not-a-date'), null);
 }
@@ -286,35 +342,88 @@ function testNewsletterRenderer() {
   const input = {
     articleId: '2021_01_06_nonviolent/index.md',
     title: 'Newsletter test',
-    markdown: '---\ntitle: Newsletter test\n---\n\n[Site](/writing/test/)\n\n![Post](./n_1.webp)',
-    unsubscribeUrl: 'https://leonlins.com/api/newsletter/unsubscribe?token=preview',
+    markdown:
+      '---\ntitle: Newsletter test\n---\n\n[Site](/writing/test/)\n\n![Post](./n_1.webp)',
+    unsubscribeUrl:
+      'https://leonlins.com/api/newsletter/unsubscribe?token=preview',
     privacyUrl: 'https://leonlins.com/privacy/',
   };
   const rendered = renderNewsletterEmail(input);
   assert.match(rendered.html, /https:\/\/leonlins\.com\/writing\/test\//);
-  assert.match(rendered.html, /https:\/\/leonlins\.com\/newsletter-assets\/2021_01_06_nonviolent\/n_1\.webp/);
+  assert.match(
+    rendered.html,
+    /https:\/\/leonlins\.com\/newsletter-assets\/2021_01_06_nonviolent\/n_1\.webp/,
+  );
   assert.match(rendered.html, /max-width:100%/);
-  assert.equal(rendered.headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
+  assert.equal(
+    rendered.headers['List-Unsubscribe-Post'],
+    'List-Unsubscribe=One-Click',
+  );
   assert.match(rendered.text, /Newsletter test/);
   assert.doesNotMatch(rendered.html, /123 Example Street/);
-  assert.equal(rendered.headers['List-Unsubscribe'], '<https://leonlins.com/api/newsletter/unsubscribe?token=preview>');
-  const external = renderNewsletterEmail({ ...input, markdown: '[External](https://example.com/path)' });
+  assert.equal(
+    rendered.headers['List-Unsubscribe'],
+    '<https://leonlins.com/api/newsletter/unsubscribe?token=preview>',
+  );
+  const external = renderNewsletterEmail({
+    ...input,
+    markdown: '[External](https://example.com/path)',
+  });
   assert.match(external.html, /href="https:\/\/example\.com\/path"/);
-  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '[relative](./private)' }), NewsletterRenderError);
-  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '![Missing](./does-not-exist.webp)' }), /does not exist/);
-  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '<NewsletterWidget />' }), /MDX/);
-  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '![Local](https://localhost/private.png)' }), /public HTTPS/);
-  assert.throws(() => renderNewsletterEmail({ ...input, markdown: '<iframe src="https://example.com"></iframe>' }), NewsletterRenderError);
-  assert.throws(() => renderNewsletterEmail({ ...input, markdown: 'x'.repeat(GMAIL_CLIP_LIMIT_BYTES) }), /100 KB/);
+  assert.throws(
+    () =>
+      renderNewsletterEmail({ ...input, markdown: '[relative](./private)' }),
+    NewsletterRenderError,
+  );
+  assert.throws(
+    () =>
+      renderNewsletterEmail({
+        ...input,
+        markdown: '![Missing](./does-not-exist.webp)',
+      }),
+    /does not exist/,
+  );
+  assert.throws(
+    () => renderNewsletterEmail({ ...input, markdown: '<NewsletterWidget />' }),
+    /MDX/,
+  );
+  assert.throws(
+    () =>
+      renderNewsletterEmail({
+        ...input,
+        markdown: '![Local](https://localhost/private.png)',
+      }),
+    /public HTTPS/,
+  );
+  assert.throws(
+    () =>
+      renderNewsletterEmail({
+        ...input,
+        markdown: '<iframe src="https://example.com"></iframe>',
+      }),
+    NewsletterRenderError,
+  );
+  assert.throws(
+    () =>
+      renderNewsletterEmail({
+        ...input,
+        markdown: 'x'.repeat(GMAIL_CLIP_LIMIT_BYTES),
+      }),
+    /100 KB/,
+  );
 }
 
 function testNewsletterTestSendSafeguard() {
   assert.equal(
-    assertAllowedTestRecipient(' Contact@LeonLins.com ', 'contact@leonlins.com'),
+    assertAllowedTestRecipient(
+      ' Contact@LeonLins.com ',
+      'contact@leonlins.com',
+    ),
     'contact@leonlins.com',
   );
   assert.throws(
-    () => assertAllowedTestRecipient('reader@example.com', 'contact@leonlins.com'),
+    () =>
+      assertAllowedTestRecipient('reader@example.com', 'contact@leonlins.com'),
     /No email was sent/,
   );
 }
@@ -333,25 +442,85 @@ function testNewsletterProductionSendSafeguards() {
     maxRecipients: 250,
     unsubscribeSecret: env.NEWSLETTER_UNSUBSCRIBE_SECRET,
   });
-  assert.throws(() => productionSendConfig({ ...env, NEWSLETTER_ENVIRONMENT: 'preview' }), /No email was sent/);
-  assert.throws(() => productionSendConfig({ ...env, NEWSLETTER_UNSUBSCRIBE_SECRET: 'short' }), /No email was sent/);
+  assert.throws(
+    () => productionSendConfig({ ...env, NEWSLETTER_ENVIRONMENT: 'preview' }),
+    /No email was sent/,
+  );
+  assert.throws(
+    () =>
+      productionSendConfig({ ...env, NEWSLETTER_UNSUBSCRIBE_SECRET: 'short' }),
+    /No email was sent/,
+  );
   assert.doesNotThrow(() => assertRecipientScope(25, 25, 250));
   assert.throws(() => assertRecipientScope(25, 26, 250), /No email was sent/);
   assert.throws(() => assertRecipientScope(251, 251, 250), /No email was sent/);
-  assert.throws(() => assertSesAccountReady({ productionAccessEnabled: false, sendingEnabled: true }, 1), /production access/);
-  assert.throws(() => assertSesAccountReady({ productionAccessEnabled: true, sendingEnabled: true, max24HourSend: 100, sentLast24Hours: 99, maxSendRate: 1 }, 2), /quota/);
-  assert.deepEqual(assertSesAccountReady({ productionAccessEnabled: true, sendingEnabled: true, max24HourSend: 100, sentLast24Hours: 1, maxSendRate: 2 }, 2), { delayMs: 500 });
-  const first = subscriberUnsubscribeToken('subscriber-id', env.NEWSLETTER_UNSUBSCRIBE_SECRET!);
-  assert.equal(first, subscriberUnsubscribeToken('subscriber-id', env.NEWSLETTER_UNSUBSCRIBE_SECRET!));
-  assert.notEqual(first, subscriberUnsubscribeToken('other-id', env.NEWSLETTER_UNSUBSCRIBE_SECRET!));
+  assert.throws(
+    () =>
+      assertSesAccountReady(
+        { productionAccessEnabled: false, sendingEnabled: true },
+        1,
+      ),
+    /production access/,
+  );
+  assert.throws(
+    () =>
+      assertSesAccountReady(
+        {
+          productionAccessEnabled: true,
+          sendingEnabled: true,
+          max24HourSend: 100,
+          sentLast24Hours: 99,
+          maxSendRate: 1,
+        },
+        2,
+      ),
+    /quota/,
+  );
+  assert.deepEqual(
+    assertSesAccountReady(
+      {
+        productionAccessEnabled: true,
+        sendingEnabled: true,
+        max24HourSend: 100,
+        sentLast24Hours: 1,
+        maxSendRate: 2,
+      },
+      2,
+    ),
+    { delayMs: 500 },
+  );
+  const first = subscriberUnsubscribeToken(
+    'subscriber-id',
+    env.NEWSLETTER_UNSUBSCRIBE_SECRET!,
+  );
+  assert.equal(
+    first,
+    subscriberUnsubscribeToken(
+      'subscriber-id',
+      env.NEWSLETTER_UNSUBSCRIBE_SECRET!,
+    ),
+  );
+  assert.notEqual(
+    first,
+    subscriberUnsubscribeToken('other-id', env.NEWSLETTER_UNSUBSCRIBE_SECRET!),
+  );
   assert.doesNotMatch(first, /subscriber-id/);
 }
 
 function testNewsletterSafetyHelpers() {
-  assert.equal(hashToken('confirmation-token'), hashToken('confirmation-token'));
+  assert.equal(
+    hashToken('confirmation-token'),
+    hashToken('confirmation-token'),
+  );
   assert.notEqual(hashToken('confirmation-token'), 'confirmation-token');
-  assert.equal(hashRateLimitSubject('reader@example.com'), hashRateLimitSubject('reader@example.com'));
-  assert.notEqual(hashRateLimitSubject('reader@example.com'), 'reader@example.com');
+  assert.equal(
+    hashRateLimitSubject('reader@example.com'),
+    hashRateLimitSubject('reader@example.com'),
+  );
+  assert.notEqual(
+    hashRateLimitSubject('reader@example.com'),
+    'reader@example.com',
+  );
   assert.equal(isRateLimitAllowed(5, 5), true);
   assert.equal(isRateLimitAllowed(6, 5), false);
 }
@@ -372,12 +541,21 @@ function testNewsletterConfirmationBoundary() {
 }
 
 function testConfirmationEmailContent() {
-  assert.equal(CONFIRMATION_SUBJECT, 'Confirm your subscription to Avoid Boring People');
+  assert.equal(
+    CONFIRMATION_SUBJECT,
+    'Confirm your subscription to Avoid Boring People',
+  );
   const url = 'https://leonlins.com/api/newsletter/confirm?token=abc123';
   const { html, text } = buildConfirmationEmail(url);
   assert.match(html, />Confirm my subscription<\/a>/);
-  assert.ok(html.includes(`<a href="${url}"`), 'HTML button links directly to the confirmation URL');
-  assert.match(text, /whatever else I’m exploring\.\nhttps:\/\/leonlins\.com\/api\/newsletter\/confirm\?token=abc123/);
+  assert.ok(
+    html.includes(`<a href="${url}"`),
+    'HTML button links directly to the confirmation URL',
+  );
+  assert.match(
+    text,
+    /whatever else I’m exploring\.\nhttps:\/\/leonlins\.com\/api\/newsletter\/confirm\?token=abc123/,
+  );
   for (const body of [html, text]) {
     assert.match(body, /Confirm your subscription/);
     assert.match(body, /Thanks for subscribing to Avoid Boring People\./);
@@ -387,7 +565,11 @@ function testConfirmationEmailContent() {
   }
   const hrefs = [...html.matchAll(/href="([^"]*)"/g)].map((match) => match[1]);
   assert.ok(hrefs.length > 0);
-  for (const href of hrefs) assert.ok(href.startsWith('https://leonlins.com/'), `unexpected confirmation link target: ${href}`);
+  for (const href of hrefs)
+    assert.ok(
+      href.startsWith('https://leonlins.com/'),
+      `unexpected confirmation link target: ${href}`,
+    );
   assert.doesNotMatch(html, /<img/i);
   assert.doesNotMatch(html, /pixel/i);
   assert.doesNotMatch(html, /track/i);
@@ -400,12 +582,18 @@ function testConfirmPages() {
   assert.match(success, /investing, technology, systems/);
   assert.match(success, /publish irregularly/);
   assert.match(success, /newsletter@leonlins\.com to your contacts/);
-  assert.ok(success.includes('<a class="cta" href="/writing">'), 'success page links into the archive');
+  assert.ok(
+    success.includes('<a class="cta" href="/writing">'),
+    'success page links into the archive',
+  );
   const invalid = buildConfirmInvalidPage();
   assert.match(invalid, /no longer valid/);
   assert.match(invalid, /work only once/);
   assert.match(invalid, /subscribe again/);
-  assert.ok(invalid.includes('<a class="cta" href="/#subscribe">'), 'invalid page links back to signup');
+  assert.ok(
+    invalid.includes('<a class="cta" href="/#subscribe">'),
+    'invalid page links back to signup',
+  );
   for (const body of [success, invalid]) {
     assert.match(body, /<!DOCTYPE html>/);
     assert.match(body, /— Leon/);
@@ -416,7 +604,9 @@ function testConfirmPages() {
   }
 }
 
-function makeFakeNewsletterDb(handler: (query: { text: string; values: unknown[] }) => unknown[]) {
+function makeFakeNewsletterDb(
+  handler: (query: { text: string; values: unknown[] }) => unknown[],
+) {
   const queries: Array<{ text: string; values: unknown[] }> = [];
   const db: any = async (parts: TemplateStringsArray, ...values: unknown[]) => {
     const query = { text: parts.join('\n'), values };
@@ -450,24 +640,44 @@ async function testSubscriptionLifecycleDb() {
     assert.equal(await confirmSubscription('wrong-token', confirmDb.db), false);
     assert.equal(await confirmSubscription('', confirmDb.db), false);
     for (const query of confirmDb.queries) {
-      assert.ok(!query.values.includes('good-token'), 'raw confirmation token must never reach the database');
+      assert.ok(
+        !query.values.includes('good-token'),
+        'raw confirmation token must never reach the database',
+      );
     }
 
     // Suppressed subscribers are never reactivated or rewritten by a new request.
     for (const status of ['active', 'unsubscribed', 'bounced', 'complained']) {
       const suppressedDb = makeFakeNewsletterDb((query) => {
-        if (query.text.includes('newsletter_rate_limits')) return [{ attempt_count: 1 }];
-        if (query.text.includes('SELECT status FROM subscribers')) return [{ status }];
-        throw new Error(`unexpected query for ${status} subscriber: ${query.text}`);
+        if (query.text.includes('newsletter_rate_limits'))
+          return [{ attempt_count: 1 }];
+        if (query.text.includes('SELECT status FROM subscribers'))
+          return [{ status }];
+        throw new Error(
+          `unexpected query for ${status} subscriber: ${query.text}`,
+        );
       });
-      const response = await requestSubscription({ email: 'person@example.com' }, suppressedDb.db);
-      assert.deepEqual(response, { ok: true, message: 'If this address can receive this newsletter, check your inbox.' });
-      assert.ok(suppressedDb.queries.every((query) => !query.text.includes('INSERT INTO subscribers')), `${status} must not be rewritten`);
+      const response = await requestSubscription(
+        { email: 'person@example.com' },
+        suppressedDb.db,
+      );
+      assert.deepEqual(response, {
+        ok: true,
+        message:
+          'If this address can receive this newsletter, check your inbox.',
+      });
+      assert.ok(
+        suppressedDb.queries.every(
+          (query) => !query.text.includes('INSERT INTO subscribers'),
+        ),
+        `${status} must not be rewritten`,
+      );
     }
 
     // A new address creates pending with hashed tokens only.
     const newDb = makeFakeNewsletterDb((query) => {
-      if (query.text.includes('newsletter_rate_limits')) return [{ attempt_count: 1 }];
+      if (query.text.includes('newsletter_rate_limits'))
+        return [{ attempt_count: 1 }];
       if (query.text.includes('SELECT status FROM subscribers')) return [];
       if (query.text.includes('INSERT INTO subscribers')) {
         assert.match(query.text, /'pending'/);
@@ -476,10 +686,14 @@ async function testSubscriptionLifecycleDb() {
       throw new Error(`unexpected query for new subscriber: ${query.text}`);
     });
     await requestSubscription({ email: 'New@Example.com' }, newDb.db);
-    const insert = newDb.queries.find((query) => query.text.includes('INSERT INTO subscribers'));
+    const insert = newDb.queries.find((query) =>
+      query.text.includes('INSERT INTO subscribers'),
+    );
     assert.ok(insert);
     assert.ok(insert.values.includes('new@example.com'));
-    const hashes = insert.values.filter((value) => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value));
+    const hashes = insert.values.filter(
+      (value) => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value),
+    );
     assert.equal(hashes.length, 2);
     assert.notEqual(hashes[0], hashes[1]);
   } finally {
@@ -488,61 +702,196 @@ async function testSubscriptionLifecycleDb() {
 }
 
 async function testSnsValidation() {
-  for (const path of ['/api/newsletter/subscribe', '/api/subscribe', '/api/newsletter/ses-events/']) {
-    for (const type of ['text/plain; charset=UTF-8', 'multipart/form-data', 'application/x-www-form-urlencoded']) {
-      const request = new Request(`https://leonlins.com${path}`, { method: 'POST', headers: { 'content-type': type } });
+  for (const path of [
+    '/api/newsletter/subscribe',
+    '/api/subscribe',
+    '/api/newsletter/ses-events/',
+  ]) {
+    for (const type of [
+      'text/plain; charset=UTF-8',
+      'multipart/form-data',
+      'application/x-www-form-urlencoded',
+    ]) {
+      const request = new Request(`https://leonlins.com${path}`, {
+        method: 'POST',
+        headers: { 'content-type': type },
+      });
       assert.equal(requiresOriginRejection(request, false), true);
       request.headers.set('origin', 'https://leonlins.com');
       assert.equal(requiresOriginRejection(request, false), false);
     }
   }
-  const snsRequest = new Request('https://leonlins.com/api/newsletter/ses-events', { method: 'POST', headers: { 'content-type': 'text/plain' } });
+  const snsRequest = new Request(
+    'https://leonlins.com/api/newsletter/ses-events',
+    { method: 'POST', headers: { 'content-type': 'text/plain' } },
+  );
   assert.equal(requiresOriginRejection(snsRequest, false), false);
-  const oneClickRequest = new Request('https://leonlins.com/api/newsletter/unsubscribe?token=secret', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: 'List-Unsubscribe=One-Click' });
+  const oneClickRequest = new Request(
+    'https://leonlins.com/api/newsletter/unsubscribe?token=secret',
+    {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: 'List-Unsubscribe=One-Click',
+    },
+  );
   assert.equal(requiresOriginRejection(oneClickRequest, false), false);
-  assert.equal(requiresOriginRejection(new Request(oneClickRequest.url, { method: 'PUT', headers: oneClickRequest.headers }), false), true);
-  assert.equal(requiresOriginRejection(new Request(snsRequest.url, { method: 'PUT' }), false), true);
-  assert.equal(requiresOriginRejection(new Request('https://leonlins.com/api/newsletter/subscribe', { method: 'POST' }), false), true);
+  assert.equal(
+    requiresOriginRejection(
+      new Request(oneClickRequest.url, {
+        method: 'PUT',
+        headers: oneClickRequest.headers,
+      }),
+      false,
+    ),
+    true,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      new Request(snsRequest.url, { method: 'PUT' }),
+      false,
+    ),
+    true,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      new Request('https://leonlins.com/api/newsletter/subscribe', {
+        method: 'POST',
+      }),
+      false,
+    ),
+    true,
+  );
   // The Instagram media upload is a CI-only machine caller with no cookies, so a
   // POST is exempt from the origin check; other methods and other paths are not.
   const instagramMedia = 'https://leonlins.com/api/social/instagram-media';
-  assert.equal(requiresOriginRejection(new Request(instagramMedia, { method: 'POST' }), false), false);
-  assert.equal(requiresOriginRejection(new Request(instagramMedia, { method: 'POST', headers: { 'content-type': 'image/jpeg' } }), false), false);
-  assert.equal(requiresOriginRejection(new Request(instagramMedia, { method: 'PUT', headers: { 'content-type': 'text/plain' } }), false), true);
-  assert.equal(requiresOriginRejection(new Request('https://leonlins.com/api/social/instagram-media-preview', { method: 'POST' }), false), true);
+  assert.equal(
+    requiresOriginRejection(
+      new Request(instagramMedia, { method: 'POST' }),
+      false,
+    ),
+    false,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      new Request(instagramMedia, {
+        method: 'POST',
+        headers: { 'content-type': 'image/jpeg' },
+      }),
+      false,
+    ),
+    false,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      new Request(instagramMedia, {
+        method: 'PUT',
+        headers: { 'content-type': 'text/plain' },
+      }),
+      false,
+    ),
+    true,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      new Request('https://leonlins.com/api/social/instagram-media-preview', {
+        method: 'POST',
+      }),
+      false,
+    ),
+    true,
+  );
   const topic = 'arn:aws:sns:us-east-2:123456789012:newsletter-events';
   const envelope = parseSnsEnvelope({
-    Type: 'Notification', MessageId: 'event-1', TopicArn: topic, Message: '{"eventType":"Delivery"}',
-    Timestamp: '2026-09-07T00:00:00.000Z', SignatureVersion: '2', Signature: 'placeholder',
-    SigningCertURL: 'https://sns.us-east-2.amazonaws.com/SimpleNotificationService-test.pem',
+    Type: 'Notification',
+    MessageId: 'event-1',
+    TopicArn: topic,
+    Message: '{"eventType":"Delivery"}',
+    Timestamp: '2026-09-07T00:00:00.000Z',
+    SignatureVersion: '2',
+    Signature: 'placeholder',
+    SigningCertURL:
+      'https://sns.us-east-2.amazonaws.com/SimpleNotificationService-test.pem',
   });
   const pair = generateKeyPairSync('rsa', { modulusLength: 2048 });
   const signer = createSign('RSA-SHA256');
   signer.update(signingString(envelope), 'utf8');
   signer.end();
   envelope.Signature = signer.sign(pair.privateKey, 'base64');
-  const publicKey = pair.publicKey.export({ type: 'pkcs1', format: 'pem' }).toString();
-  await verifySnsEnvelope(envelope, topic, async () => new Response(publicKey, { status: 200 }));
-  await assert.rejects(() => verifySnsEnvelope({ ...envelope, Message: 'tampered' }, topic, async () => new Response(publicKey)), /signature is invalid/);
-  const confirmation = { ...envelope, Type: 'SubscriptionConfirmation' as const, Token: 'test-token', SubscribeURL: `https://sns.us-east-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=${encodeURIComponent(topic)}&Token=test-token` };
+  const publicKey = pair.publicKey
+    .export({ type: 'pkcs1', format: 'pem' })
+    .toString();
+  await verifySnsEnvelope(
+    envelope,
+    topic,
+    async () => new Response(publicKey, { status: 200 }),
+  );
+  await assert.rejects(
+    () =>
+      verifySnsEnvelope(
+        { ...envelope, Message: 'tampered' },
+        topic,
+        async () => new Response(publicKey),
+      ),
+    /signature is invalid/,
+  );
+  const confirmation = {
+    ...envelope,
+    Type: 'SubscriptionConfirmation' as const,
+    Token: 'test-token',
+    SubscribeURL: `https://sns.us-east-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=${encodeURIComponent(topic)}&Token=test-token`,
+  };
   const confirmationSigner = createSign('RSA-SHA256');
   confirmationSigner.update(signingString(confirmation));
   confirmation.Signature = confirmationSigner.sign(pair.privateKey, 'base64');
-  await verifySnsEnvelope(confirmation, topic, async () => new Response(publicKey));
+  await verifySnsEnvelope(
+    confirmation,
+    topic,
+    async () => new Response(publicKey),
+  );
   await confirmSnsSubscription(confirmation, topic, async (_url, options) => {
     assert.equal(options?.redirect, 'error');
     assert.ok(options?.signal);
     return new Response(null, { status: 200 });
   });
-  await assert.rejects(() => confirmSnsSubscription({ ...confirmation, Token: 'wrong' }, topic), /not for the expected topic/);
-  await assert.rejects(() => verifySnsEnvelope({ ...envelope, SigningCertURL: 'https://sns.us-east-2.amazonaws.com:444/SimpleNotificationService-test.pem' }, topic), /not from the expected/);
+  await assert.rejects(
+    () => confirmSnsSubscription({ ...confirmation, Token: 'wrong' }, topic),
+    /not for the expected topic/,
+  );
+  await assert.rejects(
+    () =>
+      verifySnsEnvelope(
+        {
+          ...envelope,
+          SigningCertURL:
+            'https://sns.us-east-2.amazonaws.com:444/SimpleNotificationService-test.pem',
+        },
+        topic,
+      ),
+    /not from the expected/,
+  );
   const expired = AbortSignal.abort();
-  await assert.rejects(() => verifySnsEnvelope(envelope, topic, async (_url, options) => {
-    options?.signal?.throwIfAborted();
-    return new Response(publicKey);
-  }, expired), /abort/i);
-  await assert.rejects(() => verifySnsEnvelope(envelope, 'arn:aws:sns:us-east-2:123456789012:other', async () => new Response('')),
-    /not expected/);
+  await assert.rejects(
+    () =>
+      verifySnsEnvelope(
+        envelope,
+        topic,
+        async (_url, options) => {
+          options?.signal?.throwIfAborted();
+          return new Response(publicKey);
+        },
+        expired,
+      ),
+    /abort/i,
+  );
+  await assert.rejects(
+    () =>
+      verifySnsEnvelope(
+        envelope,
+        'arn:aws:sns:us-east-2:123456789012:other',
+        async () => new Response(''),
+      ),
+    /not expected/,
+  );
   assert.throws(() => parseSnsEnvelope({ Type: 'Notification' }), /missing/);
 }
 
@@ -691,11 +1040,10 @@ async function testGetAllPostsPaginated() {
     assert.equal(paginateCalls.length, 1);
     assert.equal(paginateCalls[0].options.pageSize, 2);
     assert.deepEqual(
-      pages.map((page) => page.props.items.map((post: BlogPost) => post.data.title)),
-      [
-        ['Second', 'First'],
-        ['Third'],
-      ],
+      pages.map((page) =>
+        page.props.items.map((post: BlogPost) => post.data.title),
+      ),
+      [['Second', 'First'], ['Third']],
     );
   } finally {
     setGetCollectionImplementation(null);
@@ -985,26 +1333,49 @@ async function testRssEndpoint() {
 }
 
 async function testInstagramMediaUpload() {
-  const { BLOB_PATH_HEADER, MAX_UPLOAD_BYTES, handleInstagramMediaUpload, setBlobUploader } = await import(
-    '../src/lib/social/instagram-media.ts'
+  const {
+    BLOB_PATH_HEADER,
+    MAX_UPLOAD_BYTES,
+    handleInstagramMediaUpload,
+    setBlobUploader,
+  } = await import('../src/lib/social/instagram-media.ts');
+  const { POST, prerender } = await import(
+    '../src/pages/api/social/instagram-media.ts'
   );
-  const { POST, prerender } = await import('../src/pages/api/social/instagram-media.ts');
   const { put } = await import('@vercel/blob');
 
   const endpoint = 'https://leonlins.com/api/social/instagram-media';
   const secret = 'test-media-upload-secret';
   const pathname = 'instagram/2019_02_18_why/0123456789ab/slide-01.jpg';
-  const jpeg = Buffer.concat([Buffer.from([0xff, 0xd8, 0xff, 0xe0]), Buffer.alloc(64, 1)]);
+  const jpeg = Buffer.concat([
+    Buffer.from([0xff, 0xd8, 0xff, 0xe0]),
+    Buffer.alloc(64, 1),
+  ]);
   const previousSecret = process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
 
-  const calls: { pathname: string; body: Buffer; options: Record<string, unknown> }[] = [];
-  const uploader = async (path: string, body: Buffer, options: Record<string, unknown>) => {
+  const calls: {
+    pathname: string;
+    body: Buffer;
+    options: Record<string, unknown>;
+  }[] = [];
+  const uploader = async (
+    path: string,
+    body: Buffer,
+    options: Record<string, unknown>,
+  ) => {
     calls.push({ pathname: path, body, options });
-    return { url: `https://store1.public.blob.vercel-storage.com/${path}`, pathname: path };
+    return {
+      url: `https://store1.public.blob.vercel-storage.com/${path}`,
+      pathname: path,
+    };
   };
 
   const request = (
-    options: { method?: string; headers?: Record<string, string | undefined>; body?: Buffer } = {},
+    options: {
+      method?: string;
+      headers?: Record<string, string | undefined>;
+      body?: Buffer;
+    } = {},
   ) => {
     const headers = new Headers({
       authorization: `Bearer ${secret}`,
@@ -1018,11 +1389,13 @@ async function testInstagramMediaUpload() {
     const method = options.method ?? 'POST';
     const init: RequestInit = { method, headers };
     // Node's Buffer is not part of the DOM BodyInit union, but undici accepts it.
-    if (method === 'POST') init.body = (options.body ?? jpeg) as unknown as BodyInit;
+    if (method === 'POST')
+      init.body = (options.body ?? jpeg) as unknown as BodyInit;
     return new Request(endpoint, init);
   };
 
-  const bodyOf = async (response: Response) => (await response.json()) as Record<string, unknown>;
+  const bodyOf = async (response: Response) =>
+    (await response.json()) as Record<string, unknown>;
 
   // Collect what the endpoint logs so secret hygiene can be asserted, and so a
   // rejected upload does not fill the test output with expected failures.
@@ -1039,7 +1412,10 @@ async function testInstagramMediaUpload() {
 
     process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET = secret;
 
-    const method = await handleInstagramMediaUpload(request({ method: 'GET' }), uploader);
+    const method = await handleInstagramMediaUpload(
+      request({ method: 'GET' }),
+      uploader,
+    );
     assert.equal(method.status, 405);
     assert.equal(method.headers.get('allow'), 'POST');
 
@@ -1050,8 +1426,15 @@ async function testInstagramMediaUpload() {
       ['not bearer', { authorization: `Basic ${secret}` }],
       ['bare secret', { authorization: secret }],
     ] as const) {
-      const rejected = await handleInstagramMediaUpload(request({ headers: { ...overrides } }), uploader);
-      assert.equal(rejected.status, 401, `an ${label} credential must be rejected`);
+      const rejected = await handleInstagramMediaUpload(
+        request({ headers: { ...overrides } }),
+        uploader,
+      );
+      assert.equal(
+        rejected.status,
+        401,
+        `an ${label} credential must be rejected`,
+      );
       assert.equal(rejected.headers.get('www-authenticate'), 'Bearer');
       assert.equal(String((await bodyOf(rejected)).error), 'unauthorized');
     }
@@ -1068,23 +1451,36 @@ async function testInstagramMediaUpload() {
     );
     assert.equal(notJpeg.status, 415);
 
-    const emptyBody = await handleInstagramMediaUpload(request({ body: Buffer.alloc(0) }), uploader);
+    const emptyBody = await handleInstagramMediaUpload(
+      request({ body: Buffer.alloc(0) }),
+      uploader,
+    );
     assert.equal(emptyBody.status, 400);
 
     for (const [label, badPath] of [
       ['missing', undefined],
       ['traversal', 'instagram/../../../etc/0123456789ab/slide-01.jpg'],
       ['wrong prefix', 'media/2019_02_18_why/0123456789ab/slide-01.jpg'],
-      ['uppercase digest', 'instagram/2019_02_18_why/0123456789AB/slide-01.jpg'],
+      [
+        'uppercase digest',
+        'instagram/2019_02_18_why/0123456789AB/slide-01.jpg',
+      ],
       ['short digest', 'instagram/2019_02_18_why/0123456789a/slide-01.jpg'],
       ['wrong file name', 'instagram/2019_02_18_why/0123456789ab/slide-1.jpg'],
-      ['extra segment', 'instagram/2019_02_18_why/0123456789ab/deeper/slide-01.jpg'],
+      [
+        'extra segment',
+        'instagram/2019_02_18_why/0123456789ab/deeper/slide-01.jpg',
+      ],
     ] as const) {
       const rejected = await handleInstagramMediaUpload(
         request({ headers: { [BLOB_PATH_HEADER]: badPath } }),
         uploader,
       );
-      assert.equal(rejected.status, 400, `a ${label} object path must be rejected`);
+      assert.equal(
+        rejected.status,
+        400,
+        `a ${label} object path must be rejected`,
+      );
     }
 
     const declaredTooLarge = await handleInstagramMediaUpload(
@@ -1094,12 +1490,18 @@ async function testInstagramMediaUpload() {
     assert.equal(declaredTooLarge.status, 413);
 
     const actuallyTooLarge = await handleInstagramMediaUpload(
-      request({ body: Buffer.concat([jpeg, Buffer.alloc(MAX_UPLOAD_BYTES + 1)]) }),
+      request({
+        body: Buffer.concat([jpeg, Buffer.alloc(MAX_UPLOAD_BYTES + 1)]),
+      }),
       uploader,
     );
     assert.equal(actuallyTooLarge.status, 413);
 
-    assert.equal(calls.length, 0, 'a rejected request must not reach the Blob store');
+    assert.equal(
+      calls.length,
+      0,
+      'a rejected request must not reach the Blob store',
+    );
 
     const stored = await handleInstagramMediaUpload(request(), uploader);
     assert.equal(stored.status, 200);
@@ -1121,11 +1523,30 @@ async function testInstagramMediaUpload() {
 
     for (const [label, result] of [
       ['no URL', {}],
-      ['insecure URL', { url: `http://store1.public.blob.vercel-storage.com/${pathname}`, pathname }],
-      ['a different object', { url: 'https://store1.public.blob.vercel-storage.com/other.jpg', pathname: 'instagram/2019_02_18_why/ffffffffffff/slide-01.jpg' }],
+      [
+        'insecure URL',
+        {
+          url: `http://store1.public.blob.vercel-storage.com/${pathname}`,
+          pathname,
+        },
+      ],
+      [
+        'a different object',
+        {
+          url: 'https://store1.public.blob.vercel-storage.com/other.jpg',
+          pathname: 'instagram/2019_02_18_why/ffffffffffff/slide-01.jpg',
+        },
+      ],
     ] as const) {
-      const failed = await handleInstagramMediaUpload(request(), async () => result);
-      assert.equal(failed.status, 502, `a store answering with ${label} must fail closed`);
+      const failed = await handleInstagramMediaUpload(
+        request(),
+        async () => result,
+      );
+      assert.equal(
+        failed.status,
+        502,
+        `a store answering with ${label} must fail closed`,
+      );
     }
 
     const failuresLogged = logged.length;
@@ -1134,7 +1555,11 @@ async function testInstagramMediaUpload() {
     });
     assert.equal(thrown.status, 502);
     assert.equal(String((await bodyOf(thrown)).error), 'upload failed');
-    assert.equal(logged.length, failuresLogged + 1, 'a store failure must be logged exactly once');
+    assert.equal(
+      logged.length,
+      failuresLogged + 1,
+      'a store failure must be logged exactly once',
+    );
     assert.match(logged[logged.length - 1], /\[redacted\]/);
 
     // The route's own wiring reaches the Blob SDK through the seam.
@@ -1143,7 +1568,9 @@ async function testInstagramMediaUpload() {
       const viaRoute = await POST({ request: request() } as never);
       assert.equal((viaRoute as Response).status, 200);
       assert.equal(calls.at(-1)?.pathname, pathname);
-      const viaRouteUnauthorized = await POST({ request: request({ headers: { authorization: undefined } }) } as never);
+      const viaRouteUnauthorized = await POST({
+        request: request({ headers: { authorization: undefined } }),
+      } as never);
       assert.equal((viaRouteUnauthorized as Response).status, 401);
     } finally {
       setBlobUploader(put as never);
@@ -1152,11 +1579,19 @@ async function testInstagramMediaUpload() {
     // A missing or blank secret makes the endpoint unusable rather than open.
     const uploadsSoFar = calls.length;
     for (const configured of [undefined, '   ']) {
-      if (configured === undefined) delete process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
+      if (configured === undefined)
+        delete process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
       else process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET = configured;
-      const unconfigured = await handleInstagramMediaUpload(request(), uploader);
+      const unconfigured = await handleInstagramMediaUpload(
+        request(),
+        uploader,
+      );
       assert.equal(unconfigured.status, 503);
-      assert.equal(calls.length, uploadsSoFar, 'an unconfigured endpoint must not upload');
+      assert.equal(
+        calls.length,
+        uploadsSoFar,
+        'an unconfigured endpoint must not upload',
+      );
     }
     assert.ok(
       logged.every((line) => !line.includes(secret)),
@@ -1164,7 +1599,8 @@ async function testInstagramMediaUpload() {
     );
   } finally {
     console.error = originalConsoleError;
-    if (previousSecret === undefined) delete process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
+    if (previousSecret === undefined)
+      delete process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET;
     else process.env.INSTAGRAM_MEDIA_UPLOAD_SECRET = previousSecret;
     setBlobUploader(put as never);
   }
@@ -1180,9 +1616,18 @@ function testJsonLdSerialization() {
     nested: { description: `Tail --> ${payload}` },
   });
 
-  assert.ok(!serialized.includes('<'), 'serialized JSON-LD must not contain a raw <');
-  assert.ok(!/<!--/.test(serialized), 'serialized JSON-LD must not open an HTML comment');
-  assert.ok(serialized.includes('\\u003c/script>'), 'the closing script tag must be escaped into data');
+  assert.ok(
+    !serialized.includes('<'),
+    'serialized JSON-LD must not contain a raw <',
+  );
+  assert.ok(
+    !/<!--/.test(serialized),
+    'serialized JSON-LD must not open an HTML comment',
+  );
+  assert.ok(
+    serialized.includes('\\u003c/script>'),
+    'the closing script tag must be escaped into data',
+  );
 
   const parsed = JSON.parse(serialized);
   assert.equal(parsed.headline, payload);
@@ -1191,8 +1636,16 @@ function testJsonLdSerialization() {
 
   // Embedded in the element the components emit, the payload cannot close it.
   const html = `<script type="application/ld+json">${serialized}</script>`;
-  assert.equal(html.split('</script>').length, 2, 'only the tag the template wrote may close the script element');
-  assert.equal(JSON.parse(html.slice(html.indexOf('>') + 1, html.lastIndexOf('</script>'))).headline, payload);
+  assert.equal(
+    html.split('</script>').length,
+    2,
+    'only the tag the template wrote may close the script element',
+  );
+  assert.equal(
+    JSON.parse(html.slice(html.indexOf('>') + 1, html.lastIndexOf('</script>')))
+      .headline,
+    payload,
+  );
 
   assert.equal(serializeJsonLd(undefined), 'null');
   assert.equal(serializeJsonLd({ ratio: Number.NaN, ok: true }), '{"ok":true}');
@@ -1200,32 +1653,97 @@ function testJsonLdSerialization() {
 
 function testOriginTrust() {
   const form = { 'content-type': 'application/x-www-form-urlencoded' };
-  const post = (url: string, headers: Record<string, string>) => new Request(url, { method: 'POST', headers: { ...form, ...headers } });
+  const post = (url: string, headers: Record<string, string>) =>
+    new Request(url, { method: 'POST', headers: { ...form, ...headers } });
 
   // The configured canonical origin is trusted, whatever URL the request arrived on.
-  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', { origin: 'https://leonlins.com' }), false), false);
-  assert.equal(requiresOriginRejection(post('https://internal-deployment.vercel.app/api/subscribe', { origin: 'https://leonlins.com' }), false), false);
+  assert.equal(
+    requiresOriginRejection(
+      post('https://leonlins.com/api/subscribe', {
+        origin: 'https://leonlins.com',
+      }),
+      false,
+    ),
+    false,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      post('https://internal-deployment.vercel.app/api/subscribe', {
+        origin: 'https://leonlins.com',
+      }),
+      false,
+    ),
+    false,
+  );
 
   // Foreign or absent origins are still rejected.
-  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', { origin: 'https://evil.example' }), false), true);
-  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', {}), false), true);
+  assert.equal(
+    requiresOriginRejection(
+      post('https://leonlins.com/api/subscribe', {
+        origin: 'https://evil.example',
+      }),
+      false,
+    ),
+    true,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      post('https://leonlins.com/api/subscribe', {}),
+      false,
+    ),
+    true,
+  );
 
   // A caller that controls the forwarded headers makes the request URL look like
   // its own origin; the trusted origin must not move with it.
-  assert.equal(requiresOriginRejection(post('https://evil.example/api/subscribe', {
-    origin: 'https://evil.example', 'x-forwarded-host': 'evil.example', 'x-forwarded-proto': 'https',
-  }), false), true);
-  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', {
-    origin: 'https://evil.example', 'x-forwarded-host': 'leonlins.com', 'x-forwarded-proto': 'https',
-  }), false), true);
-  assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', {
-    origin: 'https://leonlins.com', 'x-forwarded-host': 'evil.example', 'x-forwarded-proto': 'http',
-  }), false), false);
+  assert.equal(
+    requiresOriginRejection(
+      post('https://evil.example/api/subscribe', {
+        origin: 'https://evil.example',
+        'x-forwarded-host': 'evil.example',
+        'x-forwarded-proto': 'https',
+      }),
+      false,
+    ),
+    true,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      post('https://leonlins.com/api/subscribe', {
+        origin: 'https://evil.example',
+        'x-forwarded-host': 'leonlins.com',
+        'x-forwarded-proto': 'https',
+      }),
+      false,
+    ),
+    true,
+  );
+  assert.equal(
+    requiresOriginRejection(
+      post('https://leonlins.com/api/subscribe', {
+        origin: 'https://leonlins.com',
+        'x-forwarded-host': 'evil.example',
+        'x-forwarded-proto': 'http',
+      }),
+      false,
+    ),
+    false,
+  );
 
   // Machine callers keep their exemptions.
-  assert.equal(requiresOriginRejection(new Request('https://evil.example/api/newsletter/ses-events', {
-    method: 'POST', headers: { 'content-type': 'text/plain', origin: 'https://evil.example' },
-  }), false), false);
+  assert.equal(
+    requiresOriginRejection(
+      new Request('https://evil.example/api/newsletter/ses-events', {
+        method: 'POST',
+        headers: {
+          'content-type': 'text/plain',
+          origin: 'https://evil.example',
+        },
+      }),
+      false,
+    ),
+    false,
+  );
 
   // The trusted origin is the canonical site origin from `src/consts.ts`, so a
   // deployment URL, a `Host` header, or a forwarded header cannot move it.
@@ -1234,19 +1752,66 @@ function testOriginTrust() {
   process.env.SITE_URL = 'https://preview.example/';
   try {
     assert.equal(canonicalSiteOrigin(), 'https://leonlins.com');
-    assert.equal(requiresOriginRejection(post('https://preview.example/api/subscribe', { origin: 'https://preview.example' }), false), true);
-    assert.equal(requiresOriginRejection(post('https://leonlins.com/api/subscribe', { origin: 'https://preview.example' }), false), true);
+    assert.equal(
+      requiresOriginRejection(
+        post('https://preview.example/api/subscribe', {
+          origin: 'https://preview.example',
+        }),
+        false,
+      ),
+      true,
+    );
+    assert.equal(
+      requiresOriginRejection(
+        post('https://leonlins.com/api/subscribe', {
+          origin: 'https://preview.example',
+        }),
+        false,
+      ),
+      true,
+    );
   } finally {
     delete process.env.SITE_URL;
   }
 }
 
 function testPathOverrideGuard() {
-  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/_image?href=/a.png&f=png')), false);
-  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/api/newsletter/unsubscribe?token=x')), false);
-  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/_image?x_astro_path=/api/newsletter/unsubscribe')), true);
-  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/anything', { headers: { 'x-astro-path': '/api/social/instagram-media' } })), true);
-  assert.equal(hasUntrustedPathOverride(new Request('https://leonlins.com/anything', { headers: { 'x-astro-path': '' } })), true);
+  assert.equal(
+    hasUntrustedPathOverride(
+      new Request('https://leonlins.com/_image?href=/a.png&f=png'),
+    ),
+    false,
+  );
+  assert.equal(
+    hasUntrustedPathOverride(
+      new Request('https://leonlins.com/api/newsletter/unsubscribe?token=x'),
+    ),
+    false,
+  );
+  assert.equal(
+    hasUntrustedPathOverride(
+      new Request(
+        'https://leonlins.com/_image?x_astro_path=/api/newsletter/unsubscribe',
+      ),
+    ),
+    true,
+  );
+  assert.equal(
+    hasUntrustedPathOverride(
+      new Request('https://leonlins.com/anything', {
+        headers: { 'x-astro-path': '/api/social/instagram-media' },
+      }),
+    ),
+    true,
+  );
+  assert.equal(
+    hasUntrustedPathOverride(
+      new Request('https://leonlins.com/anything', {
+        headers: { 'x-astro-path': '' },
+      }),
+    ),
+    true,
+  );
 }
 
 async function run() {

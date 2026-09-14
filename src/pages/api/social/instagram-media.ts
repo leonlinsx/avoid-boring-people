@@ -8,4 +8,5 @@ export const prerender = false;
  * and returns its URL. GitHub Actions calls this because the Blob store is
  * authenticated with OIDC inside this project, not with a shared token.
  */
-export const POST: APIRoute = ({ request }) => handleInstagramMediaUpload(request);
+export const POST: APIRoute = ({ request }) =>
+  handleInstagramMediaUpload(request);

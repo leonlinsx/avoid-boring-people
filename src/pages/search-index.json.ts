@@ -1,4 +1,3 @@
-/* global Response */
 // src/pages/search-index.json.ts
 import { getCollection } from 'astro:content';
 import { getCleanSlug } from '../utils/slug.ts';

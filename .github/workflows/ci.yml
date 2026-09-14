@@ -88,3 +88,32 @@ jobs:
         run: npm ci
       - name: Build site
         run: npm run build
+      # Internal links and images break silently when slugs, images, or
+      # redirects change. This serves the just-built output locally, so it is
+      # deterministic; external link checking stays manual because remote
+      # hosts routinely 403 automated checks.
+      - name: Check internal links
+        run: npm run linkcheck:internal
+
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        run: npm ci
+      # Covers formatting (Prettier), unused vars, and explicit `any` in
+      # production code. `astro check` is intentionally not gated: it reports
+      # pre-existing type friction in site components and the test harness's
+      # mocked `astro:content` module, and fixing those is unrelated churn.
+      - name: Run ESLint
+        run: npm run lint

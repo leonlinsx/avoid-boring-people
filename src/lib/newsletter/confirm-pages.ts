@@ -11,20 +11,20 @@ function page(title: string, body: string): string {
 export function buildConfirmSuccessPage(): string {
   return page(
     'You’re subscribed',
-    `<h1>You’re subscribed.</h1>`
-      + `<p>Thanks for confirming — you’re on the list for Avoid Boring People.</p>`
-      + `<p>You’ll receive new essays on investing, technology, systems, and whatever else I’m exploring. I publish irregularly, so every email is one I thought was worth sending.</p>`
-      + `<p>To make sure they reach your inbox, add newsletter@leonlins.com to your contacts.</p>`
-      + `<a class="cta" href="/writing">Read the latest essays</a>`,
+    `<h1>You’re subscribed.</h1>` +
+      `<p>Thanks for confirming — you’re on the list for Avoid Boring People.</p>` +
+      `<p>You’ll receive new essays on investing, technology, systems, and whatever else I’m exploring. I publish irregularly, so every email is one I thought was worth sending.</p>` +
+      `<p>To make sure they reach your inbox, add newsletter@leonlins.com to your contacts.</p>` +
+      `<a class="cta" href="/writing">Read the latest essays</a>`,
   );
 }
 
 export function buildConfirmInvalidPage(): string {
   return page(
     'Link no longer valid',
-    `<h1>This link is no longer valid.</h1>`
-      + `<p>Confirmation links work only once — this one has already been used, or it isn’t quite right.</p>`
-      + `<p>If you’d still like to receive Avoid Boring People, just subscribe again.</p>`
-      + `<a class="cta" href="/#subscribe">Subscribe</a>`,
+    `<h1>This link is no longer valid.</h1>` +
+      `<p>Confirmation links work only once — this one has already been used, or it isn’t quite right.</p>` +
+      `<p>If you’d still like to receive Avoid Boring People, just subscribe again.</p>` +
+      `<a class="cta" href="/#subscribe">Subscribe</a>`,
   );
 }

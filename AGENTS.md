@@ -47,6 +47,7 @@
 | Test | `npm test` |
 | Test (Python distribution suite) | `python -m pytest tests -q`; needs `npm ci` for the carousel renderer tests and `pip install -r scripts/automation/requirements-test.lock` for pytest |
 | Build | `npm run build` |
+| Lint | `npm run lint` |
 | Run locally | `npm run dev` |
 | Preview built site | `npm run preview` |
 | Inspect Substack import | `npm run newsletter:import:dry-run -- <substack-export.csv>` |

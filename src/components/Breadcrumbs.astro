@@ -23,28 +23,30 @@ const breadcrumbSchema = sanitizeJsonLd({
 });
 ---
 
-{items.length > 1 && (
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <ol>
-      {items.map((item, index) => {
-        const isLast = index === items.length - 1;
-        return (
-          <li>
-            {item.href && !isLast ? (
-              <a href={item.href}>{item.label}</a>
-            ) : (
-              <span aria-current="page">{item.label}</span>
-            )}
-          </li>
-        );
-      })}
-    </ol>
-    <script
-      type="application/ld+json"
-      set:html={serializeJsonLd(breadcrumbSchema)}
-    ></script>
-  </nav>
-)}
+{
+  items.length > 1 && (
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
+          return (
+            <li>
+              {item.href && !isLast ? (
+                <a href={item.href}>{item.label}</a>
+              ) : (
+                <span aria-current="page">{item.label}</span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+      <script
+        type="application/ld+json"
+        set:html={serializeJsonLd(breadcrumbSchema)}
+      />
+    </nav>
+  )
+}
 
 <style>
   .breadcrumbs {

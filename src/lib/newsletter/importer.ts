@@ -19,7 +19,10 @@ export type SubstackImportPlan = {
   };
 };
 
-function earlierTimestamp(first: string | null, second: string | null): string | null {
+function earlierTimestamp(
+  first: string | null,
+  second: string | null,
+): string | null {
   if (!first) return second;
   if (!second) return first;
   const firstTime = Date.parse(first);
@@ -29,15 +32,23 @@ function earlierTimestamp(first: string | null, second: string | null): string |
   return firstTime <= secondTime ? first : second;
 }
 
-function mergeSubscriber(current: ConsolidatedSubscriber, next: ImportedSubscriber): ConsolidatedSubscriber {
-  const suppressed = current.status === 'unsubscribed' || next.status === 'unsubscribed';
+function mergeSubscriber(
+  current: ConsolidatedSubscriber,
+  next: ImportedSubscriber,
+): ConsolidatedSubscriber {
+  const suppressed =
+    current.status === 'unsubscribed' || next.status === 'unsubscribed';
   return {
     ...current,
     name: current.name ?? next.name,
     status: suppressed ? 'unsubscribed' : 'active',
-    originalSubscribedAt: earlierTimestamp(current.originalSubscribedAt, next.originalSubscribedAt),
+    originalSubscribedAt: earlierTimestamp(
+      current.originalSubscribedAt,
+      next.originalSubscribedAt,
+    ),
     legacySubstackType: current.legacySubstackType ?? next.legacySubstackType,
-    legacySubstackCancelDate: current.legacySubstackCancelDate ?? next.legacySubstackCancelDate,
+    legacySubstackCancelDate:
+      current.legacySubstackCancelDate ?? next.legacySubstackCancelDate,
   };
 }
 
@@ -47,14 +58,23 @@ export function planSubstackImport(csv: string): SubstackImportPlan {
     skip_empty_lines: true,
     trim: true,
   }) as Record<string, string>[];
-  const mapped = rows.map(mapSubstackRow).filter((row): row is ImportedSubscriber => row !== null);
+  const mapped = rows
+    .map(mapSubstackRow)
+    .filter((row): row is ImportedSubscriber => row !== null);
   const byEmail = new Map<string, ConsolidatedSubscriber>();
   for (const subscriber of mapped) {
     const current = byEmail.get(subscriber.email);
-    byEmail.set(subscriber.email, current ? mergeSubscriber(current, subscriber) : subscriber);
+    byEmail.set(
+      subscriber.email,
+      current ? mergeSubscriber(current, subscriber) : subscriber,
+    );
   }
-  const subscribers = [...byEmail.values()].sort((left, right) => left.email.localeCompare(right.email));
-  const active = subscribers.filter((subscriber) => subscriber.status === 'active').length;
+  const subscribers = [...byEmail.values()].sort((left, right) =>
+    left.email.localeCompare(right.email),
+  );
+  const active = subscribers.filter(
+    (subscriber) => subscriber.status === 'active',
+  ).length;
   return {
     subscribers,
     summary: {

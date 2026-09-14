@@ -30,7 +30,5 @@ export function categoryLabel(category: string): string {
 
 export function orderedCategorySlugs(values: Iterable<string>): string[] {
   const present = new Set(Array.from(values, categorySlug));
-  return categories
-    .map(({ slug }) => slug)
-    .filter((slug) => present.has(slug));
+  return categories.map(({ slug }) => slug).filter((slug) => present.has(slug));
 }

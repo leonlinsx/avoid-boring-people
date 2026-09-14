@@ -11,7 +11,10 @@ function isImage(path: string): boolean {
   return imageExtensions.has(extension);
 }
 
-async function copyDirectory(source: string, destination: string): Promise<void> {
+async function copyDirectory(
+  source: string,
+  destination: string,
+): Promise<void> {
   for (const entry of await readdir(source, { withFileTypes: true })) {
     const sourcePath = resolve(source, entry.name);
     const destinationPath = resolve(destination, entry.name);
@@ -35,14 +38,23 @@ export function newsletterAssets(): AstroIntegration {
     hooks: {
       'astro:build:done': async ({ dir }) => {
         const outputRoot = fileURLToPath(dir);
-        await copyDirectory(contentRoot, resolve(outputRoot, 'newsletter-assets'));
+        await copyDirectory(
+          contentRoot,
+          resolve(outputRoot, 'newsletter-assets'),
+        );
       },
     },
   };
 }
 
-export function newsletterAssetPath(articleId: string, assetPath: string): string {
-  const articleDirectory = resolve(contentRoot, articleId.replace(/\/(?:index)?\.mdx?$/i, ''));
+export function newsletterAssetPath(
+  articleId: string,
+  assetPath: string,
+): string {
+  const articleDirectory = resolve(
+    contentRoot,
+    articleId.replace(/\/(?:index)?\.mdx?$/i, ''),
+  );
   const asset = resolve(articleDirectory, assetPath);
   const sourceRoot = `${contentRoot.endsWith('/') ? contentRoot.slice(0, -1) : contentRoot}/`;
   if (!asset.startsWith(sourceRoot) || !isImage(asset)) {

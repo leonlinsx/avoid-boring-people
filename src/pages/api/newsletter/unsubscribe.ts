@@ -3,9 +3,17 @@ import { unsubscribe } from '../../../lib/newsletter/subscriptions.ts';
 export const prerender = false;
 
 function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  }[character] ?? character));
+  return value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[character] ?? character,
+  );
 }
 
 export const GET: APIRoute = async ({ url }) => {
@@ -30,5 +38,8 @@ export const POST: APIRoute = async ({ request, url }) => {
     // A malformed request remains a generic idempotent no-op.
   }
   await unsubscribe(token);
-  return new Response(null, { status: 204, headers: { 'cache-control': 'no-store' } });
+  return new Response(null, {
+    status: 204,
+    headers: { 'cache-control': 'no-store' },
+  });
 };

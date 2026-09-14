@@ -33,14 +33,19 @@ const visibleIds = new Set(filteredPosts.map((post) => post.id));
   </div>
 
   <div id="post-list">
-    {posts.map((post) => (
-      <PostCard post={post} hidden={!visibleIds.has(post.id)} />
-    ))}
+    {
+      posts.map((post) => (
+        <PostCard post={post} hidden={!visibleIds.has(post.id)} />
+      ))
+    }
   </div>
 
   <p
     id="search-empty"
-    class:list={['search-empty', filteredPosts.length === 0 && q ? 'is-visible' : '']}
+    class:list={[
+      'search-empty',
+      filteredPosts.length === 0 && q ? 'is-visible' : '',
+    ]}
     role="status"
     aria-live="polite"
   >
