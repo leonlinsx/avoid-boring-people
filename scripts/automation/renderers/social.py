@@ -19,7 +19,14 @@ def render_thread(post: SocialPost) -> list[str]:
 
 
 def render_linkedin(post: SocialPost) -> str:
-    text = f"{post.hook}\n\n{post.body}\n\nFull piece: {post.url}".strip()
+    """Render the native LinkedIn post body: the argument only, never the link.
+
+    External links in the body cost roughly 60% of reach, so the canonical URL
+    travels in the publisher's first comment instead (`post_to_linkedin`
+    accepts it as `link_url`). Keeping the link out of the commentary is what
+    preserves the post's distribution.
+    """
+    text = f"{post.hook}\n\n{post.body}".strip()
     if len(text) > 3000:
         raise ValueError("LinkedIn post exceeds its 3,000-character limit")
     return text
@@ -163,11 +170,14 @@ def render_threads(post: SocialPost) -> list[str]:
     mid-sentence reads as a mistake on a conversational feed. The first point is
     trimmed as a fallback so the post is never left with a bare hook. Under
     POST_MODE=single the body is the article title, which the hook already
-    carries, so that duplicate point drops out here.
+    carries, so that duplicate point drops out here. At most one hashtag rides
+    along: Threads supports a single topic tag per post.
     """
     hook = _strip_markdown_quotes(post.hook.strip())
     points = [_strip_markdown_quotes(point) for point in _supporting_points(post)]
     points = [point for point in points if point and point != hook]
+    # Threads supports a single topic tag per post: extra hashtags render as
+    # dead text and read as spam, so only the first article tag rides along.
     main = hook
     for point in points:
         candidate = f"{main}\n\n{point}"
@@ -181,7 +191,7 @@ def render_threads(post: SocialPost) -> list[str]:
         break
     if len(main) > THREADS_TEXT_LIMIT:
         main = f"{_trim_to_word(hook, THREADS_TEXT_LIMIT - 1)}…"
-    tags = hashtag_suffix(post.tags)
+    tags = hashtag_suffix(tuple(post.tags[:1]))
     if tags and len(f"{main}{tags}") <= THREADS_TEXT_LIMIT:
         main = f"{main}{tags}"
     if not post.url:

@@ -40,13 +40,13 @@ def test_thread_root_carries_tags_only_when_they_fit():
     summary = {"teaser": "Short hook", "points": []}
     rooted = format_as_thread(post, summary, tags=["investing", "risk"])
     assert rooted[0] == "Short hook #investing #risk"
-    assert rooted[-1] == URL
+    assert rooted[-1] == f"Full piece: {URL}"
     long_hook = {"teaser": "H" * (MAX_TWEET_LEN - 5), "points": []}
     assert format_as_thread(post, long_hook, tags=["investing"])[0] == "H" * (
         MAX_TWEET_LEN - 5
     )
-    # Tagless output is byte-identical to the old shape.
-    assert format_as_thread(post, summary) == ["Short hook", URL]
+    # The link reply always frames the canonical URL as the pointer to the piece.
+    assert format_as_thread(post, summary) == ["Short hook", f"Full piece: {URL}"]
 
 
 def test_mastodon_prefers_two_points_then_tags():
@@ -86,9 +86,12 @@ def test_farcaster_carries_tags_within_limit():
     assert "#investing" not in render_farcaster(crowded)
 
 
-def test_threads_appends_tags_to_main_post():
+def test_threads_appends_a_single_tag_to_main_post():
+    # Threads supports one topic tag per post; further tags would render as
+    # dead text, so only the first article tag rides along.
     main, reply = render_threads(_post(tags=("investing", "risk")))
-    assert main.endswith("#investing #risk")
+    assert main.endswith("#investing")
+    assert "#risk" not in main
     assert reply == f"Full piece: {URL}"
     assert len(main) <= THREADS_TEXT_LIMIT
     full = _post(hook="H" * 480, tags=("investing",))

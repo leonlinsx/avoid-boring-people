@@ -15,7 +15,10 @@ def test_category_policy_keeps_dev_selective_and_reddit_new_only():
 
 def test_social_renderers_adapt_one_argument_without_losing_the_canonical_url():
     post = SocialPost("A useful hook", "A longer explanation.", "https://example.test/article", ("A useful hook", "Supporting point"))
-    assert "Full piece: https://example.test/article" in render_linkedin(post)
+    # LinkedIn keeps the link out of the body for reach; the publisher places
+    # it as the first comment, so the body must not carry it.
+    assert "https://example.test/article" not in render_linkedin(post)
+    assert "A useful hook" in render_linkedin(post)
     assert render_farcaster(post).endswith("https://example.test/article")
 
 

@@ -275,7 +275,7 @@ def test_thread_root_leads_with_the_idea_and_ends_with_the_canonical_link():
         "Average outcomes mislead when you only live one path.\n\n"
         "A positive expected return can still ruin you if the path holds a loss you can't survive."
     )
-    assert tweets[-1] == URL
+    assert tweets[-1] == f"Full piece: {URL}"
     assert tweets[1] == "Survivability, not expected value, decides which strategies compound."
     # No article-title promotion and no mechanical numbering.
     assert "Ergodicity and the cost of ruin" not in "\n".join(tweets)
@@ -300,7 +300,7 @@ def test_thread_keeps_the_root_to_the_hook_when_the_point_does_not_fit():
     assert tweets[0] == hook
     assert tweets[1] == strongest
     assert tweets[2] == "A short point."
-    assert tweets[-1] == URL
+    assert tweets[-1] == f"Full piece: {URL}"
 
 
 def test_thread_skips_a_point_that_cannot_stand_as_its_own_reply():
@@ -312,7 +312,7 @@ def test_thread_skips_a_point_that_cannot_stand_as_its_own_reply():
     assert tweets == [
         "Average outcomes mislead when you only live one path.",
         "A short point.",
-        URL,
+        f"Full piece: {URL}",
     ]
 
 
@@ -322,7 +322,7 @@ def test_thread_stays_within_the_maximum_reply_count():
     )
 
     assert len(tweets) == 5
-    assert tweets[-1] == URL
+    assert tweets[-1] == f"Full piece: {URL}"
 
 
 def test_thread_clips_an_overlong_hook_at_a_word_boundary():

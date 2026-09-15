@@ -380,8 +380,12 @@ def _hashtags(tags: Sequence[str]) -> tuple[str, ...]:
     return tuple(hashtags[:HASHTAG_LIMIT])
 
 
-def _build_caption(title: str, teaser: str, url: str, hashtags: Sequence[str]) -> str:
-    tail = f"Full essay → {url}"
+def _build_caption(title: str, teaser: str, hashtags: Sequence[str]) -> str:
+    # Caption URLs are not clickable on Instagram, so the caption never carries
+    # the raw link: it points at the bio link, which the operator keeps aimed at
+    # the latest article. The canonical URL still lives on the storyboard (and
+    # on the final slide as a visual cue) for hosting and validation.
+    tail = "Full essay — link in bio"
     if hashtags:
         tail = f"{tail}\n\n{' '.join(hashtags)}"
 
@@ -483,7 +487,7 @@ def build_storyboard(post: dict, summary: dict) -> InstagramStoryboard:
         post_id=post_id,
         title=title,
         canonical_url=url,
-        caption=_build_caption(title, teaser, url, hashtags),
+        caption=_build_caption(title, teaser, hashtags),
         hashtags=hashtags,
         slides=tuple(slides),
     )
@@ -532,7 +536,10 @@ def validate_storyboard(storyboard: InstagramStoryboard) -> None:
         raise ValueError(
             f"Instagram caption exceeds Meta's {CAPTION_HARD_MAX}-character limit ({len(storyboard.caption)})"
         )
-    if storyboard.canonical_url not in storyboard.caption:
-        raise ValueError("Instagram caption must carry the canonical article URL")
+    if "link in bio" not in storyboard.caption.lower():
+        raise ValueError(
+            "Instagram caption must point readers at the bio link "
+            "(caption URLs are not clickable)"
+        )
     if not storyboard.canonical_url.startswith("https://"):
         raise ValueError("Instagram storyboard canonical URL must be absolute HTTPS")

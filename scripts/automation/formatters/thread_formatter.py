@@ -8,6 +8,10 @@ from scripts.automation.renderers.social import hashtag_suffix
 # as defense in depth.
 MAX_TWEET_LEN = 280
 
+# The canonical link never stands alone: a short call to action frames it as
+# the pointer to the full article, matching the Threads link reply.
+LINK_REPLY_PREFIX = "Full piece: "
+
 
 def _one_line(value) -> str:
     return " ".join(str(value or "").split())
@@ -29,11 +33,12 @@ def format_as_thread(post: Dict, summary: Dict, mode: Literal["bullets", "narrat
 
     The root states the hook, plus the strongest supporting point when both fit,
     so the thread delivers an idea even if nobody clicks. Later replies carry
-    whole standalone points, and the canonical link is always the final reply.
-    Nothing is ever split mid-sentence; a point that cannot stand as its own
-    reply is skipped instead. Deterministic hashtags append to the root only
-    when they fit; over-long tag sets drop out instead of stealing reply
-    space. `mode` is accepted for callers that still pass it.
+    whole standalone points, and the canonical link is always the final reply,
+    framed as `Full piece: <url>` so readers know why to tap. Nothing is ever
+    split mid-sentence; a point that cannot stand as its own reply is skipped
+    instead. Deterministic hashtags append to the root only when they fit;
+    over-long tag sets drop out instead of stealing reply space. `mode` is
+    accepted for callers that still pass it.
     """
     if max_tweets < 2:
         raise ValueError(f"A thread needs room for its canonical link: max_tweets={max_tweets}")
@@ -65,7 +70,8 @@ def format_as_thread(post: Dict, summary: Dict, mode: Literal["bullets", "narrat
             continue
         tweets.append(point)
 
-    tweets.append(url)
+    link_reply = f"{LINK_REPLY_PREFIX}{url}"
+    tweets.append(link_reply if len(link_reply) <= MAX_TWEET_LEN else url)
     return tweets
 
 def split_into_tweets(text: str) -> List[str]:

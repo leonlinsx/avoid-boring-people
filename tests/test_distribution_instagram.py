@@ -148,10 +148,14 @@ def test_storyboard_has_cover_body_and_final_slides_within_limits():
     assert storyboard.slides[-1].body == "leonlins.com/writing/why"
 
 
-def test_caption_carries_the_canonical_link_and_stays_within_limits():
+def test_caption_points_at_the_bio_link_and_stays_within_limits():
+    # Caption URLs are not clickable, so the caption carries a link-in-bio call
+    # to action instead of the raw URL; the canonical URL stays on the
+    # storyboard and the final slide for hosting and as a visual cue.
     storyboard = _storyboard()
 
-    assert storyboard.canonical_url in storyboard.caption
+    assert "link in bio" in storyboard.caption.lower()
+    assert storyboard.canonical_url not in storyboard.caption
     assert len(storyboard.caption) <= CAPTION_HARD_MAX
     assert storyboard.hashtags == ("#behaviour",)
     assert all(len(slide.alt_text) <= ALT_TEXT_MAX for slide in storyboard.slides)

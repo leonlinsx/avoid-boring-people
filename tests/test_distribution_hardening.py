@@ -355,8 +355,8 @@ def test_farcaster_uses_deterministic_idempotency_key(monkeypatch, tmp_path):
     _use_temp_state(monkeypatch, tmp_path)
     captured = {}
 
-    def fake_farcaster(text, idempotency_key=None):
-        captured.update(text=text, idempotency_key=idempotency_key)
+    def fake_farcaster(text, idempotency_key=None, embeds=None):
+        captured.update(text=text, idempotency_key=idempotency_key, embeds=embeds)
         return PublishResult("farcaster", remote_id="0xcast")
 
     farcaster = _fake_module(post_to_farcaster=fake_farcaster)
@@ -367,6 +367,8 @@ def test_farcaster_uses_deterministic_idempotency_key(monkeypatch, tmp_path):
 
     expected = sha256("post:farcaster:evergreen".encode()).hexdigest()[:16]
     assert captured["idempotency_key"] == expected
+    # The canonical URL rides as a link embed so the cast renders a preview card.
+    assert captured["embeds"] == [{"url": "https://leonlins.com/writing/sample/"}]
     assert state_manager.get_platform_state("post", "farcaster")["remote_id"] == "0xcast"
 
 
@@ -387,6 +389,29 @@ def test_farcaster_validates_cast_before_submission(monkeypatch):
     assert result.remote_id == "0x1"
     assert calls[0]["json"]["idem"] == "abc123"
     assert not calls[0]["json"].get("text", "") == ""
+
+
+def test_farcaster_attaches_the_article_as_a_link_embed(monkeypatch):
+    """The canonical URL rides as an embed so the cast renders a preview card."""
+    from scripts.automation.publishers import farcaster as farcaster_module
+
+    monkeypatch.setenv("NEYNAR_API_KEY", "key")
+    monkeypatch.setenv("NEYNAR_SIGNER_UUID", "uuid")
+    calls = []
+    monkeypatch.setattr(farcaster_module.requests, "post", lambda *a, **k: calls.append(k) or SimpleNamespace(status_code=200, json=lambda: {"cast": {"hash": "0x1"}}))
+    farcaster_module.post_to_farcaster(
+        "Hook https://leonlins.com/writing/x/",
+        idempotency_key="abc123",
+        embeds=[{"url": "https://leonlins.com/writing/x/"}],
+    )
+    assert calls[0]["json"]["embeds"] == [{"url": "https://leonlins.com/writing/x/"}]
+    # No embeds means no embed key at all, matching the old payload shape.
+    farcaster_module.post_to_farcaster("Hello", idempotency_key="abc123")
+    assert "embeds" not in calls[1]["json"]
+    with pytest.raises(ValueError, match="at most 2 embeds"):
+        farcaster_module.post_to_farcaster("Hello", embeds=[{"url": "https://a.test/"}] * 3)
+    with pytest.raises(ValueError, match="{\"url\""):
+        farcaster_module.post_to_farcaster("Hello", embeds=[{"image": "https://a.test/i.png"}])
 
 
 def test_farcaster_requires_cast_hash(monkeypatch):

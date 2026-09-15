@@ -116,11 +116,16 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
         return post_single_to_mastodon(rendered[0])
     if platform == "linkedin":
         from scripts.automation.publishers.linkedin import post_to_linkedin
-        return post_to_linkedin(render_linkedin(social))
+        # The body stays link-free for reach; the URL follows as first comment.
+        return post_to_linkedin(render_linkedin(social), link_url=social.url)
     if platform == "farcaster":
         from scripts.automation.publishers.farcaster import post_to_farcaster
         idem = sha256(f"{post_id}:{platform}:{DISTRIBUTION_MODE}".encode()).hexdigest()[:16]
-        return post_to_farcaster(render_farcaster(social), idempotency_key=idem)
+        return post_to_farcaster(
+            render_farcaster(social),
+            idempotency_key=idem,
+            embeds=[{"url": article.canonical_url}],
+        )
     if platform == "devto":
         from scripts.automation.publishers.devto import post_to_devto
         return post_to_devto(article.title, article.markdown_body, list(article.tags), article.canonical_url)
