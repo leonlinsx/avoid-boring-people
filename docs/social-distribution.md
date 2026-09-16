@@ -20,7 +20,7 @@ Articles are eligible for evergreen redistribution by default. Mark a time-sensi
 
 ## Required GitHub secrets
 
-Bluesky, Mastodon, DEV, Threads (`THREADS_USER_ID` and `THREADS_ACCESS_TOKEN`, a long-lived token for the `avoidboringpeople` profile), Instagram (`INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_MEDIA_UPLOAD_URL`, and `INSTAGRAM_MEDIA_UPLOAD_SECRET`; `INSTAGRAM_MEDIA_BASE_URL` is the alternative to the upload endpoint when the slides already live somewhere Meta can fetch — see [Instagram](#instagram)), DeepSeek (`DEEPSEEK_API_KEY`; the optional `DEEPSEEK_MODEL` overrides the default `deepseek-flash` alias for DeepSeek-V4.1-Flash, and an empty or unusable response fails the run rather than falling back), Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`), and Nostr (`NOSTR_NSEC`, the publishing private key) secrets are the active production set. The `TWITTER_*` secrets are retained for an explicit `PLATFORM=twitter` run, but X API v2 posting is credit-based and returns `402 credits depleted` at a zero balance, so X is not a default destination. An optional `NOSTR_RELAYS` value overrides the default relay list. Add the following only when the corresponding deferred destination is approved for production:
+Bluesky, Mastodon, DEV, Threads (`THREADS_ACCESS_TOKEN`, a long-lived token for the `avoidboringpeople` profile), Instagram (`INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_MEDIA_UPLOAD_URL`, and `INSTAGRAM_MEDIA_UPLOAD_SECRET`; `INSTAGRAM_MEDIA_BASE_URL` is the alternative to the upload endpoint when the slides already live somewhere Meta can fetch — see [Instagram](#instagram)), DeepSeek (`DEEPSEEK_API_KEY`; the optional `DEEPSEEK_MODEL` overrides the default `deepseek-flash` alias for DeepSeek-V4.1-Flash, and an empty or unusable response fails the run rather than falling back), Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`), and Nostr (`NOSTR_NSEC`, the publishing private key) secrets are the active production set. The `TWITTER_*` secrets are retained for an explicit `PLATFORM=twitter` run, but X API v2 posting is credit-based and returns `402 credits depleted` at a zero balance, so X is not a default destination. An optional `NOSTR_RELAYS` value overrides the default relay list. Add the following only when the corresponding deferred destination is approved for production:
 
 - `LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR_URN` (`urn:li:person:…` or organization URN). LinkedIn posts carry no body link (body links cost most of the post's reach): the adapter publishes the native argument and places the canonical URL as the first comment via `POST /rest/socialActions/{postUrn}/comments`. A failed comment is logged, never retried into a duplicate post.
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REFRESH_TOKEN`
@@ -117,7 +117,7 @@ Only copy the UUID from an `approved` result to the `NEYNAR_SIGNER_UUID` GitHub 
 
 ## Threads
 
-Threads publishes through the Graph API's two-step container flow: create a container at `POST /v1.0/{user-id}/threads`, then publish it at `POST /v1.0/{user-id}/threads_publish`. It is enabled in `DEFAULT_PLATFORMS` after a successful live run, so new articles and eligible evergreen cycles reach it without any override.
+Threads publishes through the Graph API's two-step container flow: create a container at `POST /v1.0/me/threads`, then publish it at `POST /v1.0/me/threads_publish`. The authenticated `me` alias removes the need to store an app-scoped user ID alongside a rotatable token. It is enabled in `DEFAULT_PLATFORMS` after a successful live run, so new articles and eligible evergreen cycles reach it without any override.
 
 Threads reads as a conversational surface, so one article becomes one standalone idea rather than a link announcement: the main post carries the hook plus as many whole author-voice points as the 500-character limit allows, and the canonical URL follows as a self-reply. The post has to make sense without the click, and the link stays a secondary pointer. Points are never cut off mid-sentence, because an unfinished thought reads as a mistake on a conversational feed; only a lone over-long first point is trimmed, at a word boundary. Under `POST_MODE=single` the hook and the first point are both the article title, so the duplicate point is dropped.
 
@@ -125,7 +125,7 @@ Threads renders no markdown, so the renderer also strips leaked `>` blockquote m
 
 The integration was verified live before promotion, and the same steps re-verify it after a token rotation or an API change:
 
-1. Store `THREADS_USER_ID` and `THREADS_ACCESS_TOKEN` as repository secrets, then confirm the user id with `GET https://graph.threads.net/v1.0/me?fields=id,username`.
+1. Store `THREADS_ACCESS_TOKEN` as a repository secret, then confirm the account with `GET https://graph.threads.net/v1.0/me?fields=id,username`.
 2. Run the `Social New Article` workflow manually with `post_id` set to a deployed article and `platforms=threads`.
 3. Confirm the main post and the link reply appear on the profile and that `posted.json` records the root media id.
 

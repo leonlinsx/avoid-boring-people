@@ -88,7 +88,6 @@ def _threads_calls(monkeypatch, *, gets=None, posts=None):
 
 
 def _credentials(monkeypatch):
-    monkeypatch.setenv("THREADS_USER_ID", "user-1")
     monkeypatch.setenv("THREADS_ACCESS_TOKEN", "token-1")
 
 
@@ -168,11 +167,10 @@ def test_render_threads_keeps_comparison_operators():
 
 # --- Credentials and validation --------------------------------------------
 
-def test_threads_requires_user_id_and_token(monkeypatch):
-    monkeypatch.delenv("THREADS_USER_ID", raising=False)
+def test_threads_requires_token(monkeypatch):
     monkeypatch.delenv("THREADS_ACCESS_TOKEN", raising=False)
     calls = _threads_calls(monkeypatch)
-    with pytest.raises(RuntimeError, match="THREADS_USER_ID or THREADS_ACCESS_TOKEN missing"):
+    with pytest.raises(RuntimeError, match="THREADS_ACCESS_TOKEN missing"):
         threads.post_to_threads(["hello"])
     assert calls == []
 
@@ -218,9 +216,9 @@ def test_threads_publishes_the_root_post_then_a_link_reply(monkeypatch, capsys):
         "threads", remote_id="media-1", remote_url="https://www.threads.net/@x/post/1"
     )
     assert calls[0]["url"] == f"{threads.THREADS_API_BASE}/me"
-    assert calls[1]["url"] == f"{threads.THREADS_API_BASE}/user-1/threads"
+    assert calls[1]["url"] == f"{threads.THREADS_API_BASE}/me/threads"
     assert calls[1]["data"] == {"media_type": "TEXT", "text": "Main idea"}
-    assert calls[2]["url"] == f"{threads.THREADS_API_BASE}/user-1/threads_publish"
+    assert calls[2]["url"] == f"{threads.THREADS_API_BASE}/me/threads_publish"
     assert calls[2]["data"] == {"creation_id": "container-1"}
     assert calls[3]["data"] == {
         "media_type": "TEXT",
@@ -310,7 +308,7 @@ def test_threads_does_not_retry_an_ambiguous_publish(monkeypatch):
     with pytest.raises(RuntimeError) as error:
         retry.run_with_retries(lambda: threads.post_to_threads(["one"]))
     assert not retry.is_transient(error.value)
-    assert [call["url"] for call in calls].count(f"{threads.THREADS_API_BASE}/user-1/threads_publish") == 1
+    assert [call["url"] for call in calls].count(f"{threads.THREADS_API_BASE}/me/threads_publish") == 1
 
 
 def test_threads_authentication_failure_is_permanent(monkeypatch):
@@ -342,8 +340,8 @@ def test_threads_runs_in_both_automatic_distribution_paths():
     evergreen = (root / ".github" / "workflows" / "social-evergreen.yml").read_text(encoding="utf-8")
 
     for name, workflow in (("social-new.yml", new), ("social-evergreen.yml", evergreen)):
-        assert "THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}" in workflow, f"{name} must pass the Threads user id"
         assert "THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}" in workflow, f"{name} must pass the Threads token"
+        assert "THREADS_USER_ID" not in workflow, f"{name} must publish through the token-bound me alias"
 
     assert "src/content/blog/**/index.md" in new
     assert "schedule:" in evergreen

@@ -34,7 +34,6 @@ jobs:
           python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
       - name: Check long-lived social tokens
         env:
-          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}

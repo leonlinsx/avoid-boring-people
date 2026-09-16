@@ -29,16 +29,16 @@ from scripts.automation.publishers import instagram, threads
 
 class Probe(NamedTuple):
     platform: str
-    user_id_env: str
+    user_id_env: str | None
     token_env: str
-    verify: Callable[[str, str], dict]
+    verify: Callable[..., dict]
     rotation: str
 
 
 PROBES: tuple[Probe, ...] = (
     Probe(
         platform="Threads",
-        user_id_env="THREADS_USER_ID",
+        user_id_env=None,
         token_env="THREADS_ACCESS_TOKEN",
         verify=threads.verify_credentials,
         rotation=(
@@ -81,10 +81,8 @@ def log_summary(message: str) -> None:
 def run_probe(probe: Probe, environ: Optional[Dict[str, str]] = None) -> ProbeResult:
     """Probe one platform without ever echoing the credential."""
     env = os.environ if environ is None else environ
-    values = {
-        probe.user_id_env: (env.get(probe.user_id_env) or "").strip(),
-        probe.token_env: (env.get(probe.token_env) or "").strip(),
-    }
+    names = [name for name in (probe.user_id_env, probe.token_env) if name]
+    values = {name: (env.get(name) or "").strip() for name in names}
     missing = [name for name, value in values.items() if not value]
     if missing:
         return ProbeResult(
@@ -95,7 +93,10 @@ def run_probe(probe: Probe, environ: Optional[Dict[str, str]] = None) -> ProbeRe
         )
 
     try:
-        probe.verify(values[probe.user_id_env], values[probe.token_env])
+        args = [values[probe.token_env]]
+        if probe.user_id_env:
+            args.insert(0, values[probe.user_id_env])
+        probe.verify(*args)
     except Exception as error:  # any error means this token cannot publish
         return ProbeResult(probe.platform, "failed", str(error), probe.rotation)
 

@@ -57,6 +57,21 @@ def test_valid_credentials_pass_the_stored_values_through():
     assert seen["args"] == ("42", "t")
 
 
+def test_token_only_probe_passes_only_the_token_through():
+    seen = {}
+
+    def verify(token):
+        seen["token"] = token
+        return {}
+
+    probe = _probe(verify, user_id_env=None)
+
+    result = check_tokens.run_probe(probe, {"FAKE_TOKEN": " t "})
+
+    assert result.status == "ok"
+    assert seen == {"token": "t"}
+
+
 def test_a_rejected_token_fails_with_rotation_instructions():
     def verify(user_id, token):
         raise RuntimeError("❌ Fake API error 401: token expired")
@@ -142,6 +157,8 @@ def test_production_probes_cover_the_expiring_tokens():
 
     assert platforms == {"Threads", "Instagram"}
     assert env_names == {"THREADS_ACCESS_TOKEN", "INSTAGRAM_ACCESS_TOKEN"}
+    threads_probe = next(probe for probe in check_tokens.PROBES if probe.platform == "Threads")
+    assert threads_probe.user_id_env is None
 
 
 @pytest.mark.parametrize("probe", check_tokens.PROBES, ids=lambda probe: probe.platform)

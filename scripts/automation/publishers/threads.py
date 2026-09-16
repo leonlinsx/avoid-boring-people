@@ -21,12 +21,11 @@ THREADS_TEXT_LIMIT = 500
 REQUEST_TIMEOUT_SECONDS = 20
 
 
-def _get_config() -> tuple[str, str]:
-    user_id = (os.getenv("THREADS_USER_ID") or "").strip()
+def _get_config() -> str:
     token = (os.getenv("THREADS_ACCESS_TOKEN") or "").strip()
-    if not user_id or not token:
-        raise RuntimeError("❌ THREADS_USER_ID or THREADS_ACCESS_TOKEN missing")
-    return user_id, token
+    if not token:
+        raise RuntimeError("❌ THREADS_ACCESS_TOKEN missing")
+    return token
 
 
 def _auth_headers(token: str) -> dict:
@@ -48,7 +47,7 @@ def _api_error(response) -> RuntimeError:
     return RuntimeError(f"❌ Threads API error {response.status_code}: {detail}")
 
 
-def verify_credentials(user_id: str, token: str) -> dict:
+def verify_credentials(token: str) -> dict:
     """Validate the token once per run, not once per post in a threaded unit."""
     response = requests.get(
         f"{THREADS_API_BASE}/me",
@@ -72,12 +71,12 @@ def validate_text(text: str) -> None:
         )
 
 
-def _create_container(user_id: str, token: str, text: str, reply_to_id: str | None = None) -> str:
+def _create_container(token: str, text: str, reply_to_id: str | None = None) -> str:
     payload = {"media_type": "TEXT", "text": text}
     if reply_to_id is not None:
         payload["reply_to_id"] = reply_to_id
     response = requests.post(
-        f"{THREADS_API_BASE}/{user_id}/threads",
+        f"{THREADS_API_BASE}/me/threads",
         data=payload,
         headers=_auth_headers(token),
         timeout=REQUEST_TIMEOUT_SECONDS,
@@ -90,7 +89,7 @@ def _create_container(user_id: str, token: str, text: str, reply_to_id: str | No
     return str(container_id)
 
 
-def _container_status(user_id: str, token: str, container_id: str) -> tuple[str, str | None]:
+def _container_status(token: str, container_id: str) -> tuple[str, str | None]:
     response = requests.get(
         f"{THREADS_API_BASE}/{container_id}",
         params={"fields": "status,error_message"},
@@ -103,9 +102,9 @@ def _container_status(user_id: str, token: str, container_id: str) -> tuple[str,
     return str(body.get("status") or "UNKNOWN"), body.get("error_message")
 
 
-def _publish_container(user_id: str, token: str, container_id: str) -> str:
+def _publish_container(token: str, container_id: str) -> str:
     response = requests.post(
-        f"{THREADS_API_BASE}/{user_id}/threads_publish",
+        f"{THREADS_API_BASE}/me/threads_publish",
         data={"creation_id": container_id},
         headers=_auth_headers(token),
         timeout=REQUEST_TIMEOUT_SECONDS,
@@ -117,7 +116,7 @@ def _publish_container(user_id: str, token: str, container_id: str) -> str:
         # Meta documents this failure mode; report the container status rather
         # than an opaque "publish returned nothing".
         try:
-            status, status_error = _container_status(user_id, token, container_id)
+            status, status_error = _container_status(token, container_id)
         except Exception:  # noqa: BLE001 - diagnostics must not mask the failure
             status, status_error = "unknown", None
         detail = f"{status}: {status_error}" if status_error else status
@@ -155,13 +154,13 @@ def post_to_threads(posts: list[str]) -> PublishResult:
         raise ValueError("No Threads posts to publish")
     for text in posts:
         validate_text(text)
-    user_id, token = _get_config()
-    verify_credentials(user_id, token)
+    token = _get_config()
+    verify_credentials(token)
     root_id: str | None = None
     reply_to_id: str | None = None
     for text in posts:
-        container_id = _create_container(user_id, token, text, reply_to_id=reply_to_id)
-        media_id = _publish_container(user_id, token, container_id)
+        container_id = _create_container(token, text, reply_to_id=reply_to_id)
+        media_id = _publish_container(token, container_id)
         if root_id is None:
             root_id = media_id
         reply_to_id = media_id
