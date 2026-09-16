@@ -22,6 +22,14 @@
         "last_posted_at": "2026-09-12T11:51:21Z",
         "remote_id": "0x5d4f466e1d52d473a026725d83c0ff00255e1fd7"
       },
+      "instagram": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-16T00:39:34Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18100030364359168",
+        "remote_url": "https://www.instagram.com/p/DdVBD96AF5y/"
+      },
       "mastodon": {
         "count": 1,
         "last_mode": "evergreen",
