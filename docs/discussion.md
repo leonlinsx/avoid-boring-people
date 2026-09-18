@@ -46,10 +46,13 @@ of looking at the problem are welcome.`
   badge comes from the `is_author` column, so a public visitor who names
   themselves "Leon" gets no badge.
 - Empty state: `No comments yet. Add the first one.` with the form as usual.
-- If the API is unreachable, the section shows `Discussion is temporarily
-unavailable.` and the article is unaffected. The same message stands in for the
-  form when the build had no Turnstile site key, so a reader never sees a form that
-  could not submit.
+- If the API is unreachable, the list area shows `Comments could not be loaded.
+Refresh the page to try again.` and the article is unaffected. A failed post
+  reports `Discussion is temporarily unavailable.` instead, because advising a
+  refresh there would discard what the reader wrote.
+- When the build had no Turnstile site key, `Discussion is temporarily
+unavailable.` stands in for the form, so a reader never sees a form that could
+  not submit.
 - A private path sits below the form: `Prefer a private conversation? Email
 Leon.` The mailto link carries the article slug as its subject. Commenters are
   never subscribed to the newsletter and are never asked for an email address.

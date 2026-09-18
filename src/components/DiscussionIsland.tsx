@@ -16,6 +16,10 @@ const TURNSTILE_SCRIPT_URL =
 
 const EMPTY_STATE = 'No comments yet. Add the first one.';
 const UNAVAILABLE = commentErrorMessages.unavailable;
+// A list that failed to load is retryable, so it says how. A failed post keeps
+// the plainer message: advising a refresh there would discard the draft.
+const LOAD_FAILED =
+  'Comments could not be loaded. Refresh the page to try again.';
 const INVITATION =
   'Thoughtful disagreements, additional evidence, and different ways of looking at the problem are welcome.';
 
@@ -337,7 +341,7 @@ export default function DiscussionIsland({
         {loadState === 'loading' && turnstileSiteKey && (
           <p class="discussion-muted">Loading discussion…</p>
         )}
-        {loadState === 'error' && <p class="discussion-muted">{UNAVAILABLE}</p>}
+        {loadState === 'error' && <p class="discussion-muted">{LOAD_FAILED}</p>}
         {loadState === 'ready' && threads.length === 0 && (
           <p class="discussion-muted">{EMPTY_STATE}</p>
         )}

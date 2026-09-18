@@ -4230,6 +4230,19 @@ function testCommentIntegrationBoundaries() {
   assert.match(island, /turnstileToken: verificationToken\.current/);
   assert.match(island, /website: honeypot/);
   assert.match(island, /No comments yet\. Add the first one\./);
+  // A list that failed to load says how to retry. A failed post must not, because
+  // a refresh would discard the draft, so only the no-site-key placeholder keeps
+  // the configuration-error wording.
+  assert.match(
+    island,
+    /'Comments could not be loaded\. Refresh the page to try again\.'/,
+  );
+  assert.match(island, /loadState === 'error'[\s\S]{0,60}LOAD_FAILED/);
+  assert.equal(
+    island.match(/\{UNAVAILABLE\}/g)?.length,
+    1,
+    'the no-site-key placeholder is the only remaining use of the unavailable message',
+  );
   assert.match(
     island,
     /Discussion\{total > 0 \? ` · \$\{total\}` : ''\}/,
