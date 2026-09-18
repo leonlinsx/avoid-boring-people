@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<BaseLayout
+  title={`What I'm Doing Now | ${SITE_TITLE}`}
+  description="What Leon Lin is currently building, thinking about, and interested in."
+>
+  <h1>What I'm doing now</h1>
+  <p class="updated">Updated September 2026.</p>
+
+  <p>
+    I'm currently working at the intersection of investing, software, and
+    decision-making.
+  </p>
+
+  <section>
+    <h2>Building</h2>
+    <ul>
+      <li>Personal research systems for public-market investing</li>
+      <li>
+        Avoid Boring People and the infrastructure around its distribution
+      </li>
+      <li>Experiments in small-scale ownership and investing</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Thinking about</h2>
+    <ul>
+      <li>AI-enabled research and decision-making workflows</li>
+      <li>How technology is changing investment research and markets</li>
+      <li>
+        How to create asymmetric opportunities in investing, business, and
+        careers
+      </li>
+      <li>
+        What world-class performers across different fields have in common
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Interested in meeting</h2>
+    <ul>
+      <li>Exceptional investors, founders, and builders</li>
+      <li>Athletes, coaches, and artists with deep mastery of their craft</li>
+      <li>People pursuing something exceptionally ambitious or interesting</li>
+    </ul>
+  </section>
+
+  <p>
+    If any of this overlaps with what you're working on, I'd be glad to
+    <a href="mailto:contact@leonlins.com">hear from you</a>.
+  </p>
+</BaseLayout>
+
+<style>
+  .updated {
+    color: var(--color-text-muted);
+    margin-top: -1rem;
+  }
+</style>
