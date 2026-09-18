@@ -9,8 +9,8 @@ name: Engagement ledger
 # token the repository deliberately does not store, so they stay uncovered.
 on:
   schedule:
-    # Monday morning UTC: after the Saturday evergreen cycle, so the newest
-    # observations are at most two days old when ranking reads them.
+    # Monday morning UTC: after the Sunday evergreen window, so the newest
+    # observations are at most a day old when ranking reads them.
     - cron: '0 9 * * 1'
   workflow_dispatch:
 

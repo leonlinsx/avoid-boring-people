@@ -1616,8 +1616,14 @@ def test_instagram_is_wired_into_both_production_workflows():
         assert f"{name}: ${{{{ secrets.{name} }}}}" in evergreen
     assert "npm ci" in evergreen
     assert "node-version: '22'" in evergreen
-    # Cron cadence is unchanged.
-    assert "cron: '0 14 * * 2,5'" in evergreen
+    # Each Eastern window is scheduled at both DST offsets and gated by the cron
+    # that fired, so the wrong offset never publishes and load delays are safe.
+    for window in ("37 13 * * 2,4", "37 14 * * 2,4", "37 21 * * 0", "37 22 * * 0"):
+        assert f"cron: '{window}'" in evergreen
+    assert "github.event.schedule" in evergreen
+    # An empty cron identifier on a schedule event must fail, not publish.
+    assert "GITHUB_EVENT_NAME" in evergreen
+    assert "needs.gate.outputs.run == 'true'" in evergreen
     # Instagram never becomes an evergreen-only or schedule-specific override.
     assert "inputs.platforms" not in evergreen
 

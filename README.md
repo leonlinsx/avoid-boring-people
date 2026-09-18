@@ -63,7 +63,8 @@ The repo holds five systems:
 New articles go in `src/content/blog/<slug>/index.md` (see
 [docs/template.md](docs/template.md) for frontmatter). Push-triggered
 workflows wait for the article to be live in the deployed search index, then
-run distribution; evergreen cycles republish back-catalog pieces twice weekly.
+run distribution; evergreen cycles republish back-catalog pieces three times
+weekly (Tuesday and Thursday mornings, Sunday evening, Eastern).
 
 ## Commands
 

@@ -7,7 +7,8 @@ name: Token health
 # token, and a platform whose secrets are unset is reported as skipped.
 on:
   schedule:
-    # Before the Tuesday/Friday evergreen cycle, so a lapse is caught first.
+    # Before every Tuesday/Thursday/Sunday evergreen window, so a lapse is
+    # caught first.
     - cron: '0 8 * * *'
   workflow_dispatch:
 

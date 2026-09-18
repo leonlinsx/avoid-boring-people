@@ -2,7 +2,13 @@ name: Social Evergreen
 
 on:
   schedule:
-    - cron: '0 14 * * 2,5'
+    # Cron is UTC-only and has no DST support, so each Eastern window is listed
+    # at both offsets (EDT is UTC-4, EST is UTC-5); `gate` keeps the run whose
+    # cron matches today's window.
+    - cron: '37 13 * * 2,4'  # Tue/Thu 09:37 America/New_York (EDT)
+    - cron: '37 14 * * 2,4'  # Tue/Thu 09:37 America/New_York (EST)
+    - cron: '37 21 * * 0'    # Sun 17:37 America/New_York (EDT)
+    - cron: '37 22 * * 0'    # Sun 17:37 America/New_York (EST)
   workflow_dispatch:
 
 permissions:
@@ -13,7 +19,70 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Cron is UTC-only, so each Eastern window is scheduled at both DST offsets.
+  # The gate keys off `github.event.schedule` — the cron that fired — so a run
+  # delayed under load still resolves to the right window and the wrong offset
+  # can never publish. Only the Eastern weekday comes from the clock, so keep
+  # every job timeout in the shared concurrency group well under six hours: a
+  # run held past Eastern midnight would read the next day and skip.
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.window.outputs.run }}
+    steps:
+      - name: Resolve the Eastern window
+        id: window
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          if [ -z "$SCHEDULE" ]; then
+            # A schedule event always carries the cron that fired, so an empty
+            # value there means something is wrong and guessing could publish
+            # off-window.
+            if [ "$GITHUB_EVENT_NAME" = schedule ]; then
+              echo '::error::scheduled run carried no cron identifier; refusing to guess'
+              exit 1
+            fi
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+            echo 'Manual dispatch: the Eastern window gate does not apply.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          read -r dow day clock zone offset <<< "$(TZ=America/New_York date '+%u %a %H:%M %Z %z')"
+          case "$zone" in
+            EST|EDT) ;;
+            *) echo "::error::America/New_York tz data unavailable (${zone:-unknown}); refusing to guess"; exit 1 ;;
+          esac
+          case "$dow" in
+            2|4) target=$((9 * 60 + 37)) ;;
+            7)   target=$((17 * 60 + 37)) ;;
+            *)   target='' ;;
+          esac
+          expected=''
+          if [ -n "$target" ]; then
+            # `%z` is the Eastern offset right now, so the expected UTC time of
+            # today's window follows the current DST phase.
+            minutes=$((target + 10#${offset:1:2} * 60))
+            expected="$((minutes % 60)) $((minutes / 60))"
+          fi
+          read -r cron_min cron_hour _ <<< "$SCHEDULE"
+          if [ -n "$expected" ] && [ "$cron_min" -eq "$((minutes % 60))" ] && [ "$cron_hour" -eq "$((minutes / 60))" ]; then
+            run=true
+          else
+            run=false
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "Evergreen gate: local=$day $clock $zone, schedule='$SCHEDULE', expected='$expected' -> run=$run" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$run" = false ]; then
+            if [ -n "$expected" ]; then
+              echo "::notice::evergreen gate skipped this window: '$SCHEDULE' is not today's '$expected' Eastern run"
+            else
+              echo "::notice::evergreen gate skipped this window: $day is not an evergreen day"
+            fi
+          fi
+
   distribute:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
