@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { requestSubscription } from '../../../lib/newsletter/subscriptions';
+import { attributionFromRequest } from '../../../lib/newsletter/attribution';
 export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -14,6 +15,7 @@ export const POST: APIRoute = async ({ request }) => {
         source: typeof data.source === 'string' ? data.source : undefined,
         honeypot: typeof data.website === 'string' ? data.website : undefined,
         ip: forwarded ?? 'unknown',
+        attribution: attributionFromRequest(data.attribution),
       }),
     );
   } catch (error) {

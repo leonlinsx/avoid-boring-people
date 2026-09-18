@@ -16,6 +16,7 @@ import pytest
 
 from scripts.automation import auto_post, state_manager
 from scripts.automation import retry as retry_module
+from scripts.automation.attribution import tagged_url
 from scripts.automation.content import PublishResult, SocialPost
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.renderers import render_farcaster, render_mastodon, render_thread
@@ -214,10 +215,20 @@ def test_dry_run_prints_the_exact_copy_each_channel_would_publish(monkeypatch, t
 
     output = capsys.readouterr().out
     tags = tuple(auto_post.sanitize_tags(_post()["tags"]))
-    social = SocialPost(summary["teaser"], "\n\n".join(summary["points"]), _post()["url"], tuple(format_as_thread(_post(), summary, mode="bullets", max_tweets=5, tags=tags)), tags)
-    for part in render_thread(social):
-        assert part in output
-    assert render_mastodon(social)[0] in output
+
+    def social_for(platform):
+        return SocialPost(
+            summary["teaser"],
+            "\n\n".join(summary["points"]),
+            tagged_url(_post()["url"], platform, _post()["id"]),
+            tuple(format_as_thread(_post(), summary, mode="bullets", max_tweets=5, tags=tags)),
+            tags,
+        )
+
+    for platform in ("twitter", "bluesky"):
+        for part in render_thread(social_for(platform)):
+            assert part in output
+    assert render_mastodon(social_for("mastodon"))[0] in output
 
 
 # --- Retry behavior ----------------------------------------------------------
@@ -441,7 +452,7 @@ def test_mastodon_prefers_one_suitable_post(monkeypatch, tmp_path):
     assert threads == []  # one suitable post, not a blind thread copy
     assert len(singles) == 1
     assert len(singles[0]) <= 500
-    assert "https://leonlins.com/writing/sample/" in singles[0]
+    assert tagged_url("https://leonlins.com/writing/sample/", "mastodon", "post") in singles[0]
 
 
 def test_mastodon_rendering_is_platform_appropriate():

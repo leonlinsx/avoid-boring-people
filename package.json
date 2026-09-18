@@ -16,6 +16,8 @@
     "newsletter:preview": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/preview.ts",
     "newsletter:send": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/send-campaign.ts",
     "newsletter:test": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/test-send.ts",
+    "newsletter:analytics": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/analytics.ts",
+    "newsletter:analytics:email": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/analytics-email.ts",
     "comments:list": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/comments/list.ts",
     "comments:hide": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/comments/hide.ts",
     "comments:restore": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/comments/restore.ts",

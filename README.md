@@ -24,10 +24,13 @@ The repo holds four systems:
 3. **Newsletter subscription** — an owned list (Neon Postgres + Amazon SES)
    being migrated off Substack, currently in controlled validation. Public
    signup is still Substack until the explicit cutover; no production email
-   sends without a local human-confirmed CLI action. Details:
+   sends without a local human-confirmed CLI action. First-party attribution and
+   a read-only analytics report measure acquisition, growth, and deliverability
+   from the owned tables. Details:
    [docs/newsletter-status.md](docs/newsletter-status.md),
    [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md),
-   [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md).
+   [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md),
+   [docs/newsletter-analytics.md](docs/newsletter-analytics.md).
 4. **Article discussion** — a small first-party discussion under each article
    (Neon Postgres, accountless opaque browser token, Cloudflare Turnstile,
    local-only moderation CLI). It replaced Giscus, so no GitHub account is
@@ -41,7 +44,7 @@ The repo holds four systems:
 ├── src/pages/             # routes, incl. /api/newsletter/* and /api/comments/*
 ├── src/components/        # shared UI, incl. SubscribeForm.astro, Discussion.astro
 ├── scripts/automation/    # social distribution (summarizers, renderers, publishers)
-├── scripts/newsletter/    # owned-newsletter CLIs (import, preview, campaign, send)
+├── scripts/newsletter/    # owned-newsletter CLIs (import, preview, campaign, send, analytics)
 ├── scripts/comments/      # discussion moderation CLIs (list, hide, restore, delete, reply)
 ├── migrations/            # Neon Postgres schema migrations
 ├── docs/                  # runbooks, evaluations, per-system documentation
@@ -75,6 +78,8 @@ All commands run from the repo root.
 | Allowlisted newsletter test | `npm run newsletter:test -- <article-id> <recipient> --confirm-test` |
 | Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <n> --confirm-snapshot` |
 | Production newsletter send | `npm run newsletter:send -- <campaign-id> --expect-recipients <n> --confirm-production` |
+| Newsletter analytics report | `npm run newsletter:analytics -- [--days <1-365>] [--json]` |
+| Email the analytics report | `npm run newsletter:analytics:email -- --to <allowlisted-address> --confirm-send [--days <1-365>]` |
 | Review discussion comments | `npm run comments:list -- [--slug <slug>] [--include-hidden]` |
 | Hide a discussion comment | `npm run comments:hide -- <comment-id>` |
 | Restore a hidden comment | `npm run comments:restore -- <comment-id>` |
@@ -102,6 +107,10 @@ Vercel deploys never send email or social posts.
 - SES/SNS event ingestion authenticates messages before changing subscriber
   state; missing email-rendering support fails visibly rather than sending
   broken mail.
+- Signup attribution is first-touch and written only through the owned signup
+  path, so the Substack form stays untouched and stores none of it; the
+  analytics report is read-only and never estimates opens, clicks, or engaged
+  readers.
 - The Substack integration is preserved until the explicit cutover.
 - Discussion moderation stays local and explicit; hidden comments are never
   returned publicly, and the author badge is set only by the operator CLI.
@@ -117,6 +126,7 @@ Vercel deploys never send email or social posts.
 | [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md) | Owned-newsletter design, phased gates, data/consent rules |
 | [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md) | SES/SNS/Vercel setup and the local production-send workflow |
 | [docs/newsletter-sns-diagnostics.md](docs/newsletter-sns-diagnostics.md) | Phase 3 transport diagnostics record |
+| [docs/newsletter-analytics.md](docs/newsletter-analytics.md) | First-party attribution model, metric definitions, and the local report CLI |
 | [docs/discussion.md](docs/discussion.md) | First-party article discussion: data model, identity, abuse controls, API, moderation CLI |
 | [docs/github-action-evaluation.md](docs/github-action-evaluation.md) | Workflow coverage, quality signals, known gaps |
 | [docs/email_digest_evaluation.md](docs/email_digest_evaluation.md) | Summarizer/ranking assessment and opportunities |

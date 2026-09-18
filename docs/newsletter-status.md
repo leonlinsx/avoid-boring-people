@@ -95,6 +95,7 @@ This status file is the handoff record for the current newsletter migration phas
 - SES event review: DELIVERY/BOUNCE/COMPLAINT notifications still pass SNS signature plus exact-topic validation before any state change, are deduplicated on `(provider, event_id)`, persist provider message IDs and event state, correlate to campaign recipients where possible, suppress only `active` subscribers, and retain pre-association events for later reconciliation. No open/click tracking was added. No implementation or test changes were needed.
 - Phase 4 remains controlled-test-only: no real Substack subscriber import, no warm-up cohort, public signup still on Substack.
 - **Deliverability authentication evidence closed 2026-09-13:** a Gmail *Show Original* check on production mail from `newsletter@leonlins.com` reports SPF **pass**, DKIM **pass**, and DMARC **pass** with aligned authentication. This is the operator's manual check from a Gmail mailbox, not something this repository can reproduce on its own, so it is recorded as reported evidence; the previously open "SPF/DKIM/DMARC NOT yet verified" item is now closed on that basis. What it establishes is that the identity authenticates for this recipient: it is not a general inbox-placement or reputation claim. The published DMARC policy is still `p=none` (monitoring), which remains a separate, deliberate DNS decision listed under the next gate.
+- First-party attribution and analytics were added ahead of cutover on 2026-09-17 and change no sending behavior: `migrations/newsletter/004_acquisition_attribution.sql` adds the attribution columns, `src/lib/newsletter/attribution.ts` derives a fixed source vocabulary from first-touch evidence, distribution links now carry canonical `utm_*` tags, and the owned signup route would store those values on the subscriber row at INSERT time only. The report CLI (`npm run newsletter:analytics`) is read-only over existing tables, and the optional email variant is restricted to the existing author allowlist. Nothing here sent email, imported a subscriber, or changed the Substack path, and no attribution is stored while the public form still posts to Substack.
 
 ## Not started
 
@@ -107,6 +108,7 @@ This status file is the handoff record for the current newsletter migration phas
 - The current form posts to `https://avoidboringpeople.substack.com/api/v1/free`.
 - `src/pages/api/subscribe.ts` behavior is unchanged; it carries a one-line `prerender = false` flag so the Substack fallback route deploys.
 - The owned lifecycle endpoints exist but are not linked from the public site; Substack remains the only production signup path.
+- First-touch attribution capture is live in the signup form's bundled script, but it is inert: the Substack form stores none of it, so no attribution reaches Neon until cutover. The local analytics report reads the owned tables only and therefore reports `unknown` acquisition until owned signups exist.
 - No owned production campaign send, public owned-signup cutover, or DNS change has occurred during this migration work.
 
 ## Next human/external gate

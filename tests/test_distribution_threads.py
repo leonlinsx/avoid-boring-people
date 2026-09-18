@@ -32,6 +32,7 @@ except ImportError:
     sys.modules.setdefault("requests", _requests_stub)
 
 from scripts.automation import auto_post, retry, state_manager
+from scripts.automation.attribution import tagged_url
 from scripts.automation.content import SocialPost
 from scripts.automation.publishers import threads
 from scripts.automation.renderers import render_threads
@@ -392,7 +393,7 @@ def test_auto_post_dispatches_threads_ignoring_post_mode(monkeypatch, tmp_path):
 
     auto_post.main()
 
-    assert published == [["T", f"Full piece: {URL}"]]
+    assert published == [["T", f"Full piece: {tagged_url(URL, 'threads', 'post')}"]]
     assert state_manager.get_platform_state("post", "threads")["remote_id"] == "media-1"
 
 
