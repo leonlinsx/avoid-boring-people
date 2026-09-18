@@ -6,6 +6,8 @@ Move **Avoid Boring People by Leon Lin** from Substack as its operational newsle
 
 The owned system is deliberately narrow: Neon managed Postgres for subscriber and campaign state, Amazon SES for delivery, short Astro/Vercel request handlers for subscriber lifecycle and SNS events, and an explicitly invoked local CLI for campaign work. It excludes paid memberships, marketing automation, generalized segmentation, custom tracking, and automated sending from builds, CI, or deployments.
 
+Recorded exception (2026-09-17): first-party **attribution and analytics** were added ahead of cutover, and they are intentionally not "custom tracking" in the excluded sense. Attribution is first-touch evidence captured in the reader's own browser and written only on an owned signup; the report is read-only over stored rows; there is no pixel, no click rewriting, no third-party analytics dependency, and no dashboard. See [newsletter-analytics.md](newsletter-analytics.md).
+
 ## Current state and target runtime
 
 The repository runs Astro 5.13.7 with static output. Phase 1 added the compatible Vercel adapter only to support isolated on-demand newsletter lifecycle routes; all normal pages remain static. `src/pages/newsletter.astro` is presently superseded by the `/newsletter -> /#subscribe` redirect, while `SubscribeForm.astro` and `src/pages/api/subscribe.ts` use the production Substack endpoint. Do not change signup behavior in Phases 0–4.5. One exception is recorded: `src/pages/api/subscribe.ts` carries `export const prerender = false` so the Substack fallback route deploys on the static-default site; this changes no signup behavior.
@@ -43,7 +45,7 @@ Use a new AWS account with MFA/root security and budget alerting. Configure SES 
 
 Keep separate least-privilege identities: a local sender profile with sending/quota permissions only, and Vercel-specific confirmation credentials with only required send permission. Store Vercel credentials as Vercel environment secrets; do not commit credentials or reuse the sender identity. SNS ingestion receives no AWS credentials unless truly required.
 
-Before infrastructure work, confirm the DNS provider and record authority; existing SPF/DKIM/DMARC; availability of `mail.leonlins.com`; TXT/CNAME/MX capability; inbound-mail routing conflicts; and that `contact@leonlins.com` is monitored. Do not guess or modify DNS in Phase 0. Add a factual privacy-policy page before public owned signup, covering Substack migration, Neon storage, SES delivery, double opt-in, suppression/event processing, and consent history.
+Before infrastructure work, confirm the DNS provider and record authority; existing SPF/DKIM/DMARC; availability of `mail.leonlins.com`; TXT/CNAME/MX capability; inbound-mail routing conflicts; and that `contact@leonlins.com` is monitored. Do not guess or modify DNS in Phase 0. Add a factual privacy-policy page before public owned signup, covering Substack migration, Neon storage, SES delivery, double opt-in, suppression/event processing, consent history, and first-touch signup attribution (referrer host, campaign tags, and landing path — no IP address, no cookie set by the site, no third party).
 
 ## Phases and acceptance gates
 
@@ -67,9 +69,13 @@ Add SES/DNS/IAM runbooks, configuration-set and SNS integration, authenticated e
 
 Validate SES production access, arbitrary-address confirmations, authentication/alignment, custom MAIL FROM, SNS lifecycle events, unsubscribe, quota and duplicate-send protection, Gmail/Outlook/Yahoo delivery, footer/privacy policy, and DNS compatibility using controlled test recipients/cohorts only.
 
+### Phase 4 companion — attribution and analytics (added 2026-09-17)
+
+Capture how each owned signup is acquired, and report audience, growth, acquisition, and deliverability from stored rows. It added one additive migration (`004_acquisition_attribution.sql`), browser-side first-touch capture behind the existing signup form, canonical `utm_*` tagging of distribution links, the stored attribution write on the owned subscribe path, a read-only report CLI, and an allowlisted email variant. It changes no sending behavior, stores no attribution while public signup remains on Substack, adds no service or dependency, and reports unavailable measurements (opens, clicks, paid conversion) as unavailable rather than estimating them. Apply `004_acquisition_attribution.sql` before deploying either the owned subscribe endpoint or the report CLI: the endpoint writes the new columns (and would fail signups), while the report fails loudly with `column "acquisition_source" does not exist`, which makes a run of `npm run newsletter:analytics` the post-migration smoke test.
+
 ### Phase 4.5 — warm-up
 
-Use an explicit, transparent cohort selector. Begin with roughly 200–300 recently active recipients when reliable activity exists, otherwise most recently subscribed legitimate active recipients; grow conservatively over about 4–8 weeks. Record each cohort and results. Hold expansion and investigate when complaint rate reaches 0.1% or hard-bounce rate reaches 2%; lower is better. Do not send the whole legacy list merely because SES production access exists.
+Use an explicit, transparent cohort selector. Begin with roughly 200–300 recently active recipients when reliable activity exists, otherwise most recently subscribed legitimate active recipients; grow conservatively over about 4–8 weeks. Record each cohort and results. Hold expansion and investigate when complaint rate reaches 0.1% or hard-bounce rate reaches 2%; lower is better. `npm run newsletter:analytics` reports both rates against the window's sends and raises them as alerts at those thresholds, so the report is the operating view for this gate. Do not send the whole legacy list merely because SES production access exists.
 
 ### Phase 5 — cutover
 
@@ -82,5 +88,6 @@ Only after successful validation and warm-up: switch canonical signup to the own
 - Renderer: absolute internal links/assets, unchanged external HTTPS links, no relative/localhost URLs, explicit unsupported-image/component errors, HTML-size check, and HTML/plain-text output.
 - Sending: required confirmation flag, test-recipient restriction, quota failure, campaign recipient uniqueness, restart/retry safety, and no production sends from test/build/deploy paths.
 - Events: invalid SNS signatures/topic/schema rejected; valid notifications deduplicated and applied correctly.
+- Attribution and analytics: first-touch storage survives later visits but an uninformative record is upgraded once; a resubmission never rewrites stored attribution; the source vocabulary is validated; report metrics, window validation, alert thresholds, and small-sample suppression are asserted against a real Postgres fixture (`tests/newsletter-analytics-postgres.ts`), and the report stays read-only.
 
 After every phase, run focused tests plus `npm test` and `npm run build` when relevant, inspect the diff, update the status document, and stop at the next human or external gate.

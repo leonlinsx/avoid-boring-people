@@ -48,7 +48,27 @@ const {
   {!compact && trustText && <p class="trust-text">{trustText}</p>}
 </section>
 
-<script is:inline>
+<script>
+  import { firstTouchAttribution } from '../lib/newsletter/attribution';
+
+  // First-touch acquisition capture. Every page that offers this form records
+  // how the reader first arrived, so the owned signup path can attribute the
+  // subscription later. Nothing is sent from here: the Substack form below and
+  // its POST are unchanged, and consumption starts at the Phase 5 cutover.
+  try {
+    firstTouchAttribution(
+      {
+        search: location.search,
+        pathname: location.pathname,
+        host: location.host,
+        referrer: document.referrer,
+      },
+      window.localStorage,
+    );
+  } catch {
+    // Attribution capture is best effort and must never block signup.
+  }
+
   const form = document.getElementById('substack-form');
   const msg = document.getElementById('subscribe-message');
   const firstUrl = document.getElementById('first_url');

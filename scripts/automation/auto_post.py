@@ -3,8 +3,10 @@ from __future__ import annotations
 import os
 import re
 from hashlib import sha256
+from dataclasses import replace
 from dotenv import load_dotenv
 from scripts.automation import fetch_posts, mark_posted, select_next_post
+from scripts.automation.attribution import tagged_url
 from scripts.automation.engagement import engagement_totals, load_engagement
 from scripts.automation.content import ArticleSyndication, CommunityPost, PublishResult, SocialPost
 from scripts.automation.formatters import format_as_thread
@@ -102,6 +104,21 @@ def _build_storyboard(post: dict, summary: dict) -> InstagramStoryboard | None:
 
 
 def _publish(platform: str, social: SocialPost, article: ArticleSyndication, community: CommunityPost, post_id: str, storyboard: InstagramStoryboard | None = None):
+    # Every renderer below reads the URLs off these two objects, so tagging them
+    # here covers each platform without touching renderer or publisher code.
+    # Canonical URLs (article.canonical_url) stay untagged.
+    canonical_url = social.url
+    tagged = tagged_url(canonical_url, platform, post_id)
+    if canonical_url and "utm_source=" in canonical_url:
+        log_summary(f"⚠️ {platform}: link already carries utm_source, tags left untouched: {canonical_url}")
+    # The X/Bluesky/Nostr thread was rendered from the untagged article URL
+    # before this point, so its link reply has to be retagged here too.
+    social = replace(
+        social,
+        url=tagged,
+        thread=tuple(part.replace(canonical_url, tagged) for part in social.thread) if canonical_url else social.thread,
+    )
+    community = replace(community, url=tagged_url(community.url, platform, post_id))
     if platform == "twitter":
         from scripts.automation.publishers import get_twitter_client, post_single, post_thread
         return post_thread(get_twitter_client(), render_thread(social)) if POST_MODE == "thread" else post_single(get_twitter_client(), {"title": social.hook, "url": social.url})
@@ -207,24 +224,26 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
     for platform in PLATFORM:
         print(f"\n{platform}\n  eligible: {'yes' if platform in eligible else 'no'}")
         if platform not in eligible: continue
+        # Mirror the tagging `_publish` applies, so the preview shows the real link.
+        tagged = replace(social, url=tagged_url(social.url, platform, post["id"]))
         if platform == "twitter":
-            if POST_MODE == "thread": print("  format: thread\n  would publish: " + "\n---\n".join(render_thread(social)))
-            else: print(f"  format: single\n  would publish: {social.hook} {social.url}")
+            if POST_MODE == "thread": print("  format: thread\n  would publish: " + "\n---\n".join(render_thread(tagged)))
+            else: print(f"  format: single\n  would publish: {tagged.hook} {tagged.url}")
         elif platform == "bluesky":
-            rendered = render_thread(social)
+            rendered = render_thread(tagged)
             if POST_MODE == "thread": print("  format: thread\n  would publish: " + "\n---\n".join(rendered))
             else: print(f"  format: single\n  would publish: {rendered[0]}")
         elif platform == "mastodon":
-            rendered = render_mastodon(social)
+            rendered = render_mastodon(tagged)
             shape = "thread" if POST_MODE == "thread" and len(rendered) > 1 else "single"
             print(f"  format: {shape}\n  would publish: " + "\n---\n".join(rendered))
-        elif platform == "linkedin": print(f"  format: social_post\n  length: {len(render_linkedin(social))} chars")
-        elif platform == "farcaster": print(f"  format: social_post\n  would publish: {render_farcaster(social)}")
+        elif platform == "linkedin": print(f"  format: social_post\n  length: {len(render_linkedin(tagged))} chars\n  link comment: {tagged.url}")
+        elif platform == "farcaster": print(f"  format: social_post\n  would publish: {render_farcaster(tagged)}")
         elif platform == "devto": print(f"  format: article syndication\n  canonical URL: {article.canonical_url}")
-        elif platform == "reddit": print("  format: link post\n  subreddit: r/" + os.getenv("REDDIT_SUBREDDIT", "AvoidBoringPeople"))
+        elif platform == "reddit": print(f"  format: link post\n  subreddit: r/" + os.getenv("REDDIT_SUBREDDIT", "AvoidBoringPeople") + f"\n  would publish: {tagged.url}")
         elif platform == "weibo": print("  format: Simplified-Chinese localized post")
         elif platform == "nostr": print("  format: signed NIP-01 note")
-        elif platform == "threads": print("  format: standalone post + link reply\n  would publish: " + "\n---\n".join(render_threads(social)))
+        elif platform == "threads": print("  format: standalone post + link reply\n  would publish: " + "\n---\n".join(render_threads(tagged)))
         elif platform == "instagram": _print_instagram_dry_run(storyboard)
         else: print(f"  format: {'thread' if POST_MODE == 'thread' else 'single'}")
 
@@ -267,7 +286,7 @@ def main() -> None:
             # failed platform never stops the remaining platforms from running.
             response = run_with_retries(lambda p=platform: _publish(p, social, article, community, selected["id"], storyboard))
             _record_success(selected, platform, response, model_label)
-            log_summary(f"✅ {platform} posting completed")
+            log_summary(f"✅ {platform} posting completed ({tagged_url(social.url, platform, selected['id'])})")
         except Exception as error:
             failures.append(platform)
             log_summary(f"❌ {platform} posting failed: {error}")

@@ -22,6 +22,38 @@
   and the private-email path is part of the built page.
 - Privacy policy updated: the site now processes discussion data itself.
 
+## Newsletter
+
+### First-party attribution and analytics
+
+- Signup attribution is now recorded first-party instead of being guessed:
+  `src/lib/newsletter/attribution.ts` normalizes a small source vocabulary
+  (`direct`, `organic_search`, the community platforms, `external_newsletter`,
+  `referral`, `leonlins.com`, `imported_substack`, `unknown`) from UTM tags,
+  the referring host, and the landing path.
+- Capture is first-touch: the signup form's bundled script remembers the first
+  attributable visit in browser storage and would send it with an owned signup.
+  `migrations/newsletter/004_acquisition_attribution.sql` adds the storage
+  columns, and
+  [src/lib/newsletter/subscriptions.ts](src/lib/newsletter/subscriptions.ts)
+  writes them on INSERT only, so a resubmission never rewrites how someone was
+  originally acquired. Attributed rows stay inert until the Phase 5 cutover
+  because the public form still posts to Substack.
+- Social distribution links now carry canonical `utm_*` tags
+  (`scripts/automation/attribution.py`), so a signup can be traced back to the
+  channel that produced it. Canonical article URLs stay untagged.
+- `npm run newsletter:analytics` prints a deterministic plain-text report from
+  read-only queries: audience by status, window growth against the previous
+  window and the last 30 days, acquisition by source with a prior-window
+  baseline, SES deliverability rates, and alerts at the 2% bounce / 0.1%
+  complaint thresholds. `--json` emits the same metrics for scripting, and
+  `npm run newsletter:analytics:email` mails the report to an allowlisted author
+  address.
+- Deliberately not built: email open or click tracking, per-subscriber event
+  history, dashboards, segmentation, and paid-membership metrics. Unavailable
+  measurements are reported as unavailable rather than estimated. Design and
+  metric definitions: [docs/newsletter-analytics.md](docs/newsletter-analytics.md).
+
 # 2025-09-22
 
 ## Automation updates

@@ -63,6 +63,23 @@ import {
   verifySnsEnvelope,
 } from '../src/lib/newsletter/sns.ts';
 import {
+  ATTRIBUTION_STORAGE_KEY,
+  attributionFromRequest,
+  attributionPayload,
+  firstTouchAttribution,
+  isInformativeSource,
+  normalizeAttribution,
+  readStoredAttribution,
+  referrerDomain,
+} from '../src/lib/newsletter/attribution.ts';
+import {
+  collectNewsletterMetrics,
+  MAX_REPORT_WINDOW_DAYS,
+  MIN_SHARE_SAMPLE,
+  renderNewsletterReport,
+  validateReportWindow,
+} from '../src/lib/newsletter/analytics.ts';
+import {
   hasUntrustedPathOverride,
   requiresOriginRejection,
 } from '../src/lib/newsletter/request-origin.ts';
@@ -775,6 +792,599 @@ async function testSubscriptionLifecycleDb() {
   } finally {
     process.env = original;
   }
+}
+
+function fakeAttributionStorage(initial: Record<string, string> = {}) {
+  const entries = new Map(Object.entries(initial));
+  return {
+    getItem: (key: string) => entries.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      entries.set(key, value);
+    },
+    snapshot: () => Object.fromEntries(entries),
+  };
+}
+
+function testNewsletterAttributionNormalization() {
+  const x = normalizeAttribution({
+    utmSource: 'X',
+    utmMedium: 'Social',
+    utmCampaign: 'Launch Thread',
+  });
+  assert.equal(x.source, 'x');
+  assert.equal(x.detail, 'Launch Thread');
+  assert.equal(x.utmSource, 'X', 'raw UTM values are preserved for auditing');
+
+  const unknownHost = normalizeAttribution({
+    utmSource: 'https://Example.com/post',
+    referrerDomain: 'www.example.com',
+  });
+  assert.equal(unknownHost.source, 'referral');
+  assert.equal(unknownHost.detail, 'https://Example.com/post');
+  assert.equal(referrerDomain('https://www.example.com/post'), 'example.com');
+
+  assert.equal(
+    normalizeAttribution({ referrerDomain: 'news.ycombinator.com' }).source,
+    'referral',
+  );
+  assert.equal(
+    normalizeAttribution({ referrerDomain: 'news.ycombinator.com' }).detail,
+    'news.ycombinator.com',
+  );
+  assert.equal(
+    normalizeAttribution({ referrerDomain: 'google.co.uk' }).source,
+    'organic_search',
+  );
+  assert.equal(
+    normalizeAttribution({ referrerDomain: 'mail.google.com' }).source,
+    'referral',
+    'a Google product page is not a search',
+  );
+  assert.equal(
+    normalizeAttribution({
+      referrerDomain: 'leonlins.com',
+      landingPath: '/writing/sample/?utm_source=leak#top',
+    }).source,
+    'leonlins.com',
+  );
+  assert.equal(
+    normalizeAttribution({
+      referrerDomain: 'leonlins.com',
+      landingPath: '/writing/sample/?utm_source=leak#top',
+    }).detail,
+    '/writing/sample/',
+  );
+  assert.equal(normalizeAttribution({}).source, 'direct');
+  assert.equal(normalizeAttribution({}).detail, null);
+  assert.ok(isInformativeSource('reddit'));
+  for (const tagged of ['mastodon', 'linkedin', 'farcaster', 'nostr'] as const)
+    assert.equal(
+      normalizeAttribution({ utmSource: tagged }).source,
+      tagged,
+      'a source the distribution pipeline tags reports as its own channel',
+    );
+  assert.ok(!isInformativeSource('direct'));
+  assert.ok(!isInformativeSource('unknown'));
+  assert.ok(
+    !isInformativeSource('leonlins.com'),
+    'an internal navigation must not block a later external touch',
+  );
+  assert.equal(
+    normalizeAttribution({ utmSource: 'x'.repeat(400) }).utmSource?.length,
+    100,
+    'oversized UTM values are capped',
+  );
+}
+
+function testNewsletterAttributionRequestShape() {
+  assert.equal(attributionFromRequest(null), null);
+  assert.equal(attributionFromRequest('string'), null);
+  assert.equal(attributionFromRequest([]), null);
+  assert.equal(attributionFromRequest({ other: 'value' }), null);
+  assert.equal(
+    attributionFromRequest({ utmSource: 5, utmCampaign: null }),
+    null,
+  );
+  assert.deepEqual(
+    attributionFromRequest({ utmSource: 'x', ignored: 'value' }),
+    {
+      utmSource: 'x',
+      utmMedium: null,
+      utmCampaign: null,
+      utmContent: null,
+      landingPath: null,
+      referrerDomain: null,
+    },
+  );
+}
+
+function testNewsletterAttributionCapture() {
+  const storage = fakeAttributionStorage();
+  const first = firstTouchAttribution(
+    {
+      search: '?utm_source=x&utm_medium=social&utm_campaign=launch',
+      pathname: '/writing/sample/',
+      host: 'leonlins.com',
+      referrer: 'https://t.co/abc',
+    },
+    storage,
+    new Date('2026-01-01T00:00:00.000Z'),
+  );
+  assert.equal(first.utmCampaign, 'launch');
+  assert.deepEqual(
+    Object.keys(storage.snapshot()),
+    [ATTRIBUTION_STORAGE_KEY],
+    'the first touch is stored for later signups',
+  );
+
+  // A later unrelated visit must not overwrite a real first touch.
+  const second = firstTouchAttribution(
+    { search: '', pathname: '/', host: 'leonlins.com', referrer: '' },
+    storage,
+  );
+  assert.equal(second.utmCampaign, 'launch');
+
+  // An uninformative first touch is upgraded once a real source appears.
+  const fresh = fakeAttributionStorage();
+  firstTouchAttribution(
+    { search: '', pathname: '/', host: 'leonlins.com', referrer: '' },
+    fresh,
+  );
+  const upgraded = firstTouchAttribution(
+    {
+      search: '?utm_source=bluesky',
+      pathname: '/writing/sample/',
+      host: 'leonlins.com',
+      referrer: '',
+    },
+    fresh,
+  );
+  assert.equal(normalizeAttribution(upgraded).source, 'bluesky');
+
+  // An internal navigation is not an acquisition touch: it must not consume the
+  // one upgrade, so a later external visit can still claim the first touch.
+  const internal = fakeAttributionStorage();
+  firstTouchAttribution(
+    { search: '', pathname: '/', host: 'leonlins.com', referrer: '' },
+    internal,
+  );
+  const navigated = firstTouchAttribution(
+    {
+      search: '',
+      pathname: '/writing/sample/',
+      host: 'leonlins.com',
+      referrer: 'https://leonlins.com/',
+    },
+    internal,
+  );
+  assert.equal(
+    normalizeAttribution(navigated).source,
+    'direct',
+    'a page view referred by the site itself is not a channel',
+  );
+  assert.equal(
+    readStoredAttribution(internal)?.capture.landingPath,
+    '/',
+    'the stored first touch is left alone',
+  );
+  const arrived = firstTouchAttribution(
+    {
+      search: '?utm_source=x&utm_campaign=launch',
+      pathname: '/writing/sample/',
+      host: 'leonlins.com',
+      referrer: 'https://t.co/abc',
+    },
+    internal,
+  );
+  assert.equal(
+    normalizeAttribution(arrived).source,
+    'x',
+    'a real external touch still replaces an uninformative first touch',
+  );
+
+  // Storage failures must never break signup.
+  const broken = {
+    getItem: () => {
+      throw new Error('storage disabled');
+    },
+    setItem: () => {
+      throw new Error('storage disabled');
+    },
+  };
+  assert.equal(
+    firstTouchAttribution(
+      { search: '', pathname: '/', host: 'leonlins.com', referrer: '' },
+      broken,
+    ).landingPath,
+    '/',
+  );
+  assert.equal(readStoredAttribution(broken), null);
+
+  const payload = attributionPayload({
+    utmSource: 'x',
+    utmCampaign: 'launch',
+    landingPath: '/writing/sample/?utm_source=leak#top',
+    referrerDomain: 'www.example.com',
+  });
+  assert.deepEqual(payload, {
+    utmSource: 'x',
+    utmCampaign: 'launch',
+    landingPath: '/writing/sample/',
+    // The wire payload keeps the raw host; the server normalizes it on write.
+    referrerDomain: 'www.example.com',
+  });
+}
+
+async function testNewsletterAttributionSignupWrite() {
+  const original = { ...process.env };
+  try {
+    delete process.env.NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED;
+    delete process.env.NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED;
+    const newSubscriberDb = () =>
+      makeFakeNewsletterDb((query) => {
+        if (query.text.includes('newsletter_rate_limits'))
+          return [{ attempt_count: 1 }];
+        if (query.text.includes('SELECT status FROM subscribers')) return [];
+        if (query.text.includes('INSERT INTO subscribers')) return [];
+        throw new Error(`unexpected query: ${query.text}`);
+      });
+
+    const withAttribution = newSubscriberDb();
+    await requestSubscription(
+      {
+        email: 'reader@example.com',
+        source: 'blog-inline',
+        attribution: {
+          utmSource: 'x',
+          utmMedium: 'social',
+          utmCampaign: 'launch',
+          utmContent: 'hook-a',
+          landingPath: '/writing/sample/',
+          referrerDomain: 't.co',
+          siteHost: 'leonlins.com',
+        },
+      },
+      withAttribution.db,
+    );
+    const insert = withAttribution.queries.find((query) =>
+      query.text.includes('INSERT INTO subscribers'),
+    );
+    assert.ok(insert);
+    for (const column of [
+      'acquisition_source',
+      'acquisition_detail',
+      'utm_source',
+      'utm_medium',
+      'utm_campaign',
+      'utm_content',
+      'signup_path',
+      'referrer_domain',
+    ])
+      assert.ok(insert.text.includes(column), `INSERT must write ${column}`);
+    assert.ok(insert.values.includes('x'), 'normalized source is written');
+    assert.ok(insert.values.includes('launch'));
+    assert.ok(
+      insert.values.includes('blog-inline'),
+      'form variant is preserved',
+    );
+    assert.ok(
+      !insert.text.includes('utm_source = '),
+      'the conflict branch must never overwrite attribution',
+    );
+
+    // A signup without attribution stores nulls rather than inventing a source.
+    const withoutAttribution = newSubscriberDb();
+    await requestSubscription(
+      { email: 'quiet@example.com' },
+      withoutAttribution.db,
+    );
+    const plainInsert = withoutAttribution.queries.find((query) =>
+      query.text.includes('INSERT INTO subscribers'),
+    );
+    assert.ok(plainInsert);
+    const attributionValues = plainInsert.values.slice(-8);
+    assert.equal(attributionValues.length, 8);
+    assert.equal(
+      attributionValues.filter((value) => value === null).length,
+      8,
+      'attribution columns stay empty when no source is known',
+    );
+  } finally {
+    process.env = original;
+  }
+}
+
+function analyticsFixtureDb(fixture: {
+  audience?: unknown[];
+  growth?: unknown[];
+  acquisition?: unknown[];
+  delivery?: unknown[];
+  sends?: unknown[];
+}) {
+  const queries: Array<{ text: string; values: unknown[] }> = [];
+  const db: any = async (parts: TemplateStringsArray, ...values: unknown[]) => {
+    const text = parts.join('\n');
+    queries.push({ text, values });
+    if (text.includes('GROUP BY status')) return fixture.audience ?? [];
+    if (text.includes('prior_new_subscribers')) return fixture.growth ?? [];
+    if (text.includes('current_count')) return fixture.acquisition ?? [];
+    if (text.includes('newsletter_event_receipts'))
+      return fixture.delivery ?? [];
+    if (text.includes('campaign_recipients')) return fixture.sends ?? [];
+    throw new Error(`unexpected analytics query: ${text}`);
+  };
+  return { db, queries };
+}
+
+function assertReadOnly(queries: Array<{ text: string }>) {
+  for (const query of queries) {
+    assert.match(
+      query.text.trim(),
+      /^SELECT/,
+      'analytics must only read, never mutate',
+    );
+    assert.ok(
+      !/\b(INSERT|UPDATE|DELETE|ALTER|DROP|TRUNCATE)\b/i.test(query.text),
+      `analytics query must stay read-only: ${query.text}`,
+    );
+  }
+}
+
+async function testNewsletterAnalyticsReport() {
+  const now = new Date('2026-03-01T12:00:00.000Z');
+  const active = analyticsFixtureDb({
+    audience: [
+      { status: 'active', count: 1204 },
+      { status: 'pending', count: '3' },
+      { status: 'unsubscribed', count: 88 },
+      { status: 'bounced', count: 4 },
+      { status: 'complained', count: 1 },
+      { status: 'legacy', count: 9 },
+    ],
+    growth: [
+      {
+        new_subscribers: 42,
+        prior_new_subscribers: 12,
+        new_subscribers_30: 178,
+        unsubscribed: 6,
+        prior_unsubscribed: 1,
+        unsubscribed_30: 14,
+      },
+    ],
+    acquisition: [
+      { source: 'x', detail: 'launch-2026', current_count: 18, prior_count: 4 },
+      {
+        source: 'reddit',
+        detail: 'r/creativecoding',
+        current_count: 9,
+        prior_count: 2,
+      },
+      { source: 'direct', detail: '/', current_count: 4, prior_count: 3 },
+      {
+        source: 'not-a-source',
+        detail: 'typo-detail',
+        current_count: 2,
+        prior_count: 0,
+      },
+    ],
+    delivery: [{ deliveries: 40, bounced: 1, complained: 0 }],
+    sends: [{ sends: 40 }],
+  });
+  const metrics = await collectNewsletterMetrics(active.db, { days: 7, now });
+  assertReadOnly(active.queries);
+  assert.equal(active.queries.length, 5);
+  assert.equal(metrics.audience.total, 1309, 'unknown statuses still count');
+  assert.equal(metrics.audience.active, 1204);
+  assert.equal(metrics.audience.pending, 3);
+  assert.equal(metrics.growth.newSubscribers, 42);
+  assert.equal(metrics.growth.netChange, 36);
+  assert.equal(metrics.growth.unsubscribeRate, 6 / 40);
+  assert.equal(metrics.deliverability.sends, 40);
+  assert.equal(metrics.deliverability.bounceRate, 0.025);
+  assert.equal(metrics.deliverability.complaintRate, 0);
+  assert.equal(metrics.windowStart, '2026-02-22T12:00:00.000Z');
+  assert.equal(metrics.windowEnd, '2026-03-01T12:00:00.000Z');
+  assert.equal(metrics.sharesWithheld, false);
+  assert.deepEqual(
+    metrics.acquisition.map((entry) => [entry.source, entry.count]),
+    [
+      ['x', 18],
+      ['reddit', 9],
+      ['direct', 4],
+      ['unknown', 2],
+    ],
+  );
+  assert.equal(metrics.acquisition[0].share, 0.5455);
+  assert.equal(
+    metrics.acquisition[1].share,
+    0.2727,
+    'shares are only reported once the sample is large enough',
+  );
+  assert.deepEqual(metrics.acquisitionDetails, [
+    { detail: 'launch-2026', count: 18 },
+    { detail: 'r/creativecoding', count: 9 },
+  ]);
+  assert.ok(
+    metrics.alerts.some((alert) => alert.includes('Bounce rate 2.50%')),
+    'bounce threshold is reported',
+  );
+  assert.ok(
+    metrics.alerts.some((alert) => alert.includes('Unsubscribes rose')),
+    'unsubscribe spike is reported',
+  );
+  assert.ok(
+    metrics.notes.some((note) =>
+      note.startsWith(
+        'x acquisition is above baseline: 18 in the last 7 days vs 4 in the prior 7 days',
+      ),
+    ),
+    'acquisition surge is reported against the prior window',
+  );
+
+  const report = renderNewsletterReport(metrics);
+  assert.equal(
+    report,
+    renderNewsletterReport(metrics),
+    'report is deterministic',
+  );
+  for (const section of [
+    'AUDIENCE (all subscribers)',
+    'GROWTH (last 7 days)',
+    'ACQUISITION (last 7 days)',
+    'DELIVERABILITY (last 7 days)',
+    'QUALITY',
+    'ENGAGEMENT',
+    'NOTABLE CHANGE',
+  ])
+    assert.ok(report.includes(section), `report must include ${section}`);
+  assert.ok(report.includes('Window: last 7×24h'));
+  assert.ok(report.includes('15.00% of 40 sends'));
+  assert.ok(report.includes('free-only'));
+  assert.ok(report.includes('not tracked'));
+  assert.ok(
+    report.includes('top details: launch-2026 18 · r/creativecoding 9'),
+  );
+  assert.ok(!report.includes('not-a-source'), 'unknown sources are normalized');
+
+  // A quiet window with no sends must not divide by zero or invent shares.
+  const quiet = analyticsFixtureDb({
+    audience: [{ status: 'active', count: 10 }],
+    growth: [],
+    acquisition: [
+      { source: 'direct', detail: '/', current_count: 3, prior_count: 0 },
+      { source: null, detail: null, current_count: 1, prior_count: 0 },
+    ],
+    delivery: [],
+    sends: [],
+  });
+  const quietMetrics = await collectNewsletterMetrics(quiet.db, {
+    days: 7,
+    now,
+  });
+  assertReadOnly(quiet.queries);
+  assert.equal(quietMetrics.growth.newSubscribers, 0);
+  assert.equal(quietMetrics.deliverability.sends, 0);
+  assert.equal(quietMetrics.growth.unsubscribeRate, null);
+  assert.equal(quietMetrics.sharesWithheld, true);
+  assert.ok(quietMetrics.acquisition.every((entry) => entry.share === null));
+  const quietReport = renderNewsletterReport(quietMetrics);
+  assert.ok(quietReport.includes('n/a (no sends in window)'));
+  assert.ok(
+    quietReport.includes(`shares withheld: fewer than ${MIN_SHARE_SAMPLE}`),
+  );
+  assert.ok(quietReport.includes('No campaign was sent in the last 7 days.'));
+
+  // Complaint rate crosses the SES threshold while a 1.9% bounce rate does not.
+  const complaints = analyticsFixtureDb({
+    audience: [],
+    growth: [{ new_subscribers: 5, prior_new_subscribers: 5 }],
+    acquisition: [],
+    delivery: [{ deliveries: 1000, bounced: 19, complained: 2 }],
+    sends: [{ sends: 1000 }],
+  });
+  const complaintMetrics = await collectNewsletterMetrics(complaints.db, {
+    days: 7,
+    now,
+  });
+  assertReadOnly(complaints.queries);
+  assert.equal(complaintMetrics.deliverability.complaintRate, 0.002);
+  assert.ok(
+    complaintMetrics.alerts.some((alert) =>
+      alert.includes('Complaint rate 0.20%'),
+    ),
+  );
+  assert.ok(
+    !complaintMetrics.alerts.some((alert) => alert.includes('Bounce rate')),
+    'a 1.9% bounce rate stays below the alert threshold',
+  );
+  const complaintReport = renderNewsletterReport(complaintMetrics);
+  assert.ok(complaintReport.includes('⚠ Complaint rate 0.20%'));
+  assert.ok(!complaintReport.includes('nothing outside the expected range'));
+  assert.ok(
+    complaintMetrics.notes.some((note) =>
+      note.includes('excludes 21 bounces and complaints'),
+    ),
+    'net change discloses the events it does not count',
+  );
+
+  // A window that is not a week must compare window counts with the same-length
+  // window rather than measuring a count against a weekly rate.
+  const monthly = analyticsFixtureDb({
+    audience: [],
+    growth: [
+      {
+        new_subscribers: 14,
+        prior_new_subscribers: 20,
+        unsubscribed: 5,
+        prior_unsubscribed: 6,
+      },
+    ],
+    acquisition: [
+      { source: 'x', detail: null, current_count: 14, prior_count: 20 },
+    ],
+    delivery: [{ deliveries: 100, bounced: 0, complained: 0 }],
+    sends: [{ sends: 100 }],
+  });
+  const monthlyMetrics = await collectNewsletterMetrics(monthly.db, {
+    days: 30,
+    now,
+  });
+  assert.deepEqual(monthlyMetrics.notes, []);
+  assert.ok(
+    !monthlyMetrics.alerts.some((alert) => alert.includes('Unsubscribes rose')),
+    '5 unsubscribes is below the 6 of the prior 30 days',
+  );
+
+  // Below the sample floor the rates are reported but not compared with the
+  // account-level SES thresholds.
+  const smallSample = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [{ deliveries: 8, bounced: 2, complained: 0 }],
+    sends: [{ sends: 10 }],
+  });
+  const smallSampleMetrics = await collectNewsletterMetrics(smallSample.db, {
+    days: 7,
+    now,
+  });
+  assert.equal(smallSampleMetrics.deliverability.bounceRate, 0.2);
+  assert.ok(
+    !smallSampleMetrics.alerts.some((alert) => alert.includes('Bounce rate')),
+    '2 bounces of 10 sends is not comparable to an account-level threshold',
+  );
+  assert.ok(
+    smallSampleMetrics.notes.some((note) => note.includes('cover 10 sends')),
+  );
+
+  // Delivery events with no campaign sent in the window must be visible rather
+  // than silently producing no rate.
+  const unreconciled = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [{ deliveries: 0, bounced: 1, complained: 0 }],
+    sends: [],
+  });
+  const unreconciledMetrics = await collectNewsletterMetrics(unreconciled.db, {
+    days: 7,
+    now,
+  });
+  assert.ok(
+    unreconciledMetrics.alerts.some((alert) =>
+      alert.includes('Delivery events (1) arrived'),
+    ),
+  );
+}
+
+function testNewsletterReportWindow() {
+  assert.equal(validateReportWindow(1), 1);
+  assert.equal(
+    validateReportWindow(MAX_REPORT_WINDOW_DAYS),
+    MAX_REPORT_WINDOW_DAYS,
+  );
+  for (const days of [0, -1, 1.5, MAX_REPORT_WINDOW_DAYS + 1, Number.NaN])
+    assert.throws(() => validateReportWindow(days));
 }
 
 async function testSnsValidation() {
@@ -3693,10 +4303,16 @@ async function run() {
     testNewsletterTestSendSafeguard();
     testNewsletterProductionSendSafeguards();
     testNewsletterSafetyHelpers();
+    testNewsletterAttributionNormalization();
+    testNewsletterAttributionRequestShape();
+    testNewsletterAttributionCapture();
+    testNewsletterReportWindow();
     testNewsletterConfirmationBoundary();
     testConfirmationEmailContent();
     testConfirmPages();
     await testSubscriptionLifecycleDb();
+    await testNewsletterAttributionSignupWrite();
+    await testNewsletterAnalyticsReport();
     await testSnsValidation();
     testJsonLdSerialization();
     testOriginTrust();

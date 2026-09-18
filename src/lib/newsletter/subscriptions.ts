@@ -8,6 +8,7 @@ import {
   takeRateLimit,
 } from './rate-limit.ts';
 import { NEWSLETTER_FROM, NEWSLETTER_REPLY_TO } from './email.ts';
+import { normalizeAttribution, type AttributionInput } from './attribution.ts';
 
 const generic = {
   ok: true,
@@ -139,7 +140,13 @@ async function sendConfirmation(email: string, token: string) {
 }
 
 export async function requestSubscription(
-  input: { email: string; source?: string; honeypot?: string; ip?: string },
+  input: {
+    email: string;
+    source?: string;
+    honeypot?: string;
+    ip?: string;
+    attribution?: AttributionInput | null;
+  },
   db = newsletterDb(),
 ) {
   const email = normalizeEmail(input.email);
@@ -162,8 +169,28 @@ export async function requestSubscription(
   const token = createToken();
   const unsubscribeToken = createToken();
   const source = (input.source ?? 'website').slice(0, 100);
-  await db`INSERT INTO subscribers (email, email_normalized, status, source, source_detail, confirmation_token_hash, unsubscribe_token_hash, consent_provenance)
-    VALUES (${email}, ${email}, 'pending', 'website', ${source}, ${hashToken(token)}, ${hashToken(unsubscribeToken)}, 'website_double_opt_in')
+  const attribution = input.attribution
+    ? normalizeAttribution(input.attribution)
+    : null;
+  // Attribution is first-touch: it is recorded when the subscriber row is
+  // first created and deliberately left untouched by the conflict branch, so a
+  // later resubmission cannot overwrite how the subscriber was originally
+  // acquired. `source_detail` keeps the signup form variant, and the row's own
+  // `created_at` is when the attribution was recorded.
+  await db`INSERT INTO subscribers (
+      email, email_normalized, status, source, source_detail,
+      confirmation_token_hash, unsubscribe_token_hash, consent_provenance,
+      acquisition_source, acquisition_detail, utm_source, utm_medium,
+      utm_campaign, utm_content, signup_path, referrer_domain
+    )
+    VALUES (
+      ${email}, ${email}, 'pending', 'website', ${source},
+      ${hashToken(token)}, ${hashToken(unsubscribeToken)}, 'website_double_opt_in',
+      ${attribution?.source ?? null}, ${attribution?.detail ?? null},
+      ${attribution?.utmSource ?? null}, ${attribution?.utmMedium ?? null},
+      ${attribution?.utmCampaign ?? null}, ${attribution?.utmContent ?? null},
+      ${attribution?.signupPath ?? null}, ${attribution?.referrerDomain ?? null}
+    )
     ON CONFLICT (email_normalized) DO UPDATE SET confirmation_token_hash = EXCLUDED.confirmation_token_hash, updated_at = now()
     WHERE subscribers.status = 'pending'`;
   await sendConfirmation(email, token);
