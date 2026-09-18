@@ -40,10 +40,28 @@ from scripts.automation.routing import DEFAULT_PLATFORMS, PLATFORMS, SOCIAL_PLAT
 
 URL = "https://leonlins.com/writing/sample/"
 
+# Meta's answer when the publish path cannot see a container that was created
+# moments earlier; the same payload is returned for a container that never
+# existed. `is_transient` is false even though the call succeeds on a retry.
+MEDIA_NOT_FOUND = {
+    "error": {
+        "message": "The requested resource does not exist",
+        "type": "OAuthException",
+        "code": 24,
+        "error_subcode": 4279009,
+        "is_transient": False,
+        "error_user_title": "Media Not Found",
+    }
+}
+READY = {"status": "FINISHED"}
+
 
 @pytest.fixture(autouse=True)
 def _no_retry_delay(monkeypatch):
     monkeypatch.setattr(retry, "BASE_DELAY_SECONDS", 0)
+    # Publish retries wait between attempts; tests queue the responses, so the
+    # interval does not have to pass in real time.
+    monkeypatch.setattr(threads, "PUBLISH_RETRY_SECONDS", 0)
 
 
 def _post(hook="Systems fail where ownership is unclear.", body="Point one\n\nPoint two", url=URL):
@@ -202,6 +220,8 @@ def test_threads_publishes_the_root_post_then_a_link_reply(monkeypatch, capsys):
         monkeypatch,
         gets=[
             _response(200, {"id": "user-1", "username": "avoidboringpeople"}),  # /me
+            _response(200, READY),  # container-1 readiness
+            _response(200, READY),  # container-2 readiness
             _response(200, {"permalink": "https://www.threads.net/@x/post/1"}),  # permalink
         ],
         posts=[
@@ -216,24 +236,236 @@ def test_threads_publishes_the_root_post_then_a_link_reply(monkeypatch, capsys):
     assert result == threads.PublishResult(
         "threads", remote_id="media-1", remote_url="https://www.threads.net/@x/post/1"
     )
-    assert calls[0]["url"] == f"{threads.THREADS_API_BASE}/me"
-    assert calls[1]["url"] == f"{threads.THREADS_API_BASE}/me/threads"
+    assert [call["url"] for call in calls] == [
+        f"{threads.THREADS_API_BASE}/me",
+        f"{threads.THREADS_API_BASE}/me/threads",
+        f"{threads.THREADS_API_BASE}/container-1",
+        f"{threads.THREADS_API_BASE}/me/threads_publish",
+        f"{threads.THREADS_API_BASE}/me/threads",
+        f"{threads.THREADS_API_BASE}/container-2",
+        f"{threads.THREADS_API_BASE}/me/threads_publish",
+        f"{threads.THREADS_API_BASE}/media-1",
+    ]
     assert calls[1]["data"] == {"media_type": "TEXT", "text": "Main idea"}
-    assert calls[2]["url"] == f"{threads.THREADS_API_BASE}/me/threads_publish"
-    assert calls[2]["data"] == {"creation_id": "container-1"}
-    assert calls[3]["data"] == {
+    assert calls[2]["params"] == {"fields": "status,error_message"}
+    assert calls[3]["data"] == {"creation_id": "container-1"}
+    assert calls[4]["data"] == {
         "media_type": "TEXT",
         "text": f"Full piece: {URL}",
         "reply_to_id": "media-1",
     }
+    assert calls[6]["data"] == {"creation_id": "container-2"}
     assert "Authenticated as Threads user: avoidboringpeople" in capsys.readouterr().out
+
+
+def test_threads_waits_for_a_container_to_finish_before_publishing_it(monkeypatch, capsys):
+    _credentials(monkeypatch)
+    calls = _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, {"status": "IN_PROGRESS"}),
+            _response(200, {"status": "IN_PROGRESS"}),
+            _response(200, READY),
+            _response(200, {"permalink": None}),
+        ],
+        posts=[_response(200, {"id": "container-1"}), _response(200, {"id": "media-1"})],
+    )
+    threads.post_to_threads(["one"])
+    assert [call["url"] for call in calls] == [
+        f"{threads.THREADS_API_BASE}/me",
+        f"{threads.THREADS_API_BASE}/me/threads",
+        f"{threads.THREADS_API_BASE}/container-1",
+        f"{threads.THREADS_API_BASE}/container-1",
+        f"{threads.THREADS_API_BASE}/container-1",
+        f"{threads.THREADS_API_BASE}/me/threads_publish",
+        f"{threads.THREADS_API_BASE}/media-1",
+    ]
+    assert "is IN_PROGRESS; waiting" in capsys.readouterr().out
+
+
+def test_threads_retries_a_publish_the_api_cannot_find_yet(monkeypatch, capsys):
+    """The pre-replication race answers HTTP 400 with code 24 / subcode 4279009."""
+    _credentials(monkeypatch)
+    calls = _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
+            # The retry is only taken after Meta confirms the container is not live.
+            _response(200, {"status": "FINISHED"}),
+            _response(200, {"status": "FINISHED"}),
+            _response(200, {"permalink": None}),
+        ],
+        posts=[
+            _response(200, {"id": "container-1"}),
+            _response(400, MEDIA_NOT_FOUND),
+            _response(400, MEDIA_NOT_FOUND),
+            _response(200, {"id": "media-1"}),
+        ],
+    )
+    result = threads.post_to_threads(["one"])
+
+    assert result.remote_id == "media-1"
+    publishes = [call for call in calls if call["url"].endswith("/me/threads_publish")]
+    # The same container id is republished: nothing was published by the failures.
+    assert [call["data"] for call in publishes] == [
+        {"creation_id": "container-1"},
+        {"creation_id": "container-1"},
+        {"creation_id": "container-1"},
+    ]
+    assert "not readable on the publish path yet (attempt 1/5)" in capsys.readouterr().out
+
+
+def test_threads_stops_retrying_a_container_the_publish_path_never_sees(monkeypatch):
+    _credentials(monkeypatch)
+    calls = _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
+            *[_response(200, READY) for _ in range(threads.PUBLISH_ATTEMPTS - 1)],
+        ],
+        posts=[
+            _response(200, {"id": "container-1"}),
+            *[_response(400, MEDIA_NOT_FOUND) for _ in range(threads.PUBLISH_ATTEMPTS)],
+        ],
+    )
+    with pytest.raises(RuntimeError) as error:
+        retry.run_with_retries(lambda: threads.post_to_threads(["one"]))
+
+    message = str(error.value)
+    assert "publish container container-1" in message
+    assert "code 24" in message and "subcode 4279009" in message and "Media Not Found" in message
+    assert not retry.is_transient(error.value)
+    assert len([call for call in calls if call["url"].endswith("/me/threads_publish")]) == threads.PUBLISH_ATTEMPTS
+
+
+def test_threads_never_retries_a_publish_whose_container_is_already_live(monkeypatch, capsys):
+    """A PUBLISHED container is live, so a retry could post the item twice."""
+    _credentials(monkeypatch)
+    calls = _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
+            _response(200, {"status": "PUBLISHED"}),
+        ],
+        posts=[_response(200, {"id": "container-1"}), _response(400, MEDIA_NOT_FOUND)],
+    )
+    with pytest.raises(RuntimeError) as error:
+        retry.run_with_retries(lambda: threads.post_to_threads(["one"]))
+
+    assert "container-1 reports PUBLISHED" in capsys.readouterr().out
+    assert not retry.is_transient(error.value)
+    assert len([call for call in calls if call["url"].endswith("/me/threads_publish")]) == 1
+
+
+def test_threads_retries_when_the_container_status_cannot_be_read(monkeypatch):
+    """A failed status read cannot prove the post is live, so the retry stands."""
+    _credentials(monkeypatch)
+    calls = _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
+            _response(500, {"error": {"message": "internal"}}, text=""),
+            _response(200, {"permalink": None}),
+        ],
+        posts=[
+            _response(200, {"id": "container-1"}),
+            _response(400, MEDIA_NOT_FOUND),
+            _response(200, {"id": "media-1"}),
+        ],
+    )
+    result = threads.post_to_threads(["one"])
+
+    assert result.remote_id == "media-1"
+    assert len([call for call in calls if call["url"].endswith("/me/threads_publish")]) == 2
+
+
+def test_threads_reports_a_container_that_expired_before_publishing(monkeypatch):
+    _credentials(monkeypatch)
+    calls = _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, {"status": "EXPIRED", "error_message": "container expired"}),
+        ],
+        posts=[_response(200, {"id": "container-1"})],
+    )
+    with pytest.raises(RuntimeError, match="container-1 is EXPIRED: container expired"):
+        threads.post_to_threads(["one"])
+    assert not [call for call in calls if call["url"].endswith("/me/threads_publish")]
+
+
+def test_threads_publishes_anyway_when_the_status_read_fails(monkeypatch, capsys):
+    """A status read is advisory: only `threads_publish` decides the outcome."""
+    _credentials(monkeypatch)
+    _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(404, MEDIA_NOT_FOUND),
+            _response(200, {"permalink": None}),
+        ],
+        posts=[_response(200, {"id": "container-1"}), _response(200, {"id": "media-1"})],
+    )
+    result = threads.post_to_threads(["one"])
+    assert result.remote_id == "media-1"
+    assert "publishing anyway" in capsys.readouterr().out
+
+
+def test_wait_for_container_polls_until_the_container_is_ready(monkeypatch, capsys):
+    statuses = iter(["IN_PROGRESS", "IN_PROGRESS", "FINISHED"])
+    _credentials(monkeypatch)
+    _threads_calls(
+        monkeypatch,
+        gets=[_response(200, {"status": status}) for status in statuses],
+    )
+    slept: list[int] = []
+    status = threads.wait_for_container("token-1", "container-1", sleep=slept.append, poll_seconds=5)
+    assert status == threads.CONTAINER_READY_STATUS
+    assert slept == [5, 5]
+    assert "is IN_PROGRESS; waiting 5s" in capsys.readouterr().out
+
+
+def test_wait_for_container_times_out_without_skipping_the_publish(monkeypatch, capsys):
+    """The wait is advisory: a slow container still goes to `threads_publish`."""
+    _credentials(monkeypatch)
+    _threads_calls(
+        monkeypatch,
+        gets=[_response(200, {"status": "IN_PROGRESS"}) for _ in range(2)],
+    )
+    times = iter([0.0, 1.0])
+    status = threads.wait_for_container(
+        "token-1",
+        "container-1",
+        sleep=lambda _: None,
+        clock=lambda: next(times),
+        timeout_seconds=1,
+    )
+    assert status == "IN_PROGRESS"
+    assert "was still IN_PROGRESS after 1s; publishing anyway" in capsys.readouterr().out
+
+
+def test_wait_for_container_reports_an_unreadable_status_but_does_not_block(monkeypatch, capsys):
+    _credentials(monkeypatch)
+    _threads_calls(monkeypatch, gets=[_response(401, {"error": {"message": "invalid token"}})])
+    assert threads.wait_for_container("token-1", "container-1", sleep=lambda _: None) == "UNKNOWN"
+    assert "publishing anyway" in capsys.readouterr().out
 
 
 def test_threads_authenticates_once_per_unit(monkeypatch):
     _credentials(monkeypatch)
     calls = _threads_calls(
         monkeypatch,
-        gets=[_response(200, {"id": "user-1", "username": "x"}), _response(200, {"permalink": None})],
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
+            _response(200, READY),
+            _response(200, {"permalink": None}),
+        ],
         posts=[
             _response(200, {"id": "c1"}),
             _response(200, {"id": "m1"}),
@@ -242,14 +474,20 @@ def test_threads_authenticates_once_per_unit(monkeypatch):
         ],
     )
     threads.post_to_threads(["one", "two"])
-    assert [call["url"] for call in calls].count(f"{threads.THREADS_API_BASE}/me") == 1
+    urls = [call["url"] for call in calls]
+    assert urls.count(f"{threads.THREADS_API_BASE}/me") == 1
+    assert urls.count(f"{threads.THREADS_API_BASE}/me/threads_publish") == 2
 
 
 def test_threads_sends_the_token_as_a_header_not_in_the_request(monkeypatch):
     _credentials(monkeypatch)
     calls = _threads_calls(
         monkeypatch,
-        gets=[_response(200, {"id": "user-1", "username": "x"}), _response(200, {"permalink": None})],
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
+            _response(200, {"permalink": None}),
+        ],
         posts=[_response(200, {"id": "c1"}), _response(200, {"id": "m1"})],
     )
     threads.post_to_threads(["one"])
@@ -265,6 +503,7 @@ def test_threads_reports_a_missing_media_id_with_container_state(monkeypatch):
         monkeypatch,
         gets=[
             _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
             _response(200, {"status": "ERROR", "error_message": "media upload failed"}),
         ],
         posts=[_response(200, {"id": "container-9"}), _response(200, {})],
@@ -302,6 +541,7 @@ def test_threads_does_not_retry_an_ambiguous_publish(monkeypatch):
         monkeypatch,
         gets=[
             _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
             _response(200, {"status": "ERROR", "error_message": "boom"}),
         ],
         posts=[_response(200, {"id": "container-9"}), _response(200, {})],
@@ -310,6 +550,35 @@ def test_threads_does_not_retry_an_ambiguous_publish(monkeypatch):
         retry.run_with_retries(lambda: threads.post_to_threads(["one"]))
     assert not retry.is_transient(error.value)
     assert [call["url"] for call in calls].count(f"{threads.THREADS_API_BASE}/me/threads_publish") == 1
+
+
+def test_threads_never_replays_a_unit_whose_root_post_is_already_live(monkeypatch):
+    """A reply that fails must not make the retry loop publish the root again."""
+    _credentials(monkeypatch)
+    calls = _threads_calls(
+        monkeypatch,
+        gets=[
+            _response(200, {"id": "user-1", "username": "x"}),
+            _response(200, READY),
+            _response(200, READY),
+        ],
+        posts=[
+            _response(200, {"id": "container-1"}),
+            _response(200, {"id": "media-1"}),
+            _response(200, {"id": "container-2"}),
+            _response(500, {"error": {"message": "unknown error"}}),
+        ],
+    )
+    with pytest.raises(RuntimeError) as error:
+        retry.run_with_retries(lambda: threads.post_to_threads(["one", "two"]))
+
+    assert not retry.is_transient(error.value)
+    urls = [call["url"] for call in calls]
+    assert urls.count(f"{threads.THREADS_API_BASE}/me/threads") == 2
+    assert [call["data"] for call in calls if call["url"].endswith("/me/threads_publish")] == [
+        {"creation_id": "container-1"},
+        {"creation_id": "container-2"},
+    ]
 
 
 def test_threads_authentication_failure_is_permanent(monkeypatch):
