@@ -23,7 +23,7 @@ I recall reading advice before about how **you should aim to be great in two or 
 
 There's also the thought that **it's nearly impossible to #1 in an area, but being #50 in two or more is achievable with less effort given diminishing marginal returns.** Maybe not the case for some of you but something to think about.
 
-While others might also say that **being exposed to more areas will inspire creativity in your core competencies,** like how [Claude Shannon came up with information theory by connecting two areas previously thought separate.](https://leonlins.com/writing/2017_07_20_claude/ 'shannon')
+While others might also say that **being exposed to more areas will inspire creativity in your core competencies,** like how [Claude Shannon came up with information theory by connecting two areas previously thought separate.](/writing/claude 'shannon')
 
 And personally, I just think **being curious and learning about random things is fun,** which is why I love [this comic](https://xkcd.com/1053/ 'xkcd comic').
 

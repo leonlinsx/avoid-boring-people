@@ -17,6 +17,8 @@ export async function GET(): Promise<Response> {
         title: post.data.title,
         description: post.data.description,
         pubDate: post.data.pubDate,
+        // Keep the trailing-slash form: @astrojs/rss emits it and feed readers
+        // already hold these values as the item <guid>.
         link: `/writing/${slug}/`,
       };
     }),

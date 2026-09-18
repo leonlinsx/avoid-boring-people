@@ -10,6 +10,7 @@ import {
   SITE_AUTHOR_SAME_AS,
 } from "../consts";
 import { sanitizeJsonLd, serializeJsonLd } from '../utils/jsonld';
+import { normalizePathname } from '../utils/slug-helpers';
 
 const {
   title,
@@ -33,15 +34,11 @@ const {
   authorName?: string;
   ogType?: string;
   tags?: string[];
-  canonical?: string;
+  /** `null` means the page has no canonical URL (see below). */
+  canonical?: string | null;
   relPrev?: string;
   relNext?: string;
   noindex?: boolean;
-};
-
-const normalizePathname = (pathname: string) => {
-  if (!pathname || pathname === '/') return '/';
-  return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
 };
 
 const resolveAbsoluteURL = (maybeRelative?: string) => {
@@ -60,9 +57,15 @@ const resolveAbsoluteURL = (maybeRelative?: string) => {
   }
 };
 
+// `canonical={null}` means the page is served for arbitrary unknown URLs (the
+// 404 handler) and therefore has no canonical URL of its own. Advertising one
+// anyway points canonical/og:url/twitter:url at a URL that does not resolve, so
+// those tags are omitted instead.
 const canonicalURL =
-  resolveAbsoluteURL(canonical) ??
-  new URL(normalizePathname(Astro.url.pathname), SITE_URL).toString();
+  canonical === null
+    ? undefined
+    : resolveAbsoluteURL(canonical) ??
+      new URL(normalizePathname(Astro.url.pathname), SITE_URL).toString();
 const prevURL = resolveAbsoluteURL(relPrev);
 const nextURL = resolveAbsoluteURL(relNext);
 
@@ -219,7 +222,7 @@ const ogImageAlt = `Preview image for ${title}`;
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canonical URL -->
-<link rel="canonical" href={canonicalURL} />
+{canonicalURL && <link rel="canonical" href={canonicalURL} />}
 {prevURL && <link rel="prev" href={prevURL} />}
 {nextURL && <link rel="next" href={nextURL} />}
 
@@ -234,7 +237,7 @@ const ogImageAlt = `Preview image for ${title}`;
 <!-- Open Graph -->
 <meta property="og:type" content={ogType} />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content={canonicalURL} />
+{canonicalURL && <meta property="og:url" content={canonicalURL} />}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImage} />
@@ -256,7 +259,7 @@ const ogImageAlt = `Preview image for ${title}`;
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:url" content={canonicalURL} />
+{canonicalURL && <meta name="twitter:url" content={canonicalURL} />}
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImage} />

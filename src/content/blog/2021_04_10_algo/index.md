@@ -107,7 +107,7 @@ Explaining Bayes rule would probably take an article on its own, so let's just t
 
 - Power law: the longer something has gone on, the longer we expect it to continue going on. For example, if a company has been growing a long time, we'd expect it to continue growing
 - Normal: early events are surprising, late events are expected. For example, we'd be surprised by people who die early in life, and not by people who die late in life.
-- Erlang: events are never any more or less surprising. For example, a memoryless distribution of a roulette wheel or [the coin flips we discussed last week](https://leonlins.com/writing/2021_04_03_ergodicity/ 'sub')
+- Erlang: events are never any more or less surprising. For example, a memoryless distribution of a roulette wheel or [the coin flips we discussed last week](/writing/ergodicity 'sub')
 
 ![post](./a_3.webp)
 

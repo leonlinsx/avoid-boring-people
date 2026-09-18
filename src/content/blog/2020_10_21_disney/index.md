@@ -158,10 +158,10 @@ This is a common critique of activists - that they're only short term holders. I
 
 With the enormous caveat that I don't cover Disney and never have, I'm leaning towards Third Point here. Which is surprising, since I normally find most activist arguments weak. Couple of reasons:
 
-- I'm not a big fan of dividends; see [here](https://leonlins.com/writing/2020_07_08_dividend/ 'divd') for why
+- I'm not a big fan of dividends; see [here](/writing/dividend 'divd') for why
 - Streaming content is likely to be a high growth trend for the next X years (5? 10? 20?) so spending more here is likely high return
 - I agree that it's unclear how much that return is, and that Third Point's subscriber math is all made up, but I'd have to think it'll be higher return than the dividend payment
-- Charging more for movies on a pay per view basis also seems stupid to me when you're trying to build a streaming business. Recall what I just wrote about [Magic and overcharging](https://leonlins.com/writing/2020_10_14_mtg/ 'Magic')
+- Charging more for movies on a pay per view basis also seems stupid to me when you're trying to build a streaming business. Recall what I just wrote about [Magic and overcharging](/writing/mtg 'Magic')
 - Semper's argument boils down to: Hang on let's see everything we can do here. Which is well... true? I mean, can't argue against that, just that it's not really a strong one. I'm sure Disney would look at all their options before deciding to reinvest their dividend, so it's not an impactful argument for me
 - I don't know Disney's full debt structure, but the 10K shows that their current rates aren't really bad (see image below). I'm unsure if paying down debt aggressively makes much sense
 - Especially in our current low rate environment, if Disney needed cash to finance an acquisition or stock repurchase, I would assume it's easy for them to borrow for cheap

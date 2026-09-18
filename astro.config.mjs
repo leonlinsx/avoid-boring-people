@@ -8,54 +8,23 @@ import preact from '@astrojs/preact';
 import vercel from '@astrojs/vercel';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { newsletterAssets } from './src/integrations/newsletter-assets.ts';
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {
+  buildBlogLastmodMap,
+  buildLegacyArticleRedirects,
+  serializeSitemapItem,
+} from './src/utils/article-routes.ts';
 
-/**
- * Build a map of blog post URL pathname → ISO lastmod date.
- * Reads frontmatter from each index.md at build time to avoid using new Date().
- */
-function buildBlogLastmodMap() {
-  const blogDir = path.join(
-    path.dirname(fileURLToPath(import.meta.url)),
-    'src/content/blog',
-  );
-  /** @type {Record<string, string>} */
-  const map = {};
-  try {
-    const entries = fs.readdirSync(blogDir);
-    for (const entry of entries) {
-      const mdPath = path.join(blogDir, entry, 'index.md');
-      if (!fs.existsSync(mdPath)) continue;
-      const content = fs.readFileSync(mdPath, 'utf-8');
-      // Parse updatedDate first, fall back to pubDate
-      const updatedMatch = content.match(/^updatedDate:\s*(\S+)/m);
-      const pubMatch = content.match(/^pubDate:\s*(\S+)/m);
-      const slugOverride = content.match(/^slug:\s*(\S+)/m);
-      const dateStr = updatedMatch?.[1] ?? pubMatch?.[1];
-      if (!dateStr) continue;
-      const slug = slugOverride
-        ? slugOverride[1]
-        : entry.replace(/^\d{4}_\d{2}_\d{2}_/, '');
-      map[`/writing/${slug}/`] = new Date(dateStr).toISOString();
-    }
-  } catch {
-    // non-fatal: fall through to static fallback
-  }
-  return map;
-}
-
+// Blog lastmod comes from each article's updatedDate/pubDate at build time, so
+// the sitemap never needs `new Date()`.
 const blogLastmod = buildBlogLastmodMap();
-// Stable fallback date for non-blog static pages (site launch / last major update)
-const STATIC_LASTMOD = '2025-01-01T00:00:00.000Z';
-const normalizePathname = (pathname) => {
-  if (!pathname || pathname === '/') return '/';
-  return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
-};
 
 export default defineConfig({
   site: SITE_URL,
+  // Canonical URLs and sitemap entries never carry a trailing slash. Asking the
+  // adapter to normalize them (it forwards this to the deployed router) also
+  // makes `/writing/2020_12_02_kelly/` reach the slashless legacy redirect key
+  // below, which is the only form a redirect route can match.
+  trailingSlash: 'never',
   // Replaced by src/middleware.ts with equivalent checks except the signed SNS POST.
   security: { checkOrigin: false },
   adapter: vercel(),
@@ -73,14 +42,7 @@ export default defineConfig({
         );
       },
       serialize(item) {
-        const url = new URL(item.url);
-        const pathname = normalizePathname(url.pathname);
-        url.pathname = pathname;
-        return {
-          ...item,
-          url: url.toString(),
-          lastmod: blogLastmod[pathname] ?? STATIC_LASTMOD,
-        };
+        return serializeSitemapItem(item, blogLastmod);
       },
     }),
     mdx(),
@@ -94,6 +56,9 @@ export default defineConfig({
 
   // ✅ Redirects must be an object
   redirects: {
+    // Legacy date-prefixed article paths (/writing/2020_12_02_kelly/) that are
+    // still linked from imported articles and the wild.
+    ...buildLegacyArticleRedirects(),
     '/writing': { destination: '/writing/1', status: 308 },
     '/writing/category/:category': {
       destination: '/writing/category/:category/1',

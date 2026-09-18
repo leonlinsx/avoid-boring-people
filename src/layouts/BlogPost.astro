@@ -49,7 +49,7 @@ const related = allPosts
   .slice(0, 3);
 
 // ✅ Canonical URL from clean slug
-const canonicalURL = new URL(`/writing/${slug}/`, SITE_URL).toString();
+const canonicalURL = new URL(`/writing/${slug}`, SITE_URL).toString();
 
 const breadcrumbItems = [
   { label: 'Home', href: '/' },

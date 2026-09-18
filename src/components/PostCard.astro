@@ -18,7 +18,7 @@ const rt = post.data.readingTime;
 
 // ✅ slug is guaranteed by enrichPost, but fallback just in case
 const slug = post.slug ?? post.id.replace(/\/index\.md$/, '');
-const href = `/writing/${slug}/`;
+const href = `/writing/${slug}`;
 
 // ✅ Thumbnail: heroImage (object) or SITE_OG_IMAGE (string fallback)
 const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;

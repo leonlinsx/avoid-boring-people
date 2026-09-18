@@ -37,7 +37,7 @@ Is 25% of rev spent on just cloud operations [^3] a lot? To contextualise that n
 
 > anecdotal data shows that many companies spend up to 10-15% of revenue on \[manual data cleaning and data accuracy maintenance\] process – usually not counting core engineering resources – and suggests ongoing development work exceeds typical bug fixes and feature additions - a16z
 
-Turns out AI companies do have other COGS, spending up to 15% on manual data processes. Mainstream media focuses on the predictions from machine learning, [but data scientists spend more of their time on data collection and cleaning.](https://leonlins.com/writing/2020_02_26_time/ 'ABP') That isn't going away, meaning **most AI companies are immediately 15% less profitable than a software company.** That's also before any other COGS involved, implying final gross margins are even lower.
+Turns out AI companies do have other COGS, spending up to 15% on manual data processes. Mainstream media focuses on the predictions from machine learning, [but data scientists spend more of their time on data collection and cleaning.](/writing/time 'ABP') That isn't going away, meaning **most AI companies are immediately 15% less profitable than a software company.** That's also before any other COGS involved, implying final gross margins are even lower.
 
 The allure of investing in software companies is that marginal costs are low, so a high percentage of incremental revenue is converted to profit. AI companies need to lower that COGS % or expect some benefit of scale in order to be as attractive. Is that likely?
 
@@ -211,7 +211,7 @@ In all the important decisions we make, we should:
 
 2. improve on our process to choose between them
 
-On the first, explicitly writing out what you're giving up, such as with a [decision journal,](https://fs.blog/2014/02/decision-journal/ 'FS') can be helpful. So can doing [premortems](https://leonlins.com/writing/2019_11_23_premortem/ 'pre'). The act of fully thinking through the scenario will usually highlight concerns you were only vaguely aware of.
+On the first, explicitly writing out what you're giving up, such as with a [decision journal,](https://fs.blog/2014/02/decision-journal/ 'FS') can be helpful. So can doing [premortems](/writing/premortem 'pre'). The act of fully thinking through the scenario will usually highlight concerns you were only vaguely aware of.
 
 Another way would be to get advice from others, particularly those that have had a similar decision to make in a similar context. They'll be able to flag key concerns or regrets they had. Such advice is highly variable in nature though, and could range from useful to downright harmful. What can be risky for someone might be safe for another.
 

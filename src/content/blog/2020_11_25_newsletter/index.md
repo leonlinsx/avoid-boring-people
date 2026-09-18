@@ -7,7 +7,7 @@ tags: ['writing']
 heroImage: './n_1.webp'
 ---
 
-Newsletters continue to rise in popularity, driven by [trends in cost, convenience, and control of the audience](https://leonlins.com/writing/2019_07_31_news/). Both amateur and professional writers are publishing independently in order to benefit from the high leverage of working in public. Writing publicly is like buying an option, with capped downside and potentially unlimited upside.
+Newsletters continue to rise in popularity, driven by [trends in cost, convenience, and control of the audience](/writing/news). Both amateur and professional writers are publishing independently in order to benefit from the high leverage of working in public. Writing publicly is like buying an option, with capped downside and potentially unlimited upside.
 
 We're a group of newsletter authors with a combined audience in the hundreds of thousands, writing about topics ranging from product management to being human. We're sharing our tips on:
 

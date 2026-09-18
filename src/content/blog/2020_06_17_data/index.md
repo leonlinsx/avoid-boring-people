@@ -13,7 +13,7 @@ It is unlikely you have an information edge as a retail investor vs professional
 
 ## Using data in investing
 
-Last week, we looked at [how companies use machine learning to take data, process it, and come to a conclusion.](https://leonlins.com/writing/2020_06_10_ml/ 'ML')
+Last week, we looked at [how companies use machine learning to take data, process it, and come to a conclusion.](/writing/ml 'ML')
 
 This week, we'll look at a more human oriented process. We'll walk through how analysts at an investment firm obtain data, analyse it, and form an investment thesis. With investors [spending >$30bn on data](https://www.ft.com/content/222855de-4fbf-11e9-9c76-bf4a0ce37d49 'spend'), where is all that money going to?
 
@@ -145,9 +145,9 @@ What you have to do is find the things that a normal pro would be reluctant to d
 
 ![post](./data_9.webp)
 
-[^1]: I don't have experience in a quant firm, so can't speak to that personally. I do know quants [pay for order flow though,](https://www.institutionalinvestor.com/article/b1m2p1cv68bx56/Twitter-Freaked-Out-Over-Robinhood-Selling-Its-Trade-Flow-But-the-App-and-Others-Have-Been-Doing-It-for-Years 'order') and that's likely included in the $30bn figure. Separately, note that an investment firm like a hedge fund is different from an investment bank; most investment analysts do compeletely different jobs than investment bankers. [Sellside equity research is the role most similar to a hedge fund analyst, but researchers don't actually invest money.](https://leonlins.com/writing/2020_02_26_time/ 'Sellside')
+[^1]: I don't have experience in a quant firm, so can't speak to that personally. I do know quants [pay for order flow though,](https://www.institutionalinvestor.com/article/b1m2p1cv68bx56/Twitter-Freaked-Out-Over-Robinhood-Selling-Its-Trade-Flow-But-the-App-and-Others-Have-Been-Doing-It-for-Years 'order') and that's likely included in the $30bn figure. Separately, note that an investment firm like a hedge fund is different from an investment bank; most investment analysts do compeletely different jobs than investment bankers. [Sellside equity research is the role most similar to a hedge fund analyst, but researchers don't actually invest money.](/writing/time 'Sellside')
 
-[^2]: Edge here refers to the relative advantage you have against your competition. We discussed [why this was important in investing last month.](https://leonlins.com/writing/2020_05_07_relative_billionaire/ 'edge') Shoutout to Barak Paz for nudging me to write on this based on a convo we had.
+[^2]: Edge here refers to the relative advantage you have against your competition. We discussed [why this was important in investing last month.](/writing/relative_billionaire 'edge') Shoutout to Barak Paz for nudging me to write on this based on a convo we had.
 
 [^3]: But usually not ask questions. Some rare companies let the public ask questions; most of the times the questions are coming from sellside research (not buyside investment analysts)
 

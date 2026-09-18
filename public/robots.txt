@@ -1,5 +1,7 @@
 # robots.txt for leonlins.com
-# SEO + answer-engine discovery enabled; private paths and AI training blocked.
+# Policy: AI-powered search, retrieval, and user-directed fetching are welcome;
+# the model-training crawlers listed below are blocked. Ordinary search
+# indexing is unaffected.
 
 User-agent: *
 Allow: /
@@ -23,10 +25,21 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
+# AI search and retrieval (allowed)
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Model training (blocked)
 User-agent: GPTBot
 Disallow: /
 
 User-agent: Google-Extended
+Disallow: /
+
+User-agent: ClaudeBot
 Disallow: /
 
 Sitemap: https://leonlins.com/sitemap-index.xml

@@ -126,6 +126,6 @@ Even the Fed has realised to not be the gatekeeper of last resort.
 
 [^6]: Also, full disclosure that I don't fully understand the math in the paper. Particularly, there's a speculator skewed return conclusion that I don't quite follow.
 
-[^7]: For readers unaware of what cost of capital means, think of it as the cost of funding. I wrote about it more previously [here](https://leonlins.com/writing/2020_09_16_capital/ 'sub')
+[^7]: For readers unaware of what cost of capital means, think of it as the cost of funding. I wrote about it more previously [here](/writing/capital 'sub')
 
 [^8]: "When a trader — e.g. a dealer, hedge fund, or investment bank — buys a security, he can use the security as collateral and borrow against it, but he cannot borrow the entire price. The difference between the security’s price and collateral value, denoted as the margin, must be financed with the trader’s own capital"

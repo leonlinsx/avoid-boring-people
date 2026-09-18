@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 import process from 'node:process';
 import { LinkChecker, LinkState } from 'linkinator';
+import { shouldSkipLink, urlRewriteExpressions } from './lib/link-policy.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const mode = process.argv[2] || 'internal';
@@ -46,12 +47,15 @@ try {
     port: linkcheckPort,
     recurse: config.recurse,
     timeout: requestTimeout,
+    // Same-site absolute links are rewritten onto the local server instead of
+    // being skipped as external, so they are still checked deterministically.
+    urlRewriteExpressions: urlRewriteExpressions(linkcheckPort),
     linksToSkip: async (link) => {
       if (skipPatterns.some((pattern) => pattern.test(link))) {
         return true;
       }
 
-      return mode === 'internal' && new URL(link).hostname !== 'localhost';
+      return shouldSkipLink(link, mode);
     },
   });
 } catch (error) {

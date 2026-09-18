@@ -193,7 +193,7 @@ Maybe the true magic is all the friends we made along the way.
 
 [^11]: Wizards has publicly claimed they follow a [FIRE philosophy](https://magic.wizards.com/en/articles/archive/card-preview/fire-it-2019-06-21 'mtg') - They want Magic to be fun, inviting, replayable, exciting.
 
-[^12]: If you recall, this is similar to the [relative vs absolute skill](https://leonlins.com/writing/2020_05_07_relative_billionaire/ 'relative') point I wrote about a while back. It doesn't matter if your deck is a good deck in absolute, but how it compares against the typical decks you're likely to face in competition, the "meta"
+[^12]: If you recall, this is similar to the [relative vs absolute skill](/writing/relative_billionaire 'relative') point I wrote about a while back. It doesn't matter if your deck is a good deck in absolute, but how it compares against the typical decks you're likely to face in competition, the "meta"
 
 [^13]: This isn't actually the first time Wizards has done external IP, having created sets such as Arabian Nights or Three Kingdoms that are based on exactly what they're named for. I'm leaving that out in the main text for simplicity.
 

@@ -30,7 +30,7 @@ People have their own unique priorities when evaluating cities. The person's pri
 
 Usually, the pace at which the person's priority changes has been faster than the pace at which a city's ability changes. You move to a city for your first job after graduating college, and then stay there for a while until you need more space for a family. The city stayed the same, you changed.
 
-Recently though, cities have lost nearly everything that attracted people to them. You may have stayed the same and want the same things, but the city changed. If you recall our [pace layer](https://leonlins.com/writing/2020_03_04_pace/ 'pace') discussion, in this case the "governance", "infrastructure", and "commerce" layers all moved more quickly than expected.
+Recently though, cities have lost nearly everything that attracted people to them. You may have stayed the same and want the same things, but the city changed. If you recall our [pace layer](/writing/pace 'pace') discussion, in this case the "governance", "infrastructure", and "commerce" layers all moved more quickly than expected.
 
 ![post](./c_2.webp)
 

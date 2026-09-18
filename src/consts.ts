@@ -13,6 +13,7 @@ export const SITE_AUTHOR_SAME_AS = [
   'https://twitter.com/leonlinsx',
   'https://github.com/leonlinsx',
   'https://avoidboringpeople.substack.com',
+  'https://www.threads.net/@leon.lin.s',
 ];
 
 export const SITE_ORG_SAME_AS = [

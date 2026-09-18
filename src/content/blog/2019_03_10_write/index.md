@@ -130,7 +130,7 @@ I think a lof of this flows out of reading and talking to a variety of people
 
 > One of the keys to coolness is to avoid situations where inexperience may make you look foolish. If you want to find surprises you should do the opposite. Study lots of different things, because some of the most interesting surprises are unexpected connections between different fields.
 
-I've written about [specialisation vs generalisation](https://leonlins.com/writing/2017_12_01_specialist/ 'post link') before
+I've written about [specialisation vs generalisation](/writing/specialist 'post link') before
 
 > Anyone can publish an essay on the Web, and it gets judged, as any writing should, by what it says, not who wrote it. Who are you to write about x? You are whatever you wrote.
 
