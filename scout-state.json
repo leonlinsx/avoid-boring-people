@@ -1,4 +1,16 @@
 {
-  "opportunities": {},
+  "opportunities": {
+    "https://news.ycombinator.com/item?id=49755575": {
+      "acted_at": null,
+      "content_id": "2019_11_23_premortem/index.md",
+      "discovered_at": "2026-09-18T18:26:54.304881+00:00",
+      "draft": "The premortem framing maps onto this well. Instead of asking what you'd do if Claude Code disappeared, assume it already has and write down the reasons. Klein, Sonkin and Johnson argue it's easier to explain why something happened than to generate scenarios for what might happen, which is exactly the asymmetry that makes \"what's my fallback\" so hard to answer honestly. Two conditions from their paper matter here. Problem reframing: the exercise only works if you commit to the failure being real, not hypothetical. And a cognitively diverse group: if you run this alone you'll surface the problems you already suspect. The people who'd notice your blind spots are the ones who see your work but don't share your enthusiasm for the tool. A secondary benefit they note is reduced overconfidence, which is the actual risk in a dependency that feels like a body part. The failure modes worth listing aren't just \"the service goes down\" but the skills and context that quietly stop being maintained while the tool works.",
+      "external_url": "https://news.ycombinator.com/item?id=49755575",
+      "outcome": null,
+      "source": "hacker-news",
+      "status": "surfaced",
+      "surfaced_at": "2026-09-18T18:26:54.304881+00:00"
+    }
+  },
   "version": 1
 }
