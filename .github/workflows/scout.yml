@@ -1,0 +1,96 @@
+name: Scout
+
+# Lin Scout looks for the few current external conversations where an already
+# published article would be a useful contribution. It is a reporting job: it
+# searches, judges, writes its report into the run summary, and records what it
+# surfaced so the same opportunity is never surfaced twice. It never publishes
+# anything, never touches the site build, and its own state file is the only
+# thing it commits. No model key or crashed run can affect leonlins.com.
+#
+# Cadence is daily because Scout targets a handful of high-value opportunities,
+# not real-time engagement. Discovery covers a bounded number of queries, so one
+# run per day is a few minutes of work rather than a continuously running
+# service.
+on:
+  schedule:
+    # 07:00 UTC, before the daily token probe and the social cycles, so the
+    # report is waiting while the other jobs spend their credentials.
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Search and report only; record nothing'
+        type: boolean
+        default: false
+      queries:
+        description: 'Comma-separated queries instead of the derived ones'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scout-state
+  cancel-in-progress: false
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    # Discovery waits on two external services under their own timeouts; a hung
+    # install or blocked request would otherwise hold the state file for a day.
+    # The ceiling leaves room for every bounded model request (the judgment cap
+    # times the client's own timeout and retries) plus the state commit.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
+          python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+      # Scout writes its report into the step summary, which is where the author
+      # reads it. A run that fails is a retryable operational failure, so it is
+      # allowed to finish the state commit first and reported at the end, the way
+      # the social workflows do it.
+      - name: Find today's opportunities
+        id: scout
+        continue-on-error: true
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+          # Dispatch inputs arrive through the environment so a query typed into
+          # the run form is data, not shell source.
+          SCOUT_DRY_RUN: ${{ inputs.dry_run }}
+          SCOUT_QUERIES: ${{ inputs.queries }}
+        run: |
+          args=()
+          if [ "${SCOUT_DRY_RUN}" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          if [ -n "${SCOUT_QUERIES}" ]; then
+            args+=(--queries "${SCOUT_QUERIES}")
+          fi
+          python -m scripts.scout run "${args[@]}"
+      # A dry run records nothing, so there is nothing to commit and a run with
+      # no new opportunities leaves the file untouched.
+      - name: Commit scout state
+        env:
+          PUSH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          git add scout-state.json
+          git diff --cached --quiet || git commit -m 'chore: update scout-state.json [skip ci]'
+          git pull --rebase origin main
+          git push origin main
+      - name: Report scout failure
+        if: steps.scout.outcome == 'failure'
+        run: exit 1

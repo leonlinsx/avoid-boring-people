@@ -171,6 +171,17 @@ def test_deepseek_client_keeps_the_hosted_endpoint(monkeypatch):
     assert str(client.base_url).rstrip("/") == "https://api.deepseek.com/v1"
 
 
+def test_deepseek_client_bounds_its_own_wait(monkeypatch):
+    """The SDK defaults (600s, 2 retries) outlive the job that pays for one call."""
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+
+    client = llm_summarizer._client()
+
+    assert client.timeout == llm_summarizer.HOSTED_TIMEOUT_SECONDS
+    assert client.max_retries == llm_summarizer.HOSTED_MAX_RETRIES
+    assert client.timeout * (client.max_retries + 1) < 20 * 60
+
+
 def test_deepseek_model_can_still_be_overridden(monkeypatch):
     monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-v4-pro")
 
@@ -344,3 +355,118 @@ def test_the_local_request_carries_no_hosted_credential(monkeypatch, capsys):
     assert "super-secret" not in printed
     assert "LLM provider: ollama" in printed
     assert "LLM model: qwen3.5:9b" in printed
+
+
+# --- shared completion seam -----------------------------------------------------
+
+def test_an_absent_deepseek_key_is_reported_as_unconfigured(monkeypatch):
+    _live(monkeypatch)
+    monkeypatch.delenv("SOCIAL_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+
+    assert llm_summarizer.llm_configured() is False
+
+
+def test_a_blank_deepseek_key_does_not_count_as_configuration(monkeypatch):
+    _live(monkeypatch)
+    monkeypatch.delenv("SOCIAL_LLM_PROVIDER", raising=False)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "   ")
+
+    assert llm_summarizer.llm_configured() is False
+
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    assert llm_summarizer.llm_configured() is True
+
+
+def test_the_local_provider_is_configured_by_its_model_not_the_hosted_key(monkeypatch):
+    _use_ollama(monkeypatch)
+
+    assert llm_summarizer.llm_configured() is True
+
+    monkeypatch.delenv("OLLAMA_MODEL", raising=False)
+    assert llm_summarizer.llm_configured() is False
+
+
+def test_an_unknown_provider_fails_closed_when_configuration_is_checked(monkeypatch):
+    monkeypatch.setenv("SOCIAL_LLM_PROVIDER", "openai")
+
+    with pytest.raises(llm_summarizer.SocialCopyError) as error:
+        llm_summarizer.llm_configured()
+
+    assert "openai" in str(error.value)
+
+
+def test_the_completion_seam_returns_the_parsed_object(monkeypatch):
+    _live(monkeypatch)
+    monkeypatch.delenv("SOCIAL_LLM_PROVIDER", raising=False)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    captured = {}
+    _fake_deepseek(monkeypatch, json.dumps({"verdict": "STRONG"}), captured)
+
+    result = llm_summarizer.complete_json(
+        "judge this thread", system="You judge.", temperature=0.3, max_tokens=1600
+    )
+
+    assert result == {"verdict": "STRONG"}
+    assert captured["temperature"] == 0.3
+    assert captured["max_tokens"] == 1600
+    assert captured["response_format"] == {"type": "json_object"}
+    assert captured["messages"] == [
+        {"role": "system", "content": "You judge."},
+        {"role": "user", "content": "judge this thread"},
+    ]
+
+
+def test_the_completion_seam_tolerates_a_fenced_object(monkeypatch):
+    _live(monkeypatch)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    _fake_deepseek(monkeypatch, '```json\n{"verdict": "REJECT"}\n```', {})
+
+    assert llm_summarizer.complete_json("judge", system="You judge.") == {"verdict": "REJECT"}
+
+
+def test_the_completion_seam_uses_the_selected_local_provider(monkeypatch):
+    _live(monkeypatch)
+    _use_ollama(monkeypatch)
+    captured = {}
+    _fake_ollama(monkeypatch, json.dumps({"verdict": "MAYBE"}), captured)
+
+    assert llm_summarizer.complete_json("judge", system="You judge.") == {"verdict": "MAYBE"}
+    assert captured["url"] == "http://localhost:11434/api/chat"
+
+
+def test_the_completion_seam_never_fabricates_a_judgment_under_dry_run(monkeypatch):
+    """`DRY_RUN` mocks the social copy, but a judgment must come from the model."""
+    _live(monkeypatch)
+    monkeypatch.setenv("DRY_RUN", "true")
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    _fake_deepseek(monkeypatch, json.dumps({"verdict": "STRONG"}), {})
+
+    assert llm_summarizer.complete_json("judge", system="You judge.") == {"verdict": "STRONG"}
+
+
+@pytest.mark.parametrize("reply", ["", "   "])
+def test_an_empty_completion_fails_closed(monkeypatch, reply):
+    _live(monkeypatch)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    _fake_deepseek(monkeypatch, reply, {})
+
+    with pytest.raises(llm_summarizer.SocialCopyError) as error:
+        llm_summarizer.complete_json("judge", system="You judge.")
+
+    assert "empty" in str(error.value)
+
+
+@pytest.mark.parametrize(
+    ("reply", "expected"),
+    [("not json at all", "unusable JSON"), ('["a", "b"]', "expected an object")],
+)
+def test_an_unusable_completion_fails_closed(monkeypatch, reply, expected):
+    _live(monkeypatch)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    _fake_deepseek(monkeypatch, reply, {})
+
+    with pytest.raises(llm_summarizer.SocialCopyError) as error:
+        llm_summarizer.complete_json("judge", system="You judge.")
+
+    assert expected in str(error.value)

@@ -50,6 +50,11 @@ DEFAULT_OLLAMA_BASE_URL = "http://localhost:11434"
 DEFAULT_OLLAMA_NUM_CTX = 32768
 OLLAMA_TIMEOUT_SECONDS = 600
 
+# The hosted backend answers in seconds; these are ceilings, not expectations.
+# They exist so one stalled request cannot consume a whole scheduled run.
+HOSTED_TIMEOUT_SECONDS = 60
+HOSTED_MAX_RETRIES = 2
+
 # The search index is a single JSON document fetched over the network, so a
 # pathological entry must not be able to build an unbounded request. The longest
 # article currently on leonlins.com is ~43,000 characters, so this bound never
@@ -145,6 +150,18 @@ def llm_identity(provider: str | None = None) -> str:
     return f"{provider}/{llm_model(provider)}"
 
 
+def llm_configured(provider: str | None = None) -> bool:
+    """Whether the selected provider has the configuration a call needs.
+
+    This is configuration presence, not reachability: whether an API key is
+    valid or a local server is up is proven by making the call.
+    """
+    provider = provider or llm_provider()
+    if provider == PROVIDER_OLLAMA:
+        return bool(os.getenv("OLLAMA_MODEL", "").strip())
+    return bool(os.getenv("DEEPSEEK_API_KEY", "").strip())
+
+
 def _request_options(provider: str, json_mode: bool = True) -> dict:
     """Extra chat-completion options for the DeepSeek request.
 
@@ -181,11 +198,21 @@ def ollama_num_ctx() -> int:
 
 
 def _client() -> OpenAI:
-    """OpenAI-compatible client for the DeepSeek production backend."""
+    """OpenAI-compatible client for the DeepSeek production backend.
+
+    The bounds are explicit because the SDK's defaults are ten minutes and two
+    retries per request: a stalled backend would otherwise outlive the job that
+    pays for it, and a killed job reports nothing.
+    """
     api_key = os.getenv("DEEPSEEK_API_KEY")
     if not api_key:
         raise RuntimeError("❌ DEEPSEEK_API_KEY is missing")
-    return OpenAI(api_key=api_key, base_url="https://api.deepseek.com/v1")
+    return OpenAI(
+        api_key=api_key,
+        base_url="https://api.deepseek.com/v1",
+        timeout=HOSTED_TIMEOUT_SECONDS,
+        max_retries=HOSTED_MAX_RETRIES,
+    )
 
 
 def _ollama_chat(
@@ -468,6 +495,35 @@ def _extract_json(text: str, label: str = "DeepSeek") -> Dict:
             f"❌ {label} returned JSON of type {type(data).__name__}, expected an object"
         )
     return data
+
+
+def complete_json(
+    prompt: str,
+    *,
+    system: str,
+    temperature: float = TEMPERATURE,
+    max_tokens: int = MAX_TOKENS,
+) -> Dict:
+    """One JSON-object completion from the selected provider.
+
+    The seam for callers that need the shared provider selection, request
+    shaping, and JSON parsing but not social copy: `summarize_post` owns its own
+    prompt and quality gate, and this deliberately bypasses its `DRY_RUN` mock so
+    a caller can never mistake fabricated output for a real judgment.
+    """
+    provider = llm_provider()
+    label = PROVIDER_LABELS[provider]
+    text = _complete(
+        prompt,
+        llm_model(provider),
+        system=system,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        json_mode=True,
+    ).strip()
+    if not text:
+        raise SocialCopyError(f"❌ {label} returned an empty response")
+    return _extract_json(text, label)
 
 
 def summarize_post(

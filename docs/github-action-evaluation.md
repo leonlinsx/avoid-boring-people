@@ -2,9 +2,9 @@
 
 ## Summary
 
-The repository has eight workflows. Four are tied to content publishing,
-two maintain the distribution loop, one gates code changes, and one checks
-newsletter health: `ci.yml` runs
+The repository has nine workflows. Four are tied to content publishing,
+two maintain the distribution loop, one gates code changes, one checks
+newsletter health, and one reports Scout opportunities: `ci.yml` runs
 the existing local suites (`npm test`, the Python distribution tests,
 `npm run build`) on pushes to `main` and on pull requests, so the
 distribution state machine and the newsletter send guards are no longer
@@ -24,6 +24,7 @@ after confirmed success, a bounded deploy wait before the first publish).
 | `token-health.yml` | Daily 08:00 UTC; manual dispatch | Probes the Threads and Instagram long-lived tokens with a read-only request | Fails with rotation instructions when a stored token is rejected; a platform whose secrets are unset is reported as skipped |
 | `engagement.yml` | Schedule Mon 09:00 UTC; manual dispatch | Re-reads recorded remote posts (Bluesky keyless; Mastodon, Farcaster, DEV via existing read credentials) and commits public counts to `engagement.json` | Fails only when eligible targets existed but nothing was observed; per-post outages skip with a warning |
 | `newsletter-health.yml` | Schedule Mon 13:00 UTC; manual dispatch | Runs `npm run newsletter:analytics -- --days 30 --check` read-only against the newsletter database | Fails on a bounce-rate or complaint-rate breach or on sends with no correlated SES event; a missing or malformed `NEWSLETTER_ANALYTICS_DATABASE_URL` fails the run before the report, and a collection failure prints no driver message because the repository is public |
+| `scout.yml` | Schedule daily 07:00 UTC; manual dispatch (`dry_run`, `queries`) | Runs Lin Scout read-only against the external sources and commits `scout-state.json`, the record of the conversations it surfaced | Reports each opportunity and each declined candidate in the run summary; an unconfigured judgment model or two unreachable sources fails the run, and the state commit happens before the failure is reported so a failed run is still retryable |
 
 ## Gaps worth knowing
 
@@ -50,7 +51,9 @@ scripts were checked by executing them rather than by shell linting).
 written; it reuses the same pinned action SHAs, explicit `permissions`,
 `concurrency` group, and `timeout-minutes` as the reviewed workflows, and its
 `run:` steps were exercised locally. Treat it as unverified by `actionlint`
-until a run passes it. GitHub Actions itself
+until a run passes it. `scout.yml` has the same standing: it is not installed
+here, its YAML parses, and its `run:` steps were executed locally, so it is
+unverified by `actionlint` until a run passes it. GitHub Actions itself
 has not been exercised for these workflows: nothing has been pushed, and the
 scripts were validated by running them directly.
 

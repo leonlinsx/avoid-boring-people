@@ -7,7 +7,7 @@ newsletter — and a first-party article discussion. This repository is public;
 secrets live only in ignored local files, GitHub Secrets, and Vercel environment
 variables — never in git.
 
-The repo holds four systems:
+The repo holds five systems:
 
 1. **Blog / site** — the Astro static site. Markdown/MDX articles under
    `src/content/blog` render at `/writing/[slug]`; `/writing` is the canonical
@@ -36,6 +36,11 @@ The repo holds four systems:
    local-only moderation CLI). It replaced Giscus, so no GitHub account is
    needed and no third party sees reader activity. Details:
    [docs/discussion.md](docs/discussion.md).
+5. **Lin Scout** — `scripts/scout/`, an internal discovery tool that finds the
+   few current external conversations (Hacker News, Bluesky) where an existing
+   article would be a useful contribution, and drafts the reply. It runs daily
+   in its own workflow, never publishes anything, and keeps its only state in
+   `scout-state.json`. Details: [docs/scout.md](docs/scout.md).
 
 ## Project structure
 
@@ -46,10 +51,12 @@ The repo holds four systems:
 ├── scripts/automation/    # social distribution (summarizers, renderers, publishers)
 ├── scripts/newsletter/    # owned-newsletter CLIs (import, preview, campaign, send, analytics)
 ├── scripts/comments/      # discussion moderation CLIs (list, hide, restore, delete, reply)
+├── scripts/scout/         # Lin Scout discovery tool (inventory, discovery, matching, filtering, CLI)
 ├── migrations/            # Neon Postgres schema migrations
 ├── docs/                  # runbooks, evaluations, per-system documentation
 ├── tests/                 # Python distribution/newsletter suites + TS runner
 ├── posted.json            # per-article, per-platform publish ledger
+├── scout-state.json       # Lin Scout's record of the conversations it surfaced
 └── engagement.json        # public like/repost/reply counts ledger
 ```
 
@@ -85,6 +92,9 @@ All commands run from the repo root.
 | Restore a hidden comment | `npm run comments:restore -- <comment-id>` |
 | Delete a comment and its replies | `npm run comments:delete -- <comment-id> --confirm-delete` |
 | Post an author reply | `npm run comments:reply -- --parent <comment-id> --body "..." --confirm-reply` |
+| Scout dry run (no side effects) | `python -m scripts.scout run --dry-run` |
+| Scout run | `python -m scripts.scout run` (needs `DEEPSEEK_API_KEY`; run `--dry-run --no-llm` to inspect discovery without one) |
+| Scout queue | `python -m scripts.scout list`, `python -m scripts.scout dismiss <url>`, `python -m scripts.scout acted <url> --outcome "..."` |
 
 The dry run prints each channel's eligibility plus the exact copy it would
 publish, so voice and formatting can be judged before anything leaves the
@@ -123,6 +133,9 @@ Vercel deploys never send email or social posts.
   returned publicly, and the author badge is set only by the operator CLI.
 - The discussion stores no IP addresses, no email addresses, and no raw browser
   tokens — only a SHA-256 hash of the token, which is never logged.
+- Lin Scout reports and never publishes: it has no posting path, no database,
+  and no coupling to the site build, and it never surfaces the same conversation
+  twice (`scout-state.json` records every URL it has shown, in any status).
 
 ## Docs index
 
@@ -135,6 +148,7 @@ Vercel deploys never send email or social posts.
 | [docs/newsletter-sns-diagnostics.md](docs/newsletter-sns-diagnostics.md) | Phase 3 transport diagnostics record |
 | [docs/newsletter-analytics.md](docs/newsletter-analytics.md) | First-party attribution model, metric definitions, and the local report CLI |
 | [docs/discussion.md](docs/discussion.md) | First-party article discussion: data model, identity, abuse controls, API, moderation CLI |
+| [docs/scout.md](docs/scout.md) | Lin Scout: sources, matching and gates, judgment contract, state, scheduling |
 | [docs/github-action-evaluation.md](docs/github-action-evaluation.md) | Workflow coverage, quality signals, known gaps |
 | [docs/email_digest_evaluation.md](docs/email_digest_evaluation.md) | Summarizer/ranking assessment and opportunities |
 | [docs/template.md](docs/template.md) | Article frontmatter template |

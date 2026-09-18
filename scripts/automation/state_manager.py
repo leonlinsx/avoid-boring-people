@@ -2,11 +2,11 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-import json
 import os
 from pathlib import Path
-import tempfile
 from typing import Dict, Iterable, Optional
+
+from scripts.automation.json_store import load_json_object, save_json_object
 
 STATE_FILE = Path("posted.json")
 STATE_VERSION = 2
@@ -47,30 +47,14 @@ def _migrate_state(raw: Dict) -> Dict:
 
 
 def load_state() -> Dict:
-    if not STATE_FILE.exists():
+    raw = load_json_object(STATE_FILE)
+    if raw is None:
         return _empty_state()
-    with STATE_FILE.open("r", encoding="utf-8") as state_file:
-        raw = json.load(state_file)
-    if not isinstance(raw, dict):
-        raise ValueError("posted.json must contain a JSON object")
     return _migrate_state(raw)
 
 
 def save_state(state: Dict) -> None:
-    """Atomically persist deterministic JSON so interrupted writes cannot truncate state."""
-    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
-    fd, temp_name = tempfile.mkstemp(prefix=f".{STATE_FILE.name}.", dir=STATE_FILE.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as state_file:
-            json.dump(state, state_file, indent=2, sort_keys=True)
-            state_file.write("\n")
-        os.replace(temp_name, STATE_FILE)
-    except Exception:
-        try:
-            os.unlink(temp_name)
-        except FileNotFoundError:
-            pass
-        raise
+    save_json_object(STATE_FILE, state)
 
 
 def get_platform_state(post_id: str, platform: str, state: Optional[Dict] = None) -> Optional[Dict]:
