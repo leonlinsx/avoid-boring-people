@@ -7,6 +7,7 @@
 // membership exists, so paid conversion and paid churn are out of scope. Every
 // metric below is re-derivable from stored rows.
 
+import { newsletterAlert } from './alerting.ts';
 import { newsletterDb } from './db.ts';
 import { acquisitionSources, type AcquisitionSource } from './attribution.ts';
 
@@ -29,6 +30,10 @@ export const UNSUBSCRIBE_SPIKE_MIN = 5;
 export const UNSUBSCRIBE_SPIKE_FACTOR = 2;
 
 const DAY_MS = 86_400_000;
+// A send must be at least this old before the absence of its SES event receipt
+// is read as an ingestion failure, because SES publishes events asynchronously
+// and the endpoint may still be catching up.
+const DELIVERY_GRACE_MS = 3_600_000;
 
 export type AudienceMetrics = {
   active: number;
@@ -78,6 +83,13 @@ export type NewsletterMetrics = {
   sharesWithheld: boolean;
   deliverability: DeliverabilityMetrics;
   alerts: string[];
+  /**
+   * The subset of {@link alerts} that a scheduled run must fail on: a
+   * deliverability rate at the SES threshold, or an ingestion path that has
+   * stopped producing events. Threshold-free observations stay out, so a quiet
+   * publishing week does not look like an outage.
+   */
+  failures: string[];
   notes: string[];
 };
 
@@ -183,8 +195,12 @@ export async function collectNewsletterMetrics(
   // sends. Only receipts that belong to a campaign send are counted, so a
   // confirmation email, a test send, or the report email itself can never be
   // read as campaign deliverability; the EXISTS join is what keeps the
-  // `deliveries`/`bounced`/`complained` counts comparable to `sends`.
+  // `deliveries`/`bounced`/`complained` counts comparable to `sends`. The total
+  // receipt count is collected separately because a receipt of any kind proves
+  // ingestion is alive, even when it is a transient bounce that maps to none of
+  // the three statuses below.
   const deliveryRows = await db`SELECT
+    count(*)::int AS receipts,
     (count(*) FILTER (WHERE event_status = 'sent'))::int AS deliveries,
     (count(*) FILTER (WHERE event_status = 'bounced'))::int AS bounced,
     (count(*) FILTER (WHERE event_status = 'complained'))::int AS complained
@@ -195,8 +211,11 @@ export async function collectNewsletterMetrics(
         WHERE campaign_recipients.provider_message_id = newsletter_event_receipts.provider_message_id
       )`;
 
-  const sendRows =
-    await db`SELECT count(*)::int AS sends FROM campaign_recipients
+  const deliveryGraceStart = new Date(now.getTime() - DELIVERY_GRACE_MS);
+  const sendRows = await db`SELECT
+    count(*)::int AS sends,
+    (count(*) FILTER (WHERE sent_at < ${at(deliveryGraceStart)}::timestamptz))::int AS sends_before_delivery_grace
+    FROM campaign_recipients
     WHERE sent_at >= ${at(windowStart)}::timestamptz AND sent_at < ${at(now)}::timestamptz`;
 
   return buildMetrics({
@@ -289,6 +308,10 @@ export function buildMetrics(input: {
 
   const deliveryRow = input.deliveryRows[0] ?? {};
   const sends = count(input.sendRows[0]?.sends);
+  const sendsBeforeDeliveryGrace = count(
+    input.sendRows[0]?.sends_before_delivery_grace,
+  );
+  const receipts = count(deliveryRow.receipts);
   const hardBounces = count(deliveryRow.bounced);
   const complaints = count(deliveryRow.complained);
   const deliverability: DeliverabilityMetrics = {
@@ -312,9 +335,13 @@ export function buildMetrics(input: {
   };
 
   const alerts: string[] = [];
+  const failures: string[] = [];
   const notes: string[] = [];
-  if (sends === 0)
-    alerts.push(`No campaign was sent in the last ${days} days.`);
+  const pushAlert = (text: string, failure = false) => {
+    alerts.push(text);
+    if (failure) failures.push(text);
+  };
+  if (sends === 0) pushAlert(`No campaign was sent in the last ${days} days.`);
 
   // A window rate and the account-level SES thresholds only compare once the
   // window holds enough sends for the ratio to mean something.
@@ -324,21 +351,37 @@ export function buildMetrics(input: {
     ratesComparable &&
     deliverability.complaintRate >= COMPLAINT_RATE_ALERT
   )
-    alerts.push(
+    pushAlert(
       `Complaint rate ${formatRate(deliverability.complaintRate)} of ${formatNumber(sends)} sends is at or above the 0.1% SES investigation threshold.`,
+      true,
     );
   if (
     deliverability.bounceRate !== null &&
     ratesComparable &&
     deliverability.bounceRate >= BOUNCE_RATE_ALERT
   )
-    alerts.push(
+    pushAlert(
       `Bounce rate ${formatRate(deliverability.bounceRate)} of ${formatNumber(sends)} sends is at or above the 2% SES investigation threshold.`,
+      true,
+    );
+  // Dead-man's switch for the ingestion path: receipts only exist while the SNS
+  // subscription and the event destination work, so a send that is past the
+  // grace period with no correlated receipt at all means events stopped
+  // arriving. A single receipt on any status clears it.
+  if (sendsBeforeDeliveryGrace > 0 && receipts === 0)
+    pushAlert(
+      `Delivery-event ingestion may have stopped: ${formatNumber(sendsBeforeDeliveryGrace)} sends in this window are past the one-hour grace period and no SES event receipt has been correlated to them.`,
+      true,
     );
   const deliveryEvents = deliverability.hardBounces + deliverability.complaints;
+  // The EXISTS join above means a receipt here always matches a
+  // `campaign_recipients` row, so an event in the window whose send is not is a
+  // late or retried event (or a window boundary artifact), not necessarily an
+  // orphan. It is reported, never escalated: the ingestion switch is the only
+  // delivery signal that fails a run.
   if (sends === 0 && deliveryEvents > 0)
-    alerts.push(
-      `Delivery events (${deliveryEvents}) arrived in the last ${days} days with no campaign sent in the same window, so no rate could be computed.`,
+    pushAlert(
+      `Delivery events (${deliveryEvents}) arrived in the last ${days} days for a campaign sent outside that window, so no rate could be computed.`,
     );
   if (sends > 0 && !ratesComparable)
     notes.push(
@@ -358,7 +401,7 @@ export function buildMetrics(input: {
       UNSUBSCRIBE_SPIKE_FACTOR * growth.priorUnsubscribed,
     )
   )
-    alerts.push(
+    pushAlert(
       `Unsubscribes rose: ${unsubscribed} in the last ${days} days vs ${growth.priorUnsubscribed} in the prior ${days} days.`,
     );
 
@@ -391,6 +434,7 @@ export function buildMetrics(input: {
     sharesWithheld,
     deliverability,
     alerts,
+    failures,
     notes,
   };
 }
@@ -487,4 +531,36 @@ export function renderNewsletterReport(metrics: NewsletterMetrics): string {
     lines.push('  nothing outside the expected range');
 
   return lines.join('\n');
+}
+
+/**
+ * The `--check` exit contract: the report is always printed, and only a listed
+ * failure makes the run non-zero, so a red scheduled run always means a real
+ * deliverability or ingestion condition rather than a quiet publishing week.
+ */
+export function newsletterCheckExitCode(metrics: NewsletterMetrics): number {
+  if (metrics.failures.length === 0) return 0;
+  newsletterAlert('analytics_job_failure', { reason: 'threshold' });
+  for (const failure of metrics.failures) console.error(`  ${failure}`);
+  return 1;
+}
+
+/**
+ * Reports a failed collection, which is the one way the read-only report can
+ * fail. The driver can quote the connection string back inside its message, and
+ * a CI run publishes its log in a public repository, so under CI this returns
+ * `true` to tell the caller to report the failure and exit non-zero instead of
+ * rethrowing the text. Outside CI it returns `false` so the caller rethrows,
+ * where the message is diagnosable and never published.
+ */
+export function reportAnalyticsCollectionFailure(error: unknown): boolean {
+  newsletterAlert('analytics_job_failure', {
+    reason: 'collection',
+    errorName: error instanceof Error ? error.name : 'unknown',
+  });
+  if (!process.env.CI) return false;
+  console.error(
+    '  Analytics collection failed; run the report locally for the error text.',
+  );
+  return true;
 }

@@ -1,3 +1,4 @@
+import { newsletterAlert } from './alerting.ts';
 import { newsletterDb } from './db.ts';
 import type { SnsEnvelope } from './sns.ts';
 
@@ -47,15 +48,23 @@ export async function recordSesEvent(
   const event = parseEvent(envelope.Message);
   const messageId =
     typeof event.mail?.messageId === 'string' ? event.mail.messageId : null;
-  const status = !messageId
-    ? null
-    : event.eventType === 'Delivery'
+  // The state the event type implies, before we know whether it can be tied to a
+  // send. A transient bounce is not a subscriber state change, so it maps to
+  // null and is never alerted on.
+  const eventStatus =
+    event.eventType === 'Delivery'
       ? 'sent'
       : event.eventType === 'Bounce' && event.bounce?.bounceType === 'Permanent'
         ? 'bounced'
         : event.eventType === 'Complaint'
           ? 'complained'
           : null;
+  // Nothing can be correlated without a message id, so nothing is written. For a
+  // real delivery, bounce, or complaint that means the event was dropped: SNS
+  // accepted it and ingestion could not act on it, which is worth a line.
+  if (eventStatus && !messageId)
+    newsletterAlert('ses_event_ingestion_failure', { reason: 'uncorrelated' });
+  const status = !messageId ? null : eventStatus;
   const at = isoDate(
     status === 'sent'
       ? event.delivery?.timestamp

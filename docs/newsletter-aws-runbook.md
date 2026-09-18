@@ -41,6 +41,16 @@ Do not set `NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED` yet. `NEWSLETTER_CONFIRM
 - To stop ingestion immediately, remove the SES event destination or SNS subscription. To stop automatic confirmations, unset `NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED` in Vercel and redeploy. Neither action touches the Substack flow.
 - Revert the code deployment to the preceding Vercel deployment if necessary. The additive Phase 3 database migration can remain in place safely; it is unused by earlier code.
 
+## Failure alerts
+
+Alerting adds no infrastructure: a failure writes one `newsletter_alert` line to the log stream of the process that failed, and the scheduled job reports itself by exiting non-zero. Three kinds exist — `signup_pipeline_failure`, `ses_event_ingestion_failure`, and `analytics_job_failure` — and each line carries only a `reason` and an error name, never an address, token, or event body.
+
+- **Ingestion** — `ses_event_ingestion_failure` with `reason: 'configuration'` means `NEWSLETTER_SNS_TOPIC_ARN` is missing, so no event can ever be ingested; check that Vercel secret first. This one is checked before authentication, because it is a deployment fault rather than internet noise, and it re-alerts once per incoming request until the secret is fixed, so match it with a count window rather than a single line. `reason: 'processing'` means an authenticated event failed to apply, and `reason: 'uncorrelated'` means a delivery, permanent bounce, or complaint arrived without a `mail.messageId` and was dropped. An unauthenticated request is not alerted: that is internet noise, not an operator problem.
+- **Signup** — `signup_pipeline_failure` means the owned subscribe route failed after understanding the request. The visitor still receives the generic response, so check the Vercel runtime logs rather than the site. A malformed body is not alerted.
+- **Weekly health check** — `.github/workflows/newsletter-health.yml` runs `npm run newsletter:analytics -- --days 30 --check` on Mondays and fails on a hard-bounce rate at or above 2%, a complaint rate at or above 0.1%, or sends past the one-hour grace period with no correlated SES event. It reads `secrets.NEWSLETTER_ANALYTICS_DATABASE_URL` (a read-only connection string) and fails loudly when that secret is unset or is not a `postgres://`/`postgresql://` string, so a red run with a missing-secret message means the check never ran, not that the list is unhealthy. A collection failure prints a generic line rather than the driver's message, because this repository is public; run the report locally to see the real error.
+- Nothing here pages a human. Signup and ingestion alerts are delivered only if an alert rule on the Vercel log stream matches `newsletter_alert`; the scheduled job notifies through the workflow's own failure email. Add the log rule before relying on either runtime alert.
+- Do not add retry queues, third-party monitoring, or a paging integration for this. The failure-only line plus the scheduled job is the whole design.
+
 ## Local production campaign workflow
 
 Production campaigns never run in Vercel, CI, builds, deploy hooks, or tests. The local environment must contain the pooled `DATABASE_URL`, local sender credentials, `AWS_REGION=us-east-2`, `SES_CONFIGURATION_SET=my-first-configuration-set`, and all of these additional ignored values:

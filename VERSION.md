@@ -1,3 +1,55 @@
+# 2026-09-18
+
+## Newsletter
+
+### Failure-only alerting
+
+- Failures are now visible without new monitoring infrastructure.
+  [src/lib/newsletter/alerting.ts](src/lib/newsletter/alerting.ts) writes one
+  greppable `newsletter_alert` line for exactly three kinds —
+  `signup_pipeline_failure` (the owned subscribe route), `ses_event_ingestion_failure`
+  (SES/SNS ingestion, including an unconfigured topic and a delivery, bounce, or
+  complaint with no message id to correlate), and `analytics_job_failure` — and
+  copies only a `reason` and an error name, so no address, token, or event body
+  can reach a log line. A message that fails signature or topic verification is
+  deliberately silent, because anyone can post junk to a public topic ARN.
+- `npm run newsletter:analytics -- --check` prints the same read-only report and
+  exits non-zero when the hard-bounce rate reaches 2%, the complaint rate reaches
+  0.1%, or sends past a one-hour grace period have no correlated SES event at
+  all, which is how a stopped ingestion path is noticed. "No campaign sent", an
+  unsubscribe spike, and delivery events whose matching send falls outside the
+  window stay report-only, so an irregular cadence does not turn the run red.
+- `.github/workflows/newsletter-health.yml` runs that check weekly from a
+  read-only `NEWSLETTER_ANALYTICS_DATABASE_URL` secret, so a failed run is the
+  notification, exactly like `token-health.yml`. It fails loudly when the secret
+  is unset or malformed rather than reporting a healthy list, and it never prints
+  the driver's message, because this repository's logs are public.
+- Details: [docs/newsletter-analytics.md](docs/newsletter-analytics.md) and the
+  "Failure alerts" section of
+  [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md).
+
+### Explicit resubscription
+
+- A reader who unsubscribed can now come back, but only through the same double
+  opt-in: a signup request on an `unsubscribed` row issues a fresh confirmation
+  token and leaves the row suppressed until that token is confirmed. A
+  resubmission can therefore never re-add someone who did not click.
+- `bounced` and `complained` rows are still never reopened — a bounce or a
+  complaint is a deliverability fact, not a preference — and automated
+  processing still never changes their status. A stale confirmation link cannot
+  revive one.
+- Resubscription keeps its first `confirmed_at` and its original first-touch
+  attribution; a later cancellation records its own `unsubscribed_at` and clears
+  any outstanding confirmation token, so a cancellation cannot be undone by a
+  confirmation email the reader never clicked. No schema migration was needed,
+  because the token column is already nullable.
+- The confirmation link no longer changes state on `GET`: it renders a page whose
+  button posts to the same endpoint, so a mailbox scanner or link prefetcher
+  cannot confirm — or restore — a subscription on the reader's behalf.
+- Verified by the new opt-in `tests/newsletter-lifecycle-postgres.ts` against a
+  disposable local Postgres cluster, which exercises the real request, confirm,
+  and unsubscribe SQL.
+
 # 2026-09-17
 
 ## Discussion

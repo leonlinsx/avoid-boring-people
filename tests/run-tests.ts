@@ -26,6 +26,10 @@ import {
 } from '../src/lib/newsletter/domain.ts';
 import { hashToken } from '../src/lib/newsletter/tokens.ts';
 import {
+  newsletterAlert,
+  type NewsletterAlertFields,
+} from '../src/lib/newsletter/alerting.ts';
+import {
   hashRateLimitSubject,
   isRateLimitAllowed,
 } from '../src/lib/newsletter/rate-limit.ts';
@@ -47,6 +51,7 @@ import {
 } from '../src/lib/newsletter/production-send.ts';
 import {
   buildConfirmInvalidPage,
+  buildConfirmPromptPage,
   buildConfirmSuccessPage,
 } from '../src/lib/newsletter/confirm-pages.ts';
 import {
@@ -54,8 +59,11 @@ import {
   canDeliverConfirmation,
   CONFIRMATION_SUBJECT,
   confirmSubscription,
+  genericSubscriptionResponse,
   requestSubscription,
+  unsubscribe,
 } from '../src/lib/newsletter/subscriptions.ts';
+import { recordSesEvent } from '../src/lib/newsletter/events.ts';
 import {
   confirmSnsSubscription,
   parseSnsEnvelope,
@@ -76,7 +84,9 @@ import {
   collectNewsletterMetrics,
   MAX_REPORT_WINDOW_DAYS,
   MIN_SHARE_SAMPLE,
+  newsletterCheckExitCode,
   renderNewsletterReport,
+  reportAnalyticsCollectionFailure,
   validateReportWindow,
 } from '../src/lib/newsletter/analytics.ts';
 import {
@@ -695,6 +705,65 @@ function testConfirmPages() {
     assert.doesNotMatch(body, /<script/i);
     assert.doesNotMatch(body, /cadence|weekly|monthly/i);
   }
+
+  // The prompt is what a confirmation link renders: it posts the token instead
+  // of acting on it, so a prefetch or a scanner cannot complete the change.
+  const prompt = buildConfirmPromptPage('tok+en&<>"');
+  assert.match(
+    prompt,
+    /<form method="post" action="\/api\/newsletter\/confirm">/,
+  );
+  assert.match(prompt, /<button class="cta" type="submit">/);
+  assert.ok(
+    prompt.includes('name="token" value="tok+en&amp;&lt;&gt;&quot;"'),
+    'prompt escapes the token into the form field',
+  );
+  assert.doesNotMatch(prompt, /<script/i);
+  assert.match(prompt, /<meta name="robots" content="noindex">/);
+  assert.doesNotMatch(prompt, /cadence|weekly|monthly/i);
+}
+
+async function testConfirmRoute() {
+  const original = { ...process.env };
+  try {
+    delete process.env.DATABASE_URL;
+    delete process.env.DATABASE_URL_UNPOOLED;
+    const { GET, POST } = await import(
+      '../src/pages/api/newsletter/confirm.ts'
+    );
+
+    // GET renders the button page, and reaching it must not touch subscriber
+    // state: no database call can happen, because no connection string exists.
+    const prompt = await GET(
+      minimalApiContext(
+        new Request('https://leonlins.com/api/newsletter/confirm?token=abc'),
+      ),
+    );
+    assert.equal(prompt.status, 200);
+    assert.equal(prompt.headers.get('cache-control'), 'no-store');
+    assert.equal(prompt.headers.get('referrer-policy'), 'no-referrer');
+    const promptBody = await prompt.text();
+    assert.match(promptBody, /Confirm your subscription\./);
+    assert.ok(
+      promptBody.includes('value="abc"'),
+      'the prompt carries the token for the POST',
+    );
+
+    // POST runs the confirmation against the submitted token, and an
+    // unavailable database fails visibly rather than reporting success.
+    await assert.rejects(async () => {
+      await POST(
+        minimalApiContext(
+          new Request('https://leonlins.com/api/newsletter/confirm', {
+            method: 'POST',
+            body: new URLSearchParams({ token: 'abc' }),
+          }),
+        ),
+      );
+    }, /Newsletter database is not configured/);
+  } finally {
+    process.env = original;
+  }
 }
 
 function makeFakeNewsletterDb(
@@ -715,13 +784,20 @@ async function testSubscriptionLifecycleDb() {
     delete process.env.NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED;
     delete process.env.NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED;
 
-    // Valid pending confirmation activates exactly once and never stores the raw token.
+    // A valid confirmation activates exactly once, from pending or from a
+    // resubscription, and never stores the raw token.
     const pendingHash = hashToken('good-token');
     let confirmations = 0;
     const confirmDb = makeFakeNewsletterDb((query) => {
-      assert.match(query.text, /status = 'pending'/);
+      assert.match(query.text, /status IN \('pending', 'unsubscribed'\)/);
       assert.match(query.text, /confirmed_at/);
       assert.match(query.text, /confirmation_token_hash = NULL/);
+      assert.match(query.text, /status = 'active'/);
+      assert.doesNotMatch(
+        query.text,
+        /unsubscribed_at/,
+        'a resubscription keeps the last cancellation time',
+      );
       if (query.values.includes(pendingHash) && confirmations === 0) {
         confirmations += 1;
         return [{ id: 'subscriber-1' }];
@@ -739,8 +815,9 @@ async function testSubscriptionLifecycleDb() {
       );
     }
 
-    // Suppressed subscribers are never reactivated or rewritten by a new request.
-    for (const status of ['active', 'unsubscribed', 'bounced', 'complained']) {
+    // A bounce or a complaint is a deliverability fact, so a signup request
+    // leaves those rows, and already-active rows, completely alone.
+    for (const status of ['active', 'bounced', 'complained']) {
       const suppressedDb = makeFakeNewsletterDb((query) => {
         if (query.text.includes('newsletter_rate_limits'))
           return [{ attempt_count: 1 }];
@@ -754,11 +831,7 @@ async function testSubscriptionLifecycleDb() {
         { email: 'person@example.com' },
         suppressedDb.db,
       );
-      assert.deepEqual(response, {
-        ok: true,
-        message:
-          'If this address can receive this newsletter, check your inbox.',
-      });
+      assert.deepEqual(response, genericSubscriptionResponse);
       assert.ok(
         suppressedDb.queries.every(
           (query) => !query.text.includes('INSERT INTO subscribers'),
@@ -766,6 +839,72 @@ async function testSubscriptionLifecycleDb() {
         `${status} must not be rewritten`,
       );
     }
+
+    // An unsubscribe is a preference, so it can be reversed — but only by a
+    // fresh confirmation. The row keeps its unsubscribed status and its
+    // first-touch attribution; the only write reissues the confirmation token.
+    const resubscribeDb = makeFakeNewsletterDb((query) => {
+      if (query.text.includes('newsletter_rate_limits'))
+        return [{ attempt_count: 1 }];
+      if (query.text.includes('SELECT status FROM subscribers'))
+        return [{ status: 'unsubscribed' }];
+      if (query.text.includes('INSERT INTO subscribers')) return [];
+      throw new Error(`unexpected query for resubscription: ${query.text}`);
+    });
+    const resubscribeResponse = await requestSubscription(
+      { email: 'person@example.com' },
+      resubscribeDb.db,
+    );
+    assert.deepEqual(resubscribeResponse, genericSubscriptionResponse);
+    const resubscribeWrites = resubscribeDb.queries.filter((query) =>
+      query.text.includes('INSERT INTO subscribers'),
+    );
+    assert.equal(resubscribeWrites.length, 1);
+    const resubscribe = resubscribeWrites[0];
+    assert.match(
+      resubscribe.text,
+      /WHERE subscribers\.status IN \('pending', 'unsubscribed'\)/,
+      'only a pending or unsubscribed row may be given a new token',
+    );
+    assert.doesNotMatch(
+      resubscribe.text,
+      /attribution|status = 'unsubscribed'|unsubscribed_at/,
+      'resubmitting must not touch attribution or the recorded cancellation time',
+    );
+    const resubscribeHashes = resubscribe.values.filter(
+      (value) => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value),
+    );
+    assert.equal(resubscribeHashes.length, 2);
+    assert.ok(resubscribe.values.includes('person@example.com'));
+
+    // Unsubscribing records the cancellation that just happened, so a
+    // resubscription followed by a later cancellation is dated correctly, while
+    // the guard on an already unsubscribed row keeps a repeat click from
+    // restating the time it already recorded.
+    const unsubscribeDb = makeFakeNewsletterDb(() => []);
+    assert.equal(
+      await unsubscribe('unsubscribe-token', unsubscribeDb.db),
+      true,
+    );
+    assert.equal(unsubscribeDb.queries.length, 1);
+    assert.match(
+      unsubscribeDb.queries[0].text,
+      /unsubscribed_at = CASE WHEN status = 'unsubscribed' THEN unsubscribed_at ELSE now\(\) END/,
+      'only a live row records a new cancellation time',
+    );
+    assert.match(
+      unsubscribeDb.queries[0].text,
+      /status IN \('pending', 'active', 'unsubscribed'\)/,
+      'a suppressed row is reachable only to clear a stale confirmation token',
+    );
+    assert.match(
+      unsubscribeDb.queries[0].text,
+      /confirmation_token_hash = NULL/,
+      'a suppressed row must not keep a confirmation link that still works',
+    );
+    assert.ok(
+      unsubscribeDb.queries[0].values.includes(hashToken('unsubscribe-token')),
+    );
 
     // A new address creates pending with hashed tokens only.
     const newDb = makeFakeNewsletterDb((query) => {
@@ -1173,6 +1312,16 @@ async function testNewsletterAnalyticsReport() {
   const metrics = await collectNewsletterMetrics(active.db, { days: 7, now });
   assertReadOnly(active.queries);
   assert.equal(active.queries.length, 5);
+  assert.ok(
+    active.queries.some((query) => query.text.includes('AS receipts')),
+    'the total receipt count feeds the ingestion switch',
+  );
+  assert.ok(
+    active.queries.some((query) =>
+      query.text.includes('AS sends_before_delivery_grace'),
+    ),
+    'sends past the delivery grace period are counted separately',
+  );
   assert.equal(metrics.audience.total, 1309, 'unknown statuses still count');
   assert.equal(metrics.audience.active, 1204);
   assert.equal(metrics.audience.pending, 3);
@@ -1220,6 +1369,15 @@ async function testNewsletterAnalyticsReport() {
     ),
     'acquisition surge is reported against the prior window',
   );
+  // Only a deliverability condition fails the scheduled check: an unsubscribe
+  // spike is worth reading, not worth a weekly red run.
+  assert.deepEqual(metrics.failures, [
+    'Bounce rate 2.50% of 40 sends is at or above the 2% SES investigation threshold.',
+  ]);
+  assert.ok(
+    metrics.failures.some((failure) => metrics.alerts.includes(failure)),
+    'every failure is also reported as an alert',
+  );
 
   const report = renderNewsletterReport(metrics);
   assert.equal(
@@ -1262,6 +1420,14 @@ async function testNewsletterAnalyticsReport() {
     now,
   });
   assertReadOnly(quiet.queries);
+  assert.deepEqual(
+    quietMetrics.failures,
+    [],
+    'a week without a campaign is reported, not failed',
+  );
+  assert.ok(
+    quietMetrics.alerts.includes('No campaign was sent in the last 7 days.'),
+  );
   assert.equal(quietMetrics.growth.newSubscribers, 0);
   assert.equal(quietMetrics.deliverability.sends, 0);
   assert.equal(quietMetrics.growth.unsubscribeRate, null);
@@ -1288,6 +1454,9 @@ async function testNewsletterAnalyticsReport() {
   });
   assertReadOnly(complaints.queries);
   assert.equal(complaintMetrics.deliverability.complaintRate, 0.002);
+  assert.deepEqual(complaintMetrics.failures, [
+    'Complaint rate 0.20% of 1,000 sends is at or above the 0.1% SES investigation threshold.',
+  ]);
   assert.ok(
     complaintMetrics.alerts.some((alert) =>
       alert.includes('Complaint rate 0.20%'),
@@ -1330,6 +1499,11 @@ async function testNewsletterAnalyticsReport() {
     now,
   });
   assert.deepEqual(monthlyMetrics.notes, []);
+  assert.deepEqual(
+    monthlyMetrics.failures,
+    [],
+    'a window inside its thresholds must pass the check',
+  );
   assert.ok(
     !monthlyMetrics.alerts.some((alert) => alert.includes('Unsubscribes rose')),
     '5 unsubscribes is below the 6 of the prior 30 days',
@@ -1356,9 +1530,15 @@ async function testNewsletterAnalyticsReport() {
   assert.ok(
     smallSampleMetrics.notes.some((note) => note.includes('cover 10 sends')),
   );
+  assert.deepEqual(
+    smallSampleMetrics.failures,
+    [],
+    'a rate below the comparable sample is not a failure',
+  );
 
-  // Delivery events with no campaign sent in the window must be visible rather
-  // than silently producing no rate.
+  // Delivery events whose send falls outside the window are reported, never
+  // failed: the EXISTS join proves a matching send row exists, so this is a late
+  // or retried event rather than a broken ingestion path.
   const unreconciled = analyticsFixtureDb({
     audience: [],
     growth: [],
@@ -1371,10 +1551,393 @@ async function testNewsletterAnalyticsReport() {
     now,
   });
   assert.ok(
-    unreconciledMetrics.alerts.some((alert) =>
-      alert.includes('Delivery events (1) arrived'),
+    unreconciledMetrics.alerts.includes(
+      'Delivery events (1) arrived in the last 7 days for a campaign sent outside that window, so no rate could be computed.',
     ),
   );
+  assert.deepEqual(
+    unreconciledMetrics.failures,
+    [],
+    'an out-of-window receipt is evidence, not a deliverability failure',
+  );
+
+  // The ingestion dead-man's switch: sends past the one-hour grace period with
+  // no correlated receipt of any kind mean events stopped arriving.
+  const silentIngestion = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [{ receipts: 0, deliveries: 0, bounced: 0, complained: 0 }],
+    sends: [{ sends: 40, sends_before_delivery_grace: 40 }],
+  });
+  const silentMetrics = await collectNewsletterMetrics(silentIngestion.db, {
+    days: 7,
+    now,
+  });
+  assert.deepEqual(silentMetrics.failures, [
+    'Delivery-event ingestion may have stopped: 40 sends in this window are past the one-hour grace period and no SES event receipt has been correlated to them.',
+  ]);
+  assert.ok(
+    renderNewsletterReport(silentMetrics).includes(
+      'Delivery-event ingestion may have stopped',
+    ),
+  );
+
+  // One receipt of any status proves ingestion is alive, and a send that is
+  // still inside the grace period has not had time to produce one.
+  const oneReceipt = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [{ receipts: 1, deliveries: 1, bounced: 0, complained: 0 }],
+    sends: [{ sends: 40, sends_before_delivery_grace: 40 }],
+  });
+  assert.deepEqual(
+    (await collectNewsletterMetrics(oneReceipt.db, { days: 7, now })).failures,
+    [],
+    'a single correlated receipt proves ingestion is alive',
+  );
+
+  const insideGrace = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [{ receipts: 0, deliveries: 0, bounced: 0, complained: 0 }],
+    sends: [{ sends: 40, sends_before_delivery_grace: 0 }],
+  });
+  assert.deepEqual(
+    (await collectNewsletterMetrics(insideGrace.db, { days: 7, now })).failures,
+    [],
+    'a send inside the grace period has not had time to produce a receipt',
+  );
+}
+
+// A route handler reads only `request` and `url` out of the Astro context.
+function minimalApiContext(request: Request) {
+  return { request, url: new URL(request.url) } as any;
+}
+
+async function withCapturedNewsletterLogs(
+  run: () => Promise<void>,
+): Promise<unknown[][]> {
+  const calls: unknown[][] = [];
+  const originalError = console.error;
+  const originalWarn = console.warn;
+  console.error = (...args: unknown[]) => {
+    calls.push(args);
+  };
+  console.warn = (...args: unknown[]) => {
+    calls.push(args);
+  };
+  try {
+    await run();
+  } finally {
+    console.error = originalError;
+    console.warn = originalWarn;
+  }
+  return calls;
+}
+
+function newsletterAlertLogs(calls: unknown[][]) {
+  return calls.filter((call) => call[0] === 'newsletter_alert');
+}
+
+async function testNewsletterAlerting() {
+  // Failure-only: one structured line, and only the fields that are allowed.
+  const calls = await withCapturedNewsletterLogs(async () => {
+    newsletterAlert('signup_pipeline_failure', { errorName: 'TypeError' });
+    const smuggled: NewsletterAlertFields & { email: string } = {
+      reason: 'processing',
+      email: 'reader@example.com',
+    };
+    newsletterAlert('ses_event_ingestion_failure', smuggled);
+    newsletterAlert('analytics_job_failure');
+  });
+  assert.deepEqual(calls, [
+    [
+      'newsletter_alert',
+      { kind: 'signup_pipeline_failure', errorName: 'TypeError' },
+    ],
+    [
+      'newsletter_alert',
+      { kind: 'ses_event_ingestion_failure', reason: 'processing' },
+    ],
+    ['newsletter_alert', { kind: 'analytics_job_failure' }],
+  ]);
+  assert.equal(
+    JSON.stringify(calls).includes('reader@example.com'),
+    false,
+    'no identifier may reach an alert',
+  );
+
+  // A failing signup pipeline is alerted on, and the caller still learns
+  // nothing about the address.
+  const original = { ...process.env };
+  try {
+    delete process.env.DATABASE_URL;
+    delete process.env.DATABASE_URL_UNPOOLED;
+    const { POST } = await import('../src/pages/api/newsletter/subscribe.ts');
+    const failing = await withCapturedNewsletterLogs(async () => {
+      const response = await POST(
+        minimalApiContext(
+          new Request('https://leonlins.com/api/newsletter/subscribe', {
+            method: 'POST',
+            body: JSON.stringify({ email: 'reader@example.com' }),
+          }),
+        ),
+      );
+      assert.equal(response.status, 200);
+      assert.deepEqual(await response.json(), genericSubscriptionResponse);
+    });
+    assert.deepEqual(newsletterAlertLogs(failing), [
+      [
+        'newsletter_alert',
+        { kind: 'signup_pipeline_failure', errorName: 'Error' },
+      ],
+    ]);
+
+    // A malformed body is a client mistake, not a pipeline failure.
+    const junk = await withCapturedNewsletterLogs(async () => {
+      for (const body of ['not json', 'null', '"text"']) {
+        const response = await POST(
+          minimalApiContext(
+            new Request('https://leonlins.com/api/newsletter/subscribe', {
+              method: 'POST',
+              body,
+            }),
+          ),
+        );
+        assert.equal(response.status, 200);
+        assert.deepEqual(await response.json(), genericSubscriptionResponse);
+      }
+    });
+    assert.deepEqual(newsletterAlertLogs(junk), []);
+
+    // A missing topic means no event can ever be ingested, whichever sender
+    // sends it, so that is alerted on as a configuration failure.
+    delete process.env.NEWSLETTER_SNS_TOPIC_ARN;
+    const { POST: sesPost } = await import(
+      '../src/pages/api/newsletter/ses-events.ts'
+    );
+    const unconfigured = await withCapturedNewsletterLogs(async () => {
+      const response = await sesPost(
+        minimalApiContext(
+          new Request('https://leonlins.com/api/newsletter/ses-events', {
+            method: 'POST',
+            body: '{}',
+          }),
+        ),
+      );
+      assert.equal(response.status, 400);
+    });
+    assert.deepEqual(newsletterAlertLogs(unconfigured), [
+      [
+        'newsletter_alert',
+        {
+          kind: 'ses_event_ingestion_failure',
+          reason: 'configuration',
+          errorName: 'Error',
+        },
+      ],
+    ]);
+
+    // An unauthenticated payload is junk internet traffic, not an incident.
+    process.env.NEWSLETTER_SNS_TOPIC_ARN =
+      'arn:aws:sns:us-east-1:123456789012:newsletter';
+    const unauthenticated = await withCapturedNewsletterLogs(async () => {
+      const response = await sesPost(
+        minimalApiContext(
+          new Request('https://leonlins.com/api/newsletter/ses-events', {
+            method: 'POST',
+            body: 'not-a-sns-envelope',
+          }),
+        ),
+      );
+      assert.equal(response.status, 400);
+    });
+    assert.deepEqual(newsletterAlertLogs(unauthenticated), []);
+  } finally {
+    process.env = original;
+  }
+}
+
+async function testAnalyticsCheckContract() {
+  const withFailures = (failures: string[]) =>
+    ({ failures }) as unknown as Parameters<typeof newsletterCheckExitCode>[0];
+
+  // A failing check names every failure it exits on and alerts once.
+  const failing = await withCapturedNewsletterLogs(async () => {
+    assert.equal(
+      newsletterCheckExitCode(
+        withFailures([
+          'Bounce rate 10.00% of 10 sends is at or above the 2% SES investigation threshold.',
+        ]),
+      ),
+      1,
+    );
+  });
+  assert.deepEqual(newsletterAlertLogs(failing), [
+    [
+      'newsletter_alert',
+      { kind: 'analytics_job_failure', reason: 'threshold' },
+    ],
+  ]);
+  assert.deepEqual(failing.slice(1), [
+    [
+      '  Bounce rate 10.00% of 10 sends is at or above the 2% SES investigation threshold.',
+    ],
+  ]);
+
+  // A clean report exits zero and stays silent, so a weekly run only ever
+  // notifies when something is wrong.
+  const passing = await withCapturedNewsletterLogs(async () => {
+    assert.equal(newsletterCheckExitCode(withFailures([])), 0);
+  });
+  assert.deepEqual(passing, []);
+
+  // A collection failure is alerted on in both places, but only a local run may
+  // see the driver's message: it can quote the connection string back, and a CI
+  // log is published in a public repository.
+  const driverError = new Error(
+    'Database connection string provided to `neon()` is not a valid URL. Connection string: postgres://user:secret@example.com/db',
+  );
+  const original = { ...process.env };
+  try {
+    process.env.CI = 'true';
+    const ci = await withCapturedNewsletterLogs(async () => {
+      assert.equal(reportAnalyticsCollectionFailure(driverError), true);
+    });
+    assert.deepEqual(newsletterAlertLogs(ci), [
+      [
+        'newsletter_alert',
+        {
+          kind: 'analytics_job_failure',
+          reason: 'collection',
+          errorName: 'Error',
+        },
+      ],
+    ]);
+    assert.deepEqual(ci.slice(1), [
+      [
+        '  Analytics collection failed; run the report locally for the error text.',
+      ],
+    ]);
+    assert.equal(
+      JSON.stringify(ci).includes('secret'),
+      false,
+      'the driver message must never reach a CI log',
+    );
+
+    delete process.env.CI;
+    const local = await withCapturedNewsletterLogs(async () => {
+      assert.equal(reportAnalyticsCollectionFailure(driverError), false);
+    });
+    assert.equal(
+      local.length,
+      1,
+      'outside CI the rethrown error is the diagnostic, not a printed line',
+    );
+  } finally {
+    process.env = original;
+  }
+}
+
+function sesEnvelope(event: Record<string, unknown>, messageId = 'sns-1') {
+  return {
+    Type: 'Notification',
+    MessageId: messageId,
+    TopicArn: 'arn:aws:sns:us-east-1:123456789012:newsletter',
+    Message: JSON.stringify(event),
+    Timestamp: '2026-03-01T12:00:00.000Z',
+    SignatureVersion: '1',
+    Signature: 'signature',
+    SigningCertURL: 'https://sns.us-east-1.amazonaws.com/cert.pem',
+  } as unknown as Parameters<typeof recordSesEvent>[0];
+}
+
+async function testSesEventIngestionAlerts() {
+  const event = (overrides: Record<string, unknown>) => ({
+    eventType: 'Delivery',
+    mail: { messageId: 'ses-1', destination: ['reader@example.com'] },
+    delivery: { timestamp: '2026-03-01T12:00:00.000Z' },
+    ...overrides,
+  });
+
+  // A delivery with no message id cannot be correlated, so it is alerted on —
+  // and the receipt is still recorded, so a retry is still deduplicated.
+  const uncorrelated = makeFakeNewsletterDb(() => []);
+  const uncorrelatedLogs = await withCapturedNewsletterLogs(async () => {
+    await recordSesEvent(
+      sesEnvelope(event({ mail: { destination: ['reader@example.com'] } })),
+      uncorrelated.db,
+    );
+  });
+  assert.deepEqual(newsletterAlertLogs(uncorrelatedLogs), [
+    [
+      'newsletter_alert',
+      { kind: 'ses_event_ingestion_failure', reason: 'uncorrelated' },
+    ],
+  ]);
+  assert.equal(uncorrelated.queries.length, 1);
+  assert.match(
+    uncorrelated.queries[0].text,
+    /INSERT INTO newsletter_event_receipts/,
+  );
+
+  // A correlated delivery is ordinary ingestion.
+  const correlated = makeFakeNewsletterDb(() => []);
+  const correlatedLogs = await withCapturedNewsletterLogs(async () => {
+    await recordSesEvent(sesEnvelope(event({})), correlated.db);
+  });
+  assert.deepEqual(newsletterAlertLogs(correlatedLogs), []);
+  assert.equal(correlated.queries.length, 1);
+
+  for (const ignored of [
+    // A transient bounce is not a subscriber state change.
+    event({
+      eventType: 'Bounce',
+      bounce: {
+        bounceType: 'Transient',
+        timestamp: '2026-03-01T12:00:00.000Z',
+        bouncedRecipients: [{ emailAddress: 'reader@example.com' }],
+      },
+      mail: { destination: ['reader@example.com'] },
+    }),
+    // Neither is an event type the newsletter does not act on.
+    event({ eventType: 'Open', mail: { destination: ['reader@example.com'] } }),
+  ]) {
+    const ignoredDb = makeFakeNewsletterDb(() => []);
+    const ignoredLogs = await withCapturedNewsletterLogs(async () => {
+      await recordSesEvent(sesEnvelope(ignored), ignoredDb.db);
+    });
+    assert.deepEqual(newsletterAlertLogs(ignoredLogs), []);
+  }
+
+  // A permanent bounce without a message id still alerts, because the
+  // suppression it implies never happened.
+  const uncorrelatedBounce = makeFakeNewsletterDb(() => []);
+  const bounceLogs = await withCapturedNewsletterLogs(async () => {
+    await recordSesEvent(
+      sesEnvelope(
+        event({
+          eventType: 'Bounce',
+          bounce: {
+            bounceType: 'Permanent',
+            timestamp: '2026-03-01T12:00:00.000Z',
+            bouncedRecipients: [{ emailAddress: 'reader@example.com' }],
+          },
+          mail: { destination: ['reader@example.com'] },
+        }),
+      ),
+      uncorrelatedBounce.db,
+    );
+  });
+  assert.deepEqual(newsletterAlertLogs(bounceLogs), [
+    [
+      'newsletter_alert',
+      { kind: 'ses_event_ingestion_failure', reason: 'uncorrelated' },
+    ],
+  ]);
 }
 
 function testNewsletterReportWindow() {
@@ -4321,8 +4884,12 @@ async function run() {
     testNewsletterAttributionCapture();
     testNewsletterReportWindow();
     testNewsletterConfirmationBoundary();
+    await testNewsletterAlerting();
+    await testSesEventIngestionAlerts();
+    await testAnalyticsCheckContract();
     testConfirmationEmailContent();
     testConfirmPages();
+    await testConfirmRoute();
     await testSubscriptionLifecycleDb();
     await testNewsletterAttributionSignupWrite();
     await testNewsletterAnalyticsReport();

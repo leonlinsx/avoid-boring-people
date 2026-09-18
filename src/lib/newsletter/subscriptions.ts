@@ -10,7 +10,9 @@ import {
 import { NEWSLETTER_FROM, NEWSLETTER_REPLY_TO } from './email.ts';
 import { normalizeAttribution, type AttributionInput } from './attribution.ts';
 
-const generic = {
+// The one answer every signup request gets, whatever the request did. It never
+// reveals whether the address is known, suppressed, or newly created.
+export const genericSubscriptionResponse = {
   ok: true,
   message: 'If this address can receive this newsletter, check your inbox.',
 };
@@ -150,22 +152,22 @@ export async function requestSubscription(
   db = newsletterDb(),
 ) {
   const email = normalizeEmail(input.email);
-  if (!email || input.honeypot) return generic;
+  if (!email || input.honeypot) return genericSubscriptionResponse;
   const [emailAllowed, ipAllowed] = await Promise.all([
     takeRateLimit('email', email, EMAIL_ATTEMPTS_PER_HOUR, db),
     takeRateLimit('ip', input.ip ?? 'unknown', IP_ATTEMPTS_PER_HOUR, db),
   ]);
-  if (!emailAllowed || !ipAllowed) return generic;
+  if (!emailAllowed || !ipAllowed) return genericSubscriptionResponse;
   const rows =
     await db`SELECT status FROM subscribers WHERE email_normalized = ${email}`;
   const status = rows[0]?.status as string | undefined;
-  if (
-    status === 'active' ||
-    status === 'unsubscribed' ||
-    status === 'bounced' ||
-    status === 'complained'
-  )
-    return generic;
+  // A bounce or a complaint is a deliverability fact, not a preference, so those
+  // rows are never reopened by a form post. An unsubscribe is a preference and
+  // can be reversed, but only by the same double opt-in that created the
+  // subscription: the row is reissued a confirmation token and keeps its
+  // suppressed status until the reader confirms it.
+  if (status === 'active' || status === 'bounced' || status === 'complained')
+    return genericSubscriptionResponse;
   const token = createToken();
   const unsubscribeToken = createToken();
   const source = (input.source ?? 'website').slice(0, 100);
@@ -177,6 +179,11 @@ export async function requestSubscription(
   // later resubmission cannot overwrite how the subscriber was originally
   // acquired. `source_detail` keeps the signup form variant, and the row's own
   // `created_at` is when the attribution was recorded.
+  //
+  // The conflict branch refreshes the confirmation token for a pending row and
+  // for an unsubscribed row — the latter is how an explicit resubscription
+  // starts — and never changes status, so a row stays suppressed until the
+  // confirmation step below activates it.
   await db`INSERT INTO subscribers (
       email, email_normalized, status, source, source_detail,
       confirmation_token_hash, unsubscribe_token_hash, consent_provenance,
@@ -192,22 +199,34 @@ export async function requestSubscription(
       ${attribution?.signupPath ?? null}, ${attribution?.referrerDomain ?? null}
     )
     ON CONFLICT (email_normalized) DO UPDATE SET confirmation_token_hash = EXCLUDED.confirmation_token_hash, updated_at = now()
-    WHERE subscribers.status = 'pending'`;
+    WHERE subscribers.status IN ('pending', 'unsubscribed')`;
   await sendConfirmation(email, token);
-  return generic;
+  return genericSubscriptionResponse;
 }
 
 export async function confirmSubscription(token: string, db = newsletterDb()) {
   if (!token) return false;
+  // A first confirmation and a resubscription both arrive here: a pending row
+  // becomes active, and an unsubscribed row that asked for a fresh token becomes
+  // active again. `confirmed_at` keeps its first value, so a resubscription
+  // reads as a return rather than as a new subscriber. `unsubscribed_at` is left
+  // alone: it records the last cancellation, which the report counts in the
+  // window where it actually happened.
   const rows =
     await db`UPDATE subscribers SET status = 'active', confirmed_at = COALESCE(confirmed_at, now()), confirmation_token_hash = NULL, updated_at = now()
-    WHERE status = 'pending' AND confirmation_token_hash = ${hashToken(token)} RETURNING id`;
+    WHERE status IN ('pending', 'unsubscribed') AND confirmation_token_hash = ${hashToken(token)} RETURNING id`;
   return rows.length > 0;
 }
 
 export async function unsubscribe(token: string, db = newsletterDb()) {
   if (!token) return false;
-  await db`UPDATE subscribers SET status = 'unsubscribed', unsubscribed_at = COALESCE(unsubscribed_at, now()), updated_at = now()
-    WHERE unsubscribe_token_hash = ${hashToken(token)} AND status IN ('pending', 'active')`;
+  // `now()` applies only to a row that is still live, so a cancellation after an
+  // explicit resubscription records its own time while a repeated click on an
+  // already unsubscribed row keeps the time it already had. The confirmation
+  // token is cleared either way, because a suppressed row must not keep a live
+  // credential that a confirmation email from an earlier request could still use
+  // to reopen it.
+  await db`UPDATE subscribers SET status = 'unsubscribed', unsubscribed_at = CASE WHEN status = 'unsubscribed' THEN unsubscribed_at ELSE now() END, confirmation_token_hash = NULL, updated_at = now()
+    WHERE unsubscribe_token_hash = ${hashToken(token)} AND status IN ('pending', 'active', 'unsubscribed')`;
   return true;
 }

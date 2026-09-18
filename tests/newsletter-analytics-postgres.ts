@@ -4,7 +4,8 @@
 //
 //   export PATH=$PATH:/usr/lib/postgresql/16/bin
 //   NEWSLETTER_TEST_PG_SOCKET=/tmp/newsletter-analytics-pg-test \
-//     node --import ts-node/esm tests/newsletter-analytics-postgres.ts
+//     node --import ./tests/register-loaders.mjs --loader ts-node/esm \
+//     tests/newsletter-analytics-postgres.ts
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -264,8 +265,39 @@ try {
     monthly.notes.every((note) => !note.includes('last 7 days')),
     'every note names the requested window length',
   );
+  // Dead-man's switch: sends past the one-hour grace period with no correlated
+  // receipt at all mean events stopped arriving, which is the one delivery
+  // signal that indicts the ingestion path rather than the list, so it fails the
+  // scheduled check.
+  sql(`DELETE FROM newsletter_event_receipts`);
+  const silent = await collectNewsletterMetrics(db, { days: 7, now });
+  const ingestionAlert = silent.alerts.find((alert) =>
+    alert.includes('Delivery-event ingestion may have stopped'),
+  );
+  assert.ok(
+    ingestionAlert,
+    'sends past the grace period with no receipt at all are alerted on',
+  );
+  assert.ok(
+    silent.failures.includes(ingestionAlert!),
+    'the ingestion switch is one of the conditions that fails the run',
+  );
+  // One receipt on any status is enough: the switch asks whether events are
+  // arriving at all, not whether every send was accounted for.
+  sql(`
+    INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at)
+      VALUES ('ses','sent-silent','message-x1@example.com','sent','2026-02-26T12:01:00Z');
+  `);
+  const recovered = await collectNewsletterMetrics(db, { days: 7, now });
+  assert.ok(
+    !recovered.alerts.some((alert) =>
+      alert.includes('Delivery-event ingestion may have stopped'),
+    ),
+    'a single correlated receipt clears the switch',
+  );
+
   console.log(
-    'Newsletter analytics Postgres integration checks passed (growth from confirmed rows, window boundaries, import exclusions, acquisition reconciliation, small-sample handling, deliverability thresholds).',
+    'Newsletter analytics Postgres integration checks passed (growth from confirmed rows, window boundaries, import exclusions, acquisition reconciliation, small-sample handling, deliverability thresholds, ingestion dead-man switch).',
   );
 } finally {
   sql(`DROP SCHEMA ${schema} CASCADE`);

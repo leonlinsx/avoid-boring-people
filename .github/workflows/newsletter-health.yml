@@ -1,0 +1,74 @@
+name: Newsletter health
+
+# The newsletter has no dashboard and no third-party monitoring, so a broken
+# signup pipeline, a stalled SES ingestion, or a deliverability threshold is only
+# noticed by accident. This job is the existing mechanism that makes those
+# visible: it runs the read-only analytics report weekly and fails when the
+# report says something is wrong, exactly as the token-health probe does. A red
+# run sends GitHub's own workflow-failure notification; no alerting service is
+# involved.
+#
+# The job is read-only. It never sends mail, never changes subscriber state, and
+# needs only a database connection string.
+on:
+  schedule:
+    # Monday 13:00 UTC, after the Monday morning send and after the engagement
+    # window that follows it, so the report sees the finished week.
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: newsletter-health
+  cancel-in-progress: false
+
+jobs:
+  analytics:
+    runs-on: ubuntu-latest
+    # A hung install or connection would otherwise hold the concurrency group and
+    # consume the week's slot.
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        run: npm ci
+      # A missing secret would otherwise fail obscurely inside the client, and a
+      # malformed one makes the driver quote the connection string back in its
+      # error. Both are caught here, where the value is never printed. This step
+      # fails where `token-health.yml` would skip: for a job whose only output is
+      # a notification, a skip is indistinguishable from a healthy week, so an
+      # unset secret has to be the loud case. The `newsletter_alert` line this
+      # job prints is suppressed under CI too, so the unambiguous `::error::`
+      # here is what the author reads.
+      - name: Require the analytics database secret
+        env:
+          NEWSLETTER_ANALYTICS_DATABASE_URL: ${{ secrets.NEWSLETTER_ANALYTICS_DATABASE_URL }}
+        run: |
+          if [ -z "$NEWSLETTER_ANALYTICS_DATABASE_URL" ]; then
+            echo "::error::NEWSLETTER_ANALYTICS_DATABASE_URL is not set; the weekly newsletter health check cannot run."
+            exit 1
+          fi
+          case "$NEWSLETTER_ANALYTICS_DATABASE_URL" in
+            postgres://*|postgresql://*) ;;
+            *)
+              echo "::error::NEWSLETTER_ANALYTICS_DATABASE_URL is not a postgres connection string."
+              exit 1
+              ;;
+          esac
+      # `--check` exits 1 when the report lists a failure. The report is printed
+      # first, so the failed run carries its own evidence.
+      - name: Run the newsletter analytics report
+        env:
+          DATABASE_URL: ${{ secrets.NEWSLETTER_ANALYTICS_DATABASE_URL }}
+        run: npm run newsletter:analytics -- --days 30 --check

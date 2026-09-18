@@ -1,11 +1,45 @@
 // Small purpose-specific confirmation result pages. These are standalone HTML
 // documents returned directly by the confirm endpoint: serif headline matching
 // the site brand, theme-aware via the site's CSS variables with light fallbacks,
-// one primary action each, no user input reflected, no tracking.
-const PAGE_STYLE = `<style>:root{color-scheme:light dark}body{margin:0;background:var(--color-bg,#ffffff);color:var(--color-text,#222222);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.6}main{max-width:560px;margin:0 auto;padding:64px 20px}h1{font-family:Merriweather,Georgia,"Times New Roman",serif;font-size:28px;line-height:1.3;margin:0 0 16px}p{margin:0 0 12px}.cta{display:inline-block;margin:20px 0 8px;padding:12px 24px;background-color:#1a1a1a;color:#ffffff !important;text-decoration:none;border-radius:4px;font-size:16px}.sign{margin-top:28px;padding-top:16px;border-top:1px solid var(--color-border,#e0e0e0);color:var(--color-text-subtle,#666666);font-size:14px}.sign a{color:var(--color-link,#0066cc)}</style>`;
+// one primary action each, no tracking. The only reflected value is the
+// confirmation token, which is escaped into a hidden form field on the prompt
+// page and never appears in the result pages.
+const PAGE_STYLE = `<style>:root{color-scheme:light dark}body{margin:0;background:var(--color-bg,#ffffff);color:var(--color-text,#222222);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.6}main{max-width:560px;margin:0 auto;padding:64px 20px}h1{font-family:Merriweather,Georgia,"Times New Roman",serif;font-size:28px;line-height:1.3;margin:0 0 16px}p{margin:0 0 12px}.cta{display:inline-block;margin:20px 0 8px;padding:12px 24px;background-color:#1a1a1a;color:#ffffff !important;text-decoration:none;border-radius:4px;font-size:16px}button.cta{border:0;cursor:pointer;font-family:inherit}.sign{margin-top:28px;padding-top:16px;border-top:1px solid var(--color-border,#e0e0e0);color:var(--color-text-subtle,#666666);font-size:14px}.sign a{color:var(--color-link,#0066cc)}</style>`;
+
+function escapeHtml(value: string): string {
+  return value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[character] ?? character,
+  );
+}
 
 function page(title: string, body: string): string {
-  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} — Avoid Boring People</title>${PAGE_STYLE}</head><body><main>${body}<p class="sign">— Leon<br><a href="https://leonlins.com">leonlins.com</a></p></main></body></html>`;
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${title} — Avoid Boring People</title>${PAGE_STYLE}</head><body><main>${body}<p class="sign">— Leon<br><a href="https://leonlins.com">leonlins.com</a></p></main></body></html>`;
+}
+
+/**
+ * The page a confirmation link opens. Confirming is a state change, so the link
+ * itself only renders this page and the button's POST performs the change: a
+ * mailbox link scanner or a prefetched message must not be able to confirm on
+ * the reader's behalf.
+ */
+export function buildConfirmPromptPage(token: string): string {
+  return page(
+    'Confirm your subscription',
+    `<h1>Confirm your subscription.</h1>` +
+      `<p>One click and you’re on the list for Avoid Boring People.</p>` +
+      `<form method="post" action="/api/newsletter/confirm">` +
+      `<input type="hidden" name="token" value="${escapeHtml(token)}">` +
+      `<button class="cta" type="submit">Confirm subscription</button>` +
+      `</form>`,
+  );
 }
 
 export function buildConfirmSuccessPage(): string {

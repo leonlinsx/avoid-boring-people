@@ -78,7 +78,7 @@ All commands run from the repo root.
 | Allowlisted newsletter test | `npm run newsletter:test -- <article-id> <recipient> --confirm-test` |
 | Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <n> --confirm-snapshot` |
 | Production newsletter send | `npm run newsletter:send -- <campaign-id> --expect-recipients <n> --confirm-production` |
-| Newsletter analytics report | `npm run newsletter:analytics -- [--days <1-365>] [--json]` |
+| Newsletter analytics report | `npm run newsletter:analytics -- [--days <1-365>] [--json] [--check]` |
 | Email the analytics report | `npm run newsletter:analytics:email -- --to <allowlisted-address> --confirm-send [--days <1-365>]` |
 | Review discussion comments | `npm run comments:list -- [--slug <slug>] [--include-hidden]` |
 | Hide a discussion comment | `npm run comments:hide -- <comment-id>` |
@@ -103,10 +103,17 @@ Vercel deploys never send email or social posts.
   scheduled/runtime work is safe to retry (`posted.json` is written only after
   a platform confirms success; campaign recipients carry unique constraints).
 - Imports and automated processing never reactivate `unsubscribed`, `bounced`,
-  or `complained` subscribers.
+  or `complained` subscribers. Resubscription is explicit and confirmation-only:
+  a signup request on an `unsubscribed` row issues a fresh token and leaves the
+  row suppressed until it is confirmed, while `bounced` and `complained` rows
+  are never reopened.
 - SES/SNS event ingestion authenticates messages before changing subscriber
   state; missing email-rendering support fails visibly rather than sending
   broken mail.
+- Failures alert with one greppable `newsletter_alert` log line for
+  `signup_pipeline_failure`, `ses_event_ingestion_failure`, or
+  `analytics_job_failure`, carrying only a reason and an error name; there is no
+  monitoring service, no retry queue, and no paging integration.
 - Signup attribution is first-touch and written only through the owned signup
   path, so the Substack form stays untouched and stores none of it; the
   analytics report is read-only and never estimates opens, clicks, or engaged
