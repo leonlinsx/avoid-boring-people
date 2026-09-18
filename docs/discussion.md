@@ -223,6 +223,22 @@ then apply it to production. The migration is safe to deploy before or after the
 code: the API reports 503 while the table is missing, and articles render
 normally regardless.
 
+Applied to the linked Neon production branch (the same database the newsletter
+uses) on 2026-09-18, after verifying the target from `.env.local`:
+
+- `comments` exists with 10 columns, 4 indexes, and 14 constraints, and 0 rows.
+- Re-running the migration only reports `already exists, skipping` for the table
+  and each index, so it is a no-op.
+- No newsletter table or row changed; the database went from 5 to 6 public
+  tables.
+- `GET /api/comments/list` moved from 503 to 200. A `POST` with no Turnstile
+  token is refused with 400 `verification_failed`, which shows the production
+  secret is configured; a foreign `Origin` is refused with 403 `cross_site` and
+  an oversized body with 413 `too_large`. None of the probes wrote a row.
+
+The Turnstile site and secret keys are set in Vercel production, so the section
+renders the form rather than the configuration-error placeholder.
+
 ## Tests
 
 `npm test` covers the discussion logic without a database: validation and
