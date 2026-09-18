@@ -1,0 +1,51 @@
+---
+import DiscussionIsland from './DiscussionIsland.tsx';
+import {
+  MAX_AUTHOR_NAME_LENGTH,
+  MAX_COMMENT_BODY_LENGTH,
+  discussionPrompt,
+} from '../lib/comments/domain.ts';
+import {
+  turnstileSiteKey,
+  warnIfSiteKeyMissing,
+} from '../lib/comments/turnstile.ts';
+
+type Props = {
+  slug: string;
+  prompt?: string;
+};
+
+const { slug, prompt } = Astro.props;
+
+// The section wrapper lives here so the article stays static. The heading,
+// prompt, form, and private-email path come from the island's own server
+// render, which is why they are part of the built HTML; only the comment list
+// is fetched in the browser. The form itself is omitted when no public Turnstile
+// site key was configured at build time.
+const siteKey = turnstileSiteKey(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
+warnIfSiteKeyMissing(siteKey);
+const emailHref =
+  'mailto:contact@leonlins.com?subject=' +
+  encodeURIComponent('Comment on ' + slug);
+---
+
+<section class="discussion-section" id="discussion">
+  <DiscussionIsland
+    client:visible
+    slug={slug}
+    prompt={discussionPrompt(prompt)}
+    turnstileSiteKey={siteKey}
+    maxNameLength={MAX_AUTHOR_NAME_LENGTH}
+    maxBodyLength={MAX_COMMENT_BODY_LENGTH}
+    emailHref={emailHref}
+    emailLabel="Email Leon"
+  />
+</section>
+
+<style>
+  .discussion-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+</style>

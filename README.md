@@ -2,11 +2,12 @@
 
 Leon Lin's personal website and publishing platform, published under the
 **Avoid Boring People** identity. An Astro 5 static site for essays, plus two
-owned-distribution systems: automated social posting and a self-hosted
-newsletter. This repository is public; secrets live only in ignored local
-files, GitHub Secrets, and Vercel environment variables — never in git.
+owned-distribution systems — automated social posting and a self-hosted
+newsletter — and a first-party article discussion. This repository is public;
+secrets live only in ignored local files, GitHub Secrets, and Vercel environment
+variables — never in git.
 
-The repo holds three systems:
+The repo holds four systems:
 
 1. **Blog / site** — the Astro static site. Markdown/MDX articles under
    `src/content/blog` render at `/writing/[slug]`; `/writing` is the canonical
@@ -27,15 +28,21 @@ The repo holds three systems:
    [docs/newsletter-status.md](docs/newsletter-status.md),
    [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md),
    [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md).
+4. **Article discussion** — a small first-party discussion under each article
+   (Neon Postgres, accountless opaque browser token, Cloudflare Turnstile,
+   local-only moderation CLI). It replaced Giscus, so no GitHub account is
+   needed and no third party sees reader activity. Details:
+   [docs/discussion.md](docs/discussion.md).
 
 ## Project structure
 
 ```text
 ├── src/content/blog/      # canonical articles (Markdown/MDX, one dir per post)
-├── src/pages/             # routes, incl. /api/newsletter/* lifecycle endpoints
-├── src/components/        # shared UI, incl. SubscribeForm.astro
+├── src/pages/             # routes, incl. /api/newsletter/* and /api/comments/*
+├── src/components/        # shared UI, incl. SubscribeForm.astro, Discussion.astro
 ├── scripts/automation/    # social distribution (summarizers, renderers, publishers)
 ├── scripts/newsletter/    # owned-newsletter CLIs (import, preview, campaign, send)
+├── scripts/comments/      # discussion moderation CLIs (list, hide, restore, delete, reply)
 ├── migrations/            # Neon Postgres schema migrations
 ├── docs/                  # runbooks, evaluations, per-system documentation
 ├── tests/                 # Python distribution/newsletter suites + TS runner
@@ -68,6 +75,11 @@ All commands run from the repo root.
 | Allowlisted newsletter test | `npm run newsletter:test -- <article-id> <recipient> --confirm-test` |
 | Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <n> --confirm-snapshot` |
 | Production newsletter send | `npm run newsletter:send -- <campaign-id> --expect-recipients <n> --confirm-production` |
+| Review discussion comments | `npm run comments:list -- [--slug <slug>] [--include-hidden]` |
+| Hide a discussion comment | `npm run comments:hide -- <comment-id>` |
+| Restore a hidden comment | `npm run comments:restore -- <comment-id>` |
+| Delete a comment and its replies | `npm run comments:delete -- <comment-id> --confirm-delete` |
+| Post an author reply | `npm run comments:reply -- --parent <comment-id> --body "..." --confirm-reply` |
 
 The dry run prints each channel's eligibility plus the exact copy it would
 publish, so voice and formatting can be judged before anything leaves the
@@ -91,6 +103,10 @@ Vercel deploys never send email or social posts.
   state; missing email-rendering support fails visibly rather than sending
   broken mail.
 - The Substack integration is preserved until the explicit cutover.
+- Discussion moderation stays local and explicit; hidden comments are never
+  returned publicly, and the author badge is set only by the operator CLI.
+- The discussion stores no IP addresses, no email addresses, and no raw browser
+  tokens — only a SHA-256 hash of the token, which is never logged.
 
 ## Docs index
 
@@ -101,6 +117,7 @@ Vercel deploys never send email or social posts.
 | [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md) | Owned-newsletter design, phased gates, data/consent rules |
 | [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md) | SES/SNS/Vercel setup and the local production-send workflow |
 | [docs/newsletter-sns-diagnostics.md](docs/newsletter-sns-diagnostics.md) | Phase 3 transport diagnostics record |
+| [docs/discussion.md](docs/discussion.md) | First-party article discussion: data model, identity, abuse controls, API, moderation CLI |
 | [docs/github-action-evaluation.md](docs/github-action-evaluation.md) | Workflow coverage, quality signals, known gaps |
 | [docs/email_digest_evaluation.md](docs/email_digest_evaluation.md) | Summarizer/ranking assessment and opportunities |
 | [docs/template.md](docs/template.md) | Article frontmatter template |

@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+import { MAX_DISCUSSION_PROMPT_LENGTH } from '../lib/comments/domain.ts';
 import { categoryLabels } from '../utils/taxonomy';
 
 const blog = defineCollection({
@@ -18,6 +19,9 @@ const blog = defineCollection({
       heroImage: z.union([image(), z.string()]).optional(),
       readingTime: z.number().optional(),
       slug: z.string().optional(), // ✅ new override field
+      // Optional per-article prompt shown above the discussion box. Omit it to
+      // use the default question.
+      discussionPrompt: z.string().max(MAX_DISCUSSION_PROMPT_LENGTH).optional(),
     }),
 });
 
