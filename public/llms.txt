@@ -6,6 +6,7 @@ Leon Lin's personal writing site. It publishes public essays on investing, techn
 
 - Homepage: https://leonlins.com/
 - About Leon Lin: https://leonlins.com/about/
+- What Leon Lin is doing now: https://leonlins.com/now/
 - Writing archive: https://leonlins.com/writing/1/
 - RSS feed: https://leonlins.com/rss.xml
 - Sitemap: https://leonlins.com/sitemap-index.xml
