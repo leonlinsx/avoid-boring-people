@@ -1,12 +1,4 @@
-import { SITE_URL } from '../../consts.ts';
-
-// The trusted origin is the canonical origin this site is built for, never the
-// request URL: `Host`, `x-forwarded-host`, and `x-forwarded-proto` are supplied
-// by the caller or by the proxy in front of us, so deriving the origin from the
-// request would let a forwarded header decide whether a POST looks same-origin.
-export function canonicalSiteOrigin(): string {
-  return new URL(SITE_URL).origin;
-}
+import { canonicalSiteOrigin } from '../site-origin.ts';
 
 // `@astrojs/vercel` rewrites the internal request path from the client-supplied
 // `x-astro-path` header or `x_astro_path` query parameter with no authentication

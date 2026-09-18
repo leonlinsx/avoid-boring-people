@@ -1,3 +1,27 @@
+# 2026-09-17
+
+## Discussion
+
+### First-party article comments
+
+- Replaced Giscus with a first-party discussion under each article: no GitHub
+  account, no iframe, and no third party receiving reader activity. Design and
+  operations notes: [docs/discussion.md](docs/discussion.md).
+- One Neon `comments` table (`migrations/comments/001_initial.sql`) holds names,
+  comment text, and timestamps; identity is an opaque browser token stored only
+  as a SHA-256 hash, so there are no commenter accounts and no IP storage.
+- Readers can edit or delete their own comment for 30 minutes. A comment with
+  replies leaves a `[comment deleted]` placeholder so replies keep their thread.
+- Abuse controls: Cloudflare Turnstile (verified server-side, fails closed), an
+  off-screen honeypot, and about 3 comments per browser per 10 minutes counted
+  from the comments table. No Redis, no queues, no IP addresses.
+- Moderation and author replies are local-only CLIs: `comments:list`,
+  `comments:hide`, `comments:restore`, `comments:delete`, `comments:reply`.
+  Author comments get the `Author` badge from the database, never from a name.
+- Articles stay statically generated; only the discussion island is hydrated,
+  and the private-email path is part of the built page.
+- Privacy policy updated: the site now processes discussion data itself.
+
 # 2025-09-22
 
 ## Automation updates
