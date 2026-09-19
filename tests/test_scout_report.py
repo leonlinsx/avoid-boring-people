@@ -64,7 +64,7 @@ def _result(*, ok=True, note="", attempted=True):
 def _screen(*judgments, gated=0, judged=None):
     return ScreenResult(
         judgments=judgments,
-        judged=len(judgments) if judged is None else judged,
+        judged=tuple(judgments) if judged is None else judged,
         gated=gated,
     )
 

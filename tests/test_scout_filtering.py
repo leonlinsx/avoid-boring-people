@@ -264,7 +264,7 @@ def test_screen_gates_before_judging_and_reports_the_survivors(monkeypatch):
     result = filtering.screen([stale, *_ranked()], items=[_item()], now=NOW, recorded=set())
 
     assert result.gated == 1
-    assert result.judged == 2
+    assert len(result.judged) == 2
     assert judged == ["https://news.ycombinator.com/item?id=1", "https://news.ycombinator.com/item?id=2"]
     assert len(result.strong) == 2
 
@@ -274,7 +274,7 @@ def test_screen_without_the_model_marks_survivors_unjudged(monkeypatch):
 
     result = filtering.screen(_ranked(), items=[_item()], now=NOW, recorded=set(), use_llm=False)
 
-    assert result.judged == 0
+    assert result.judged == ()
     assert {judgment.verdict for judgment in result.judgments} == {filtering.VERDICT_UNJUDGED}
 
 
@@ -291,7 +291,8 @@ def test_screen_bounds_the_number_of_model_calls(monkeypatch):
     result = filtering.screen(_ranked(), items=[_item()], now=NOW, recorded=set())
 
     assert len(calls) == 1
-    assert result.judged == 1
+    assert len(result.judged) == 1
+    assert result.judged[0].verdict == filtering.VERDICT_REJECT
     assert [judgment.verdict for judgment in result.judgments].count(filtering.VERDICT_UNJUDGED) == 1
 
 

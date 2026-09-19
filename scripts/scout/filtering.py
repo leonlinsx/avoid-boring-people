@@ -117,7 +117,10 @@ class ScreenResult:
     """Everything the run learned about the candidates it ranked."""
 
     judgments: Tuple[Judgment, ...] = ()
-    judged: int = 0
+    # The rows a model call produced, kept as rows rather than as a count: they
+    # are the only candidates Scout actually asked about, so anything comparing
+    # decisions needs them separately from the gated rows in `judgments`.
+    judged: Tuple[Judgment, ...] = ()
     gated: int = 0
     failures: Tuple[str, ...] = field(default=())
 
@@ -459,7 +462,7 @@ def screen(
     rows.extend(judged_rows)
     return ScreenResult(
         judgments=tuple(rows),
-        judged=len([row for row in judged_rows if row.verdict in VERDICTS]),
+        judged=tuple(row for row in judged_rows if row.verdict in VERDICTS),
         gated=gated,
         failures=tuple(failures),
     )

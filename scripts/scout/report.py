@@ -62,7 +62,7 @@ def render_scan(
     ]
     if screen is not None:
         lines.append(
-            f"Judgments: {screen.judged} model calls | {screen.gated} gated before judgment | "
+            f"Judgments: {len(screen.judged)} model calls | {screen.gated} gated before judgment | "
             f"{len(screen.failures)} call failures"
         )
     return "\n".join(line for line in lines if line)

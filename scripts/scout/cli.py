@@ -1,4 +1,4 @@
-"""Scout's command line: one scheduled run, plus three commands for the author.
+"""Scout's command line: one scheduled run, plus four commands for the author.
 
 `run` is what the daily workflow calls: read the published article index, search
 the external sources, judge what matches, print the opportunities found, record
@@ -6,7 +6,8 @@ them, and expire the ones nobody acted on. `--dry-run` does exactly the same wor
 except that it writes nothing, which is how a change to any stage is inspected
 before it can influence what gets surfaced. `--no-llm` stops after the
 deterministic gates, for checking what the sources returned without spending a
-model call.
+model call. `jev` reads back the optional shadow-evaluation experiment, if it was
+switched on.
 """
 from __future__ import annotations
 
@@ -16,7 +17,7 @@ import os
 import sys
 from typing import Optional, Sequence
 
-from scripts.scout import discovery, filtering, matching, report, state
+from scripts.scout import discovery, filtering, jev, matching, report, state
 from scripts.scout.errors import ScoutError
 from scripts.scout.inventory import load_inventory
 from scripts.scout.state import STATUSES
@@ -35,6 +36,33 @@ def _split_queries(raw: Optional[str]) -> Optional[Sequence[str]]:
     if raw is None:
         return None
     return [query.strip() for query in raw.split(",") if query.strip()]
+
+
+def _shadow_pass(judged_rows: Sequence[filtering.Judgment], *, now: datetime, dry_run: bool) -> None:
+    """Run the optional Jev shadow evaluation over what Scout just judged.
+
+    The rows are `ScreenResult.judged` — exactly what a model call produced. A
+    candidate stopped by a deterministic gate was never evaluated by Scout, and
+    comparing Jev against that gate would compare it against a different
+    decision, so the gate rows are excluded where they are known rather than
+    filtered again here.
+
+    Nothing here feeds back into the run: the loop only reads the rows, and the
+    answers go to the record file and to stdout. That is what keeps it a shadow —
+    a run in which every evaluation fails is identical to a run with the
+    experiment switched off. `--dry-run` evaluates and prints but records
+    nothing, as it does everywhere else.
+    """
+    blocker = jev.blocker()
+    if blocker is not None:
+        if blocker != jev.NOT_ENABLED:
+            print(f"⚠️  scout_jev_shadow_unavailable ({blocker})")
+        return
+    for judgment in judged_rows:
+        record = jev.evaluate(judgment, now=now)
+        jev.print_record(record)
+        if not dry_run:
+            jev.append_record(record)
 
 
 def run_command(args: argparse.Namespace) -> int:
@@ -84,6 +112,10 @@ def run_command(args: argparse.Namespace) -> int:
         recorded=recorded,
         use_llm=use_llm,
     )
+
+    # Observational only, and off unless explicitly switched on: the shadow sees
+    # the judgments and changes nothing about them.
+    _shadow_pass(screened.judged, now=now, dry_run=args.dry_run)
 
     summary = report.build_summary(
         discovered,
@@ -145,6 +177,13 @@ def _set_status(url: str, status: str, outcome: Optional[str] = None) -> int:
     return 0
 
 
+def jev_command(args: argparse.Namespace) -> int:
+    """Print the shadow-evaluation comparison. Reads the record file, writes nothing."""
+    records, unreadable = jev.load_records()
+    print(jev.render_report(records, unreadable=unreadable))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m scripts.scout",
@@ -176,6 +215,12 @@ def build_parser() -> argparse.ArgumentParser:
     acted_parser.add_argument("url")
     acted_parser.add_argument("--outcome", help="what came of it")
     acted_parser.set_defaults(handler=lambda args: _set_status(args.url, state.STATUS_ACTED, args.outcome))
+
+    jev_parser = commands.add_parser(
+        "jev",
+        help="compare the optional Jev shadow evaluations against Scout's own decisions",
+    )
+    jev_parser.set_defaults(handler=jev_command)
 
     return parser
 
