@@ -7,6 +7,11 @@ name: Scout
 # anything, never touches the site build, and its own state file is the only
 # thing it commits. No model key or crashed run can affect leonlins.com.
 #
+# The last thing a run does is the Jev shadow experiment, switched on below so it
+# collects observations from real runs. It is an experiment, and reads like one:
+# it runs after the report and after the state file is written, it cannot change a
+# candidate, and a failure in it is its own log line rather than a red run.
+#
 # Cadence is daily because Scout targets a handful of high-value opportunities,
 # not real-time engagement. Discovery covers a bounded number of queries, so one
 # run per day is a few minutes of work rather than a continuously running
@@ -39,9 +44,14 @@ jobs:
     runs-on: ubuntu-latest
     # Discovery waits on two external services under their own timeouts; a hung
     # install or blocked request would otherwise hold the state file for a day.
-    # The ceiling leaves room for every bounded model request (the judgment cap
-    # times the client's own timeout and retries) plus the state commit.
-    timeout-minutes: 30
+    # The first 30 minutes are the run's own work — every bounded model request
+    # (the judgment cap times the client's own timeout and retries), discovery,
+    # and the state commit. The ten after that are the Jev shadow experiment's
+    # tail: it starts only after scout-state.json is written, and it stops itself
+    # at its own budget (SHADOW_BUDGET_SECONDS, four minutes) rather than spending
+    # the clock the commit step needs, so a Jev timeout can lengthen a run but
+    # cannot cost it the commit that follows.
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -54,6 +64,20 @@ jobs:
         run: |
           python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
           python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+      # The Jev shadow experiment's own client, into the same environment the run
+      # uses. Deliberately not added to the pinned requirements: the experiment
+      # is removable, and removing it is deleting this step and the two
+      # variables it needs below.
+      #
+      # `continue-on-error` is what makes that true for the job and not only for
+      # the code: a PyPI hiccup, a yanked version, or a resolver conflict here
+      # would otherwise fail the run before it started, and this experiment is
+      # never worth a day without a report. The CLI skips cleanly when the
+      # package is missing, exactly as it does on a machine that never installed
+      # it.
+      - name: Install the shadow experiment's SDK
+        continue-on-error: true
+        run: python -m pip install 'typesafe-sdk==0.7.0'
       # Scout writes its report into the step summary, which is where the author
       # reads it. A run that fails is a retryable operational failure, so it is
       # allowed to finish the state commit first and reported at the end, the way
@@ -65,6 +89,15 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+          # The Jev shadow experiment, switched on so it collects observations
+          # from real runs. It is best effort by construction: the CLI calls it
+          # after the report and after scout-state.json is written, it cannot
+          # change what was surfaced or recorded, and its failures — a timeout, a
+          # bad key, a broken response — are its own log lines. The key goes
+          # straight to the SDK from the secret below: it is never written to a
+          # file, an artifact, or the state, and never echoed.
+          SCOUT_JEV_SHADOW: '1'
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
           # Dispatch inputs arrive through the environment so a query typed into
           # the run form is data, not shell source.
           SCOUT_DRY_RUN: ${{ inputs.dry_run }}

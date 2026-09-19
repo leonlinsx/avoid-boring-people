@@ -41,7 +41,8 @@ are stated before the mechanics.
   whether there is a contribution.
 - It does not depend on the optional Jev shadow evaluation. That experiment is
   off unless two separate environment variables are set, nothing in the pipeline
-  reads what it produces, and its failures are contained in its own local record
+  reads what it produces, it runs only after the report and the state file are
+  finished, and its failures are contained in its own local record
   file (see [Jev shadow evaluation](#jev-shadow-evaluation-experiment)).
 
 ## How a run works
@@ -67,17 +68,21 @@ are stated before the mechanics.
 6. **Judgment** (`scripts/scout/filtering.py`) — one model call per surviving
    candidate, capped at `SCOUT_MAX_JUDGMENTS` (8), returning a verdict and, for a
    contribution, a draft.
-7. **Shadow (optional)** (`scripts/scout/jev.py`) — when switched on, the
-   candidates a model call just judged are *also* sent to Jev, whose answers are
-   written beside Scout's decision for later reading. Nothing downstream reads
-   them, and a candidate a gate dropped is not sent, because Scout never judged
-   it.
-8. **Report** (`scripts/scout/report.py`) — the scan summary, the STRONG
+7. **Report** (`scripts/scout/report.py`) — the scan summary, the STRONG
    opportunities (at most `SCOUT_MAX_OPPORTUNITIES`, 5), and then every candidate
    the run declined with the reason it declined. Printed to the log and appended
    to `GITHUB_STEP_SUMMARY`.
-9. **State** (`scripts/scout/state.py`) — a normal run records what it surfaced
+8. **State** (`scripts/scout/state.py`) — a normal run records what it surfaced
    and expires stale staged opportunities. A dry run writes nothing.
+9. **Shadow (optional, last)** (`scripts/scout/jev.py`) — when switched on, the
+   candidates a model call judged are *also* sent to Jev, whose answers are
+   written beside Scout's decision for later reading. Nothing reads them, and a
+   candidate a gate dropped is not sent, because Scout never judged it. It is the
+   final step on purpose: the report is out and `scout-state.json` is already
+   written when the experiment is paid for, so an evaluation that hangs, times
+   out, or fails outright cannot stand between the run and its own durable
+   result. It carries its own wall-clock budget so the tail stays inside the
+   job's ceiling (see [Authority and failure containment](#authority-and-failure-containment)).
 
 Two empty results are treated as failures rather than as quiet days, because both
 would otherwise keep reporting success indefinitely: a run where every attempted
@@ -275,6 +280,13 @@ which is what the record file is for.
   candidate, and nothing in `run`, `list`, `dismiss`, or `acted` reads its
   output. A run in which every Jev call fails produces the same report, the same
   state file, and the same exit code as a run with Jev switched off.
+- **Last, so it cannot cost the run its result.** The pass is called after the
+  report has been printed and after `scout-state.json` has been written and
+  flushed, so a Jev call that is slow, that times out, or that never comes back
+  cannot delay or lose what the run itself produced. The one thing that could
+  still lose a committed state file is the job's own ceiling killing the run
+  before the workflow's commit step, which is why the experiment is bounded
+  (below) rather than merely placed at the end.
 - **Off unless asked for twice.** Both `SCOUT_JEV_SHADOW` and `TYPESAFE_API_KEY`
   must be set; either one alone leaves the run untouched. The flag accepts
   `1`/`true`/`yes`/`on` (and `0`/`false`/`no`/`off`); any other value is reported
@@ -283,11 +295,22 @@ which is what the record file is for.
   unimportable SDK, a timeout, an HTTP error, a response with none of the
   expected answers, and an unwritable record file are each recorded rather than
   raised. When the experiment cannot run at all, the run prints one
-  `⚠️  scout_jev_shadow_unavailable (reason)` line and continues.
+  `⚠️  scout_jev_shadow_unavailable (reason)` line and continues. The pass as a
+  whole is wrapped as well, so even a failure nothing anticipated costs one
+  `⚠️  scout_jev_shadow_failure` line and not the run's exit code.
 - **Bounded like the real judgment call.** One System One call per judged
   candidate (so at most `SCOUT_MAX_JUDGMENTS`, 8, per run), a 30-second HTTP
   timeout on each operation, and no retries: an experiment gains nothing from
-  outliving the run that pays for it.
+  outliving the run that pays for it. The HTTP timeout alone is not a bound —
+  the SDK applies it per request phase and builds its client per candidate, so a
+  server that keeps dribbling bytes stays inside it — so the pass also carries its
+  own wall-clock budget (`SHADOW_BUDGET_SECONDS`, 240). Before each candidate it
+  checks the time it has spent against that budget, stops when it is used up, and
+  reports
+  `⚠️  scout_jev_shadow_budget_exhausted after N of M evaluation(s)`: the tail a
+  scheduled run pays for is Scout's own measurement, not the SDK's timeout
+  semantics. Because the tail also starts after the state file is written, a slow
+  Jev call can lengthen a run but never takes the run's result away.
 - **The key is never echoed.** The `TYPESAFE_API_KEY` value is scrubbed out of
   everything a response contributes — error text, model name, probability labels —
   before any of it is printed or persisted, and the record is what gets printed,
@@ -311,11 +334,12 @@ is still untrusted input, and each question says so.
 
 ### Storage
 
-`scout-shadow.jsonl`, one JSON object per line, appended next to the ignored
-state file and never committed (`.gitignore`). Append-only per record means a
-killed run loses at most a line; an unreadable line is skipped and counted rather
-than trusted, including one that is not valid UTF-8 at all. A dry run writes no
-records.
+`scout-shadow.jsonl`, one JSON object per line, appended at the repository root
+next to the state file but ignored by `.gitignore` and never committed — so a
+scheduled run's records exist only in that run's log, and `git` can never pick
+them up. Append-only per record means a killed run loses at most a line; an
+unreadable line is skipped and counted rather than trusted, including one that is
+not valid UTF-8 at all. A dry run writes no records.
 
 ```json
 {
@@ -372,6 +396,9 @@ depends on it:
 - remove the `import ... jev` line, the `_shadow_pass` call in `run_command`,
   and the `_shadow_pass`/`jev_command` functions plus the `jev` subparser in
   `scripts/scout/cli.py`;
+- drop the `Install the shadow experiment's SDK` step and the `SCOUT_JEV_SHADOW`
+  and `TYPESAFE_API_KEY` variables from `.github/workflows/scout.yml`, and delete
+  the `TYPESAFE_API_KEY` repository secret;
 - drop `/scout-shadow.jsonl` from `.gitignore` and delete the file.
 
 One shared edit came with the experiment: `filtering.ScreenResult.judged` holds
@@ -379,13 +406,14 @@ the model-judged rows rather than their count, so the shadow can offer exactly
 what a model call produced instead of guessing from verdicts (gated and
 model-`REJECT` rows are indistinguishable in `judgments`). It can be reverted to
 an `int` and `report.py` back to `screen.judged`, or simply left alone, since the
-only reader is `len(screen.judged)`. No schema, migration, dependency manifest, or
-workflow change is involved, so removal cannot break a run.
+only reader is `len(screen.judged)`. No schema, migration, or dependency manifest
+is involved: the SDK is installed by one workflow step rather than by the pinned
+requirements, so removal cannot break a run.
 
 ### Running it by hand
 
 ```bash
-python -m pip install typesafe-sdk          # deliberately not in the pinned requirements
+python -m pip install typesafe-sdk==0.7.0    # deliberately not in the pinned requirements
 export SCOUT_JEV_SHADOW=1 TYPESAFE_API_KEY=…
 python -m scripts.scout run                 # prints records and persists them
 python -m scripts.scout run --dry-run       # prints records, writes nothing
@@ -393,25 +421,17 @@ python -m scripts.scout jev                 # reads the comparison afterwards
 ```
 
 The SDK is absent from `scripts/automation/requirements*.lock` on purpose: the
-scheduled workflow must not acquire a third-party dependency, credential, and
-per-candidate cost because of an experiment. `.github/workflows/scout.yml` is
-left unchanged and does not set the flag, so the scheduled run never evaluates
-with Jev; keeping it that way is the intent, not an oversight.
+pinned requirements are the publishing path's, and an experiment should not be
+able to make a publish job depend on a third-party credential and a per-candidate
+cost. `.github/workflows/scout.yml` installs it in a step of its own, which is why
+removing the experiment does not touch a lock file.
 
-Run it locally on purpose. Scout's provider module loads a repo-root `.env` at
-import, so a `.env` holding both `SCOUT_JEV_SHADOW=1` and `TYPESAFE_API_KEY`
-enables the experiment just as an `export` does — that is the documented recipe
-reached a second way, not a third switch. Do not enable it in the scheduled job:
-that job's 30-minute cap budgets the judgment stage's own bounded requests plus
-the state commit, and a cancelled job runs no later step, so the state commit
-would be skipped silently rather than failing.
-
-If a scheduled experiment is ever wanted anyway, the manual changes would be a
-repository secret `TYPESAFE_API_KEY`, a repository variable `SCOUT_JEV_SHADOW`
-set to `1`, and an explicit `python -m pip install typesafe-sdk` step in
-`.github/workflows/scout.yml` before the run — all three, since the flag alone
-does nothing without the key and the SDK. None of that is in place, and adding a
-key by itself still activates nothing.
+Scout's provider module loads a repo-root `.env` at import, so a `.env` holding
+both `SCOUT_JEV_SHADOW=1` and `TYPESAFE_API_KEY` enables the experiment just as an
+`export` does — that is the documented recipe reached a second way, not a third
+switch. Keep a key there and nowhere else in the checkout: it is a local
+convenience, and the scheduled workflow takes its own copy from the repository
+secret.
 
 ## Commands
 
@@ -446,31 +466,53 @@ accepted together with `--dry-run` for the same reason.
 | `SCOUT_MAX_JUDGMENTS` | 8 | Model calls per run. |
 | `SCOUT_MAX_OPPORTUNITIES` | 5 | Opportunities reported and recorded per run. |
 | `SCOUT_EXPIRE_DAYS` | 14 | Age at which an unacted opportunity is marked expired. |
-| `SCOUT_JEV_SHADOW` | — | Enables the optional Jev shadow experiment (`1`/`true`/`yes`/`on`; any other value is reported as unrecognized). Requires `TYPESAFE_API_KEY` and the `typesafe-sdk` package to be present. |
-| `TYPESAFE_API_KEY` | — | The shadow experiment's own credential, read by the TypeSafe SDK. Scout's judgment call never uses it, and the workflows never set it. |
+| `SCOUT_JEV_SHADOW` | — | Enables the optional Jev shadow experiment (`1`/`true`/`yes`/`on`; any other value is reported as unrecognized). Requires `TYPESAFE_API_KEY` and the `typesafe-sdk` package to be present. Set by the scheduled workflow. |
+| `TYPESAFE_API_KEY` | — | The shadow experiment's own credential, read by the TypeSafe SDK. Scout's judgment call never uses it. The scheduled workflow reads it from the repository secret of the same name and passes it straight to the SDK; it is never written to a file, an artifact, a log line, or the state file. |
 
 ## Scheduling and observability
 
 `.github/workflows/scout.yml` runs the CLI daily at 07:00 UTC (ahead of the daily
 token probe and the social cycles) and on manual dispatch, with an optional
 `dry_run` input. It installs the same hash-pinned Python requirements as the
-distribution jobs, runs the CLI with only `DEEPSEEK_API_KEY`, `BLUESKY_HANDLE`,
-and `BLUESKY_PASSWORD` in its environment, commits `scout-state.json` when it
-changed, and then fails the step if the run failed. That ordering mirrors the
-social workflows: the state commit happens first, and a failed run still turns
-red so GitHub's own notification reaches the author. Dispatch inputs are read
-from the environment rather than interpolated into the step's shell, so a typed
-query stays data.
+distribution jobs, runs the CLI with `DEEPSEEK_API_KEY`, `BLUESKY_HANDLE`, and
+`BLUESKY_PASSWORD` (plus the optional shadow experiment's two variables, below)
+in its environment, commits `scout-state.json` when it changed, and then fails the
+step if the run failed. That ordering mirrors the social workflows: the state
+commit happens first, and a failed run still turns red so GitHub's own
+notification reaches the author. Dispatch inputs are read from the environment
+rather than interpolated into the step's shell, so a typed query stays data.
 
 There is no monitoring service and no alerting integration. The report lands in
 the run's step summary, and an unconfigured model, a run whose sources all
 failed, and a run whose reachable sources returned nothing all fail loudly
 instead of quietly reporting nothing.
 
-The scheduled workflow also does not enable the Jev shadow experiment: it sets no
-`SCOUT_JEV_SHADOW` or `TYPESAFE_API_KEY`, and the pinned requirements do not
-include the SDK, so the scheduled run skips the shadow pass silently and cannot
-spend or fail on it.
+The scheduled workflow also collects the Jev shadow observations. It installs
+`typesafe-sdk` into the same interpreter the run uses — in its own step, still
+not in the pinned requirements — and sets `SCOUT_JEV_SHADOW=1` plus
+`TYPESAFE_API_KEY` from the repository secret of that name. That install step is
+`continue-on-error`, because an experiment must not be able to cost the day's
+report: without it a PyPI hiccup or a yanked version would fail the job before
+the run started, and with it the CLI simply skips the shadow the way it does on
+any machine where the package is unavailable. Three more things keep the
+experiment from changing what the job is: the key is passed to the SDK as an
+environment variable and written nowhere, so it reaches neither the log nor the
+state file nor an artifact; the CLI calls the experiment only after
+`scout-state.json` is written, so a slow or failed evaluation cannot keep the
+state commit from running; and the SDK is not part of the pinned requirements, so
+removing the experiment is deleting that install step and the two variables.
+Scout's own model and provider configuration is untouched: `DEEPSEEK_API_KEY` is
+still the only thing the judgment calls use.
+
+What the experiment did in a scheduled run is one line in the step summary —
+`🔬 Jev shadow: N evaluated, N failed, N not attempted` — alongside the per-candidate
+`🔬 scout_jev_shadow` lines in the log. The record file itself is gitignored and
+never uploaded, so those two are what the run leaves behind.
+
+Without the `TYPESAFE_API_KEY` secret the run stays green: the shadow reports
+`⚠️  scout_jev_shadow_unavailable (TYPESAFE_API_KEY is not set)` and stops there,
+which is what makes the experiment safe to enable before the credential exists and
+safe to leave enabled afterwards.
 
 Bluesky app passwords are not scopeable, so Scout logs in with the same
 credential the publisher uses: the job only calls `login` and `search_posts`, but
@@ -514,9 +556,25 @@ extract then.
   sent, that a dry run
   writes nothing, the failure modes, the state it builds (including clipping and
   that no verdict, draft, or article body is sent), the question contract, and
-  that the key is never printed or persisted. The real SDK's client construction
+  that the key is never printed or persisted, including in a clipped error
+  message whose tail is a fragment of it — and that a fragment shorter than the
+  point where scrubbing would eat ordinary text is left alone rather than
+  mangled. Two of those tests are the ordering
+  guarantee itself: one fails the Jev client from inside the SDK boundary and
+  asserts `scout-state.json` was already on disk at that moment, and one makes the
+  evaluation raise something its own guard does not catch and asserts the run
+  still exits 0 with its state intact and the key unprinted. Both fail against the
+  earlier order, where the shadow ran before the state was written. A third covers
+  the budget: with a fake clock but a real sequence of three judged candidates,
+  the pass evaluates one, prints the budget line, writes one record, leaves the
+  state untouched, and still exits 0. The real SDK's client construction
   and response parsing were verified once by hand against a mocked transport:
   no live TypeSafe call is part of any test or run.
+- The workflow's own claims are checked by inspection rather than by a workflow
+  linter: the SDK install is a single `continue-on-error` step, and
+  `typesafe-sdk==0.7.0` resolves
+  against the pinned environment without changing a pinned package (it adds
+  `tenacity` and nothing else).
 - Known local limitations: the judgment stage needs `DEEPSEEK_API_KEY` and
   Bluesky search needs an app password, so both are covered by tests with fakes
   rather than by a live run; the scoring thresholds are reasoned from candidate
