@@ -39,6 +39,10 @@ are stated before the mechanics.
 - It does not present a candidate as an opportunity on the strength of topical
   overlap. Overlap only decides what deserves a model call; the judgment decides
   whether there is a contribution.
+- It does not depend on the optional Jev shadow evaluation. That experiment is
+  off unless two separate environment variables are set, nothing in the pipeline
+  reads what it produces, and its failures are contained in its own local record
+  file (see [Jev shadow evaluation](#jev-shadow-evaluation-experiment)).
 
 ## How a run works
 
@@ -63,11 +67,16 @@ are stated before the mechanics.
 6. **Judgment** (`scripts/scout/filtering.py`) — one model call per surviving
    candidate, capped at `SCOUT_MAX_JUDGMENTS` (8), returning a verdict and, for a
    contribution, a draft.
-7. **Report** (`scripts/scout/report.py`) — the scan summary, the STRONG
+7. **Shadow (optional)** (`scripts/scout/jev.py`) — when switched on, the
+   candidates a model call just judged are *also* sent to Jev, whose answers are
+   written beside Scout's decision for later reading. Nothing downstream reads
+   them, and a candidate a gate dropped is not sent, because Scout never judged
+   it.
+8. **Report** (`scripts/scout/report.py`) — the scan summary, the STRONG
    opportunities (at most `SCOUT_MAX_OPPORTUNITIES`, 5), and then every candidate
    the run declined with the reason it declined. Printed to the log and appended
    to `GITHUB_STEP_SUMMARY`.
-8. **State** (`scripts/scout/state.py`) — a normal run records what it surfaced
+9. **State** (`scripts/scout/state.py`) — a normal run records what it surfaced
    and expires stale staged opportunities. A dry run writes nothing.
 
 Two empty results are treated as failures rather than as quiet days, because both
@@ -231,6 +240,166 @@ is a fact; and it leaves a row with an unreadable timestamp alone rather than
 guessing. A malformed `opportunities` object fails the run instead of silently
 forgetting history.
 
+## Jev shadow evaluation (experiment)
+
+An optional, deliberately temporary experiment: the candidates a model call
+already judged are *also* sent to TypeSafe's Jev model, and Jev's answers are
+written beside Scout's decision and read by nothing. It is not a second opinion
+that changes an outcome — it is a record of what a cheap structured judgment says
+about our own candidates. Candidates a deterministic gate dropped before any call
+are left out: Scout never judged them, so there is no decision to compare
+against.
+
+The question it exists to answer is not "is Jev cheaper than the current
+judgment call?" but whether cheap structured judgment could one day let Scout
+look at a far larger universe of conversations while still surfacing only the few
+worth the author's attention. That needs evidence from Scout's own candidates,
+which is what the record file is for.
+
+### Authority and failure containment
+
+- **Zero production authority.** Jev cannot add, drop, reorder, or redraft a
+  candidate, and nothing in `run`, `list`, `dismiss`, or `acted` reads its
+  output. A run in which every Jev call fails produces the same report, the same
+  state file, and the same exit code as a run with Jev switched off.
+- **Off unless asked for twice.** Both `SCOUT_JEV_SHADOW` and `TYPESAFE_API_KEY`
+  must be set; either one alone leaves the run untouched. The flag accepts
+  `1`/`true`/`yes`/`on` (and `0`/`false`/`no`/`off`); any other value is reported
+  as unrecognized rather than guessed at, so a typo is visible instead of silent.
+- **Fail-safe by construction.** `evaluate()` never raises: a missing key, an
+  unimportable SDK, a timeout, an HTTP error, a response with none of the
+  expected answers, and an unwritable record file are each recorded rather than
+  raised. When the experiment cannot run at all, the run prints one
+  `⚠️  scout_jev_shadow_unavailable (reason)` line and continues.
+- **Bounded like the real judgment call.** One System One call per judged
+  candidate (so at most `SCOUT_MAX_JUDGMENTS`, 8, per run), a 30-second HTTP
+  timeout on each operation, and no retries: an experiment gains nothing from
+  outliving the run that pays for it.
+- **The key is never echoed.** The `TYPESAFE_API_KEY` value is scrubbed out of
+  everything a response contributes — error text, model name, probability labels —
+  before any of it is printed or persisted, and the record is what gets printed,
+  so the two paths cannot disagree.
+
+### What is sent
+
+Only what the judgment call already had, and nothing that reveals Scout's
+answer: the conversation's title, author, community, timestamp, reply count, and
+up to 1200 characters of body, plus the matched article's title, category, tags,
+and summary. The article body is never sent, and neither is Scout's verdict,
+reason, draft, or score — so Jev's answers cannot be an echo of Scout's decision.
+
+Each candidate is asked five questions in one call: four `noul` primitives
+(`content_fit`, `substantive_conversation`, `relationship_value`,
+`natural_contribution`) and one `score` primitive (`asymmetric_value`, "how
+asymmetric is the value of contributing here?"). `content_fit` — does existing
+writing materially help this conversation? — is deliberately the same question
+Scout's own verdict answers, because that comparison is the point. Candidate text
+is still untrusted input, and each question says so.
+
+### Storage
+
+`scout-shadow.jsonl`, one JSON object per line, appended next to the ignored
+state file and never committed (`.gitignore`). Append-only per record means a
+killed run loses at most a line; an unreadable line is skipped and counted rather
+than trusted, including one that is not valid UTF-8 at all. A dry run writes no
+records.
+
+```json
+{
+  "candidate_id": "https://news.ycombinator.com/item?id=…", "evaluated_at": "…",
+  "source": "hacker-news", "title": "…", "content_id": "…",
+  "existing": {"selected": true, "verdict": "STRONG"},
+  "jev": {"model": "jev-latest", "content_fit": {"noul": 0.81}, "…": {"noul": 0.0},
+          "asymmetric_value": {"score": 2.0, "confidence": 0.7, "probabilities": {"2": 0.7}}},
+  "usage": {"input_tokens": 812, "output_tokens": 41}, "latency_ms": 904, "error": null
+}
+```
+
+`existing.selected` is the judgment's positive verdict (`verdict == "STRONG"`),
+not a claim about what the run surfaced: it is recorded before the
+`SCOUT_MAX_OPPORTUNITIES` cap and even under `--dry-run`, where a STRONG judgment
+is never written to the state file. `existing.verdict` is the raw answer, so both
+readings are recoverable from the record.
+
+### Reading the results
+
+`python -m scripts.scout jev` prints the comparison and writes nothing:
+
+```
+Jev shadow evaluations — scout-shadow.jsonl
+
+Evaluations: 5 across 5 candidate(s) | with answers: 4 | failed: 1
+Scout decisions: 2 selected | 2 not selected
+
+Jev means (expected score for asymmetric_value, 0-2)
+  content_fit              selected 0.45 (n=2) | not selected 0.55 (n=2)
+  …
+Disagreements (low < 0.25, high >= 0.75)
+
+Scout selected, Jev saw little to add (content_fit or natural_contribution below low):
+  https://news.ycombinator.com/item?id=2 (Scout: STRONG)
+    … — hacker-news
+    content_fit 0.10 · substantive_conversation 0.60 · relationship_value 0.40 · natural_contribution 0.05 · asymmetric_value 0.00
+```
+
+The thresholds are levels for inspection, not weights for tuning: the report
+never declares either side correct, and neither mean is a metric that Scout is
+optimized against. A disagreement is a candidate worth reading by hand. `n` is
+reported beside every mean so a mean over two records cannot be mistaken for a
+finding, and failed evaluations are listed separately rather than folded into a
+mean as zeros.
+
+### Removing it
+
+The experiment is one module, its test file, and three hooks; nothing else
+depends on it:
+
+- delete `scripts/scout/jev.py` and `tests/test_scout_jev.py` (the latter imports
+  the module, so leaving it behind would break the whole suite's collection);
+- remove the `import ... jev` line, the `_shadow_pass` call in `run_command`,
+  and the `_shadow_pass`/`jev_command` functions plus the `jev` subparser in
+  `scripts/scout/cli.py`;
+- drop `/scout-shadow.jsonl` from `.gitignore` and delete the file.
+
+One shared edit came with the experiment: `filtering.ScreenResult.judged` holds
+the model-judged rows rather than their count, so the shadow can offer exactly
+what a model call produced instead of guessing from verdicts (gated and
+model-`REJECT` rows are indistinguishable in `judgments`). It can be reverted to
+an `int` and `report.py` back to `screen.judged`, or simply left alone, since the
+only reader is `len(screen.judged)`. No schema, migration, dependency manifest, or
+workflow change is involved, so removal cannot break a run.
+
+### Running it by hand
+
+```bash
+python -m pip install typesafe-sdk          # deliberately not in the pinned requirements
+export SCOUT_JEV_SHADOW=1 TYPESAFE_API_KEY=…
+python -m scripts.scout run                 # prints records and persists them
+python -m scripts.scout run --dry-run       # prints records, writes nothing
+python -m scripts.scout jev                 # reads the comparison afterwards
+```
+
+The SDK is absent from `scripts/automation/requirements*.lock` on purpose: the
+scheduled workflow must not acquire a third-party dependency, credential, and
+per-candidate cost because of an experiment. `.github/workflows/scout.yml` is
+left unchanged and does not set the flag, so the scheduled run never evaluates
+with Jev; keeping it that way is the intent, not an oversight.
+
+Run it locally on purpose. Scout's provider module loads a repo-root `.env` at
+import, so a `.env` holding both `SCOUT_JEV_SHADOW=1` and `TYPESAFE_API_KEY`
+enables the experiment just as an `export` does — that is the documented recipe
+reached a second way, not a third switch. Do not enable it in the scheduled job:
+that job's 30-minute cap budgets the judgment stage's own bounded requests plus
+the state commit, and a cancelled job runs no later step, so the state commit
+would be skipped silently rather than failing.
+
+If a scheduled experiment is ever wanted anyway, the manual changes would be a
+repository secret `TYPESAFE_API_KEY`, a repository variable `SCOUT_JEV_SHADOW`
+set to `1`, and an explicit `python -m pip install typesafe-sdk` step in
+`.github/workflows/scout.yml` before the run — all three, since the flag alone
+does nothing without the key and the SDK. None of that is in place, and adding a
+key by itself still activates nothing.
+
 ## Commands
 
 | Command | Purpose |
@@ -242,6 +411,7 @@ forgetting history.
 | `python -m scripts.scout list [--status surfaced]` | Recorded opportunities, newest first. |
 | `python -m scripts.scout dismiss <url>` | Records that an opportunity was not worth joining. |
 | `python -m scripts.scout acted <url> [--outcome "…"]` | Records that an opportunity was acted on, and what came of it. |
+| `python -m scripts.scout jev` | Prints the optional shadow-evaluation comparison from `scout-shadow.jsonl`. Reads only, writes nothing, and reports an empty file as such. |
 
 A normal run requires a judgment model, so it fails with a clear message rather
 than reporting unjudged candidates when none is configured. `--no-llm` is only
@@ -263,6 +433,8 @@ accepted together with `--dry-run` for the same reason.
 | `SCOUT_MAX_JUDGMENTS` | 8 | Model calls per run. |
 | `SCOUT_MAX_OPPORTUNITIES` | 5 | Opportunities reported and recorded per run. |
 | `SCOUT_EXPIRE_DAYS` | 14 | Age at which an unacted opportunity is marked expired. |
+| `SCOUT_JEV_SHADOW` | — | Enables the optional Jev shadow experiment (`1`/`true`/`yes`/`on`; any other value is reported as unrecognized). Requires `TYPESAFE_API_KEY` and the `typesafe-sdk` package to be present. |
+| `TYPESAFE_API_KEY` | — | The shadow experiment's own credential, read by the TypeSafe SDK. Scout's judgment call never uses it, and the workflows never set it. |
 
 ## Scheduling and observability
 
@@ -281,6 +453,11 @@ There is no monitoring service and no alerting integration. The report lands in
 the run's step summary, and an unconfigured model, a run whose sources all
 failed, and a run whose reachable sources returned nothing all fail loudly
 instead of quietly reporting nothing.
+
+The scheduled workflow also does not enable the Jev shadow experiment: it sets no
+`SCOUT_JEV_SHADOW` or `TYPESAFE_API_KEY`, and the pinned requirements do not
+include the SDK, so the scheduled run skips the shadow pass silently and cannot
+spend or fail on it.
 
 Bluesky app passwords are not scopeable, so Scout logs in with the same
 credential the publisher uses: the job only calls `login` and `search_posts`, but
@@ -317,8 +494,19 @@ extract then.
 - A real dry run against live sources and the live index is the check that
   matters for a change to discovery, matching, or the gates:
   `/tmp/scout-venv/bin/python -m scripts.scout run --dry-run --no-llm`.
+- The shadow experiment is covered by `tests/test_scout_jev.py`, which never
+  imports the SDK and never reaches the network: it fakes the `_client()` seam
+  and asserts the switch, the missing-key and missing-SDK paths, one evaluation
+  per judged candidate, that gate-rejected and unjudged candidates are never
+  sent, that a dry run
+  writes nothing, the failure modes, the state it builds (including clipping and
+  that no verdict, draft, or article body is sent), the question contract, and
+  that the key is never printed or persisted. The real SDK's client construction
+  and response parsing were verified once by hand against a mocked transport:
+  no live TypeSafe call is part of any test or run.
 - Known local limitations: the judgment stage needs `DEEPSEEK_API_KEY` and
   Bluesky search needs an app password, so both are covered by tests with fakes
   rather than by a live run; the scoring thresholds are reasoned from candidate
   counts and must be re-tuned against real verdicts once Scout has been run for a
-  week.
+  week. Whether Jev's judgments are any good is exactly what the shadow record
+  file is for and cannot be settled locally.

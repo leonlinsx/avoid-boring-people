@@ -63,3 +63,5 @@ __pycache__/
 /post_payload.json
 # Local render/preview scratch space, including rendered Instagram slides
 .tmp/
+# Local Jev shadow-evaluation records for Scout (experiment data, never committed)
+/scout-shadow.jsonl
