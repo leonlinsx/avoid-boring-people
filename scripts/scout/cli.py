@@ -142,6 +142,10 @@ def run_command(args: argparse.Namespace) -> int:
             source=judgment.match.candidate.source,
             content_id=judgment.match.item.content_id,
             draft=judgment.draft,
+            thread_title=judgment.match.candidate.title,
+            content_title=judgment.match.item.title,
+            content_url=judgment.match.item.url,
+            why_now=judgment.why_now,
             now=now,
         ):
             surfaced += 1

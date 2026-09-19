@@ -109,6 +109,11 @@ def test_a_real_run_records_the_opportunity_and_can_be_read_back(monkeypatch, tm
     assert list(recorded) == ["https://news.ycombinator.com/item?id=1"]
     assert recorded["https://news.ycombinator.com/item?id=1"]["status"] == state.STATUS_SURFACED
     assert recorded["https://news.ycombinator.com/item?id=1"]["draft"] == DRAFT
+    # The row keeps enough context to be read on its own, without a rerun.
+    assert recorded["https://news.ycombinator.com/item?id=1"]["thread_title"] == "Investing risk nobody prices"
+    assert recorded["https://news.ycombinator.com/item?id=1"]["content_title"] == "When markets fail quietly"
+    assert recorded["https://news.ycombinator.com/item?id=1"]["content_url"] == "https://leonlins.com/writing/market-failure"
+    assert recorded["https://news.ycombinator.com/item?id=1"]["why_now"] == "the thread is live"
 
 
 def test_a_second_run_never_surfaces_the_same_conversation_twice(monkeypatch, tmp_path, capsys):
