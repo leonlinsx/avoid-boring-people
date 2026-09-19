@@ -7,7 +7,9 @@ Scout's decision and read by nothing. Jev has no production authority here: it
 cannot add, drop, reorder, or redraft a candidate, and a run in which every Jev
 call fails reports the same candidates, writes the same state, and exits with the
 same code as a run in which Jev is switched off. The shadow's own `🔬`/`⚠️` lines
-are the only difference in output.
+are the only difference in output. It is also called last, after the report and
+the state save, so a Jev call that hangs or times out cannot keep Scout's own
+work from being finished and durable before the experiment is paid for.
 
 The question it is meant to answer is not "is Jev cheaper?" but whether cheap
 structured judgment could one day let Scout look at a far larger universe of
@@ -33,7 +35,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
-from scripts.scout.errors import MAX_NOTE_CHARS, note
+from scripts.scout.errors import note
 from scripts.scout.filtering import VERDICT_STRONG, Judgment
 
 FLAG_ENV = "SCOUT_JEV_SHADOW"
@@ -48,6 +50,12 @@ SHADOW_FILE = Path("scout-shadow.jsonl")
 # a failed judgment into the run's budget.
 JEV_TIMEOUT_SECONDS = 30
 JEV_MAX_RETRIES = 0
+
+# The whole pass stops itself here rather than trusting the client's timeout to
+# bound it: an HTTP timeout counts per phase, not per call, so the only bound
+# this experiment can promise the scheduled job is its own clock. Four minutes is
+# many times the seconds a handful of System One calls actually take.
+SHADOW_BUDGET_SECONDS = 240
 
 # Why the shadow is not running. `NOT_ENABLED` is the ordinary, silent case;
 # the others are printed, because an experiment that was asked for and silently
@@ -311,7 +319,7 @@ def _usage(response: Any) -> Optional[Dict[str, Optional[int]]]:
     }
 
 
-def _redacted_note(error: Exception) -> str:
+def redacted_note(error: Exception) -> str:
     """`errors.note`, with the API key removed first.
 
     A provider's error text is untrusted: it may quote the credential it rejected,
@@ -320,19 +328,20 @@ def _redacted_note(error: Exception) -> str:
     still a credential — the tail goes with it. A fragment shorter than nine
     characters is left alone, because replacing it could not be distinguished from
     rewriting the message.
+
+    The tail is checked whether or not the whole key was found: a clipped message
+    long enough to contain the key once can end with the first characters of a
+    second, and finding the first replaced them without ever looking at the end.
     """
     key = os.getenv(KEY_ENV, "").strip()
     message = note(error)
     if not key:
         return message
     scrubbed = message.replace(key, "[redacted]")
-    if scrubbed != message:
-        return scrubbed
-    if len(message) == MAX_NOTE_CHARS:
-        for length in range(len(key) - 1, 8, -1):
-            if message.endswith(key[:length]):
-                return f"{message[:-length]}[redacted]"
-    return message
+    for length in range(len(key) - 1, 8, -1):
+        if scrubbed.endswith(key[:length]):
+            return f"{scrubbed[:-length]}[redacted]"
+    return scrubbed
 
 
 def _without_key(value: Any) -> Any:
@@ -388,7 +397,7 @@ def evaluate(judgment: Judgment, *, now: Optional[datetime] = None) -> Dict[str,
         record["jev"] = {"model": str(getattr(response, "model", "") or "unknown"), **dimensions}
         record["usage"] = _usage(response)
     except Exception as error:  # noqa: BLE001 - a shadow failure is data, not an interruption
-        record["error"] = _redacted_note(error)
+        record["error"] = redacted_note(error)
     record["latency_ms"] = int((time.monotonic() - started) * 1000)
     return _without_key(record)
 

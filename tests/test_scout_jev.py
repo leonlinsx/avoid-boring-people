@@ -410,7 +410,7 @@ def test_candidates_scout_never_judged_are_not_sent_to_jev(monkeypatch, tmp_path
 def test_a_dry_run_evaluates_and_prints_but_records_nothing(monkeypatch, tmp_path, capsys):
     _install_run(monkeypatch)
 
-    code, calls, _, shadow_path = _run_scout(
+    code, calls, state_path, shadow_path = _run_scout(
         monkeypatch, tmp_path / "dry", enabled=True, response=_response(), argv=("run", "--dry-run")
     )
 
@@ -419,6 +419,7 @@ def test_a_dry_run_evaluates_and_prints_but_records_nothing(monkeypatch, tmp_pat
     assert len(calls) == 1
     assert "🔬 scout_jev_shadow" in output
     assert not shadow_path.exists()
+    assert not state_path.exists()
 
 
 # --- failures are data, never interruptions ---------------------------------
@@ -492,6 +493,148 @@ def test_a_write_failure_is_reported_and_never_raised(tmp_path, capsys):
     assert jev.append_record({"candidate_id": "x"}, path=tmp_path / "missing" / "shadow.jsonl") is False
 
     assert "scout_jev_shadow_write_failure" in capsys.readouterr().out
+
+
+# --- the shadow runs last, so it cannot cost the run its own result ---------
+
+
+def test_scout_state_is_already_saved_by_the_time_jev_is_called(monkeypatch, tmp_path, capsys):
+    """The regression this ordering exists for: Jev is paid for only afterwards."""
+    _install_run(monkeypatch)
+    state_path, _ = _use_paths(monkeypatch, tmp_path / "ordered")
+    monkeypatch.setenv(jev.FLAG_ENV, "1")
+    monkeypatch.setenv(jev.KEY_ENV, API_KEY)
+    monkeypatch.setattr(jev, "_sdk_available", lambda: True)
+    seen = []
+
+    class _NeverAnswers:
+        """A Jev client whose request never comes back, as a timeout is seen here."""
+
+        def __enter__(self):
+            seen.append(_without_timestamps(state_path).get("opportunities"))
+            raise TypeSafeAPITimeoutError("the evaluation timed out")
+
+        def __exit__(self, *exception):
+            return False
+
+    monkeypatch.setattr(jev, "_client", _NeverAnswers)
+
+    code = cli.main(["run"])
+
+    output = capsys.readouterr().out
+    assert code == 0
+    assert "scout_jev_shadow_failure" in output
+    # At the moment Jev was called, Scout's own record was already on disk, so a
+    # shadow that never returns cannot take it away.
+    assert seen and seen[0], "scout-state.json was not written before the Jev call"
+    assert _without_timestamps(state_path)["opportunities"]
+
+
+def test_an_uncontained_shadow_failure_still_leaves_the_state_and_the_code(monkeypatch, tmp_path, capsys):
+    """A bug Jev's own guard did not anticipate costs a log line, nothing else."""
+    _install_run(monkeypatch)
+    state_path, shadow_path = _use_paths(monkeypatch, tmp_path / "explode")
+    monkeypatch.setenv(jev.FLAG_ENV, "1")
+    monkeypatch.setenv(jev.KEY_ENV, API_KEY)
+    monkeypatch.setattr(jev, "_sdk_available", lambda: True)
+
+    def explode(judgment, *, now=None):
+        raise RuntimeError(f"the shadow fell over holding {API_KEY}")
+
+    monkeypatch.setattr(jev, "evaluate", explode)
+
+    code = cli.main(["run"])
+
+    output = capsys.readouterr().out
+    assert code == 0
+    assert "scout_jev_shadow_failure" in output
+    assert API_KEY not in output
+    assert not shadow_path.exists()
+    assert _without_timestamps(state_path)["opportunities"]
+
+
+def test_the_pass_stops_itself_at_its_budget_rather_than_spending_the_run(monkeypatch, tmp_path, capsys):
+    """The bound is Scout's own clock: an HTTP timeout counts per phase, not per call."""
+    urls = (
+        "https://news.ycombinator.com/item?id=1",
+        "https://news.ycombinator.com/item?id=2",
+        "https://news.ycombinator.com/item?id=3",
+    )
+    _install_run(monkeypatch, urls=urls)
+    state_path, shadow_path = _use_paths(monkeypatch, tmp_path / "budget")
+    calls = _install_jev(monkeypatch, response=_response())
+    monkeypatch.setenv(jev.FLAG_ENV, "1")
+    monkeypatch.setenv(jev.KEY_ENV, API_KEY)
+    monkeypatch.setattr(jev, "SHADOW_BUDGET_SECONDS", 10)
+
+    class _SlowClock:
+        """A clock that spends the whole budget between two evaluations."""
+
+        def __init__(self) -> None:
+            self.now = 0.0
+
+        def monotonic(self) -> float:
+            self.now += 6.0
+            return self.now
+
+    monkeypatch.setattr(cli, "time", _SlowClock())
+
+    code = cli.main(["run"])
+
+    output = capsys.readouterr().out
+    assert code == 0
+    assert "scout_jev_shadow_budget_exhausted after 1 of 3 evaluation(s)" in output
+    # The candidates it never reached were not called, and the run's own work is
+    # untouched: this is a shorter experiment, not a shorter run.
+    assert len(calls) == 1
+    assert len(_shadow_lines(shadow_path)) == 1
+    assert _without_timestamps(state_path)["opportunities"]
+
+
+def test_the_step_summary_says_what_the_experiment_did_without_the_key(monkeypatch, tmp_path, capsys):
+    """Collection that silently stopped has to be visible where the report is read."""
+    summary_file = tmp_path / "summary.md"
+    _install_run(monkeypatch)
+    _use_paths(monkeypatch, tmp_path / "summary")
+    _install_jev(monkeypatch, response=_response())
+    monkeypatch.setenv(jev.FLAG_ENV, "1")
+    monkeypatch.setenv(jev.KEY_ENV, API_KEY)
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary_file))
+
+    code = cli.main(["run"])
+
+    written = summary_file.read_text(encoding="utf-8")
+    assert code == 0
+    assert "🔬 Jev shadow: 1 evaluated, 0 failed, 0 not attempted" in written
+    assert API_KEY not in written
+    assert API_KEY not in capsys.readouterr().out
+
+
+def test_a_clipped_message_cannot_leave_a_piece_of_the_key_behind(monkeypatch):
+    """`note` clips before the key is known, so a message can end mid-credential."""
+    monkeypatch.setenv(jev.KEY_ENV, API_KEY)
+    # Exactly `MAX_NOTE_CHARS` once `note` prefixes the class name, with the key
+    # intact near the front and its first twelve characters at the cut: finding
+    # the first of those must not end the search for the second.
+    filler = 200 - len("TypeSafeAPIError: ") - len(API_KEY) - len(" rejected ") - 12
+    body = f"{API_KEY} rejected {'y' * filler}{API_KEY[:12]}"
+    clipped = f"TypeSafeAPIError: {body}"
+    assert len(clipped) == 200
+
+    scrubbed = jev.redacted_note(TypeSafeAPIError(body))
+
+    assert API_KEY not in scrubbed
+    assert API_KEY[:12] not in scrubbed
+    assert scrubbed.endswith("y[redacted]")
+
+
+def test_a_short_fragment_of_the_key_is_not_rewritten_away(monkeypatch):
+    """Below nine characters the fragment is left alone rather than mangled text."""
+    monkeypatch.setenv(jev.KEY_ENV, API_KEY)
+
+    scrubbed = jev.redacted_note(TypeSafeAPIError(f"a request that ended with {API_KEY[:6]}"))
+
+    assert f"ended with {API_KEY[:6]}" in scrubbed
 
 
 # --- Jev cannot change what Scout does --------------------------------------

@@ -7,7 +7,9 @@ except that it writes nothing, which is how a change to any stage is inspected
 before it can influence what gets surfaced. `--no-llm` stops after the
 deterministic gates, for checking what the sources returned without spending a
 model call. `jev` reads back the optional shadow-evaluation experiment, if it was
-switched on.
+switched on. That experiment is the one thing that runs after a run has already
+finished — reported and (unless this is a dry run) saved — so nothing it does can
+change what Scout decided or whether the run's own state survived it.
 """
 from __future__ import annotations
 
@@ -15,6 +17,7 @@ import argparse
 from datetime import datetime, timezone
 import os
 import sys
+import time
 from typing import Optional, Sequence
 
 from scripts.scout import discovery, filtering, jev, matching, report, state
@@ -38,7 +41,7 @@ def _split_queries(raw: Optional[str]) -> Optional[Sequence[str]]:
     return [query.strip() for query in raw.split(",") if query.strip()]
 
 
-def _shadow_pass(judged_rows: Sequence[filtering.Judgment], *, now: datetime, dry_run: bool) -> None:
+def _shadow_pass(judged_rows: Sequence[filtering.Judgment], *, now: datetime, dry_run: bool) -> Optional[str]:
     """Run the optional Jev shadow evaluation over what Scout just judged.
 
     The rows are `ScreenResult.judged` — exactly what a model call produced. A
@@ -52,17 +55,45 @@ def _shadow_pass(judged_rows: Sequence[filtering.Judgment], *, now: datetime, dr
     a run in which every evaluation fails is identical to a run with the
     experiment switched off. `--dry-run` evaluates and prints but records
     nothing, as it does everywhere else.
+
+    Called last, once the report is out and `scout-state.json` is already
+    written, so a Jev call that hangs, times out, or fails outright cannot stand
+    between a run and its own durable result. The `try` is the outer half of that
+    promise: `jev.evaluate` turns the failures it can see into records, and this
+    catches the ones nothing anticipated, because an experiment may cost its own
+    line in the log but never the run's exit code or its state. The budget is the
+    other half: the pass stops itself rather than spending the job's remaining
+    wall clock, which is what could still keep the state commit from running.
+
+    Returns the one line the run adds to its step summary when the experiment was
+    asked for, or `None` when it is switched off — an experiment that collects
+    nothing has to be visible where the report is read, not only in the log.
     """
-    blocker = jev.blocker()
-    if blocker is not None:
-        if blocker != jev.NOT_ENABLED:
+    try:
+        blocker = jev.blocker()
+        if blocker is not None:
+            if blocker == jev.NOT_ENABLED:
+                return None
             print(f"⚠️  scout_jev_shadow_unavailable ({blocker})")
-        return
-    for judgment in judged_rows:
-        record = jev.evaluate(judgment, now=now)
-        jev.print_record(record)
-        if not dry_run:
-            jev.append_record(record)
+            return f"⚠️  Jev shadow not run ({blocker})"
+        evaluated = failed = skipped = 0
+        started = time.monotonic()
+        for judgment in judged_rows:
+            if time.monotonic() - started >= jev.SHADOW_BUDGET_SECONDS:
+                skipped = len(judged_rows) - evaluated
+                print(f"⚠️  scout_jev_shadow_budget_exhausted after {evaluated} of {len(judged_rows)} evaluation(s)")
+                break
+            record = jev.evaluate(judgment, now=now)
+            evaluated += 1
+            failed += 1 if record.get("error") else 0
+            jev.print_record(record)
+            if not dry_run:
+                jev.append_record(record)
+    except Exception as error:  # noqa: BLE001 - an experiment may never fail the run
+        problem = jev.redacted_note(error)
+        print(f"⚠️  scout_jev_shadow_failure {problem}")
+        return f"⚠️  Jev shadow failed ({problem})"
+    return f"🔬 Jev shadow: {evaluated} evaluated, {failed} failed, {skipped} not attempted"
 
 
 def run_command(args: argparse.Namespace) -> int:
@@ -113,10 +144,6 @@ def run_command(args: argparse.Namespace) -> int:
         use_llm=use_llm,
     )
 
-    # Observational only, and off unless explicitly switched on: the shadow sees
-    # the judgments and changes nothing about them.
-    _shadow_pass(screened.judged, now=now, dry_run=args.dry_run)
-
     summary = report.build_summary(
         discovered,
         screened,
@@ -130,28 +157,34 @@ def run_command(args: argparse.Namespace) -> int:
 
     if args.dry_run:
         print("\nDry run: nothing recorded and scout-state.json left untouched.")
-        return 0
+    else:
+        surfaced = 0
+        for judgment in screened.judgments:
+            if judgment.verdict != filtering.VERDICT_STRONG or surfaced >= args.max_opportunities:
+                continue
+            if state.record_surfaced(
+                state_data,
+                url=judgment.match.candidate.external_url,
+                source=judgment.match.candidate.source,
+                content_id=judgment.match.item.content_id,
+                draft=judgment.draft,
+                thread_title=judgment.match.candidate.title,
+                content_title=judgment.match.item.title,
+                content_url=judgment.match.item.url,
+                why_now=judgment.why_now,
+                now=now,
+            ):
+                surfaced += 1
+        expired = state.expire_stale(state_data, now=now)
+        state.save_state(state_data)
+        print(f"\nRecorded {surfaced} surfaced opportunity(ies); expired {expired} stale one(s).")
 
-    surfaced = 0
-    for judgment in screened.judgments:
-        if judgment.verdict != filtering.VERDICT_STRONG or surfaced >= args.max_opportunities:
-            continue
-        if state.record_surfaced(
-            state_data,
-            url=judgment.match.candidate.external_url,
-            source=judgment.match.candidate.source,
-            content_id=judgment.match.item.content_id,
-            draft=judgment.draft,
-            thread_title=judgment.match.candidate.title,
-            content_title=judgment.match.item.title,
-            content_url=judgment.match.item.url,
-            why_now=judgment.why_now,
-            now=now,
-        ):
-            surfaced += 1
-    expired = state.expire_stale(state_data, now=now)
-    state.save_state(state_data)
-    print(f"\nRecorded {surfaced} surfaced opportunity(ies); expired {expired} stale one(s).")
+    # The shadow runs after the run's own work is complete and durable: it only
+    # ever reads the judgments, and nothing it does can reach the report, the
+    # state file, or the exit code below.
+    shadow_note = _shadow_pass(screened.judged, now=now, dry_run=args.dry_run)
+    if shadow_note:
+        _print_step_summary(shadow_note)
     return 0
 
 
