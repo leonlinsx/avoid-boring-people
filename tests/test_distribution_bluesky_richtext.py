@@ -11,11 +11,18 @@ import types
 
 import pytest
 
-# Other distribution test modules stub `atproto` when it is missing from their
-# venv; this module needs the real SDK for facet/embed models, and the stub
-# (if already installed by collection order) would shadow it.
-sys.modules.pop("atproto", None)
-atproto = pytest.importorskip("atproto")
+# conftest.py stubs `atproto` when the SDK is missing from the venv; this module
+# needs the real SDK for facet/embed models, and the stub (already installed by
+# conftest) would shadow it. Since that stub is installed only once, put it back
+# when the SDK is unavailable: the later-collected modules that import the
+# Bluesky adapter need it.
+_atproto_stub = sys.modules.pop("atproto", None)
+try:
+    atproto = pytest.importorskip("atproto")
+except BaseException:  # pytest's Skipped is not an Exception subclass
+    if _atproto_stub is not None:
+        sys.modules["atproto"] = _atproto_stub
+    raise
 
 from scripts.automation.publishers import bluesky as bluesky_module  # noqa: E402
 

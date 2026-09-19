@@ -32,7 +32,6 @@ jobs:
       - name: Install dependencies
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-          PUPPETEER_SKIP_DOWNLOAD: 'true'
         run: npm ci
       - name: Run TypeScript tests
         run: npm test
@@ -62,7 +61,6 @@ jobs:
       - name: Install carousel renderer dependencies
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-          PUPPETEER_SKIP_DOWNLOAD: 'true'
         run: npm ci --omit=dev
       - name: Run Python distribution tests
         run: python -m pytest tests -q
@@ -84,7 +82,6 @@ jobs:
       - name: Install dependencies
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-          PUPPETEER_SKIP_DOWNLOAD: 'true'
         run: npm ci
       - name: Build site
         run: npm run build
@@ -109,7 +106,6 @@ jobs:
       - name: Install dependencies
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-          PUPPETEER_SKIP_DOWNLOAD: 'true'
         run: npm ci
       # Covers formatting (Prettier), unused vars, and explicit `any` in
       # production code. `astro check` is intentionally not gated: it reports

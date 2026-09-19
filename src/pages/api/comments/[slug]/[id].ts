@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { tryCommentsDb } from '../../../../lib/comments/db.ts';
+import { tryNeonDb } from '../../../../lib/neon.ts';
 import {
   handleDeleteComment,
   handleUpdateComment,
@@ -11,12 +11,12 @@ export const PATCH: APIRoute = ({ request, params }) =>
   handleUpdateComment(
     request,
     { slug: params.slug ?? '', id: params.id ?? '' },
-    { db: tryCommentsDb() },
+    { db: tryNeonDb() },
   );
 
 export const DELETE: APIRoute = ({ request, params }) =>
   handleDeleteComment(
     request,
     { slug: params.slug ?? '', id: params.id ?? '' },
-    { db: tryCommentsDb() },
+    { db: tryNeonDb() },
   );

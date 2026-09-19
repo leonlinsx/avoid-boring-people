@@ -108,23 +108,4 @@ export default [
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
-
-  // API routes (Node.js + Web APIs like Response, URLSearchParams)
-  {
-    files: ['src/pages/api/**/*.{js,ts}'],
-    languageOptions: {
-      parser: tsParser,
-      globals: {
-        ...globals.node, // ✅ Node globals
-        ...globals.browser, // ✅ fetch, Response, URLSearchParams
-      },
-    },
-    plugins: {
-      '@typescript-eslint': tseslint,
-      prettier: prettierPlugin,
-    },
-    rules: {
-      'prettier/prettier': 'error',
-    },
-  },
 ];

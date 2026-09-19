@@ -8,7 +8,7 @@ import {
   markContactLinCheckSynced,
   markContactNotified,
 } from '../src/lib/contact/store.ts';
-import type { ContactDb } from '../src/lib/contact/db.ts';
+import type { NeonDb } from '../src/lib/neon.ts';
 
 const socket = process.env.CONTACT_TEST_PG_SOCKET;
 assert.match(socket ?? '', /^\/tmp\/contact-pg-[A-Za-z0-9]+$/);
@@ -67,7 +67,7 @@ const db = (async (parts: TemplateStringsArray, ...values: unknown[]) => {
     `WITH result AS (${statement}) SELECT coalesce(json_agg(row_to_json(result)), '[]'::json)::text FROM result`,
   );
   return JSON.parse(json || '[]') as unknown[];
-}) as unknown as ContactDb;
+}) as unknown as NeonDb;
 
 const NOTE = {
   name: 'Ada Lovelace',

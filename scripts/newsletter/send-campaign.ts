@@ -12,7 +12,7 @@ import {
   NEWSLETTER_PRIVACY_URL,
   NEWSLETTER_REPLY_TO,
 } from '../../src/lib/newsletter/email.ts';
-import { newsletterDb } from '../../src/lib/newsletter/db.ts';
+import { neonDb } from '../../src/lib/neon.ts';
 import { hashToken } from '../../src/lib/newsletter/tokens.ts';
 import { reconcileSesMessage } from '../../src/lib/newsletter/events.ts';
 import {
@@ -36,7 +36,7 @@ if (!campaignId || !process.argv.includes('--confirm-production')) {
 }
 const expected = parseExpectedRecipients(option('--expect-recipients'));
 const config = productionSendConfig(process.env);
-const db = newsletterDb();
+const db = neonDb('Newsletter');
 const campaigns = await db`
   SELECT id, article_slug, subject, status,
     (SELECT count(*)::int FROM campaign_recipients WHERE campaign_id = campaigns.id) AS recipient_count,

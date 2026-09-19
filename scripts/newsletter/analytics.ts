@@ -1,4 +1,4 @@
-import { newsletterDb } from '../../src/lib/newsletter/db.ts';
+import { neonDb } from '../../src/lib/neon.ts';
 import type { NewsletterMetrics } from '../../src/lib/newsletter/analytics.ts';
 import {
   collectNewsletterMetrics,
@@ -28,7 +28,7 @@ const days = validateReportWindow(
 const check = process.argv.includes('--check');
 let metrics: NewsletterMetrics | undefined;
 try {
-  metrics = await collectNewsletterMetrics(newsletterDb(), { days });
+  metrics = await collectNewsletterMetrics(neonDb('Newsletter'), { days });
 } catch (error) {
   // The report is read-only, so a failure here means the job did not run. In CI
   // the failure is reported and the run ends non-zero without the driver's

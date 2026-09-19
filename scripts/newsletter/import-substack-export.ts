@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { newsletterDb } from '../../src/lib/newsletter/db.ts';
+import { neonDb } from '../../src/lib/neon.ts';
 import {
   importTimestamp,
   planSubstackImport,
@@ -52,7 +52,7 @@ if (
   );
 }
 
-const db = newsletterDb();
+const db = neonDb('Newsletter');
 const batches = Array.from(
   { length: Math.ceil(plan.subscribers.length / 100) },
   (_, index) => plan.subscribers.slice(index * 100, (index + 1) * 100),
