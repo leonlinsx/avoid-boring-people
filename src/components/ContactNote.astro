@@ -1,0 +1,410 @@
+---
+import {
+  CONTACT_EMAIL,
+  MAX_CONTACT_EMAIL_LENGTH,
+  MAX_CONTACT_MESSAGE_LENGTH,
+  MAX_CONTACT_NAME_LENGTH,
+} from '../lib/contact/domain.ts';
+import { turnstileSiteKey, warnIfSiteKeyMissing } from '../lib/turnstile.ts';
+
+type Props = {
+  /** The form starts open on the dedicated contact page. */
+  expanded?: boolean;
+};
+
+const { expanded = false } = Astro.props;
+
+// No site key means no verification can happen, so no form is rendered at all:
+// the invitation stays, the address stays clickable, and the build log says why.
+const siteKey = turnstileSiteKey(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
+warnIfSiteKeyMissing(
+  siteKey,
+  '[contact] PUBLIC_TURNSTILE_SITE_KEY is not set: the note form is omitted and only the email address is offered.',
+);
+
+const emailHref = `mailto:${CONTACT_EMAIL}`;
+const formId = 'contact-note-form';
+const toggleId = `${formId}-toggle`;
+---
+
+<div class="contact-note">
+  <p class="contact-invite">
+    Email me at <a href={emailHref}>{CONTACT_EMAIL}</a>
+    {
+      siteKey && (
+        <>
+          <span class="contact-separator" aria-hidden="true">
+            ·
+          </span>
+          <button
+            type="button"
+            class="contact-toggle"
+            id={toggleId}
+            aria-expanded={expanded ? 'true' : 'false'}
+            aria-controls={formId}
+          >
+            Send a note
+          </button>
+        </>
+      )
+    }
+  </p>
+
+  {
+    siteKey && (
+      <form
+        class="contact-form"
+        id={formId}
+        method="post"
+        hidden={!expanded}
+        aria-labelledby={toggleId}
+      >
+        <div class="contact-field">
+          <label for={`${formId}-name`}>Name</label>
+          <input
+            id={`${formId}-name`}
+            name="name"
+            type="text"
+            autocomplete="name"
+            maxlength={MAX_CONTACT_NAME_LENGTH}
+            required
+          />
+        </div>
+
+        <div class="contact-field">
+          <label for={`${formId}-email`}>Email</label>
+          <input
+            id={`${formId}-email`}
+            name="email"
+            type="email"
+            autocomplete="email"
+            maxlength={MAX_CONTACT_EMAIL_LENGTH}
+            required
+          />
+        </div>
+
+        <div class="contact-field">
+          <label for={`${formId}-message`}>Message</label>
+          <textarea
+            id={`${formId}-message`}
+            name="message"
+            rows={6}
+            maxlength={MAX_CONTACT_MESSAGE_LENGTH}
+            placeholder="What you're working on, or what you'd like to talk about"
+            required
+          />
+        </div>
+
+        <div class="contact-honeypot" aria-hidden="true">
+          <label for={`${formId}-note-origin`}>Note origin</label>
+          <input
+            id={`${formId}-note-origin`}
+            name="note_origin"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div
+          class="contact-turnstile"
+          data-contact-turnstile
+          data-sitekey={siteKey}
+        />
+
+        <div class="contact-actions">
+          <button type="submit">Send</button>
+        </div>
+
+        <p class="contact-status" role="status" aria-live="polite" />
+      </form>
+    )
+  }
+</div>
+
+<script>
+  import {
+    CONTACT_SUCCESS_MESSAGE,
+    contactErrors,
+  } from '../lib/contact/domain.ts';
+  import {
+    loadTurnstileScript,
+    pageTheme,
+    turnstileApi,
+    type TurnstileWidgetId,
+  } from '../lib/turnstile-client.ts';
+
+  const ENDPOINT = '/api/contact';
+  // A bounded request means the button cannot sit in a loading state forever if
+  // the endpoint never answers.
+  const REQUEST_TIMEOUT_MS = 15_000;
+
+  type ContactField = 'name' | 'email' | 'message';
+
+  const form = document.getElementById('contact-note-form');
+  const toggle = document.getElementById('contact-note-form-toggle');
+
+  if (form instanceof HTMLFormElement && toggle instanceof HTMLButtonElement) {
+    const status = form.querySelector<HTMLParagraphElement>('.contact-status');
+    const submit = form.querySelector<HTMLButtonElement>(
+      'button[type="submit"]',
+    );
+    const widgetContainer = form.querySelector<HTMLElement>(
+      '[data-contact-turnstile]',
+    );
+    const fields: Record<
+      ContactField | 'note_origin',
+      HTMLInputElement | HTMLTextAreaElement
+    > = {
+      name: form.elements.namedItem('name') as HTMLInputElement,
+      email: form.elements.namedItem('email') as HTMLInputElement,
+      message: form.elements.namedItem('message') as HTMLTextAreaElement,
+      note_origin: form.elements.namedItem('note_origin') as HTMLInputElement,
+    };
+
+    const siteKey = widgetContainer?.dataset.sitekey ?? '';
+    let widgetId: TurnstileWidgetId | null = null;
+    let token: string | null = null;
+    let submitting = false;
+
+    const setStatus = (message: string, failed: boolean): void => {
+      if (!status) return;
+      status.textContent = message;
+      status.classList.toggle('contact-error', failed);
+      status.classList.toggle('contact-success', !failed && message !== '');
+    };
+
+    const renderWidget = (): void => {
+      // Rendered explicitly so the theme follows the page and so a token can be
+      // reset after every attempt: Turnstile tokens are single-use.
+      const api = turnstileApi();
+      if (!widgetContainer || !api || widgetId) return;
+      widgetId = api.render(widgetContainer, {
+        sitekey: siteKey,
+        size: 'flexible',
+        theme: pageTheme(),
+        callback: (value) => {
+          token = value;
+        },
+        'expired-callback': () => {
+          token = null;
+        },
+        'error-callback': () => {
+          token = null;
+        },
+      });
+    };
+
+    const expand = (next: boolean): void => {
+      form.hidden = !next;
+      toggle.setAttribute('aria-expanded', String(next));
+      if (!next) {
+        // Focus cannot stay inside a form that is no longer rendered.
+        toggle.focus();
+        return;
+      }
+      // The widget script is only fetched once someone asks for the form, so a
+      // reader who only wants the address downloads nothing extra.
+      loadTurnstileScript(renderWidget);
+      fields.name.focus();
+    };
+
+    toggle.addEventListener('click', () => expand(form.hidden));
+    if (!form.hidden) loadTurnstileScript(renderWidget);
+
+    const resetVerification = (): void => {
+      token = null;
+      const api = turnstileApi();
+      if (widgetId && api) api.reset(widgetId);
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      // One note per click: a second submit while the first is in flight would
+      // be the same note twice.
+      if (submitting) return;
+      setStatus('', false);
+
+      if (!token) {
+        // An expired or failed widget clears its token without saying so, so the
+        // check is reset: waiting for a token that is never coming again is the
+        // one state this branch must not leave the reader in.
+        resetVerification();
+        setStatus(contactErrors.verification_required.message, true);
+        return;
+      }
+
+      submitting = true;
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+      }
+
+      const send = async (): Promise<void> => {
+        try {
+          const response = await fetch(ENDPOINT, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              name: fields.name.value,
+              email: fields.email.value,
+              message: fields.message.value,
+              note_origin: fields.note_origin.value,
+              turnstileToken: token,
+            }),
+            signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+          });
+          const payload = (await response.json().catch(() => null)) as {
+            message?: unknown;
+            field?: unknown;
+          } | null;
+          // An unreadable body is still an answer: what it means is decided by
+          // the status, never by the fallback copy alone.
+          const message =
+            typeof payload?.message === 'string'
+              ? payload.message
+              : response.ok
+                ? CONTACT_SUCCESS_MESSAGE
+                : contactErrors.unavailable.message;
+
+          if (response.ok) {
+            form.reset();
+            setStatus(message, false);
+            return;
+          }
+
+          setStatus(message, true);
+          const field = payload?.field;
+          if (field === 'name' || field === 'email' || field === 'message')
+            fields[field].focus();
+        } catch {
+          // A request that never came back is not a request that failed: the
+          // note may already be stored, so the reader is told to keep what they
+          // wrote and not to send it a second time.
+          setStatus(contactErrors.send_unconfirmed.message, true);
+        } finally {
+          submitting = false;
+          if (submit) {
+            submit.disabled = false;
+            submit.textContent = 'Send';
+          }
+          resetVerification();
+        }
+      };
+
+      void send();
+    });
+  }
+</script>
+
+<style>
+  .contact-invite {
+    margin: 0;
+  }
+  .contact-separator {
+    padding: 0 0.35rem;
+    color: var(--color-text-muted);
+  }
+  .contact-toggle {
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--color-link);
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .contact-toggle:hover {
+    color: var(--color-link-hover);
+  }
+  .contact-toggle:focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    max-width: 34rem;
+  }
+  /* The form is revealed by script, so `hidden` has to beat `display: flex`. */
+  .contact-form[hidden] {
+    display: none;
+  }
+  .contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .contact-field label {
+    font-weight: 600;
+    font-size: var(--text-base-sm);
+  }
+  .contact-field input,
+  .contact-field textarea {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-base);
+  }
+  .contact-field input:focus-visible,
+  .contact-field textarea:focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 1px;
+  }
+  .contact-field textarea {
+    resize: vertical;
+  }
+
+  /* Honeypot: present for form-filling bots, invisible and unreachable for people. */
+  .contact-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    overflow: hidden;
+  }
+
+  .contact-turnstile {
+    min-height: 65px;
+  }
+
+  .contact-actions button[type='submit'] {
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--color-link);
+    color: #fff;
+    font-weight: 600;
+    font-size: var(--text-base);
+    cursor: pointer;
+  }
+  .contact-actions button[type='submit']:hover:not(:disabled) {
+    background: var(--color-link-hover);
+  }
+  .contact-actions button[type='submit']:disabled {
+    opacity: 0.7;
+    cursor: progress;
+  }
+
+  .contact-status {
+    margin: 0;
+    min-height: 1.25rem;
+    font-size: var(--text-base-sm);
+  }
+  .contact-error {
+    color: var(--color-error);
+    font-weight: 500;
+  }
+  .contact-success {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+</style>

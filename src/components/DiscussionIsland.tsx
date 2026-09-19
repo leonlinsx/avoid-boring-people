@@ -10,9 +10,12 @@ import {
   groupCommentThreads,
   isEdited,
 } from '../lib/comments/display.ts';
-
-const TURNSTILE_SCRIPT_URL =
-  'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+import {
+  loadTurnstileScript,
+  pageTheme,
+  turnstileApi,
+  type TurnstileWidgetId,
+} from '../lib/turnstile-client.ts';
 
 const EMPTY_STATE = 'No comments yet. Add the first one.';
 const UNAVAILABLE = commentErrorMessages.unavailable;
@@ -27,8 +30,6 @@ const INVITATION =
 // permanent loading state when the API never answers.
 const REQUEST_TIMEOUT_MS = 15_000;
 
-type TurnstileWidgetId = string;
-
 // The site's existing GA property accepts lightweight interaction events, so the
 // discussion reports the three events the design calls for and nothing else: no
 // comment analytics subsystem and no per-commenter identifiers.
@@ -36,28 +37,6 @@ function trackInteraction(event: string): void {
   const gtag = (window as { gtag?: (...args: unknown[]) => void }).gtag;
   if (typeof gtag !== 'function') return;
   gtag('event', event, { event_category: 'engagement' });
-}
-
-type TurnstileApi = {
-  render: (
-    container: HTMLElement,
-    options: {
-      sitekey: string;
-      size?: 'normal' | 'compact' | 'flexible';
-      theme?: 'light' | 'dark' | 'auto';
-      callback?: (token: string) => void;
-      'expired-callback'?: () => void;
-      'error-callback'?: () => void;
-    },
-  ) => TurnstileWidgetId;
-  reset: (widgetId?: TurnstileWidgetId) => void;
-  remove: (widgetId?: TurnstileWidgetId) => void;
-};
-
-declare global {
-  interface Window {
-    turnstile?: TurnstileApi;
-  }
 }
 
 type Props = {
@@ -131,9 +110,9 @@ export default function DiscussionIsland({
 
     const renderWidget = () => {
       const container = widgetContainer.current;
-      if (cancelled || !container || !window.turnstile || widgetId.current)
-        return;
-      widgetId.current = window.turnstile.render(container, {
+      const api = turnstileApi();
+      if (cancelled || !container || !api || widgetId.current) return;
+      widgetId.current = api.render(container, {
         sitekey: turnstileSiteKey,
         size: 'flexible',
         theme: pageTheme(),
@@ -149,27 +128,13 @@ export default function DiscussionIsland({
       });
     };
 
-    const existing = document.querySelector<HTMLScriptElement>(
-      'script[data-turnstile-explicit]',
-    );
-    if (window.turnstile) {
-      renderWidget();
-    } else if (existing) {
-      existing.addEventListener('load', renderWidget);
-    } else {
-      const script = document.createElement('script');
-      script.src = TURNSTILE_SCRIPT_URL;
-      script.async = true;
-      script.defer = true;
-      script.dataset.turnstileExplicit = 'true';
-      script.addEventListener('load', renderWidget);
-      document.head.appendChild(script);
-    }
+    loadTurnstileScript(renderWidget);
 
     return () => {
       cancelled = true;
-      if (widgetId.current && window.turnstile) {
-        window.turnstile.remove(widgetId.current);
+      const api = turnstileApi();
+      if (widgetId.current && api) {
+        api.remove(widgetId.current);
       }
       widgetId.current = null;
     };
@@ -180,8 +145,9 @@ export default function DiscussionIsland({
 
   const resetVerification = () => {
     verificationToken.current = null;
-    if (widgetId.current && window.turnstile) {
-      window.turnstile.reset(widgetId.current);
+    const api = turnstileApi();
+    if (widgetId.current && api) {
+      api.reset(widgetId.current);
     }
   };
 
@@ -631,10 +597,4 @@ function CommentBody({
       )}
     </article>
   );
-}
-
-function pageTheme(): 'light' | 'dark' {
-  return document.documentElement.getAttribute('data-theme') === 'dark'
-    ? 'dark'
-    : 'light';
 }

@@ -108,6 +108,25 @@ import { SITE_TITLE } from '../consts';
       comment to be removed.
     </p>
 
+    <h2>Notes you send</h2>
+    <p>
+      A note sent from the contact form stores the name, email address, and
+      message you type, along with the page you sent it from and the time it
+      arrived, so the author can reply and not lose track of the conversation.
+      The note is also emailed to the author so it is not missed, which means
+      Amazon SES processes your email address for that notification. Sending a
+      note does not subscribe you to the newsletter. When the author's private
+      note log is enabled, the same fields are copied to it; it is the author's
+      own tool and not a third-party marketing service.
+    </p>
+    <p>
+      Cloudflare Turnstile is used to check that a note is sent by a person
+      rather than a script, and it processes the request needed for that check
+      under its own privacy policy. The site does not store IP addresses,
+      browser tokens, or advertising identifiers with notes, and notes are not
+      used for profiling or automated marketing.
+    </p>
+
     <h2>Analytics and third-party content</h2>
     <p>
       The site may use a privacy-conscious Google Analytics configuration when

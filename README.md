@@ -3,11 +3,12 @@
 Leon Lin's personal website and publishing platform, published under the
 **Avoid Boring People** identity. An Astro 5 static site for essays, plus two
 owned-distribution systems — automated social posting and a self-hosted
-newsletter — and a first-party article discussion. This repository is public;
+newsletter — a first-party article discussion, and a small contact flow for
+inbound notes. This repository is public;
 secrets live only in ignored local files, GitHub Secrets, and Vercel environment
 variables — never in git.
 
-The repo holds five systems:
+The repo holds six systems:
 
 1. **Blog / site** — the Astro static site. Markdown/MDX articles under
    `src/content/blog` render at `/writing/[slug]`; `/writing` is the canonical
@@ -36,7 +37,12 @@ The repo holds five systems:
    local-only moderation CLI). It replaced Giscus, so no GitHub account is
    needed and no third party sees reader activity. Details:
    [docs/discussion.md](docs/discussion.md).
-5. **Lin Scout** — `scripts/scout/`, an internal discovery tool that finds the
+5. **Contact notes** — a three-field note form offered on `/about`, `/now`, and
+   `/contact` (no navigation entry). A note is stored in Neon, emailed to the
+   author through SES, and optionally handed off to Lin Check for human review;
+   it is never scored, never a relationship record, and never an automated
+   funnel. Details: [docs/contact.md](docs/contact.md).
+6. **Lin Scout** — `scripts/scout/`, an internal discovery tool that finds the
    few current external conversations (Hacker News, Bluesky) where an existing
    article would be a useful contribution, and drafts the reply. It runs daily
    in its own workflow, never publishes anything, and keeps its only state in
@@ -46,7 +52,7 @@ The repo holds five systems:
 
 ```text
 ├── src/content/blog/      # canonical articles (Markdown/MDX, one dir per post)
-├── src/pages/             # routes, incl. /api/newsletter/* and /api/comments/*
+├── src/pages/             # routes, incl. /api/newsletter/*, /api/comments/*, /api/contact
 ├── src/components/        # shared UI, incl. SubscribeForm.astro, Discussion.astro
 ├── scripts/automation/    # social distribution (summarizers, renderers, publishers)
 ├── scripts/newsletter/    # owned-newsletter CLIs (import, preview, campaign, send, analytics)
@@ -134,6 +140,9 @@ Vercel deploys never send email or social posts.
   returned publicly, and the author badge is set only by the operator CLI.
 - The discussion stores no IP addresses, no email addresses, and no raw browser
   tokens — only a SHA-256 hash of the token, which is never logged.
+- A note stays a note: the contact flow stores what someone wrote and emails it,
+  and it never creates a Person, scores a sender, subscribes an address, or
+  becomes a relationship record on its own.
 - Lin Scout reports and never publishes: it has no posting path, no database,
   and no coupling to the site build, and it never surfaces the same conversation
   twice (`scout-state.json` records every URL it has shown, in any status).
@@ -149,6 +158,7 @@ Vercel deploys never send email or social posts.
 | [docs/newsletter-sns-diagnostics.md](docs/newsletter-sns-diagnostics.md) | Phase 3 transport diagnostics record |
 | [docs/newsletter-analytics.md](docs/newsletter-analytics.md) | First-party attribution model, metric definitions, and the local report CLI |
 | [docs/discussion.md](docs/discussion.md) | First-party article discussion: data model, identity, abuse controls, API, moderation CLI |
+| [docs/contact.md](docs/contact.md) | Contact notes: submission flow, notification email, schema, Lin Check handoff contract |
 | [docs/scout.md](docs/scout.md) | Lin Scout: sources, matching and gates, judgment contract, state, scheduling |
 | [docs/github-action-evaluation.md](docs/github-action-evaluation.md) | Workflow coverage, quality signals, known gaps |
 | [docs/email_digest_evaluation.md](docs/email_digest_evaluation.md) | Summarizer/ranking assessment and opportunities |
