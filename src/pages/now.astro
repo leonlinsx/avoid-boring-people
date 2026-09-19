@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactNote from '../components/ContactNote.astro';
 import { SITE_TITLE } from '../consts';
 ---
 
@@ -51,9 +52,10 @@ import { SITE_TITLE } from '../consts';
   </section>
 
   <p>
-    If any of this overlaps with what you're working on, I'd be glad to
-    <a href="mailto:contact@leonlins.com">hear from you</a>.
+    If any of this overlaps with what you're working on, I'd be glad to hear
+    from you.
   </p>
+  <ContactNote />
 </BaseLayout>
 
 <style>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactNote from '../components/ContactNote.astro';
 import { SITE_TITLE } from '../consts';
 ---
 
@@ -104,11 +105,7 @@ import { SITE_TITLE } from '../consts';
   <!-- Contact -->
   <section id="contact" class="contact">
     <h2>Contact</h2>
-    <p>
-      The best way to reach me is <a href="mailto:contact@leonlins.com"
-        >contact@leonlins.com</a
-      >.
-    </p>
+    <ContactNote />
     <p>
       I'm especially interested in hearing from investors, founders, builders,
       and practitioners working on something unusually ambitious or interesting.

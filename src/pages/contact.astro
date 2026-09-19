@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactNote from '../components/ContactNote.astro';
+import { CONTACT_EMAIL } from '../lib/contact/domain.ts';
+import { SITE_TITLE } from '../consts';
+---
+
+<BaseLayout
+  title={`Contact | ${SITE_TITLE}`}
+  description={`Send Leon Lin a note at ${CONTACT_EMAIL}.`}
+  includePerson={true}
+>
+  <h1>Contact</h1>
+
+  <p>
+    I read everything that reaches me. A short note about what you're working
+    on, or what you'd like to talk about, is plenty.
+  </p>
+
+  <ContactNote expanded />
+</BaseLayout>

@@ -5,10 +5,7 @@ import {
   MAX_COMMENT_BODY_LENGTH,
   discussionPrompt,
 } from '../lib/comments/domain.ts';
-import {
-  turnstileSiteKey,
-  warnIfSiteKeyMissing,
-} from '../lib/comments/turnstile.ts';
+import { turnstileSiteKey, warnIfSiteKeyMissing } from '../lib/turnstile.ts';
 
 type Props = {
   slug: string;
@@ -23,7 +20,10 @@ const { slug, prompt } = Astro.props;
 // is fetched in the browser. The form itself is omitted when no public Turnstile
 // site key was configured at build time.
 const siteKey = turnstileSiteKey(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
-warnIfSiteKeyMissing(siteKey);
+warnIfSiteKeyMissing(
+  siteKey,
+  '[discussion] PUBLIC_TURNSTILE_SITE_KEY is not set: article pages will show the comment form as temporarily unavailable.',
+);
 const emailHref =
   'mailto:contact@leonlins.com?subject=' +
   encodeURIComponent('Comment on ' + slug);

@@ -22,7 +22,7 @@ import {
   hashCommentToken,
   readCommentToken,
 } from './tokens.ts';
-import { verifyTurnstile } from './turnstile.ts';
+import { verifyTurnstile } from '../turnstile.ts';
 import { isSameSiteRequest } from '../site-origin.ts';
 
 // A comment body is at most a few thousand characters, so a request larger than
