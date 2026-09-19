@@ -260,12 +260,23 @@ def _article_block(item: ContentItem) -> str:
 
 
 def build_judgment_prompt(match: Match, alternates: Sequence[ContentItem] = ()) -> str:
-    """The single prompt whose JSON reply decides one candidate."""
+    """The single prompt whose JSON reply decides one candidate.
+
+    The paired writing is Scout's own deterministic choice, so the model is only
+    asked for it when there are alternates to choose between, and even then only
+    as an override it may omit. An id it never has to restate is an id it cannot
+    get wrong.
+    """
     candidate = match.candidate
     alternate_block = ""
+    alternate_field = ""
     if alternates:
         lines = "\n".join(f"- {item.content_id}: {item.title}" for item in alternates)
         alternate_block = f"\n\nOTHER EXISTING WRITING WITH OVERLAPPING TERMS\n{lines}\n"
+        alternate_field = (
+            '\n  "matching_content_id": "<optional: the exact id of a different writing shown above, '
+            'only when it fits the conversation better than the paired one; omit this field to keep the paired writing>",'
+        )
 
     return f"""CANDIDATE CONVERSATION
 Source: {candidate.source} ({candidate.community})
@@ -284,8 +295,7 @@ Decide whether the paired writing adds something this conversation does not alre
 
 Reply with only this JSON object:
 {{
-  "verdict": "STRONG" | "MAYBE" | "REJECT",
-  "matching_content_id": "<id of the writing the reply draws on; must be an id shown above>",
+  "verdict": "STRONG" | "MAYBE" | "REJECT",{alternate_field}
   "reason": "<one sentence explaining the verdict>",
   "why_now": "<one sentence: why this conversation is live and worth joining now>",
   "why_fits": "<one sentence: what the writing contributes that the conversation lacks>",
@@ -344,16 +354,23 @@ def parse_judgment(
 
     The model may pair the response with a different existing article than the
     deterministic guess; that choice is honored, because the guess was only
-    candidate generation, but the article must be one that exists.
+    candidate generation, but the article must be one that exists. The id is the
+    only machine-owned value the reply may name, and it is optional: an absent or
+    empty id means the model kept the pairing it was shown, so the canonical id
+    comes from `match` rather than from the model's text. A non-empty id that
+    names no known article is still refused.
     """
     verdict = _clip(payload.get("verdict"), 20).upper()
     if verdict not in VERDICTS:
         raise SocialCopyError(f"❌ judgment returned verdict {verdict!r}, expected one of {', '.join(VERDICTS)}")
 
     chosen_id = _clip(payload.get("matching_content_id"), 200)
-    item = items_by_id.get(chosen_id)
-    if item is None:
-        raise SocialCopyError(f"❌ judgment named unknown content id {chosen_id!r}")
+    if chosen_id:
+        item = items_by_id.get(chosen_id)
+        if item is None:
+            raise SocialCopyError(f"❌ judgment named unknown content id {chosen_id!r}")
+    else:
+        item = match.item
     score, matched = score_item(terms(f"{match.candidate.title} {match.candidate.body}"), item)
     resolved = Match(candidate=match.candidate, item=item, score=score, matched_terms=matched)
 

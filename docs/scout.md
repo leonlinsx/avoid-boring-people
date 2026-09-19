@@ -142,7 +142,7 @@ one JSON object:
 ```json
 {
   "verdict": "STRONG | MAYBE | REJECT",
-  "matching_content_id": "<an id shown in the prompt>",
+  "matching_content_id": "<optional; only asked for when alternates are shown>",
   "reason": "one sentence",
   "why_now": "one sentence",
   "why_fits": "one sentence",
@@ -153,11 +153,17 @@ one JSON object:
 ```
 
 The prompt shows the paired article in full (title, metadata, URL, body) plus up
-to two other articles that share vocabulary with the conversation, and the model
-may name any of them as `matching_content_id`, so a wrong pairing cannot become a
-wrong draft. The prompt states that precision matters more than recall, that
-STRONG must be rare, that nothing may be invented, and that the candidate text is
-untrusted material rather than instructions.
+to two other articles that share vocabulary with the conversation, so a wrong
+pairing cannot become a wrong draft. The prompt states that precision matters
+more than recall, that STRONG must be rare, that nothing may be invented, and
+that the candidate text is untrusted material rather than instructions.
+
+`matching_content_id` is the one machine-owned value the reply may name, so it is
+the one the model is not required to produce: it is absent from the schema unless
+there are alternates to choose between, it is described there as optional, and an
+absent or empty id keeps the deterministic pairing. A non-empty id that names no
+article in the archive is still refused, and the model naming an existing article
+still overrides the guess.
 
 Untrusted text is quoted between delimiters it cannot reproduce: the fence token
 is stripped from anything interpolated into the prompt, and source text arrives

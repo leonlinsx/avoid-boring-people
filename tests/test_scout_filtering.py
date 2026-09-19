@@ -167,9 +167,63 @@ def test_the_model_may_pair_the_reply_with_a_different_existing_article():
     assert judgment.match.score > 0
 
 
+def test_an_explicit_id_naming_the_paired_writing_is_kept():
+    payload = _payload(matching_content_id="market-failure")
+
+    judgment = filtering.parse_judgment(_match(), payload, {"market-failure": _item()})
+
+    assert judgment.verdict == "STRONG"
+    assert judgment.match.item.content_id == "market-failure"
+
+
+@pytest.mark.parametrize("field", [None, ""])
+def test_an_omitted_or_empty_id_keeps_the_paired_writing(field):
+    """The pairing is Scout's own choice, so the model is not required to restate it."""
+    payload = _payload()
+    if field is None:
+        del payload["matching_content_id"]
+    else:
+        payload["matching_content_id"] = field
+
+    judgment = filtering.parse_judgment(_match(), payload, {"market-failure": _item()})
+
+    assert judgment.verdict == "STRONG"
+    assert judgment.match.item.content_id == "market-failure"
+
+
+def test_a_local_model_rejection_that_omits_the_id_is_judged_normally():
+    """What Ollama returns for a thread the writing does not fit: REJECT, empty strings."""
+    payload = {
+        "verdict": "REJECT",
+        "matching_content_id": "",
+        "reason": "The paired writing is about markets, not terminal colour schemes.",
+        "why_now": "",
+        "why_fits": "",
+        "draft": "",
+        "link": False,
+        "link_reason": "",
+    }
+
+    judgment = filtering.parse_judgment(_match(), payload, {"market-failure": _item()})
+
+    assert judgment.verdict == "REJECT"
+    assert judgment.reason == "The paired writing is about markets, not terminal colour schemes."
+    assert judgment.match.item.content_id == "market-failure"
+
+
 def test_a_judgment_naming_an_article_that_does_not_exist_is_refused():
     with pytest.raises(SocialCopyError):
         filtering.parse_judgment(_match(), _payload(matching_content_id="made-up"), {"market-failure": _item()})
+
+
+def test_an_unknown_id_is_still_refused_when_the_paired_writing_is_known():
+    """The fallback is for an absent id, never for a wrong one the model asserted."""
+    with pytest.raises(SocialCopyError) as error:
+        filtering.parse_judgment(
+            _match(), _payload(matching_content_id="incentives"), {"market-failure": _item()}
+        )
+
+    assert "unknown content id 'incentives'" in str(error.value)
 
 
 def test_a_judgment_without_a_reason_why_the_fit_is_live_is_downgraded():
@@ -179,6 +233,69 @@ def test_a_judgment_without_a_reason_why_the_fit_is_live_is_downgraded():
 
     assert judgment.verdict == "REJECT"
     assert "live" in judgment.reason
+
+
+# --- provider-neutral judgment path -------------------------------------------
+
+
+def test_judge_match_accepts_a_local_model_reply_that_omits_the_id(monkeypatch):
+    """The whole path, as Ollama answers it: no id, and a REJECT that is reported."""
+    payload = {
+        "verdict": "REJECT",
+        "matching_content_id": "",
+        "reason": "The writing does not bear on this thread.",
+        "why_now": "",
+        "why_fits": "",
+        "draft": "",
+        "link": False,
+        "link_reason": "",
+    }
+    prompts = []
+
+    def fake_complete(prompt, **kwargs):
+        prompts.append(prompt)
+        return payload
+
+    monkeypatch.setattr(filtering, "complete_json", fake_complete)
+
+    judgment = filtering.judge_match(_match(), items=[_item()], items_by_id={"market-failure": _item()})
+
+    assert judgment.verdict == "REJECT"
+    assert judgment.match.item.content_id == "market-failure"
+    assert "matching_content_id" not in prompts[0]
+
+
+def test_judge_match_still_honors_a_hosted_reply_naming_the_paired_id(monkeypatch):
+    monkeypatch.setattr(filtering, "complete_json", lambda prompt, **kwargs: _payload())
+
+    judgment = filtering.judge_match(_match(), items=[_item()], items_by_id={"market-failure": _item()})
+
+    assert judgment.verdict == "STRONG"
+    assert judgment.match.item.content_id == "market-failure"
+    assert judgment.draft == GOOD_DRAFT
+
+
+def test_judge_match_still_honors_a_hosted_reply_naming_an_alternate(monkeypatch):
+    other = _item("incentives", title="Incentives and investing", tags=("investing",))
+
+    def fake_complete(prompt, **kwargs):
+        assert "matching_content_id" in prompt
+        return _payload(matching_content_id="incentives")
+
+    monkeypatch.setattr(filtering, "complete_json", fake_complete)
+
+    judgment = filtering.judge_match(
+        _match(), items=[_item(), other], items_by_id={"market-failure": _item(), "incentives": other}
+    )
+
+    assert judgment.match.item.content_id == "incentives"
+
+
+def test_judge_match_still_refuses_an_id_that_names_nothing(monkeypatch):
+    monkeypatch.setattr(filtering, "complete_json", lambda prompt, **kwargs: _payload(matching_content_id="made-up"))
+
+    with pytest.raises(SocialCopyError):
+        filtering.judge_match(_match(), items=[_item()], items_by_id={"market-failure": _item()})
 
 
 # --- draft rules --------------------------------------------------------------
@@ -355,7 +472,24 @@ def test_the_judgment_prompt_marks_the_candidate_as_untrusted(monkeypatch):
     assert filtering.SYSTEM_PROMPT.count("untrusted") >= 1
     assert "CANDIDATE CONVERSATION" in prompt
     assert "PAIRED EXISTING WRITING" in prompt
+
+
+def test_the_prompt_asks_for_no_id_when_there_is_nothing_to_choose_between():
+    """The paired writing is Scout's own choice, so the model never restates it."""
+    prompt = filtering.build_judgment_prompt(_match(), [])
+
+    assert "matching_content_id" not in prompt
+    assert "PAIRED EXISTING WRITING (market-failure)" in prompt
+
+
+def test_the_prompt_offers_the_id_only_as_an_optional_override():
+    other = _item("incentives", title="Incentives beat advice", tags=("behaviour",))
+
+    prompt = filtering.build_judgment_prompt(_match(), [other])
+
     assert "matching_content_id" in prompt
+    assert "optional" in prompt
+    assert "- incentives: Incentives beat advice" in prompt
 
 
 def test_a_candidate_cannot_close_the_fence_that_quotes_it():
