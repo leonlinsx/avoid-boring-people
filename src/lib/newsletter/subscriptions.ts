@@ -1,5 +1,5 @@
 import { SendEmailCommand, SESv2Client } from '@aws-sdk/client-sesv2';
-import { newsletterDb } from './db.ts';
+import { neonDb } from '../neon.ts';
 import { normalizeEmail } from './domain.ts';
 import { createToken, hashToken } from './tokens.ts';
 import {
@@ -149,7 +149,7 @@ export async function requestSubscription(
     ip?: string;
     attribution?: AttributionInput | null;
   },
-  db = newsletterDb(),
+  db = neonDb('Newsletter'),
 ) {
   const email = normalizeEmail(input.email);
   if (!email || input.honeypot) return genericSubscriptionResponse;
@@ -204,7 +204,10 @@ export async function requestSubscription(
   return genericSubscriptionResponse;
 }
 
-export async function confirmSubscription(token: string, db = newsletterDb()) {
+export async function confirmSubscription(
+  token: string,
+  db = neonDb('Newsletter'),
+) {
   if (!token) return false;
   // A first confirmation and a resubscription both arrive here: a pending row
   // becomes active, and an unsubscribed row that asked for a fresh token becomes
@@ -218,7 +221,7 @@ export async function confirmSubscription(token: string, db = newsletterDb()) {
   return rows.length > 0;
 }
 
-export async function unsubscribe(token: string, db = newsletterDb()) {
+export async function unsubscribe(token: string, db = neonDb('Newsletter')) {
   if (!token) return false;
   // `now()` applies only to a row that is still live, so a cancellation after an
   // explicit resubscription records its own time while a repeated click on an

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { newsletterDb } from './db.ts';
+import { neonDb } from '../neon.ts';
 
 export const EMAIL_ATTEMPTS_PER_HOUR = 5;
 export const IP_ATTEMPTS_PER_HOUR = 20;
@@ -19,7 +19,7 @@ export async function takeRateLimit(
   scope: 'ip' | 'email',
   subject: string,
   limit: number,
-  db = newsletterDb(),
+  db = neonDb('Newsletter'),
 ): Promise<boolean> {
   const rows =
     await db`INSERT INTO newsletter_rate_limits (scope, subject, window_started_at, attempt_count)

@@ -1,4 +1,4 @@
-import type { CommentDb } from './db.ts';
+import type { NeonDb } from '../neon.ts';
 import {
   EDIT_WINDOW_INTERVAL,
   RATE_LIMIT_WINDOW_INTERVAL,
@@ -23,7 +23,7 @@ export type OwnCommentTarget = {
 };
 
 export async function listPublishedComments(
-  db: CommentDb,
+  db: NeonDb,
   slug: string,
   tokenHash: string | null,
 ): Promise<CommentRow[]> {
@@ -51,7 +51,7 @@ export async function listPublishedComments(
 // Counted across every article for one browser identity, so the limit cannot be
 // sidestepped by moving to another post. Hidden comments still count.
 export async function countRecentComments(
-  db: CommentDb,
+  db: NeonDb,
   tokenHash: string,
 ): Promise<number> {
   const rows = (await db`
@@ -69,7 +69,7 @@ export async function countRecentComments(
 // makes "reply to a reply" and cross-article replies impossible without a
 // separate lookup that could race with the insert.
 export async function createComment(
-  db: CommentDb,
+  db: NeonDb,
   input: CreateCommentInput,
 ): Promise<CommentRow | null> {
   const rows = (await db`
@@ -94,7 +94,7 @@ export async function createComment(
 // already saw attached to the reply-level context, and the token hash is only
 // reachable through the ownership check below.
 export async function updateOwnCommentBody(
-  db: CommentDb,
+  db: NeonDb,
   target: OwnCommentTarget & { body: string },
 ): Promise<CommentRow | null> {
   const rows = (await db`
@@ -117,7 +117,7 @@ export type DeleteOutcome = 'deleted' | 'placeholder' | 'unavailable';
 // to their thread, and the deleted comment's token hash is cleared so nothing
 // can ever act on it again.
 export async function deleteOwnComment(
-  db: CommentDb,
+  db: NeonDb,
   target: OwnCommentTarget,
 ): Promise<DeleteOutcome> {
   const deleted = (await db`
@@ -161,7 +161,7 @@ export type ModeratedComment = {
 // Operator view: every comment the public cannot see, including hidden ones and
 // rows whose owner identity is no longer stored.
 export async function listCommentsForOperator(
-  db: CommentDb,
+  db: NeonDb,
   options: { slug?: string | null; includeHidden: boolean },
 ): Promise<ModeratedComment[]> {
   const slug = options.slug ?? null;
@@ -175,7 +175,7 @@ export async function listCommentsForOperator(
 }
 
 export async function setCommentStatus(
-  db: CommentDb,
+  db: NeonDb,
   id: string,
   status: 'published' | 'hidden',
 ): Promise<boolean> {
@@ -202,7 +202,7 @@ export type RemovedComment = {
 // unreachable in the public discussion. The removed rows are returned so the
 // CLI can report exactly what an irreversible step destroyed.
 export async function deleteCommentWithReplies(
-  db: CommentDb,
+  db: NeonDb,
   id: string,
 ): Promise<{
   deleted: number;
@@ -229,7 +229,7 @@ export type AuthorReplyInput = {
 // Author replies are written by the local operator CLI. They carry is_author and
 // no owning token: the public API can never create or modify one.
 export async function createAuthorReply(
-  db: CommentDb,
+  db: NeonDb,
   input: AuthorReplyInput,
 ): Promise<{ id: string; post_slug: string; parent_id: string } | null> {
   const rows = (await db`

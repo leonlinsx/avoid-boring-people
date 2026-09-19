@@ -14,7 +14,7 @@ import {
   setCommentStatus,
   updateOwnCommentBody,
 } from '../src/lib/comments/store.ts';
-import type { CommentDb } from '../src/lib/comments/db.ts';
+import type { NeonDb } from '../src/lib/neon.ts';
 
 const socket = process.env.COMMENTS_TEST_PG_SOCKET;
 assert.match(socket ?? '', /^\/tmp\/comments-pg-[A-Za-z0-9]+$/);
@@ -69,7 +69,7 @@ const db = (async (parts: TemplateStringsArray, ...values: unknown[]) => {
     `WITH result AS (${statement}) SELECT coalesce(json_agg(row_to_json(result)), '[]'::json)::text FROM result`,
   );
   return JSON.parse(json || '[]') as unknown[];
-}) as unknown as CommentDb;
+}) as unknown as NeonDb;
 
 const SLUG = 'postgres-integration-article';
 const OTHER_SLUG = 'another-postgres-article';

@@ -9,7 +9,7 @@ import {
   recordSesEvent,
 } from '../src/lib/newsletter/events.ts';
 import type { SnsEnvelope } from '../src/lib/newsletter/sns.ts';
-import type { newsletterDb } from '../src/lib/newsletter/db.ts';
+import type { NeonDb } from '../src/lib/neon.ts';
 
 const socket = process.env.NEWSLETTER_TEST_PG_SOCKET;
 assert.match(socket ?? '', /^\/tmp\/newsletter-event-pg-[A-Za-z0-9]+$/);
@@ -75,7 +75,7 @@ const db = (async (parts: TemplateStringsArray, ...values: unknown[]) => {
     },
   );
   return [];
-}) as unknown as ReturnType<typeof newsletterDb>;
+}) as unknown as NeonDb;
 const event = (id: string, eventType: string, extra = {}) =>
   ({
     MessageId: id,

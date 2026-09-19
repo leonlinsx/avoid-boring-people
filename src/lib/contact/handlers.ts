@@ -1,5 +1,6 @@
 import { canonicalSiteOrigin, isSameSiteRequest } from '../site-origin.ts';
 import { verifyTurnstile } from '../turnstile.ts';
+import { isHoneypotFilled, readJsonBody } from '../request-body.ts';
 import { contactAlert } from './alerting.ts';
 import {
   CONTACT_SUCCESS_MESSAGE,
@@ -9,7 +10,7 @@ import {
   validateContactNote,
   type ContactErrorCode,
 } from './domain.ts';
-import type { ContactDb } from './db.ts';
+import type { NeonDb } from '../neon.ts';
 import { handOffToLinCheck } from './lin-check.ts';
 import { sendContactNotification, type ContactNotification } from './notify.ts';
 import {
@@ -24,7 +25,7 @@ export const MAX_CONTACT_REQUEST_BYTES = 16 * 1024;
 
 export type ContactHandlerDeps = {
   // null when no database is configured in this environment.
-  db: ContactDb | null;
+  db: NeonDb | null;
   fetchImpl?: typeof fetch;
   turnstileSecret?: string;
   env?: NodeJS.ProcessEnv;
@@ -73,43 +74,6 @@ function unavailable(reason: RefusalReason): Response {
   return errorResponse('unavailable');
 }
 
-type ParsedBody =
-  | { ok: true; value: Record<string, unknown> }
-  | { ok: false; error: ContactErrorCode };
-
-async function readJsonBody(request: Request): Promise<ParsedBody> {
-  const declaredLength = Number(request.headers.get('content-length') ?? '');
-  if (
-    Number.isFinite(declaredLength) &&
-    declaredLength > MAX_CONTACT_REQUEST_BYTES
-  )
-    return { ok: false, error: 'too_large' };
-
-  let text: string;
-  try {
-    text = await request.text();
-  } catch {
-    return { ok: false, error: 'invalid_request' };
-  }
-  if (!text || text.length > MAX_CONTACT_REQUEST_BYTES)
-    return { ok: false, error: text ? 'too_large' : 'invalid_request' };
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    return { ok: false, error: 'invalid_request' };
-  }
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed))
-    return { ok: false, error: 'invalid_request' };
-  return { ok: true, value: parsed as Record<string, unknown> };
-}
-
-function isHoneypotFilled(value: unknown): boolean {
-  if (value === undefined || value === null) return false;
-  return String(value).trim() !== '';
-}
-
 // The page the note was written from is taken from the browser's own `Referer`
 // and only kept when it points at this site's canonical origin, so a note cannot
 // claim to have come from somewhere it did not. The query string is dropped and
@@ -141,7 +105,7 @@ export async function handleContactNote(
   }
   if (!deps.db) return unavailable('db_unconfigured');
 
-  const parsed = await readJsonBody(request);
+  const parsed = await readJsonBody(request, MAX_CONTACT_REQUEST_BYTES);
   if (!parsed.ok) return errorResponse(parsed.error);
 
   // Verification happens before anything is written, and a Turnstile outage

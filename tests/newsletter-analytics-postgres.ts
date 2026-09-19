@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { collectNewsletterMetrics } from '../src/lib/newsletter/analytics.ts';
-import type { newsletterDb } from '../src/lib/newsletter/db.ts';
+import type { NeonDb } from '../src/lib/neon.ts';
 
 const socket = process.env.NEWSLETTER_TEST_PG_SOCKET;
 assert.match(socket ?? '', /^\/tmp\/newsletter-analytics-pg-[A-Za-z0-9]+$/);
@@ -55,7 +55,7 @@ const db = (async (parts: TemplateStringsArray, ...values: unknown[]) => {
     `SELECT COALESCE(json_agg(row_to_json(rows)), '[]'::json) FROM (${query}) rows`,
   );
   return JSON.parse(json) as unknown[];
-}) as unknown as ReturnType<typeof newsletterDb>;
+}) as unknown as NeonDb;
 
 const now = new Date('2026-03-01T12:00:00.000Z');
 

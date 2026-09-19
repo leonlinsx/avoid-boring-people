@@ -12,7 +12,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from scripts.automation import auto_post, state_manager
+from scripts.automation import auto_post
 from scripts.automation.attribution import SOCIAL_SOURCES, tagged_url
 from scripts.automation.content import SocialPost
 from scripts.automation.renderers import render_thread
@@ -20,13 +20,6 @@ from scripts.automation.renderers import render_thread
 ATTRIBUTION_MODULE = (
     Path(__file__).resolve().parents[1] / "src" / "lib" / "newsletter" / "attribution.ts"
 )
-
-_tweepy_stub = types.ModuleType("tweepy")
-sys.modules.setdefault("tweepy", _tweepy_stub)
-_atproto_stub = types.ModuleType("atproto")
-_atproto_stub.Client = type("AtprotoClient", (), {})
-_atproto_stub.models = types.SimpleNamespace()
-sys.modules.setdefault("atproto", _atproto_stub)
 
 ARTICLE_URL = "https://leonlins.com/writing/sample/"
 
@@ -70,12 +63,6 @@ def _drive_main(monkeypatch, post, platforms, fakes, dry_run=False, post_mode="s
     )
     for name, module in fakes.items():
         monkeypatch.setitem(sys.modules, name, module)
-
-
-def _use_temp_state(monkeypatch, tmp_path):
-    path = tmp_path / "posted.json"
-    monkeypatch.setattr(state_manager, "STATE_FILE", path)
-    return path
 
 
 def _fake_module(**attrs):
@@ -170,8 +157,7 @@ def test_every_tagged_source_is_a_named_attribution_source():
 
 # --- publishing --------------------------------------------------------------
 
-def test_each_platform_publishes_its_own_tagged_link(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_each_platform_publishes_its_own_tagged_link(monkeypatch, use_temp_distribution_state):
     for platform in ("twitter", "bluesky", "mastodon"):
         published = []
         module_name, fake = _fake_publishers(platform, published)
@@ -183,9 +169,8 @@ def test_each_platform_publishes_its_own_tagged_link(monkeypatch, tmp_path):
         assert tagged_url(ARTICLE_URL, platform, "post") in str(published[0]), platform
 
 
-def test_thread_mode_publishes_the_tagged_link(monkeypatch, tmp_path, capsys):
+def test_thread_mode_publishes_the_tagged_link(monkeypatch, capsys, use_temp_distribution_state):
     """Thread mode is what production runs, so its link reply must be tagged too."""
-    _use_temp_state(monkeypatch, tmp_path)
     for platform in ("twitter", "bluesky", "mastodon", "nostr"):
         published = []
         module_name, fake = _fake_publishers(platform, published)
@@ -199,8 +184,7 @@ def test_thread_mode_publishes_the_tagged_link(monkeypatch, tmp_path, capsys):
         assert f"✅ {platform} posting completed ({link})" in capsys.readouterr().out, platform
 
 
-def test_pre_tagged_link_is_reported_not_silently_retagged(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_pre_tagged_link_is_reported_not_silently_retagged(monkeypatch, capsys, use_temp_distribution_state):
     pre_tagged = f"{ARTICLE_URL}?utm_source=manual-campaign"
     published = []
     module_name, fake = _fake_publishers("bluesky", published)
@@ -213,8 +197,7 @@ def test_pre_tagged_link_is_reported_not_silently_retagged(monkeypatch, tmp_path
     assert "already carries utm_source" in output
 
 
-def test_canonical_url_stays_untagged_for_syndication(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_canonical_url_stays_untagged_for_syndication(monkeypatch, use_temp_distribution_state):
     received = []
     devto = _fake_module(
         post_to_devto=lambda title, body, tags, canonical_url: received.append(canonical_url)
@@ -227,8 +210,7 @@ def test_canonical_url_stays_untagged_for_syndication(monkeypatch, tmp_path):
     assert received == [ARTICLE_URL]
 
 
-def test_dry_run_shows_the_tagged_link(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_dry_run_shows_the_tagged_link(monkeypatch, capsys, use_temp_distribution_state):
     _drive_main(monkeypatch, _post(), ["twitter", "mastodon"], {}, dry_run=True)
 
     auto_post.main()
@@ -238,8 +220,7 @@ def test_dry_run_shows_the_tagged_link(monkeypatch, tmp_path, capsys):
         assert tagged_url(ARTICLE_URL, platform, "post") in output
 
 
-def test_published_text_is_the_rendered_tagged_copy(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_published_text_is_the_rendered_tagged_copy(monkeypatch, use_temp_distribution_state):
     published = []
     _drive_main(
         monkeypatch,

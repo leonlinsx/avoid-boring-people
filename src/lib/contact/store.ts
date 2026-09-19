@@ -1,4 +1,4 @@
-import type { ContactDb } from './db.ts';
+import type { NeonDb } from '../neon.ts';
 
 export type StoredContactNote = {
   id: string;
@@ -10,7 +10,7 @@ export type StoredContactNote = {
 // so a failed notification leaves evidence behind instead of losing what someone
 // wrote.
 export async function createContactSubmission(
-  db: ContactDb,
+  db: NeonDb,
   input: {
     name: string;
     email: string;
@@ -44,7 +44,7 @@ function toIso(value: string | Date): string {
 // or abandoned handoff must never leave it looking like a note nobody was told
 // about. A row without this timestamp is the operator's inbox.
 export async function markContactNotified(
-  db: ContactDb,
+  db: NeonDb,
   id: string,
 ): Promise<void> {
   await db`
@@ -58,7 +58,7 @@ export async function markContactNotified(
 // `lin_check_failure` alert line instead, which keeps "not configured yet"
 // distinguishable from "Lin Check is refusing notes".
 export async function markContactLinCheckSynced(
-  db: ContactDb,
+  db: NeonDb,
   id: string,
 ): Promise<void> {
   await db`

@@ -56,7 +56,7 @@ The repo holds six systems:
 ├── src/components/        # shared UI, incl. SubscribeForm.astro, Discussion.astro
 ├── scripts/automation/    # social distribution (summarizers, renderers, publishers)
 ├── scripts/newsletter/    # owned-newsletter CLIs (import, preview, campaign, send, analytics)
-├── scripts/comments/      # discussion moderation CLIs (list, hide, restore, delete, reply)
+├── scripts/comments/      # discussion moderation CLI (list, hide, restore, delete, reply)
 ├── scripts/scout/         # Lin Scout discovery tool (inventory, discovery, matching, filtering, CLI)
 ├── migrations/            # Neon Postgres schema migrations
 ├── docs/                  # runbooks, evaluations, per-system documentation
