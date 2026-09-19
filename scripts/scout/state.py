@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Dict, Optional, Set
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
+from scripts.automation.fetch_post import SITE_URL
 from scripts.automation.json_store import load_json_object, save_json_object
 from scripts.scout.errors import ScoutError
 
@@ -107,6 +108,16 @@ def get_opportunity(state: Dict, url: str) -> Optional[Dict]:
     return (state.get("opportunities") or {}).get(normalize_url(url))
 
 
+def absolute_content_url(url: object) -> str:
+    """A published article's URL on the public site, absolute when it is relative."""
+    raw = str(url or "").strip()
+    if not raw:
+        return ""
+    if raw.startswith(("http://", "https://")):
+        return raw
+    return f"{SITE_URL}{raw}" if raw.startswith("/") else f"{SITE_URL}/{raw}"
+
+
 def record_surfaced(
     state: Dict,
     *,
@@ -114,6 +125,10 @@ def record_surfaced(
     source: str,
     content_id: str,
     draft: str,
+    thread_title: str = "",
+    content_title: str = "",
+    content_url: str = "",
+    why_now: str = "",
     now: Optional[datetime] = None,
 ) -> bool:
     """Record one surfaced opportunity, once, under its normalized URL.
@@ -121,13 +136,18 @@ def record_surfaced(
     Returns False when the conversation was already recorded, leaving the first
     record intact: what Scout said about a conversation the day it surfaced it is
     history, not something a later run may rewrite.
+
+    The optional context — what the conversation was called, the article it
+    matched, and why it was timely — is stored only when Scout had it, so rows
+    written before these keys existed stay readable. Nothing decides anything
+    from them; they let a reader look at one row and know what it was.
     """
     moment = now or datetime.now(timezone.utc)
     opportunities = state.setdefault("opportunities", {})
     key = normalize_url(url)
     if key in opportunities:
         return False
-    opportunities[key] = {
+    entry = {
         "external_url": str(url).strip(),
         "source": source,
         "content_id": content_id,
@@ -138,6 +158,14 @@ def record_surfaced(
         "acted_at": None,
         "outcome": None,
     }
+    context = {
+        "thread_title": str(thread_title or "").strip(),
+        "content_title": str(content_title or "").strip(),
+        "content_url": absolute_content_url(content_url),
+        "why_now": str(why_now or "").strip(),
+    }
+    entry.update({name: value for name, value in context.items() if value})
+    opportunities[key] = entry
     return True
 
 

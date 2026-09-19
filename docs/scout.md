@@ -233,6 +233,13 @@ because a scheduled run can be killed mid-write:
 }
 ```
 
+A surfaced row also keeps the context that made it worth surfacing, so one row
+can be read without rerunning Scout: `thread_title`, `content_title`,
+`content_url` (absolute, built from the article's relative index URL), and
+`why_now`. Those keys are written only when Scout had them, so rows recorded
+before they existed stay readable — anything reading state must treat them as
+optional. Nothing decides anything from them; they are what the row *was*.
+
 A conversation's identity is its normalized URL: scheme and host lowercased,
 trailing slash and `utm_*` parameters dropped, fragment ignored. Statuses are
 `surfaced`, `dismissed`, `acted`, and `expired`. Recording is append-once — a

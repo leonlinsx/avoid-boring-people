@@ -169,3 +169,78 @@ def test_expire_days_env_rejects_nonsense_or_clamps_it(monkeypatch, raw):
             state.expire_stale(state.empty_state(), now=NOW)
     else:
         assert state.expire_stale(state.empty_state(), now=NOW) == 0
+
+
+def test_surfaced_context_is_kept_so_a_reader_can_see_what_the_row_was(monkeypatch, tmp_path):
+    _use_temp_state(monkeypatch, tmp_path)
+    state_data = state.empty_state()
+
+    state.record_surfaced(
+        state_data,
+        url="https://news.ycombinator.com/item?id=1",
+        source="hacker-news",
+        content_id="2019_11_23_premortem/index.md",
+        draft="draft body",
+        thread_title="Anyone still doing pre-mortems?",
+        content_title="The pre-mortem that saved the migration",
+        content_url="/writing/premortem/",
+        why_now="The thread is two days old with 120 replies and no pre-mortem answer.",
+        now=NOW,
+    )
+
+    entry = state_data["opportunities"]["https://news.ycombinator.com/item?id=1"]
+    assert entry["thread_title"] == "Anyone still doing pre-mortems?"
+    assert entry["content_title"] == "The pre-mortem that saved the migration"
+    assert entry["content_url"] == "https://leonlins.com/writing/premortem/"
+    assert entry["why_now"].startswith("The thread is two days old")
+
+
+def test_context_that_scout_did_not_have_is_not_written(monkeypatch, tmp_path):
+    _use_temp_state(monkeypatch, tmp_path)
+    state_data = state.empty_state()
+
+    state.record_surfaced(
+        state_data, url="https://example.test/a", source="hacker-news", content_id="a", draft="d", now=NOW
+    )
+
+    entry = state_data["opportunities"]["https://example.test/a"]
+    assert not {"thread_title", "content_title", "content_url", "why_now"} & set(entry)
+
+
+def test_absolute_content_url_keeps_a_public_url_and_builds_a_relative_one():
+    assert state.absolute_content_url("https://leonlins.com/writing/foo/") == "https://leonlins.com/writing/foo/"
+    assert state.absolute_content_url("/writing/foo/") == "https://leonlins.com/writing/foo/"
+    assert state.absolute_content_url("writing/foo/") == "https://leonlins.com/writing/foo/"
+    assert state.absolute_content_url(None) == ""
+
+
+def test_rows_written_before_the_context_fields_still_read_and_expire(monkeypatch, tmp_path):
+    path = _use_temp_state(monkeypatch, tmp_path)
+    legacy_url = "https://example.test/legacy"
+    path.write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "opportunities": {
+                    legacy_url: {
+                        "external_url": legacy_url,
+                        "source": "hacker-news",
+                        "content_id": "a",
+                        "status": state.STATUS_SURFACED,
+                        "draft": "d",
+                        "discovered_at": (NOW - timedelta(days=30)).isoformat(),
+                        "surfaced_at": (NOW - timedelta(days=30)).isoformat(),
+                        "acted_at": None,
+                        "outcome": None,
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    state_data = state.load_state()
+
+    assert "thread_title" not in state_data["opportunities"][legacy_url]
+    assert state.expire_stale(state_data, now=NOW, after_days=14) == 1
+    assert state_data["opportunities"][legacy_url]["status"] == state.STATUS_EXPIRED
