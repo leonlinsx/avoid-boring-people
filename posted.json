@@ -545,6 +545,14 @@
         "model": "deepseek/deepseek-flash",
         "remote_id": "60daf1c72f8cc5fc143309d45d829df89d7f0a5d082a5e8ba4e5f13d587264fb"
       },
+      "threads": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-20T23:30:46Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18101504144625632",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/DdhxQCfmqPp"
+      },
       "twitter": {
         "count": 1,
         "last_mode": "new",
