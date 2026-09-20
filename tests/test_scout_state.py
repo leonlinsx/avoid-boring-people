@@ -158,8 +158,7 @@ def test_expire_days_env_rejects_nonsense_or_clamps_it(monkeypatch, raw):
         assert state.expire_stale(state.empty_state(), now=NOW) == 0
 
 
-def test_surfaced_context_is_kept_so_a_reader_can_see_what_the_row_was(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_surfaced_context_is_kept_so_a_reader_can_see_what_the_row_was(use_temp_scout_state):
     state_data = state.empty_state()
 
     state.record_surfaced(
@@ -182,8 +181,7 @@ def test_surfaced_context_is_kept_so_a_reader_can_see_what_the_row_was(monkeypat
     assert entry["why_now"].startswith("The thread is two days old")
 
 
-def test_context_that_scout_did_not_have_is_not_written(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_context_that_scout_did_not_have_is_not_written(use_temp_scout_state):
     state_data = state.empty_state()
 
     state.record_surfaced(
@@ -201,8 +199,8 @@ def test_absolute_content_url_keeps_a_public_url_and_builds_a_relative_one():
     assert state.absolute_content_url(None) == ""
 
 
-def test_rows_written_before_the_context_fields_still_read_and_expire(monkeypatch, tmp_path):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_rows_written_before_the_context_fields_still_read_and_expire(use_temp_scout_state):
+    path = use_temp_scout_state
     legacy_url = "https://example.test/legacy"
     path.write_text(
         json.dumps(
