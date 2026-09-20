@@ -1271,7 +1271,7 @@ export function testContactIntegrationBoundaries() {
   );
   // The toggle is worded, not a bare icon, and only the address is offered when
   // no site key is configured.
-  assert.match(component, /Send a note/);
+  assert.match(component, /Or use the contact form/);
   assert.match(component, /Email me at/);
 
   // Exactly three fields, plus the honeypot, which a person cannot reach.
