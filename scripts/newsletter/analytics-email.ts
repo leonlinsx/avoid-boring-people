@@ -1,5 +1,5 @@
 import { SendEmailCommand, SESv2Client } from '@aws-sdk/client-sesv2';
-import { newsletterDb } from '../../src/lib/newsletter/db.ts';
+import { neonDb } from '../../src/lib/neon.ts';
 import {
   collectNewsletterMetrics,
   DEFAULT_REPORT_WINDOW_DAYS,
@@ -46,7 +46,7 @@ if (!configurationSet || !process.env.AWS_REGION)
     'Report email requires SES_CONFIGURATION_SET and AWS_REGION. No email was sent.',
   );
 
-const metrics = await collectNewsletterMetrics(newsletterDb(), { days });
+const metrics = await collectNewsletterMetrics(neonDb('Newsletter'), { days });
 const report = renderNewsletterReport(metrics);
 console.log(report);
 

@@ -18,14 +18,6 @@ from pathlib import Path
 import pytest
 import requests
 
-# tweepy/atproto are installed in CI but not in every local venv; stub them so
-# the publisher submodules import, matching the other distribution tests.
-sys.modules.setdefault("tweepy", types.ModuleType("tweepy"))
-_atproto_stub = types.ModuleType("atproto")
-_atproto_stub.Client = type("AtprotoClient", (), {})
-_atproto_stub.models = types.SimpleNamespace()
-sys.modules.setdefault("atproto", _atproto_stub)
-
 from scripts.automation import auto_post, state_manager
 from scripts.automation import media_host as media_host_module
 from scripts.automation import retry as retry_module

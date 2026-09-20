@@ -1,5 +1,5 @@
 import { newsletterAlert } from './alerting.ts';
-import { newsletterDb } from './db.ts';
+import { neonDb } from '../neon.ts';
 import type { SnsEnvelope } from './sns.ts';
 
 type SesRecipient = { emailAddress?: unknown };
@@ -43,7 +43,7 @@ function parseEvent(value: string): SesEvent {
 
 export async function recordSesEvent(
   envelope: SnsEnvelope,
-  db = newsletterDb(),
+  db = neonDb('Newsletter'),
 ): Promise<void> {
   const event = parseEvent(envelope.Message);
   const messageId =
@@ -106,7 +106,7 @@ export async function recordSesEvent(
 
 export async function reconcileSesMessage(
   messageId: string,
-  db = newsletterDb(),
+  db = neonDb('Newsletter'),
 ): Promise<void> {
   await db`WITH event_state AS (
     SELECT CASE

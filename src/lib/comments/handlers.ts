@@ -1,4 +1,4 @@
-import type { CommentDb } from './db.ts';
+import type { NeonDb } from '../neon.ts';
 import {
   RATE_LIMIT_MAX_COMMENTS,
   commentErrorMessages,
@@ -24,6 +24,7 @@ import {
 } from './tokens.ts';
 import { verifyTurnstile } from '../turnstile.ts';
 import { isSameSiteRequest } from '../site-origin.ts';
+import { isHoneypotFilled, readJsonBody } from '../request-body.ts';
 
 // A comment body is at most a few thousand characters, so a request larger than
 // this is never real content and is rejected before it is parsed.
@@ -31,7 +32,7 @@ export const MAX_COMMENT_REQUEST_BYTES = 16 * 1024;
 
 export type CommentHandlerDeps = {
   // null when the comment database is not configured in this environment.
-  db: CommentDb | null;
+  db: NeonDb | null;
   fetchImpl?: typeof fetch;
   turnstileSecret?: string;
 };
@@ -97,43 +98,6 @@ function unavailable(operation: string, reason: RefusalReason): Response {
   return errorResponse(503, 'unavailable');
 }
 
-type ParsedBody =
-  | { ok: true; value: Record<string, unknown> }
-  | { ok: false; error: CommentErrorCode };
-
-async function readJsonBody(request: Request): Promise<ParsedBody> {
-  const declaredLength = Number(request.headers.get('content-length') ?? '');
-  if (
-    Number.isFinite(declaredLength) &&
-    declaredLength > MAX_COMMENT_REQUEST_BYTES
-  )
-    return { ok: false, error: 'too_large' };
-
-  let text: string;
-  try {
-    text = await request.text();
-  } catch {
-    return { ok: false, error: 'invalid_request' };
-  }
-  if (!text || text.length > MAX_COMMENT_REQUEST_BYTES)
-    return { ok: false, error: text ? 'too_large' : 'invalid_request' };
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    return { ok: false, error: 'invalid_request' };
-  }
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed))
-    return { ok: false, error: 'invalid_request' };
-  return { ok: true, value: parsed as Record<string, unknown> };
-}
-
-function isHoneypotFilled(value: unknown): boolean {
-  if (value === undefined || value === null) return false;
-  return String(value).trim() !== '';
-}
-
 export async function handleListComments(
   request: Request,
   params: { slug: string },
@@ -168,7 +132,7 @@ export async function handleCreateComment(
   if (!slug) return errorResponse(404, 'invalid_slug');
   if (!deps.db) return unavailable('create', 'db_unconfigured');
 
-  const parsed = await readJsonBody(request);
+  const parsed = await readJsonBody(request, MAX_COMMENT_REQUEST_BYTES);
   if (!parsed.ok)
     return errorResponse(
       parsed.error === 'too_large' ? 413 : 400,
@@ -253,7 +217,7 @@ export async function handleUpdateComment(
   const token = readCommentToken(request.headers.get('cookie'));
   if (!token) return errorResponse(403, 'not_owned');
 
-  const parsed = await readJsonBody(request);
+  const parsed = await readJsonBody(request, MAX_COMMENT_REQUEST_BYTES);
   if (!parsed.ok)
     return errorResponse(
       parsed.error === 'too_large' ? 413 : 400,

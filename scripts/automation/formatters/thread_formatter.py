@@ -74,13 +74,6 @@ def format_as_thread(post: Dict, summary: Dict, mode: Literal["bullets", "narrat
     tweets.append(link_reply if len(link_reply) <= MAX_TWEET_LEN else url)
     return tweets
 
-def split_into_tweets(text: str) -> List[str]:
-    """
-    Split long text into chunks <= MAX_TWEET_LEN.
-    """
-    return textwrap.wrap(text, width=MAX_TWEET_LEN, break_long_words=False)
-
-
 # Debug example
 if __name__ == "__main__":
     post = {"title": "Specialists vs Generalists", "url": "https://example.com"}

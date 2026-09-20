@@ -13,14 +13,8 @@ from pathlib import Path
 
 import pytest
 
-# tweepy/atproto/requests are installed in CI but not in every local venv;
-# stub them so the publisher submodules import, matching the other distribution tests.
-_tweepy_stub = types.ModuleType("tweepy")
-sys.modules.setdefault("tweepy", _tweepy_stub)
-_atproto_stub = types.ModuleType("atproto")
-_atproto_stub.Client = type("AtprotoClient", (), {})
-_atproto_stub.models = types.SimpleNamespace()
-sys.modules.setdefault("atproto", _atproto_stub)
+# requests is installed in CI but not in every local venv; stub it so the
+# publisher submodules import (tweepy/atproto are stubbed in conftest.py).
 try:
     import requests as _requests_lib  # noqa: F401
 except ImportError:

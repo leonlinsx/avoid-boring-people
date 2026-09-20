@@ -8,14 +8,8 @@ from scripts.automation import auto_post
 from scripts.automation import retry as retry_module
 
 
-def _use_temp_state(monkeypatch, tmp_path):
-    path = tmp_path / "posted.json"
-    monkeypatch.setattr(state_manager, "STATE_FILE", path)
-    return path
-
-
-def test_legacy_state_migrates_without_fabricating_platform_history(monkeypatch, tmp_path):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_legacy_state_migrates_without_fabricating_platform_history(use_temp_distribution_state):
+    path = use_temp_distribution_state
     path.write_text(json.dumps({"abc": 2}), encoding="utf-8")
 
     state = state_manager.load_state()
@@ -25,9 +19,7 @@ def test_legacy_state_migrates_without_fabricating_platform_history(monkeypatch,
     assert state_manager.load_state() == state
 
 
-def test_success_only_updates_the_successful_platform(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
-
+def test_success_only_updates_the_successful_platform(use_temp_distribution_state):
     # Simulate Twitter succeeding while Bluesky raises before state mutation.
     state_manager.mark_posted("post", "twitter", "new", "tweet-123")
 
@@ -37,16 +29,16 @@ def test_success_only_updates_the_successful_platform(monkeypatch, tmp_path):
     assert state_manager.get_platform_state("post", "bluesky", state) is None
 
 
-def test_skip_and_dry_run_do_not_change_state(monkeypatch, tmp_path):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_skip_and_dry_run_do_not_change_state(use_temp_distribution_state):
+    path = use_temp_distribution_state
 
     # A Dev.to category skip and every dry-run branch intentionally make no mark_posted call.
     assert state_manager.load_state() == {"version": 2, "posts": {}}
     assert not path.exists()
 
 
-def test_dry_run_does_not_call_the_state_writer(monkeypatch, tmp_path):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_dry_run_does_not_call_the_state_writer(monkeypatch, use_temp_distribution_state):
+    path = use_temp_distribution_state
     post = {"id": "post", "title": "Title", "url": "https://example.test", "content": "word " * 200}
     monkeypatch.setattr(auto_post, "DRY_RUN", True)
     monkeypatch.setattr(auto_post, "POST_MODE", "single")
@@ -61,8 +53,7 @@ def test_dry_run_does_not_call_the_state_writer(monkeypatch, tmp_path):
     assert not path.exists()
 
 
-def test_partial_platform_failure_only_persists_success(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_partial_platform_failure_only_persists_success(monkeypatch, use_temp_distribution_state):
     monkeypatch.setattr(retry_module, "BASE_DELAY_SECONDS", 0)
     post = {"id": "post", "title": "Title", "url": "https://example.test", "content": "word " * 200}
     twitter = types.ModuleType("scripts.automation.publishers")
@@ -89,8 +80,7 @@ def test_partial_platform_failure_only_persists_success(monkeypatch, tmp_path):
     assert state_manager.get_platform_state("post", "bluesky", state) is None
 
 
-def test_explicit_evergreen_exclusion_and_per_platform_cooldowns(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_explicit_evergreen_exclusion_and_per_platform_cooldowns(use_temp_distribution_state):
     post = {"id": "post", "evergreen": True}
     state = {
         "version": 2,
@@ -116,8 +106,7 @@ def test_explicit_evergreen_exclusion_and_per_platform_cooldowns(monkeypatch, tm
     assert state_manager.platform_is_eligible(post, "twitter", "evergreen", state)
 
 
-def test_selection_keeps_first_publication_eligible_per_platform(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_selection_keeps_first_publication_eligible_per_platform(use_temp_distribution_state):
     state_manager.save_state(
         {
             "version": 2,
@@ -160,8 +149,7 @@ def _posted_days_ago(days):
     return (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
 
 
-def test_evergreen_prefers_longest_ago_posted_over_fresh_score(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_evergreen_prefers_longest_ago_posted_over_fresh_score(use_temp_distribution_state):
     state_manager.save_state(
         {
             "version": 2,
@@ -191,8 +179,7 @@ def test_evergreen_prefers_longest_ago_posted_over_fresh_score(monkeypatch, tmp_
     assert selected["id"] == "old"
 
 
-def test_evergreen_rotates_away_from_last_posted_category(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_evergreen_rotates_away_from_last_posted_category(use_temp_distribution_state):
     state_manager.save_state(
         {
             "version": 2,
@@ -230,16 +217,14 @@ def test_evergreen_rotates_away_from_last_posted_category(monkeypatch, tmp_path)
     assert selected["id"] == "newer-tech"
 
 
-def test_evergreen_prefers_unposted_articles_first(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_evergreen_prefers_unposted_articles_first(use_temp_distribution_state):
     state_manager.save_state({"version": 2, "posts": {}})
     posts = [_evergreen_post("fresh", date="2024-01-01", score=0.0)]
     selected = state_manager.select_next_post(posts, ["bluesky"], "evergreen")
     assert selected["id"] == "fresh"
 
 
-def test_new_mode_still_prefers_higher_score(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_new_mode_still_prefers_higher_score(use_temp_distribution_state):
     state_manager.save_state({"version": 2, "posts": {}})
     posts = [
         {**_evergreen_post("low"), "priority_score": 1.0},
@@ -249,8 +234,7 @@ def test_new_mode_still_prefers_higher_score(monkeypatch, tmp_path):
     assert selected["id"] == "high"
 
 
-def test_new_distribution_does_not_repeat_a_successful_platform(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_new_distribution_does_not_repeat_a_successful_platform(use_temp_distribution_state):
     state_manager.mark_posted("post", "twitter", "new")
 
     state = state_manager.load_state()
@@ -277,8 +261,8 @@ def test_target_post_must_exist_in_deployed_index(monkeypatch):
         raise AssertionError("missing deployed target must fail clearly")
 
 
-def test_state_round_trip_preserves_v2_schema(monkeypatch, tmp_path):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_state_round_trip_preserves_v2_schema(use_temp_distribution_state):
+    path = use_temp_distribution_state
     state_manager.mark_posted("post", "mastodon", "evergreen", "status-1")
 
     persisted = json.loads(path.read_text(encoding="utf-8"))

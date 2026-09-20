@@ -22,27 +22,10 @@ from scripts.automation.formatters import format_as_thread
 from scripts.automation.renderers import render_farcaster, render_mastodon, render_thread
 from scripts.automation.routing import DEFAULT_PLATFORMS, PLATFORMS, eligible_for_category
 
-# The real publisher package __init__ imports tweepy, and the Bluesky adapter
-# imports atproto; neither is installed in the test env, so provide import-time
-# stubs. Tests that need the real adapters import the submodules, which only
-# touch these dependencies inside network-touching helpers.
-_tweepy_stub = types.ModuleType("tweepy")
-sys.modules.setdefault("tweepy", _tweepy_stub)
-_atproto_stub = types.ModuleType("atproto")
-_atproto_stub.Client = type("AtprotoClient", (), {})
-_atproto_stub.models = types.SimpleNamespace()
-sys.modules.setdefault("atproto", _atproto_stub)
-
 
 @pytest.fixture(autouse=True)
 def _no_retry_delay(monkeypatch):
     monkeypatch.setattr(retry_module, "BASE_DELAY_SECONDS", 0)
-
-
-def _use_temp_state(monkeypatch, tmp_path):
-    path = tmp_path / "posted.json"
-    monkeypatch.setattr(state_manager, "STATE_FILE", path)
-    return path
 
 
 def _post(**overrides):
@@ -97,8 +80,7 @@ def test_remote_id_records_thread_root_not_final_reply():
     assert auto_post._remote_id(PublishResult("farcaster", remote_id="0xabc")) == "0xabc"
 
 
-def test_x_thread_persists_root_post_id(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_x_thread_persists_root_post_id(monkeypatch, use_temp_distribution_state):
     calls = []
     responses = [SimpleNamespace(data={"id": f"tweet-{i}"}) for i in range(3)]
 
@@ -117,8 +99,7 @@ def test_x_thread_persists_root_post_id(monkeypatch, tmp_path):
     assert len(calls[0]) == 3
 
 
-def test_bluesky_thread_persists_root_uri(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_bluesky_thread_persists_root_uri(monkeypatch, use_temp_distribution_state):
     responses = [SimpleNamespace(uri=f"at://post-{i}", cid=f"cid-{i}") for i in range(3)]
     bluesky = _fake_module(
         post_single_to_bluesky=lambda text: responses[0],
@@ -136,8 +117,7 @@ def test_bluesky_thread_persists_root_uri(monkeypatch, tmp_path):
 
 # --- Partial failure, rerun, propagation ------------------------------------
 
-def test_failed_platform_does_not_stop_remaining_platforms(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_failed_platform_does_not_stop_remaining_platforms(monkeypatch, use_temp_distribution_state):
     bluesky = _fake_module(
         post_single_to_bluesky=lambda text: (_ for _ in ()).throw(RuntimeError("Bluesky API error: 500 boom")),
         post_thread_to_bluesky=lambda posts: (_ for _ in ()).throw(RuntimeError("Bluesky API error: 500 boom")),
@@ -152,8 +132,7 @@ def test_failed_platform_does_not_stop_remaining_platforms(monkeypatch, tmp_path
     assert state_manager.get_platform_state("post", "twitter", state)["remote_id"] == "tweet-1"
 
 
-def test_rerun_after_partial_success_attempts_only_missing(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_rerun_after_partial_success_attempts_only_missing(monkeypatch, use_temp_distribution_state):
     twitter_calls = []
     twitter = _fake_module(
         get_twitter_client=lambda: object(),
@@ -181,8 +160,7 @@ def test_rerun_after_partial_success_attempts_only_missing(monkeypatch, tmp_path
     assert state_manager.get_platform_state("post", "bluesky", state)["remote_id"] == "at://recovered"
 
 
-def test_fail_on_publish_error_raises_after_partial_state(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_fail_on_publish_error_raises_after_partial_state(monkeypatch, use_temp_distribution_state):
     monkeypatch.setenv("FAIL_ON_PUBLISH_ERROR", "true")
     bluesky = _fake_module(
         post_single_to_bluesky=lambda text: (_ for _ in ()).throw(RuntimeError("Bluesky API error: 400 bad request")),
@@ -195,8 +173,8 @@ def test_fail_on_publish_error_raises_after_partial_state(monkeypatch, tmp_path)
     assert state_manager.get_platform_state("post", "bluesky") is None
 
 
-def test_dry_run_never_modifies_state(monkeypatch, tmp_path):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_dry_run_never_modifies_state(monkeypatch, use_temp_distribution_state):
+    path = use_temp_distribution_state
     monkeypatch.setattr(auto_post, "_summarize", lambda post: {"teaser": "Hook", "points": ["Point one"]})
     _drive_main(monkeypatch, _post(), ["twitter", "bluesky", "mastodon", "devto"], {}, post_mode="thread", dry_run=True)
 
@@ -205,8 +183,7 @@ def test_dry_run_never_modifies_state(monkeypatch, tmp_path):
     assert not path.exists()
 
 
-def test_dry_run_prints_the_exact_copy_each_channel_would_publish(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_dry_run_prints_the_exact_copy_each_channel_would_publish(monkeypatch, capsys, use_temp_distribution_state):
     summary = {"teaser": "Hook", "points": ["Point one", "Point two"]}
     monkeypatch.setattr(auto_post, "_summarize", lambda post: summary)
     _drive_main(monkeypatch, _post(), ["twitter", "bluesky", "mastodon"], {}, post_mode="thread", dry_run=True)
@@ -233,8 +210,7 @@ def test_dry_run_prints_the_exact_copy_each_channel_would_publish(monkeypatch, t
 
 # --- Retry behavior ----------------------------------------------------------
 
-def test_transient_failures_are_retried_then_recorded(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_transient_failures_are_retried_then_recorded(monkeypatch, use_temp_distribution_state):
     attempts = []
 
     def flaky(text):
@@ -275,8 +251,7 @@ def test_retry_gives_up_after_bounded_attempts():
     assert len(attempts) == 3
 
 
-def test_permanent_error_runs_once_and_leaves_no_state(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_permanent_error_runs_once_and_leaves_no_state(monkeypatch, use_temp_distribution_state):
     attempts = []
 
     def rejected(client, post):
@@ -306,8 +281,7 @@ def test_evergreen_never_recycles_dev():
     assert not state_manager.platform_is_eligible({"id": "a", "evergreen": True}, "reddit", "evergreen")
 
 
-def test_evergreen_cooldowns_are_per_platform(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_evergreen_cooldowns_are_per_platform(use_temp_distribution_state):
     from datetime import datetime, timedelta, timezone
     fresh = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
     state = {"version": 2, "posts": {"post": {
@@ -322,8 +296,7 @@ def test_evergreen_cooldowns_are_per_platform(monkeypatch, tmp_path):
 
 # --- DEV ---------------------------------------------------------------------
 
-def test_dev_receives_full_content_with_canonical_url(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_dev_receives_full_content_with_canonical_url(monkeypatch, use_temp_distribution_state):
     captured = {}
 
     def fake_devto(title, body, tags, canonical_url, published=True):
@@ -362,8 +335,7 @@ def test_dev_sanitizes_markdown_and_enforces_canonical_host():
 
 # --- Farcaster ---------------------------------------------------------------
 
-def test_farcaster_uses_deterministic_idempotency_key(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_farcaster_uses_deterministic_idempotency_key(monkeypatch, use_temp_distribution_state):
     captured = {}
 
     def fake_farcaster(text, idempotency_key=None, embeds=None):
@@ -437,8 +409,7 @@ def test_farcaster_requires_cast_hash(monkeypatch):
 
 # --- Mastodon ----------------------------------------------------------------
 
-def test_mastodon_prefers_one_suitable_post(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_mastodon_prefers_one_suitable_post(monkeypatch, use_temp_distribution_state):
     singles, threads = [], []
     mastodon = _fake_module(
         post_single_to_mastodon=lambda text, idempotency_key=None: singles.append(text) or {"id": "m-1", "url": "https://mastodon/x"},
@@ -587,8 +558,7 @@ def test_local_summarizer_truncates_at_a_word_boundary():
     assert text[:-1].rstrip().split()[-1] in words
 
 
-def test_summary_generated_once_then_rendered_per_platform(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_summary_generated_once_then_rendered_per_platform(monkeypatch, use_temp_distribution_state):
     summaries = []
     monkeypatch.setattr(auto_post, "_summarize", lambda post: summaries.append(post["id"]) or {"teaser": "Hook", "points": ["P1", "P2"]})
     twitter = _fake_module(get_twitter_client=lambda: object(), post_single=lambda c, p: {"id": "t"}, post_thread=lambda c, t: [{"id": "t"}])

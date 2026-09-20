@@ -30,12 +30,6 @@ def _entry(**overrides):
     return entry
 
 
-def _use_temp_state(monkeypatch, tmp_path):
-    path = tmp_path / "posted.json"
-    monkeypatch.setattr(state_manager, "STATE_FILE", path)
-    return path
-
-
 # --- A/B/C: default resolution, explicit exclusion, explicit inclusion ------
 
 def test_fetch_posts_defaults_a_missing_evergreen_field_to_true(monkeypatch):
@@ -62,8 +56,7 @@ def test_fetch_posts_preserves_explicit_evergreen_flags(monkeypatch):
     assert posts["stale/index.md"]["evergreen"] is False
 
 
-def test_resolved_default_is_eligible_while_explicit_exclusion_is_not(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_resolved_default_is_eligible_while_explicit_exclusion_is_not(monkeypatch, use_temp_distribution_state):
     monkeypatch.setattr(
         fetch_post_module,
         "load_search_index",
@@ -77,8 +70,7 @@ def test_resolved_default_is_eligible_while_explicit_exclusion_is_not(monkeypatc
 
 # --- D: changing the default must not affect mode="new" ----------------------
 
-def test_new_mode_ignores_the_evergreen_flag(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_new_mode_ignores_the_evergreen_flag(use_temp_distribution_state):
     excluded = {
         "id": "stale",
         "title": "Stale",
@@ -95,8 +87,7 @@ def test_new_mode_ignores_the_evergreen_flag(monkeypatch, tmp_path):
 
 # --- E: existing routing and cooldowns are preserved ------------------------
 
-def test_evergreen_still_excludes_dev_and_reddit(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_evergreen_still_excludes_dev_and_reddit(use_temp_distribution_state):
     post = {"id": "post", "evergreen": True}
 
     assert not state_manager.platform_is_eligible(post, "devto", "evergreen")
@@ -111,8 +102,7 @@ def test_every_evergreen_eligible_platform_has_a_cooldown():
     assert missing == []
 
 
-def test_previously_posted_nostr_and_weibo_articles_respect_cooldown(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_previously_posted_nostr_and_weibo_articles_respect_cooldown(use_temp_distribution_state):
     fresh = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     state = {
         "version": 2,
@@ -129,8 +119,7 @@ def test_previously_posted_nostr_and_weibo_articles_respect_cooldown(monkeypatch
     assert not state_manager.platform_is_eligible(post, "weibo", "evergreen", state)
 
 
-def test_evergreen_cooldown_and_least_used_selection_are_preserved(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_evergreen_cooldown_and_least_used_selection_are_preserved(use_temp_distribution_state):
     fresh = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
     state = {
         "version": 2,

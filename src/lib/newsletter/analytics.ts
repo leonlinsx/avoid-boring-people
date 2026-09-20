@@ -7,8 +7,8 @@
 // membership exists, so paid conversion and paid churn are out of scope. Every
 // metric below is re-derivable from stored rows.
 
+import type { NeonDb } from '../neon.ts';
 import { newsletterAlert } from './alerting.ts';
-import { newsletterDb } from './db.ts';
 import { acquisitionSources, type AcquisitionSource } from './attribution.ts';
 
 export const DEFAULT_REPORT_WINDOW_DAYS = 7;
@@ -126,7 +126,7 @@ export function validateReportWindow(days: number): number {
 }
 
 export async function collectNewsletterMetrics(
-  db: ReturnType<typeof newsletterDb>,
+  db: NeonDb,
   options: { days?: number; now?: Date } = {},
 ): Promise<NewsletterMetrics> {
   const days = validateReportWindow(options.days ?? DEFAULT_REPORT_WINDOW_DAYS);

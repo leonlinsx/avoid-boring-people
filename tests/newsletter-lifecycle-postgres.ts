@@ -16,7 +16,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { hashToken } from '../src/lib/newsletter/tokens.ts';
-import type { newsletterDb } from '../src/lib/newsletter/db.ts';
+import type { NeonDb } from '../src/lib/neon.ts';
 import {
   confirmSubscription,
   requestSubscription,
@@ -88,7 +88,7 @@ const db = (async (parts: TemplateStringsArray, ...values: unknown[]) =>
         text + part + (index < values.length ? literal(values[index]) : ''),
       '',
     ),
-  )) as unknown as ReturnType<typeof newsletterDb>;
+  )) as unknown as NeonDb;
 
 type SubscriberRow = {
   status: string;

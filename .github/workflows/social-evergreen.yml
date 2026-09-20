@@ -105,7 +105,6 @@ jobs:
       - name: Install carousel renderer dependencies
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-          PUPPETEER_SKIP_DOWNLOAD: 'true'
         run: npm ci --omit=dev
       - name: Publish one eligible evergreen article
         id: publish

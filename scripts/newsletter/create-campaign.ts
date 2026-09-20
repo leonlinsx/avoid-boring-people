@@ -3,7 +3,7 @@ import {
   renderNewsletterEmail,
 } from '../../src/lib/newsletter/render.ts';
 import { NEWSLETTER_PRIVACY_URL } from '../../src/lib/newsletter/email.ts';
-import { newsletterDb } from '../../src/lib/newsletter/db.ts';
+import { neonDb } from '../../src/lib/neon.ts';
 import {
   assertRecipientScope,
   parseExpectedRecipients,
@@ -44,7 +44,7 @@ renderNewsletterEmail({
     'https://leonlins.com/api/newsletter/unsubscribe?token=preflight-placeholder',
 });
 
-const db = newsletterDb();
+const db = neonDb('Newsletter');
 const rows = await db`
   WITH eligible AS MATERIALIZED (
     SELECT id FROM subscribers WHERE status = 'active'

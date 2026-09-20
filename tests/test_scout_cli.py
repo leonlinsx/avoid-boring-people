@@ -79,14 +79,8 @@ def _install_run(monkeypatch, *, urls=("https://news.ycombinator.com/item?id=1",
     monkeypatch.setattr(cli.filtering, "judge_match", fake_judge)
 
 
-def _use_temp_state(monkeypatch, tmp_path):
-    path = tmp_path / "scout-state.json"
-    monkeypatch.setattr(state, "STATE_FILE", path)
-    return path
-
-
-def test_dry_run_reports_opportunities_and_writes_no_state(monkeypatch, tmp_path, capsys):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_dry_run_reports_opportunities_and_writes_no_state(monkeypatch, capsys, use_temp_scout_state):
+    path = use_temp_scout_state
     _install_run(monkeypatch)
 
     code = cli.main(["run", "--dry-run"])
@@ -99,8 +93,8 @@ def test_dry_run_reports_opportunities_and_writes_no_state(monkeypatch, tmp_path
     assert not path.exists()
 
 
-def test_a_real_run_records_the_opportunity_and_can_be_read_back(monkeypatch, tmp_path, capsys):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_a_real_run_records_the_opportunity_and_can_be_read_back(monkeypatch, capsys, use_temp_scout_state):
+    path = use_temp_scout_state
     _install_run(monkeypatch)
 
     assert cli.main(["run"]) == 0
@@ -116,8 +110,8 @@ def test_a_real_run_records_the_opportunity_and_can_be_read_back(monkeypatch, tm
     assert recorded["https://news.ycombinator.com/item?id=1"]["why_now"] == "the thread is live"
 
 
-def test_a_second_run_never_surfaces_the_same_conversation_twice(monkeypatch, tmp_path, capsys):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_a_second_run_never_surfaces_the_same_conversation_twice(monkeypatch, capsys, use_temp_scout_state):
+    path = use_temp_scout_state
     _install_run(monkeypatch)
     cli.main(["run"])
 
@@ -130,9 +124,8 @@ def test_a_second_run_never_surfaces_the_same_conversation_twice(monkeypatch, tm
     assert len(json.loads(path.read_text(encoding="utf-8"))["opportunities"]) == 1
 
 
-def test_a_live_run_surfaces_at_most_the_configured_number(monkeypatch, tmp_path, capsys):
+def test_a_live_run_surfaces_at_most_the_configured_number(monkeypatch, capsys, use_temp_scout_state):
     monkeypatch.setenv("SCOUT_MAX_OPPORTUNITIES", "1")
-    _use_temp_state(monkeypatch, tmp_path)
     _install_run(monkeypatch, urls=("https://news.ycombinator.com/item?id=1", "https://news.ycombinator.com/item?id=2"))
 
     assert cli.main(["run"]) == 0
@@ -142,8 +135,7 @@ def test_a_live_run_surfaces_at_most_the_configured_number(monkeypatch, tmp_path
     assert state.load_state()["opportunities"].keys() == {"https://news.ycombinator.com/item?id=1"}
 
 
-def test_no_opportunities_is_a_successful_run(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_no_opportunities_is_a_successful_run(monkeypatch, capsys, use_temp_scout_state):
     _install_run(monkeypatch, verdict="REJECT")
 
     assert cli.main(["run"]) == 0
@@ -153,8 +145,7 @@ def test_no_opportunities_is_a_successful_run(monkeypatch, tmp_path, capsys):
     assert state.load_state()["opportunities"] == {}
 
 
-def test_a_real_run_without_a_configured_model_fails_loudly(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_a_real_run_without_a_configured_model_fails_loudly(monkeypatch, capsys, use_temp_scout_state):
     _install_run(monkeypatch)
     monkeypatch.setattr(cli.filtering, "llm_required", lambda: False)
     monkeypatch.setattr(cli.discovery, "discover", lambda queries, **kwargs: pytest.fail("no search expected"))
@@ -164,16 +155,13 @@ def test_a_real_run_without_a_configured_model_fails_loudly(monkeypatch, tmp_pat
     assert "no judgment model is configured" in capsys.readouterr().out
 
 
-def test_no_llm_is_refused_without_a_dry_run(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
-
+def test_no_llm_is_refused_without_a_dry_run(capsys, use_temp_scout_state):
     assert cli.main(["run", "--no-llm"]) == 1
 
     assert "--no-llm is only available with --dry-run" in capsys.readouterr().out
 
 
-def test_no_llm_dry_run_reports_decisions_without_judging(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_no_llm_dry_run_reports_decisions_without_judging(monkeypatch, capsys, use_temp_scout_state):
     _install_run(monkeypatch)
     monkeypatch.setattr(cli.filtering, "judge_match", lambda *args, **kwargs: pytest.fail("no call expected"))
 
@@ -184,8 +172,7 @@ def test_no_llm_dry_run_reports_decisions_without_judging(monkeypatch, tmp_path,
     assert "none (--no-llm)" in output
 
 
-def test_an_empty_archive_stops_the_run(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_an_empty_archive_stops_the_run(monkeypatch, capsys, use_temp_scout_state):
     monkeypatch.setattr(cli, "load_inventory", lambda: [])
     monkeypatch.setattr(cli.filtering, "llm_required", lambda: True)
 
@@ -194,8 +181,7 @@ def test_an_empty_archive_stops_the_run(monkeypatch, tmp_path, capsys):
     assert "no content" in capsys.readouterr().out
 
 
-def test_every_source_failing_stops_the_run(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_every_source_failing_stops_the_run(monkeypatch, capsys, use_temp_scout_state):
     _install_run(monkeypatch)
     monkeypatch.setattr(
         cli.discovery,
@@ -212,8 +198,7 @@ def test_every_source_failing_stops_the_run(monkeypatch, tmp_path, capsys):
     assert "every discovery source failed" in output
 
 
-def test_a_reachable_source_with_no_candidates_stops_the_run(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_a_reachable_source_with_no_candidates_stops_the_run(monkeypatch, capsys, use_temp_scout_state):
     _install_run(monkeypatch, urls=())
     monkeypatch.setattr(
         cli.discovery,
@@ -230,8 +215,7 @@ def test_a_reachable_source_with_no_candidates_stops_the_run(monkeypatch, tmp_pa
     assert "returned no candidates" in capsys.readouterr().out
 
 
-def test_a_quiet_query_with_candidates_that_do_not_survive_still_reports(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_a_quiet_query_with_candidates_that_do_not_survive_still_reports(monkeypatch, capsys, use_temp_scout_state):
     _install_run(monkeypatch, verdict="MAYBE")
 
     # Discovery did its job, so a run whose candidates all failed the confidence
@@ -241,8 +225,7 @@ def test_a_quiet_query_with_candidates_that_do_not_survive_still_reports(monkeyp
     assert "No high-confidence Scout opportunities found." in capsys.readouterr().out
 
 
-def test_an_unknown_llm_provider_fails_the_run_in_one_line(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_an_unknown_llm_provider_fails_the_run_in_one_line(monkeypatch, capsys, use_temp_scout_state):
     monkeypatch.setattr(cli, "load_inventory", lambda: [_item()])
     monkeypatch.setenv("SOCIAL_LLM_PROVIDER", "openai")
 
@@ -253,8 +236,7 @@ def test_an_unknown_llm_provider_fails_the_run_in_one_line(monkeypatch, tmp_path
     assert "Traceback" not in output
 
 
-def test_explicit_queries_replace_the_derived_ones(monkeypatch, tmp_path):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_explicit_queries_replace_the_derived_ones(monkeypatch, use_temp_scout_state):
     seen = {}
 
     def fake_discover(queries, **kwargs):
@@ -270,10 +252,9 @@ def test_explicit_queries_replace_the_derived_ones(monkeypatch, tmp_path):
     assert seen["queries"] == ["prediction markets", "index funds"]
 
 
-def test_the_step_summary_receives_the_same_report(monkeypatch, tmp_path, capsys):
+def test_the_step_summary_receives_the_same_report(monkeypatch, tmp_path, capsys, use_temp_scout_state):
     summary_file = tmp_path / "summary.md"
     monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary_file))
-    _use_temp_state(monkeypatch, tmp_path)
     _install_run(monkeypatch)
 
     assert cli.main(["run"]) == 0
@@ -283,8 +264,8 @@ def test_the_step_summary_receives_the_same_report(monkeypatch, tmp_path, capsys
     assert DRAFT in written
 
 
-def test_list_dismiss_and_acted_track_what_the_author_did(monkeypatch, tmp_path, capsys):
-    path = _use_temp_state(monkeypatch, tmp_path)
+def test_list_dismiss_and_acted_track_what_the_author_did(monkeypatch, capsys, use_temp_scout_state):
+    path = use_temp_scout_state
     _install_run(monkeypatch)
     cli.main(["run"])
     capsys.readouterr()
@@ -305,16 +286,13 @@ def test_list_dismiss_and_acted_track_what_the_author_did(monkeypatch, tmp_path,
     assert entry["outcome"] == "replied"
 
 
-def test_marking_an_unknown_url_fails_instead_of_inventing_history(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
-
+def test_marking_an_unknown_url_fails_instead_of_inventing_history(capsys, use_temp_scout_state):
     assert cli.main(["dismiss", "https://news.ycombinator.com/item?id=999"]) == 1
 
     assert "not a recorded scout opportunity" in capsys.readouterr().out
 
 
-def test_environment_overrides_are_read_at_call_time_not_import_time(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_environment_overrides_are_read_at_call_time_not_import_time(monkeypatch, capsys, use_temp_scout_state):
     _install_run(monkeypatch)
     monkeypatch.setenv("SCOUT_MAX_OPPORTUNITIES", "0")
 
@@ -323,8 +301,7 @@ def test_environment_overrides_are_read_at_call_time_not_import_time(monkeypatch
     assert "No high-confidence Scout opportunities found." in capsys.readouterr().out
 
 
-def test_a_scout_error_is_reported_with_a_non_zero_exit(monkeypatch, tmp_path, capsys):
-    _use_temp_state(monkeypatch, tmp_path)
+def test_a_scout_error_is_reported_with_a_non_zero_exit(monkeypatch, capsys, use_temp_scout_state):
     monkeypatch.setattr(cli, "load_inventory", lambda: (_ for _ in ()).throw(ScoutError("❌ index unreachable")))
     monkeypatch.setattr(cli.filtering, "llm_required", lambda: True)
 

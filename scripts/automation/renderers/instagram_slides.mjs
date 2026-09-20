@@ -25,7 +25,14 @@
  * or partially invisible image.
  */
 import { createHash } from 'node:crypto';
-import { mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  readdir,
+  readFile,
+  rename,
+  rm,
+  writeFile,
+} from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -92,7 +99,13 @@ const FONT_FACES = {
   regular: { weight: 400, file: 'atkinson-regular.woff' },
   bold: { weight: 700, file: 'atkinson-bold.woff' },
 };
-const FONT_SCRATCH = path.join(REPO_ROOT, '.tmp', 'social', 'instagram', '.fonts');
+const FONT_SCRATCH = path.join(
+  REPO_ROOT,
+  '.tmp',
+  'social',
+  'instagram',
+  '.fonts',
+);
 const FONTCONFIG_FILE = path.join(FONT_SCRATCH, 'fonts.conf');
 
 class RendererFailure extends Error {}
@@ -163,13 +176,18 @@ function sfntFromWoff(buffer) {
     const compressedLength = buffer.readUInt32BE(base + 8);
     const originalLength = buffer.readUInt32BE(base + 12);
     const body = buffer.subarray(offset, offset + compressedLength);
-    const data = compressedLength < originalLength ? zlib.inflateSync(body) : body;
+    const data =
+      compressedLength < originalLength ? zlib.inflateSync(body) : body;
     if (data.length !== originalLength) {
-      throw new RendererFailure(`brand font table ${tag} has an unexpected length`);
+      throw new RendererFailure(
+        `brand font table ${tag} has an unexpected length`,
+      );
     }
     tables.push({ tag, data });
   }
-  tables.sort((left, right) => (left.tag < right.tag ? -1 : left.tag > right.tag ? 1 : 0));
+  tables.sort((left, right) =>
+    left.tag < right.tag ? -1 : left.tag > right.tag ? 1 : 0,
+  );
 
   const entrySelector = Math.floor(Math.log2(numTables));
   const searchRange = 2 ** entrySelector * 16;
@@ -220,7 +238,10 @@ async function prepareFonts() {
     if (!existsSync(source)) {
       throw new RendererFailure(`brand font is missing: ${source}`);
     }
-    const target = path.join(FONT_SCRATCH, face.file.replace(/\.woff$/, '.ttf'));
+    const target = path.join(
+      FONT_SCRATCH,
+      face.file.replace(/\.woff$/, '.ttf'),
+    );
     const sfnt = sfntFromWoff(await readFile(source));
     await writeIfChanged(target, sfnt);
     fonts[name] = { ...face, path: target, font: createFont(sfnt) };
@@ -228,13 +249,13 @@ async function prepareFonts() {
   await writeIfChanged(
     FONTCONFIG_FILE,
     Buffer.from(
-      '<?xml version="1.0"?>\n'
-      + '<!DOCTYPE fontconfig SYSTEM "fonts.dtd">\n'
-      + '<fontconfig>\n'
-      + '  <include ignore_missing="yes">/etc/fonts/fonts.conf</include>\n'
-      + `  <dir>${escapeXml(FONT_SCRATCH)}</dir>\n`
-      + `  <cachedir>${escapeXml(path.join(FONT_SCRATCH, 'cache'))}</cachedir>\n`
-      + '</fontconfig>\n',
+      '<?xml version="1.0"?>\n' +
+        '<!DOCTYPE fontconfig SYSTEM "fonts.dtd">\n' +
+        '<fontconfig>\n' +
+        '  <include ignore_missing="yes">/etc/fonts/fonts.conf</include>\n' +
+        `  <dir>${escapeXml(FONT_SCRATCH)}</dir>\n` +
+        `  <cachedir>${escapeXml(path.join(FONT_SCRATCH, 'cache'))}</cachedir>\n` +
+        '</fontconfig>\n',
       'utf8',
     ),
   );
@@ -251,7 +272,10 @@ function ascentPx(font, size) {
 function textWidth(font, text, size, letterSpacing = 0) {
   const scale = size / font.unitsPerEm;
   const run = font.layout(text);
-  const advance = run.positions.reduce((total, position) => total + position.xAdvance, 0);
+  const advance = run.positions.reduce(
+    (total, position) => total + position.xAdvance,
+    0,
+  );
   return advance * scale + Math.max(0, text.length - 1) * letterSpacing;
 }
 
@@ -278,7 +302,8 @@ function missingGlyphs(font, text) {
   const missing = new Set();
   for (const character of String(text ?? '')) {
     if (character === '\n' || character === '\r') continue;
-    if (!font.hasGlyphForCodePoint(character.codePointAt(0))) missing.add(character);
+    if (!font.hasGlyphForCodePoint(character.codePointAt(0)))
+      missing.add(character);
   }
   return [...missing];
 }
@@ -293,9 +318,18 @@ function fitField({ field, kind, face, text, maxWidth }) {
   let overflow = null;
   for (const size of face.sizes) {
     const lines = wrapText(face.font, value, size, maxWidth);
-    const widest = Math.max(...lines.map((line) => textWidth(face.font, line, size)));
+    const widest = Math.max(
+      ...lines.map((line) => textWidth(face.font, line, size)),
+    );
     if (lines.length <= face.lines && widest <= maxWidth) {
-      return { field, kind, size, lines, lineHeight: face.lineHeight, weight: face.weight };
+      return {
+        field,
+        kind,
+        size,
+        lines,
+        lineHeight: face.lineHeight,
+        weight: face.weight,
+      };
     }
     overflow = { field, kind, size, lines: lines.length, maxLines: face.lines };
   }
@@ -310,23 +344,30 @@ function slideDocument({ width, height, blocks, rules, labels }) {
     `<rect x="0" y="0" width="${width}" height="${height}" fill="${TOKENS.background}"/>`,
   ];
   for (const rule of rules) {
-    parts.push(`<rect x="${rule.x}" y="${rule.y}" width="${rule.width}" height="${rule.height}" fill="${TOKENS.rule}"/>`);
+    parts.push(
+      `<rect x="${rule.x}" y="${rule.y}" width="${rule.width}" height="${rule.height}" fill="${TOKENS.rule}"/>`,
+    );
   }
   for (const label of labels) {
     if (!label.value) continue;
     const anchor = label.anchor ? ` text-anchor="${label.anchor}"` : '';
-    const spacing = label.letterSpacing ? ` letter-spacing="${label.letterSpacing}"` : '';
+    const spacing = label.letterSpacing
+      ? ` letter-spacing="${label.letterSpacing}"`
+      : '';
     parts.push(
-      `<text x="${label.x}" y="${label.y}" font-family="${FONT_FAMILY}" font-size="${label.size}"`
-      + ` font-weight="${label.weight}"${spacing}${anchor} fill="${label.fill}">${escapeXml(label.value)}</text>`,
+      `<text x="${label.x}" y="${label.y}" font-family="${FONT_FAMILY}" font-size="${label.size}"` +
+        ` font-weight="${label.weight}"${spacing}${anchor} fill="${label.fill}">${escapeXml(label.value)}</text>`,
     );
   }
   for (const block of blocks) {
     for (const [index, line] of block.lines.entries()) {
-      const baseline = block.top + ascentPx(block.font, block.size) + index * block.size * block.lineHeight;
+      const baseline =
+        block.top +
+        ascentPx(block.font, block.size) +
+        index * block.size * block.lineHeight;
       parts.push(
-        `<text x="${block.x}" y="${baseline.toFixed(2)}" font-family="${FONT_FAMILY}" font-size="${block.size}"`
-        + ` font-weight="${block.weight}" fill="${block.fill}">${escapeXml(line)}</text>`,
+        `<text x="${block.x}" y="${baseline.toFixed(2)}" font-family="${FONT_FAMILY}" font-size="${block.size}"` +
+          ` font-weight="${block.weight}" fill="${block.fill}">${escapeXml(line)}</text>`,
       );
     }
   }
@@ -394,8 +435,8 @@ function layoutSlide(slide, { width, height, fonts, totalSlides = 0 }) {
           lines: 0,
           maxLines: 0,
           message:
-            `copy needs ${Math.round(lowestInk)}px of vertical space but only `
-            + `${Math.round(footerRule - LAYOUT.bodyGap)}px is available`,
+            `copy needs ${Math.round(lowestInk)}px of vertical space but only ` +
+            `${Math.round(footerRule - LAYOUT.bodyGap)}px is available`,
         },
       ],
     };
@@ -407,8 +448,18 @@ function layoutSlide(slide, { width, height, fonts, totalSlides = 0 }) {
       height,
       blocks,
       rules: [
-        { x: left, y: pad.top + LAYOUT.headerRuleOffset, width: contentWidth, height: LAYOUT.ruleHeight },
-        { x: left, y: footerRule, width: contentWidth, height: LAYOUT.ruleHeight },
+        {
+          x: left,
+          y: pad.top + LAYOUT.headerRuleOffset,
+          width: contentWidth,
+          height: LAYOUT.ruleHeight,
+        },
+        {
+          x: left,
+          y: footerRule,
+          width: contentWidth,
+          height: LAYOUT.ruleHeight,
+        },
       ],
       labels: [
         {
@@ -424,7 +475,9 @@ function layoutSlide(slide, { width, height, fonts, totalSlides = 0 }) {
           y: pad.top + ascentPx(fonts.regular.font, LAYOUT.counter.size),
           anchor: 'end',
           fill: TOKENS.inkSoft,
-          value: String(slide.counter ?? defaultCounter(slide.index, totalSlides)),
+          value: String(
+            slide.counter ?? defaultCounter(slide.index, totalSlides),
+          ),
         },
         {
           ...LAYOUT.footer,
@@ -445,15 +498,18 @@ async function loadSharp() {
     const module = await import('sharp');
     return module.default;
   } catch (error) {
-    throw new RendererUnavailable(`sharp is not installed; run \`npm ci\` (${error.message})`);
+    throw new RendererUnavailable(
+      `sharp is not installed; run \`npm ci\` (${error.message})`,
+    );
   }
 }
 
-const fontProbeSvg = (family) => Buffer.from(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="260" height="64">'
-  + '<rect width="260" height="64" fill="#FFFFFF"/>'
-  + `<text x="8" y="44" font-family="${family}" font-size="34" fill="#000000">RagWhy1</text></svg>`,
-);
+const fontProbeSvg = (family) =>
+  Buffer.from(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="260" height="64">' +
+      '<rect width="260" height="64" fill="#FFFFFF"/>' +
+      `<text x="8" y="44" font-family="${family}" font-size="34" fill="#000000">RagWhy1</text></svg>`,
+  );
 
 /**
  * Fail loudly when the brand font does not resolve.
@@ -465,7 +521,10 @@ const fontProbeSvg = (family) => Buffer.from(
  */
 async function assertBrandFontResolves(sharp) {
   const render = (family) => sharp(fontProbeSvg(family)).png().toBuffer();
-  const [brand, absent] = await Promise.all([render(FONT_FAMILY), render('__absent-family__')]);
+  const [brand, absent] = await Promise.all([
+    render(FONT_FAMILY),
+    render('__absent-family__'),
+  ]);
   if (brand.equals(absent)) {
     throw new RendererUnavailable(
       `the ${FONT_FAMILY} brand font did not resolve and would silently fall back; check ${FONTCONFIG_FILE}`,
@@ -480,8 +539,15 @@ async function assertBrandFontResolves(sharp) {
  * measurement. This inspects the pixels that were actually written.
  */
 async function assertSafeArea(sharp, jpeg, width, height) {
-  const { data, info } = await sharp(jpeg).raw().toBuffer({ resolveWithObject: true });
-  const expected = Buffer.from(TOKENS.background.slice(1).match(/../g).map((pair) => parseInt(pair, 16)));
+  const { data, info } = await sharp(jpeg)
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const expected = Buffer.from(
+    TOKENS.background
+      .slice(1)
+      .match(/../g)
+      .map((pair) => parseInt(pair, 16)),
+  );
   const inset = LAYOUT.safeInset;
   const channels = info.channels;
   for (let y = 0; y < height; y += 1) {
@@ -493,10 +559,13 @@ async function assertSafeArea(sharp, jpeg, width, height) {
       }
       const offset = (y * info.width + x) * channels;
       for (let channel = 0; channel < 3; channel += 1) {
-        if (Math.abs(data[offset + channel] - expected[channel]) > LAYOUT.inkTolerance) {
+        if (
+          Math.abs(data[offset + channel] - expected[channel]) >
+          LAYOUT.inkTolerance
+        ) {
           throw new RendererFailure(
-            `slide ink reached the ${inset}px safe margin at (${x}, ${y}); `
-            + 'the layout refused to clip but the safe area was still breached',
+            `slide ink reached the ${inset}px safe margin at (${x}, ${y}); ` +
+              'the layout refused to clip but the safe area was still breached',
           );
         }
       }
@@ -515,7 +584,9 @@ async function renderJob(job) {
   }
   for (const slide of job.slides) {
     if (!KINDS.includes(slide.kind)) {
-      throw new RendererFailure(`unknown slide kind ${JSON.stringify(slide.kind)}; expected one of ${KINDS.join(', ')}`);
+      throw new RendererFailure(
+        `unknown slide kind ${JSON.stringify(slide.kind)}; expected one of ${KINDS.join(', ')}`,
+      );
     }
   }
 
@@ -532,28 +603,49 @@ async function renderJob(job) {
   const rendered = [];
   const violations = [];
   for (const slide of job.slides) {
-    const layout = layoutSlide(slide, { width, height, fonts, totalSlides: job.slides.length });
+    const layout = layoutSlide(slide, {
+      width,
+      height,
+      fonts,
+      totalSlides: job.slides.length,
+    });
     if (layout.violations) {
-      violations.push(...layout.violations.map((item) => ({ slide: slide.index, kind: slide.kind, ...item })));
+      violations.push(
+        ...layout.violations.map((item) => ({
+          slide: slide.index,
+          kind: slide.kind,
+          ...item,
+        })),
+      );
       continue;
     }
-    const fields = { title: fonts.bold.font, kicker: fonts.bold.font, body: fonts.regular.font, footer: fonts.regular.font };
+    const fields = {
+      title: fonts.bold.font,
+      kicker: fonts.bold.font,
+      body: fonts.regular.font,
+      footer: fonts.regular.font,
+    };
     for (const [field, font] of Object.entries(fields)) {
       const missing = missingGlyphs(font, slide[field]);
       if (missing.length > 0) {
         throw new RendererFailure(
-          `slide ${slide.index} ${field} uses characters the brand font has no glyph for: `
-          + missing.map((character) => JSON.stringify(character)).join(', '),
+          `slide ${slide.index} ${field} uses characters the brand font has no glyph for: ` +
+            missing.map((character) => JSON.stringify(character)).join(', '),
         );
       }
     }
     const svg = Buffer.from(slideDocument(layout.document), 'utf8');
-    const file = path.join(outputDir, `slide-${String(slide.index).padStart(2, '0')}.jpg`);
+    const file = path.join(
+      outputDir,
+      `slide-${String(slide.index).padStart(2, '0')}.jpg`,
+    );
     const { data, info } = await sharp(svg)
       .jpeg({ quality, chromaSubsampling: '4:4:4', mozjpeg: true })
       .toBuffer({ resolveWithObject: true });
     if (info.width !== width || info.height !== height) {
-      throw new RendererFailure(`slide ${slide.index} rendered ${info.width}x${info.height} instead of ${width}x${height}`);
+      throw new RendererFailure(
+        `slide ${slide.index} rendered ${info.width}x${info.height} instead of ${width}x${height}`,
+      );
     }
     await assertSafeArea(sharp, data, width, height);
     await writeFile(file, data);
@@ -566,7 +658,9 @@ async function renderJob(job) {
       width,
       height,
     });
-    process.stderr.write(`rendered slide ${slide.index}/${job.slides.length} (${data.length} bytes)\n`);
+    process.stderr.write(
+      `rendered slide ${slide.index}/${job.slides.length} (${data.length} bytes)\n`,
+    );
   }
   return { rendered, violations };
 }
@@ -577,33 +671,47 @@ async function main() {
   try {
     job = JSON.parse(raw);
   } catch (error) {
-    process.stdout.write(`${JSON.stringify({ error: 'invalid_job', message: error.message })}\n`);
+    process.stdout.write(
+      `${JSON.stringify({ error: 'invalid_job', message: error.message })}\n`,
+    );
     process.exitCode = 2;
     return;
   }
   try {
     const result = await renderJob(job);
     if (result.violations.length > 0) {
-      process.stdout.write(`${JSON.stringify({ error: 'content_overflow', violations: result.violations })}\n`);
+      process.stdout.write(
+        `${JSON.stringify({ error: 'content_overflow', violations: result.violations })}\n`,
+      );
       process.exitCode = 3;
       return;
     }
-    process.stdout.write(`${JSON.stringify({
-      renderer: 'svg-sharp',
-      font: { family: FONT_FAMILY, source: 'public/fonts/*.woff', container: 'sfnt' },
-      slides: result.rendered,
-    })}\n`);
+    process.stdout.write(
+      `${JSON.stringify({
+        renderer: 'svg-sharp',
+        font: {
+          family: FONT_FAMILY,
+          source: 'public/fonts/*.woff',
+          container: 'sfnt',
+        },
+        slides: result.rendered,
+      })}\n`,
+    );
   } catch (error) {
     const unavailable = error instanceof RendererUnavailable;
-    process.stdout.write(`${JSON.stringify({
-      error: unavailable ? 'renderer_unavailable' : 'render_failed',
-      message: error.message,
-    })}\n`);
+    process.stdout.write(
+      `${JSON.stringify({
+        error: unavailable ? 'renderer_unavailable' : 'render_failed',
+        message: error.message,
+      })}\n`,
+    );
     process.exitCode = unavailable ? 4 : 1;
   }
 }
 
-const isDirectRun = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const isDirectRun =
+  Boolean(process.argv[1]) &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isDirectRun) {
   main();
 }
