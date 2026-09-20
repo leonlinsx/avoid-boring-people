@@ -94,6 +94,7 @@ All commands run from the repo root.
 | Production newsletter send | `npm run newsletter:send -- <campaign-id> --expect-recipients <n> --confirm-production` |
 | Newsletter analytics report | `npm run newsletter:analytics -- [--days <1-365>] [--json] [--check]` |
 | Email the analytics report | `npm run newsletter:analytics:email -- --to <allowlisted-address> --confirm-send [--days <1-365>]` |
+| Scheduled author report | `npm run newsletter:analytics:author -- [--dry-run]` (recipient fixed by `NEWSLETTER_AUTHOR_REPORT_TO`; installed as the first-Tuesday 11:30 ET timer in [deploy/systemd](deploy/systemd)) |
 | Review discussion comments | `npm run comments:list -- [--slug <slug>] [--include-hidden]` |
 | Hide a discussion comment | `npm run comments:hide -- <comment-id>` |
 | Restore a hidden comment | `npm run comments:restore -- <comment-id>` |
@@ -135,6 +136,12 @@ Vercel deploys never send email or social posts.
   path, so the Substack form stays untouched and stores none of it; the
   analytics report is read-only and never estimates opens, clicks, or engaged
   readers.
+- The analytics report reaches only the author: it goes from
+  `newsletter@leonlins.com` to the one address fixed by
+  `NEWSLETTER_AUTHOR_REPORT_TO`, which must be on the
+  `NEWSLETTER_TEST_RECIPIENTS` allowlist. Subscribers are never addressed, the
+  manual command keeps requiring `--to` and `--confirm-send`, and the monthly
+  run is a local user timer — no build, deploy, or CI job emails a report.
 - The Substack integration is preserved until the explicit cutover.
 - Discussion moderation stays local and explicit; hidden comments are never
   returned publicly, and the author badge is set only by the operator CLI.

@@ -27,7 +27,7 @@ Priorities: reliable publishing and unchanged site behavior, subscriber consent 
 ## Important invariants
 
 - `/writing` is the canonical article archive and Markdown/MDX is the canonical content source.
-- Production email requires an explicit human local-CLI action.
+- Production email to subscribers requires an explicit human local-CLI action; the analytics report is author-only and may be scheduled.
 - A recipient must never receive a campaign twice after a retry or resume; scheduled and runtime work must be safe to retry.
 - Imports and automated processing must never reactivate `unsubscribed`, `bounced`, or `complained` subscribers, and Substack cancellation rows stay suppressed. Resubscription is explicit and confirmation-only: a signup request on an `unsubscribed` row issues a fresh token and leaves the row suppressed until that token is confirmed, while `bounced` and `complained` rows are never reopened.
 - Missing email-rendering support must fail visibly rather than generate broken mail.
@@ -35,6 +35,7 @@ Priorities: reliable publishing and unchanged site behavior, subscriber consent 
 - Failures must stay observable without new monitoring infrastructure: one greppable `newsletter_alert` log line carrying only a reason and an error name (`signup_pipeline_failure`, `ses_event_ingestion_failure`, `analytics_job_failure`), the scheduled analytics job reporting itself through a non-zero exit, and contact failures emitting one `contact_alert` line rather than retrying.
 - Signup attribution must stay first-touch and append-once: a resubmission may never rewrite how a subscriber was originally acquired, an unattributed row is reported as `unknown` rather than claimed as `direct`, and imported Substack rows keep their import provenance.
 - Analytics must stay read-only and honest: every reported metric is re-derivable from stored rows, and unavailable measurements (opens, clicks, paid conversion) are reported as unavailable instead of estimated.
+- Report delivery stays author-only: a report goes from `newsletter@leonlins.com` to the single address fixed by `NEWSLETTER_AUTHOR_REPORT_TO`, which must be on the `NEWSLETTER_TEST_RECIPIENTS` allowlist. Subscribers are never addressed, no entry point accepts an arbitrary recipient, the manual `--to <address> --confirm-send` command keeps its explicit confirmation, and the unattended monthly run is a local user timer (`deploy/systemd/newsletter-author-report.timer`) that no build, deploy, or CI job runs.
 - A contact note stays a note: never scored or qualified, never a relationship record, never a newsletter subscription, and never handled by an automated funnel. No IP address, browser token, or message body may reach a log line. Its Lin Check handoff stays optional and non-blocking, and the notification is recorded before the handoff runs so a delivered note is never left recorded as unfinished. Abuse protection stays Turnstile, the honeypot, the request-size cap, and the same-origin check — no rate-limiting service.
 - A contact note is stored in the `contact_submissions` table and nowhere else. The contact form is an invitation, not navigation: `/about`, `/now`, and direct-link `/contact` offer it, and no nav or footer links to it. A missing `PUBLIC_TURNSTILE_SITE_KEY` removes the form and leaves the email address; a missing `DATABASE_URL` or `AWS_REGION` still renders the form, which then fails at submit with a message naming the email address.
 - Discussion articles stay statically generated; only the comment island loads client-side, and a missing database or Turnstile configuration degrades to "temporarily unavailable" rather than breaking the article.
@@ -47,6 +48,7 @@ Run the narrow relevant tests, broader checks when core behavior changes, and bu
 
 - Newsletter changes: re-verify the production-send safeguards and disclose what cannot be exercised locally.
 - Attribution or analytics changes: also run the opt-in Postgres analytics test (`tests/newsletter-analytics-postgres.ts`); the report SQL is otherwise untested.
+- Report-delivery changes: verify the recipient safeguards in `npm test` (the recipient is configuration, never an argument; a `--to` argument to the scheduled command is refused; an address off the allowlist is refused) and exercise `npm run newsletter:analytics:author -- --dry-run`, which renders the report and sends nothing. A real send needs SES credentials and must never run in a test.
 - Subscription-lifecycle changes: also run the opt-in Postgres lifecycle test (`tests/newsletter-lifecycle-postgres.ts`), which exercises the real request/confirm/unsubscribe SQL.
 - Failure-alerting changes: verify against the log capture in `npm test`; never add a monitoring service, retry queue, or paging integration.
 - Discussion changes: verify the abuse controls (Turnstile, honeypot, rate limiting, origin checks) and that no token, body, or display name can reach a log.

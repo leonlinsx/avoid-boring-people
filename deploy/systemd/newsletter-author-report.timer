@@ -1,0 +1,12 @@
+[Unit]
+Description=Monthly newsletter analytics report (first Tuesday, 11:30 Eastern)
+
+[Timer]
+OnCalendar=Tue *-*-1..7 11:30:00 America/New_York
+# A missed month is caught up on the next boot rather than skipped: this report
+# is the only monthly view of deliverability and list health the author has.
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

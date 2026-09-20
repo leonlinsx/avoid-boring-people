@@ -64,6 +64,7 @@ import {
 } from '../../src/lib/newsletter/attribution.ts';
 import {
   collectNewsletterMetrics,
+  DEFAULT_REPORT_WINDOW_DAYS,
   MAX_REPORT_WINDOW_DAYS,
   MIN_SHARE_SAMPLE,
   newsletterCheckExitCode,
@@ -71,6 +72,18 @@ import {
   reportAnalyticsCollectionFailure,
   validateReportWindow,
 } from '../../src/lib/newsletter/analytics.ts';
+import {
+  AUTHOR_REPORT_WINDOW_DAYS,
+  analyticsReportSesConfig,
+  authorReportRecipient,
+  newsletterReportEmail,
+  parseAnalyticsEmailArgs,
+  parseAuthorReportArgs,
+} from '../../src/lib/newsletter/analytics-email.ts';
+import {
+  NEWSLETTER_FROM,
+  NEWSLETTER_REPLY_TO,
+} from '../../src/lib/newsletter/email.ts';
 import { requiresOriginRejection } from '../../src/lib/newsletter/request-origin.ts';
 import { createSign, generateKeyPairSync } from 'node:crypto';
 import { withCapturedLogs } from '../helpers/harness.ts';
@@ -232,6 +245,122 @@ export function testNewsletterTestSendSafeguard() {
     () =>
       assertAllowedTestRecipient('reader@example.com', 'contact@leonlins.com'),
     /No email was sent/,
+  );
+}
+
+export function testNewsletterAuthorReportSafeguards() {
+  const allowlist = 'contact@leonlins.com, leon.lin.sx@example.com';
+  const env = {
+    NEWSLETTER_TEST_RECIPIENTS: allowlist,
+    NEWSLETTER_AUTHOR_REPORT_TO: ' Contact@LeonLins.com ',
+    AWS_REGION: 'us-east-2',
+    SES_CONFIGURATION_SET: 'my-first-configuration-set',
+  } as NodeJS.ProcessEnv;
+
+  // The scheduled report has exactly one fixed recipient, and it has to already
+  // be on the existing author allowlist.
+  assert.equal(authorReportRecipient(env), 'contact@leonlins.com');
+  for (const configured of [
+    undefined,
+    '   ',
+    'reader@example.com',
+    // A list, or a subscriber-shaped address, is never a report recipient.
+    'contact@leonlins.com, reader@example.com',
+  ])
+    assert.throws(
+      () =>
+        authorReportRecipient({
+          ...env,
+          NEWSLETTER_AUTHOR_REPORT_TO: configured,
+        }),
+      /No email was sent/,
+      `recipient ${JSON.stringify(configured)} must be refused`,
+    );
+
+  // The scheduled command takes no recipient: an argument is rejected rather
+  // than quietly ignored, so it can never be redirected.
+  assert.deepEqual(parseAuthorReportArgs([]), { dryRun: false });
+  assert.deepEqual(parseAuthorReportArgs(['--dry-run']), { dryRun: true });
+  for (const args of [
+    ['--to', 'reader@example.com'],
+    ['--confirm-send'],
+    ['--days', '30'],
+    ['--send'],
+  ])
+    assert.throws(
+      () => parseAuthorReportArgs(args),
+      /never an argument/,
+      `${args.join(' ')} must be refused`,
+    );
+
+  // The manual command keeps requiring both the address and the confirmation.
+  assert.deepEqual(
+    parseAnalyticsEmailArgs(['--to', 'contact@leonlins.com', '--confirm-send']),
+    { to: 'contact@leonlins.com', days: DEFAULT_REPORT_WINDOW_DAYS },
+  );
+  assert.deepEqual(
+    parseAnalyticsEmailArgs([
+      '--to',
+      'contact@leonlins.com',
+      '--confirm-send',
+      '--days',
+      '30',
+    ]),
+    { to: 'contact@leonlins.com', days: 30 },
+  );
+  for (const args of [
+    ['--to', 'contact@leonlins.com'],
+    ['--confirm-send'],
+    ['--to', '--confirm-send'],
+    ['--to', 'contact@leonlins.com', '--confirm-send', '--days'],
+    ['--to', 'contact@leonlins.com', '--confirm-send', '--days', 'abc'],
+  ])
+    assert.throws(
+      () => parseAnalyticsEmailArgs(args),
+      /Usage: npm run newsletter:analytics:email|whole number of days/,
+      `${args.join(' ')} must be refused`,
+    );
+
+  // SES settings are required before a report is sent.
+  assert.deepEqual(analyticsReportSesConfig(env), {
+    region: 'us-east-2',
+    configurationSet: 'my-first-configuration-set',
+  });
+  assert.throws(
+    () => analyticsReportSesConfig({ ...env, AWS_REGION: undefined }),
+    /No email was sent/,
+  );
+  assert.throws(
+    () =>
+      analyticsReportSesConfig({ ...env, SES_CONFIGURATION_SET: undefined }),
+    /No email was sent/,
+  );
+
+  // Exactly one recipient, from the newsletter address, carrying the report.
+  const command = newsletterReportEmail({
+    to: 'contact@leonlins.com',
+    days: AUTHOR_REPORT_WINDOW_DAYS,
+    report: 'AUDIENCE\n  1 active',
+    configurationSet: 'my-first-configuration-set',
+  });
+  const input = command.input;
+  assert.deepEqual(input.Destination?.ToAddresses, ['contact@leonlins.com']);
+  assert.equal(input.FromEmailAddress, NEWSLETTER_FROM);
+  assert.deepEqual(input.ReplyToAddresses, [NEWSLETTER_REPLY_TO]);
+  assert.equal(input.ConfigurationSetName, 'my-first-configuration-set');
+  assert.equal(
+    input.Content?.Simple?.Subject?.Data,
+    'Newsletter analytics — last 30 days',
+  );
+  assert.equal(
+    input.Content?.Simple?.Body?.Text?.Data,
+    'AUDIENCE\n  1 active',
+    'the rendered report is the body',
+  );
+  assert.equal(
+    JSON.stringify(input).includes('leon.lin.sx@example.com'),
+    false,
+    'a report never goes to the whole allowlist',
   );
 }
 
@@ -1837,6 +1966,7 @@ export async function runNewsletterTests() {
   await testNewsletterImporter();
   await testNewsletterRenderer();
   await testNewsletterTestSendSafeguard();
+  await testNewsletterAuthorReportSafeguards();
   await testNewsletterProductionSendSafeguards();
   await testNewsletterSafetyHelpers();
   await testNewsletterAttributionNormalization();
