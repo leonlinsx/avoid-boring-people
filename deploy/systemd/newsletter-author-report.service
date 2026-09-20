@@ -1,0 +1,13 @@
+[Unit]
+Description=Email the monthly newsletter analytics report to the author
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/leon/repos/avoid-boring-people
+# The user manager's PATH has no node, and this runs `npm run`. Keep the path in
+# step with the other node-based units on this machine.
+Environment=PATH=/home/leon/.nvm/versions/node/v24.13.0/bin:/usr/local/bin:/usr/bin:/bin
+# Credentials, SES configuration, NEWSLETTER_AUTHOR_REPORT_TO, and the author
+# allowlist come from the repo's own .env.local, which the npm script loads
+# itself. No recipient is passed here: the address is fixed configuration.
+ExecStart=/usr/bin/env npm run newsletter:analytics:author

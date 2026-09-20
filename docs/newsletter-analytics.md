@@ -23,14 +23,15 @@ optional Google Analytics tag, and this system neither reads nor writes GA.
 
 ## Architecture
 
-Four pieces, none of which adds a service:
+Five pieces, none of which adds a service:
 
 | Piece                  | Location                                                                                                                                                                                                                        | Responsibility                                                         |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | Capture (browser)      | [src/lib/newsletter/attribution.ts](../src/lib/newsletter/attribution.ts) used by [src/components/SubscribeForm.astro](../src/components/SubscribeForm.astro)                                                                   | Remember the first attributable visit in browser storage               |
 | Tagging (distribution) | [scripts/automation/attribution.py](../scripts/automation/attribution.py) used by [scripts/automation/auto_post.py](../scripts/automation/auto_post.py)                                                                         | Add canonical `utm_*` tags to outbound social links                    |
 | Write (server)         | [src/lib/newsletter/subscriptions.ts](../src/lib/newsletter/subscriptions.ts) via `/api/newsletter/subscribe`                                                                                                                   | Store normalized attribution on the subscriber row at INSERT time only |
-| Read (report)          | [src/lib/newsletter/analytics.ts](../src/lib/newsletter/analytics.ts), [scripts/newsletter/analytics.ts](../scripts/newsletter/analytics.ts), [scripts/newsletter/analytics-email.ts](../scripts/newsletter/analytics-email.ts) | Aggregate rows into a deterministic report                             |
+| Read (report)          | [src/lib/newsletter/analytics.ts](../src/lib/newsletter/analytics.ts), [scripts/newsletter/analytics.ts](../scripts/newsletter/analytics.ts)                                                                                     | Aggregate rows into a deterministic report                             |
+| Deliver (author only)  | [src/lib/newsletter/analytics-email.ts](../src/lib/newsletter/analytics-email.ts) used by [scripts/newsletter/analytics-email.ts](../scripts/newsletter/analytics-email.ts) and [scripts/newsletter/analytics-author-report.ts](../scripts/newsletter/analytics-author-report.ts) | Email that report to one allowlisted author address                    |
 
 Capture and tagging are live today; the stored attribution stays **inert until
 the Phase 5 cutover**, because the public signup form still posts to Substack and
@@ -246,6 +247,43 @@ read-only while sending mail is not. The recipient must appear in the existing
 goes only from `newsletter@leonlins.com` to that address. Subscribers never
 receive it, and no build, deploy, or CI job can send it.
 
+### The monthly author report
+
+The same message is also sent unattended once a month, so the author sees list
+health and deliverability without having to remember to ask for it:
+
+```bash
+npm run newsletter:analytics:author          # emails the report
+npm run newsletter:analytics:author -- --dry-run   # renders it and sends nothing
+```
+
+The recipient is not an argument. It is fixed configuration,
+`NEWSLETTER_AUTHOR_REPORT_TO`, and it must already be on the
+`NEWSLETTER_TEST_RECIPIENTS` allowlist — so an unattended run can only ever mail
+that one address, and a `--to` argument is refused rather than honoured. The
+window is one month, and the message only ever names that one recipient: there
+is no subscriber list in this path to send to.
+
+The scheduled entry point runs from a local user timer installed from
+[deploy/systemd](../deploy/systemd):
+
+```bash
+install -Dm644 deploy/systemd/newsletter-author-report.{service,timer} ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now newsletter-author-report.timer
+systemctl --user list-timers newsletter-author-report.timer
+```
+
+`OnCalendar=Tue *-*-1..7 11:30:00 America/New_York` fires on the first Tuesday
+of each month at 11:30 ET, and `Persistent=true` means a month missed because
+the machine was off is caught up on the next boot instead of skipped. The unit
+is a oneshot running `npm run newsletter:analytics:author` in the repository, so
+credentials, `SES_CONFIGURATION_SET`, and both addresses come from the repo's
+own `.env.local`; nothing is stored in the unit. A failed metric collection is
+reported with the same `newsletter_alert`/non-zero-exit contract as the weekly
+health check, so a broken month shows up in the journal rather than as a month
+of silence.
+
 ## Failure-only alerting and the weekly health check
 
 Scheduled newsletter work is unattended, so the question that matters is "did it
@@ -367,6 +405,19 @@ npm run lint
 npm run build
 python -m pytest tests -q    # social tagging and dry-run expectations
 ```
+
+The report-delivery safeguards are unit-tested without any mail being sent: the
+scheduled recipient is configuration (never an argument, and an address off the
+allowlist is refused), a `--to` argument to the scheduled command is rejected,
+the manual command still requires both `--to` and `--confirm-send`, and the
+built message has exactly one recipient. The scheduled path itself can be
+exercised for real, without email, with:
+
+```bash
+npm run newsletter:analytics:author -- --dry-run
+```
+
+A real author report needs SES credentials, so it is never sent from a test.
 
 An opt-in integration test exercises the real SQL against a disposable local
 Postgres cluster (it never uses `DATABASE_URL`):
