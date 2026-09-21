@@ -2,7 +2,7 @@
   "observations": {
     "2017_02_23_random/index.md": {
       "bluesky": {
-        "collected_at": "2026-09-14T15:29:33Z",
+        "collected_at": "2026-09-21T15:30:50Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -11,7 +11,7 @@
         }
       },
       "farcaster": {
-        "collected_at": "2026-09-14T15:29:33Z",
+        "collected_at": "2026-09-21T15:30:51Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -19,7 +19,7 @@
         }
       },
       "mastodon": {
-        "collected_at": "2026-09-14T15:29:35Z",
+        "collected_at": "2026-09-21T15:30:52Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -29,13 +29,31 @@
     },
     "2021_05_02_art_history/index.md": {
       "bluesky": {
-        "collected_at": "2026-09-14T15:29:35Z",
+        "collected_at": "2026-09-21T15:30:52Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
           "replies": 2,
           "reposts": 0
         }
+      },
+      "farcaster": {
+        "collected_at": "2026-09-21T15:30:52Z",
+        "counts": {
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      },
+      "mastodon": {
+        "collected_at": "2026-09-21T15:30:53Z",
+        "counts": {
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
       }
     }
   },
