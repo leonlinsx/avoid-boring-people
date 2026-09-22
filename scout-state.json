@@ -10,6 +10,21 @@
       "source": "hacker-news",
       "status": "surfaced",
       "surfaced_at": "2026-09-18T18:26:54.304881+00:00"
+    },
+    "https://news.ycombinator.com/item?id=49776910": {
+      "acted_at": null,
+      "content_id": "2021_04_03_ergodicity/index.md",
+      "content_title": "Ergodicity: What Does It Mean?",
+      "content_url": "https://leonlins.com/writing/ergodicity/",
+      "discovered_at": "2026-09-22T12:09:36.747652+00:00",
+      "draft": "One thing worth being careful about with Monte Carlo plan comparisons: the ensemble average across many simulated paths is not the same as the time average for any single path. Wealth processes are non-ergodic, so a plan can look fine on expected value while most individual paths end badly, or vice versa. That matters for how you present results. If the simulator reports a median or a success rate, that is closer to a time-average question (what happens to me over my life) than a mean terminal balance is. A mean terminal balance is an ensemble statistic and can be dominated by a small number of very good paths. For the mortgage prepayment versus taxable investing comparison specifically, the ranking of the two strategies can flip depending on whether you look at the mean across scenarios or the typical outcome for one person. Showing a distribution of paths, or at least percentiles, rather than a single expected number would make the tool's answers much more honest about risk.",
+      "external_url": "https://news.ycombinator.com/item?id=49776910",
+      "outcome": null,
+      "source": "hacker-news",
+      "status": "surfaced",
+      "surfaced_at": "2026-09-22T12:09:36.747652+00:00",
+      "thread_title": "Show HN: Ifso.io \u2013 Personal finance simulator with no sign up required",
+      "why_now": "The author is actively discussing a Monte Carlo-based personal finance simulator and its design tradeoffs, so a comment about what Monte Carlo output does and does not represent is timely and on-topic."
     }
   },
   "version": 1
