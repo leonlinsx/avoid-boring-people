@@ -617,6 +617,89 @@ export function testNotFoundPageHasNoCanonical() {
   }
 }
 
+/**
+ * Normal indexable pages advertise `max-image-preview:large` (Google
+ * Discover eligibility); noindex pages keep exactly one robots tag with
+ * their noindex directive and never gain a conflicting second tag.
+ */
+export function testRobotsImagePreviewMeta() {
+  const head = fs.readFileSync(
+    path.join(REPO_ROOT, 'src/components/BaseHead.astro'),
+    'utf-8',
+  );
+
+  assert.match(
+    head,
+    /<meta name="robots" content="max-image-preview:large" \/>/,
+    'indexable pages must allow large image previews for Discover',
+  );
+  assert.match(
+    head,
+    /<meta name="robots" content="noindex, follow" \/>/,
+    'noindex pages must keep their noindex behavior',
+  );
+
+  // The two directives live on opposite branches of one conditional, so a
+  // page emits exactly one robots tag and the directives can never conflict.
+  const robotsTags = head.match(/<meta name="robots"[^>]*>/g) ?? [];
+  assert.equal(
+    robotsTags.length,
+    2,
+    `expected the two conditional robots branches, found: ${robotsTags.join(' | ')}`,
+  );
+  assert.match(
+    head,
+    /\{noindex \? \(/,
+    'the robots tag must branch on the noindex prop',
+  );
+
+  // No page may add its own second robots tag: tokens.astro used to carry an
+  // inline noindex tag and now goes through the shared noindex prop instead.
+  for (const page of ['src/pages/tokens.astro', 'src/pages/404.astro']) {
+    const source = fs.readFileSync(path.join(REPO_ROOT, page), 'utf-8');
+    assert.equal(
+      (source.match(/<meta name="robots"/g) ?? []).length,
+      0,
+      `${page} must not emit its own robots tag alongside BaseHead`,
+    );
+  }
+  const tokens = fs.readFileSync(
+    path.join(REPO_ROOT, 'src/pages/tokens.astro'),
+    'utf-8',
+  );
+  assert.match(tokens, /noindex=\{true\}/, 'the tokens page must stay noindex');
+}
+
+/**
+ * Article `og:image` / `BlogPosting.image` must use the deployed 1200x630
+ * hero transform (Discover wants >=1200px wide), not the smaller original
+ * source file. BlogPost.astro already renders that transform with `<Image>`;
+ * the social image resolves the same transform with `getImage` using the
+ * identical parameters, so both point at the same built asset.
+ */
+export function testArticleSocialImageUsesLargeHeroTransform() {
+  const post = fs.readFileSync(
+    path.join(REPO_ROOT, 'src/layouts/BlogPost.astro'),
+    'utf-8',
+  );
+
+  assert.match(
+    post,
+    /await getImage\(\{\s*src: hero,\s*format: 'webp',\s*width: 1200,\s*height: 630,\s*fit: 'cover',\s*\}\)/,
+    'the social image must resolve the same 1200x630 webp transform the hero renders',
+  );
+  assert.match(
+    post,
+    /image=\{socialImage\}/,
+    'BaseLayout must receive the transformed social image, not hero.src',
+  );
+  assert.equal(
+    post.includes('hero.src'),
+    false,
+    'the raw original source must no longer feed og:image',
+  );
+}
+
 export async function runSeoMetaTests() {
   await testJsonLdSerialization();
   await testOriginTrust();
@@ -630,4 +713,6 @@ export async function runSeoMetaTests() {
   await testAuthorIdentityGraph();
   await testRobotsCrawlerPolicy();
   await testNotFoundPageHasNoCanonical();
+  await testRobotsImagePreviewMeta();
+  await testArticleSocialImageUsesLargeHeroTransform();
 }

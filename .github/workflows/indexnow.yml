@@ -68,6 +68,15 @@ jobs:
           python -m scripts.automation.submit_indexnow \
             --key-file public/a84f78d24790ed123e7a736ea0abfe64.txt \
             --urls-file "$RUNNER_TEMP/urls.tsv"
+      # Sender-only Webmentions for the same deployed articles. Best-effort and
+      # isolated: the script always exits 0 on per-target failures, and
+      # continue-on-error keeps a script-level failure off the IndexNow result.
+      - name: Send outbound Webmentions for the published articles
+        if: steps.changed.outputs.found == 'true'
+        continue-on-error: true
+        run: |
+          python -m scripts.automation.send_webmentions \
+            --urls-file "$RUNNER_TEMP/urls.tsv"
       - name: Report that no article changed
         if: steps.changed.outputs.found != 'true'
         run: |
