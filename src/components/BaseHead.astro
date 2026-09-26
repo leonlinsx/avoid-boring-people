@@ -99,9 +99,6 @@ const metaDescription = description || SITE_DESCRIPTION;
 const keywordsContent =
   normalizedTags.length > 0 ? normalizedTags.join(', ') : undefined;
 
-// ✅ Absolute URL for organization logo
-const orgLogo = new URL("/logos/substack_logo.webp", SITE_URL).toString();
-
 // Keep organization minimal and secondary to the person entity.
 const orgSchema = {
   "@context": "https://schema.org",
@@ -206,8 +203,8 @@ const ogImageAlt = `Preview image for ${title}`;
 
 <!-- Favicons -->
 <link rel="icon" href="/favicon.ico" sizes="any" />
-<link rel="icon" href={orgLogo} type="image/webp" sizes="192x192" />
-<link rel="apple-touch-icon" href={orgLogo} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/brand/icon-512.png" />
 
 <!-- Sitemap & RSS -->
 <link rel="sitemap" href={new URL("sitemap-index.xml", SITE_URL).toString()} />
