@@ -22,7 +22,4 @@ export const SITE_ORG_SAME_AS = [
 ];
 
 // ✅ Default Open Graph image (used if no heroImage is set in frontmatter)
-// Place this file in `public/logos/` so it's accessible at /logos/substack_logo.png
-export const SITE_OG_IMAGE = '/logos/substack_logo.webp';
-
-export const SITE_BANNER_IMAGE = '/logos/substack_banner.webp';
+export const SITE_OG_IMAGE = '/brand/default-og.webp';

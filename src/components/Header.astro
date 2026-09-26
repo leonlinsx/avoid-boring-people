@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE } from '../consts';
+import { SITE_AUTHOR } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 
 interface Props {
@@ -11,14 +11,8 @@ const { currentPath } = Astro.props;
 
 <header class="site-header">
   <div class="nav-container">
-    <a href="/" class="site-logo" aria-label={SITE_TITLE}>
-      <img
-        src="/logos/substack_logo.webp"
-        alt=""
-        aria-hidden="true"
-        width="32"
-        height="32"
-      />
+    <a href="/" class="site-logo" aria-label={`${SITE_AUTHOR} home`}>
+      {SITE_AUTHOR}
     </a>
 
     <nav class="nav-links" aria-label="Primary">
@@ -53,12 +47,18 @@ const { currentPath } = Astro.props;
     align-items: center;
     justify-content: space-between;
   }
-  .site-logo img {
-    height: 32px;
-    transition: opacity 0.2s ease;
+  .site-logo {
+    color: var(--color-text);
+    font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 32px;
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
-  .site-logo:hover img {
-    opacity: 0.85;
+  .site-logo:hover {
+    color: #383f77;
+    text-decoration: none;
   }
   .nav-links {
     display: flex;
@@ -85,8 +85,9 @@ const { currentPath } = Astro.props;
       gap: var(--space-sm);
       font-size: 0.85rem;
     }
-    .site-logo img {
-      height: 28px;
+    .site-logo {
+      font-size: 1.2rem;
+      line-height: 28px;
     }
   }
 </style>

@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PostList from '../components/PostList.astro';
-import { SITE_AUTHOR, SITE_BANNER_IMAGE, SITE_URL } from '../consts';
+import { SITE_AUTHOR, SITE_OG_IMAGE, SITE_URL } from '../consts';
 import { enrichPost } from '../utils/text';
 import TableOfContents from '../components/TableOfContents.astro';
 import ShareButtons from '../components/ShareButtons.astro';
@@ -38,14 +38,11 @@ const {
   discussionPrompt,
 } = enrichedPost.data;
 const slug = enrichedPost.slug;
-
-// ✅ Use normalized hero (string or ImageMetadata)
-const hero = heroImage ?? SITE_BANNER_IMAGE;
+const hero = heroImage;
 
 // Social image reuses the rendered hero transform, so `og:image` and
 // `BlogPosting.image` point at the deployed 1200x630 asset instead of the
-// smaller original source. String heroes (public-dir fallbacks) cannot be
-// optimized and pass through unchanged.
+// smaller original source. Hero-less articles use the metadata-only fallback.
 const socialImage =
   typeof hero === 'object'
     ? (
@@ -57,7 +54,7 @@ const socialImage =
           fit: 'cover',
         })
       ).src
-    : hero;
+    : (hero ?? SITE_OG_IMAGE);
 
 // ✅ Related posts (exclude by id)
 const allPosts = await getCollection('blog');
