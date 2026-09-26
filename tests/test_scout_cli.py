@@ -9,7 +9,7 @@ from scripts.scout.errors import ScoutError
 from scripts.scout.inventory import ContentItem
 from scripts.scout.matching import Match
 
-NOW = datetime(2026, 9, 18, 12, 0, tzinfo=timezone.utc)
+NOW = datetime.now(timezone.utc)
 PUBLISHED = (NOW - timedelta(days=1)).isoformat()
 DRAFT = (
     "The incentive to look busy is usually stronger than the incentive to be right, which is "
