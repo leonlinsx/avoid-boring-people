@@ -231,7 +231,11 @@ const ogImageAlt = `Preview image for ${title}`;
 <meta name="description" content={metaDescription} />
 <meta name="author" content={resolvedAuthor} />
 {keywordsContent && <meta name="keywords" content={keywordsContent} />}
-{noindex && <meta name="robots" content="noindex, follow" />}
+{noindex ? (
+  <meta name="robots" content="noindex, follow" />
+) : (
+  <meta name="robots" content="max-image-preview:large" />
+)}
 
 <!-- Open Graph -->
 <meta property="og:type" content={ogType} />

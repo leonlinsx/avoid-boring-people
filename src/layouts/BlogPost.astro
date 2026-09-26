@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -42,6 +42,23 @@ const slug = enrichedPost.slug;
 // ✅ Use normalized hero (string or ImageMetadata)
 const hero = heroImage ?? SITE_BANNER_IMAGE;
 
+// Social image reuses the rendered hero transform, so `og:image` and
+// `BlogPosting.image` point at the deployed 1200x630 asset instead of the
+// smaller original source. String heroes (public-dir fallbacks) cannot be
+// optimized and pass through unchanged.
+const socialImage =
+  typeof hero === 'object'
+    ? (
+        await getImage({
+          src: hero,
+          format: 'webp',
+          width: 1200,
+          height: 630,
+          fit: 'cover',
+        })
+      ).src
+    : hero;
+
 // ✅ Related posts (exclude by id)
 const allPosts = await getCollection('blog');
 const related = allPosts
@@ -73,7 +90,7 @@ breadcrumbItems.push({ label: title });
 <BaseLayout
   title={title}
   description={description}
-  image={typeof hero === 'object' ? hero.src : hero}
+  image={socialImage}
   pubDate={pubDate}
   updatedDate={updatedDate}
   authorName={SITE_AUTHOR}
