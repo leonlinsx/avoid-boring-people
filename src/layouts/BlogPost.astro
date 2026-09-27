@@ -6,7 +6,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PostList from '../components/PostList.astro';
 import { SITE_AUTHOR, SITE_OG_IMAGE, SITE_URL } from '../consts';
-import { comparePostsByDate, enrichPost } from '../utils/text';
+import { enrichPost } from '../utils/text';
+import { selectRelatedPosts } from '../utils/related-posts';
 import TableOfContents from '../components/TableOfContents.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import TagList from '../components/TagList.astro';
@@ -46,13 +47,9 @@ const hero = heroImage;
 // smaller original source. Hero-less articles use the metadata-only fallback.
 const socialImage = (await articleHeroUrl(hero)) ?? SITE_OG_IMAGE;
 
-// ✅ Related posts (exclude by id)
+// ✅ Related posts
 const allPosts = await getCollection('blog');
-const related = allPosts
-  .filter((p) => p.data.category === category && p.id !== post.id)
-  .map(enrichPost)
-  .sort(comparePostsByDate)
-  .slice(0, 3);
+const related = selectRelatedPosts(post, allPosts).map(enrichPost);
 
 // ✅ Canonical URL from clean slug
 const canonicalURL = new URL(`/writing/${slug}`, SITE_URL).toString();
