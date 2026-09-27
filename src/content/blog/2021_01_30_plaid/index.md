@@ -3,7 +3,7 @@ title: 'Plaid and the Power of APIs'
 description: 'Plaid abstracts away the boring financial plumbing, enabling others to innovate faster.'
 pubDate: 2021-01-30
 category: Technology
-tags: ['startups', 'tech', 'software']
+tags: ['startups', 'software']
 featured: false
 heroImage: './plaid_3.webp'
 ---
