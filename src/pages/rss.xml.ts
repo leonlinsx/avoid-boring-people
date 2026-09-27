@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '../consts.ts';
 import { getCleanSlug } from '../utils/slug.ts';
+import { comparePostsByDate } from '../utils/text.ts';
 
 export async function GET(): Promise<Response> {
   const posts = await getCollection('blog');
@@ -10,7 +11,7 @@ export async function GET(): Promise<Response> {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     site: SITE_URL,
-    items: posts.map((post) => {
+    items: posts.sort(comparePostsByDate).map((post) => {
       // fallback to post.id if slug isn’t available
       const slug = getCleanSlug(post);
       return {
