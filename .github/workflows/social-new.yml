@@ -87,6 +87,7 @@ jobs:
         continue-on-error: true
         env:
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          MANUAL_PLATFORMS: ${{ inputs.platforms }}
           FAIL_ON_PUBLISH_ERROR: 'true'
           DISTRIBUTION_MODE: new
           USE_LLM: 'true'
