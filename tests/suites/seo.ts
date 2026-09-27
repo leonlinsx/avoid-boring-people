@@ -4,10 +4,7 @@ import assert from 'node:assert/strict';
 import { SITE_URL, SITE_AUTHOR_SAME_AS } from '../../src/consts.ts';
 import { normalizePathname } from '../../src/utils/slug-helpers.ts';
 
-import {
-  hasUntrustedPathOverride,
-  requiresOriginRejection,
-} from '../../src/lib/newsletter/request-origin.ts';
+import { requiresOriginRejection } from '../../src/lib/newsletter/request-origin.ts';
 import { serializeJsonLd } from '../../src/utils/jsonld.ts';
 import { canonicalSiteOrigin } from '../../src/lib/site-origin.ts';
 import {
@@ -194,44 +191,6 @@ export function testOriginTrust() {
   }
 }
 
-export function testPathOverrideGuard() {
-  assert.equal(
-    hasUntrustedPathOverride(
-      new Request('https://leonlins.com/_image?href=/a.png&f=png'),
-    ),
-    false,
-  );
-  assert.equal(
-    hasUntrustedPathOverride(
-      new Request('https://leonlins.com/api/newsletter/unsubscribe?token=x'),
-    ),
-    false,
-  );
-  assert.equal(
-    hasUntrustedPathOverride(
-      new Request(
-        'https://leonlins.com/_image?x_astro_path=/api/newsletter/unsubscribe',
-      ),
-    ),
-    true,
-  );
-  assert.equal(
-    hasUntrustedPathOverride(
-      new Request('https://leonlins.com/anything', {
-        headers: { 'x-astro-path': '/api/social/instagram-media' },
-      }),
-    ),
-    true,
-  );
-  assert.equal(
-    hasUntrustedPathOverride(
-      new Request('https://leonlins.com/anything', {
-        headers: { 'x-astro-path': '' },
-      }),
-    ),
-    true,
-  );
-}
 export const ROBOTS_PATH = path.join(REPO_ROOT, 'public/robots.txt');
 
 export function testArticleSitemapLastmod() {
@@ -703,7 +662,6 @@ export function testArticleSocialImageUsesLargeHeroTransform() {
 export async function runSeoMetaTests() {
   await testJsonLdSerialization();
   await testOriginTrust();
-  await testPathOverrideGuard();
   await testArticleSitemapLastmod();
   await testSitemapSerializationUsesArticleDates();
   await testArticleLastmodPrefersUpdatedDate();

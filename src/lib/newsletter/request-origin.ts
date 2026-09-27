@@ -1,21 +1,5 @@
 import { canonicalSiteOrigin } from '../site-origin.ts';
 
-// `@astrojs/vercel` rewrites the internal request path from the client-supplied
-// `x-astro-path` header or `x_astro_path` query parameter with no authentication
-// (GHSA-mr6q-rp88-fx84), which lets any caller reach any route under any URL.
-// The header survives into middleware, so the guard below rejects it. The query
-// parameter is consumed by the adapter before middleware runs, so that half can
-// only be fixed by upgrading the adapter. There is no ISR route, no `vercel.json`
-// rewrite, and no generated edge middleware here, so no legitimate request
-// carries either value; remove this guard once the adapter gates the override
-// behind its build-time middleware secret.
-export function hasUntrustedPathOverride(request: Request): boolean {
-  return (
-    request.headers.has('x-astro-path') ||
-    new URL(request.url).searchParams.has('x_astro_path')
-  );
-}
-
 // Preserve Astro 5's origin-check behavior except for the machine-to-machine
 // POSTs whose bodies carry their own authorization. SNS authenticates a signature;
 // RFC one-click unsubscribe authenticates the high-entropy token in the URL/body;

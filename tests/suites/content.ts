@@ -1,7 +1,8 @@
 // Coverage for content collections, search index generation, RSS, and Instagram publishing.
 
 import assert from 'node:assert/strict';
-import { __setMockGetCollectionImplementation, z } from 'astro:content';
+import { __setMockGetCollectionImplementation } from '../mocks/astro-content.ts';
+import { z } from 'astro/zod';
 import { computeCleanSlug } from '../../src/utils/slug-helpers.ts';
 import {
   enrichPost,
@@ -277,7 +278,7 @@ export async function withMockGetCollection(
 }
 
 export async function testContentSchemaEvergreenDefault() {
-  const { collections } = await import('../../src/content/config.ts');
+  const { collections } = await import('../../src/content.config.ts');
   const schema = (collections.blog as any).schema({ image: () => z.any() });
   const base = {
     title: 'Evergreen default',
