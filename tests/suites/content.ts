@@ -397,9 +397,8 @@ export async function testInstagramMediaUpload() {
     handleInstagramMediaUpload,
     setBlobUploader,
   } = await import('../../src/lib/social/instagram-media.ts');
-  const { POST, prerender } = await import(
-    '../../src/pages/api/social/instagram-media.ts'
-  );
+  const { POST, prerender } =
+    await import('../../src/pages/api/social/instagram-media.ts');
   const { put } = await import('@vercel/blob');
 
   const endpoint = 'https://leonlins.com/api/social/instagram-media';
