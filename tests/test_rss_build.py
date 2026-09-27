@@ -33,3 +33,8 @@ def test_built_rss_is_distribution_quality():
             image = enclosure.attrib["url"]
             assert urlparse(image).scheme == "https" and urlparse(image).netloc
             assert media is not None and media.attrib["url"] == image
+
+
+if __name__ == "__main__":
+    test_built_rss_is_distribution_quality()
+    print("Built RSS validation passed")
