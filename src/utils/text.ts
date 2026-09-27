@@ -17,6 +17,16 @@ export type BlogPost = CollectionEntry<'blog'> & {
   };
 };
 
+/** Order posts newest first, then by collection entry id for equal dates. */
+export function comparePostsByDate(
+  a: CollectionEntry<'blog'>,
+  b: CollectionEntry<'blog'>,
+): number {
+  const dateDifference = b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  if (dateDifference !== 0) return dateDifference;
+  return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+}
+
 export type PaginateFn = <T>(
   items: T[],
   options: { pageSize: number; params?: Record<string, string> },
@@ -108,9 +118,7 @@ export async function getAllPostsPaginated(paginate: PaginateFn, pageSize = 8) {
     allPosts.map((p) => p.data.category ?? ''),
   );
 
-  const posts: BlogPost[] = allPosts
-    .map(enrichPost)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const posts: BlogPost[] = allPosts.map(enrichPost).sort(comparePostsByDate);
 
   const pages = paginate(posts, { pageSize });
 
@@ -138,7 +146,7 @@ export async function getCategoryPostsPaginated(
     const filtered: BlogPost[] = all
       .filter((p) => normalizeCategory(p.data.category ?? '') === category)
       .map(enrichPost)
-      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+      .sort(comparePostsByDate);
 
     const pages = paginate(filtered, {
       pageSize,

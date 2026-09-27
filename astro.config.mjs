@@ -1,5 +1,6 @@
 // @ts-check
 import mdx from '@astrojs/mdx';
+import { unified } from '@astrojs/markdown-remark';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import remarkFootnotes from 'remark-footnotes';
@@ -20,6 +21,7 @@ const blogLastmod = buildBlogLastmodMap();
 
 export default defineConfig({
   site: SITE_URL,
+  compressHTML: true,
   // Canonical URLs and sitemap entries never carry a trailing slash. Asking the
   // adapter to normalize them (it forwards this to the deployed router) also
   // makes `/writing/2020_12_02_kelly/` reach the slashless legacy redirect key
@@ -51,7 +53,7 @@ export default defineConfig({
   ],
   markdown: {
     // @ts-expect-error - remarkFootnotes typing mismatch
-    remarkPlugins: [[remarkFootnotes, { inlineNotes: true }]],
+    processor: unified({ remarkPlugins: [[remarkFootnotes, { inlineNotes: true }]] }),
   },
 
   // ✅ Redirects must be an object

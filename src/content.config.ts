@@ -1,9 +1,16 @@
-import { defineCollection, z } from 'astro:content';
-import { MAX_DISCUSSION_PROMPT_LENGTH } from '../lib/comments/domain.ts';
-import { categoryLabels } from '../utils/taxonomy';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
+import { MAX_DISCUSSION_PROMPT_LENGTH } from './lib/comments/domain.ts';
+import { categoryLabels } from './utils/taxonomy';
 
 const blog = defineCollection({
-  type: 'content',
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/blog',
+    // Keep the Astro 5 IDs used by search-index.json and image paths.
+    generateId: ({ entry }) => entry,
+  }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),

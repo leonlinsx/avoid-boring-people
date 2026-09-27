@@ -7,7 +7,7 @@ import {
   SITE_URL,
 } from '../consts.ts';
 import { articleHeroUrl } from '../utils/hero.ts';
-import { enrichPost } from '../utils/text.ts';
+import { comparePostsByDate, enrichPost } from '../utils/text.ts';
 
 const DESCRIPTION_MAX = 500;
 
@@ -60,7 +60,7 @@ export function rssDescription(
 export async function GET(): Promise<Response> {
   const posts = (await getCollection('blog'))
     .map(enrichPost)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    .sort(comparePostsByDate);
 
   const items = await Promise.all(
     posts.map(async (post) => {

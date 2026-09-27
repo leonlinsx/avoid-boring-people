@@ -561,9 +561,8 @@ export async function testConfirmRoute() {
   try {
     delete process.env.DATABASE_URL;
     delete process.env.DATABASE_URL_UNPOOLED;
-    const { GET, POST } = await import(
-      '../../src/pages/api/newsletter/confirm.ts'
-    );
+    const { GET, POST } =
+      await import('../../src/pages/api/newsletter/confirm.ts');
 
     // GET renders the button page, and reaching it must not touch subscriber
     // state: no database call can happen, because no connection string exists.
@@ -1488,9 +1487,8 @@ export async function testNewsletterAlerting() {
   try {
     delete process.env.DATABASE_URL;
     delete process.env.DATABASE_URL_UNPOOLED;
-    const { POST } = await import(
-      '../../src/pages/api/newsletter/subscribe.ts'
-    );
+    const { POST } =
+      await import('../../src/pages/api/newsletter/subscribe.ts');
     const failing = await withCapturedLogs(async () => {
       const response = await POST(
         minimalApiContext(
@@ -1530,9 +1528,8 @@ export async function testNewsletterAlerting() {
     // A missing topic means no event can ever be ingested, whichever sender
     // sends it, so that is alerted on as a configuration failure.
     delete process.env.NEWSLETTER_SNS_TOPIC_ARN;
-    const { POST: sesPost } = await import(
-      '../../src/pages/api/newsletter/ses-events.ts'
-    );
+    const { POST: sesPost } =
+      await import('../../src/pages/api/newsletter/ses-events.ts');
     const unconfigured = await withCapturedLogs(async () => {
       const response = await sesPost(
         minimalApiContext(

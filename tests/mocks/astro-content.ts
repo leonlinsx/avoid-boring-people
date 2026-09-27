@@ -1,7 +1,7 @@
 import { z, type ZodTypeAny } from 'zod';
 
 // Re-export the content-collection helpers the real `astro:content` module
-// provides so schema files (e.g. src/content/config.ts) can be imported and
+// provides so schema files (e.g. src/content.config.ts) can be imported and
 // exercised directly in tests. The context type mirrors the shape Astro passes
 // to a schema function closely enough to avoid implicit-any diagnostics.
 export { z };
@@ -11,7 +11,7 @@ export interface MockSchemaContext {
 }
 
 export interface MockCollectionConfig {
-  type: string;
+  loader: unknown;
   schema?: (context: MockSchemaContext) => unknown;
 }
 

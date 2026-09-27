@@ -4,7 +4,7 @@ import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 import SearchBar from '../../components/SearchBar.astro';
-import { enrichPost } from '../../utils/text'; // ✅ reuse helper
+import { comparePostsByDate, enrichPost } from '../../utils/text'; // ✅ reuse helper
 import { searchPosts } from '../../utils/search';
 
 // Extract query param `q` from the URL
@@ -14,9 +14,7 @@ const q = (url.searchParams.get('q') || '').trim();
 // Fetch and enrich all posts
 const allPosts = await getCollection('blog');
 
-const posts = allPosts
-  .map(enrichPost)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = allPosts.map(enrichPost).sort(comparePostsByDate);
 
 const filteredPosts = q ? searchPosts(posts, q) : posts;
 const visibleIds = new Set(filteredPosts.map((post) => post.id));

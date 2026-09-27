@@ -6,7 +6,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PostList from '../components/PostList.astro';
 import { SITE_AUTHOR, SITE_OG_IMAGE, SITE_URL } from '../consts';
-import { enrichPost } from '../utils/text';
+import { comparePostsByDate, enrichPost } from '../utils/text';
 import TableOfContents from '../components/TableOfContents.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import TagList from '../components/TagList.astro';
@@ -51,7 +51,7 @@ const allPosts = await getCollection('blog');
 const related = allPosts
   .filter((p) => p.data.category === category && p.id !== post.id)
   .map(enrichPost)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .sort(comparePostsByDate)
   .slice(0, 3);
 
 // ✅ Canonical URL from clean slug

@@ -1,7 +1,8 @@
 // Coverage for content collections, search index generation, RSS, and Instagram publishing.
 
 import assert from 'node:assert/strict';
-import { __setMockGetCollectionImplementation, z } from 'astro:content';
+import { __setMockGetCollectionImplementation } from '../mocks/astro-content.ts';
+import { z } from 'astro/zod';
 import { computeCleanSlug } from '../../src/utils/slug-helpers.ts';
 import {
   enrichPost,
@@ -277,7 +278,7 @@ export async function withMockGetCollection(
 }
 
 export async function testContentSchemaEvergreenDefault() {
-  const { collections } = await import('../../src/content/config.ts');
+  const { collections } = await import('../../src/content.config.ts');
   const schema = (collections.blog as any).schema({ image: () => z.any() });
   const base = {
     title: 'Evergreen default',
@@ -414,6 +415,68 @@ export async function testRssEndpoint() {
   });
 }
 
+export async function testChronologicalPostOrderIsIndependentOfCollectionOrder() {
+  const posts = [
+    makeCollectionEntry({
+      id: '2024_01_01_zeta/index.md',
+      slug: 'zeta',
+      data: {
+        title: 'Zeta',
+        category: 'Investing',
+        pubDate: new Date('2024-01-01T00:00:00Z'),
+      },
+    }),
+    makeCollectionEntry({
+      id: '2024_01_01_alpha/index.md',
+      slug: 'alpha',
+      data: {
+        title: 'Alpha',
+        category: 'Investing',
+        pubDate: new Date('2024-01-01T00:00:00Z'),
+      },
+    }),
+    makeCollectionEntry({
+      id: '2024_02_01_newer/index.md',
+      slug: 'newer',
+      data: {
+        title: 'Newer',
+        category: 'Investing',
+        pubDate: new Date('2024-02-01T00:00:00Z'),
+      },
+    }),
+  ];
+  const expectedIds = [posts[2].id, posts[1].id, posts[0].id];
+  const paginate = ((items: BlogPost[]) => [{ props: { items } }]) as any;
+  const { GET } = await import('../../src/pages/rss.xml.ts');
+
+  for (const input of [posts, [...posts].reverse()]) {
+    setGetCollectionImplementation(async () => input as any);
+    try {
+      const { pages } = await getAllPostsPaginated(paginate);
+      assert.deepEqual(
+        pages[0].props.items.map((post: BlogPost) => post.id),
+        expectedIds,
+      );
+
+      const routes = await getCategoryPostsPaginated(paginate);
+      assert.deepEqual(
+        routes[0].props.items.map((post: BlogPost) => post.id),
+        expectedIds,
+      );
+    } finally {
+      setGetCollectionImplementation(null);
+    }
+
+    await withMockGetCollection(input, async () => {
+      const xml = await (await GET()).text();
+      const titles = [
+        ...xml.matchAll(/<item>[\s\S]*?<title>([^<]+)<\/title>/g),
+      ].map((match) => match[1]);
+      assert.deepEqual(titles, ['Newer', 'Alpha', 'Zeta']);
+    });
+  }
+}
+
 export async function testInstagramMediaUpload() {
   const {
     BLOB_PATH_HEADER,
@@ -421,9 +484,8 @@ export async function testInstagramMediaUpload() {
     handleInstagramMediaUpload,
     setBlobUploader,
   } = await import('../../src/lib/social/instagram-media.ts');
-  const { POST, prerender } = await import(
-    '../../src/pages/api/social/instagram-media.ts'
-  );
+  const { POST, prerender } =
+    await import('../../src/pages/api/social/instagram-media.ts');
   const { put } = await import('@vercel/blob');
 
   const endpoint = 'https://leonlins.com/api/social/instagram-media';
@@ -697,5 +759,6 @@ export async function runContentTests() {
   await testContentSchemaEvergreenDefault();
   await testSearchIndexEndpoint();
   await testRssEndpoint();
+  await testChronologicalPostOrderIsIndependentOfCollectionOrder();
   await testInstagramMediaUpload();
 }

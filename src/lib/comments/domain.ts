@@ -55,8 +55,7 @@ export type CommentInput = {
 };
 
 export type CommentValidationResult =
-  | { ok: true; value: CommentInput }
-  | { ok: false; error: CommentErrorCode };
+  { ok: true; value: CommentInput } | { ok: false; error: CommentErrorCode };
 
 // One clean line-ending convention, no more than one blank line between
 // paragraphs, and no leading or trailing whitespace. Everything else in the body
@@ -71,8 +70,7 @@ export function normalizeCommentText(value: unknown): string {
 }
 
 export type CommentBodyValidationResult =
-  | { ok: true; value: string }
-  | { ok: false; error: CommentErrorCode };
+  { ok: true; value: string } | { ok: false; error: CommentErrorCode };
 
 export function validateCommentBody(
   value: unknown,

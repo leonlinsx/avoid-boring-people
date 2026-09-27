@@ -7,10 +7,7 @@ export const TURNSTILE_VERIFY_URL =
   'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 export type TurnstileResult =
-  | 'verified'
-  | 'invalid'
-  | 'unconfigured'
-  | 'unavailable';
+  'verified' | 'invalid' | 'unconfigured' | 'unavailable';
 
 // Read at build time in the Astro component, because the widget site key is
 // public by design and must reach the static shell. A missing site key disables
