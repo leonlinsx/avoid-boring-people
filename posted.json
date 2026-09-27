@@ -526,6 +526,14 @@
     "2020_12_23_practice/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "tumblr": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-09-27T11:54:17Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "<TUMBLR_POST_ID>",
+        "remote_url": "<TUMBLR_POST_URL>"
       }
     },
     "2021_01_06_nonviolent/index.md": {
