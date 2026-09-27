@@ -1,10 +1,4 @@
-"""Discovery hashtags and richer single-status surfaces.
-
-Hashtags come only from sanitized article metadata, never from the model, and
-ride along only when everything fits: discovery must not steal content space.
-Mastodon prefers two whole points over one when the 500-character budget
-allows; the trim fallback stays tagless.
-"""
+"""Deterministic platform renderers from shared social copy."""
 from scripts.automation.content import SocialPost
 from scripts.automation.formatters.thread_formatter import (
     MAX_TWEET_LEN,
@@ -13,10 +7,12 @@ from scripts.automation.formatters.thread_formatter import (
 from scripts.automation.renderers.social import (
     FARCASTER_CAST_LIMIT,
     MASTODON_STATUS_LIMIT,
+    NOSTR_NOTE_LIMIT,
     THREADS_TEXT_LIMIT,
     hashtag_suffix,
     render_farcaster,
     render_mastodon,
+    render_nostr,
     render_threads,
 )
 
@@ -35,18 +31,14 @@ def test_hashtag_suffix_caps_dedupes_and_empties():
     assert hashtag_suffix(["  ", "x"]) == " #x"
 
 
-def test_thread_root_carries_tags_only_when_they_fit():
+def test_thread_root_omits_article_taxonomy_tags():
     post = {"title": "Title", "url": URL}
-    summary = {"teaser": "Short hook", "points": []}
-    rooted = format_as_thread(post, summary, tags=["investing", "risk"])
-    assert rooted[0] == "Short hook #investing #risk"
-    assert rooted[-1] == f"Full piece: {URL}"
+    summary = {"teaser": "Short hook", "points": ["A useful point."]}
+    rooted = format_as_thread(post, summary)
+    assert rooted == ["Short hook\n\nA useful point.", f"Full piece: {URL}"]
+    assert "#investing" not in "\n".join(rooted)
     long_hook = {"teaser": "H" * (MAX_TWEET_LEN - 5), "points": []}
-    assert format_as_thread(post, long_hook, tags=["investing"])[0] == "H" * (
-        MAX_TWEET_LEN - 5
-    )
-    # The link reply always frames the canonical URL as the pointer to the piece.
-    assert format_as_thread(post, summary) == ["Short hook", f"Full piece: {URL}"]
+    assert format_as_thread(post, long_hook)[0] == "H" * (MAX_TWEET_LEN - 5)
 
 
 def test_mastodon_prefers_two_points_then_tags():
@@ -76,14 +68,23 @@ def test_mastodon_single_point_unchanged_without_tags():
     assert rendered == f"Hook\n\nBody text here.\n\n{URL}"
 
 
-def test_farcaster_carries_tags_within_limit():
-    rendered = render_farcaster(_post(tags=("investing",)))
-    assert "#investing" in rendered
-    assert rendered.endswith(URL)
-    assert len(rendered) <= FARCASTER_CAST_LIMIT
-    # 200 + 2 + 80 + 2 + 27 = 311 without tags (fits); +11 with tags (over).
-    crowded = _post(hook="H" * 200, body="B" * 80, tags=("investing",))
-    assert "#investing" not in render_farcaster(crowded)
+def test_farcaster_uses_clean_whole_supporting_copy():
+    rendered = render_farcaster(_post(body="First point.\n\nSecond point.", tags=("behaviour",)))
+    assert rendered == "Hook\n\nFirst point."
+    assert URL not in rendered and "#behaviour" not in rendered
+    crowded = _post(hook="H" * 200, body="B" * 240, tags=("behaviour",))
+    assert render_farcaster(crowded) == "H" * 200
+    assert len(render_farcaster(crowded)) <= FARCASTER_CAST_LIMIT
+
+
+def test_nostr_uses_two_whole_points_and_tagged_link():
+    post = _post(body="First point.\n\nSecond point.\n\nThird point.", tags=("behaviour",))
+    assert render_nostr(post) == f"Hook\n\nFirst point.\n\nSecond point.\n\n{URL}"
+    long = _post(body="A" * 470 + ".\n\nShort second point.", tags=("behaviour",))
+    assert render_nostr(long) == f"Hook\n\nShort second point.\n\n{URL}"
+    assert len(render_nostr(long)) <= NOSTR_NOTE_LIMIT
+    crowded = _post(body="First point.\n\n" + "B" * 470 + ".\n\nThird point.")
+    assert render_nostr(crowded) == f"Hook\n\nFirst point.\n\n{URL}"
 
 
 def test_threads_omits_article_taxonomy_tags_from_visible_copy():

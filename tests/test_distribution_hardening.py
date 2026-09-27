@@ -198,7 +198,7 @@ def test_dry_run_prints_the_exact_copy_each_channel_would_publish(monkeypatch, c
             summary["teaser"],
             "\n\n".join(summary["points"]),
             tagged_url(_post()["url"], platform, _post()["id"]),
-            tuple(format_as_thread(_post(), summary, mode="bullets", max_tweets=5, tags=tags)),
+            tuple(format_as_thread(_post(), summary, mode="bullets", max_tweets=5)),
             tags,
         )
 
@@ -350,8 +350,9 @@ def test_farcaster_uses_deterministic_idempotency_key(monkeypatch, use_temp_dist
 
     expected = sha256("post:farcaster:evergreen".encode()).hexdigest()[:16]
     assert captured["idempotency_key"] == expected
-    # The canonical URL rides as a link embed so the cast renders a preview card.
-    assert captured["embeds"] == [{"url": "https://leonlins.com/writing/sample/"}]
+    # The tagged URL rides in the embed; cast text stays free of raw links and taxonomy tags.
+    assert captured["embeds"] == [{"url": tagged_url("https://leonlins.com/writing/sample/", "farcaster", "post")}]
+    assert captured["text"] == "Hook\n\nPoint one"
     assert state_manager.get_platform_state("post", "farcaster")["remote_id"] == "0xcast"
 
 

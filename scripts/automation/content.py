@@ -11,9 +11,8 @@ class SocialPost:
     body: str
     url: str
     thread: tuple[str, ...] = ()
-    # Sanitized article tags for deterministic hashtag discovery. Microblog
-    # renderers append at most HASHTAG_MAX of these when they fit; the LLM
-    # never generates hashtags (its brief still prohibits them).
+    # Sanitized article tags for destinations that use taxonomy metadata.
+    # The LLM never generates hashtags (its brief still prohibits them).
     tags: tuple[str, ...] = ()
 
 

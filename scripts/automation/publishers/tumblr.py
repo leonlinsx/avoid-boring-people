@@ -47,7 +47,7 @@ def render_tumblr_post(post: SocialPost, canonical_url: str) -> dict:
         "content": [
             {"type": "text", "text": post.hook.strip(), "subtype": "heading1"},
             {"type": "text", "text": excerpt},
-            {"type": "link", "url": canonical_url, "title": "Read the full article on leonlins.com"},
+            {"type": "link", "url": post.url, "title": "Read the full article on leonlins.com"},
         ],
         "tags": ",".join(post.tags[:4]),
         "source_url": canonical_url,

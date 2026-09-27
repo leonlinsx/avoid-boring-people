@@ -19,7 +19,7 @@ def test_social_renderers_adapt_one_argument_without_losing_the_canonical_url():
     # it as the first comment, so the body must not carry it.
     assert "https://example.test/article" not in render_linkedin(post)
     assert "A useful hook" in render_linkedin(post)
-    assert render_farcaster(post).endswith("https://example.test/article")
+    assert render_farcaster(post) == "A useful hook\n\nA longer explanation."
 
 
 def test_farcaster_rendering_stays_within_the_cast_limit():
@@ -31,4 +31,4 @@ def test_farcaster_rendering_stays_within_the_cast_limit():
 
     assert len(rendered) <= 320
     assert rendered.startswith("H" * 200)
-    assert rendered.endswith(url)
+    assert url not in rendered

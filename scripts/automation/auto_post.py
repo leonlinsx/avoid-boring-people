@@ -16,6 +16,7 @@ from scripts.automation.renderers import (
     render_farcaster,
     render_linkedin,
     render_mastodon,
+    render_nostr,
     render_thread,
     render_threads,
     supporting_point,
@@ -90,7 +91,7 @@ def _build_content(post: dict, summary: dict | None = None) -> tuple[SocialPost,
     if POST_MODE not in {"single", "thread"}: raise ValueError(f"Unknown POST_MODE: {POST_MODE}")
     summary = _summary_for(post) if summary is None else summary
     tags = tuple(sanitize_tags(post.get("tags", [])))
-    thread = tuple(format_as_thread(post, summary, mode=THREAD_MODE, max_tweets=5, tags=tags)) if POST_MODE == "thread" else ()
+    thread = tuple(format_as_thread(post, summary, mode=THREAD_MODE, max_tweets=5)) if POST_MODE == "thread" else ()
     social = SocialPost(summary.get("teaser") or post["title"], "\n\n".join(summary.get("points", [])) or post["title"], post["url"], thread, tags)
     article = ArticleSyndication(post["title"], post.get("content", ""), tuple(sanitize_tags(post.get("tags", []))), post["url"])
     return social, article, CommunityPost(post["title"], post["url"])
@@ -142,7 +143,7 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
         return post_to_farcaster(
             render_farcaster(social),
             idempotency_key=idem,
-            embeds=[{"url": article.canonical_url}],
+            embeds=[{"url": social.url}],
         )
     if platform == "devto":
         from scripts.automation.publishers.devto import post_to_devto
@@ -159,8 +160,7 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
         return post_to_weibo(localize_zh_cn(article.title, social.hook, point, article.canonical_url))
     if platform == "nostr":
         from scripts.automation.publishers.nostr import post_to_nostr
-        rendered = render_thread(social)
-        return post_to_nostr(rendered[0] if len(rendered) == 1 else "\n\n".join(rendered))
+        return post_to_nostr(render_nostr(social))
     if platform == "threads":
         from scripts.automation.publishers.threads import post_to_threads
         # Threads is always a standalone idea plus a link reply, so POST_MODE
@@ -263,7 +263,7 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
         elif platform == "linkedin":
             print(f"  format: social post + link comment\n  would publish:\n{render_linkedin(tagged)}\n---\n{tagged.url}")
         elif platform == "farcaster":
-            print(f"  format: cast (canonical embed: {article.canonical_url})\n  would publish:\n{render_farcaster(tagged)}")
+            print(f"  format: cast (tagged embed: {tagged.url})\n  would publish:\n{render_farcaster(tagged)}")
         elif platform == "devto":
             from scripts.automation.publishers.devto import validate_article
             body = validate_article(article.title, article.markdown_body, list(article.tags), article.canonical_url)
@@ -275,8 +275,7 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
             point = supporting_point(tagged) or tagged.body
             print("  format: Simplified-Chinese localized post\n  would publish:\n" + localize_zh_cn(article.title, tagged.hook, point, article.canonical_url))
         elif platform == "nostr":
-            rendered = render_thread(tagged)
-            print("  format: signed NIP-01 note\n  would publish:\n" + (rendered[0] if len(rendered) == 1 else "\n\n".join(rendered)))
+            print("  format: signed NIP-01 note\n  would publish:\n" + render_nostr(tagged))
         elif platform == "threads":
             print("  format: standalone post + link reply\n  would publish:\n" + "\n---\n".join(render_threads(tagged)))
         elif platform == "instagram":

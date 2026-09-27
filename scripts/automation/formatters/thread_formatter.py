@@ -1,7 +1,5 @@
 import textwrap
-from typing import List, Dict, Literal, Sequence
-
-from scripts.automation.renderers.social import hashtag_suffix
+from typing import List, Dict, Literal
 
 # One shared thread representation serves both X (280) and Bluesky (300), so the
 # formatter must fit the tighter platform. Publishers keep their own validation
@@ -28,7 +26,7 @@ def _clip(text: str, limit: int) -> str:
 
 
 def format_as_thread(post: Dict, summary: Dict, mode: Literal["bullets", "narrative"] = "bullets",
-                     max_tweets: int = 5, tags: Sequence[str] = ()) -> List[str]:
+                     max_tweets: int = 5) -> List[str]:
     """Compose the shared X/Bluesky thread from an article and its social copy.
 
     The root states the hook, plus the strongest supporting point when both fit,
@@ -36,8 +34,7 @@ def format_as_thread(post: Dict, summary: Dict, mode: Literal["bullets", "narrat
     whole standalone points, and the canonical link is always the final reply,
     framed as `Full piece: <url>` so readers know why to tap. Nothing is ever
     split mid-sentence; a point that cannot stand as its own reply is skipped
-    instead. Deterministic hashtags append to the root only when they fit;
-    over-long tag sets drop out instead of stealing reply space. `mode` is
+    instead. Article taxonomy tags are not appended to the thread. `mode` is
     accepted for callers that still pass it.
     """
     if max_tweets < 2:
@@ -58,10 +55,6 @@ def format_as_thread(post: Dict, summary: Dict, mode: Literal["bullets", "narrat
     tweets = [hook]
     if points and len(f"{hook}\n\n{points[0]}") <= MAX_TWEET_LEN:
         tweets[0] = f"{hook}\n\n{points.pop(0)}"
-    tag_suffix = hashtag_suffix(tags)
-    if tag_suffix and len(f"{tweets[0]}{tag_suffix}") <= MAX_TWEET_LEN:
-        tweets[0] = f"{tweets[0]}{tag_suffix}"
-
     # Reserve the last slot for the canonical link.
     for point in points:
         if len(tweets) >= max_tweets - 1:
