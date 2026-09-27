@@ -234,6 +234,32 @@ def test_new_mode_still_prefers_higher_score(use_temp_distribution_state):
     assert selected["id"] == "high"
 
 
+def test_scout_score_cannot_bypass_evergreen_eligibility_or_cooldown(use_temp_distribution_state):
+    state_manager.save_state(
+        {
+            "version": 2,
+            "posts": {
+                "cooling": {
+                    "bluesky": {
+                        "count": 1,
+                        "last_posted_at": _posted_days_ago(1),
+                        "last_mode": "evergreen",
+                    }
+                }
+            },
+        }
+    )
+    posts = [
+        {**_evergreen_post("excluded", score=100.0), "evergreen": False},
+        _evergreen_post("cooling", score=100.0),
+        _evergreen_post("eligible", score=0.0),
+    ]
+
+    selected = state_manager.select_next_post(posts, ["bluesky"], "evergreen")
+
+    assert selected["id"] == "eligible"
+
+
 def test_new_distribution_does_not_repeat_a_successful_platform(use_temp_distribution_state):
     state_manager.mark_posted("post", "twitter", "new")
 

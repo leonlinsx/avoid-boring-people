@@ -11,7 +11,7 @@ from scripts.automation.engagement import engagement_totals, load_engagement
 from scripts.automation.content import ArticleSyndication, CommunityPost, PublishResult, SocialPost
 from scripts.automation.formatters import format_as_thread
 from scripts.automation.formatters.instagram_storyboard import InstagramStoryboard, build_storyboard
-from scripts.automation.ranking import filter_posts, score_posts
+from scripts.automation.ranking import apply_scout_relevance_boost, filter_posts, score_posts
 from scripts.automation.renderers import (
     render_farcaster,
     render_linkedin,
@@ -260,6 +260,8 @@ def main() -> None:
         if TARGET_POST_ID: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
         print("No posts found."); return
     ranked = score_posts(filter_posts(posts), engagement=engagement_totals(load_engagement()))
+    if DISTRIBUTION_MODE == "evergreen":
+        ranked = apply_scout_relevance_boost(ranked)
     if TARGET_POST_ID:
         selected = next((p for p in ranked if p.get("id") == TARGET_POST_ID), None)
         if selected is None: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
