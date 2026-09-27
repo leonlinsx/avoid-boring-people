@@ -96,13 +96,13 @@ than passed through, so a typo cannot create a new channel label.
 ## UTM conventions
 
 Outbound distribution links are tagged so a signup can be traced back to the
-post that produced it. Canonical article URLs stay untagged: dev.to cross-posts,
-Farcaster embeds, and the localized Weibo post reference the canonical essay
-rather than a campaign.
+post that produced it. Canonical article URLs stay untagged in dev.to
+cross-posts, Tumblr `source_url`, and localized Weibo posts. Farcaster embeds
+and Tumblr reader-facing links carry platform tags.
 
 | Tag            | Value                                                                                                                                            |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `utm_source`   | Pipeline platform, mapped to the canonical source: `twitter` → `x`, `bluesky`, `mastodon`, `linkedin`, `farcaster`, `nostr`, `threads`, `reddit` |
+| `utm_source`   | Pipeline platform, mapped to the canonical source: `twitter` → `x`, `bluesky`, `mastodon`, `linkedin`, `farcaster`, `nostr`, `threads`, `reddit`, `tumblr` |
 | `utm_medium`   | `social`                                                                                                                                         |
 | `utm_campaign` | The article slug used as the post id                                                                                                             |
 

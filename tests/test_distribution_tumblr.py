@@ -34,7 +34,8 @@ def test_tumblr_uses_npf_oauth1_and_returns_publish_result(monkeypatch):
     assert url == "https://api.tumblr.com/v2/blog/avoidboringpeople.tumblr.com/posts"
     assert calls[0][1]["auth"].client.client_key == "secret"
     assert [block["type"] for block in payload["content"]] == ["text", "text", "link"]
-    assert payload["content"][2]["url"] == "https://leonlins.com/writing/example/"
+    assert payload["content"][2]["url"] == "https://leonlins.com/tagged"
+    assert payload["source_url"] == "https://leonlins.com/writing/example/"
     assert payload["tags"] == "systems,risk"
     assert "full article" not in payload
 

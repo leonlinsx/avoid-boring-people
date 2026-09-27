@@ -2,9 +2,8 @@
 
 Social links carry tags so the site's first-touch attribution can tell which
 channel produced a signup. Canonical article URLs stay untagged on purpose:
-dev.to cross-posts, Farcaster embeds, and the localized Weibo post all point at
-the canonical essay rather than at a campaign, so tagging them would blur the
-canonical reference without adding attribution.
+dev.to cross-posts and the localized Weibo post point at the canonical essay.
+Farcaster embeds and Tumblr reader-facing links use platform-tagged URLs.
 """
 from __future__ import annotations
 
@@ -20,6 +19,7 @@ SOCIAL_SOURCES: dict[str, str] = {
     "linkedin": "linkedin",
     "farcaster": "farcaster",
     "nostr": "nostr",
+    "tumblr": "tumblr",
     "threads": "threads",
     "reddit": "reddit",
 }

@@ -1,9 +1,9 @@
 """Neynar-backed Farcaster adapter; the orchestration layer remains vendor-neutral.
 
-Casts carry the canonical article URL twice: inline in the text (always
-clickable) and as a link embed (which renders the rich preview card that
-drives click-through). Neynar fetches embed targets server-side, so an embed
-is a URL reference, never an upload.
+Casts keep the hook and supporting idea in the text. The platform-tagged
+article URL travels as a link embed, which renders the rich preview card.
+Neynar fetches embed targets server-side, so an embed is a URL reference,
+never an upload.
 """
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ def post_to_farcaster(
     """Publish one cast, attaching link embeds so the article renders a preview card.
 
     `embeds` is a list of `{"url": ...}` references (at most two per cast);
-    pass the canonical article URL so readers see a rich preview, not a bare link.
+    pass the platform-tagged article URL so the preview card is attributable.
     """
     validate_cast(text)
     if embeds is not None:

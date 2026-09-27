@@ -4,11 +4,11 @@ The automated distribution job publishes a canonical leonlins.com article to Blu
 
 The job generates one author-voice social distillation per article where required, then deterministically renders that shared argument per platform. The distillation is a single DeepSeek call that rewrites the author's own long-form writing — a teaser plus up to two alternate hooks plus standalone supporting points — and it is given the full article content from the search index rather than a truncated prefix. A deterministic specificity rubric (numbers, proper nouns, concrete length) selects the most specific usable teaser, ties keeping the model's first choice; unusable candidates are skipped, never repaired, and the dry run lists every candidate with the winner marked. Production uses DeepSeek-V4.1-Flash through the `deepseek-flash` API alias in non-thinking mode with JSON output, and a deterministic gate then rejects outside-summary framing such as "the author argues" or "this essay explains", URLs, leaked markdown, empty copy, and copy over the configured limits. Generation fails closed: an API error, unusable JSON, an empty response, or copy that fails the gate raises before any platform is attempted, so no account ever receives fallback text. DEV receives the full source-index article content with the canonical leonlins.com URL. `posted.json` is updated only after a platform confirms success, so retrying a failed run attempts only destinations that have not already succeeded. Transient failures (429, timeouts/connections, 500/502/503/504) are retried with backoff; permanent errors (400/401/403/422, validation failures) are not.
 
-X and Bluesky share one deterministic thread. The root states the hook plus the strongest point that still fits, later replies carry whole standalone points, and the canonical article link is always the final reply — framed as `Full piece: <url>` so readers know why to tap — so the thread delivers an idea even if nobody clicks. No point is ever split mid-sentence — one that cannot stand as its own reply is skipped, and the thread is never padded to reach a target count. The formatter enforces X's 280-character limit on the shared representation, which satisfies Bluesky's 300, and each publisher keeps its own validation as defense in depth. Bluesky additionally attaches link facets (exact UTF-8 byte offsets) to every URL-bearing post plus hashtag facets to `#tag` tokens, and the link reply carries an external embed card built from the article's Open Graph title/description; a page whose metadata cannot be fetched still posts with facets, so a flaky fetch never loses the thread. Farcaster casts attach the canonical URL as a link embed (Neynar fetches it server-side) alongside the inline text link, so the cast renders a preview card.
+X and Bluesky share one deterministic thread. The root states the hook plus the strongest point that still fits, later replies carry whole standalone points, and the canonical article link is always the final reply — framed as `Full piece: <url>` so readers know why to tap — so the thread delivers an idea even if nobody clicks. No point is ever split mid-sentence — one that cannot stand as its own reply is skipped, and the thread is never padded to reach a target count. The formatter enforces X's 280-character limit on the shared representation, which satisfies Bluesky's 300, and each publisher keeps its own validation as defense in depth. Bluesky additionally attaches link facets (exact UTF-8 byte offsets) to every URL-bearing post, and the link reply carries an external embed card built from the article's Open Graph title/description; a page whose metadata cannot be fetched still posts with facets, so a flaky fetch never loses the thread. Farcaster casts contain only the hook and a supporting point; their platform-tagged article URL is a link embed (Neynar fetches it server-side). Nostr renders a separate concise note with up to two whole supporting points and the tagged article URL.
 
 New articles can use all eligible destinations. Evergreen distribution is limited to Bluesky, Mastodon, Farcaster, Nostr, Threads, and Instagram; DEV is never recycled and X is out of the defaults while its API credits are depleted. Evergreen selection serves the back catalog, not the freshest eligible article: least-posted first, then away from the most recently published category, then longest-unposted, with the priority score (including any engagement boost) as the final tiebreak.
 
-Hashtags come only from sanitized article metadata, never from the model: the X/Bluesky thread root, the Mastodon status, and the Farcaster cast each append up to three `#tags` when everything fits, dropping them before trimming content. Threads omits article taxonomy tags from visible copy; the adapter does not set a Threads topic tag. Mastodon prefers two whole supporting points over one within its 500-character budget; the trim fallback stays tagless.
+The Mastodon status adds up to three hashtags from sanitized article metadata when they fit, dropping them before trimming content. X/Bluesky, Farcaster, Nostr, and Threads do not append article taxonomy tags to visible copy. Mastodon prefers two whole supporting points over one within its 500-character budget; the trim fallback stays tagless.
 
 ## Cadence
 
@@ -24,9 +24,9 @@ Articles are eligible for evergreen redistribution by default. Mark a time-sensi
 
 ## Link tagging
 
-Every link the distribution pipeline publishes is tagged so the newsletter's first-touch attribution can tell which channel produced a signup. `scripts/automation/attribution.py` maps the pipeline platform name to the canonical `utm_source` (`twitter` → `x`, `bluesky`, `mastodon`, `linkedin`, `farcaster`, `nostr`, `threads`, `reddit`), sets `utm_medium=social`, and sets `utm_campaign` to the article slug used as the post id. Tagging happens in `_publish` and in the dry run, so the review output shows the exact tagged URL before anything is sent.
+Every link the distribution pipeline publishes is tagged so the newsletter's first-touch attribution can tell which channel produced a signup. `scripts/automation/attribution.py` maps the pipeline platform name to the canonical `utm_source` (`twitter` → `x`, `bluesky`, `mastodon`, `linkedin`, `farcaster`, `nostr`, `threads`, `reddit`, `tumblr`), sets `utm_medium=social`, and sets `utm_campaign` to the article slug used as the post id. Tagging happens in `_publish` and in the dry run, so the review output shows the exact tagged URL before anything is sent.
 
-Canonical article URLs stay untagged on purpose: the dev.to cross-post, the Farcaster embed, and the localized Weibo post reference the canonical essay rather than a campaign, so tagging them would blur the canonical reference without adding attribution. Internal links inside article bodies are likewise left alone. Tagging is idempotent — a URL that already carries a `utm_source`, an unknown platform, or an unusable URL is returned unchanged — and it preserves any existing query string and fragment.
+Canonical article URLs stay untagged on purpose in the dev.to cross-post, the Tumblr `source_url`, and the localized Weibo post. Farcaster embeds and Tumblr reader-facing link blocks use platform-tagged URLs for attribution. Internal links inside article bodies are likewise left alone. Tagging is idempotent — a URL that already carries a `utm_source`, an unknown platform, or an unusable URL is returned unchanged — and it preserves any existing query string and fragment.
 
 `tests/test_attribution.py` pins the tagging behavior, and the per-platform dry-run expectations in `tests/test_distribution_hardening.py` carry the tagged URLs. The source vocabulary, the report that consumes it, and the reasoning behind first-touch storage are documented in [newsletter-analytics.md](newsletter-analytics.md).
 
@@ -42,14 +42,16 @@ Bluesky, Mastodon, DEV, Threads (`THREADS_ACCESS_TOKEN`, a long-lived token for 
 `REDDIT_SUBREDDIT` defaults to `AvoidBoringPeople`; set it as a repository variable or workflow environment value only if that changes. The Reddit adapter refreshes its OAuth token at run time; do not use a short-lived access token in GitHub secrets.
 
 The default destinations are versioned in `scripts/automation/routing.py` as
-`DEFAULT_PLATFORMS`: Bluesky, Mastodon, DEV, Farcaster, Nostr, Threads, and
-Instagram.
+`DEFAULT_PLATFORMS`: Bluesky, Mastodon, DEV, Farcaster, Nostr, Threads,
+Instagram, and Tumblr.
 LinkedIn, Reddit, and Weibo remain out of the defaults until their
 setup is verified (Weibo additionally needs a Chinese mobile-verified account
 and is parked). X stays out of the defaults until its API credits are restored.
 For a local one-off override, set `PLATFORM` explicitly. Weibo posts
 a Simplified-Chinese DeepSeek localization of the article, never the English
-text; the localizer raises rather than falling back.
+text; the localizer raises rather than falling back. Its observed risk of
+inventing article facts remains deferred until Weibo reactivation; this pass
+does not change its localizer.
 
 ## Token health
 

@@ -8,6 +8,7 @@ from scripts.automation.content import SocialPost
 MASTODON_STATUS_LIMIT = 500
 FARCASTER_CAST_LIMIT = 320
 THREADS_TEXT_LIMIT = 500
+NOSTR_NOTE_LIMIT = 500
 
 # A blockquote marker at the start of a fragment or after a space, introducing a
 # capitalised quote. Comparisons such as `risk > return` keep their operator.
@@ -79,33 +80,32 @@ def render_mastodon(post: SocialPost) -> list[str]:
 
 
 def render_farcaster(post: SocialPost) -> str:
-    """Render one self-contained Farcaster cast within the 320-character limit.
+    """Render clean cast text; the tagged article link travels in the embed."""
+    hook = post.hook.strip()
+    points = [point for point in _supporting_points(post) if point != hook]
+    if points and len(f"{hook}\n\n{points[0]}") <= FARCASTER_CAST_LIMIT:
+        return f"{hook}\n\n{points[0]}"
+    if len(hook) <= FARCASTER_CAST_LIMIT:
+        return hook
+    return f"{_trim_to_word(hook, FARCASTER_CAST_LIMIT - 1)}…"
 
-    A long LLM hook plus supporting thought can exceed the cast limit. Keep the
-    hook and canonical URL and shorten the supporting thought, rather than
-    letting the publisher reject the whole cast. Deterministic hashtags ride
-    along only when everything fits.
-    """
-    points = _supporting_points(post)
-    tags = hashtag_suffix(post.tags)
-    bodies = [points[0]] if points else []
-    for body in bodies:
-        base = f"{post.hook}\n\n{body}"
-        for suffix in (tags, ""):
-            candidate = f"{base}{suffix}\n\n{post.url}".strip()
-            if len(candidate) <= FARCASTER_CAST_LIMIT:
-                return candidate
-    supporting = supporting_point(post)
-    candidate = f"{post.hook}\n\n{supporting}\n\n{post.url}".strip()
-    if len(candidate) <= FARCASTER_CAST_LIMIT:
-        return candidate
-    ellipsis = "…"
-    fixed = f"{post.hook}\n\n\n\n{post.url}"
-    budget = FARCASTER_CAST_LIMIT - len(fixed) - len(ellipsis)
-    if budget < 0:
-        trimmed_hook = post.hook[: FARCASTER_CAST_LIMIT - len(post.url) - len("\n\n…\n\n")]
-        return f"{trimmed_hook}…\n\n{post.url}".strip()
-    return f"{post.hook}\n\n{supporting[:budget].rstrip()}{ellipsis}\n\n{post.url}".strip()
+
+def render_nostr(post: SocialPost) -> str:
+    """Render one concise note with up to two whole points and a tagged link."""
+    if not post.url:
+        raise ValueError("Nostr note requires an article URL")
+    hook = post.hook.strip()
+    hook_budget = NOSTR_NOTE_LIMIT - len(post.url) - len("\n\n")
+    if hook_budget < 1:
+        raise ValueError("Nostr article URL leaves no room for a hook")
+    if len(hook) > hook_budget:
+        hook = f"{_trim_to_word(hook, hook_budget - 1)}…"
+    parts = [hook]
+    for point in _supporting_points(post)[:2]:
+        if point != hook and len("\n\n".join([*parts, point, post.url])) <= NOSTR_NOTE_LIMIT:
+            parts.append(point)
+    parts.append(post.url)
+    return "\n\n".join(parts)
 
 
 HASHTAG_MAX = 3
@@ -115,9 +115,8 @@ def hashtag_suffix(tags) -> str:
     """Deterministic discovery suffix from sanitized article tags.
 
     Returns `" #a #b"` (leading space, at most HASHTAG_MAX, deduplicated) or
-    `""`. Renderers try content with the suffix first and without as
-    fallback, so tags never steal content space and over-long tag sets simply
-    drop out instead of breaking limits.
+    `""`. Mastodon tries content with the suffix first and without as
+    fallback, so tags never steal content space.
     """
     picked: list[str] = []
     for tag in tags or ():

@@ -2,7 +2,7 @@
 
 Links posted to social platforms must carry a platform-specific utm_source so
 first-touch attribution can credit the channel, while canonical article URLs
-(dev.to syndication, Farcaster embeds, Weibo localization) stay untagged.
+(dev.to syndication, Tumblr source_url, Weibo localization) stay untagged.
 """
 import re
 import sys
@@ -181,6 +181,8 @@ def test_thread_mode_publishes_the_tagged_link(monkeypatch, capsys, use_temp_dis
         link = tagged_url(ARTICLE_URL, platform, "post")
         assert len(published) == 1, platform
         assert link in published[0], platform
+        if platform == "nostr":
+            assert published[0] == f"Hook\n\nPoint one\n\n{link}"
         assert f"✅ {platform} posting completed ({link})" in capsys.readouterr().out, platform
 
 
@@ -239,3 +241,16 @@ def test_published_text_is_the_rendered_tagged_copy(monkeypatch, use_temp_distri
         tuple(auto_post.sanitize_tags(_post()["tags"])),
     )
     assert published == [render_thread(social)[0]]
+
+
+def test_tumblr_reader_link_is_tagged_but_source_is_canonical(monkeypatch, use_temp_distribution_state):
+    received = []
+    tumblr = _fake_module(
+        post_to_tumblr=lambda social, canonical_url: received.append((social.url, canonical_url))
+        or {"id": "tumblr-1"}
+    )
+    _drive_main(monkeypatch, _post(), ["tumblr"], {"scripts.automation.publishers.tumblr": tumblr})
+
+    auto_post.main()
+
+    assert received == [(tagged_url(ARTICLE_URL, "tumblr", "post"), ARTICLE_URL)]

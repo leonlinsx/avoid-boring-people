@@ -828,7 +828,13 @@ export function testNewsletterAttributionNormalization() {
   assert.equal(normalizeAttribution({}).source, 'direct');
   assert.equal(normalizeAttribution({}).detail, null);
   assert.ok(isInformativeSource('reddit'));
-  for (const tagged of ['mastodon', 'linkedin', 'farcaster', 'nostr'] as const)
+  for (const tagged of [
+    'mastodon',
+    'linkedin',
+    'farcaster',
+    'nostr',
+    'tumblr',
+  ] as const)
     assert.equal(
       normalizeAttribution({ utmSource: tagged }).source,
       tagged,
