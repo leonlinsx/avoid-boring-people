@@ -3,7 +3,7 @@ title: 'Data analysis industry landscape'
 description: 'Market overview, risks, and competitive landscape'
 pubDate: 2021-03-07
 category: Technology
-tags: ['business']
+tags: ['business', 'data', 'software']
 evergreen: false
 heroImage: './d_1.webp'
 ---

@@ -3,7 +3,7 @@ title: 'Investing and information'
 description: 'Does having more information help you make better investment decisions?'
 pubDate: 2019-04-18
 category: Investing
-tags: ['investing']
+tags: ['information']
 heroImage: './i_1.webp'
 ---
 

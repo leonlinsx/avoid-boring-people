@@ -3,7 +3,7 @@ title: 'Not everything is insider trading'
 description: 'The tools that professional investors use'
 pubDate: 2020-06-17
 category: Investing
-tags: ['investing', 'data']
+tags: ['data']
 heroImage: './data_9.webp'
 ---
 

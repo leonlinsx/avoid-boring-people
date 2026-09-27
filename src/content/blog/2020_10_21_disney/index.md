@@ -3,7 +3,7 @@ title: 'Just keep streaming'
 description: "Two activist investors disagree on Disney's future"
 pubDate: 2020-10-21
 category: Investing
-tags: ['investing']
+tags: ['business']
 evergreen: false
 heroImage: './d_1.webp'
 ---

@@ -3,7 +3,7 @@ title: "When it doesn't pay dividends"
 description: 'The costs of investing in dividend paying companies'
 pubDate: 2020-07-08
 category: Investing
-tags: ['investing']
+tags: ['dividends']
 heroImage: './d_6.webp'
 ---
 

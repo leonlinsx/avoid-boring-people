@@ -3,7 +3,7 @@ title: 'Hong Kong small cap stock plunges and pledges'
 description: 'Loopholes in HK stock disclosures'
 pubDate: 2019-04-14
 category: Investing
-tags: ['investing']
+tags: ['risk']
 heroImage: './s_1.webp'
 ---
 
