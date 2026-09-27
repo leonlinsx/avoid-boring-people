@@ -21,7 +21,7 @@ from scripts.automation.renderers import (
     supporting_point,
 )
 from scripts.automation.retry import run_with_retries
-from scripts.automation.routing import DEFAULT_PLATFORMS, eligible_for_category
+from scripts.automation.routing import DEFAULT_PLATFORMS, PLATFORMS, eligible_for_category
 from scripts.automation.state_manager import platform_is_eligible
 
 load_dotenv()
@@ -103,21 +103,22 @@ def _build_storyboard(post: dict, summary: dict) -> InstagramStoryboard | None:
     return build_storyboard(post, summary)
 
 
-def _publish(platform: str, social: SocialPost, article: ArticleSyndication, community: CommunityPost, post_id: str, storyboard: InstagramStoryboard | None = None):
-    # Every renderer below reads the URLs off these two objects, so tagging them
-    # here covers each platform without touching renderer or publisher code.
-    # Canonical URLs (article.canonical_url) stay untagged.
+def _tagged_social(social: SocialPost, platform: str, post_id: str) -> SocialPost:
+    """Apply the same URL tagging to live publishing and preview."""
     canonical_url = social.url
     tagged = tagged_url(canonical_url, platform, post_id)
-    if canonical_url and "utm_source=" in canonical_url:
-        log_summary(f"⚠️ {platform}: link already carries utm_source, tags left untouched: {canonical_url}")
-    # The X/Bluesky/Nostr thread was rendered from the untagged article URL
-    # before this point, so its link reply has to be retagged here too.
-    social = replace(
+    return replace(
         social,
         url=tagged,
         thread=tuple(part.replace(canonical_url, tagged) for part in social.thread) if canonical_url else social.thread,
     )
+
+
+def _publish(platform: str, social: SocialPost, article: ArticleSyndication, community: CommunityPost, post_id: str, storyboard: InstagramStoryboard | None = None):
+    # Canonical article URLs stay untagged; all social links share this helper.
+    if social.url and "utm_source=" in social.url:
+        log_summary(f"⚠️ {platform}: link already carries utm_source, tags left untouched: {social.url}")
+    social = _tagged_social(social, platform, post_id)
     community = replace(community, url=tagged_url(community.url, platform, post_id))
     if platform == "twitter":
         from scripts.automation.publishers import get_twitter_client, post_single, post_thread
@@ -216,8 +217,21 @@ def _print_instagram_dry_run(storyboard: InstagramStoryboard | None) -> None:
         print(f"  would publish: nothing until a media host is configured ({error})")
 
 
+def _normal_routing_eligible(post: dict, platform: str) -> bool:
+    """Static routing policy; posting history is deliberately excluded."""
+    if not eligible_for_category(post, platform):
+        return False
+    if DISTRIBUTION_MODE == "evergreen":
+        return bool(post.get("evergreen", False)) and platform not in {"devto", "reddit"}
+    return True
+
+
 def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article: ArticleSyndication, storyboard: InstagramStoryboard | None = None, summary: dict | None = None) -> None:
-    print(f"\nArticle: {post['title']}\nCategory: {post.get('category') or 'Uncategorized'}\nMode: {DISTRIBUTION_MODE}")
+    preview = bool(TARGET_POST_ID)
+    print(f"\nArticle: {post['title']}\nID: {post['id']}\nCategory: {post.get('category') or 'Uncategorized'}\nMode: {DISTRIBUTION_MODE}")
+    if preview:
+        print("Target preview: posting history and cooldowns ignored; no publishing or posted.json writes")
+        print(f"Normal article filter: {'eligible' if filter_posts([post]) else 'ineligible'}")
     candidates = (summary or {}).get("teaser_candidates") or []
     if len(candidates) > 1:
         print(f"Teaser: {social.hook}")
@@ -225,52 +239,74 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
             marker = "selected" if candidate == social.hook else "considered"
             print(f"  [{marker}] {candidate}")
     for platform in PLATFORM:
-        print(f"\n{platform}\n  eligible: {'yes' if platform in eligible else 'no'}")
-        if platform not in eligible: continue
-        # Mirror the tagging `_publish` applies, so the preview shows the real link.
-        tagged = replace(social, url=tagged_url(social.url, platform, post["id"]))
-        if platform == "twitter":
-            if POST_MODE == "thread": print("  format: thread\n  would publish: " + "\n---\n".join(render_thread(tagged)))
-            else: print(f"  format: single\n  would publish: {tagged.hook} {tagged.url}")
-        elif platform == "bluesky":
+        routing = _normal_routing_eligible(post, platform)
+        print(f"\n{platform}\n  normal routing (category/mode): {'eligible' if routing else 'ineligible'}")
+        if preview:
+            print("  posting history: ignored for preview")
+        else:
+            print(f"  eligible now: {'yes' if platform in eligible else 'no'}")
+            if platform not in eligible:
+                continue
+        tagged = _tagged_social(social, platform, post["id"])
+        if platform in {"twitter", "bluesky"}:
             rendered = render_thread(tagged)
-            if POST_MODE == "thread": print("  format: thread\n  would publish: " + "\n---\n".join(rendered))
-            else: print(f"  format: single\n  would publish: {rendered[0]}")
+            if POST_MODE == "thread":
+                print("  format: thread\n  would publish:\n" + "\n---\n".join(rendered))
+            elif platform == "twitter":
+                print(f"  format: single\n  would publish:\n{tagged.hook}\n\n{tagged.url}")
+            else:
+                print(f"  format: single\n  would publish:\n{rendered[0]}")
         elif platform == "mastodon":
             rendered = render_mastodon(tagged)
             shape = "thread" if POST_MODE == "thread" and len(rendered) > 1 else "single"
-            print(f"  format: {shape}\n  would publish: " + "\n---\n".join(rendered))
-        elif platform == "linkedin": print(f"  format: social_post\n  length: {len(render_linkedin(tagged))} chars\n  link comment: {tagged.url}")
-        elif platform == "farcaster": print(f"  format: social_post\n  would publish: {render_farcaster(tagged)}")
-        elif platform == "devto": print(f"  format: article syndication\n  canonical URL: {article.canonical_url}")
-        elif platform == "reddit": print(f"  format: link post\n  subreddit: r/" + os.getenv("REDDIT_SUBREDDIT", "AvoidBoringPeople") + f"\n  would publish: {tagged.url}")
-        elif platform == "weibo": print("  format: Simplified-Chinese localized post")
-        elif platform == "nostr": print("  format: signed NIP-01 note")
-        elif platform == "threads": print("  format: standalone post + link reply\n  would publish: " + "\n---\n".join(render_threads(tagged)))
-        elif platform == "instagram": _print_instagram_dry_run(storyboard)
+            print(f"  format: {shape}\n  would publish:\n" + "\n---\n".join(rendered))
+        elif platform == "linkedin":
+            print(f"  format: social post + link comment\n  would publish:\n{render_linkedin(tagged)}\n---\n{tagged.url}")
+        elif platform == "farcaster":
+            print(f"  format: cast (canonical embed: {article.canonical_url})\n  would publish:\n{render_farcaster(tagged)}")
+        elif platform == "devto":
+            from scripts.automation.publishers.devto import validate_article
+            body = validate_article(article.title, article.markdown_body, list(article.tags), article.canonical_url)
+            print(f"  format: article syndication\n  title: {article.title}\n  tags: {', '.join(article.tags)}\n  canonical URL: {article.canonical_url}\n  body:\n{body}")
+        elif platform == "reddit":
+            print(f"  format: link post\n  subreddit: r/{os.getenv('REDDIT_SUBREDDIT', 'AvoidBoringPeople')}\n  title: {post['title']}\n  URL: {tagged_url(post['url'], platform, post['id'])}")
+        elif platform == "weibo":
+            from scripts.automation.summarizers.llm_summarizer import localize_zh_cn
+            point = supporting_point(tagged) or tagged.body
+            print("  format: Simplified-Chinese localized post\n  would publish:\n" + localize_zh_cn(article.title, tagged.hook, point, article.canonical_url))
+        elif platform == "nostr":
+            rendered = render_thread(tagged)
+            print("  format: signed NIP-01 note\n  would publish:\n" + (rendered[0] if len(rendered) == 1 else "\n\n".join(rendered)))
+        elif platform == "threads":
+            print("  format: standalone post + link reply\n  would publish:\n" + "\n---\n".join(render_threads(tagged)))
+        elif platform == "instagram":
+            _print_instagram_dry_run(storyboard)
         elif platform == "tumblr":
             from scripts.automation.publishers.tumblr import render_tumblr_post
-            print(f"  format: native discovery post\n  would publish: {render_tumblr_post(tagged, article.canonical_url)}")
-        else: print(f"  format: {'thread' if POST_MODE == 'thread' else 'single'}")
+            import json
+            print("  format: native discovery post\n  would publish:\n" + json.dumps(render_tumblr_post(tagged, article.canonical_url), ensure_ascii=False, indent=2))
 
 def main() -> None:
     if DISTRIBUTION_MODE not in {"new", "evergreen"}: raise ValueError(f"Unknown DISTRIBUTION_MODE: {DISTRIBUTION_MODE}")
+    if any(platform not in PLATFORMS for platform in PLATFORM):
+        raise ValueError("Unknown platform in PLATFORM")
     posts = fetch_posts()
     if not posts:
         if TARGET_POST_ID: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
         print("No posts found."); return
-    ranked = score_posts(filter_posts(posts), engagement=engagement_totals(load_engagement()))
-    if DISTRIBUTION_MODE == "evergreen":
+    preview = DRY_RUN and bool(TARGET_POST_ID)
+    ranked = [] if preview else score_posts(filter_posts(posts), engagement=engagement_totals(load_engagement()))
+    if DISTRIBUTION_MODE == "evergreen" and not preview:
         ranked = apply_scout_relevance_boost(ranked)
     if TARGET_POST_ID:
-        selected = next((p for p in ranked if p.get("id") == TARGET_POST_ID), None)
+        selected = next((p for p in (posts if preview else ranked) if p.get("id") == TARGET_POST_ID), None)
         if selected is None: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
-        selected = dict(selected); selected["eligible_platforms"] = [p for p in PLATFORM if eligible_for_category(selected, p) and platform_is_eligible(selected, p, DISTRIBUTION_MODE)]
+        selected = dict(selected); selected["eligible_platforms"] = [p for p in PLATFORM if _normal_routing_eligible(selected, p) and (preview or platform_is_eligible(selected, p, DISTRIBUTION_MODE))]
     else:
         routed = [post for post in ranked if any(eligible_for_category(post, platform) for platform in PLATFORM)]
         selected = select_next_post(routed, PLATFORM, DISTRIBUTION_MODE)
         if selected: selected["eligible_platforms"] = [p for p in selected["eligible_platforms"] if eligible_for_category(selected, p)]
-    if not selected or not selected["eligible_platforms"]: print("No eligible post to publish."); return
+    if not selected or (not preview and not selected["eligible_platforms"]): print("No eligible post to publish."); return
     try:
         summary = _summary_for(selected)
     except Exception as error:

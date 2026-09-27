@@ -170,14 +170,12 @@ def render_threads(post: SocialPost) -> list[str]:
     mid-sentence reads as a mistake on a conversational feed. The first point is
     trimmed as a fallback so the post is never left with a bare hook. Under
     POST_MODE=single the body is the article title, which the hook already
-    carries, so that duplicate point drops out here. At most one hashtag rides
-    along: Threads supports a single topic tag per post.
+    carries, so that duplicate point drops out here. Article taxonomy tags are
+    not Threads topic tags and must not appear as visible trailing text.
     """
     hook = _strip_markdown_quotes(post.hook.strip())
     points = [_strip_markdown_quotes(point) for point in _supporting_points(post)]
     points = [point for point in points if point and point != hook]
-    # Threads supports a single topic tag per post: extra hashtags render as
-    # dead text and read as spam, so only the first article tag rides along.
     main = hook
     for point in points:
         candidate = f"{main}\n\n{point}"
@@ -191,9 +189,6 @@ def render_threads(post: SocialPost) -> list[str]:
         break
     if len(main) > THREADS_TEXT_LIMIT:
         main = f"{_trim_to_word(hook, THREADS_TEXT_LIMIT - 1)}…"
-    tags = hashtag_suffix(tuple(post.tags[:1]))
-    if tags and len(f"{main}{tags}") <= THREADS_TEXT_LIMIT:
-        main = f"{main}{tags}"
     if not post.url:
         return [main]
     return [main, f"Full piece: {post.url}"]

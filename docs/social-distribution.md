@@ -8,7 +8,7 @@ X and Bluesky share one deterministic thread. The root states the hook plus the 
 
 New articles can use all eligible destinations. Evergreen distribution is limited to Bluesky, Mastodon, Farcaster, Nostr, Threads, and Instagram; DEV is never recycled and X is out of the defaults while its API credits are depleted. Evergreen selection serves the back catalog, not the freshest eligible article: least-posted first, then away from the most recently published category, then longest-unposted, with the priority score (including any engagement boost) as the final tiebreak.
 
-Hashtags come only from sanitized article metadata, never from the model: the X/Bluesky thread root, the Mastodon status, and the Farcaster cast each append up to three `#tags` when everything fits, dropping them before trimming content. The Threads main post appends at most one — Threads supports a single topic tag per post, so further tags would render as dead text. Mastodon prefers two whole supporting points over one within its 500-character budget; the trim fallback stays tagless.
+Hashtags come only from sanitized article metadata, never from the model: the X/Bluesky thread root, the Mastodon status, and the Farcaster cast each append up to three `#tags` when everything fits, dropping them before trimming content. Threads omits article taxonomy tags from visible copy; the adapter does not set a Threads topic tag. Mastodon prefers two whole supporting points over one within its 500-character budget; the trim fallback stays tagless.
 
 ## Cadence
 
@@ -76,7 +76,7 @@ Run a no-side-effect inspection with:
 DRY_RUN=true POST_MODE=thread PLATFORM=twitter,bluesky,mastodon,devto python -m scripts.automation.auto_post
 ```
 
-The output lists each channel's eligibility plus the exact copy that channel would publish — the X/Bluesky thread, the Mastodon status, the Threads post, the Farcaster cast, the Instagram cover/slides/caption — so voice and formatting can be judged before anything leaves the machine. In GitHub Actions, `FAIL_ON_PUBLISH_ERROR=true` makes a partial failure visible and retryable while retaining state for channels that already succeeded.
+Set `TARGET_POST_ID` to preview one article regardless of `posted.json` history or cooldowns. A targeted dry run reports normal category/mode routing eligibility, then renders every requested platform, including those normal routing would skip. It never publishes or writes `posted.json`. Use `POST_MODE=thread` and `USE_LLM=true TEST_API=true` to exercise the shared production copy path; a local Ollama provider can replace DeepSeek for review. The output includes the exact tagged thread and status text, article syndication body, and Instagram caption and slide copy. Instagram also renders local JPEGs but never uploads them. In GitHub Actions, `FAIL_ON_PUBLISH_ERROR=true` makes a partial failure visible and retryable while retaining state for channels that already succeeded.
 
 ## Local model preview (Ollama)
 
