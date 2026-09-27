@@ -86,13 +86,10 @@ def test_farcaster_carries_tags_within_limit():
     assert "#investing" not in render_farcaster(crowded)
 
 
-def test_threads_appends_a_single_tag_to_main_post():
-    # Threads supports one topic tag per post; further tags would render as
-    # dead text, so only the first article tag rides along.
-    main, reply = render_threads(_post(tags=("investing", "risk")))
-    assert main.endswith("#investing")
-    assert "#risk" not in main
+def test_threads_omits_article_taxonomy_tags_from_visible_copy():
+    main, reply = render_threads(_post(tags=("behaviour", "risk")))
+    assert main == "Hook\n\nPoint one"
+    assert "behaviour" not in main
+    assert "risk" not in main
     assert reply == f"Full piece: {URL}"
     assert len(main) <= THREADS_TEXT_LIMIT
-    full = _post(hook="H" * 480, tags=("investing",))
-    assert "#investing" not in render_threads(full)[0]
