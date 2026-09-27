@@ -2,7 +2,13 @@ import os
 from datetime import datetime, timedelta, timezone
 import unittest
 
-from scripts.automation.ranking import RankingConfig, filter_posts, score_posts
+from scripts.automation.ranking import (
+    SCOUT_RELEVANCE_MAX_BOOST,
+    RankingConfig,
+    apply_scout_relevance_boost,
+    filter_posts,
+    score_posts,
+)
 
 
 class FilterPostsTests(unittest.TestCase):
@@ -122,6 +128,55 @@ class ScorePostsTests(unittest.TestCase):
 
         # Ensure the invalid override was ignored rather than causing an error.
         self.assertNotEqual(scores["invalid_override"], scores["manual_boost"])
+
+
+class ScoutRelevanceBoostTests(unittest.TestCase):
+    NOW = datetime(2026, 9, 27, tzinfo=timezone.utc)
+
+    def _state(self, *entries):
+        return {"version": 1, "opportunities": {str(index): entry for index, entry in enumerate(entries)}}
+
+    def _entry(self, **overrides):
+        entry = {
+            "content_id": "article/index.md",
+            "content_url": "https://leonlins.com/writing/article/",
+            "status": "surfaced",
+            "surfaced_at": (self.NOW - timedelta(days=1)).isoformat(),
+        }
+        entry.update(overrides)
+        return entry
+
+    def test_fresh_surfaced_signal_boosts_exact_article_id(self):
+        posts = [{"id": "article/index.md", "url": "https://elsewhere.invalid", "priority_score": 1.0}]
+
+        boosted = apply_scout_relevance_boost(posts, self._state(self._entry()), now=self.NOW)
+
+        self.assertEqual(1.0 + SCOUT_RELEVANCE_MAX_BOOST, boosted[0]["priority_score"])
+
+    def test_signal_expires_after_fixed_ttl(self):
+        stale = self._entry(surfaced_at=(self.NOW - timedelta(days=8)).isoformat())
+        posts = [{"id": "article/index.md", "priority_score": 1.0}]
+
+        self.assertEqual(posts, apply_scout_relevance_boost(posts, self._state(stale), now=self.NOW))
+
+    def test_missing_or_invalid_state_leaves_scores_unchanged(self):
+        posts = [{"id": "article/index.md", "priority_score": 1.0}]
+
+        self.assertEqual(posts, apply_scout_relevance_boost(posts, {}, now=self.NOW))
+        self.assertEqual(posts, apply_scout_relevance_boost(posts, {"opportunities": []}, now=self.NOW))
+
+    def test_multiple_fresh_signals_are_capped_at_one_fixed_bonus(self):
+        posts = [{"id": "article/index.md", "priority_score": 1.0}]
+        state = self._state(self._entry(), self._entry(content_url="https://leonlins.com/writing/other/"))
+
+        boosted = apply_scout_relevance_boost(posts, state, now=self.NOW)
+
+        self.assertEqual(1.0 + SCOUT_RELEVANCE_MAX_BOOST, boosted[0]["priority_score"])
+
+    def test_only_exact_id_or_canonical_url_matches(self):
+        posts = [{"id": "article", "url": "https://leonlins.com/writing/article", "priority_score": 1.0}]
+
+        self.assertEqual(posts, apply_scout_relevance_boost(posts, self._state(self._entry()), now=self.NOW))
 
 
 if __name__ == "__main__":

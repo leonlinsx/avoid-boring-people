@@ -2,10 +2,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from math import log10
 import os
 from typing import Dict, Iterable, List, Optional, Sequence, Set
+
+from scripts.scout.errors import ScoutError
+from scripts.scout.state import load_state as load_scout_state
 
 ISO_FORMATS: Sequence[str] = (
     "%Y-%m-%d",
@@ -85,6 +88,62 @@ def filter_posts(posts: Iterable[Dict], config: Optional[RankingConfig] = None) 
 ENGAGEMENT_MAX_BOOST = 0.75
 ENGAGEMENT_BOOST_RATE = 0.25
 
+# Scout only records opportunities after its deterministic gates and STRONG
+# judgment agree.  That existing `surfaced` row is therefore the confidence
+# signal; keep its influence brief and smaller than any ranking component that
+# is intended to dominate selection.
+SCOUT_RELEVANCE_TTL_DAYS = 7
+SCOUT_RELEVANCE_MAX_BOOST = 0.5
+
+
+def apply_scout_relevance_boost(
+    posts: Iterable[Dict], scout_state: Optional[Dict] = None, *, now: Optional[datetime] = None
+) -> List[Dict]:
+    """Add a bounded evergreen tie-break boost from fresh Scout opportunities.
+
+    Scout is deliberately optional.  Missing or malformed state contributes
+    nothing, and matching is limited to the exact content id or canonical URL
+    already stored by Scout—never titles, terms, or fuzzy similarity.
+    """
+    posts = [dict(post) for post in posts]
+    if scout_state is None:
+        try:
+            scout_state = load_scout_state()
+        except (OSError, ScoutError, TypeError, ValueError):
+            return posts
+
+    opportunities = scout_state.get("opportunities") if isinstance(scout_state, dict) else None
+    if not isinstance(opportunities, dict):
+        return posts
+
+    moment = now or datetime.now(timezone.utc)
+    cutoff = moment - timedelta(days=SCOUT_RELEVANCE_TTL_DAYS)
+    fresh_ids: Set[str] = set()
+    fresh_urls: Set[str] = set()
+    for entry in opportunities.values():
+        if not isinstance(entry, dict) or entry.get("status") != "surfaced":
+            continue
+        surfaced_at = _parse_date(entry.get("surfaced_at"))
+        if surfaced_at is None or surfaced_at < cutoff or surfaced_at > moment:
+            continue
+        content_id = entry.get("content_id")
+        content_url = entry.get("content_url")
+        if isinstance(content_id, str) and content_id:
+            fresh_ids.add(content_id)
+        if isinstance(content_url, str) and content_url:
+            fresh_urls.add(content_url)
+
+    for post in posts:
+        if post.get("id") not in fresh_ids and post.get("url") not in fresh_urls:
+            continue
+        try:
+            base = float(post.get("priority_score", 0.0) or 0.0)
+        except (TypeError, ValueError):
+            base = 0.0
+        # One or many fresh opportunities have the same capped influence.
+        post["priority_score"] = round(base + SCOUT_RELEVANCE_MAX_BOOST, 4)
+    return posts
+
 
 def score_posts(posts: Iterable[Dict], config: Optional[RankingConfig] = None, engagement: Optional[Dict[str, int]] = None) -> List[Dict]:
     """Annotate posts with a priority score for downstream selection."""
@@ -131,4 +190,4 @@ def score_posts(posts: Iterable[Dict], config: Optional[RankingConfig] = None, e
     return scored
 
 
-__all__ = ["RankingConfig", "filter_posts", "score_posts"]
+__all__ = ["RankingConfig", "apply_scout_relevance_boost", "filter_posts", "score_posts"]
