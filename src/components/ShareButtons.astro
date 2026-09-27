@@ -1,5 +1,5 @@
 ---
-import { Mail, Linkedin, Twitter, Share2, Hash } from 'lucide-astro';
+import { Share2 } from 'lucide-astro';
 
 interface Props {
   title: string;
@@ -11,98 +11,56 @@ const encodedTitle = encodeURIComponent(title);
 const encodedURL = encodeURIComponent(url);
 ---
 
-<section class="share-buttons">
-  <p class="share-label">Share this post:</p>
-
-  <!-- Desktop pills -->
-  <div class="share-links desktop-only">
+<div class="share-control" data-share-control data-title={title} data-url={url}>
+  <button
+    type="button"
+    id="share-toggle"
+    class="share-toggle"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls="share-menu"
+  >
+    <Share2 class="icon" aria-hidden="true" />
+    Share
+  </button>
+  <div
+    id="share-menu"
+    class="share-menu"
+    role="menu"
+    aria-labelledby="share-toggle"
+    hidden
+  >
+    <button type="button" role="menuitem" data-copy-link>Copy link</button>
     <a
       href={`https://www.threads.net/intent/post?text=${encodedTitle}%20${encodedURL}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Share on Threads"
-      data-share="Threads"
+      role="menuitem"
+      data-share="Threads">Threads</a
     >
-      <Hash class="icon" /> Threads
-    </a>
-
     <a
       href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Share on Twitter"
-      data-share="Twitter"
+      role="menuitem"
+      data-share="Twitter">X/Twitter</a
     >
-      <Twitter class="icon" /> Twitter
-    </a>
-
     <a
       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Share on LinkedIn"
-      data-share="LinkedIn"
+      role="menuitem"
+      data-share="LinkedIn">LinkedIn</a
     >
-      <Linkedin class="icon" /> LinkedIn
-    </a>
-
     <a
       href={`mailto:?subject=${encodedTitle}&body=${encodedURL}`}
-      aria-label="Share via Email"
-      data-share="Email"
+      role="menuitem"
+      data-share="Email">Email</a
     >
-      <Mail class="icon" /> Email
-    </a>
   </div>
-
-  <!-- Mobile dropdown -->
-  <div class="mobile-only dropdown">
-    <button
-      type="button"
-      id="share-toggle"
-      class="dropdown-toggle"
-      aria-haspopup="menu"
-      aria-expanded="false"
-      aria-controls="share-menu"
-    >
-      <Share2 class="icon" /> Share
-    </button>
-    <div
-      id="share-menu"
-      class="dropdown-menu"
-      role="menu"
-      aria-labelledby="share-toggle"
-      hidden
-    >
-      <a
-        href={`https://www.threads.net/intent/post?text=${encodedTitle}%20${encodedURL}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        role="menuitem"
-        data-share="Threads">Threads</a
-      >
-      <a
-        href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        role="menuitem"
-        data-share="Twitter">Twitter</a
-      >
-      <a
-        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        role="menuitem"
-        data-share="LinkedIn">LinkedIn</a
-      >
-      <a
-        href={`mailto:?subject=${encodedTitle}&body=${encodedURL}`}
-        role="menuitem"
-        data-share="Email">Email</a
-      >
-    </div>
-  </div>
-</section>
+  <span class="sr-only" role="status" aria-live="polite" data-share-status
+  ></span>
+</div>
 
 <script is:inline>
   function trackShare(platform) {
@@ -116,176 +74,172 @@ const encodedURL = encodeURIComponent(url);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const dropdown = document.querySelector('.dropdown');
-    const toggle = document.querySelector('.dropdown-toggle');
-    const menu = document.querySelector('.dropdown-menu');
+    document.querySelectorAll('[data-share-control]').forEach((control) => {
+      const toggle = control.querySelector('.share-toggle');
+      const menu = control.querySelector('.share-menu');
+      const status = control.querySelector('[data-share-status]');
+      const items = Array.from(
+        menu?.querySelectorAll('[role="menuitem"]') ?? [],
+      );
+      if (
+        !(toggle instanceof HTMLButtonElement) ||
+        !(menu instanceof HTMLElement)
+      )
+        return;
 
-    const closeMenu = (returnFocus = true) => {
-      if (!toggle || !menu) return;
-      menu.classList.remove('open');
-      menu.hidden = true;
-      toggle.setAttribute('aria-expanded', 'false');
-      if (returnFocus) {
-        toggle.focus();
-      }
-    };
+      const closeMenu = (returnFocus = false) => {
+        menu.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+        if (returnFocus) toggle.focus();
+      };
+      const openMenu = () => {
+        menu.hidden = false;
+        toggle.setAttribute('aria-expanded', 'true');
+        if (items[0] instanceof HTMLElement) items[0].focus();
+      };
 
-    const openMenu = () => {
-      if (!toggle || !menu) return;
-      menu.classList.add('open');
-      menu.hidden = false;
-      toggle.setAttribute('aria-expanded', 'true');
-      const firstItem = menu.querySelector('[role="menuitem"]');
-      if (firstItem instanceof HTMLElement) {
-        firstItem.focus();
-      }
-    };
-
-    // Track clicks on all share links
-    document.querySelectorAll('[data-share]').forEach((el) => {
-      el.addEventListener('click', () => {
-        trackShare(el.dataset.share);
-        if (menu?.classList.contains('open')) {
-          closeMenu(false);
+      toggle.addEventListener('click', async (event) => {
+        event.stopPropagation();
+        const useNativeShare =
+          typeof navigator.share === 'function' &&
+          window.matchMedia('(pointer: coarse)').matches;
+        if (useNativeShare) {
+          try {
+            await navigator.share({
+              title: control.dataset.title,
+              url: control.dataset.url,
+            });
+            trackShare('Native');
+            return;
+          } catch (error) {
+            if (error instanceof DOMException && error.name === 'AbortError')
+              return;
+          }
         }
+        if (menu.hidden) openMenu();
+        else closeMenu();
+      });
+
+      control.querySelectorAll('[data-share]').forEach((link) => {
+        link.addEventListener('click', () => {
+          trackShare(link.dataset.share);
+          closeMenu();
+        });
+      });
+
+      control
+        .querySelector('[data-copy-link]')
+        ?.addEventListener('click', async () => {
+          const shareURL = control.dataset.url ?? location.href;
+          try {
+            await navigator.clipboard.writeText(shareURL);
+          } catch {
+            const input = document.createElement('textarea');
+            input.value = shareURL;
+            input.setAttribute('readonly', '');
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.append(input);
+            input.select();
+            void document.execCommand('copy');
+            input.remove();
+          }
+          trackShare('Copy link');
+          if (status) status.textContent = 'Link copied';
+          closeMenu(true);
+        });
+
+      menu.addEventListener('keydown', (event) => {
+        const current = items.indexOf(document.activeElement);
+        let next = -1;
+        if (event.key === 'ArrowDown') next = (current + 1) % items.length;
+        if (event.key === 'ArrowUp')
+          next = (current - 1 + items.length) % items.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = items.length - 1;
+        if (next >= 0 && items[next] instanceof HTMLElement) {
+          event.preventDefault();
+          items[next].focus();
+        }
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !menu.hidden) closeMenu(true);
+      });
+      document.addEventListener('click', (event) => {
+        if (!menu.hidden && !control.contains(event.target)) closeMenu();
       });
     });
-
-    // Mobile dropdown toggle
-    if (toggle && menu) {
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent immediate close
-        if (menu.classList.contains('open')) {
-          closeMenu(false);
-        } else {
-          openMenu();
-        }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && menu.classList.contains('open')) {
-          closeMenu();
-        }
-      });
-
-      // Close dropdown when clicking outside
-      document.addEventListener('click', (e) => {
-        if (menu.classList.contains('open') && !dropdown?.contains(e.target)) {
-          closeMenu();
-        }
-      });
-    }
   });
 </script>
 
 <style>
-  .share-buttons {
-    margin-top: var(--space-lg);
-    margin-bottom: var(--space-lg);
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--color-border);
-    text-align: center;
+  .share-control {
+    position: relative;
+    flex: none;
+    font-size: var(--text-sm);
   }
-  .share-label {
-    font-size: var(--text-base-sm);
-    margin-bottom: var(--space-sm);
-    color: var(--color-text-muted);
-    font-weight: 500;
-  }
-
-  /* Desktop pills */
-  .desktop-only {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--space-sm) var(--space-md);
-  }
-  .share-links a {
-    display: flex;
+  .share-toggle {
+    display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-size: var(--text-base-sm);
-    font-weight: 600;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-muted);
+    font: inherit;
     cursor: pointer;
-    text-decoration: none;
-    transition:
-      background 0.2s,
-      transform 0.1s;
-    box-shadow: var(--shadow-xs);
   }
-  .share-links a:hover {
-    background: var(--color-border);
-    transform: translateY(-1px);
+  .share-toggle:hover {
+    color: var(--color-link);
+  }
+  .share-toggle:focus-visible,
+  .share-menu :is(a, button):focus-visible {
+    border-radius: var(--radius-sm);
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
   }
   .icon {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2;
+    width: 1rem;
+    height: 1rem;
   }
-
-  /* Mobile dropdown */
-  .mobile-only {
-    display: none;
-    position: relative;
-    margin-top: var(--space-md);
-  }
-  .dropdown-toggle {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: var(--shadow-xs);
-  }
-  .dropdown-menu {
-    display: none;
-    flex-direction: column;
+  .share-menu {
     position: absolute;
-    top: 110%;
-    left: 0; /* ✅ align neatly with button */
-    transform: none; /* ✅ remove the centering shift */
-    background: var(--color-bg);
+    z-index: 10;
+    top: calc(100% + var(--space-sm));
+    right: 0;
+    width: max-content;
+    min-width: 9.5rem;
+    padding: var(--space-xs) 0;
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    padding: var(--space-sm) 0;
-    z-index: 100;
-    min-width: 180px;
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
   }
-  .dropdown-menu.open {
-    display: flex;
-    animation: slideDown 0.25s ease;
+  .share-menu[hidden] {
+    display: none;
   }
-  .dropdown-menu a {
-    padding: var(--space-sm) var(--space-md);
-    text-align: left;
-    border: none;
+  .share-menu :is(a, button) {
+    display: block;
+    width: 100%;
+    padding: var(--space-xs) var(--space-md);
+    border: 0;
     background: transparent;
-    cursor: pointer;
-    font-size: var(--text-base-sm);
     color: var(--color-text);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
   }
-  .dropdown-menu a:hover {
-    background: var(--color-border);
+  .share-menu :is(a, button):hover {
+    background: var(--color-border-soft);
   }
-
-  /* Responsive */
-  @media (max-width: 640px) {
-    .desktop-only {
-      display: none;
-    }
-    .mobile-only {
-      display: block;
-    }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
   }
 </style>
