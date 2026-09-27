@@ -43,14 +43,17 @@ jobs:
           NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: python -m scripts.automation.engagement
+      - name: Create social-state GitHub App token
+        id: social-state-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.SOCIAL_STATE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.SOCIAL_STATE_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Commit ledger
         env:
-          PUSH_TOKEN: ${{ secrets.SOCIAL_STATE_PUSH_TOKEN }}
+          PUSH_TOKEN: ${{ steps.social-state-token.outputs.token }}
         run: |
-          if [ -z "$PUSH_TOKEN" ]; then
-            echo '::error::SOCIAL_STATE_PUSH_TOKEN is required to commit distribution state to protected main'
-            exit 1
-          fi
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
@@ -58,6 +61,6 @@ jobs:
           git diff --cached --quiet || git commit -m 'chore: update engagement.json [skip ci]'
           git pull --rebase origin main
           if ! git push origin main; then
-            echo '::error::SOCIAL_STATE_PUSH_TOKEN could not update protected main; verify its repository access and branch-protection bypass'
+            echo '::error::GitHub App token could not update protected main; verify the GitHub App installation, Contents write permission, and ruleset bypass permission for the GitHub App'
             exit 1
           fi
