@@ -434,7 +434,7 @@ export function testAuthorIdentityGraph() {
     'sameAs entries must be unique',
   );
   assert.deepEqual(SITE_AUTHOR_SAME_AS, [
-    'https://twitter.com/leonlinsx',
+    'https://twitter.com/leon_lin_s',
     'https://github.com/leonlinsx',
     'https://avoidboringpeople.substack.com',
     threads,
