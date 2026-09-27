@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -15,6 +15,7 @@ import Discussion from '../components/Discussion.astro';
 import type { MarkdownHeading } from 'astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { categoryLabel } from '../utils/taxonomy';
+import { articleHeroUrl } from '../utils/hero';
 
 type Props = {
   post: CollectionEntry<'blog'> & { slug: string };
@@ -43,18 +44,7 @@ const hero = heroImage;
 // Social image reuses the rendered hero transform, so `og:image` and
 // `BlogPosting.image` point at the deployed 1200x630 asset instead of the
 // smaller original source. Hero-less articles use the metadata-only fallback.
-const socialImage =
-  typeof hero === 'object'
-    ? (
-        await getImage({
-          src: hero,
-          format: 'webp',
-          width: 1200,
-          height: 630,
-          fit: 'cover',
-        })
-      ).src
-    : (hero ?? SITE_OG_IMAGE);
+const socialImage = (await articleHeroUrl(hero)) ?? SITE_OG_IMAGE;
 
 // ✅ Related posts (exclude by id)
 const allPosts = await getCollection('blog');

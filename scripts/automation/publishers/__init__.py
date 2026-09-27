@@ -28,6 +28,7 @@ __all__ = [
     "nostr",
     "reddit",
     "threads",
+    "tumblr",
     "twitter",
     "weibo",
 ]

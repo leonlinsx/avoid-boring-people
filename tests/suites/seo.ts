@@ -641,11 +641,20 @@ export function testArticleSocialImageUsesLargeHeroTransform() {
     path.join(REPO_ROOT, 'src/layouts/BlogPost.astro'),
     'utf-8',
   );
+  const hero = fs.readFileSync(
+    path.join(REPO_ROOT, 'src/utils/hero.ts'),
+    'utf-8',
+  );
 
   assert.match(
-    post,
-    /await getImage\(\{\s*src: hero,\s*format: 'webp',\s*width: 1200,\s*height: 630,\s*fit: 'cover',\s*\}\)/,
+    hero,
+    /await getImage\(\{\s*src: heroImage,\s*format: 'webp',\s*width: 1200,\s*height: 630,\s*fit: 'cover',\s*\}\)/,
     'the social image must resolve the same 1200x630 webp transform the hero renders',
+  );
+  assert.match(
+    post,
+    /await articleHeroUrl\(hero\)/,
+    'BlogPost must use the shared article hero transform',
   );
   assert.match(
     post,

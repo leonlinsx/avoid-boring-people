@@ -139,6 +139,11 @@ jobs:
           INSTAGRAM_MEDIA_BASE_URL: ${{ secrets.INSTAGRAM_MEDIA_BASE_URL }}
           INSTAGRAM_MEDIA_UPLOAD_URL: ${{ secrets.INSTAGRAM_MEDIA_UPLOAD_URL }}
           INSTAGRAM_MEDIA_UPLOAD_SECRET: ${{ secrets.INSTAGRAM_MEDIA_UPLOAD_SECRET }}
+          TUMBLR_BLOG_IDENTIFIER: ${{ secrets.TUMBLR_BLOG_IDENTIFIER }}
+          TUMBLR_CONSUMER_KEY: ${{ secrets.TUMBLR_CONSUMER_KEY }}
+          TUMBLR_CONSUMER_SECRET: ${{ secrets.TUMBLR_CONSUMER_SECRET }}
+          TUMBLR_OAUTH_TOKEN: ${{ secrets.TUMBLR_OAUTH_TOKEN }}
+          TUMBLR_OAUTH_TOKEN_SECRET: ${{ secrets.TUMBLR_OAUTH_TOKEN_SECRET }}
         run: python -m scripts.automation.auto_post
       - name: Commit state
         env:

@@ -63,7 +63,7 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: npm ci --omit=dev
       - name: Run Python distribution tests
-        run: python -m pytest tests -q
+        run: python -m pytest tests --ignore=tests/test_rss_build.py -q
 
   build:
     name: Astro build
@@ -85,6 +85,8 @@ jobs:
         run: npm ci
       - name: Build site
         run: npm run build
+      - name: Validate built RSS feed
+        run: python tests/test_rss_build.py
       # Internal links and images break silently when slugs, images, or
       # redirects change. This serves the just-built output locally, so it is
       # deterministic; external link checking stays manual because remote

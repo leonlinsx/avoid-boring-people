@@ -221,3 +221,75 @@ Everything up to and including the parent container is retried normally: an unpu
 8. Refresh `INSTAGRAM_ACCESS_TOKEN` before its 60-day lifetime lapses, with the `refresh_access_token` call in [Credentials](#credentials), and store the returned value as the new repository secret. Instagram is unattended, so an expired token fails the scheduled run rather than a manual one, and the daily [token health](#token-health) probe reports the lapse.
 
 The storyboard limits are editorial, not platform limits: 5-8 slides, 60 characters for a body headline, 200 for its supporting text, 40 for the kicker, 1,000 for alt text. Meta documents at most 10 carousel children and no minimum, so at least 2 is enforced where the platform requires it, and the renderer fails visibly rather than shipping a clipped slide: copy that does not fit exits with `content_overflow`, and a missing brand font stops the render instead of falling back to a system typeface.
+# RSS, Pinterest, Flipboard, and Tumblr setup
+
+`https://leonlins.com/rss.xml` is the single canonical distribution feed. It
+is newest-first and supplies absolute canonical GUIDs, author/category data,
+300–500 character descriptions where the article has enough source text, and
+an article hero as both an RSS enclosure and Media RSS content. Hero-less
+articles deliberately omit image elements rather than presenting a shared
+brand image as if it were article-specific.
+
+## Pinterest (one time)
+
+1. Create or convert to a free Pinterest business account.
+2. In **Settings → Claimed accounts → Websites**, enter `leonlins.com` and use
+   one of Pinterest's offered verification methods: add its HTML tag to the
+   site, upload its HTML file, or add its DNS TXT record. Complete **Verify**
+   and wait for Pinterest to show the domain as claimed before continuing.
+3. Create a public board for Avoid Boring People articles.
+4. In business settings, open the bulk-creation/RSS area, choose **Connect RSS
+   feed**, enter `https://leonlins.com/rss.xml`, select that board, and save.
+5. Confirm the feed is listed as connected. Pinterest processes new feed items
+   rather than importing the whole archive immediately; check the next article
+   becomes a Pin whose image and destination are the article's own values.
+
+Pinterest changes settings navigation periodically, so use its current help
+article **Auto-publish Pins from your RSS feed** if the displayed path differs;
+do not connect the feed until the domain claim is complete.
+
+## Flipboard (one time)
+
+1. Create or sign in to a free Flipboard account and complete the Leon Lin /
+   Avoid Boring People profile.
+2. Apply through Flipboard's publisher/creator onboarding at
+   `https://about.flipboard.com/publishers/`, supplying the site identity and
+   `https://leonlins.com/rss.xml` when asked for the publication feed.
+3. Complete any domain, identity, or content-ownership verification Flipboard
+   requests and keep the feed public while it is reviewed.
+4. After approval, verify the resulting publication/profile opens items at the
+   canonical `leonlins.com` URLs and displays per-article hero images.
+
+Feed acceptance is reviewed by Flipboard and is not immediate or guaranteed.
+Its onboarding form is the authority for the current labels; there is no
+browser automation or second Flipboard-specific feed in this repository.
+
+## Tumblr (one time)
+
+Tumblr is implemented with its official v2 Neue Post Format endpoint and OAuth
+1.0a. It creates a native heading, short summary, and link card; it never copies
+the full article. OAuth1 is appropriate for one owner posting to one blog and
+avoids running an interactive callback/refresh service.
+
+1. Create the Tumblr blog/profile that will represent Avoid Boring People and
+   note its hostname (for example `avoidboringpeople.tumblr.com`).
+2. Register an application at `https://www.tumblr.com/oauth/apps`. Set the app
+   website to `https://leonlins.com`; use a local placeholder callback URL if
+   Tumblr requires one (the production publisher does not run a callback).
+3. On the app details page, use Tumblr's **Explore API** / API console flow to
+   authorize that application as the blog owner and obtain an OAuth 1.0a access
+   token and access-token secret. Do not use the app's consumer secret as the
+   access-token secret.
+4. Add these GitHub Actions repository secrets, preserving the hostname exactly:
+   `TUMBLR_BLOG_IDENTIFIER`, `TUMBLR_CONSUMER_KEY`,
+   `TUMBLR_CONSUMER_SECRET`, `TUMBLR_OAUTH_TOKEN`, and
+   `TUMBLR_OAUTH_TOKEN_SECRET`.
+5. Dispatch **Social New Article** with a deployed `post_id`,
+   `platforms=tumblr`, and `dry_run=true`; review the NPF payload. Then repeat
+   once with `dry_run=false`, confirm the post and link on Tumblr, and confirm
+   its id/permalink were written under that article's `tumblr` entry in
+   `posted.json`.
+6. After that live check, add `"tumblr"` to `DEFAULT_PLATFORMS` in
+   `scripts/automation/routing.py`. That is the only activation change. Until
+   then Tumblr is manual-ready and missing credentials cannot fail unattended
+   publishing. Its evergreen cooldown is 60 days.
