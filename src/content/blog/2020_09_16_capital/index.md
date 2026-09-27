@@ -3,7 +3,7 @@ title: 'Cost of capital in the 21st century'
 description: 'Why you should take more risk today'
 pubDate: 2020-09-16
 category: Investing
-tags: ['investing', 'risk']
+tags: ['risk']
 evergreen: false
 heroImage: './c_8.webp'
 ---

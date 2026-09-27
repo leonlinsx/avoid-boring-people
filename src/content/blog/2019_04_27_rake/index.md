@@ -3,7 +3,7 @@ title: 'Marketplace rakes'
 description: 'Benchmarking take rates for various marketplaces'
 pubDate: 2019-04-27
 category: Technology
-tags: ['business']
+tags: ['marketplace']
 heroImage: './t_1.webp'
 ---
 

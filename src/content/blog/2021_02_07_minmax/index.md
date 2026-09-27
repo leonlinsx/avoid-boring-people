@@ -3,7 +3,7 @@ title: 'Min, Max, and 10x people'
 description: 'Some skills in life have dramatically larger variance than others, which is helpful to know when deciding how much more effort to put in on the margin.'
 pubDate: 2021-02-07
 category: Risk & Decision Making
-tags: ['growth']
+tags: ['skill']
 featured: false
 heroImage: './min_2.webp'
 ---
