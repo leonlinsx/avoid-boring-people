@@ -20,7 +20,8 @@ function testShareMenuAccessibilityAndBehavior() {
   assert.match(share, /aria-haspopup="menu"/);
   assert.match(share, /aria-expanded="false"/);
   assert.match(share, /role="menu"/);
-  assert.equal((share.match(/role="menuitem"/g) ?? []).length, 5);
+  const menuItems = share.match(/<(?:a|button)\b[^>]*role="menuitem"/g) ?? [];
+  assert.equal(menuItems.length, 5);
   for (const label of [
     'Copy link',
     'Threads',
