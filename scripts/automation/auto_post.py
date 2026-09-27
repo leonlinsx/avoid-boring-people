@@ -172,6 +172,9 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
         # The publisher owns rendering, hosting checks, and the three API
         # steps, so every local failure happens before the first network call.
         return post_carousel(storyboard)
+    if platform == "tumblr":
+        from scripts.automation.publishers.tumblr import post_to_tumblr
+        return post_to_tumblr(social, article.canonical_url)
     raise ValueError(f"Unknown platform: {platform}")
 
 
@@ -245,6 +248,9 @@ def _print_dry_run(post: dict, eligible: list[str], social: SocialPost, article:
         elif platform == "nostr": print("  format: signed NIP-01 note")
         elif platform == "threads": print("  format: standalone post + link reply\n  would publish: " + "\n---\n".join(render_threads(tagged)))
         elif platform == "instagram": _print_instagram_dry_run(storyboard)
+        elif platform == "tumblr":
+            from scripts.automation.publishers.tumblr import render_tumblr_post
+            print(f"  format: native discovery post\n  would publish: {render_tumblr_post(tagged, article.canonical_url)}")
         else: print(f"  format: {'thread' if POST_MODE == 'thread' else 'single'}")
 
 def main() -> None:

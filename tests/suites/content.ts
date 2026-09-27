@@ -361,10 +361,13 @@ export async function testRssEndpoint() {
       id: '2024_01_01_alpha/index.md',
       slug: 'alpha',
       data: {
-        title: 'Alpha',
+        title: 'Alpha & Escape',
         description: 'Alpha description',
         pubDate: new Date('2024-01-01T00:00:00Z'),
+        category: 'Risk & Decision Making',
+        heroImage: 'https://images.example.com/alpha.jpg',
       },
+      body: 'A useful article body '.repeat(30),
     }),
     makeCollectionEntry({
       id: '2024_02_01_beta/index.md',
@@ -373,7 +376,9 @@ export async function testRssEndpoint() {
         title: 'Beta',
         description: 'Beta description',
         pubDate: new Date('2024-02-01T00:00:00Z'),
+        category: 'Technology',
       },
+      body: 'A second useful article body '.repeat(30),
     }),
   ];
 
@@ -382,10 +387,30 @@ export async function testRssEndpoint() {
     const response = await GET();
     const xml = await response.text();
 
-    assert.match(xml, /<title>Alpha<\/title>/);
+    assert.match(xml, /<language>en<\/language>/);
+    assert.ok(
+      xml.indexOf('<title>Beta</title>') <
+        xml.indexOf('<title>Alpha &amp; Escape</title>'),
+    );
     assert.match(xml, /<link>https:\/\/leonlins.com\/writing\/alpha\/<\/link>/);
+    assert.match(
+      xml,
+      /<guid isPermaLink="true">https:\/\/leonlins.com\/writing\/alpha\/<\/guid>/,
+    );
+    assert.match(xml, /<dc:creator>Leon Lin<\/dc:creator>/);
+    assert.match(xml, /<category>Risk &amp; Decision Making<\/category>/);
+    assert.match(
+      xml,
+      /<enclosure url="https:\/\/images.example.com\/alpha.jpg" type="image\/jpeg"\s*\/>/,
+    );
+    assert.ok(xml.match(/<description>([^<]{300,501})<\/description>/));
     assert.match(xml, /<title>Beta<\/title>/);
     assert.match(xml, /<link>https:\/\/leonlins.com\/writing\/beta\/<\/link>/);
+    const betaItem = xml.slice(
+      xml.indexOf('<title>Beta</title>'),
+      xml.indexOf('</item>', xml.indexOf('<title>Beta</title>')),
+    );
+    assert.doesNotMatch(betaItem, /<enclosure/);
   });
 }
 

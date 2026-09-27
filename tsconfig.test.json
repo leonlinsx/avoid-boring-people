@@ -6,7 +6,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "astro:content": ["tests/mocks/astro-content.ts"]
+      "astro:content": ["tests/mocks/astro-content.ts"],
+      "astro:assets": ["tests/mocks/astro-assets.ts"]
     }
   }
 }
