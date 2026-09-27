@@ -10,14 +10,14 @@ export const SITE_AUTHOR_URL = 'https://leonlins.com/about/';
 
 // Social profiles for structured data sameAs
 export const SITE_AUTHOR_SAME_AS = [
-  'https://twitter.com/leonlinsx',
+  'https://twitter.com/leon_lin_s',
   'https://github.com/leonlinsx',
   'https://avoidboringpeople.substack.com',
   'https://www.threads.net/@leon.lin.s',
 ];
 
 export const SITE_ORG_SAME_AS = [
-  'https://twitter.com/leonlinsx',
+  'https://twitter.com/leon_lin_s',
   'https://avoidboringpeople.substack.com',
 ];
 
