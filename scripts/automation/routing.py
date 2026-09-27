@@ -1,8 +1,8 @@
 """Category-based distribution policy, kept separate from provider code."""
 from __future__ import annotations
 
-PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads", "instagram")
-SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr", "threads", "instagram")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads", "instagram", "tumblr")
+SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "weibo", "nostr", "threads", "instagram", "tumblr")
 
 # The normal automation destinations. Keep disabled, unapproved, or unusable
 # providers out of this list; PLATFORM remains available as an explicit
@@ -20,6 +20,8 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "
 # and its 60-day evergreen cooldown stops a recycled article from repeating.
 # INSTAGRAM_ACCESS_TOKEN is a long-lived Instagram User token with the same
 # 60-day lifetime as Threads, so it needs the same rotation.
+# Tumblr is fully wired but remains manual-only until its four OAuth1 secrets
+# and blog identifier have been tested live. Add it here after that one check.
 DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads", "instagram")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,

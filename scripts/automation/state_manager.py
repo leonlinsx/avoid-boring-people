@@ -10,7 +10,7 @@ from scripts.automation.json_store import load_json_object, save_json_object
 
 STATE_FILE = Path("posted.json")
 STATE_VERSION = 2
-PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads", "instagram")
+PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "devto", "reddit", "weibo", "nostr", "threads", "instagram", "tumblr")
 EVERGREEN_COOLDOWN_DAYS = {
     "twitter": int(os.getenv("TWITTER_EVERGREEN_COOLDOWN_DAYS", "60")),
     "linkedin": int(os.getenv("LINKEDIN_EVERGREEN_COOLDOWN_DAYS", "60")),
@@ -27,6 +27,7 @@ EVERGREEN_COOLDOWN_DAYS = {
     # across attempts, so the cooldown must exist before the first evergreen
     # run rather than raising KeyError.
     "instagram": int(os.getenv("INSTAGRAM_EVERGREEN_COOLDOWN_DAYS", "60")),
+    "tumblr": int(os.getenv("TUMBLR_EVERGREEN_COOLDOWN_DAYS", "60")),
 }
 
 

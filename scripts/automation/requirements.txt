@@ -8,6 +8,7 @@ numpy
 scipy        
 pycountry    
 requests
+requests-oauthlib
 atproto
 python-frontmatter
 setuptools
