@@ -140,14 +140,15 @@ breadcrumbItems.push({ label: title });
         <!-- Post content -->
         <slot />
 
-        <!-- Tags -->
-        <TagList tags={tags} />
+        <footer class="article-footer">
+          <div class="article-utilities">
+            <TagList tags={tags} />
+            <ShareButtons title={title} url={canonicalURL} />
+          </div>
 
-        <!-- Share Buttons -->
-        <ShareButtons title={title} url={canonicalURL} />
-
-        <!-- Newsletter CTA -->
-        <SubscribeForm compact={false} />
+          <!-- Newsletter CTA -->
+          <SubscribeForm compact={false} />
+        </footer>
 
         <!-- Discussion -->
         <Discussion slug={slug} prompt={discussionPrompt} />
@@ -210,5 +211,34 @@ breadcrumbItems.push({ label: title });
     margin-top: 0;
     margin-bottom: var(--space-lg);
     font-size: var(--text-xl);
+  }
+  .article-footer {
+    margin-top: var(--space-xl);
+  }
+  .article-utilities {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-sm) var(--space-lg);
+  }
+  .article-footer :global(.signup) {
+    margin-top: var(--space-xl);
+    margin-bottom: 0;
+  }
+  @media (max-width: 640px) {
+    .article-utilities {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .article-footer :global(.signup) {
+      text-align: left;
+    }
+    .article-footer :global(.signup .signup-box) {
+      justify-content: flex-start;
+      margin-left: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 </style>
