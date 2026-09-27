@@ -586,12 +586,58 @@
       "_legacy": {
         "global_count": 2
       },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-27T23:57:18Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mwjyutw3hm23",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mwjyutw3hm23"
+      },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-27T23:57:20Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "0xd7519c2fdec539e4477c3631ed7153d0960990e6"
+      },
       "instagram": {
         "count": 1,
         "last_mode": "new",
         "last_posted_at": "2026-09-13T16:04:42Z",
         "remote_id": "17959614963213061",
         "remote_url": "https://www.instagram.com/p/DdO8qGjgcCm/"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-27T23:57:19Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "117345710203514249",
+        "remote_url": "https://mastodon.social/@leonlins/117345710203514249"
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-27T23:57:36Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "2d5024421fc4aa2e42d708714b8504ddc33d0242432ba745ac4336a7dc9db05a"
+      },
+      "threads": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-27T23:58:06Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18196059697388722",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/Ddz17Z2j-y6"
+      },
+      "tumblr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-27T23:58:07Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "828955412633141248",
+        "remote_url": "https://avoidboringpeople/post/828955412633141248"
       }
     },
     "2021_04_10_algo/index.md": {
