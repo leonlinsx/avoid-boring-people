@@ -668,6 +668,21 @@ function describeStructureMismatch(source: string, candidate: string): string {
   return `First mismatch: ${first.path}: source=${value(first.before)}, candidate=${value(first.after)}. Categories: ${[...new Set(differences.map((difference) => difference.category))].join(', ')}.`;
 }
 
+/** Keep Azure prose literal when placed back into Markdown source. */
+function escapeMarkdownText(text: string): string {
+  // GFM recognizes bare URLs after decoding punctuation escapes. A word
+  // joiner keeps those visually unchanged while preventing autolink nodes.
+  const withoutAutolinks = text
+    .replace(/\bhttps?:\/\//gi, (url) => `${url[0]}\u2060${url.slice(1)}`)
+    .replace(/\bwww\./gi, (url) => `${url[0]}\u2060${url.slice(1)}`)
+    .replace(/([\w.+-])@(?=[\w.-]+\.[a-z]{2,})/gi, '$1@\u2060');
+  // CommonMark allows backslash escapes for every ASCII punctuation character.
+  return withoutAutolinks.replace(
+    /[\x21-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]/g,
+    '\\$&',
+  );
+}
+
 /** Translate prose spans while keeping the source Markdown bytes in place. */
 export async function translateProtectedBody(
   body: string,
@@ -699,7 +714,7 @@ export async function translateProtectedBody(
         );
         span.translated = span.text;
       } else {
-        span.translated = result;
+        span.translated = escapeMarkdownText(result);
       }
     });
     batch = [];

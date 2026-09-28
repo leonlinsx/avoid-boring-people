@@ -9,6 +9,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { z } from 'astro/zod';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
 import {
   BLOG_CONTENT_DIR,
   STATIC_LASTMOD,
@@ -407,7 +410,9 @@ export async function testSyntaxAwareMarkdownTranslation() {
     const items = JSON.parse(options.body) as Array<{ Text: string }>;
     return new Response(
       JSON.stringify(
-        items.map((item) => ({ translations: [{ text: `# ${item.Text}` }] })),
+        items.map((item) => ({
+          translations: [{ text: `${item.Text}\n\nextra paragraph` }],
+        })),
       ),
       { headers: { 'content-type': 'application/json' } },
     );
@@ -428,9 +433,9 @@ export async function testSyntaxAwareMarkdownTranslation() {
       (error: Error) => {
         assert.match(
           error.message,
-          /First mismatch: structure\.children\[0\]\(paragraph\)\.type/,
+          /First mismatch: structure\.children\.length/,
         );
-        assert.match(error.message, /Categories: headings/);
+        assert.match(error.message, /Categories: layout\/nodes/);
         assert.match(error.message, /layout\/syntax/);
         assert.ok(error.message.includes(rejectedCandidatePath));
         assert.match(error.message, /No files were modified/);
@@ -439,7 +444,7 @@ export async function testSyntaxAwareMarkdownTranslation() {
     );
     assert.equal(
       fs.readFileSync(rejectedCandidatePath, 'utf-8'),
-      '# alpha paragraph',
+      'alpha paragraph\n\nextra paragraph',
     );
 
     fs.unlinkSync(rejectedCandidatePath);
@@ -486,9 +491,9 @@ export async function testTextNodeMappingAndEmptyResult() {
   assert.equal(
     translated,
     [
-      '訳0:Alpha  [link](https://example.com/a)  訳1:Beta',
+      '訳0\\:Alpha  [link](https://example.com/a)  訳1\\:Beta',
       '',
-      '[^note]: 訳2:Gamma  [link](https://example.com/b)  訳3:Delta',
+      '[^note]: 訳2\\:Gamma  [link](https://example.com/b)  訳3\\:Delta',
       '',
     ].join('\n'),
   );
@@ -537,6 +542,88 @@ export async function testTextNodeMappingAndEmptyResult() {
   }
 }
 
+export async function testTranslatedProseEscapesMarkdownSyntax() {
+  const cases = [
+    {
+      source:
+        '- E.g. China e-commerce marketplace rakes: taobao ~4% vs ebay ~9%',
+      translated: '例えば、淘宝~4%に対しebayは~9%',
+    },
+    { source: 'Plain words', translated: '文字 *strong* と _emphasis_' },
+    { source: 'Plain words', translated: '[label](https://example.com)' },
+    { source: 'Plain words', translated: '`code` and backslash \\ marker' },
+    { source: 'Plain words', translated: '<tag attr="x"> and a|b' },
+    {
+      source: 'Plain words',
+      translated:
+        'https://example.com and <https://example.com> plus www.example.com and name@example.com',
+    },
+    { source: 'First line\nSecond line', translated: '最初\n# heading' },
+    { source: 'First line\nSecond line', translated: '最初\n- list item' },
+    { source: 'First line\nSecond line', translated: '最初\n1. ordered item' },
+    { source: 'First line\nSecond line', translated: '最初\n> blockquote' },
+  ];
+  const parser = unified().use(remarkParse).use(remarkGfm);
+  for (const { source, translated } of cases) {
+    const translating = (async (_url: unknown, options: { body: string }) => {
+      const items = JSON.parse(options.body) as Array<{ Text: string }>;
+      assert.equal(items.length, 1);
+      return new Response(
+        JSON.stringify([{ translations: [{ text: translated }] }]),
+        { headers: { 'content-type': 'application/json' } },
+      );
+    }) as unknown as typeof fetch;
+    const output = await translateProtectedBody(
+      source,
+      'ja',
+      paceCredentials,
+      translating,
+    );
+    assert.equal(
+      markdownStructureFingerprint(output),
+      markdownStructureFingerprint(source),
+      source,
+    );
+    const values: string[] = [];
+    const types: string[] = [];
+    const visit = (node: {
+      type: string;
+      value?: string;
+      children?: unknown[];
+    }): void => {
+      types.push(node.type);
+      if (node.type === 'text') values.push(node.value ?? '');
+      for (const child of node.children ?? [])
+        visit(child as { type: string; value?: string; children?: unknown[] });
+    };
+    visit(
+      parser.parse(output) as unknown as { type: string; children?: unknown[] },
+    );
+    assert.deepEqual(
+      values.map((value) => value.replaceAll('\u2060', '')),
+      [translated],
+      source,
+    );
+    assert.ok(
+      !types.some((type) =>
+        [
+          'delete',
+          'emphasis',
+          'strong',
+          'link',
+          'inlineCode',
+          'html',
+          'blockquote',
+        ].includes(type),
+      ),
+      source,
+    );
+    if (translated.includes('淘宝~4%')) {
+      assert.match(output, /淘宝\\~4\\%に対しebayは\\~9\\%/);
+    }
+  }
+}
+
 export async function testLongArticleChunksAndAtomicFailure() {
   const body = [
     `Opening [link](https://example.com/a) and ![image](./img.webp) with \`code\` and [^note].`,
@@ -580,9 +667,19 @@ export async function testLongArticleChunksAndAtomicFailure() {
   );
   assert.ok(submitted.length > 2);
   assert.equal(
-    result,
-    body,
+    markdownStructureFingerprint(result),
+    markdownStructureFingerprint(body),
     'ordering, separators and protected Markdown survive',
+  );
+  assert.ok(
+    ['A', 'B', 'C', 'D']
+      .map((letter) =>
+        result.indexOf(letter.repeat(letter === 'D' ? 4_000 : 9_800)),
+      )
+      .every(
+        (offset, index, offsets) =>
+          offset >= 0 && (index === 0 || offset > offsets[index - 1]!),
+      ),
   );
   assert.ok(clock.sleeps.length > 0, 'shared throttle paces the full article');
 
@@ -872,7 +969,7 @@ export async function testTranslatorFailureModifiesNothing() {
     credentials,
     okFetch,
   );
-  assert.ok(translated.startsWith('TR:Hello'));
+  assert.ok(translated.startsWith('TR\\:Hello'));
   assert.ok(translated.includes('https://example.com/x'));
 }
 
@@ -1503,6 +1600,7 @@ export async function runI18nTests() {
   testSplitIntoChunksKeepsPlaceholdersWhole();
   await testSyntaxAwareMarkdownTranslation();
   await testTextNodeMappingAndEmptyResult();
+  await testTranslatedProseEscapesMarkdownSyntax();
   await testLongArticleChunksAndAtomicFailure();
   testFailedChunkDoesNotWriteArticle();
   testComposeTranslatedFile();
