@@ -10,27 +10,27 @@ sourceSlug: 'zipf'
 sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 ---
 
-## テイクアウト
+## 要点
 
 ジップの法則とシャノンの情報エントロピーは、異星生命の発見を助けることができます
 
-## どうやって異星人の生命体を見つける?
+## どうやって異星生命体を見つけるのですか\?
 
-私たちは[機械学習企業がテキスト認識にデータを使う方法](/writing/ml 'ML')や[投資家がデータを使って企業を選ぶ方法]について話しました。(/writing/data 'invest')
+私たちは話しました [how machine learning companies use data to recognise text](/writing/ml 'ML') そして [investors use data to pick companies.](/writing/data 'invest')
 
-今週は、科学者たちがどのようにデータを活用してエイリアンを探しているのかについて話しましょう。以下の内容の一部は[ローランス・ドイルによるLong Nowグループとの講演]から引用します。(http://longnow.org/seminars/02020/apr/29/interspecies-communication-and-search-extraterrestrial-intelligence/『Long』)
+今週は、科学者たちがどのようにデータを活用してエイリアンを探しているかについて話しましょう。以下の内容の一部は以下のものから引用します [Laurance Doyle's talk with the Long Now group.](http://longnow.org/seminars/02020/apr/29/interspecies-communication-and-search-extraterrestrial-intelligence/ 'Long')
 
-### 問題の枠組みを描く
+### 問題の枠組み
 
-地球外知的生命体研究所(SETI)の探索は、異星生命を探す研究機関の中で最も有名なものです。その使命は[「宇宙における生命の起源と性質、そして知性の進化を探求し、理解し、説明すること」です。](https://www.seti.org/about-us/mission「ミッション」)
+地球外知的生命体研究所\(SETI\)の探索は、異星生命を探す研究機関の中で最も有名なものです。その使命は ["to explore, understand and explain the origin and nature of life in the universe and the evolution of intelligence."](https://www.seti.org/about-us/mission 'mission')
 
-そもそも、どうやってそんな問題をスコープ化すればいいのでしょうか?
+そもそも、どうやってそんな問題をスコープ化すればいいのでしょうか\?
 
 もし異星生命体を探すなら、彼らはどこか別の惑星に存在しているはずです。つまり、惑星を探すことが出発点になる可能性があるということです。
 
 初歩的な科学からも、惑星は星の周りで形成されることがわかっています。したがって、惑星を支えられる星を見つけることも重要なポイントであることがわかっています。
 
-ほとんどの惑星は過酷な環境を持っていることはわかっています。ですので、そのリストは生命を支えられると考えられる惑星だけに絞[^1]。
+ほとんどの惑星は過酷な環境を持っていることはわかっています。ですので、そのリストは生命を支えられると考える惑星に絞りましょう [^1]\.
 
 その惑星のうち、すべてが実際に生命が現れるわけではないので、実際に生命が現れる割合を考えてみましょう。
 
@@ -46,49 +46,51 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 それはかなりの量でした。しかし今や、問題を枠組み化し、信号を送れる知的異星文明の数を探すために必要な主要な要素がすべて揃っています。
 
-これらすべてを総合すると、知的生命[^2]を推定する有名な方法である[ドレイク方程式](https://en.wikipedia.org/wiki/Drake_equation#:~:text=The%20Drake%20equation%20is%20a%20statement%20that%20stimulates%20intellectual%20curiosity,a%20part%20of%20that%20universe.「ドレイク」)を算出しました。先ほど触れたすべてのポイントを掛け合わせて、どれだけ多くの賢い宇宙人がいるかを推測しているのに注目してください:
+これらすべてを総合すると、私たちが考え出したのは [Drake equation](https://en.wikipedia.org/wiki/Drake_equation#:~:text=The%20Drake%20equation%20is%20a%20statement%20that%20stimulates%20intellectual%20curiosity,a%20part%20of%20that%20universe. 'Drake')知的生命体を推定する有名な方法 [^2]\.今回触れたすべてのポイントを掛け合わせて、どれだけの賢いエイリアンがいるかを推測しているのに注目してください\:
 
-![投稿](./z_1.webp)
+![post](./z_1.webp)
 
-### 範囲を絞り込む
+### 範囲の狭まり
 
 ただし、それは多くの変数なので、今日はその方程式の一部、つまり「知的」な種の割合に焦点を当てましょう。
 
-「知的」な信号と「知能的でない」信号を区別する方法を見つける必要があります。例えば、マイクで歌うことと[オーディオフィードバック](https://en.wikipedia.org/wiki/Audio_feedback「オーディオ」)を区別したいです。
+「知的」な信号と「知能のない」信号を区別する方法を見つける必要があります。例えば、マイクで歌うことと歌うことを区別したいと思います [audio feedback](https://en.wikipedia.org/wiki/Audio_feedback 'audio')\.
 
-もし異星人の通信の例があったり、何を探しているのか分かっていたら助かります。前者の[^3]は明らかにありませんが、後者をさらに絞り込む方法はあります。私たちが見つけたいのは、知的信号がランダムノイズと対照的に持つかもしれない特徴です。
+もし異星人の通信の例があったり、何を探しているのか分かっていたら助かります。明らかに前者はいません [^3]しかし、後者をさらに絞り込む方法もあります。私たちが見つけたいのは、知的信号がランダムノイズと対照的に持つ特性です。
 
-その一つの方法は、私たちの周りにある非人間的な知的生命体を見ることです。[私たちは南極洲を火星の代理として使います。](https://www.cnn.com/2015/12/09/health/white-mars-antarctica-concordia/index.html『火星』)そして同様に動物を異星語の代理として使うことができます。
+その一つの方法は、私たちの周りにある非人間知的生命体を観察することです。 [We use Antarctica as a proxy for Mars,](https://www.cnn.com/2015/12/09/health/white-mars-antarctica-concordia/index.html 'Mars') 同様に動物を異星語の代理として使うこともあります。
 
-もし知的なコミュニケーションが守るべきだと考えるルールがあれば、それを動物のコミュニケーションと照らして、どれだけ効果的かを検証できます。これにより、検索基準を広げるか絞るべきかがわかります。言語理論には2つの主要な法則があることがわかりました。ジップの法則とシャノンの情報論エントロピーです。それぞれ順に見ていきましょう。
+もし知的なコミュニケーションが守るべきだと考えるルールがあれば、それを動物のコミュニケーションと照らして、どれだけ効果的かを検証できます。これにより、検索基準を広げるか絞るべきかがわかります。
+
+言語理論には2つの主要な法則があることがわかりました。ジップの法則とシャノンの情報論エントロピーです。それぞれ順に見ていきましょう。
 
 ### 単語の頻度に関するジップの法則
 
-ジップの法則は、すべての言語において、単語の出現頻度は単語の順位に逆比例するということです。すべての単語を出現頻度でランク付けした場合です。例えば、「the」が最も一般的な単語であれば、そのランクは#1です。「I」が2番目に多い単語であれば、ランク#2です。ランク#1の単語「the」は、ランク#2の単語「I」の2倍の回数で言語内で出現します。この単語はrunの#3単語の3倍の頻度で言語内で現れます。
+ジップの法則は、すべての言語において、単語の出現頻度は単語の順位に逆比例するということです。すべての単語を出現頻度でランク付けした場合です。例えば、「the」が最も一般的な単語であれば、そのランクは\#1です。「I」が2番目に多い単語であれば、ランク\#2です。ランク\#1の単語「the」は、ランク\#2の単語「I」の2倍の回数で言語内で出現します。この単語はrunの\#3単語の3倍の頻度で言語内で現れます。
 
-このような法則があれば、その言語のサンプルテキストで検証できます。例えば、『ロミオとジュリエット』の単語の頻度をプロットした人がいます:
+このような法則があれば、その言語のサンプルテキストで検証できます。例えば、『ロミオとジュリエット』の単語の頻度をプロットした人がいます\:
 
-![投稿](./z_2.webp)
+![post](./z_2.webp)
 
-インターネットの見知らぬ人に頼るだけでは満足せず、自分のニュースレター投稿を分析してみました。簡単なPythonコード[^4]を使って、サブスタックの投稿からテキストを抽出し、使った上位50語を抽出して、その頻度に対してグラフ化しました。この関係は完璧ではありませんが、ジップの法則が予測するものにかなり近いです。ご想像の通り、「the」「to」「a」「and」「of」は頻繁に現れます。
+インターネットの見知らぬ人に頼るのに満足せず、自分のニュースレター投稿を分析してみました。簡単なPythonコードで [^4]私はすべてのサブスタック投稿からテキストを抽出し、使った上位50語を抽出して、それらの頻度に対してグラフ化しました。この関係は完璧ではありませんが、ジップフの法則が予測するものにかなり近いです。ご想像の通り、「the」「to」「a」「and」「of」は頻繁に現れます。
 
-![投稿](./z_3.webp)
+![post](./z_3.webp)
 
-素晴らしい、これで一つの法則ができた。イルカやクジラのような動物に対してそれを試してみて、まだ成り立つかどうか確かめられる。[研究者たちはそれを行った。](https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipfの%20法則%20分布%20of%20signals.&text=In%20other%20words%2C%20baby%20baby%20to%20whistle%20like%20adults。'dolphin')そして、彼らはそれを成し遂げることを発見した![^5] 言い換えれば、ジップの法則は異星語にも適用される可能性が高い。宇宙からの信号に適用することで、ノイズの一部をフィルタリングできる。
+よし、これで一つの法則ができた。イルカやクジラのような動物に対してそれを試してみて、まだ有効かどうか確かめられる。 [Researchers did that,](https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipf's%20Law%20distribution%20of%20signals.&text=In%20other%20words%2C%20baby%20bottlenose,start%20to%20whistle%20like%20adults. 'dolphin') そして、その通りだとわかりました\! [^5] 言い換えれば、ジップの法則は異星言語にも適用される可能性が高いのです。宇宙からの信号に適用することで、ノイズの一部を除去できます。
 
 ### シャノンの次の単語予測に関する情報理論
 
-シャノンの情報理論[^6]は、他の単語の前に単語を知っておくことで、その単語が何であるかの手がかりが得られると提案しています。言い換えれば、文中の単語はそれぞれの単語に依存します。例えば、前の文はおそらく十分理解できているでしょうが、最後の単語「other」は省略しました。
+シャノンの情報理論 [^6] 他の単語の前に単語を知っておくことで、その単語が何かの手がかりが得られると提案しています。言い換えれば、文中の単語はそれぞれの単語によって異なります。例えば、前の文はおそらく十分理解できているでしょうが、最後の単語「other」を省略しました。
 
-単語同士の関係性が分かっているので、[その関係性に基づいて言語にスコアをつける方法も導き出せます。](https://langev.com/pdf/plotkin00languageEvolution.pdf「シャノン」)数学については自分では理解できませんが、私たちが理解できる主なポイントは、言語にはスコアがあるということです。
+言葉の間に何らかの関係があることを知っているからこそ、 [we can also derive a way to score the language based on those relationships.](https://langev.com/pdf/plotkin00languageEvolution.pdf 'shannon') 私は数学については自分では理解できないので手放しにしていますが、私たちが理解できる主なポイントは、言語にはスコアがあるということです。
 
-これらのスコアをプロットすることで、ほとんどの言語がどの範囲に属するかを把握できます。以前と同じプロセスでイルカやクジラのスコアリングを行い、それらの言語がどのように機能するかも確認できます:
+これらのスコアをプロットすることで、ほとんどの言語がどの範囲に属するかを把握できます。以前と同じプロセスでイルカやクジラのスコアリングを行い、それらの言語がどのように機能するかも確認できます\:
 
-![投稿](./z_4.webp)
+![post](./z_4.webp)
 
 ご覧の通り、ほとんどの言語には一定の範囲があります。同じスコアリングシステムを信号に適用すれば、言語である可能性が低いものも除外できます。
 
-### 宇宙人を見つけることは機械学習とそれほど変わらない
+### 宇宙人を見つけることは機械学習とそれほど変わりません
 
 私たちは大きな目標を持ってスタートしました――エイリアンを見つけること。
 
@@ -96,16 +98,18 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 問題の一部に絞り込み、検索の精度を高める方法を模索しました。人間の言語から2つの主要な基準を導き出し、それを他の非人間の言語と照合しました。今後は、同様のアプローチでさらに研究したい信号を絞り込むことができます。
 
-もしこれがすべて仮定だと思ったなら、上記のアプローチはまさにSETIのあるチームが信号解析に使っている方法です。(https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipfの%20Law%20distribution%20of%20signals.&text=In%20other%20words%2C%20baby%20bottlenose, start%20to%20whistle%20like%20adults。「SETI」)ご覧の通り、このプロセス自体は他のデータ分析の問題と似ていることがあります。まず、目標を決めます。次に、自分が必要かもしれないものを枠組みにします。次にアルゴリズムを考えます。最後に、それが通用するかテストします。ある分野の問題解決は、別の分野での問題解決とそれほど違いはありません。
+もしこれがすべて仮定の話だと思っていたなら、上記のアプローチは [exactly what one team at SETI is using to analyse signals.](https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipf's%20Law%20distribution%20of%20signals.&text=In%20other%20words%2C%20baby%20bottlenose,start%20to%20whistle%20like%20adults. 'SETI')
 
-[^1]:何が居住可能か何がそうでないかを定義するのは難しいです(https://en.wikipedia.org/wiki/Circumstellar_habitable_zone「ゾーン」)。なぜなら、私たちに合うものが宇宙生命に当てはまるとは限らないからです。炭素ベースの生命(私たちのもの)ではなくシリコンベースの生命を信じる人もいるかもしれませんが、[その仮定には困難があります](https://astronomy.stackexchange.com/questions/20858/why-do-aliens-have-to-be-carbon-based-lifeforms「炭素」)
+ご覧の通り、このプロセス自体は他のデータ分析の問題と似ていることがあります。まず、目標を決めます。次に、自分が必要かもしれないものを枠組みにします。次にアルゴリズムを考えます。最後に、それが通用するかテストします。ある分野の問題解決は、別の分野での問題解決とそれほど違いはありません。
 
-[^2]: 「ドレイク方程式の有用性は解くこと自体ではなく、科学者が他の世界での生命を考える際に取り入れなければならないあらゆる概念を熟考することにあり、他方での生命の問題に科学的分析の基盤を与える」ことに注目してください。
+[^1]: 居住可能とそうでないものの定義 [is difficult of course,](https://en.wikipedia.org/wiki/Circumstellar_habitable_zone 'zone') 私たちに合う方法が宇宙生命に当てはまるとは限りません。ただし、炭素ベースの生命\(私たちがそうであるもの\)ではなく、シリコンベースの生命を信じる人もいるかもしれません [there are difficulties with that assumption](https://astronomy.stackexchange.com/questions/20858/why-do-aliens-have-to-be-carbon-based-lifeforms 'carbon')
 
-[^3]:もし私が知らない何かを知っているなら、もっと知りたいです...
+[^2]: 「ドレイク方程式の有用性は解くこと自体ではなく、科学者が他宇宙の生命を検討する際に取り入れなければならないあらゆる概念を熟考することにあり、他の場所での生命の問題に科学的分析の基盤を与える」ことに注目してください
 
-[^4]: シンプルとは、書くのに<30分、トラブルシューティングに3時間かかったという意味です。コードは[ここ](https://github.com/leonlinsx/ABP-code/blob/master/Python-projects/File%20extractor.py 'git')で、ご自身の目的に合わせて適応させたい方はどうぞ。
+[^3]: もしあなたが私に知らない何かを知っているなら、もっと知りたいです\.\.\.
 
-[^5]:また、人間とイルカの赤ちゃんの赤ちゃんのおしゃべりにもテストしました。しかし、どちらもジップの法則には当てはまらないことが分かりました。
+[^4]: 簡単というのは、書くのに\<30分、トラブルシューティングに3時間かかったという意味です。コードは [here](https://github.com/leonlinsx/ABP-code/blob/master/Python-projects/File%20extractor.py 'git') もし自分の目的に合わせてアレンジしたいなら、
 
-[^6]:はい、こちらが_[クロード・シャノン、電子通信の作り方を教えてくれた人物](https://www.itsoc.org/about/shannon「シャノン」)です。
+[^5]: また、人間とイルカの赤ちゃんの赤ちゃんのおしゃべりともテストしました。しかし、どちらもジップの法則には従わないことが分かりました。
+
+[^6]: はい、こちらです _その_ [Claude Shannon, the guy who essentially taught us how to create electronic communications](https://www.itsoc.org/about/shannon 'Shannon')
