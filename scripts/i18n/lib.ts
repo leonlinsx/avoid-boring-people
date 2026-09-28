@@ -5,6 +5,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkFootnotes from 'remark-footnotes';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
 import { computeCleanSlug } from '../../src/utils/slug-helpers.ts';
 import {
   LOCALES,
@@ -91,6 +97,8 @@ const sharedThrottle = new TranslationThrottle();
 export interface TranslateRequestOptions {
   throttle?: TranslationThrottle;
   sleep?: (ms: number) => Promise<void>;
+  rejectedCandidatePath?: string;
+  articleSlug?: string;
 }
 
 /** Retry-After in seconds or an HTTP date; undefined when absent/unparseable. */
@@ -404,13 +412,345 @@ export async function translateTexts(
       );
     }
     pending.forEach(({ index }, position) => {
-      results[index] =
-        payload[position]?.translations?.[0]?.text ?? texts[index];
+      const translation = payload[position]?.translations?.[0]?.text;
+      if (typeof translation !== 'string') {
+        throw new Error(
+          `Azure Translator returned an unexpected response (${target}, item ${position}). No files were modified for this article.`,
+        );
+      }
+      results[index] = translation;
     });
     return results;
   }
 }
 
+type MarkdownNode = {
+  type: string;
+  children?: MarkdownNode[];
+  position?: { start: { offset?: number }; end: { offset?: number } };
+  [key: string]: unknown;
+};
+
+type ProseSpan = {
+  start: number;
+  end: number;
+  text: string;
+  nodePath: string;
+  translated?: string;
+};
+
+const markdownParser = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  // @ts-expect-error remark-footnotes bundles a different unified type tree.
+  .use(remarkFootnotes, { inlineNotes: true });
+
+function parseMarkdown(body: string): MarkdownNode {
+  return markdownParser.parse(body) as unknown as MarkdownNode;
+}
+
+function sourceOffsets(node: MarkdownNode): { start: number; end: number } {
+  const start = node.position?.start.offset;
+  const end = node.position?.end.offset;
+  if (start === undefined || end === undefined) {
+    throw new Error(
+      'Markdown node has no source offsets. No files were modified for this article.',
+    );
+  }
+  return { start, end };
+}
+
+const literalNodes = new Set([
+  'link',
+  'linkReference',
+  'image',
+  'imageReference',
+  'definition',
+  'code',
+  'inlineCode',
+  'html',
+  'footnoteReference',
+  'break',
+  'thematicBreak',
+]);
+
+function proseSpans(body: string, tree: MarkdownNode): ProseSpan[] {
+  const spans: ProseSpan[] = [];
+  const visit = (node: MarkdownNode, nodePath: string): void => {
+    if (literalNodes.has(node.type) || node.type.startsWith('mdx')) return;
+    if (node.type === 'text') {
+      const { start, end } = sourceOffsets(node);
+      const raw = body.slice(start, end);
+      const leading = raw.match(/^\s*/u)?.[0].length ?? 0;
+      const trailing = raw.match(/\s*$/u)?.[0].length ?? 0;
+      const core = raw.slice(leading, raw.length - trailing);
+      if (!core) return;
+      // A text node is one Azure item unless its core exceeds the request cap.
+      let offset = start + leading;
+      for (const part of splitIntoChunks(core)) {
+        const prefix = part.match(/^\s*/u)?.[0].length ?? 0;
+        const suffix = part.match(/\s*$/u)?.[0].length ?? 0;
+        const text = part.slice(prefix, part.length - suffix);
+        if (text)
+          spans.push({
+            start: offset + prefix,
+            end: offset + part.length - suffix,
+            text,
+            nodePath,
+          });
+        offset += part.length;
+      }
+      return;
+    }
+    node.children?.forEach((child, index) => {
+      const identifier =
+        child.type === 'footnoteDefinition' &&
+        typeof child.identifier === 'string'
+          ? `[^${child.identifier}]`
+          : '';
+      visit(
+        child,
+        `${nodePath}.children[${index}](${child.type}${identifier})`,
+      );
+    });
+  };
+  visit(tree, 'root');
+  return spans;
+}
+
+/** The parsed Markdown shape and all original bytes outside prose text nodes. */
+export function markdownStructureFingerprint(body: string): string {
+  const tree = parseMarkdown(body);
+  const textNodes: MarkdownNode[] = [];
+  const shape = (node: MarkdownNode): unknown => {
+    if (node.type === 'text') {
+      textNodes.push(node);
+      return { type: 'text' };
+    }
+    const fields: Record<string, unknown> = { type: node.type };
+    for (const key of [
+      'depth',
+      'ordered',
+      'start',
+      'spread',
+      'checked',
+      'align',
+      'url',
+      'title',
+      'alt',
+      'identifier',
+      'label',
+      'referenceType',
+      'lang',
+      'meta',
+    ]) {
+      if (node[key] !== undefined) fields[key] = node[key];
+    }
+    if (literalNodes.has(node.type)) {
+      const start = node.position?.start.offset;
+      const end = node.position?.end.offset;
+      fields.raw =
+        start === undefined || end === undefined
+          ? null
+          : body.slice(start, end);
+    }
+    if (node.children) fields.children = node.children.map(shape);
+    return fields;
+  };
+  const structure = shape(tree);
+  let syntax = body;
+  for (const node of textNodes.reverse()) {
+    const { start, end } = sourceOffsets(node);
+    syntax =
+      syntax.slice(0, start) +
+      body.slice(start, end).replace(/[^\r\n]+/g, 'TEXT') +
+      syntax.slice(end);
+  }
+  return JSON.stringify({ structure, syntax });
+}
+
+function describeStructureMismatch(source: string, candidate: string): string {
+  const expected = JSON.parse(source) as Record<string, unknown>;
+  const actual = JSON.parse(candidate) as Record<string, unknown>;
+  const differences: Array<{
+    path: string;
+    category: string;
+    before: unknown;
+    after: unknown;
+  }> = [];
+  const categoryFor = (type: string): string => {
+    if (type === 'heading') return 'headings';
+    if (type === 'list' || type === 'listItem') return 'lists';
+    if (type.includes('footnote')) return 'footnotes';
+    if (type === 'link' || type === 'linkReference' || type === 'definition')
+      return 'links';
+    if (type === 'image' || type === 'imageReference') return 'images';
+    if (type === 'code' || type === 'inlineCode') return 'code';
+    if (type === 'html') return 'HTML';
+    if (type.startsWith('table')) return 'tables';
+    return 'layout/nodes';
+  };
+  const compare = (
+    before: unknown,
+    after: unknown,
+    location: string,
+    type = '',
+  ): void => {
+    if (JSON.stringify(before) === JSON.stringify(after)) return;
+    if (Array.isArray(before) && Array.isArray(after)) {
+      if (before.length !== after.length)
+        differences.push({
+          path: `${location}.length`,
+          category: categoryFor(type),
+          before: before.length,
+          after: after.length,
+        });
+      for (
+        let index = 0;
+        index < Math.min(before.length, after.length);
+        index += 1
+      ) {
+        const item = before[index] as Record<string, unknown> | undefined;
+        const itemType = typeof item?.type === 'string' ? item.type : type;
+        compare(
+          before[index],
+          after[index],
+          `${location}[${index}](${itemType})`,
+          itemType,
+        );
+      }
+      return;
+    }
+    if (
+      before &&
+      after &&
+      typeof before === 'object' &&
+      typeof after === 'object' &&
+      !Array.isArray(before) &&
+      !Array.isArray(after)
+    ) {
+      const left = before as Record<string, unknown>;
+      const right = after as Record<string, unknown>;
+      const nodeType = typeof left.type === 'string' ? left.type : type;
+      for (const key of new Set([...Object.keys(left), ...Object.keys(right)]))
+        compare(left[key], right[key], `${location}.${key}`, nodeType);
+      return;
+    }
+    differences.push({
+      path: location,
+      category: location.startsWith('syntax')
+        ? 'layout/syntax'
+        : location.endsWith('.type') && typeof after === 'string'
+          ? categoryFor(after)
+          : categoryFor(type),
+      before,
+      after,
+    });
+  };
+  compare(expected.structure, actual.structure, 'structure');
+  if (expected.syntax !== actual.syntax) {
+    const left = expected.syntax as string;
+    const right = actual.syntax as string;
+    let offset = 0;
+    while (
+      offset < Math.min(left.length, right.length) &&
+      left[offset] === right[offset]
+    )
+      offset += 1;
+    differences.push({
+      path: `syntax at offset ${offset}`,
+      category: 'layout/syntax',
+      before: left.slice(Math.max(0, offset - 30), offset + 50),
+      after: right.slice(Math.max(0, offset - 30), offset + 50),
+    });
+  }
+  const first = differences[0];
+  const value = (input: unknown): string => {
+    const serialized = JSON.stringify(input);
+    return serialized && serialized.length > 160
+      ? `${serialized.slice(0, 157)}...`
+      : (serialized ?? 'undefined');
+  };
+  return `First mismatch: ${first.path}: source=${value(first.before)}, candidate=${value(first.after)}. Categories: ${[...new Set(differences.map((difference) => difference.category))].join(', ')}.`;
+}
+
+type ValidationResult =
+  | { severity: 'pass' }
+  | { severity: 'warning'; detail: string }
+  | { severity: 'hard'; detail: string };
+
+function visibleText(node: MarkdownNode): string {
+  if (node.type === 'text' || node.type === 'inlineCode')
+    return String(node.value ?? '');
+  return (node.children ?? []).map(visibleText).join('');
+}
+
+const markdownRenderer = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  // @ts-expect-error remark-footnotes bundles a different unified type tree.
+  .use(remarkFootnotes, { inlineNotes: true })
+  .use(remarkRehype)
+  .use(rehypeStringify);
+
+/** Only whole-article loss or a render failure blocks best-effort publishing. */
+export function validateMarkdownStructure(
+  source: string,
+  candidate: string,
+): ValidationResult {
+  let sourceTree: MarkdownNode;
+  let candidateTree: MarkdownNode;
+  try {
+    sourceTree = parseMarkdown(source);
+    candidateTree = parseMarkdown(candidate);
+    markdownRenderer.processSync(candidate);
+  } catch (error) {
+    return {
+      severity: 'hard',
+      detail: `Markdown render failed: ${String(error)}`,
+    };
+  }
+  const sourceLength = visibleText(sourceTree).trim().length;
+  const candidateLength = visibleText(candidateTree).trim().length;
+  if (
+    sourceLength > 0 &&
+    (candidateLength === 0 ||
+      (sourceLength >= 100 && candidateLength < sourceLength / 4))
+  )
+    return {
+      severity: 'hard',
+      detail: `substantial prose loss: source=${sourceLength} characters, candidate=${candidateLength}`,
+    };
+  const sourceFingerprint = markdownStructureFingerprint(source);
+  const candidateFingerprint = markdownStructureFingerprint(candidate);
+  if (sourceFingerprint !== candidateFingerprint)
+    return {
+      severity: 'warning',
+      detail: describeStructureMismatch(
+        sourceFingerprint,
+        candidateFingerprint,
+      ),
+    };
+  return { severity: 'pass' };
+}
+
+/** Keep Azure prose literal when placed back into Markdown source. */
+function escapeMarkdownText(text: string): string {
+  // GFM autolinks URL/email-like text even when Markdown punctuation is escaped or entity-encoded.
+  // Insert U+2060 only where necessary to preserve the source text-node structure; it may survive
+  // copy/paste but keeps rendered text and document structure unchanged.
+  const withoutAutolinks = text
+    .replace(/\bhttps?:\/\//gi, (url) => `${url[0]}\u2060${url.slice(1)}`)
+    .replace(/\bwww\./gi, (url) => `${url[0]}\u2060${url.slice(1)}`)
+    .replace(/([\w.+-])@(?=[\w.-]+\.[a-z]{2,})/gi, '$1@\u2060');
+  // CommonMark allows backslash escapes for every ASCII punctuation character.
+  return withoutAutolinks.replace(
+    /[\x21-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]/g,
+    '\\$&',
+  );
+}
+
+/** Translate prose spans while keeping the source Markdown bytes in place. */
 export async function translateProtectedBody(
   body: string,
   target: string,
@@ -418,24 +758,63 @@ export async function translateProtectedBody(
   fetchImpl: typeof fetch = fetch,
   options: TranslateRequestOptions = {},
 ): Promise<string> {
-  const guarded = protectMarkdown(body);
-  const chunks = splitIntoChunks(guarded.text);
-  const translated: string[] = [];
-  for (const chunk of chunks) {
-    const separator = chunk.match(/\n+$/)?.[0] ?? '';
-    const [result] = await translateTexts(
-      [chunk.slice(0, chunk.length - separator.length)],
+  const spans = proseSpans(body, parseMarkdown(body));
+  let batch: ProseSpan[] = [];
+  let chars = 0;
+  const flush = async (): Promise<void> => {
+    if (batch.length === 0) return;
+    const translated = await translateTexts(
+      batch.map((span) => span.text),
       target,
       credentials,
       fetchImpl,
       options,
     );
-    translated.push((result ?? '') + separator);
+    batch.forEach((span, index) => {
+      const result = translated[index];
+      if (!result || !result.trim()) {
+        const sourceExcerpt = JSON.stringify(
+          span.text.length > 100 ? `${span.text.slice(0, 100)}…` : span.text,
+        );
+        console.warn(
+          `translation_fallback locale=${target} article=${options.articleSlug ?? 'unknown'} source=${sourceExcerpt}`,
+        );
+        span.translated = span.text;
+      } else {
+        span.translated = escapeMarkdownText(result);
+      }
+    });
+    batch = [];
+    chars = 0;
+  };
+  for (const span of spans) {
+    if (chars + span.text.length > MAX_CHUNK_CHARS) await flush();
+    batch.push(span);
+    chars += span.text.length;
   }
-  return restoreProtectedText({
-    text: translated.join(''),
-    slots: guarded.slots,
-  });
+  await flush();
+  let translatedBody = body;
+  for (const span of spans.reverse()) {
+    translatedBody =
+      translatedBody.slice(0, span.start) +
+      (span.translated ?? span.text) +
+      translatedBody.slice(span.end);
+  }
+  const validation = validateMarkdownStructure(body, translatedBody);
+  if (validation.severity === 'hard') {
+    const rejectedPath =
+      options.rejectedCandidatePath ??
+      path.join('/tmp', `abp-i18n-rejected-${target}-article.md`);
+    fs.writeFileSync(rejectedPath, translatedBody, 'utf-8');
+    throw new Error(
+      `Azure Translator changed Markdown structure: ${validation.detail}. Rejected candidate: ${rejectedPath}. No files were modified for this article.`,
+    );
+  }
+  if (validation.severity === 'warning')
+    console.warn(
+      `translation_structure_warning locale=${target} article=${options.articleSlug ?? 'unknown'} ${validation.detail}`,
+    );
+  return translatedBody;
 }
 
 /**
