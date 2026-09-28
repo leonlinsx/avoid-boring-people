@@ -39,6 +39,7 @@ import {
 } from '../../src/utils/locale-chrome.ts';
 import {
   MAX_CHUNK_CHARS,
+  markdownStructureFingerprint,
   TRANSLATOR_MAX_CHARS_PER_MINUTE,
   TRANSLATOR_MAX_RETRIES,
   TranslationThrottle,
@@ -312,6 +313,230 @@ export function testSplitIntoChunksKeepsPlaceholdersWhole() {
   );
 }
 
+export async function testSyntaxAwareMarkdownTranslation() {
+  const body = [
+    '# Heading alpha',
+    '',
+    'Paragraph alpha with **strong alpha**, *emphasis alpha*, [link alpha](https://example.com/x), ![image alpha](./img.webp), `code alpha`, and [^note].',
+    '',
+    '- alpha first',
+    '- alpha second',
+    '  1. alpha nested one',
+    '  2. alpha nested two',
+    '',
+    '1. alpha ordered one',
+    '2. alpha ordered two',
+    '',
+    '> alpha quote',
+    '',
+    '| alpha heading | alpha heading |',
+    '| --- | --- |',
+    '| alpha cell | alpha cell |',
+    '',
+    '```js',
+    'const alpha = "literal";',
+    '```',
+    '',
+    '<div class="note">alpha literal</div>',
+    '',
+    '[^note]: alpha footnote',
+    '',
+  ].join('\n');
+  const submitted: string[] = [];
+  const translating = (async (_url: unknown, options: { body: string }) => {
+    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    assert.ok(
+      items.reduce((sum, item) => sum + item.Text.length, 0) <= MAX_CHUNK_CHARS,
+    );
+    submitted.push(...items.map((item) => item.Text));
+    return new Response(
+      JSON.stringify(
+        items.map((item) => ({
+          translations: [{ text: item.Text.replaceAll('alpha', '翻訳') }],
+        })),
+      ),
+      { headers: { 'content-type': 'application/json' } },
+    );
+  }) as unknown as typeof fetch;
+  const translated = await translateProtectedBody(
+    body,
+    'ja',
+    paceCredentials,
+    translating,
+  );
+  assert.equal(
+    markdownStructureFingerprint(translated),
+    markdownStructureFingerprint(body),
+  );
+  assert.ok(translated.includes('# Heading 翻訳'));
+  assert.ok(translated.includes('- 翻訳 first\n- 翻訳 second'));
+  assert.ok(translated.includes('1. 翻訳 ordered one\n2. 翻訳 ordered two'));
+  assert.ok(translated.includes('**strong 翻訳**'));
+  assert.ok(translated.includes('[link alpha](https://example.com/x)'));
+  assert.ok(translated.includes('![image alpha](./img.webp)'));
+  assert.ok(translated.includes('`code alpha`'));
+  assert.ok(translated.includes('const alpha = "literal";'));
+  assert.ok(translated.includes('<div class="note">alpha literal</div>'));
+  assert.ok(translated.includes('[^note]: 翻訳 footnote'));
+  assert.ok(submitted.every((text) => !/[\r\n]/.test(text)));
+  assert.ok(
+    submitted.every((text) => !/https?:|__I18N|```|<div|\[\^note\]/.test(text)),
+  );
+
+  assert.ok(submitted.every((text) => !text.includes('link alpha')));
+  for (const changed of [
+    body.replace('# Heading alpha', '## Heading alpha'),
+    body.replace('- alpha second', 'alpha second'),
+    body.replace('2. alpha ordered two', '3. alpha ordered two'),
+    body.replace('[^note]: alpha footnote', '[^other]: alpha footnote'),
+    body.replace('and [^note].', 'and [^other].'),
+    body.replace('https://example.com/x', 'https://example.com/y'),
+    body.replace('./img.webp', './other.webp'),
+    body.replace('`code alpha`', '`different code`'),
+    body.replace('const alpha = "literal";', 'const alpha = "changed";'),
+    body.replace('| alpha cell | alpha cell |', '| alpha cell |'),
+    body.replace('<div class="note">', '<section class="note">'),
+  ]) {
+    assert.notEqual(
+      markdownStructureFingerprint(changed),
+      markdownStructureFingerprint(body),
+    );
+  }
+
+  const corrupting = (async (_url: unknown, options: { body: string }) => {
+    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    return new Response(
+      JSON.stringify(
+        items.map((item) => ({ translations: [{ text: `# ${item.Text}` }] })),
+      ),
+      { headers: { 'content-type': 'application/json' } },
+    );
+  }) as unknown as typeof fetch;
+  const diagnosticDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), 'abp-i18n-diagnostic-'),
+  );
+  const rejectedCandidatePath = path.join(diagnosticDir, 'rejected.md');
+  try {
+    await assert.rejects(
+      translateProtectedBody(
+        'alpha paragraph',
+        'ja',
+        paceCredentials,
+        corrupting,
+        { rejectedCandidatePath },
+      ),
+      (error: Error) => {
+        assert.match(
+          error.message,
+          /First mismatch: structure\.children\[0\]\(paragraph\)\.type/,
+        );
+        assert.match(error.message, /Categories: headings/);
+        assert.match(error.message, /layout\/syntax/);
+        assert.ok(error.message.includes(rejectedCandidatePath));
+        assert.match(error.message, /No files were modified/);
+        return true;
+      },
+    );
+    assert.equal(
+      fs.readFileSync(rejectedCandidatePath, 'utf-8'),
+      '# alpha paragraph',
+    );
+
+    fs.unlinkSync(rejectedCandidatePath);
+    await translateProtectedBody(
+      'alpha paragraph',
+      'ja',
+      paceCredentials,
+      translating,
+      { rejectedCandidatePath },
+    );
+    assert.equal(fs.existsSync(rejectedCandidatePath), false);
+  } finally {
+    fs.rmSync(diagnosticDir, { recursive: true, force: true });
+  }
+}
+
+export async function testTextNodeMappingAndEmptyResult() {
+  const body = [
+    'Alpha  [link](https://example.com/a)  Beta',
+    '',
+    '[^note]: Gamma  [link](https://example.com/b)  Delta',
+    '',
+  ].join('\n');
+  const requests: string[][] = [];
+  const translating = (async (_url: unknown, options: { body: string }) => {
+    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    requests.push(items.map((item) => item.Text));
+    return new Response(
+      JSON.stringify(
+        items.map((item, index) => ({
+          translations: [{ text: `訳${index}:${item.Text}` }],
+        })),
+      ),
+      { headers: { 'content-type': 'application/json' } },
+    );
+  }) as unknown as typeof fetch;
+  const translated = await translateProtectedBody(
+    body,
+    'ja',
+    paceCredentials,
+    translating,
+  );
+  assert.deepEqual(requests, [['Alpha', 'Beta', 'Gamma', 'Delta']]);
+  assert.equal(
+    translated,
+    [
+      '訳0:Alpha  [link](https://example.com/a)  訳1:Beta',
+      '',
+      '[^note]: 訳2:Gamma  [link](https://example.com/b)  訳3:Delta',
+      '',
+    ].join('\n'),
+  );
+  assert.equal(
+    markdownStructureFingerprint(translated),
+    markdownStructureFingerprint(body),
+  );
+
+  for (const empty of ['', '   ']) {
+    let calls = 0;
+    const emptyFetch = (async (_url: unknown, options: { body: string }) => {
+      calls += 1;
+      const items = JSON.parse(options.body) as Array<{ Text: string }>;
+      return new Response(
+        JSON.stringify(
+          items.map((item) => ({
+            translations: [{ text: item.Text === 'Gamma' ? empty : item.Text }],
+          })),
+        ),
+        { headers: { 'content-type': 'application/json' } },
+      );
+    }) as unknown as typeof fetch;
+    const warnings: string[] = [];
+    const originalWarn = console.warn;
+    console.warn = (message: string) => warnings.push(message);
+    try {
+      const fallback = await translateProtectedBody(
+        body,
+        'ja',
+        paceCredentials,
+        emptyFetch,
+        { articleSlug: 'fixture' },
+      );
+      assert.equal(fallback, body);
+      assert.equal(
+        markdownStructureFingerprint(fallback),
+        markdownStructureFingerprint(body),
+      );
+      assert.equal(calls, 1, 'empty prose does not trigger a retry');
+      assert.deepEqual(warnings, [
+        'translation_fallback locale=ja article=fixture source="Gamma"',
+      ]);
+    } finally {
+      console.warn = originalWarn;
+    }
+  }
+}
+
 export async function testLongArticleChunksAndAtomicFailure() {
   const body = [
     `Opening [link](https://example.com/a) and ![image](./img.webp) with \`code\` and [^note].`,
@@ -328,12 +553,15 @@ export async function testLongArticleChunksAndAtomicFailure() {
     active += 1;
     assert.equal(active, 1, 'body requests must be sequential');
     const items = JSON.parse(options.body) as Array<{ Text: string }>;
-    assert.equal(items.length, 1);
-    assert.ok(items[0]!.Text.length <= MAX_CHUNK_CHARS);
-    submitted.push(items[0]!.Text);
+    assert.ok(
+      items.reduce((sum, item) => sum + item.Text.length, 0) <= MAX_CHUNK_CHARS,
+    );
+    submitted.push(...items.map((item) => item.Text));
     active -= 1;
     return new Response(
-      JSON.stringify([{ translations: [{ text: items[0]!.Text }] }]),
+      JSON.stringify(
+        items.map((item) => ({ translations: [{ text: item.Text }] })),
+      ),
       {
         headers: { 'content-type': 'application/json' },
       },
@@ -364,7 +592,9 @@ export async function testLongArticleChunksAndAtomicFailure() {
     if (calls === 2) return new Response('failed', { status: 500 });
     const items = JSON.parse(options.body) as Array<{ Text: string }>;
     return new Response(
-      JSON.stringify([{ translations: [{ text: items[0]!.Text }] }]),
+      JSON.stringify(
+        items.map((item) => ({ translations: [{ text: item.Text }] })),
+      ),
       { headers: { 'content-type': 'application/json' } },
     );
   }) as unknown as typeof fetch;
@@ -450,11 +680,70 @@ export function testFailedChunkDoesNotWriteArticle() {
       run.stderr,
       /translation_failed entry=2024_01_01_fixture locale=ja/,
     );
-    assert.equal(
-      fs.existsSync(
-        path.join(root, 'src/content/i18n/ja/2024_01_01_fixture/index.md'),
+    const targetFile = path.join(
+      root,
+      'src/content/i18n/ja/2024_01_01_fixture/index.md',
+    );
+    assert.equal(fs.existsSync(targetFile), false);
+
+    writeFile(
+      root,
+      'src/content/blog/2024_01_01_fixture/index.md',
+      '---\ntitle: Fixture\n---\n\nAlpha  [link](https://example.com)  Beta\n',
+    );
+    writeFile(
+      root,
+      'fake-fetch.mjs',
+      `globalThis.fetch = async (_url, options) => {
+         const items = JSON.parse(options.body);
+         return new Response(JSON.stringify(items.map(({ Text }) => ({
+           translations: [{ text: Text === 'Alpha' ? '' : Text }],
+         }))), { headers: { 'content-type': 'application/json' } });
+       };`,
+    );
+    const emptyRun = spawnSync(
+      process.execPath,
+      [
+        '--import',
+        './fake-fetch.mjs',
+        '--import',
+        'ts-node/esm',
+        'scripts/i18n/translate.ts',
+        '--locale',
+        'ja',
+        '--slug',
+        'fixture',
+      ],
+      {
+        cwd: root,
+        encoding: 'utf-8',
+        env: {
+          ...process.env,
+          TS_NODE_PROJECT: path.join(root, 'tsconfig.json'),
+          AZURE_TRANSLATOR_KEY: 'test',
+          AZURE_TRANSLATOR_REGION: 'test',
+        },
+      },
+    );
+    assert.equal(emptyRun.status, 0, emptyRun.stderr);
+    assert.match(
+      emptyRun.stderr,
+      /translation_fallback locale=ja article=fixture source="Alpha"/,
+    );
+    assert.equal(fs.existsSync(targetFile), true);
+    const sourceBody = splitFrontmatter(
+      fs.readFileSync(
+        path.join(root, 'src/content/blog/2024_01_01_fixture/index.md'),
+        'utf-8',
       ),
-      false,
+    ).body;
+    const targetBody = splitFrontmatter(
+      fs.readFileSync(targetFile, 'utf-8'),
+    ).body;
+    assert.equal(targetBody, sourceBody);
+    assert.equal(
+      markdownStructureFingerprint(targetBody),
+      markdownStructureFingerprint(sourceBody),
     );
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
@@ -1212,6 +1501,8 @@ export async function runI18nTests() {
   testSourceHashIsDeterministic();
   testProtectRestoreRoundTrip();
   testSplitIntoChunksKeepsPlaceholdersWhole();
+  await testSyntaxAwareMarkdownTranslation();
+  await testTextNodeMappingAndEmptyResult();
   await testLongArticleChunksAndAtomicFailure();
   testFailedChunkDoesNotWriteArticle();
   testComposeTranslatedFile();

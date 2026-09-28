@@ -181,7 +181,14 @@ async function main(): Promise<void> {
             locale.translatorTarget,
             credentials,
             fetch,
-            { throttle },
+            {
+              throttle,
+              articleSlug: item.entry.slug,
+              rejectedCandidatePath: path.join(
+                '/tmp',
+                `abp-i18n-rejected-${locale.code}-${item.entry.slug}.md`,
+              ),
+            },
           ),
         ]);
       // The whole article translated successfully: only now write the file.
