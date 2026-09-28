@@ -23,7 +23,7 @@ export const BLOG_DIR = path.join(REPO_ROOT, 'src/content/blog');
 export const I18N_DIR = path.join(REPO_ROOT, 'src/content/i18n');
 
 const TRANSLATOR_API_VERSION = '3.0';
-const MAX_CHUNK_CHARS = 4000;
+export const MAX_CHUNK_CHARS = 10_000;
 const TRANSLATOR_WINDOW_MS = 60_000;
 
 /** Conservative share of the F0 ~2M chars/hour rate, consumed evenly. */
@@ -264,20 +264,17 @@ export function protectMarkdown(body: string): ProtectedText {
   let text = body;
   // Fenced code blocks first so nothing inside them is touched.
   text = text.replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/g, stash);
+  // Keep complete Markdown links and images together: Translator may move
+  // optional link titles into destinations or rearrange the brackets.
+  text = text.replace(/!?\[[^\]\n]*\]\((?:[^)(\n]|\([^)(\n]*\))*\)/g, stash);
   // Inline code spans.
   text = text.replace(/`[^`\n]+`/g, stash);
   // Angle-bracket spans (autolinks and inline HTML tags).
   text = text.replace(/<[^>\n]+>/g, stash);
   // Footnote references: translate the prose, keep the labels.
   text = text.replace(/\[\^[^\]]+\]/g, stash);
-  // Markdown link/image destinations: `[label](url)` keeps a translatable label.
-  text = text.replace(/(\]\()([^)\s]+)(\))/g, (_all, open, url, close) => {
-    return `${open}${stash(url)}${close}`;
-  });
-  // Reference-style link definitions: `[ref]: url`.
-  text = text.replace(/^(\s*\[[^\]]+\]:\s*)(\S+)/gm, (_all, open, url) => {
-    return `${open}${stash(url)}`;
-  });
+  // Reference-style link definitions keep their labels and destinations.
+  text = text.replace(/^\s*\[[^\]]+\]:[^\n]+/gm, stash);
   // Bare URLs.
   text = text.replace(/https?:\/\/[^\s)<>"'`]+/g, stash);
   return { text, slots };
@@ -290,7 +287,7 @@ export function restoreProtectedText(protected_: ProtectedText): string {
   });
 }
 
-/** Split protected text into translator-sized chunks on blank lines. */
+/** Split protected text without losing separators or cutting placeholders. */
 export function splitIntoChunks(
   text: string,
   maxChars: number = MAX_CHUNK_CHARS,
@@ -300,21 +297,30 @@ export function splitIntoChunks(
   let rest = text;
   while (rest.length > maxChars) {
     const window = rest.slice(0, maxChars);
-    const boundary =
-      window.lastIndexOf('\n\n') > 0
-        ? window.lastIndexOf('\n\n')
-        : window.lastIndexOf('\n') > 0
-          ? window.lastIndexOf('\n')
-          : window.lastIndexOf(' ');
-    let cut = boundary > 0 ? boundary : maxChars;
-    // Never cut inside a placeholder; extend past it instead.
-    const dangling = window.slice(0, cut).match(/__I18NPH\d*$/);
-    if (dangling) {
-      const end = rest.indexOf('__', cut);
-      if (end !== -1) cut = end + 2;
+    const paragraph = window.lastIndexOf('\n\n');
+    const line = window.lastIndexOf('\n');
+    const space = window.lastIndexOf(' ');
+    let cut =
+      paragraph > 0
+        ? paragraph + 2
+        : line > 0
+          ? line + 1
+          : space > 0
+            ? space + 1
+            : maxChars;
+    // Move a hard cut back to the start of a protected token.
+    for (const match of rest.matchAll(/__I18NPH\d+__/g)) {
+      const start = match.index;
+      if (start >= cut) break;
+      if (start + match[0].length > cut) {
+        if (start === 0)
+          throw new Error('Placeholder exceeds translation chunk limit');
+        cut = start;
+        break;
+      }
     }
     chunks.push(rest.slice(0, cut));
-    rest = rest.slice(cut).replace(/^\n+/, '');
+    rest = rest.slice(cut);
   }
   if (rest) chunks.push(rest);
   return chunks;
@@ -335,7 +341,13 @@ export async function translateTexts(
   if (pending.length === 0) return results;
   const throttle = options.throttle ?? sharedThrottle;
   const sleep = options.sleep ?? realClock.sleep;
-  await throttle.pace(pending.reduce((sum, { text }) => sum + text.length, 0));
+  const chars = pending.reduce((sum, { text }) => sum + text.length, 0);
+  if (chars > MAX_CHUNK_CHARS) {
+    throw new Error(
+      `Azure Translator request exceeds ${MAX_CHUNK_CHARS} source characters. No files were modified for this article.`,
+    );
+  }
+  await throttle.pace(chars);
   const url =
     `${credentials.endpoint}/translate?api-version=${TRANSLATOR_API_VERSION}` +
     `&from=en&to=${encodeURIComponent(target)}&textType=plain`;
@@ -408,13 +420,18 @@ export async function translateProtectedBody(
 ): Promise<string> {
   const guarded = protectMarkdown(body);
   const chunks = splitIntoChunks(guarded.text);
-  const translated = await translateTexts(
-    chunks,
-    target,
-    credentials,
-    fetchImpl,
-    options,
-  );
+  const translated: string[] = [];
+  for (const chunk of chunks) {
+    const separator = chunk.match(/\n+$/)?.[0] ?? '';
+    const [result] = await translateTexts(
+      [chunk.slice(0, chunk.length - separator.length)],
+      target,
+      credentials,
+      fetchImpl,
+      options,
+    );
+    translated.push((result ?? '') + separator);
+  }
   return restoreProtectedText({
     text: translated.join(''),
     slots: guarded.slots,

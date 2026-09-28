@@ -4,6 +4,7 @@
 // collection or distribution systems.
 
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -37,6 +38,7 @@ import {
   newsletterChrome,
 } from '../../src/utils/locale-chrome.ts';
 import {
+  MAX_CHUNK_CHARS,
   TRANSLATOR_MAX_CHARS_PER_MINUTE,
   TRANSLATOR_MAX_RETRIES,
   TranslationThrottle,
@@ -268,8 +270,8 @@ export function testProtectRestoreRoundTrip() {
     'prose and inline Markdown stay translatable',
   );
   assert.ok(
-    guarded.text.includes('[the docs](__I18NPH'),
-    'link labels stay while destinations are protected',
+    !guarded.text.includes('[the docs]('),
+    'complete links stay protected from Markdown syntax changes',
   );
   // Identity "translation": nothing protected may change.
   assert.equal(
@@ -295,16 +297,168 @@ export function testProtectRestoreRoundTrip() {
 }
 
 export function testSplitIntoChunksKeepsPlaceholdersWhole() {
-  const paragraph = `Para one __I18NPH12__ tail.\n\n${'x'.repeat(5000)}\n\nLast __I18NPH3__.`;
-  const chunks = splitIntoChunks(paragraph, 100);
-  assert.ok(chunks.every((chunk) => chunk.length <= 120));
-  assert.equal(chunks.join('').replace(/\n+/g, ' ').length > 0, true);
-  // Rejoining (blank-line joins are preserved by the splitter) keeps content.
-  const joined = chunks.join('\n\n');
-  for (const token of ['__I18NPH12__', '__I18NPH3__']) {
-    assert.ok(joined.includes(token), `${token} must survive chunking whole`);
+  const text = `First paragraph.\n\nSecond line.\nThird line.\n${'x'.repeat(100)}__I18NPH12__ tail.`;
+  const chunks = splitIntoChunks(text, 36);
+  assert.equal(chunks.join(''), text);
+  assert.equal(chunks[0], 'First paragraph.\n\n');
+  assert.equal(chunks[1], 'Second line.\nThird line.\n');
+  assert.ok(chunks.every((chunk) => chunk.length <= 36));
+  assert.ok(chunks.some((chunk) => chunk.includes('__I18NPH12__')));
+  assert.ok(
+    chunks.every(
+      (chunk) =>
+        !chunk.includes('__I18NPH12') || chunk.includes('__I18NPH12__'),
+    ),
+  );
+}
+
+export async function testLongArticleChunksAndAtomicFailure() {
+  const body = [
+    `Opening [link](https://example.com/a) and ![image](./img.webp) with \`code\` and [^note].`,
+    'A'.repeat(9_800),
+    'B'.repeat(9_800),
+    'C'.repeat(9_800),
+    'D'.repeat(4_000),
+    '```js\nconst url = "https://example.com/code";\n```',
+  ].join('\n\n');
+  assert.ok(body.length > 25_000);
+  const submitted: string[] = [];
+  let active = 0;
+  const translating = (async (_url: unknown, options: { body: string }) => {
+    active += 1;
+    assert.equal(active, 1, 'body requests must be sequential');
+    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    assert.equal(items.length, 1);
+    assert.ok(items[0]!.Text.length <= MAX_CHUNK_CHARS);
+    submitted.push(items[0]!.Text);
+    active -= 1;
+    return new Response(
+      JSON.stringify([{ translations: [{ text: items[0]!.Text }] }]),
+      {
+        headers: { 'content-type': 'application/json' },
+      },
+    );
+  }) as unknown as typeof fetch;
+  const clock = makeVirtualClock();
+  const result = await translateProtectedBody(
+    body,
+    'ja',
+    paceCredentials,
+    translating,
+    {
+      throttle: new TranslationThrottle(clock),
+      sleep: clock.sleep,
+    },
+  );
+  assert.ok(submitted.length > 2);
+  assert.equal(
+    result,
+    body,
+    'ordering, separators and protected Markdown survive',
+  );
+  assert.ok(clock.sleeps.length > 0, 'shared throttle paces the full article');
+
+  let calls = 0;
+  const failing = (async (_url: unknown, options: { body: string }) => {
+    calls += 1;
+    if (calls === 2) return new Response('failed', { status: 500 });
+    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    return new Response(
+      JSON.stringify([{ translations: [{ text: items[0]!.Text }] }]),
+      { headers: { 'content-type': 'application/json' } },
+    );
+  }) as unknown as typeof fetch;
+  await assert.rejects(
+    translateProtectedBody(body, 'ja', paceCredentials, failing, {
+      throttle: new TranslationThrottle(makeVirtualClock()),
+    }),
+    /HTTP 500.*No files were modified/s,
+  );
+  assert.equal(calls, 2);
+}
+
+export function testFailedChunkDoesNotWriteArticle() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'i18n-cli-failure-'));
+  try {
+    writeFile(root, 'package.json', '{"type":"module"}');
+    fs.copyFileSync(
+      path.join(REPO_ROOT, 'tsconfig.json'),
+      path.join(root, 'tsconfig.json'),
+    );
+    fs.symlinkSync(
+      path.join(REPO_ROOT, 'node_modules'),
+      path.join(root, 'node_modules'),
+      'dir',
+    );
+    for (const file of [
+      'scripts/i18n/lib.ts',
+      'scripts/i18n/translate.ts',
+      'src/utils/i18n.ts',
+      'src/utils/slug-helpers.ts',
+      'src/utils/locale-chrome.ts',
+      'src/lib/comments/domain.ts',
+    ]) {
+      writeFile(
+        root,
+        file,
+        fs.readFileSync(path.join(REPO_ROOT, file), 'utf-8'),
+      );
+    }
+    writeFile(
+      root,
+      'src/content/blog/2024_01_01_fixture/index.md',
+      `---\ntitle: Fixture\n---\n\n${'A'.repeat(9_800)}\n\n${'B'.repeat(9_800)}\n\n${'C'.repeat(9_800)}`,
+    );
+    writeFile(
+      root,
+      'fake-fetch.mjs',
+      `let bodyCalls = 0;
+       globalThis.fetch = async (_url, options) => {
+         const [{ Text }] = JSON.parse(options.body);
+         if (Text.length > 1000 && ++bodyCalls === 2) return new Response('failed', { status: 500 });
+         return new Response(JSON.stringify([{ translations: [{ text: Text }] }]), {
+           headers: { 'content-type': 'application/json' },
+         });
+       };`,
+    );
+    const run = spawnSync(
+      process.execPath,
+      [
+        '--import',
+        './fake-fetch.mjs',
+        '--import',
+        'ts-node/esm',
+        'scripts/i18n/translate.ts',
+        '--locale',
+        'ja',
+        '--slug',
+        'fixture',
+      ],
+      {
+        cwd: root,
+        encoding: 'utf-8',
+        env: {
+          ...process.env,
+          TS_NODE_PROJECT: path.join(root, 'tsconfig.json'),
+          AZURE_TRANSLATOR_KEY: 'test',
+          AZURE_TRANSLATOR_REGION: 'test',
+        },
+      },
+    );
+    assert.equal(run.status, 1, run.stderr);
+    assert.match(
+      run.stderr,
+      /translation_failed entry=2024_01_01_fixture locale=ja/,
+    );
+    assert.equal(
+      fs.existsSync(
+        path.join(root, 'src/content/i18n/ja/2024_01_01_fixture/index.md'),
+      ),
+      false,
+    );
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
   }
-  assert.ok(!/__I18NPH\d*[^0-9_]|__I18NPH$/.test(chunks.join('\n')));
 }
 
 export function testComposeTranslatedFile() {
@@ -928,7 +1082,7 @@ export async function testTranslateTextsSharesPacing() {
   const fetch = successFetch('TR');
 
   const first = await translateTexts(
-    ['x'.repeat(TRANSLATOR_MAX_CHARS_PER_MINUTE)],
+    ['x'.repeat(MAX_CHUNK_CHARS)],
     'ja',
     paceCredentials,
     fetch,
@@ -937,13 +1091,35 @@ export async function testTranslateTextsSharesPacing() {
   assert.equal(first.length, 1);
   assert.deepEqual(clock.sleeps, []);
 
-  // The next request must wait for the window even though it is tiny.
+  await translateTexts(
+    ['z'.repeat(MAX_CHUNK_CHARS)],
+    'ja',
+    paceCredentials,
+    fetch,
+    {
+      throttle,
+      sleep: clock.sleep,
+    },
+  );
+  await translateTexts(['q'.repeat(5_000)], 'ja', paceCredentials, fetch, {
+    throttle,
+    sleep: clock.sleep,
+  });
   const second = await translateTexts(['y'], 'ja', paceCredentials, fetch, {
     throttle,
     sleep: clock.sleep,
   });
   assert.deepEqual(second, ['TR:y']);
   assert.deepEqual(clock.sleeps, [60_000]);
+  await assert.rejects(
+    translateTexts(
+      ['x'.repeat(MAX_CHUNK_CHARS + 1)],
+      'ja',
+      paceCredentials,
+      fetch,
+    ),
+    /exceeds 10000 source characters/,
+  );
 }
 
 export async function testTranslatorRetriesOn429() {
@@ -1036,6 +1212,8 @@ export async function runI18nTests() {
   testSourceHashIsDeterministic();
   testProtectRestoreRoundTrip();
   testSplitIntoChunksKeepsPlaceholdersWhole();
+  await testLongArticleChunksAndAtomicFailure();
+  testFailedChunkDoesNotWriteArticle();
   testComposeTranslatedFile();
   testMissingCredentialsFailClearly();
   await testTranslatorFailureModifiesNothing();
