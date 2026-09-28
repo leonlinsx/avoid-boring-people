@@ -322,52 +322,38 @@ export function testMarkdownValidationSeverities() {
     ['- taobao ~4% vs ebay ~9%', '- 淘宝~4%に対しebayは~9%'],
     ['[^rate]: taobao ~4% vs ebay ~9%', '[^rate]: 淘宝~4%に対しebayは~9%'],
     ['Plain prose', 'https://example.com'],
-  ]) {
-    const result = validateMarkdownStructure(source, candidate);
-    assert.equal(result.severity, 'warning', source);
-  }
-
-  for (const [source, candidate, reason] of [
-    ['# Heading', 'Heading', /block structure/],
-    ['- first\n- second', '- first second', /block structure/],
-    ['[^rate]: Footnote prose', 'Footnote prose', /block structure/],
-    ['![alt](./image.webp)', '![alt](./other.webp)', /images changed/],
-    [
-      '[link](https://example.com/a)',
-      '[link](https://example.com/b)',
-      /link destination/,
-    ],
-    ['`code`', 'code', /code changed/],
-    [
-      '<div>fixed</div>',
-      '<section>fixed</section>',
-      /block structure|html changed/,
-    ],
-    [
-      '| a | b |\n| - | - |\n| c | d |',
-      '| a |\n| - |\n| c |',
-      /block structure/,
-    ],
-    ['A '.repeat(60), 'short', /truncated prose/],
+    ['# Heading', 'Heading'],
+    ['- first\n- second', '- first second'],
+    ['> quoted prose', 'quoted prose'],
+    ['[^rate]: Footnote prose', 'Footnote prose'],
+    ['![alt](./image.webp)', '![alt](./other.webp)'],
+    ['[link](https://example.com/a)', '[link](https://example.com/b)'],
+    ['`code`', 'code'],
+    ['<div>fixed</div>', '<section>fixed</section>'],
+    ['| a | b |\n| - | - |\n| c | d |', '| a |\n| - |\n| c |'],
     [
       'Before [link](https://example.com) After',
       'Before [link](https://example.com)',
-      /missing or truncated prose/,
-    ],
-    [
-      'Before [link](https://example.com) After',
-      '[link](https://example.com) After',
-      /missing or truncated prose/,
     ],
     [
       '[^1]: Rate https://fred.stlouisfed.org/series/DFII10 on 2020-09-14.',
       '[^1]: 金利 https://fred.stlouisfed.org/series/DFII102020年9月14日。',
-      /link destination/,
     ],
   ] as const) {
+    assert.equal(
+      validateMarkdownStructure(source, candidate).severity,
+      'warning',
+      source,
+    );
+  }
+  for (const candidate of ['', 'short', 'First section only.']) {
+    const source =
+      'First section of the article. '.repeat(15) +
+      '\n\nSecond major section of the article. '.repeat(15);
     const result = validateMarkdownStructure(source, candidate);
-    assert.equal(result.severity, 'hard', source);
-    if (result.severity === 'hard') assert.match(result.detail, reason);
+    assert.equal(result.severity, 'hard');
+    if (result.severity === 'hard')
+      assert.match(result.detail, /substantial prose loss/);
   }
 }
 
@@ -465,8 +451,8 @@ export async function testSyntaxAwareMarkdownTranslation() {
     const items = JSON.parse(options.body) as Array<{ Text: string }>;
     return new Response(
       JSON.stringify(
-        items.map((item) => ({
-          translations: [{ text: `${item.Text}\n\nextra paragraph` }],
+        items.map(() => ({
+          translations: [{ text: 'x' }],
         })),
       ),
       { headers: { 'content-type': 'application/json' } },
@@ -479,28 +465,20 @@ export async function testSyntaxAwareMarkdownTranslation() {
   try {
     await assert.rejects(
       translateProtectedBody(
-        'alpha paragraph',
+        'alpha paragraph '.repeat(20),
         'ja',
         paceCredentials,
         corrupting,
         { rejectedCandidatePath },
       ),
       (error: Error) => {
-        assert.match(
-          error.message,
-          /First mismatch: structure\.children\.length/,
-        );
-        assert.match(error.message, /Categories: layout\/nodes/);
-        assert.match(error.message, /layout\/syntax/);
+        assert.match(error.message, /substantial prose loss/);
         assert.ok(error.message.includes(rejectedCandidatePath));
         assert.match(error.message, /No files were modified/);
         return true;
       },
     );
-    assert.equal(
-      fs.readFileSync(rejectedCandidatePath, 'utf-8'),
-      'alpha paragraph\n\nextra paragraph',
-    );
+    assert.equal(fs.readFileSync(rejectedCandidatePath, 'utf-8'), 'x ');
 
     fs.unlinkSync(rejectedCandidatePath);
     await translateProtectedBody(

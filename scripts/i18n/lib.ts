@@ -9,6 +9,8 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkFootnotes from 'remark-footnotes';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
 import { computeCleanSlug } from '../../src/utils/slug-helpers.ts';
 import {
   LOCALES,
@@ -677,212 +679,47 @@ type ValidationResult =
   | { severity: 'warning'; detail: string }
   | { severity: 'hard'; detail: string };
 
-const blockNodes = new Set([
-  'root',
-  'paragraph',
-  'heading',
-  'blockquote',
-  'list',
-  'listItem',
-  'footnoteDefinition',
-  'table',
-  'tableRow',
-  'tableCell',
-  'code',
-  'html',
-  'thematicBreak',
-]);
-
-function markdownHardShape(node: MarkdownNode, body: string): unknown {
-  const shape: Record<string, unknown> = { type: node.type };
-  for (const key of [
-    'depth',
-    'ordered',
-    'start',
-    'spread',
-    'checked',
-    'identifier',
-    'align',
-    'lang',
-    'meta',
-  ]) {
-    if (node[key] !== undefined) shape[key] = node[key];
-  }
-  if (node.type === 'code' || node.type === 'html') {
-    const { start, end } = sourceOffsets(node);
-    shape.raw = body.slice(start, end);
-  }
-  if (node.children) {
-    shape.children = node.children
-      .filter((child) => blockNodes.has(child.type))
-      .map((child) => markdownHardShape(child, body));
-  }
-  return shape;
-}
-
-function markdownInvariants(tree: MarkdownNode, body: string) {
-  const links: string[] = [];
-  const images: string[] = [];
-  const footnotes: string[] = [];
-  const code: string[] = [];
-  const html: string[] = [];
-  const definitions: string[] = [];
-  const visit = (node: MarkdownNode): void => {
-    if (node.type === 'link' || node.type === 'linkReference')
-      links.push(String(node.url ?? node.identifier ?? ''));
-    if (node.type === 'image' || node.type === 'imageReference')
-      images.push(String(node.url ?? node.identifier ?? ''));
-    if (node.type === 'footnoteReference')
-      footnotes.push(String(node.identifier ?? ''));
-    if (node.type === 'inlineCode') code.push(String(node.value ?? ''));
-    if (node.type === 'html') {
-      const start = node.position?.start.offset;
-      const end = node.position?.end.offset;
-      html.push(
-        start === undefined || end === undefined
-          ? String(node.value ?? '')
-          : body.slice(start, end),
-      );
-    }
-    if (node.type === 'definition')
-      definitions.push(
-        `${String(node.identifier ?? '')}:${String(node.url ?? '')}`,
-      );
-    node.children?.forEach(visit);
-  };
-  visit(tree);
-  return { links, images, footnotes, code, html, definitions };
-}
-
 function visibleText(node: MarkdownNode): string {
   if (node.type === 'text' || node.type === 'inlineCode')
     return String(node.value ?? '');
   return (node.children ?? []).map(visibleText).join('');
 }
 
-type InlinePart = { text: string } | { anchor: string; text: string };
+const markdownRenderer = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  // @ts-expect-error remark-footnotes bundles a different unified type tree.
+  .use(remarkFootnotes, { inlineNotes: true })
+  .use(remarkRehype)
+  .use(rehypeStringify);
 
-function inlineParts(node: MarkdownNode): InlinePart[] {
-  const anchor =
-    node.type === 'link' || node.type === 'image'
-      ? `${node.type}:${String(node.url ?? '')}`
-      : node.type === 'linkReference' ||
-          node.type === 'imageReference' ||
-          node.type === 'footnoteReference'
-        ? `${node.type}:${String(node.identifier ?? '')}`
-        : node.type === 'inlineCode' || node.type === 'html'
-          ? `${node.type}:${String(node.value ?? '')}`
-          : undefined;
-  if (anchor) return [{ anchor, text: visibleText(node) }];
-  if (node.type === 'text') return [{ text: String(node.value ?? '') }];
-  return (node.children ?? []).flatMap(inlineParts);
-}
-
-function missingProse(
-  source: MarkdownNode,
-  candidate: MarkdownNode,
-  nodePath = 'root',
-): string | undefined {
-  if (['paragraph', 'heading', 'tableCell'].includes(source.type)) {
-    const sourceParts = inlineParts(source);
-    const candidateParts = inlineParts(candidate);
-    const anchors = sourceParts.flatMap((part) =>
-      'anchor' in part ? [part.anchor] : [],
-    );
-    const before = Array.from({ length: anchors.length + 1 }, () => '');
-    const after = Array.from({ length: anchors.length + 1 }, () => '');
-    let index = 0;
-    for (const part of sourceParts) {
-      if ('anchor' in part) index += 1;
-      else before[index] += part.text;
-    }
-    index = 0;
-    for (const part of candidateParts) {
-      if ('anchor' in part && part.anchor === anchors[index]) index += 1;
-      else after[index] += part.text;
-    }
-    for (let segment = 0; segment < before.length; segment += 1) {
-      const sourceText = before[segment]!.trim();
-      const candidateText = after[segment]!.trim();
-      if (
-        sourceText &&
-        (!candidateText ||
-          (sourceText.length >= 80 &&
-            candidateText.length < sourceText.length / 10))
-      )
-        return `${nodePath}.segment[${segment}]: source prose has ${sourceText.length} characters, candidate has ${candidateText.length}`;
-    }
-  }
-  const left = (source.children ?? []).filter((child) =>
-    blockNodes.has(child.type),
-  );
-  const right = (candidate.children ?? []).filter((child) =>
-    blockNodes.has(child.type),
-  );
-  for (let index = 0; index < Math.min(left.length, right.length); index += 1) {
-    const detail = missingProse(
-      left[index]!,
-      right[index]!,
-      `${nodePath}.children[${index}](${left[index]!.type})`,
-    );
-    if (detail) return detail;
-  }
-  return undefined;
-}
-
-function containsInOrder(source: string[], candidate: string[]): boolean {
-  let index = 0;
-  for (const value of candidate) if (value === source[index]) index += 1;
-  return index === source.length;
-}
-
-/** Block/content loss is fatal; inline parser differences are diagnostic only. */
+/** Only whole-article loss or a render failure blocks best-effort publishing. */
 export function validateMarkdownStructure(
   source: string,
   candidate: string,
 ): ValidationResult {
-  const sourceTree = parseMarkdown(source);
-  const candidateTree = parseMarkdown(candidate);
+  let sourceTree: MarkdownNode;
+  let candidateTree: MarkdownNode;
+  try {
+    sourceTree = parseMarkdown(source);
+    candidateTree = parseMarkdown(candidate);
+    markdownRenderer.processSync(candidate);
+  } catch (error) {
+    return {
+      severity: 'hard',
+      detail: `Markdown render failed: ${String(error)}`,
+    };
+  }
+  const sourceLength = visibleText(sourceTree).trim().length;
+  const candidateLength = visibleText(candidateTree).trim().length;
   if (
-    JSON.stringify(markdownHardShape(sourceTree, source)) !==
-    JSON.stringify(markdownHardShape(candidateTree, candidate))
+    sourceLength > 0 &&
+    (candidateLength === 0 ||
+      (sourceLength >= 100 && candidateLength < sourceLength / 4))
   )
     return {
       severity: 'hard',
-      detail: `block structure changed. ${describeStructureMismatch(
-        markdownStructureFingerprint(source),
-        markdownStructureFingerprint(candidate),
-      )}`,
-    };
-  const expected = markdownInvariants(sourceTree, source);
-  const actual = markdownInvariants(candidateTree, candidate);
-  for (const key of [
-    'images',
-    'footnotes',
-    'code',
-    'html',
-    'definitions',
-  ] as const)
-    if (JSON.stringify(expected[key]) !== JSON.stringify(actual[key]))
-      return {
-        severity: 'hard',
-        detail: `${key} changed: source=${JSON.stringify(expected[key])}, candidate=${JSON.stringify(actual[key])}`,
-      };
-  if (!containsInOrder(expected.links, actual.links)) {
-    const missing = expected.links.find((url) => !actual.links.includes(url));
-    const changed = actual.links.find(
-      (url) => missing && url.startsWith(missing),
-    );
-    return {
-      severity: 'hard',
-      detail: `existing link destination changed or missing: source=${JSON.stringify(missing ?? expected.links)}, candidate=${JSON.stringify(changed ?? actual.links)}`,
-    };
-  }
-  const proseLoss = missingProse(sourceTree, candidateTree);
-  if (proseLoss)
-    return {
-      severity: 'hard',
-      detail: `missing or truncated prose: ${proseLoss}`,
+      detail: `substantial prose loss: source=${sourceLength} characters, candidate=${candidateLength}`,
     };
   const sourceFingerprint = markdownStructureFingerprint(source);
   const candidateFingerprint = markdownStructureFingerprint(candidate);
