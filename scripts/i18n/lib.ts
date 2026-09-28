@@ -545,8 +545,12 @@ export function markdownStructureFingerprint(body: string): string {
       if (node[key] !== undefined) fields[key] = node[key];
     }
     if (literalNodes.has(node.type)) {
-      const { start, end } = sourceOffsets(node);
-      fields.raw = body.slice(start, end);
+      const start = node.position?.start.offset;
+      const end = node.position?.end.offset;
+      fields.raw =
+        start === undefined || end === undefined
+          ? null
+          : body.slice(start, end);
     }
     if (node.children) fields.children = node.children.map(shape);
     return fields;
@@ -668,10 +672,197 @@ function describeStructureMismatch(source: string, candidate: string): string {
   return `First mismatch: ${first.path}: source=${value(first.before)}, candidate=${value(first.after)}. Categories: ${[...new Set(differences.map((difference) => difference.category))].join(', ')}.`;
 }
 
+type ValidationResult =
+  | { severity: 'pass' }
+  | { severity: 'warning'; detail: string }
+  | { severity: 'hard'; detail: string };
+
+const blockNodes = new Set([
+  'root',
+  'paragraph',
+  'heading',
+  'blockquote',
+  'list',
+  'listItem',
+  'footnoteDefinition',
+  'table',
+  'tableRow',
+  'tableCell',
+  'code',
+  'html',
+  'thematicBreak',
+]);
+
+function markdownHardShape(node: MarkdownNode, body: string): unknown {
+  const shape: Record<string, unknown> = { type: node.type };
+  for (const key of [
+    'depth',
+    'ordered',
+    'start',
+    'spread',
+    'checked',
+    'identifier',
+    'align',
+    'lang',
+    'meta',
+  ]) {
+    if (node[key] !== undefined) shape[key] = node[key];
+  }
+  if (node.type === 'code' || node.type === 'html') {
+    const { start, end } = sourceOffsets(node);
+    shape.raw = body.slice(start, end);
+  }
+  if (node.children) {
+    shape.children = node.children
+      .filter((child) => blockNodes.has(child.type))
+      .map((child) => markdownHardShape(child, body));
+  }
+  return shape;
+}
+
+function markdownInvariants(tree: MarkdownNode, body: string) {
+  const links: string[] = [];
+  const images: string[] = [];
+  const footnotes: string[] = [];
+  const code: string[] = [];
+  const html: string[] = [];
+  const definitions: string[] = [];
+  const visit = (node: MarkdownNode): void => {
+    if (node.type === 'link' || node.type === 'linkReference')
+      links.push(String(node.url ?? node.identifier ?? ''));
+    if (node.type === 'image' || node.type === 'imageReference')
+      images.push(String(node.url ?? node.identifier ?? ''));
+    if (node.type === 'footnoteReference')
+      footnotes.push(String(node.identifier ?? ''));
+    if (node.type === 'inlineCode') code.push(String(node.value ?? ''));
+    if (node.type === 'html') {
+      const start = node.position?.start.offset;
+      const end = node.position?.end.offset;
+      html.push(
+        start === undefined || end === undefined
+          ? String(node.value ?? '')
+          : body.slice(start, end),
+      );
+    }
+    if (node.type === 'definition')
+      definitions.push(
+        `${String(node.identifier ?? '')}:${String(node.url ?? '')}`,
+      );
+    node.children?.forEach(visit);
+  };
+  visit(tree);
+  return { links, images, footnotes, code, html, definitions };
+}
+
+function visibleText(node: MarkdownNode): string {
+  if (node.type === 'text' || node.type === 'inlineCode')
+    return String(node.value ?? '');
+  return (node.children ?? []).map(visibleText).join('');
+}
+
+function missingProse(
+  source: MarkdownNode,
+  candidate: MarkdownNode,
+  nodePath = 'root',
+): string | undefined {
+  if (['paragraph', 'heading', 'tableCell'].includes(source.type)) {
+    const before = visibleText(source).trim();
+    const after = visibleText(candidate).trim();
+    if (
+      before &&
+      (!after || (before.length >= 80 && after.length < before.length / 10))
+    )
+      return `${nodePath}: source prose has ${before.length} characters, candidate has ${after.length}`;
+  }
+  const left = (source.children ?? []).filter((child) =>
+    blockNodes.has(child.type),
+  );
+  const right = (candidate.children ?? []).filter((child) =>
+    blockNodes.has(child.type),
+  );
+  for (let index = 0; index < Math.min(left.length, right.length); index += 1) {
+    const detail = missingProse(
+      left[index]!,
+      right[index]!,
+      `${nodePath}.children[${index}](${left[index]!.type})`,
+    );
+    if (detail) return detail;
+  }
+  return undefined;
+}
+
+function containsInOrder(source: string[], candidate: string[]): boolean {
+  let index = 0;
+  for (const value of candidate) if (value === source[index]) index += 1;
+  return index === source.length;
+}
+
+/** Block/content loss is fatal; inline parser differences are diagnostic only. */
+export function validateMarkdownStructure(
+  source: string,
+  candidate: string,
+): ValidationResult {
+  const sourceTree = parseMarkdown(source);
+  const candidateTree = parseMarkdown(candidate);
+  if (
+    JSON.stringify(markdownHardShape(sourceTree, source)) !==
+    JSON.stringify(markdownHardShape(candidateTree, candidate))
+  )
+    return {
+      severity: 'hard',
+      detail: `block structure changed. ${describeStructureMismatch(
+        markdownStructureFingerprint(source),
+        markdownStructureFingerprint(candidate),
+      )}`,
+    };
+  const proseLoss = missingProse(sourceTree, candidateTree);
+  if (proseLoss)
+    return {
+      severity: 'hard',
+      detail: `missing or truncated prose: ${proseLoss}`,
+    };
+  const expected = markdownInvariants(sourceTree, source);
+  const actual = markdownInvariants(candidateTree, candidate);
+  for (const key of [
+    'images',
+    'footnotes',
+    'code',
+    'html',
+    'definitions',
+  ] as const)
+    if (JSON.stringify(expected[key]) !== JSON.stringify(actual[key]))
+      return {
+        severity: 'hard',
+        detail: `${key} changed: source=${JSON.stringify(expected[key])}, candidate=${JSON.stringify(actual[key])}`,
+      };
+  if (!containsInOrder(expected.links, actual.links)) {
+    const missing = expected.links.find((url) => !actual.links.includes(url));
+    const changed = actual.links.find(
+      (url) => missing && url.startsWith(missing),
+    );
+    return {
+      severity: 'hard',
+      detail: `existing link destination changed or missing: source=${JSON.stringify(missing ?? expected.links)}, candidate=${JSON.stringify(changed ?? actual.links)}`,
+    };
+  }
+  const sourceFingerprint = markdownStructureFingerprint(source);
+  const candidateFingerprint = markdownStructureFingerprint(candidate);
+  if (sourceFingerprint !== candidateFingerprint)
+    return {
+      severity: 'warning',
+      detail: describeStructureMismatch(
+        sourceFingerprint,
+        candidateFingerprint,
+      ),
+    };
+  return { severity: 'pass' };
+}
+
 /** Keep Azure prose literal when placed back into Markdown source. */
 function escapeMarkdownText(text: string): string {
-  // GFM recognizes bare URLs after decoding punctuation escapes. A word
-  // joiner keeps those visually unchanged while preventing autolink nodes.
+  // GFM autolinks URL/email-like text even when Markdown punctuation is escaped or entity-encoded.
+  // Insert U+2060 only where necessary to preserve the source text-node structure; it may survive
+  // copy/paste but keeps rendered text and document structure unchanged.
   const withoutAutolinks = text
     .replace(/\bhttps?:\/\//gi, (url) => `${url[0]}\u2060${url.slice(1)}`)
     .replace(/\bwww\./gi, (url) => `${url[0]}\u2060${url.slice(1)}`)
@@ -733,17 +924,20 @@ export async function translateProtectedBody(
       (span.translated ?? span.text) +
       translatedBody.slice(span.end);
   }
-  const sourceFingerprint = markdownStructureFingerprint(body);
-  const translatedFingerprint = markdownStructureFingerprint(translatedBody);
-  if (sourceFingerprint !== translatedFingerprint) {
+  const validation = validateMarkdownStructure(body, translatedBody);
+  if (validation.severity === 'hard') {
     const rejectedPath =
       options.rejectedCandidatePath ??
       path.join('/tmp', `abp-i18n-rejected-${target}-article.md`);
     fs.writeFileSync(rejectedPath, translatedBody, 'utf-8');
     throw new Error(
-      `Azure Translator changed Markdown structure. ${describeStructureMismatch(sourceFingerprint, translatedFingerprint)} Rejected candidate: ${rejectedPath}. No files were modified for this article.`,
+      `Azure Translator changed Markdown structure: ${validation.detail}. Rejected candidate: ${rejectedPath}. No files were modified for this article.`,
     );
   }
+  if (validation.severity === 'warning')
+    console.warn(
+      `translation_structure_warning locale=${target} article=${options.articleSlug ?? 'unknown'} ${validation.detail}`,
+    );
   return translatedBody;
 }
 

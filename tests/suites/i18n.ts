@@ -57,6 +57,7 @@ import {
   splitIntoChunks,
   translateProtectedBody,
   translateTexts,
+  validateMarkdownStructure,
 } from '../../scripts/i18n/lib.ts';
 import { REPO_ROOT } from '../helpers/harness.ts';
 
@@ -314,6 +315,50 @@ export function testSplitIntoChunksKeepsPlaceholdersWhole() {
         !chunk.includes('__I18NPH12') || chunk.includes('__I18NPH12__'),
     ),
   );
+}
+
+export function testMarkdownValidationSeverities() {
+  for (const [source, candidate] of [
+    ['- taobao ~4% vs ebay ~9%', '- 淘宝~4%に対しebayは~9%'],
+    ['[^rate]: taobao ~4% vs ebay ~9%', '[^rate]: 淘宝~4%に対しebayは~9%'],
+    ['Plain prose', 'https://example.com'],
+  ]) {
+    const result = validateMarkdownStructure(source, candidate);
+    assert.equal(result.severity, 'warning', source);
+  }
+
+  for (const [source, candidate, reason] of [
+    ['# Heading', 'Heading', /block structure/],
+    ['- first\n- second', '- first second', /block structure/],
+    ['[^rate]: Footnote prose', 'Footnote prose', /block structure/],
+    ['![alt](./image.webp)', '![alt](./other.webp)', /images changed/],
+    [
+      '[link](https://example.com/a)',
+      '[link](https://example.com/b)',
+      /link destination/,
+    ],
+    ['`code`', 'code', /code changed/],
+    [
+      '<div>fixed</div>',
+      '<section>fixed</section>',
+      /block structure|html changed/,
+    ],
+    [
+      '| a | b |\n| - | - |\n| c | d |',
+      '| a |\n| - |\n| c |',
+      /block structure/,
+    ],
+    ['A '.repeat(60), 'short', /truncated prose/],
+    [
+      '[^1]: Rate https://fred.stlouisfed.org/series/DFII10 on 2020-09-14.',
+      '[^1]: 金利 https://fred.stlouisfed.org/series/DFII102020年9月14日。',
+      /link destination/,
+    ],
+  ] as const) {
+    const result = validateMarkdownStructure(source, candidate);
+    assert.equal(result.severity, 'hard', source);
+    if (result.severity === 'hard') assert.match(result.detail, reason);
+  }
 }
 
 export async function testSyntaxAwareMarkdownTranslation() {
@@ -1598,6 +1643,7 @@ export async function runI18nTests() {
   testSourceHashIsDeterministic();
   testProtectRestoreRoundTrip();
   testSplitIntoChunksKeepsPlaceholdersWhole();
+  testMarkdownValidationSeverities();
   await testSyntaxAwareMarkdownTranslation();
   await testTextNodeMappingAndEmptyResult();
   await testTranslatedProseEscapesMarkdownSyntax();
