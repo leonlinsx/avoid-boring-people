@@ -24,6 +24,80 @@ export const I18N_DIR = path.join(REPO_ROOT, 'src/content/i18n');
 
 const TRANSLATOR_API_VERSION = '3.0';
 const MAX_CHUNK_CHARS = 4000;
+const TRANSLATOR_WINDOW_MS = 60_000;
+
+/** Conservative share of the F0 ~2M chars/hour rate, consumed evenly. */
+export const TRANSLATOR_MAX_CHARS_PER_MINUTE = 25_000;
+/** Small bounded number of retries on HTTP 429 before giving up. */
+export const TRANSLATOR_MAX_RETRIES = 5;
+const TRANSLATOR_RETRY_BASE_DELAY_MS = 2_000;
+const TRANSLATOR_RETRY_MAX_DELAY_MS = 60_000;
+
+export interface ThrottleClock {
+  now(): number;
+  sleep(ms: number): Promise<void>;
+}
+
+const realClock: ThrottleClock = {
+  now: () => Date.now(),
+  sleep: (ms: number) =>
+    new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    }),
+};
+
+/**
+ * Rolling-window pacer for submitted source characters. One instance is
+ * shared across every request in a run so the F0 per-minute rate is consumed
+ * evenly instead of arriving in bursts that draw HTTP 429s.
+ */
+export class TranslationThrottle {
+  private submissions: Array<{ at: number; chars: number }> = [];
+
+  constructor(private clock: ThrottleClock = realClock) {}
+
+  /** Wait until `chars` fit inside the current window, then record them. */
+  async pace(chars: number): Promise<void> {
+    if (chars <= 0) return;
+    for (;;) {
+      const now = this.clock.now();
+      this.submissions = this.submissions.filter(
+        (submission) => now - submission.at < TRANSLATOR_WINDOW_MS,
+      );
+      const used = this.submissions.reduce((sum, s) => sum + s.chars, 0);
+      if (used + chars <= TRANSLATOR_MAX_CHARS_PER_MINUTE || used === 0) {
+        this.submissions.push({ at: now, chars });
+        return;
+      }
+      const oldest = this.submissions.reduce((a, b) => (a.at <= b.at ? a : b));
+      const wait = TRANSLATOR_WINDOW_MS - (now - oldest.at);
+      if (wait <= 0) {
+        // Defensive against clock weirdness: drop the stale entry and recheck.
+        this.submissions = this.submissions.filter((s) => s !== oldest);
+        continue;
+      }
+      await this.clock.sleep(wait);
+    }
+  }
+}
+
+/** Process default so every request shares one window unless told otherwise. */
+const sharedThrottle = new TranslationThrottle();
+
+export interface TranslateRequestOptions {
+  throttle?: TranslationThrottle;
+  sleep?: (ms: number) => Promise<void>;
+}
+
+/** Retry-After in seconds or an HTTP date; undefined when absent/unparseable. */
+function parseRetryAfterMs(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const trimmed = value.trim();
+  if (/^\d+$/.test(trimmed)) return Number(trimmed) * 1000;
+  const at = Date.parse(trimmed);
+  if (!Number.isNaN(at)) return Math.max(0, at - Date.now());
+  return undefined;
+}
 
 export interface TranslatorCredentials {
   key: string;
@@ -247,6 +321,7 @@ export async function translateTexts(
   target: string,
   credentials: TranslatorCredentials,
   fetchImpl: typeof fetch = fetch,
+  options: TranslateRequestOptions = {},
 ): Promise<string[]> {
   const results: string[] = new Array(texts.length).fill('');
   const pending: Array<{ index: number; text: string }> = [];
@@ -254,44 +329,70 @@ export async function translateTexts(
     if (text.trim()) pending.push({ index, text });
   });
   if (pending.length === 0) return results;
+  const throttle = options.throttle ?? sharedThrottle;
+  const sleep = options.sleep ?? realClock.sleep;
+  await throttle.pace(pending.reduce((sum, { text }) => sum + text.length, 0));
   const url =
     `${credentials.endpoint}/translate?api-version=${TRANSLATOR_API_VERSION}` +
     `&from=en&to=${encodeURIComponent(target)}&textType=plain`;
-  let response: Response;
-  try {
-    response = await fetchImpl(url, {
-      method: 'POST',
-      headers: {
-        'Ocp-Apim-Subscription-Key': credentials.key,
-        'Ocp-Apim-Subscription-Region': credentials.region,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(pending.map(({ text }) => ({ Text: text }))),
+  const body = JSON.stringify(pending.map(({ text }) => ({ Text: text })));
+  for (let attempt = 0; ; attempt += 1) {
+    let response: Response;
+    try {
+      response = await fetchImpl(url, {
+        method: 'POST',
+        headers: {
+          'Ocp-Apim-Subscription-Key': credentials.key,
+          'Ocp-Apim-Subscription-Region': credentials.region,
+          'Content-Type': 'application/json',
+        },
+        body,
+      });
+    } catch (error) {
+      throw new Error(
+        `Azure Translator request failed (${target}): ${(error as Error).message}. No files were modified for this article.`,
+      );
+    }
+    if (response.status === 429 && attempt < TRANSLATOR_MAX_RETRIES) {
+      const retryAfterMs = parseRetryAfterMs(
+        response.headers.get('retry-after'),
+      );
+      const backoffMs = Math.min(
+        TRANSLATOR_RETRY_MAX_DELAY_MS,
+        TRANSLATOR_RETRY_BASE_DELAY_MS * 2 ** attempt,
+      );
+      await sleep(retryAfterMs ?? backoffMs);
+      continue;
+    }
+    if (!response.ok) {
+      const detail = (await response.text().catch(() => '')).slice(0, 200);
+      if (response.status === 429) {
+        throw new Error(
+          `Azure Translator request failed (${target}): HTTP 429${detail ? ` ${detail}` : ''}. ` +
+            `The request was throttled ${TRANSLATOR_MAX_RETRIES} times; the F0 per-minute rate is likely exceeded ` +
+            'rather than the monthly quota — wait a minute and rerun to resume (completed translations are kept). ' +
+            'No files were modified for this article.',
+        );
+      }
+      throw new Error(
+        `Azure Translator request failed (${target}): HTTP ${response.status}${detail ? ` ${detail}` : ''}. ` +
+          'The free F0 quota may be exhausted. No files were modified for this article.',
+      );
+    }
+    const payload = (await response.json()) as Array<{
+      translations?: Array<{ text?: string }>;
+    }>;
+    if (!Array.isArray(payload) || payload.length !== pending.length) {
+      throw new Error(
+        `Azure Translator returned an unexpected response (${target}). No files were modified for this article.`,
+      );
+    }
+    pending.forEach(({ index }, position) => {
+      results[index] =
+        payload[position]?.translations?.[0]?.text ?? texts[index];
     });
-  } catch (error) {
-    throw new Error(
-      `Azure Translator request failed (${target}): ${(error as Error).message}. No files were modified for this article.`,
-    );
+    return results;
   }
-  if (!response.ok) {
-    const detail = (await response.text().catch(() => '')).slice(0, 200);
-    throw new Error(
-      `Azure Translator request failed (${target}): HTTP ${response.status}${detail ? ` ${detail}` : ''}. ` +
-        'The free F0 quota may be exhausted. No files were modified for this article.',
-    );
-  }
-  const payload = (await response.json()) as Array<{
-    translations?: Array<{ text?: string }>;
-  }>;
-  if (!Array.isArray(payload) || payload.length !== pending.length) {
-    throw new Error(
-      `Azure Translator returned an unexpected response (${target}). No files were modified for this article.`,
-    );
-  }
-  pending.forEach(({ index }, position) => {
-    results[index] = payload[position]?.translations?.[0]?.text ?? texts[index];
-  });
-  return results;
 }
 
 export async function translateProtectedBody(
@@ -299,6 +400,7 @@ export async function translateProtectedBody(
   target: string,
   credentials: TranslatorCredentials,
   fetchImpl: typeof fetch = fetch,
+  options: TranslateRequestOptions = {},
 ): Promise<string> {
   const guarded = protectMarkdown(body);
   const chunks = splitIntoChunks(guarded.text);
@@ -307,6 +409,7 @@ export async function translateProtectedBody(
     target,
     credentials,
     fetchImpl,
+    options,
   );
   return restoreProtectedText({
     text: translated.join(''),

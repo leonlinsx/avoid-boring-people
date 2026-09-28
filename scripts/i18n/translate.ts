@@ -6,6 +6,8 @@
 // - Writes static translated files (committed to Git) plus colocated assets.
 // - Records a deterministic source hash; skips current translations unless
 //   `--force` is passed; translates missing/stale files only.
+// - Paces requests to a conservative share of the F0 rate and retries
+//   throttled (HTTP 429) requests with backoff before giving up.
 // - Fails clearly without modifying files when Azure credentials are
 //   unavailable or the free quota/API fails. Never runs in builds or CI.
 
@@ -13,6 +15,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   I18N_DIR,
+  TranslationThrottle,
   composeTranslatedFile,
   copyMissingAssets,
   getFrontmatterValue,
@@ -119,6 +122,10 @@ async function main(): Promise<void> {
     return;
   }
 
+  // One throttle for the whole run so every request shares a single
+  // rolling per-minute window.
+  const throttle = new TranslationThrottle();
+
   // Probe the API before writing anything: a bad key or an exhausted free
   // quota must fail here, not halfway through the corpus.
   const first = plan[0];
@@ -127,7 +134,15 @@ async function main(): Promise<void> {
     LOCALES.find((locale) => locale.code === first.code)?.translatorTarget ??
     first.code;
   try {
-    await translateTexts(['Translation check'], probeTarget, credentials);
+    await translateTexts(
+      ['Translation check'],
+      probeTarget,
+      credentials,
+      fetch,
+      {
+        throttle,
+      },
+    );
   } catch (error) {
     console.error((error as Error).message);
     process.exit(1);
@@ -149,17 +164,25 @@ async function main(): Promise<void> {
     try {
       const [translatedTitle, translatedDescription, translatedBody] =
         await Promise.all([
-          translateTexts([title], locale.translatorTarget, credentials).then(
-            (texts) => texts[0] ?? title,
-          ),
+          translateTexts([title], locale.translatorTarget, credentials, fetch, {
+            throttle,
+          }).then((texts) => texts[0] ?? title),
           description === undefined
             ? Promise.resolve(undefined)
             : translateTexts(
                 [description],
                 locale.translatorTarget,
                 credentials,
+                fetch,
+                { throttle },
               ).then((texts) => texts[0] ?? description),
-          translateProtectedBody(body, locale.translatorTarget, credentials),
+          translateProtectedBody(
+            body,
+            locale.translatorTarget,
+            credentials,
+            fetch,
+            { throttle },
+          ),
         ]);
       // The whole article translated successfully: only now write the file.
       const output = composeTranslatedFile({

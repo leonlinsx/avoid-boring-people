@@ -37,6 +37,9 @@ import {
   newsletterChrome,
 } from '../../src/utils/locale-chrome.ts';
 import {
+  TRANSLATOR_MAX_CHARS_PER_MINUTE,
+  TRANSLATOR_MAX_RETRIES,
+  TranslationThrottle,
   composeTranslatedFile,
   getFrontmatterValue,
   listSourceEntries,
@@ -381,12 +384,18 @@ export async function testTranslatorFailureModifiesNothing() {
     region: 'region',
     endpoint: 'https://example.invalid',
   };
+  // Virtual sleep: the retry backoff must not really wait in tests.
+  const clock = makeVirtualClock();
   await assert.rejects(
-    translateTexts(['hello'], 'ja', credentials, failingFetch),
+    translateTexts(['hello'], 'ja', credentials, failingFetch, {
+      sleep: clock.sleep,
+    }),
     /HTTP 429.*No files were modified/,
   );
   await assert.rejects(
-    translateProtectedBody('hello', 'ja', credentials, failingFetch),
+    translateProtectedBody('hello', 'ja', credentials, failingFetch, {
+      sleep: clock.sleep,
+    }),
     /HTTP 429/,
   );
 
@@ -862,6 +871,156 @@ export function testNewsletterChromeCoversAllLocales() {
   }
 }
 
+/** Virtual clock: sleeps advance time instead of waiting, and are recorded. */
+function makeVirtualClock() {
+  let now = 0;
+  const sleeps: number[] = [];
+  return {
+    sleeps,
+    now: () => now,
+    sleep: async (ms: number) => {
+      sleeps.push(ms);
+      now += ms;
+    },
+  };
+}
+
+function successFetch(prefix: string) {
+  return (async (_url: unknown, options: { body: string }) => {
+    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    return new Response(
+      JSON.stringify(
+        items.map((item) => ({
+          translations: [{ text: `${prefix}:${item.Text}` }],
+        })),
+      ),
+      { headers: { 'content-type': 'application/json' } },
+    );
+  }) as unknown as typeof fetch;
+}
+
+const paceCredentials = {
+  key: 'key',
+  region: 'region',
+  endpoint: 'https://example.invalid',
+};
+
+export async function testTranslationPacing() {
+  const clock = makeVirtualClock();
+  const throttle = new TranslationThrottle(clock);
+
+  // A full minute's budget submits without waiting.
+  await throttle.pace(TRANSLATOR_MAX_CHARS_PER_MINUTE);
+  assert.deepEqual(clock.sleeps, []);
+
+  // Anything beyond the budget waits for the rolling window to slide.
+  await throttle.pace(1);
+  assert.deepEqual(clock.sleeps, [60_000]);
+
+  // Pacing is shared across requests: a second full budget waits again.
+  await throttle.pace(TRANSLATOR_MAX_CHARS_PER_MINUTE);
+  assert.deepEqual(clock.sleeps, [60_000, 60_000]);
+}
+
+export async function testTranslateTextsSharesPacing() {
+  const clock = makeVirtualClock();
+  const throttle = new TranslationThrottle(clock);
+  const fetch = successFetch('TR');
+
+  const first = await translateTexts(
+    ['x'.repeat(TRANSLATOR_MAX_CHARS_PER_MINUTE)],
+    'ja',
+    paceCredentials,
+    fetch,
+    { throttle, sleep: clock.sleep },
+  );
+  assert.equal(first.length, 1);
+  assert.deepEqual(clock.sleeps, []);
+
+  // The next request must wait for the window even though it is tiny.
+  const second = await translateTexts(['y'], 'ja', paceCredentials, fetch, {
+    throttle,
+    sleep: clock.sleep,
+  });
+  assert.deepEqual(second, ['TR:y']);
+  assert.deepEqual(clock.sleeps, [60_000]);
+}
+
+export async function testTranslatorRetriesOn429() {
+  const clock = makeVirtualClock();
+  let calls = 0;
+  const flaky = (async (_url: unknown, options: { body: string }) => {
+    calls += 1;
+    if (calls <= 2) return new Response('slow down', { status: 429 });
+    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    return new Response(
+      JSON.stringify(
+        items.map((item) => ({
+          translations: [{ text: `TR:${item.Text}` }],
+        })),
+      ),
+      { headers: { 'content-type': 'application/json' } },
+    );
+  }) as unknown as typeof fetch;
+
+  // The same request is retried rather than terminating immediately.
+  const result = await translateTexts(['hello'], 'ja', paceCredentials, flaky, {
+    sleep: clock.sleep,
+  });
+  assert.deepEqual(result, ['TR:hello']);
+  assert.equal(calls, 3);
+  assert.deepEqual(clock.sleeps, [2_000, 4_000]);
+}
+
+export async function testTranslatorHonorsRetryAfter() {
+  const clock = makeVirtualClock();
+  let calls = 0;
+  const throttledOnce = (async () => {
+    calls += 1;
+    if (calls === 1) {
+      return new Response('slow down', {
+        status: 429,
+        headers: { 'retry-after': '45' },
+      });
+    }
+    return new Response(
+      JSON.stringify([{ translations: [{ text: 'TR:hello' }] }]),
+      { headers: { 'content-type': 'application/json' } },
+    );
+  }) as unknown as typeof fetch;
+
+  const result = await translateTexts(
+    ['hello'],
+    'ja',
+    paceCredentials,
+    throttledOnce,
+    { sleep: clock.sleep },
+  );
+  assert.deepEqual(result, ['TR:hello']);
+  assert.deepEqual(clock.sleeps, [45_000]);
+}
+
+export async function testTranslatorGivesUpAfterBoundedRetries() {
+  const clock = makeVirtualClock();
+  let calls = 0;
+  const alwaysThrottled = (async () =>
+    new Response('slow down', { status: 429 })) as unknown as typeof fetch;
+  const counting = (async (url: string | URL | Request, init?: RequestInit) => {
+    calls += 1;
+    return alwaysThrottled(url, init);
+  }) as unknown as typeof fetch;
+
+  await assert.rejects(
+    translateTexts(['hello'], 'ja', paceCredentials, counting, {
+      sleep: clock.sleep,
+    }),
+    /HTTP 429.*throttl.*No files were modified/s,
+  );
+  // One initial attempt plus a small bounded number of retries.
+  assert.equal(calls, 1 + TRANSLATOR_MAX_RETRIES);
+  assert.deepEqual(clock.sleeps, [2_000, 4_000, 8_000, 16_000, 32_000]);
+}
+
 export async function runI18nTests() {
   testLocaleDefinitions();
   testHreflangLinks();
@@ -880,6 +1039,11 @@ export async function runI18nTests() {
   testComposeTranslatedFile();
   testMissingCredentialsFailClearly();
   await testTranslatorFailureModifiesNothing();
+  await testTranslationPacing();
+  await testTranslateTextsSharesPacing();
+  await testTranslatorRetriesOn429();
+  await testTranslatorHonorsRetryAfter();
+  await testTranslatorGivesUpAfterBoundedRetries();
   testTranslationStatusClassification();
   await testCollectionsKeepTranslationsSeparate();
   testEnglishCorpusRoutesAreUnaffected();
