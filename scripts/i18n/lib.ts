@@ -54,7 +54,11 @@ const realClock: ThrottleClock = {
 export class TranslationThrottle {
   private submissions: Array<{ at: number; chars: number }> = [];
 
-  constructor(private clock: ThrottleClock = realClock) {}
+  private clock: ThrottleClock;
+
+  constructor(clock: ThrottleClock = realClock) {
+    this.clock = clock;
+  }
 
   /** Wait until `chars` fit inside the current window, then record them. */
   async pace(chars: number): Promise<void> {
