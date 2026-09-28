@@ -7,9 +7,11 @@ import type { BlogPost } from '../utils/text';
 interface Props {
   post: BlogPost;
   hidden?: boolean;
+  /** Locale URL prefix for translated related posts (e.g. `/ja`); English stays prefixless. */
+  hrefPrefix?: string;
 }
 
-const { post, hidden = false } = Astro.props;
+const { post, hidden = false, hrefPrefix = '' } = Astro.props;
 const title = post.data.title ?? 'Untitled';
 const desc = post.data.description ?? '';
 const category = post.data.category ?? '';
@@ -18,7 +20,7 @@ const rt = post.data.readingTime;
 
 // ✅ slug is guaranteed by enrichPost, but fallback just in case
 const slug = post.slug ?? post.id.replace(/\/index\.md$/, '');
-const href = `/writing/${slug}`;
+const href = `${hrefPrefix}/writing/${slug}`;
 
 // ✅ Thumbnail: heroImage (object) or SITE_OG_IMAGE (string fallback)
 const thumbnail = post.data.heroImage ?? SITE_OG_IMAGE;

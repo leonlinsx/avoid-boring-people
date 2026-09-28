@@ -1,0 +1,60 @@
+---
+// Static localized article routes (`/ja/writing/<slug>`, …). Only versions
+// that were actually generated exist; English URLs are unchanged. Publishing
+// stays English-only: this route renders the English post shell with the
+// translated title/description/body, while dates, category, tags, and hero
+// image stay on the English source. Related posts, discussion, and newsletter
+// blocks reuse the English selection/thread/backend with localized chrome.
+import { getCollection, render } from 'astro:content';
+import BlogPost from '../../../layouts/BlogPost.astro';
+import { getCleanSlug } from '../../../utils/slug';
+import { contentEntryName, localeByCode } from '../../../utils/i18n';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const translations = await getCollection('i18n');
+
+  const englishByEntry = new Map(
+    posts.map((post) => [contentEntryName(post.id), post]),
+  );
+  const seen = new Set<string>();
+  const paths = [];
+
+  for (const translation of translations) {
+    const segments = translation.id.split('/');
+    const code = segments[0] ?? '';
+    const locale = localeByCode(code);
+    // The translation id leads with its locale code
+    // (`<locale>/<entry>/index.md`); anything else is not a translation.
+    if (!locale || segments.length < 3) continue;
+    const entry = contentEntryName(segments.slice(1).join('/'));
+    const post = englishByEntry.get(entry);
+    if (!post) continue;
+
+    const slug = getCleanSlug(post);
+    const key = `${locale.prefix}/${slug}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    paths.push({
+      params: { locale: locale.prefix, slug },
+      props: { ...post, slug, translation, localeCode: locale.code },
+    });
+  }
+
+  return paths;
+}
+
+const { translation, localeCode, ...post } = Astro.props;
+const { Content, headings } = await render(translation);
+---
+
+<BlogPost
+  post={post}
+  headings={headings}
+  locale={localeCode}
+  translatedTitle={translation.data.title}
+  translatedDescription={translation.data.description}
+>
+  <Content />
+</BlogPost>

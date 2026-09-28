@@ -5,6 +5,10 @@ import {
   type PublicComment,
 } from '../lib/comments/domain.ts';
 import {
+  discussionChrome,
+  type DiscussionChrome,
+} from '../utils/locale-chrome.ts';
+import {
   commentCount,
   formatCommentTimestamp,
   groupCommentThreads,
@@ -17,14 +21,7 @@ import {
   type TurnstileWidgetId,
 } from '../lib/turnstile-client.ts';
 
-const EMPTY_STATE = 'No comments yet. Add the first one.';
 const UNAVAILABLE = commentErrorMessages.unavailable;
-// A list that failed to load is retryable, so it says how. A failed post keeps
-// the plainer message: advising a refresh there would discard the draft.
-const LOAD_FAILED =
-  'Comments could not be loaded. Refresh the page to try again.';
-const INVITATION =
-  'Thoughtful disagreements, additional evidence, and different ways of looking at the problem are welcome.';
 
 // Every request is bounded, so neither the list nor a submit can sit in a
 // permanent loading state when the API never answers.
@@ -47,6 +44,8 @@ type Props = {
   maxBodyLength: number;
   emailHref: string;
   emailLabel: string;
+  /** Visible UI strings; English by default. The slug/thread stays English. */
+  chrome?: DiscussionChrome;
 };
 
 type LoadState = 'loading' | 'ready' | 'error';
@@ -59,6 +58,7 @@ export default function DiscussionIsland({
   maxBodyLength,
   emailHref,
   emailLabel,
+  chrome = discussionChrome(),
 }: Props) {
   const commentsEndpoint = `/api/comments/${encodeURIComponent(slug)}`;
   const [loadState, setLoadState] = useState<LoadState>('loading');
@@ -215,7 +215,7 @@ export default function DiscussionIsland({
     setBody('');
     setReplyTo(null);
     setHoneypot('');
-    setNotice('Comment posted.');
+    setNotice(chrome.noticePosted);
     trackInteraction(replyTo ? 'comment_reply' : 'comment_submit');
   };
 
@@ -249,7 +249,7 @@ export default function DiscussionIsland({
       ),
     );
     setEditing(null);
-    setNotice('Comment updated.');
+    setNotice(chrome.noticeUpdated);
   };
 
   const removeComment = async (comment: PublicComment) => {
@@ -289,27 +289,30 @@ export default function DiscussionIsland({
         ),
       );
     }
-    setNotice('Comment deleted.');
+    setNotice(chrome.noticeDeleted);
   };
 
   return (
     <div class="discussion">
       <h2 id="discussion-heading">
-        Discussion{total > 0 ? ` · ${total}` : ''}
+        {chrome.heading}
+        {total > 0 ? ` · ${total}` : ''}
       </h2>
 
       <p class="discussion-prompt">{prompt}</p>
-      <p class="discussion-invitation">{INVITATION}</p>
+      <p class="discussion-invitation">{chrome.invitation}</p>
 
       <div class="discussion-list" aria-labelledby="discussion-heading">
         {/* Without a public site key no comment can be submitted, so the loading
             state is skipped rather than left beside the unavailable message. */}
         {loadState === 'loading' && turnstileSiteKey && (
-          <p class="discussion-muted">Loading discussion…</p>
+          <p class="discussion-muted">{chrome.loadingState}</p>
         )}
-        {loadState === 'error' && <p class="discussion-muted">{LOAD_FAILED}</p>}
+        {loadState === 'error' && (
+          <p class="discussion-muted">{chrome.loadFailed}</p>
+        )}
         {loadState === 'ready' && threads.length === 0 && (
-          <p class="discussion-muted">{EMPTY_STATE}</p>
+          <p class="discussion-muted">{chrome.emptyState}</p>
         )}
         {threads.map((thread) => (
           <div class="discussion-thread" key={thread.comment.id}>
@@ -319,6 +322,7 @@ export default function DiscussionIsland({
               confirmDeleteId={confirmDeleteId}
               submitting={submitting}
               maxBodyLength={maxBodyLength}
+              chrome={chrome}
               onReply={startReply}
               onStartEdit={(comment) =>
                 setEditing({ id: comment.id, body: comment.body })
@@ -345,6 +349,7 @@ export default function DiscussionIsland({
                     confirmDeleteId={confirmDeleteId}
                     submitting={submitting}
                     maxBodyLength={maxBodyLength}
+                    chrome={chrome}
                     onReply={startReply}
                     onStartEdit={(comment) =>
                       setEditing({ id: comment.id, body: comment.body })
@@ -370,7 +375,7 @@ export default function DiscussionIsland({
       {turnstileSiteKey ? (
         <form class="discussion-form" method="post" onSubmit={onSubmit}>
           <div class="discussion-field">
-            <label for="discussion-name">Display name</label>
+            <label for="discussion-name">{chrome.nameLabel}</label>
             <input
               id="discussion-name"
               name="name"
@@ -380,18 +385,18 @@ export default function DiscussionIsland({
               maxlength={maxNameLength}
               value={name}
               onInput={(event) => setName(event.currentTarget.value)}
-              placeholder="Your name or a pseudonym"
+              placeholder={chrome.namePlaceholder}
             />
           </div>
 
           <div class="discussion-field">
             {replyTo ? (
               <label for="discussion-body">
-                {`Reply to ${replyTo.authorName || 'comment'}`}
+                {`${chrome.replyToPrefix} ${replyTo.authorName || chrome.commentFallback}`}
               </label>
             ) : (
               <label class="discussion-visually-hidden" for="discussion-body">
-                Add to the discussion
+                {chrome.bodyLabel}
               </label>
             )}
             <textarea
@@ -400,7 +405,7 @@ export default function DiscussionIsland({
               rows={5}
               required
               maxlength={maxBodyLength}
-              placeholder="Add to the discussion…"
+              placeholder={chrome.bodyPlaceholder}
               value={body}
               ref={bodyField}
               onInput={(event) => setBody(event.currentTarget.value)}
@@ -424,7 +429,7 @@ export default function DiscussionIsland({
 
           <div class="discussion-actions">
             <button type="submit" disabled={submitting}>
-              {submitting ? 'Posting…' : 'Post'}
+              {submitting ? chrome.postingButton : chrome.postButton}
             </button>
             {replyTo && (
               <button
@@ -432,7 +437,7 @@ export default function DiscussionIsland({
                 class="discussion-secondary"
                 onClick={() => setReplyTo(null)}
               >
-                Cancel reply
+                {chrome.cancelReply}
               </button>
             )}
           </div>
@@ -443,11 +448,11 @@ export default function DiscussionIsland({
           </p>
         </form>
       ) : (
-        <p class="discussion-muted">{UNAVAILABLE}</p>
+        <p class="discussion-muted">{chrome.unavailable}</p>
       )}
 
       <p class="discussion-private">
-        Prefer a private conversation?{' '}
+        {chrome.privatePrefix}{' '}
         <a
           href={emailHref}
           onClick={() => trackInteraction('private_email_click')}
@@ -466,6 +471,7 @@ type CommentBodyProps = {
   confirmDeleteId: string | null;
   submitting: boolean;
   maxBodyLength: number;
+  chrome: DiscussionChrome;
   onReply: (comment: PublicComment) => void;
   onStartEdit: (comment: PublicComment) => void;
   onCancelEdit: () => void;
@@ -483,6 +489,7 @@ function CommentBody({
   confirmDeleteId,
   submitting,
   maxBodyLength,
+  chrome,
   onReply,
   onStartEdit,
   onCancelEdit,
@@ -511,18 +518,22 @@ function CommentBody({
       <header class="comment-meta">
         <span class="comment-author">
           {comment.authorName}
-          {comment.isAuthor && <span class="comment-badge">Author</span>}
+          {comment.isAuthor && (
+            <span class="comment-badge">{chrome.authorBadge}</span>
+          )}
         </span>
         <time class="comment-time" dateTime={comment.createdAt}>
           {formatCommentTimestamp(comment.createdAt)}
-          {isEdited(comment) && <span class="comment-edited"> · edited</span>}
+          {isEdited(comment) && (
+            <span class="comment-edited"> · {chrome.edited}</span>
+          )}
         </time>
       </header>
 
       {isEditing ? (
         <form class="comment-edit" method="post" onSubmit={onSubmitEdit}>
           <label class="discussion-visually-hidden" for={`edit-${comment.id}`}>
-            Edit comment
+            {chrome.editLabel}
           </label>
           <textarea
             id={`edit-${comment.id}`}
@@ -534,14 +545,14 @@ function CommentBody({
           />
           <div class="discussion-actions">
             <button type="submit" disabled={submitting}>
-              Save changes
+              {chrome.saveButton}
             </button>
             <button
               type="button"
               class="discussion-secondary"
               onClick={onCancelEdit}
             >
-              Cancel
+              {chrome.cancelButton}
             </button>
           </div>
         </form>
@@ -553,12 +564,12 @@ function CommentBody({
         <div class="comment-actions">
           {canReply && !isEditing && (
             <button type="button" onClick={() => onReply(comment)}>
-              Reply
+              {chrome.replyButton}
             </button>
           )}
           {comment.canEdit && !isEditing && (
             <button type="button" onClick={() => onStartEdit(comment)}>
-              Edit
+              {chrome.editButton}
             </button>
           )}
           {comment.canEdit && !isEditing && (
@@ -567,7 +578,7 @@ function CommentBody({
               class="discussion-danger"
               onClick={() => onAskDelete(comment.id)}
             >
-              Delete
+              {chrome.deleteButton}
             </button>
           )}
         </div>
@@ -575,7 +586,7 @@ function CommentBody({
 
       {confirmDeleteId === comment.id && (
         <div class="comment-confirm" role="alert">
-          <p>Delete this comment?</p>
+          <p>{chrome.deleteConfirm}</p>
           <div class="discussion-actions">
             <button
               type="button"
@@ -583,14 +594,14 @@ function CommentBody({
               disabled={submitting}
               onClick={() => onConfirmDelete(comment)}
             >
-              Yes, delete
+              {chrome.confirmDelete}
             </button>
             <button
               type="button"
               class="discussion-secondary"
               onClick={onCancelDelete}
             >
-              Cancel
+              {chrome.cancelButton}
             </button>
           </div>
         </div>

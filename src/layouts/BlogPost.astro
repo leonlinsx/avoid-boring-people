@@ -17,19 +17,44 @@ import type { MarkdownHeading } from 'astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { categoryLabel } from '../utils/taxonomy';
 import { articleHeroUrl } from '../utils/hero';
+import LanguageSelector from '../components/LanguageSelector.astro';
+import {
+  ENGLISH,
+  articleChrome,
+  availableLocalesForEntry,
+  buildHreflangLinks,
+  contentEntryName,
+  englishPathname,
+  languageSelectorEntries,
+  localeByCode,
+  localizeRelatedPosts,
+  localizedPathname,
+  newsletterChrome,
+} from '../utils/i18n';
 
 type Props = {
   post: CollectionEntry<'blog'> & { slug: string };
   headings?: MarkdownHeading[];
+  /** BCP47 locale code when rendering a translation; omitted for English. */
+  locale?: string;
+  translatedTitle?: string;
+  translatedDescription?: string;
 };
 
-const { post, headings = [] } = Astro.props;
+const {
+  post,
+  headings = [],
+  locale,
+  translatedTitle,
+  translatedDescription,
+} = Astro.props;
+const translationLocale = locale ? localeByCode(locale) : undefined;
 
 // ✅ Enrich once, then destructure from .data
 const enrichedPost = enrichPost(post);
 const {
-  title,
-  description,
+  title: englishTitle,
+  description: englishDescription,
   pubDate,
   updatedDate,
   heroImage,
@@ -42,23 +67,77 @@ const {
 const slug = enrichedPost.slug;
 const hero = heroImage;
 
+// Translated pages reuse the English shell (dates, category, tags, hero,
+// related posts, discussion) and only swap the reading strings.
+const title = translatedTitle ?? englishTitle;
+const description = translatedDescription ?? englishDescription;
+const chrome = articleChrome(translationLocale?.code);
+const dateLocale = translationLocale?.dateLocale ?? ENGLISH.dateLocale;
+const canonicalPath = translationLocale
+  ? localizedPathname(translationLocale.prefix, slug)
+  : englishPathname(slug);
+
+// Versions that actually exist, for hreflang and the language selector.
+const availableCodes = availableLocalesForEntry(contentEntryName(post.id));
+const hreflangs = buildHreflangLinks({
+  siteOrigin: SITE_URL,
+  slug,
+  availableCodes,
+});
+const currentCode = translationLocale?.code ?? ENGLISH.code;
+const langEntries = languageSelectorEntries({
+  siteOrigin: SITE_URL,
+  slug,
+  currentCode,
+  availableCodes,
+});
+const currentLabel =
+  langEntries.find((entry) => entry.isCurrent)?.label ?? ENGLISH.label;
+const pageOgLocale = translationLocale?.ogLocale ?? ENGLISH.ogLocale;
+const ogLocaleAlternates = [
+  ENGLISH.ogLocale,
+  ...availableCodes.flatMap((code) => localeByCode(code)?.ogLocale ?? []),
+].filter((value) => value !== pageOgLocale);
+
 // Social image reuses the rendered hero transform, so `og:image` and
 // `BlogPosting.image` point at the deployed 1200x630 asset instead of the
 // smaller original source. Hero-less articles use the metadata-only fallback.
 const socialImage = (await articleHeroUrl(hero)) ?? SITE_OG_IMAGE;
 
-// ✅ Related posts
+// ✅ Related posts reuse the English selection. On a localized page only the
+// selected posts that have a translation in the current locale are shown,
+// with localized titles and URLs; with none, the section is omitted entirely.
 const allPosts = await getCollection('blog');
 const related = selectRelatedPosts(post, allPosts).map(enrichPost);
+const relatedTranslations = translationLocale
+  ? new Map(
+      (await getCollection('i18n'))
+        .filter((entry) => entry.data.locale === translationLocale.code)
+        .map((entry) => [
+          entry.data.sourceSlug,
+          {
+            title: entry.data.title,
+            description: entry.data.description,
+          },
+        ]),
+    )
+  : null;
+const visibleRelated = relatedTranslations
+  ? localizeRelatedPosts(related, relatedTranslations)
+  : related;
+const relatedHrefPrefix = translationLocale
+  ? `/${translationLocale.prefix}`
+  : '';
+const newsletter = newsletterChrome(translationLocale?.code);
 
-// ✅ Canonical URL from clean slug
-const canonicalURL = new URL(`/writing/${slug}`, SITE_URL).toString();
+// ✅ Canonical URL from clean slug (self-canonical per language version)
+const canonicalURL = new URL(canonicalPath, SITE_URL).toString();
 
 const breadcrumbItems = [
-  { label: 'Home', href: '/' },
+  { label: chrome.home, href: '/' },
   // Link the canonical destination directly: the trailing-slash form 404s
   // even in production, and the bare form costs a redirect hop.
-  { label: 'Writing', href: '/writing/1' },
+  { label: chrome.writing, href: '/writing/1' },
 ];
 
 if (categoryNormalized) {
@@ -80,6 +159,10 @@ breadcrumbItems.push({ label: title });
   authorName={SITE_AUTHOR}
   ogType="article"
   tags={tags}
+  lang={translationLocale?.code ?? 'en'}
+  hreflangs={hreflangs}
+  ogLocale={pageOgLocale}
+  ogLocaleAlternates={ogLocaleAlternates}
 >
   <main>
     <article>
@@ -117,16 +200,23 @@ breadcrumbItems.push({ label: title });
       <div class="prose">
         <div class="title">
           <div class="meta">
-            <FormattedDate date={pubDate} />
+            <FormattedDate date={pubDate} locale={dateLocale} />
             {category && ` · ${category}`}
-            {readingTime && ` · ${readingTime} min read`}
+            {readingTime && ` · ${readingTime} ${chrome.minReadUnit}`}
             {
               updatedDate && (
                 <div class="last-updated-on">
-                  Last updated on <FormattedDate date={updatedDate} />
+                  {chrome.lastUpdated}{' '}
+                  <FormattedDate date={updatedDate} locale={dateLocale} />
                 </div>
               )
             }
+          </div>
+          <div class="lang-row">
+            <LanguageSelector
+              entries={langEntries}
+              currentLabel={currentLabel}
+            />
           </div>
           <h1>{title}</h1>
         </div>
@@ -143,19 +233,35 @@ breadcrumbItems.push({ label: title });
             <ShareButtons title={title} url={canonicalURL} />
           </div>
 
-          <!-- Newsletter CTA -->
-          <SubscribeForm compact={false} />
+          <!-- Newsletter CTA: same backend; localized copy on translated pages -->
+          <SubscribeForm
+            compact={false}
+            title={newsletter.title}
+            emailLabel={newsletter.emailLabel}
+            emailPlaceholder={newsletter.emailPlaceholder}
+            subscribeLabel={newsletter.subscribeButton}
+            successFull={newsletter.successFull}
+            successCompact={newsletter.successCompact}
+          />
         </footer>
 
-        <!-- Discussion -->
-        <Discussion slug={slug} prompt={discussionPrompt} />
+        <!-- Discussion: same English thread; localized UI strings only -->
+        <Discussion
+          slug={slug}
+          prompt={discussionPrompt}
+          locale={translationLocale?.code}
+        />
 
         <!-- Related posts -->
         {
-          related.length > 0 && (
+          visibleRelated.length > 0 && (
             <section class="related-posts">
-              <h2>Related Posts</h2>
-              <PostList posts={related} variant="compact" />
+              <h2>{chrome.relatedPosts}</h2>
+              <PostList
+                posts={visibleRelated}
+                variant="compact"
+                hrefPrefix={relatedHrefPrefix}
+              />
             </section>
           )
         }
@@ -187,6 +293,14 @@ breadcrumbItems.push({ label: title });
     margin-bottom: 0.75rem;
     font-size: 0.95rem;
     color: rgb(var(--color-text-meta));
+  }
+  .lang-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-md);
+  }
+  .lang-row:empty {
+    display: none;
   }
   .last-updated-on {
     font-style: italic;

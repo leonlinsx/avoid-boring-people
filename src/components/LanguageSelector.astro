@@ -1,0 +1,162 @@
+---
+// Restrained article language selector. Renders only when more than one
+// version of the article exists, links to real static URLs, and dissolves
+// (~200ms) on language navigation with `prefers-reduced-motion` respected.
+import type { LanguageEntry } from '../utils/i18n';
+
+interface Props {
+  entries: LanguageEntry[];
+  currentLabel: string;
+}
+
+const { entries, currentLabel } = Astro.props as Props;
+const show = entries.length > 1;
+---
+
+{
+  show && (
+    <details class="lang-selector">
+      <summary>
+        <span>{currentLabel}</span>
+        <span aria-hidden="true">▾</span>
+      </summary>
+      <ul>
+        {entries.map((entry) =>
+          entry.isCurrent ? (
+            <li>
+              <span aria-current="true">{entry.label}</span>
+            </li>
+          ) : (
+            <li>
+              <a href={entry.href} data-lang-link={true}>
+                {entry.label}
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+    </details>
+  )
+}
+
+<script is:inline>
+  (function () {
+    try {
+      if (sessionStorage.getItem('i18n-dissolve') === '1') {
+        sessionStorage.removeItem('i18n-dissolve');
+        document.documentElement.setAttribute('data-i18n-dissolve', '');
+      }
+    } catch {
+      // Storage unavailable: the page simply renders without the dissolve-in.
+    }
+    document.addEventListener('click', function (event) {
+      var target =
+        event.target && event.target.closest
+          ? event.target.closest('a[data-lang-link]')
+          : null;
+      if (!target) return;
+      if (
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        return;
+      }
+      event.preventDefault();
+      var href = target.getAttribute('href');
+      try {
+        sessionStorage.setItem('i18n-dissolve', '1');
+      } catch {
+        // Storage unavailable: still navigate after the dissolve-out.
+      }
+      var root = document.documentElement;
+      root.style.setProperty('transition', 'opacity 200ms ease');
+      root.style.setProperty('opacity', '0');
+      setTimeout(function () {
+        window.location.href = href;
+      }, 200);
+    });
+  })();
+</script>
+
+<style>
+  .lang-selector {
+    position: relative;
+    display: inline-block;
+    font-size: 0.95rem;
+    color: rgb(var(--color-text-meta));
+  }
+  .lang-selector summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    cursor: pointer;
+    list-style: none;
+    white-space: nowrap;
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    color: rgb(var(--color-text-meta));
+  }
+  .lang-selector summary::-webkit-details-marker {
+    display: none;
+  }
+  .lang-selector summary:hover {
+    color: var(--color-text);
+    border-color: rgb(var(--color-text-meta));
+  }
+  .lang-selector ul {
+    position: absolute;
+    left: 0;
+    z-index: 10;
+    margin: var(--space-xs) 0 0 0;
+    padding: var(--space-xs) 0;
+    list-style: none;
+    width: max-content;
+    min-width: 100%;
+    max-width: min(18rem, calc(100vw - 2 * var(--space-md)));
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .lang-selector li a,
+  .lang-selector li span {
+    display: block;
+    padding: var(--space-xs) var(--space-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .lang-selector summary:focus-visible,
+  .lang-selector li a:focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
+  }
+  .lang-selector li a:hover {
+    text-decoration: underline;
+  }
+  .lang-selector li span[aria-current='true'] {
+    color: rgb(var(--color-text-meta));
+  }
+</style>
+
+<style is:global>
+  html[data-i18n-dissolve] body {
+    animation: i18n-dissolve-in 200ms ease;
+  }
+  @keyframes i18n-dissolve-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html[data-i18n-dissolve] body {
+      animation: none;
+    }
+  }
+</style>

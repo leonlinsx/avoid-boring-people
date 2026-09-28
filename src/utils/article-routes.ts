@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { stripLocalePrefix } from './i18n';
 import { computeCleanSlug, normalizePathname } from './slug-helpers';
 
 /** Content directory that owns the canonical article routes. */
@@ -95,12 +96,21 @@ export function buildBlogLastmodMap(
   return map;
 }
 
-/** Lastmod for a sitemap entry, falling back for genuinely static pages. */
+/**
+ * Lastmod for a sitemap entry, falling back for genuinely static pages.
+ * Localized article paths (`/<locale>/writing/<slug>`) reuse their English
+ * article's date so translated pages never fall back to the static lastmod.
+ */
 export function resolveLastmod(
   pathname: string,
   lastmodMap: Record<string, string>,
 ): string {
-  return lastmodMap[normalizePathname(pathname)] ?? STATIC_LASTMOD;
+  const normalized = normalizePathname(pathname);
+  return (
+    lastmodMap[normalized] ??
+    lastmodMap[stripLocalePrefix(normalized)] ??
+    STATIC_LASTMOD
+  );
 }
 
 export interface SitemapItem {

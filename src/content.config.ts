@@ -32,4 +32,24 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+// Generated translations live outside the English blog collection so they can
+// never leak into RSS, search, related posts, or distribution automation. Each
+// file mirrors its English source directory:
+// `src/content/i18n/<locale>/<entry>/index.md`.
+const i18n = defineCollection({
+  loader: glob({
+    pattern: '**/index.{md,mdx}',
+    base: './src/content/i18n',
+    generateId: ({ entry }) => entry,
+  }),
+  schema: () =>
+    z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      locale: z.enum(['ja', 'ko', 'es', 'pt-BR', 'fr', 'zh-Hans']),
+      sourceSlug: z.string(),
+      sourceHash: z.string(),
+    }),
+});
+
+export const collections = { blog, i18n };

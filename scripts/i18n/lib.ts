@@ -1,0 +1,390 @@
+// Shared helpers for the translation CLI (`translations:translate`) and the
+// informational status command (`translations:status`). Azure Translator (F0)
+// only; no paid services, runtime translation, or new dependencies.
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { computeCleanSlug } from '../../src/utils/slug-helpers.ts';
+import {
+  LOCALES,
+  computeSourceHash,
+  localeByCode,
+  localeByPrefix,
+} from '../../src/utils/i18n.ts';
+
+export { computeSourceHash, LOCALES };
+
+export const REPO_ROOT = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../..',
+);
+export const BLOG_DIR = path.join(REPO_ROOT, 'src/content/blog');
+export const I18N_DIR = path.join(REPO_ROOT, 'src/content/i18n');
+
+const TRANSLATOR_API_VERSION = '3.0';
+const MAX_CHUNK_CHARS = 4000;
+
+export interface TranslatorCredentials {
+  key: string;
+  region: string;
+  endpoint: string;
+}
+
+/** Fail clearly before any file is touched when credentials are missing. */
+export function readTranslatorCredentials(
+  env: NodeJS.ProcessEnv = process.env,
+): TranslatorCredentials {
+  const key = (env.AZURE_TRANSLATOR_KEY ?? '').trim();
+  const region = (env.AZURE_TRANSLATOR_REGION ?? '').trim();
+  if (!key || !region) {
+    throw new Error(
+      'Azure Translator credentials are unavailable: set AZURE_TRANSLATOR_KEY ' +
+        'and AZURE_TRANSLATOR_REGION (the F0 free tier is enough). No files were modified.',
+    );
+  }
+  const endpoint = (env.AZURE_TRANSLATOR_ENDPOINT ?? '')
+    .trim()
+    .replace(/\/+$/, '');
+  return {
+    key,
+    region,
+    endpoint: endpoint || 'https://api.cognitive.microsofttranslator.com',
+  };
+}
+
+/** Normalize a `--locale` argument (BCP47 code or short URL prefix). */
+export function normalizeLocaleArg(value: string): string {
+  const trimmed = value.trim();
+  return (
+    localeByCode(trimmed)?.code ?? localeByPrefix(trimmed)?.code ?? trimmed
+  );
+}
+
+export interface SourceEntry {
+  /** Content directory name, e.g. `2021_04_03_ergodicity`. */
+  entry: string;
+  slug: string;
+  sourcePath: string;
+  content: string;
+  hash: string;
+}
+
+/** Every English article directory holding an `index.md` (or `index.mdx`). */
+export function listSourceEntries(blogDir: string = BLOG_DIR): SourceEntry[] {
+  let dirs: string[];
+  try {
+    dirs = fs.readdirSync(blogDir);
+  } catch {
+    return [];
+  }
+  const entries: SourceEntry[] = [];
+  for (const entry of [...dirs].sort()) {
+    const mdPath = path.join(blogDir, entry, 'index.md');
+    const mdxPath = path.join(blogDir, entry, 'index.mdx');
+    const sourcePath = fs.existsSync(mdPath)
+      ? mdPath
+      : fs.existsSync(mdxPath)
+        ? mdxPath
+        : undefined;
+    if (!sourcePath) continue;
+    const content = fs.readFileSync(sourcePath, 'utf-8');
+    const { frontmatter } = splitFrontmatter(content);
+    entries.push({
+      entry,
+      slug: computeCleanSlug({
+        id: `${entry}/index.md`,
+        data: { slug: getFrontmatterValue(frontmatter, 'slug') },
+      }),
+      sourcePath,
+      content,
+      hash: computeSourceHash(content),
+    });
+  }
+  return entries;
+}
+
+export function targetPath(
+  entry: string,
+  code: string,
+  i18nDir: string = I18N_DIR,
+): string {
+  return path.join(i18nDir, code, entry, 'index.md');
+}
+
+/** The recorded `sourceHash:` of an existing translation, if any. */
+export function readTargetHash(targetFile: string): string | undefined {
+  let content: string;
+  try {
+    content = fs.readFileSync(targetFile, 'utf-8');
+  } catch {
+    return undefined;
+  }
+  return getFrontmatterValue(
+    splitFrontmatter(content).frontmatter,
+    'sourceHash',
+  );
+}
+
+export function splitFrontmatter(markdown: string): {
+  frontmatter: string;
+  body: string;
+} {
+  const match = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!match) return { frontmatter: '', body: markdown };
+  return {
+    frontmatter: match[1] ?? '',
+    body: markdown.slice(match[0].length),
+  };
+}
+
+function unquote(value: string): string {
+  const trimmed = value.trim();
+  if (
+    trimmed.length >= 2 &&
+    ((trimmed.startsWith("'") && trimmed.endsWith("'")) ||
+      (trimmed.startsWith('"') && trimmed.endsWith('"')))
+  ) {
+    const inner = trimmed.slice(1, -1);
+    return trimmed.startsWith("'")
+      ? inner.replace(/''/g, "'")
+      : inner.replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  }
+  return trimmed;
+}
+
+/** Single-line `key: value` lookup; the corpus keeps titles one line. */
+export function getFrontmatterValue(
+  frontmatter: string,
+  key: string,
+): string | undefined {
+  const match = frontmatter.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+  const raw = match?.[1]?.trim();
+  if (!raw || raw === '>' || raw === '|') return undefined;
+  return unquote(raw);
+}
+
+const yamlQuote = (value: string): string => JSON.stringify(value);
+
+export interface ProtectedText {
+  text: string;
+  slots: string[];
+}
+
+const PLACEHOLDER = (index: number): string => `__I18NPH${index}__`;
+
+/**
+ * Replace URLs, code, images targets, and other must-not-translate spans with
+ * placeholders so the structure survives translation. `restore` puts them back.
+ */
+export function protectMarkdown(body: string): ProtectedText {
+  const slots: string[] = [];
+  const stash = (match: string): string => {
+    slots.push(match);
+    return PLACEHOLDER(slots.length - 1);
+  };
+  let text = body;
+  // Fenced code blocks first so nothing inside them is touched.
+  text = text.replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/g, stash);
+  // Inline code spans.
+  text = text.replace(/`[^`\n]+`/g, stash);
+  // Angle-bracket spans (autolinks and inline HTML tags).
+  text = text.replace(/<[^>\n]+>/g, stash);
+  // Footnote references: translate the prose, keep the labels.
+  text = text.replace(/\[\^[^\]]+\]/g, stash);
+  // Markdown link/image destinations: `[label](url)` keeps a translatable label.
+  text = text.replace(/(\]\()([^)\s]+)(\))/g, (_all, open, url, close) => {
+    return `${open}${stash(url)}${close}`;
+  });
+  // Reference-style link definitions: `[ref]: url`.
+  text = text.replace(/^(\s*\[[^\]]+\]:\s*)(\S+)/gm, (_all, open, url) => {
+    return `${open}${stash(url)}`;
+  });
+  // Bare URLs.
+  text = text.replace(/https?:\/\/[^\s)<>"'`]+/g, stash);
+  return { text, slots };
+}
+
+export function restoreProtectedText(protected_: ProtectedText): string {
+  return protected_.text.replace(/__I18NPH(\d+)__/g, (_all, index) => {
+    const slot = protected_.slots[Number(index)];
+    return slot ?? _all;
+  });
+}
+
+/** Split protected text into translator-sized chunks on blank lines. */
+export function splitIntoChunks(
+  text: string,
+  maxChars: number = MAX_CHUNK_CHARS,
+): string[] {
+  if (text.length <= maxChars) return [text];
+  const chunks: string[] = [];
+  let rest = text;
+  while (rest.length > maxChars) {
+    const window = rest.slice(0, maxChars);
+    const boundary =
+      window.lastIndexOf('\n\n') > 0
+        ? window.lastIndexOf('\n\n')
+        : window.lastIndexOf('\n') > 0
+          ? window.lastIndexOf('\n')
+          : window.lastIndexOf(' ');
+    let cut = boundary > 0 ? boundary : maxChars;
+    // Never cut inside a placeholder; extend past it instead.
+    const dangling = window.slice(0, cut).match(/__I18NPH\d*$/);
+    if (dangling) {
+      const end = rest.indexOf('__', cut);
+      if (end !== -1) cut = end + 2;
+    }
+    chunks.push(rest.slice(0, cut));
+    rest = rest.slice(cut).replace(/^\n+/, '');
+  }
+  if (rest) chunks.push(rest);
+  return chunks;
+}
+
+export async function translateTexts(
+  texts: string[],
+  target: string,
+  credentials: TranslatorCredentials,
+  fetchImpl: typeof fetch = fetch,
+): Promise<string[]> {
+  const results: string[] = new Array(texts.length).fill('');
+  const pending: Array<{ index: number; text: string }> = [];
+  texts.forEach((text, index) => {
+    if (text.trim()) pending.push({ index, text });
+  });
+  if (pending.length === 0) return results;
+  const url =
+    `${credentials.endpoint}/translate?api-version=${TRANSLATOR_API_VERSION}` +
+    `&from=en&to=${encodeURIComponent(target)}&textType=plain`;
+  let response: Response;
+  try {
+    response = await fetchImpl(url, {
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': credentials.key,
+        'Ocp-Apim-Subscription-Region': credentials.region,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(pending.map(({ text }) => ({ Text: text }))),
+    });
+  } catch (error) {
+    throw new Error(
+      `Azure Translator request failed (${target}): ${(error as Error).message}. No files were modified for this article.`,
+    );
+  }
+  if (!response.ok) {
+    const detail = (await response.text().catch(() => '')).slice(0, 200);
+    throw new Error(
+      `Azure Translator request failed (${target}): HTTP ${response.status}${detail ? ` ${detail}` : ''}. ` +
+        'The free F0 quota may be exhausted. No files were modified for this article.',
+    );
+  }
+  const payload = (await response.json()) as Array<{
+    translations?: Array<{ text?: string }>;
+  }>;
+  if (!Array.isArray(payload) || payload.length !== pending.length) {
+    throw new Error(
+      `Azure Translator returned an unexpected response (${target}). No files were modified for this article.`,
+    );
+  }
+  pending.forEach(({ index }, position) => {
+    results[index] = payload[position]?.translations?.[0]?.text ?? texts[index];
+  });
+  return results;
+}
+
+export async function translateProtectedBody(
+  body: string,
+  target: string,
+  credentials: TranslatorCredentials,
+  fetchImpl: typeof fetch = fetch,
+): Promise<string> {
+  const guarded = protectMarkdown(body);
+  const chunks = splitIntoChunks(guarded.text);
+  const translated = await translateTexts(
+    chunks,
+    target,
+    credentials,
+    fetchImpl,
+  );
+  return restoreProtectedText({
+    text: translated.join(''),
+    slots: guarded.slots,
+  });
+}
+
+/**
+ * Compose the translated file: every source frontmatter line is preserved
+ * verbatim except `title`/`description` (translated) plus the recorded
+ * `locale`, `sourceSlug`, and deterministic `sourceHash`.
+ */
+export function composeTranslatedFile(options: {
+  sourceFrontmatter: string;
+  translatedTitle: string;
+  translatedDescription?: string;
+  localeCode: string;
+  sourceSlug: string;
+  sourceHash: string;
+  translatedBody: string;
+}): string {
+  const {
+    sourceFrontmatter,
+    translatedTitle,
+    translatedDescription,
+    localeCode,
+    sourceSlug,
+    sourceHash,
+    translatedBody,
+  } = options;
+  const managed = new Set([
+    'title',
+    'description',
+    'locale',
+    'sourceSlug',
+    'sourceHash',
+  ]);
+  const lines = sourceFrontmatter
+    .split('\n')
+    .filter((line) => {
+      const key = line.split(':')[0]?.trim() ?? '';
+      return !managed.has(key);
+    })
+    .filter(
+      (line, index, all) => line.trim() !== '' || index !== all.length - 1,
+    );
+  const head = [
+    `title: ${yamlQuote(translatedTitle)}`,
+    ...(translatedDescription !== undefined
+      ? [`description: ${yamlQuote(translatedDescription)}`]
+      : []),
+  ];
+  const tail = [
+    `locale: '${localeCode}'`,
+    `sourceSlug: '${sourceSlug}'`,
+    `sourceHash: '${sourceHash}'`,
+  ];
+  return `---\n${[...head, ...lines, ...tail].join('\n')}\n---\n\n${translatedBody.replace(/^\n+/, '')}`;
+}
+
+/** Copy colocated assets (images, …) so relative body/hero paths keep working. */
+export function copyMissingAssets(sourceDir: string, targetDir: string): void {
+  let files: string[];
+  try {
+    files = fs.readdirSync(sourceDir);
+  } catch {
+    return;
+  }
+  for (const file of files) {
+    if (/^index\.mdx?$/i.test(file)) continue;
+    const from = path.join(sourceDir, file);
+    const to = path.join(targetDir, file);
+    try {
+      if (fs.statSync(from).isFile() && !fs.existsSync(to)) {
+        fs.copyFileSync(from, to);
+      }
+    } catch {
+      // A missing asset must never fail translation; the build surfaces it.
+    }
+  }
+}
