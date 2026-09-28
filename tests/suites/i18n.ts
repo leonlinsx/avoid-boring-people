@@ -152,11 +152,8 @@ export function testHreflangLinks() {
 }
 
 export function testLanguageSelectorEntries() {
-  const origin = 'https://leonlins.com';
-
   // No translations: a single entry, so the component hides itself.
   const alone = languageSelectorEntries({
-    siteOrigin: origin,
     slug: 'kelly',
     currentCode: 'en',
     availableCodes: [],
@@ -166,7 +163,6 @@ export function testLanguageSelectorEntries() {
 
   // English page with translations: English stays current and first.
   const english = languageSelectorEntries({
-    siteOrigin: origin,
     slug: 'kelly',
     currentCode: 'en',
     availableCodes: ['ja', 'pt-BR'],
@@ -178,17 +174,12 @@ export function testLanguageSelectorEntries() {
   assert.equal(english.find((entry) => entry.isCurrent)?.code, 'en');
   assert.deepEqual(
     english.map((entry) => entry.href),
-    [
-      `${origin}/writing/kelly`,
-      `${origin}/ja/writing/kelly`,
-      `${origin}/pt/writing/kelly`,
-    ],
-    'navigation must go to real static URLs',
+    ['/writing/kelly', '/ja/writing/kelly', '/pt/writing/kelly'],
+    'navigation must go to real static path-only URLs',
   );
 
   // Translated page: English plus the existing versions, self marked current.
   const japanese = languageSelectorEntries({
-    siteOrigin: origin,
     slug: 'kelly',
     currentCode: 'ja',
     availableCodes: ['ja', 'zh-Hans', 'xx'],
@@ -582,12 +573,9 @@ export function testEnglishOnlySystemsNeverReferenceTranslations() {
 }
 
 export function testEnglishSelectorVisibilityWithTranslations() {
-  const origin = 'https://leonlins.com';
-
   // An English article with a translation shows the selector (more than one
   // entry), with English current — so it stays available after switching back.
   const withTranslation = languageSelectorEntries({
-    siteOrigin: origin,
     slug: 'kelly',
     currentCode: 'en',
     availableCodes: ['ja'],
@@ -601,7 +589,6 @@ export function testEnglishSelectorVisibilityWithTranslations() {
   // An untranslated English article still shows no selector (single entry).
   assert.equal(
     languageSelectorEntries({
-      siteOrigin: origin,
       slug: 'kelly',
       currentCode: 'en',
       availableCodes: [],
@@ -612,7 +599,6 @@ export function testEnglishSelectorVisibilityWithTranslations() {
   // Every localized page keeps the selector with itself current.
   for (const locale of LOCALES) {
     const entries = languageSelectorEntries({
-      siteOrigin: origin,
       slug: 'kelly',
       currentCode: locale.code,
       availableCodes: [locale.code],
@@ -623,7 +609,6 @@ export function testEnglishSelectorVisibilityWithTranslations() {
 }
 
 export function testSelectorLabelsAndReciprocalNavigation() {
-  const origin = 'https://leonlins.com';
   const expectedLabels: Record<string, string> = {
     en: 'English',
     ja: '日本語',
@@ -638,7 +623,6 @@ export function testSelectorLabelsAndReciprocalNavigation() {
   // language name — never a hardcoded English label.
   for (const locale of LOCALES) {
     const entries = languageSelectorEntries({
-      siteOrigin: origin,
       slug: 'kelly',
       currentCode: locale.code,
       availableCodes: LOCALES.map((candidate) => candidate.code),
@@ -657,13 +641,11 @@ export function testSelectorLabelsAndReciprocalNavigation() {
   // Navigation is reciprocal: each side links to the other's canonical URL,
   // and only versions that actually exist are listed.
   const english = languageSelectorEntries({
-    siteOrigin: origin,
     slug: 'kelly',
     currentCode: 'en',
     availableCodes: ['ja', 'ko'],
   });
   const japanese = languageSelectorEntries({
-    siteOrigin: origin,
     slug: 'kelly',
     currentCode: 'ja',
     availableCodes: ['ja', 'ko'],
@@ -686,6 +668,44 @@ export function testSelectorLabelsAndReciprocalNavigation() {
     false,
     'untranslated versions must not be listed',
   );
+}
+
+export function testSelectorLinksArePathOnlyWhileSeoUrlsStayAbsolute() {
+  const origin = 'https://leonlins.com';
+
+  // Selector links are internal navigation: path-only, so local/dev/preview
+  // environments stay on the current origin instead of jumping to production.
+  const entries = languageSelectorEntries({
+    slug: 'kelly',
+    currentCode: 'en',
+    availableCodes: ['ja', 'pt-BR'],
+  });
+  assert.deepEqual(
+    entries.map((entry) => entry.href),
+    ['/writing/kelly', '/ja/writing/kelly', '/pt/writing/kelly'],
+  );
+  for (const entry of entries) {
+    assert.equal(
+      entry.href.startsWith('http'),
+      false,
+      `selector hrefs must not pin an origin (${entry.href})`,
+    );
+  }
+
+  // Canonical, hreflang, and OG URLs stay absolute off SITE_URL.
+  const links = buildHreflangLinks({
+    siteOrigin: origin,
+    slug: 'kelly',
+    availableCodes: ['ja'],
+  });
+  assert.ok(links.length > 0);
+  for (const link of links) {
+    assert.equal(
+      link.href.startsWith(`${origin}/`),
+      true,
+      `SEO URLs must stay absolute (${link.href})`,
+    );
+  }
 }
 
 export function testLocalizeRelatedPosts() {
@@ -848,6 +868,7 @@ export async function runI18nTests() {
   testLanguageSelectorEntries();
   testEnglishSelectorVisibilityWithTranslations();
   testSelectorLabelsAndReciprocalNavigation();
+  testSelectorLinksArePathOnlyWhileSeoUrlsStayAbsolute();
   testLocalizeRelatedPosts();
   testDiscussionChromeCoversAllLocales();
   testNewsletterChromeCoversAllLocales();

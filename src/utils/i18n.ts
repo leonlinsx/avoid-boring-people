@@ -160,21 +160,21 @@ export interface LanguageEntry {
 
 /**
  * Language-selector entries: English plus every translation that exists for
- * this slug. The component hides itself when only one entry is returned.
+ * this slug. Hrefs are path-only internal navigation, so local/dev/preview
+ * environments stay on the current origin. The component hides itself when
+ * only one entry is returned.
  */
 export function languageSelectorEntries(options: {
-  siteOrigin: string;
   slug: string;
   currentCode: string;
   availableCodes: string[];
 }): LanguageEntry[] {
-  const { siteOrigin, slug, currentCode, availableCodes } = options;
-  const origin = siteOrigin.replace(/\/+$/, '');
+  const { slug, currentCode, availableCodes } = options;
   const entries: LanguageEntry[] = [
     {
       code: ENGLISH.code,
       label: ENGLISH.label,
-      href: `${origin}${englishPathname(slug)}`,
+      href: englishPathname(slug),
       isCurrent: currentCode === ENGLISH.code,
     },
   ];
@@ -186,7 +186,7 @@ export function languageSelectorEntries(options: {
     entries.push({
       code: locale.code,
       label: locale.label,
-      href: `${origin}${localizedPathname(locale.prefix, slug)}`,
+      href: localizedPathname(locale.prefix, slug),
       isCurrent: currentCode === locale.code,
     });
   }
@@ -196,7 +196,7 @@ export function languageSelectorEntries(options: {
       entries.push({
         code: locale.code,
         label: locale.label,
-        href: `${origin}${localizedPathname(locale.prefix, slug)}`,
+        href: localizedPathname(locale.prefix, slug),
         isCurrent: true,
       });
     }
