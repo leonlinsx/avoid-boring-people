@@ -350,6 +350,16 @@ export function testMarkdownValidationSeverities() {
     ],
     ['A '.repeat(60), 'short', /truncated prose/],
     [
+      'Before [link](https://example.com) After',
+      'Before [link](https://example.com)',
+      /missing or truncated prose/,
+    ],
+    [
+      'Before [link](https://example.com) After',
+      '[link](https://example.com) After',
+      /missing or truncated prose/,
+    ],
+    [
       '[^1]: Rate https://fred.stlouisfed.org/series/DFII10 on 2020-09-14.',
       '[^1]: 金利 https://fred.stlouisfed.org/series/DFII102020年9月14日。',
       /link destination/,

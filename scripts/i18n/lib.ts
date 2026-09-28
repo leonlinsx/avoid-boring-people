@@ -760,19 +760,58 @@ function visibleText(node: MarkdownNode): string {
   return (node.children ?? []).map(visibleText).join('');
 }
 
+type InlinePart = { text: string } | { anchor: string; text: string };
+
+function inlineParts(node: MarkdownNode): InlinePart[] {
+  const anchor =
+    node.type === 'link' || node.type === 'image'
+      ? `${node.type}:${String(node.url ?? '')}`
+      : node.type === 'linkReference' ||
+          node.type === 'imageReference' ||
+          node.type === 'footnoteReference'
+        ? `${node.type}:${String(node.identifier ?? '')}`
+        : node.type === 'inlineCode' || node.type === 'html'
+          ? `${node.type}:${String(node.value ?? '')}`
+          : undefined;
+  if (anchor) return [{ anchor, text: visibleText(node) }];
+  if (node.type === 'text') return [{ text: String(node.value ?? '') }];
+  return (node.children ?? []).flatMap(inlineParts);
+}
+
 function missingProse(
   source: MarkdownNode,
   candidate: MarkdownNode,
   nodePath = 'root',
 ): string | undefined {
   if (['paragraph', 'heading', 'tableCell'].includes(source.type)) {
-    const before = visibleText(source).trim();
-    const after = visibleText(candidate).trim();
-    if (
-      before &&
-      (!after || (before.length >= 80 && after.length < before.length / 10))
-    )
-      return `${nodePath}: source prose has ${before.length} characters, candidate has ${after.length}`;
+    const sourceParts = inlineParts(source);
+    const candidateParts = inlineParts(candidate);
+    const anchors = sourceParts.flatMap((part) =>
+      'anchor' in part ? [part.anchor] : [],
+    );
+    const before = Array.from({ length: anchors.length + 1 }, () => '');
+    const after = Array.from({ length: anchors.length + 1 }, () => '');
+    let index = 0;
+    for (const part of sourceParts) {
+      if ('anchor' in part) index += 1;
+      else before[index] += part.text;
+    }
+    index = 0;
+    for (const part of candidateParts) {
+      if ('anchor' in part && part.anchor === anchors[index]) index += 1;
+      else after[index] += part.text;
+    }
+    for (let segment = 0; segment < before.length; segment += 1) {
+      const sourceText = before[segment]!.trim();
+      const candidateText = after[segment]!.trim();
+      if (
+        sourceText &&
+        (!candidateText ||
+          (sourceText.length >= 80 &&
+            candidateText.length < sourceText.length / 10))
+      )
+        return `${nodePath}.segment[${segment}]: source prose has ${sourceText.length} characters, candidate has ${candidateText.length}`;
+    }
   }
   const left = (source.children ?? []).filter((child) =>
     blockNodes.has(child.type),
@@ -815,12 +854,6 @@ export function validateMarkdownStructure(
         markdownStructureFingerprint(candidate),
       )}`,
     };
-  const proseLoss = missingProse(sourceTree, candidateTree);
-  if (proseLoss)
-    return {
-      severity: 'hard',
-      detail: `missing or truncated prose: ${proseLoss}`,
-    };
   const expected = markdownInvariants(sourceTree, source);
   const actual = markdownInvariants(candidateTree, candidate);
   for (const key of [
@@ -845,6 +878,12 @@ export function validateMarkdownStructure(
       detail: `existing link destination changed or missing: source=${JSON.stringify(missing ?? expected.links)}, candidate=${JSON.stringify(changed ?? actual.links)}`,
     };
   }
+  const proseLoss = missingProse(sourceTree, candidateTree);
+  if (proseLoss)
+    return {
+      severity: 'hard',
+      detail: `missing or truncated prose: ${proseLoss}`,
+    };
   const sourceFingerprint = markdownStructureFingerprint(source);
   const candidateFingerprint = markdownStructureFingerprint(candidate);
   if (sourceFingerprint !== candidateFingerprint)
