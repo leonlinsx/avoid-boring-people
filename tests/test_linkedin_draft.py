@@ -26,17 +26,27 @@ BODY = (
 )
 
 
+FIELDS = {
+    "core_insight": BODY.split("\n\n")[0],
+    "explanation": "That changes how to think about leverage.",
+    "concrete_detail": "A strategy with attractive average results may still be a poor choice if one adverse sequence ends the game.",
+    "implication": "The distinction between an average across people and one path through time matters.",
+    "click_reason": "I develop that distinction and its implications for investment decisions in the full article.",
+}
+
 def test_full_article_one_provider_call_and_tagged_link(monkeypatch):
     calls = []
     def complete(prompt, **kwargs):
         calls.append((prompt, kwargs))
-        return {"paragraphs": BODY.split("\n\n")}
+        return FIELDS
     monkeypatch.setattr("scripts.automation.linkedin_draft.complete_json", complete)
     result = generate_linkedin_draft(POST)
     assert len(calls) == 1
     assert POST["content"].strip() in calls[0][0]
     assert "2020-07-22" in calls[0][0]
-    assert result == BODY + "\n" + tagged_url(POST["url"], "linkedin", POST["id"])
+    assert all(name in calls[0][0] for name in FIELDS)
+    assert "Do not summarize the article" in calls[0][0]
+    assert result == BODY + "\n" + tagged_url(POST["url"], "linkedin", "ergodicity")
     assert len(result.split("\n\n")) == 3
     assert result.count("https://") == 1
     assert "#" not in result and "FIRST COMMENT" not in result
@@ -56,11 +66,11 @@ def test_targeted_preview_has_no_state_or_publishing_side_effects(monkeypatch, t
         pytest.fail("targeted LinkedIn preview reached state, generic summary, or publisher")
     for name in ("_summarize", "_publish", "mark_posted", "score_posts", "load_engagement"):
         monkeypatch.setattr(auto_post, name, forbidden)
-    monkeypatch.setattr("scripts.automation.linkedin_draft.complete_json", lambda *a, **k: {"paragraphs": BODY.split("\n\n")})
+    monkeypatch.setattr("scripts.automation.linkedin_draft.complete_json", lambda *a, **k: FIELDS)
     auto_post.main()
     output = capsys.readouterr().out
     assert "LINKEDIN POST\n\n" + BODY in output
-    assert tagged_url(POST["url"], "linkedin", POST["id"]) in output
+    assert tagged_url(POST["url"], "linkedin", "ergodicity") in output
     assert "FIRST COMMENT" not in output
     assert state_file.read_bytes() == original
 
@@ -79,6 +89,9 @@ def test_targeted_preview_has_no_state_or_publishing_side_effects(monkeypatch, t
     BODY + "\n\nTags: risk",
     BODY + "\n\n" + ("A" * 2400) + ".",
     BODY.replace("I develop that distinction", "The analysis explores that distinction"),
+    BODY.replace("I develop that distinction and its implications for investment decisions", "I explore this further"),
+    BODY.replace("I develop that distinction", "The author develops that distinction"),
+    BODY.replace("I develop that distinction", "The full article details that distinction"),
 ])
 def test_validator_fails_closed(bad):
     with pytest.raises(llm_summarizer.SocialCopyError):
@@ -91,7 +104,7 @@ def test_ollama_uses_shared_provider_request(monkeypatch):
     calls = []
     def fake_chat(prompt, model, **kwargs):
         calls.append((prompt, model, kwargs))
-        return __import__("json").dumps({"paragraphs": BODY.split("\n\n")})
+        return __import__("json").dumps(FIELDS)
     monkeypatch.setattr(llm_summarizer, "_ollama_chat", fake_chat)
     generate_linkedin_draft(POST)
     assert len(calls) == 1
@@ -102,3 +115,9 @@ def test_ollama_uses_shared_provider_request(monkeypatch):
 def test_wrong_article_url_fails_closed():
     with pytest.raises(llm_summarizer.SocialCopyError):
         validate_linkedin_draft(BODY, {**POST, "url": "https://example.com/article"})
+
+
+def test_malformed_editorial_selection_fails_closed(monkeypatch):
+    monkeypatch.setattr("scripts.automation.linkedin_draft.complete_json", lambda *a, **k: {**FIELDS, "click_reason": ""})
+    with pytest.raises(llm_summarizer.SocialCopyError, match="editorial selection"):
+        generate_linkedin_draft(POST)
