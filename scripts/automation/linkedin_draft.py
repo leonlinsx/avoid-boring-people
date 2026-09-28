@@ -19,6 +19,7 @@ OPENING_RE = re.compile(
     r"(?:this article|this essay|this post|the author|the writer)\b)", re.I,
 )
 ENDING_RE = re.compile(r"(?:agree\??|thoughts\??|what do you think\??|let me know|comment below)\s*[.!?]?\s*$", re.I)
+GENERIC_CTA_RE = re.compile(r"\b(?:i (?:explore|examine|discuss) (?:this|it|the implications|that mechanism) further|read the full article|linked (?:post|piece)|the full article details)\b", re.I)
 META_CTA_RE = re.compile(r"\b(?:the (?:analysis|study|article|essay|full text)|this (?:analysis|article|essay|piece))\s+(?:explores|examines|discusses|covers|delves into)\b", re.I)
 
 
@@ -30,10 +31,10 @@ def validate_linkedin_draft(body: str, post: dict) -> str:
     paragraphs = re.split(r"\n\s*\n", body)
     words = re.findall(r"\b[\w’'-]+\b", body)
     problems = []
-    if not 3 <= len(paragraphs) <= 5 or any("\n" in p for p in paragraphs):
-        problems.append("expected 3–5 ordinary prose paragraphs")
-    if not 80 <= len(words) <= 300:
-        problems.append("word count outside 80–300")
+    if len(paragraphs) != 3 or any("\n" in p for p in paragraphs):
+        problems.append("expected three ordinary prose paragraphs")
+    if not 75 <= len(words) <= 240:
+        problems.append("word count outside 75–240")
     if URL_RE.search(body):
         problems.append("model copy contains a URL")
     if "#" in body:
@@ -42,9 +43,11 @@ def validate_linkedin_draft(body: str, post: dict) -> str:
         problems.append("markdown")
     if OPENING_RE.search(paragraphs[0].strip()):
         problems.append("generic promotional opening")
+    if re.search(r"\bthe author\b", body, re.I):
+        problems.append("outside-author voice")
     if ENDING_RE.search(body):
         problems.append("engagement-bait ending")
-    if META_CTA_RE.search(paragraphs[-1]):
+    if META_CTA_RE.search(paragraphs[-1]) or GENERIC_CTA_RE.search(paragraphs[-1]):
         problems.append("generic outside-summary CTA")
     normalized = [re.sub(r"\W+", "", p).casefold() for p in paragraphs]
     if len(normalized) != len(set(normalized)):
@@ -56,12 +59,16 @@ def validate_linkedin_draft(body: str, post: dict) -> str:
     if any(label and re.search(rf"(?im)^\s*(?:category|tags?)\s*:\s*{re.escape(label)}\s*$", body) for label in taxonomy):
         problems.append("article taxonomy leaked into copy")
 
-    url = tagged_url(post.get("url", ""), "linkedin", post.get("id"))
+    # The URL slug is the visible manual campaign; the shared UTM helper and
+    # first-touch attribution semantics are unchanged.
+    article_path = urlsplit(post.get("url", "")).path.strip("/").split("/")
+    campaign = article_path[-1] if len(article_path) >= 2 and article_path[0] == "writing" else ""
+    url = tagged_url(post.get("url", ""), "linkedin", campaign)
     parts = urlsplit(url)
     query = parse_qs(parts.query)
     if (parts.scheme != "https" or parts.hostname not in {"leonlins.com", "www.leonlins.com"}
             or query.get("utm_source") != ["linkedin"] or query.get("utm_medium") != ["social"]
-            or query.get("utm_campaign") != [post.get("id")]):
+            or not campaign or query.get("utm_campaign") != [campaign]):
         problems.append("invalid LinkedIn-tagged leonlins.com article URL")
     result = f"{body}\n{url}"
     if len(result) > 3000:
@@ -77,27 +84,45 @@ def generate_linkedin_draft(post: dict) -> str:
     if not content.strip() or len(content) > MAX_ARTICLE_CHARS:
         raise SocialCopyError("LinkedIn draft requires a non-empty, complete article")
     prompt = dedent(f"""
-        Write one LinkedIn post in the author's voice from the complete article below.
-        Return JSON with one field: {{"paragraphs": ["paragraph one", "paragraph two", "paragraph three"]}}. Each array item must be one complete prose paragraph with no embedded line breaks.
+        Select one useful idea from the complete article below for a manual LinkedIn post.
+        Do not summarize the article. Return JSON with exactly these string fields:
+        {{"core_insight": "...", "explanation": "...", "concrete_detail": "...",
+          "implication": "...", "click_reason": "..."}}
 
-        Aim for 150–250 words in exactly 3 or 4 ordinary prose paragraphs. A shorter strong post is fine. Do not add a standalone heading or CTA item.
-        Open with a substantive insight, explain why it matters, and use one concrete
-        source-supported example, number, qualification, or comparison. Teach one useful
-        idea while leaving a specific deeper argument, evidence, framework, or implication
-        for the full article. End with a natural, article-specific reason to read further.
-        The article URL will be appended after your final sentence; do not include any URL.
+        Each field is plain prose with complete sentences and no line breaks.
+        Core insight: state ONE source-supported claim directly, in Leon's voice.
+        Explanation: briefly show why that one claim holds. Do not introduce a second theme.
+        Concrete detail: choose ONE source-supported number, example, comparison, or
+        qualification that makes this idea credible. Preserve its time context and caveats.
+        Implication: give the reader one useful consequence that Leon actually draws
+        in the source. Do not add advice to investors or organizations that he did not give.
+        Click reason: name ONE specific additional argument, example, mechanism, caveat,
+        or implication that is actually developed in the article but NOT explained in the
+        other fields. Say naturally that the full article develops it, and lead into the
+        link that will be appended after this sentence. This should sound like Leon
+        inviting a colleague to follow a named thread of the argument, not like a
+        summary of what "the article" or "the author" does. Do not withhold basic understanding.
 
-        Write as Leon speaking directly to investors, founders, senior operators, and analytical professionals. Do not sound like an analyst summarizing Leon from outside. Preserve a distinctive source observation or caveat rather than generic business advice.
-        Preserve the author's reasoning, uncertainty, voice, numbers, and time context. Use one specific detail from the source and do not add projected losses, benefits, or advice absent from it.
-        Do not invent facts, examples, personal experience, or stronger certainty.
-        Do not imply old observations are current. Avoid "recent", "today", "now", "currently", or applying the original market conditions to the present. Anchor time-sensitive analysis to the publication period ({_format_publication_date(post)}).
-        Avoid clickbait, generic promotion, engagement questions, emojis, hashtags,
-        markdown, listicles, one-sentence-per-line formatting, and article taxonomy.
-        Never open by announcing an article or say "check out my latest piece". Do not use "the analysis explores", "the study examines", "the full text explores", "understanding this is vital", or similar generic summary language. The final sentence should be in my voice ("I examine..." is fine) and name a specific source-supported question, mechanism, example, or caveat developed further, rather than saying only "read further".
-        Do not repeat the entire article or manufacture a curiosity gap.
+        The fields will be assembled into three paragraphs: insight; explanation plus
+        detail; implication plus click reason. Aim for 120–200 words total, with no filler.
+        Write for analytically minded professionals. Use plain English, relatively short
+        sentences, and Leon's own terminology where useful. Stay in the source's voice,
+        rather than sounding like an analyst reporting on the source. Do not retell the
+        article from beginning to end or invent a personal experience or source fact.
+        Avoid abstract filler such as "the critical insight lies in", "this distinction
+        is critical", "offers a more robust framework", "provides a foundation",
+        "ultimately", "it is crucial to", "this approach allows us to", and
+        "empirical evidence demonstrates". Do not write a generic CTA such as
+        "I explore this further", "the full article details", or "in the linked post".
+        Never refer to Leon as "the author". Do not repeat a field in another field.
+        Prefer "I work through <specific omitted material> in the full piece:" or a
+        natural variation that names the actual material and ends before the URL.
+        No clickbait, engagement bait, emojis, hashtags, markdown, listicles, article
+        taxonomy, promotional opening, or URLs. Do not manufacture a curiosity gap.
+        This article was published on {_format_publication_date(post)}. Anchor old
+        time-sensitive facts to that period; do not imply they are current.
 
         TITLE: {post.get('title', '')}
-        PUBLICATION DATE: {_format_publication_date(post)}
         FULL ARTICLE:
         {content}
     """).strip()
@@ -107,9 +132,15 @@ def generate_linkedin_draft(post: dict) -> str:
         temperature=0.25,
         max_tokens=900,
     )
-    paragraphs = data.get("paragraphs")
-    if not isinstance(paragraphs, list) or not 3 <= len(paragraphs) <= 4 or any(
-        not isinstance(paragraph, str) or "\n" in paragraph for paragraph in paragraphs
+    fields = ("core_insight", "explanation", "concrete_detail", "implication", "click_reason")
+    if set(data) != set(fields) or any(
+        not isinstance(data[field], str) or not data[field].strip() or "\n" in data[field]
+        for field in fields
     ):
-        raise SocialCopyError("LinkedIn model returned malformed paragraphs")
+        raise SocialCopyError("LinkedIn model returned malformed editorial selection")
+    paragraphs = (
+        data["core_insight"].strip(),
+        f"{data['explanation'].strip()} {data['concrete_detail'].strip()}",
+        f"{data['implication'].strip()} {data['click_reason'].strip()}",
+    )
     return validate_linkedin_draft("\n\n".join(paragraphs), post)

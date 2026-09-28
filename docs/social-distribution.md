@@ -90,7 +90,7 @@ DRY_RUN=true TARGET_POST_ID=2020_06_17_data/index.md PLATFORM=linkedin \
   python -m scripts.automation.auto_post
 ```
 
-The command reads the full article from the existing search index, makes one model call, validates the copy, and prints `LINKEDIN POST` followed by the complete post and its LinkedIn-tagged leonlins.com URL. It does not need `POST_MODE` or `TEST_API`. It does not publish, call the LinkedIn API, or write `posted.json`. Review source fidelity and wording before pasting into LinkedIn. The body link is intentional: click-through to the owned article takes priority over possible feed-reach effects. DeepSeek remains available by setting `SOCIAL_LLM_PROVIDER=deepseek` and its existing key.
+The command reads the full article from the existing search index, makes one model call to select one insight, one concrete detail, and one specific reason to keep reading, then validates three assembled paragraphs and prints `LINKEDIN POST` followed by the complete post and its LinkedIn-tagged leonlins.com URL. The visible LinkedIn `utm_campaign` uses the article URL slug (for example, `dividend`); the shared tagging helper and first-touch attribution behavior are unchanged. It does not need `POST_MODE` or `TEST_API`. It does not publish, call the LinkedIn API, or write `posted.json`. Review source fidelity and wording before pasting into LinkedIn. The body link is intentional: click-through to the owned article takes priority over possible feed-reach effects. DeepSeek remains available by setting `SOCIAL_LLM_PROVIDER=deepseek` and its existing key.
 
 ## Local model preview (Ollama)
 
