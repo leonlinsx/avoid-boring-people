@@ -135,7 +135,7 @@ def _publish(platform: str, social: SocialPost, article: ArticleSyndication, com
         return post_single_to_mastodon(rendered[0])
     if platform == "linkedin":
         from scripts.automation.publishers.linkedin import post_to_linkedin
-        # The body stays link-free for reach; the URL follows as first comment.
+        # Preserve the dormant API adapter's first-comment behavior.
         return post_to_linkedin(render_linkedin(social), link_url=social.url)
     if platform == "farcaster":
         from scripts.automation.publishers.farcaster import post_to_farcaster
@@ -306,6 +306,12 @@ def main() -> None:
         selected = select_next_post(routed, PLATFORM, DISTRIBUTION_MODE)
         if selected: selected["eligible_platforms"] = [p for p in selected["eligible_platforms"] if eligible_for_category(selected, p)]
     if not selected or (not preview and not selected["eligible_platforms"]): print("No eligible post to publish."); return
+    if preview and PLATFORM == ["linkedin"]:
+        if not USE_LLM:
+            raise ValueError("LinkedIn manual preview requires USE_LLM=true")
+        from scripts.automation.linkedin_draft import generate_linkedin_draft
+        print("LINKEDIN POST\n\n" + generate_linkedin_draft(selected))
+        return
     try:
         summary = _summary_for(selected)
     except Exception as error:

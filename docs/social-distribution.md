@@ -34,7 +34,7 @@ Canonical article URLs stay untagged on purpose in the dev.to cross-post, the Tu
 
 Bluesky, Mastodon, DEV, Threads (`THREADS_ACCESS_TOKEN`, a long-lived token for the `avoidboringpeople` profile), Instagram (`INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_MEDIA_UPLOAD_URL`, and `INSTAGRAM_MEDIA_UPLOAD_SECRET`; `INSTAGRAM_MEDIA_BASE_URL` is the alternative to the upload endpoint when the slides already live somewhere Meta can fetch — see [Instagram](#instagram)), DeepSeek (`DEEPSEEK_API_KEY`; the optional `DEEPSEEK_MODEL` overrides the default `deepseek-flash` alias for DeepSeek-V4.1-Flash, and an empty or unusable response fails the run rather than falling back), Neynar (`NEYNAR_API_KEY`, `NEYNAR_SIGNER_UUID`), and Nostr (`NOSTR_NSEC`, the publishing private key) secrets are the active production set. The `TWITTER_*` secrets are retained for an explicit `PLATFORM=twitter` run, but X API v2 posting is credit-based and returns `402 credits depleted` at a zero balance, so X is not a default destination. An optional `NOSTR_RELAYS` value overrides the default relay list. Add the following only when the corresponding deferred destination is approved for production:
 
-- `LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR_URN` (`urn:li:person:…` or organization URN). LinkedIn posts carry no body link (body links cost most of the post's reach): the adapter publishes the native argument and places the canonical URL as the first comment via `POST /rest/socialActions/{postUrn}/comments`. A failed comment is logged, never retried into a duplicate post.
+- `LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR_URN` (`urn:li:person:…` or organization URN). The dormant LinkedIn API adapter still publishes a native body and adds the URL as a first comment. It is not part of the manual drafting workflow. A failed comment is logged, never retried into a duplicate post.
 - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REFRESH_TOKEN`
 - `WEIBO_ACCESS_TOKEN` plus `WEIBO_APP_KEY`, `WEIBO_APP_SECRET`, and `WEIBO_REFRESH_TOKEN` for token refresh (all require a manually approved Weibo open-platform app with write scope)
 - `REDDIT_USER_AGENT` (a descriptive, stable API user agent)
@@ -79,6 +79,18 @@ DRY_RUN=true POST_MODE=thread PLATFORM=twitter,bluesky,mastodon,devto python -m 
 ```
 
 Set `TARGET_POST_ID` to preview one article regardless of `posted.json` history or cooldowns. A targeted dry run reports normal category/mode routing eligibility, then renders every requested platform, including those normal routing would skip. It never publishes or writes `posted.json`. Use `POST_MODE=thread` and `USE_LLM=true TEST_API=true` to exercise the shared production copy path; a local Ollama provider can replace DeepSeek for review. The output includes the exact tagged thread and status text, article syndication body, and Instagram caption and slide copy. Instagram also renders local JPEGs but never uploads them. In GitHub Actions, `FAIL_ON_PUBLISH_ERROR=true` makes a partial failure visible and retryable while retaining state for channels that already succeeded.
+
+## Manual LinkedIn draft
+
+LinkedIn stays outside `DEFAULT_PLATFORMS`. For a selected article, generate one draft to review and paste manually:
+
+```sh
+DRY_RUN=true TARGET_POST_ID=2020_06_17_data/index.md PLATFORM=linkedin \
+  USE_LLM=true SOCIAL_LLM_PROVIDER=ollama OLLAMA_MODEL=<installed-model> \
+  python -m scripts.automation.auto_post
+```
+
+The command reads the full article from the existing search index, makes one model call, validates the copy, and prints `LINKEDIN POST` followed by the complete post and its LinkedIn-tagged leonlins.com URL. It does not need `POST_MODE` or `TEST_API`. It does not publish, call the LinkedIn API, or write `posted.json`. Review source fidelity and wording before pasting into LinkedIn. The body link is intentional: click-through to the owned article takes priority over possible feed-reach effects. DeepSeek remains available by setting `SOCIAL_LLM_PROVIDER=deepseek` and its existing key.
 
 ## Local model preview (Ollama)
 

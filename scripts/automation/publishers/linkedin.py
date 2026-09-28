@@ -1,9 +1,8 @@
 """LinkedIn Posts API adapter for text-only personal or organization posts.
 
-LinkedIn deprioritizes posts carrying external links (roughly 60% less reach),
-so the canonical article URL never goes in the commentary: the post carries the
-native argument and the link follows as the first comment, where readers who
-want the full piece still find it without taxing the post's distribution.
+This dormant API adapter retains its existing first-comment link behavior for
+future activation. The manual draft workflow is separate and includes the URL
+directly in the text for copy and paste.
 """
 from __future__ import annotations
 
@@ -54,7 +53,7 @@ def _create_post(token: str, author: str, text: str) -> str:
 
 
 def _create_first_comment(token: str, author: str, post_urn: str, link_url: str) -> None:
-    """Drop the canonical link as the first comment, where it costs no reach.
+    """Drop the canonical link as the first comment.
 
     A failed comment never fails the publish: the post is already live and
     retrying would duplicate it, so the miss is reported loudly in the logs

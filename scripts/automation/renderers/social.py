@@ -22,10 +22,9 @@ def render_thread(post: SocialPost) -> list[str]:
 def render_linkedin(post: SocialPost) -> str:
     """Render the native LinkedIn post body: the argument only, never the link.
 
-    External links in the body cost roughly 60% of reach, so the canonical URL
-    travels in the publisher's first comment instead (`post_to_linkedin`
-    accepts it as `link_url`). Keeping the link out of the commentary is what
-    preserves the post's distribution.
+    The dormant API publisher places the URL in a first comment. Targeted
+    manual drafts use their own full-article generation path with an in-body
+    URL.
     """
     text = f"{post.hook}\n\n{post.body}".strip()
     if len(text) > 3000:
