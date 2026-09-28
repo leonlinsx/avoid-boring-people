@@ -25,6 +25,9 @@ const {
   relPrev,
   relNext,
   noindex = false,
+  hreflangs = [],
+  ogLocale = "en_US",
+  ogLocaleAlternates = [],
 } = Astro.props as {
   title: string;
   description?: string;
@@ -39,6 +42,10 @@ const {
   relPrev?: string;
   relNext?: string;
   noindex?: boolean;
+  /** Reciprocal hreflang links for the article versions that exist. */
+  hreflangs?: Array<{ hrefLang: string; href: string }>;
+  ogLocale?: string;
+  ogLocaleAlternates?: string[];
 };
 
 const resolveAbsoluteURL = (maybeRelative?: string) => {
@@ -221,6 +228,9 @@ const ogImageAlt = `Preview image for ${title}`;
 {canonicalURL && <link rel="canonical" href={canonicalURL} />}
 {prevURL && <link rel="prev" href={prevURL} />}
 {nextURL && <link rel="next" href={nextURL} />}
+{hreflangs.map((link) => (
+  <link rel="alternate" hreflang={link.hrefLang} href={link.href} />
+))}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
@@ -236,7 +246,10 @@ const ogImageAlt = `Preview image for ${title}`;
 
 <!-- Open Graph -->
 <meta property="og:type" content={ogType} />
-<meta property="og:locale" content="en_US" />
+<meta property="og:locale" content={ogLocale} />
+{ogLocaleAlternates.map((alternate) => (
+  <meta property="og:locale:alternate" content={alternate} />
+))}
 {canonicalURL && <meta property="og:url" content={canonicalURL} />}
 <meta property="og:title" content={title} />
 <meta property="og:description" content={metaDescription} />

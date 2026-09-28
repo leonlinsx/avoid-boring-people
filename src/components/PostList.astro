@@ -6,13 +6,15 @@ import type { BlogPost } from '../utils/text';
 interface Props {
   posts: BlogPost[]; // ✅ expect enriched posts
   variant?: 'list' | 'grid' | 'compact';
+  /** Locale URL prefix forwarded to cards for translated related posts. */
+  hrefPrefix?: string;
 }
 
-const { posts = [], variant = 'list' } = Astro.props;
+const { posts = [], variant = 'list', hrefPrefix = '' } = Astro.props;
 ---
 
 <section class:list={['writing-post-list', variant]}>
-  {posts.map((post) => <PostCard post={post} />)}
+  {posts.map((post) => <PostCard post={post} hrefPrefix={hrefPrefix} />)}
 </section>
 
 <style>

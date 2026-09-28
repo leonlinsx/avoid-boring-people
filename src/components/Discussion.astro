@@ -6,13 +6,17 @@ import {
   discussionPrompt,
 } from '../lib/comments/domain.ts';
 import { turnstileSiteKey, warnIfSiteKeyMissing } from '../lib/turnstile.ts';
+import { discussionChrome } from '../utils/locale-chrome.ts';
 
 type Props = {
   slug: string;
   prompt?: string;
+  /** BCP47 locale code for the visible UI strings; the thread stays English. */
+  locale?: string;
 };
 
-const { slug, prompt } = Astro.props;
+const { slug, prompt, locale } = Astro.props;
+const chrome = discussionChrome(locale);
 
 // The section wrapper lives here so the article stays static. The heading,
 // prompt, form, and private-email path come from the island's own server
@@ -38,7 +42,8 @@ const emailHref =
     maxNameLength={MAX_AUTHOR_NAME_LENGTH}
     maxBodyLength={MAX_COMMENT_BODY_LENGTH}
     emailHref={emailHref}
-    emailLabel="Email Leon"
+    emailLabel={chrome.emailLabel}
+    chrome={chrome}
   />
 </section>
 

@@ -1367,6 +1367,9 @@ export function testCommentIntegrationBoundaries() {
   // The island never trusts client-side input for the privileged field, and
   // posts exactly the fields the API expects.
   const island = read('src/components/DiscussionIsland.tsx');
+  // Visible UI strings live in the locale chrome module; the island only
+  // references them, so localization cannot change structure or behavior.
+  const chrome = read('src/utils/locale-chrome.ts');
   assert.ok(
     !island.includes('is_author'),
     'the island cannot set the author field',
@@ -1384,27 +1387,41 @@ export function testCommentIntegrationBoundaries() {
   // caller's loading behaviour cannot drift out of the other.
   assert.match(island, /loadTurnstileScript\(renderWidget\)/);
   assert.match(island, /website: honeypot/);
-  assert.match(island, /No comments yet\. Add the first one\./);
+  assert.match(chrome, /emptyState: 'No comments yet\. Add the first one\.'/);
+  assert.match(
+    island,
+    /loadState === 'ready'[\s\S]{0,120}\{chrome\.emptyState\}/,
+  );
   // A list that failed to load says how to retry. A failed post must not, because
   // a refresh would discard the draft, so only the no-site-key placeholder keeps
   // the configuration-error wording.
   assert.match(
-    island,
-    /'Comments could not be loaded\. Refresh the page to try again\.'/,
-  );
-  assert.match(island, /loadState === 'error'[\s\S]{0,60}LOAD_FAILED/);
-  assert.equal(
-    island.match(/\{UNAVAILABLE\}/g)?.length,
-    1,
-    'the no-site-key placeholder is the only remaining use of the unavailable message',
+    chrome,
+    /loadFailed: 'Comments could not be loaded\. Refresh the page to try again\.'/,
   );
   assert.match(
     island,
-    /Discussion\{total > 0 \? ` · \$\{total\}` : ''\}/,
+    /loadState === 'error'[\s\S]{0,80}\{chrome\.loadFailed\}/,
+  );
+  assert.equal(
+    island.match(/UNAVAILABLE/g)?.length,
+    2,
+    'the backend unavailable wording backs only describeFailure besides its declaration',
+  );
+  assert.match(
+    island,
+    /\{chrome\.unavailable\}/,
+    'the no-site-key placeholder reads the localized unavailable message',
+  );
+  assert.match(
+    island,
+    /total > 0 \? ` · \$\{total\}` : ''/,
     'the count appears only once comments exist',
   );
+  assert.match(island, /\{chrome\.heading\}/);
   assert.match(island, /role="status" aria-live="polite"/);
-  assert.match(island, /prefer a private conversation/i);
+  assert.match(chrome, /privatePrefix: 'Prefer a private conversation\?'/);
+  assert.match(island, /\{chrome\.privatePrefix\}/);
   assert.ok(
     !/\b0 comments\b/i.test(island),
     'an empty discussion never renders "0 comments"',
@@ -1414,11 +1431,14 @@ export function testCommentIntegrationBoundaries() {
   // invitation, display name, body, post, private link.
   assert.match(island, /class="discussion-prompt"/);
   assert.match(
-    island,
+    chrome,
     /Thoughtful disagreements, additional evidence, and different ways of looking at the problem are welcome\./,
   );
-  assert.match(island, /<label for="discussion-name">Display name<\/label>/);
-  assert.match(island, /placeholder="Add to the discussion…"/);
+  assert.match(island, /\{chrome\.invitation\}/);
+  assert.match(chrome, /nameLabel: 'Display name',/);
+  assert.match(island, /\{chrome\.nameLabel\}/);
+  assert.match(chrome, /bodyPlaceholder: 'Add to the discussion…',/);
+  assert.match(island, /\{chrome\.bodyPlaceholder\}/);
 
   // Every form posts, so a browser that submits without JavaScript can never put
   // comment text in the URL, the history, or a server access log.

@@ -17,12 +17,16 @@ const {
   relNext,
   includePerson,
   noindex,
+  lang,
+  hreflangs,
+  ogLocale,
+  ogLocaleAlternates,
 } = Astro.props;
 const GA_ID = import.meta.env.PUBLIC_GA_ID;
 const isProd = import.meta.env.PROD;
 ---
 
-<html lang="en">
+<html lang={lang ?? 'en'}>
   <head>
     <BaseHead
       title={title}
@@ -38,6 +42,9 @@ const isProd = import.meta.env.PROD;
       relNext={relNext}
       includePerson={includePerson}
       noindex={noindex}
+      hreflangs={hreflangs}
+      ogLocale={ogLocale}
+      ogLocaleAlternates={ogLocaleAlternates}
     />
 
     {
