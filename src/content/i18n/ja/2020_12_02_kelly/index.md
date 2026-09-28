@@ -103,7 +103,7 @@ sourceHash: '360b60f1699a1f7679aa8e710a2d62b9ff39faaf7b217118a06c5a13e2b226cb'
 ### ケリー基準の詳細はこちら:
 
 1. [ケリー基準:クリスチャン・アイチンガー著『マルチプル・インベストメント・オポチュニス』](https://greek0.net/blog/2018/04/17/kelly_criterion2/年)
-2. [ケリー・クライテリオン:アロン・ボックマン著『You Don't Know the half of It』](4年)(4https://blogs.cfainstitute.org/investor/2018/06/14/the-kelly-criterion-you-dont-know-the-half-of-it/年)
+2. [ケリー・クライテリオン:アロン・ボックマン著『You Don't Know the half of It』](https://blogs.cfainstitute.org/investor/2018/06/14/the-kelly-criterion-you-dont-know-the-half-of-it/)
 3. [Pythonリスクマネジメント:ケリー基準 レスター・リョン著](https://towardsdatascience.com/python-risk-management-kelly-criterion-526e8fb6d6fd年)
 4. [アンドレア・カルタとクラウディオ・コンヴェルサーノによるケリー基準の実践的実装](https://www.frontiersin.org/articles/10.3389/fams.2020.577050/full年)
 5. [AngelListによるベンチャーキャピタルにおけるべき法則リターンに関するAngelList Dataの見解](https://angel.co/blog/what-angellist-data-says-about-power-law-returns-in-venture-capital)
