@@ -105,6 +105,14 @@
         "model": "deepseek/deepseek-flash",
         "remote_id": "18148739068541231",
         "remote_url": "https://www.threads.com/@leon.lin.s/post/DdmThHXlIgL"
+      },
+      "tumblr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-09-29T18:52:02Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "829117350332743680",
+        "remote_url": "https://avoidboringpeople/post/829117350332743680"
       }
     },
     "2017_07_24_ib/index.md": {
