@@ -25,6 +25,21 @@
       "surfaced_at": "2026-09-22T12:09:36.747652+00:00",
       "thread_title": "Show HN: Ifso.io \u2013 Personal finance simulator with no sign up required",
       "why_now": "The author is actively discussing a Monte Carlo-based personal finance simulator and its design tradeoffs, so a comment about what Monte Carlo output does and does not represent is timely and on-topic."
+    },
+    "https://news.ycombinator.com/item?id=49877752": {
+      "acted_at": null,
+      "content_id": "2019_04_18_investing/index.md",
+      "content_title": "Investing and information",
+      "content_url": "https://leonlins.com/writing/investing/",
+      "discovered_at": "2026-09-30T02:14:51.914757+00:00",
+      "draft": "The premise here is that more connected context makes an agent's answers better. That's worth testing rather than assuming. There's a body of judgment research (Tsai, Klayman & Hastie 2008) showing that as people receive more information, their confidence rises but the accuracy of their conclusions doesn't move much. The usual explanations are insufficient correction of prior beliefs and a failure to distinguish diagnostic information from information that merely feels relevant. A personal context layer is close to a worst case for this. Everything in it is correlated with everything else, it's all confirmatory of the life you already believe you're living, and there's no external price or outcome to mark your interpretation wrong. An agent with access to your messages, transactions and location can produce a fluent, well-sourced narrative about your life that is confidently mistaken, and the sourcing makes it harder to argue with, not easier. So the interesting design question isn't coverage, it's what in the system pushes back. What would make an agent say the evidence doesn't support the story you're telling yourself?",
+      "external_url": "https://news.ycombinator.com/item?id=49877752",
+      "outcome": null,
+      "source": "hacker-news",
+      "status": "surfaced",
+      "surfaced_at": "2026-09-30T02:14:51.914757+00:00",
+      "thread_title": "Show HN: Omnesis \u2013 A private knowledge layer for ChatGPT and other agents",
+      "why_now": "The thread is an active Show HN with four replies about a system whose entire value proposition is accumulating and connecting more personal data for agents."
     }
   },
   "version": 1
