@@ -2,10 +2,11 @@ name: Scout
 
 # Lin Scout looks for the few current external conversations where an already
 # published article would be a useful contribution. It is a reporting job: it
-# searches, judges, writes its report into the run summary, and records what it
+# searches, judges, captures its report privately, and records what it
 # surfaced so the same opportunity is never surfaced twice. It never publishes
-# anything, never touches the site build, and its own state file is the only
-# thing it commits. No model key or crashed run can affect leonlins.com.
+# anything, never touches the site build, and keeps live opportunities, drafts,
+# and relationship state in one encrypted Actions artifact. Public logs expose only generic status. No model key or
+# crashed run can affect leonlins.com.
 #
 # The last thing a run does is the Jev shadow experiment, switched on below so it
 # collects observations from real runs. It is an experiment, and reads like one:
@@ -33,7 +34,8 @@ on:
         default: ''
 
 permissions:
-  contents: write
+  contents: read
+  actions: read
 
 concurrency:
   group: scout-state
@@ -46,17 +48,42 @@ jobs:
     # install or blocked request would otherwise hold the state file for a day.
     # The first 30 minutes are the run's own work — every bounded model request
     # (the judgment cap times the client's own timeout and retries), discovery,
-    # and the state commit. The ten after that are the Jev shadow experiment's
-    # tail: it starts only after scout-state.json is written, and it stops itself
+    # and encrypted state persistence. The last ten minutes cover the Jev shadow
+    # experiment tail: it starts only after scout-state.json is written, and it stops itself
     # at its own budget (SHADOW_BUDGET_SECONDS, four minutes) rather than spending
-    # the clock the commit step needs, so a Jev timeout can lengthen a run but
-    # cannot cost it the commit that follows.
+    # the clock the persistence step needs, so a Jev timeout can lengthen a run but
+    # cannot cost it the persistence step that follows.
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           ref: main
           persist-credentials: false
+      - name: Restore encrypted private state
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SCOUT_STATE_PASSPHRASE: ${{ secrets.SCOUT_STATE_PASSPHRASE }}
+          SCOUT_STATE_BOOTSTRAP_B64: ${{ secrets.SCOUT_STATE_BOOTSTRAP_B64 }}
+        run: |
+          if [ -z "${SCOUT_STATE_PASSPHRASE}" ]; then
+            echo "::error::SCOUT_STATE_PASSPHRASE is required"
+            exit 1
+          fi
+          artifact_id="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=scout-private-state&per_page=100" --jq "[.artifacts[] | select(.expired == false)][0].id // empty")"
+          if [ -n "${artifact_id}" ]; then
+            gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" > /tmp/scout-private-state.zip
+            unzip -q /tmp/scout-private-state.zip -d /tmp/scout-private-state
+            gpg --batch --yes --pinentry-mode loopback --passphrase "${SCOUT_STATE_PASSPHRASE}" \
+              --output /tmp/scout-private-state.tar.gz --decrypt /tmp/scout-private-state/scout-private-state.tar.gz.gpg
+            mkdir -p /tmp/scout-restored
+            tar -xzf /tmp/scout-private-state.tar.gz -C /tmp/scout-restored
+            cp /tmp/scout-restored/scout-private/scout-state.json scout-state.json
+          elif [ -n "${SCOUT_STATE_BOOTSTRAP_B64}" ]; then
+            printf "%s" "${SCOUT_STATE_BOOTSTRAP_B64}" | base64 --decode > scout-state.json
+          else
+            echo "::error::No prior private Scout artifact exists; seed SCOUT_STATE_BOOTSTRAP_B64 before the first run"
+            exit 1
+          fi
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
           python-version: '3.12'
@@ -78,10 +105,9 @@ jobs:
       - name: Install the shadow experiment's SDK
         continue-on-error: true
         run: python -m pip install 'typesafe-sdk==0.7.0'
-      # Scout writes its report into the step summary, which is where the author
-      # reads it. A run that fails is a retryable operational failure, so it is
-      # allowed to finish the state commit first and reported at the end, the way
-      # the social workflows do it.
+      # Public-repository Actions logs are public. Capture the full report and
+      # diagnostics to a file that is encrypted with the state; print only generic
+      # status before the encrypted artifact is uploaded.
       - name: Find today's opportunities
         id: scout
         continue-on-error: true
@@ -110,30 +136,40 @@ jobs:
           if [ -n "${SCOUT_QUERIES}" ]; then
             args+=(--queries "${SCOUT_QUERIES}")
           fi
-          python -m scripts.scout run "${args[@]}"
-      # A dry run records nothing, so there is nothing to commit and a run with
-      # no new opportunities leaves the file untouched.
-      - name: Create social-state GitHub App token
-        id: social-state-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        with:
-          client-id: ${{ secrets.SOCIAL_STATE_APP_CLIENT_ID }}
-          private-key: ${{ secrets.SOCIAL_STATE_APP_PRIVATE_KEY }}
-          permission-contents: write
-      - name: Commit scout state
+          set +e
+          GITHUB_STEP_SUMMARY= python -m scripts.scout run "${args[@]}" > scout-report.txt 2>&1
+          scout_exit=$?
+          set -e
+          if [ "${scout_exit}" -eq 0 ]; then
+            echo "Scout completed; the private report is in the encrypted artifact."
+          else
+            echo "::error::Scout failed; diagnostic output is in the encrypted artifact."
+          fi
+          exit "${scout_exit}"
+      - name: Encrypt private Scout state and report
+        if: always()
         env:
-          PUSH_TOKEN: ${{ steps.social-state-token.outputs.token }}
+          SCOUT_STATE_PASSPHRASE: ${{ secrets.SCOUT_STATE_PASSPHRASE }}
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
-          git add scout-state.json
-          git diff --cached --quiet || git commit -m 'chore: update scout-state.json [skip ci]'
-          git pull --rebase origin main
-          if ! git push origin main; then
-            echo '::error::GitHub App token could not update protected main; verify the GitHub App installation, Contents write permission, and ruleset bypass permission for the GitHub App'
+          if [ -z "${SCOUT_STATE_PASSPHRASE}" ] || [ ! -f scout-state.json ]; then
+            echo "::error::Private Scout state cannot be persisted"
             exit 1
           fi
+          mkdir -p /tmp/scout-private
+          cp scout-state.json /tmp/scout-private/
+          if [ -f scout-report.txt ]; then cp scout-report.txt /tmp/scout-private/; fi
+          if [ -f scout-shadow.jsonl ]; then cp scout-shadow.jsonl /tmp/scout-private/; fi
+          tar -czf /tmp/scout-private-state.tar.gz -C /tmp scout-private
+          gpg --batch --yes --pinentry-mode loopback --passphrase "${SCOUT_STATE_PASSPHRASE}" \
+            --symmetric --cipher-algo AES256 --output /tmp/scout-private-state.tar.gz.gpg /tmp/scout-private-state.tar.gz
+      - name: Upload encrypted private Scout state
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: scout-private-state
+          path: /tmp/scout-private-state.tar.gz.gpg
+          if-no-files-found: error
+          retention-days: 90
       - name: Report scout failure
         if: steps.scout.outcome == 'failure'
         run: exit 1

@@ -28,7 +28,6 @@ The repo holds six systems:
    sends without a local human-confirmed CLI action. First-party attribution and
    a read-only analytics report measure acquisition, growth, and deliverability
    from the owned tables. Details:
-   [docs/newsletter-status.md](docs/newsletter-status.md),
    [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md),
    [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md),
    [docs/newsletter-analytics.md](docs/newsletter-analytics.md).
@@ -45,8 +44,8 @@ The repo holds six systems:
 6. **Lin Scout** — `scripts/scout/`, an internal discovery tool that finds the
    few current external conversations (Hacker News, Bluesky) where an existing
    article would be a useful contribution, and drafts the reply. It runs daily
-   in its own workflow, never publishes anything, and keeps its only state in
-   `scout-state.json`. Details: [docs/scout.md](docs/scout.md).
+   in its own workflow, never publishes anything, and keeps live reports and state out of
+   public git in an encrypted Actions artifact. Details: [docs/scout.md](docs/scout.md).
 
 ## Project structure
 
@@ -62,7 +61,6 @@ The repo holds six systems:
 ├── docs/                  # runbooks, evaluations, per-system documentation
 ├── tests/                 # Python distribution/newsletter suites + TS runner
 ├── posted.json            # per-article, per-platform publish ledger
-├── scout-state.json       # Lin Scout's record of the conversations it surfaced
 └── engagement.json        # public like/repost/reply counts ledger
 ```
 
@@ -151,18 +149,17 @@ Vercel deploys never send email or social posts.
   and it never creates a Person, scores a sender, subscribes an address, or
   becomes a relationship record on its own.
 - Lin Scout reports and never publishes: it has no posting path, no database,
-  and no coupling to the site build, and it never surfaces the same conversation
-  twice (`scout-state.json` records every URL it has shown, in any status).
+  and no coupling to the site build. Its gitignored `scout-state.json` is restored from an
+  encrypted workflow artifact and records every URL it has shown, in any status, so it never
+  surfaces the same conversation twice.
 
 ## Docs index
 
 | Doc | What it is |
 | --- | --- |
 | [docs/social-distribution.md](docs/social-distribution.md) | Autopost design: copy engine, per-channel formats, link placement, token rotation, local review |
-| [docs/newsletter-status.md](docs/newsletter-status.md) | Migration handoff record — current phase, gates, and what is approved |
 | [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md) | Owned-newsletter design, phased gates, data/consent rules |
 | [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md) | SES/SNS/Vercel setup and the local production-send workflow |
-| [docs/newsletter-sns-diagnostics.md](docs/newsletter-sns-diagnostics.md) | Phase 3 transport diagnostics record |
 | [docs/newsletter-analytics.md](docs/newsletter-analytics.md) | First-party attribution model, metric definitions, and the local report CLI |
 | [docs/discussion.md](docs/discussion.md) | First-party article discussion: data model, identity, abuse controls, API, moderation CLI |
 | [docs/contact.md](docs/contact.md) | Contact notes: submission flow, notification email, schema, Lin Check handoff contract |

@@ -7,7 +7,7 @@
 Where the truth lives:
 
 - `README.md` — system map, project structure, and the full command index.
-- `docs/` — `newsletter-aws-runbook.md`, `newsletter-status.md`, `newsletter-analytics.md`, `newsletter-migration-plan.md`, `newsletter-sns-diagnostics.md`, `discussion.md`, `contact.md`, `scout.md`, `social-distribution.md`, and `template.md` (article frontmatter).
+- `docs/` — `newsletter-aws-runbook.md`, `newsletter-analytics.md`, `newsletter-migration-plan.md`, `discussion.md`, `contact.md`, `scout.md`, `social-distribution.md`, and `template.md` (article frontmatter).
 
 Priorities: reliable publishing and unchanged site behavior, subscriber consent and sending reputation, no duplicate or accidental production sends, a simple author workflow, portable and low-cost infrastructure, and preserved site performance and SEO.
 

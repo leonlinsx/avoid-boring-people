@@ -51,7 +51,7 @@ Before infrastructure work, confirm the DNS provider and record authority; exist
 
 ### Phase 0 — contract and audit
 
-Create `AGENTS.md`, this plan, and `docs/newsletter-status.md`; inspect repository paths, commands, content/assets, and deployment shape. No production behavior, AWS, DNS, database, or email changes. Stop at the external-input gate.
+Create `AGENTS.md` and this plan; keep the live phase handoff outside public git; inspect repository paths, commands, content/assets, and deployment shape. No production behavior, AWS, DNS, database, or email changes. Stop at the external-input gate.
 
 ### Phase 1 — subscriber ownership
 
