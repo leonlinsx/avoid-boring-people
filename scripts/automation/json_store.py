@@ -1,4 +1,4 @@
-"""Atomic, deterministic JSON documents for the committed state files.
+"""Atomic, deterministic JSON documents for automation state files.
 
 Distribution state (`posted.json`) and Scout state (`scout-state.json`) are small
 documents written by scheduled jobs that can be interrupted at any moment. Both

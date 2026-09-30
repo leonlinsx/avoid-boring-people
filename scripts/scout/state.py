@@ -1,7 +1,7 @@
 """Scout's memory: enough to never suggest the same conversation twice.
 
-One small committed JSON document, written the same way the distribution state is
-and for the same reason: a scheduled run can be killed mid-write. Scout keeps no
+One small gitignored JSON document, written atomically for the same reason as
+the distribution state: a scheduled run can be killed mid-write. Scout keeps no
 database, because the only questions it has to answer are "has this conversation
 been surfaced before?" and "did anything come of it?".
 """

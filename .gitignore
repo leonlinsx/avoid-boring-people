@@ -23,10 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Environment
-.env
-.env.local
-.env.*.local
+# Environment (deny every variant; the example file is intentionally public)
+.env*
+!.env.example
 /.agents/
 /skills-lock.json
 /newsletter-preview.html
@@ -65,3 +64,10 @@ __pycache__/
 .tmp/
 # Local Jev shadow-evaluation records for Scout (experiment data, never committed)
 /scout-shadow.jsonl
+# Lin Scout live opportunity, draft, relationship, and report state
+/scout-state.json
+/scout-report.txt
+# Point-in-time operational/security records are local, not public architecture
+/SECURITY-REVIEW*.md
+/docs/newsletter-status.md
+/docs/newsletter-sns-diagnostics.md

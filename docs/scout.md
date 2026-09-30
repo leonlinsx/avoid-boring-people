@@ -6,9 +6,9 @@ an article that already exists in the archive would be a genuinely useful
 contribution, and it drafts the reply the author could post by hand.
 
 It is a reporting tool, not a publishing tool. It runs in a scheduled GitHub
-Action, prints its report into the run summary, records what it surfaced so the
-same conversation is never surfaced twice, and stops. Nothing it does touches the
-website build, the deploy, or any subscriber or social credential beyond the two
+Action, captures its report and state in one encrypted private artifact,
+records what it surfaced so the same conversation is never surfaced twice, and
+stops. Nothing it does touches the website build, the deploy, or any subscriber or social credential beyond the two
 searches it makes.
 
 Scout exists to make high-quality distribution cheap. It is not a growth tool and
@@ -26,9 +26,9 @@ are stated before the mechanics.
   posts by hand or not at all.
 - It does not run as a service. One bounded invocation per day, no daemon, no
   worker, no queue, no event stream, no real-time polling.
-- It adds no infrastructure: no database, no vector store, no embeddings, no
-  third-party analytics, no dashboard, no new repository. State is one committed
-  JSON file.
+- It adds no database, vector store, embeddings, analytics, dashboard, or new
+  repository. Runtime state stays one JSON file, encrypted into a GitHub Actions
+  artifact and ignored by git.
 - It does not re-index the archive. The article inventory is the same
   `search-index.json` the distribution job already reads, and the judgment call
   reuses the existing summarizer's provider plumbing (see
@@ -69,9 +69,9 @@ are stated before the mechanics.
    candidate, capped at `SCOUT_MAX_JUDGMENTS` (8), returning a verdict and, for a
    contribution, a draft.
 7. **Report** (`scripts/scout/report.py`) — the scan summary, the STRONG
-   opportunities (at most `SCOUT_MAX_OPPORTUNITIES`, 5), and then every candidate
-   the run declined with the reason it declined. Printed to the log and appended
-   to `GITHUB_STEP_SUMMARY`.
+   opportunities (at most `SCOUT_MAX_OPPORTUNITIES`, 5), and every declined
+   candidate with its reason. Local runs print it normally; the public scheduled
+   workflow captures it to `scout-report.txt` and encrypts it before upload.
 8. **State** (`scripts/scout/state.py`) — a normal run records what it surfaced
    and expires stale staged opportunities. A dry run writes nothing.
 9. **Shadow (optional, last)** (`scripts/scout/jev.py`) — when switched on, the
@@ -214,16 +214,16 @@ The declined list is part of the product. It is what makes the tool's precision
 inspectable instead of a mystery, and a candidate that is repeatedly rejected is
 evidence the thresholds need changing rather than a reason to loosen the gates.
 
-The same text is written to `$GITHUB_STEP_SUMMARY`, which GitHub renders as
-Markdown, so model-written explanation lines are flattened to plain prose before
-they are shown: no link, image, emphasis, or code span arrives from the model
-into the page the author reads.
+Local runs print the same text to the terminal. The scheduled workflow
+deliberately disables `GITHUB_STEP_SUMMARY` and redirects stdout and stderr into
+the encrypted private bundle, because logs and summaries for a public repository are public.
 
 ## State
 
-`scout-state.json`, committed at the repository root, written atomically through
-`scripts/automation/json_store.py` — the same discipline as `posted.json`,
-because a scheduled run can be killed mid-write:
+`scout-state.json` is a gitignored repository-root runtime file, written
+atomically through `scripts/automation/json_store.py` because a scheduled run
+can be killed mid-write. The scheduled job restores it from, and saves it to,
+an AES-256 encrypted Actions artifact:
 
 ```json
 {
@@ -334,11 +334,10 @@ is still untrusted input, and each question says so.
 
 ### Storage
 
-`scout-shadow.jsonl`, one JSON object per line, appended at the repository root
-next to the state file but ignored by `.gitignore` and never committed — so a
-scheduled run's records exist only in that run's log, and `git` can never pick
-them up. Append-only per record means a killed run loses at most a line; an
-unreadable line is skipped and counted rather than trusted, including one that is
+`scout-shadow.jsonl`, one JSON object per line, is appended at the repository root
+next to the state file and ignored by `.gitignore`. Scheduled runs include it
+only inside the encrypted private artifact; `git` and public workflow logs never receive its contents. Append-only per record means a
+killed run loses at most a line; an unreadable line is skipped and counted rather than trusted, including one that is
 not valid UTF-8 at all. A dry run writes no records.
 
 ```json
@@ -471,53 +470,50 @@ accepted together with `--dry-run` for the same reason.
 
 ## Scheduling and observability
 
-`.github/workflows/scout.yml` runs the CLI daily at 07:00 UTC (ahead of the daily
-token probe and the social cycles) and on manual dispatch, with an optional
-`dry_run` input. It installs the same hash-pinned Python requirements as the
-distribution jobs, runs the CLI with `DEEPSEEK_API_KEY`, `BLUESKY_HANDLE`, and
-`BLUESKY_PASSWORD` (plus the optional shadow experiment's two variables, below)
-in its environment, commits `scout-state.json` when it changed, and then fails the
-step if the run failed. That ordering mirrors the social workflows: the state
-commit happens first, and a failed run still turns red so GitHub's own
-notification reaches the author. Dispatch inputs are read from the environment
-rather than interpolated into the step's shell, so a typed query stays data.
+`.github/workflows/scout.yml` runs daily at 07:00 UTC and on manual dispatch.
+The repository is public, so the workflow never writes opportunities, drafts,
+relationship state, shadow records, source diagnostics, or model output to its
+logs or step summary. It redirects the CLI output to `scout-report.txt`, packages
+that report with `scout-state.json` and any `scout-shadow.jsonl`, encrypts the
+bundle with GnuPG AES-256, and uploads only the ciphertext as the
+`scout-private-state` artifact with 90-day retention.
 
-There is no monitoring service and no alerting integration. The report lands in
-the run's step summary, and an unconfigured model, a run whose sources all
-failed, and a run whose reachable sources returned nothing all fail loudly
-instead of quietly reporting nothing.
+At the start of each run the workflow downloads the newest unexpired artifact,
+decrypts it with the `SCOUT_STATE_PASSPHRASE` repository secret, and restores
+`scout-state.json`. The job refreshes the artifact on every scheduled run, even
+when Scout has no new opportunity, so the daily cadence keeps the canonical
+private state inside the retention window. Actions cache is not used. No database,
+Redis instance, private repository, or generalized state service is involved.
 
-The scheduled workflow also collects the Jev shadow observations. It installs
-`typesafe-sdk` into the same interpreter the run uses — in its own step, still
-not in the pinned requirements — and sets `SCOUT_JEV_SHADOW=1` plus
-`TYPESAFE_API_KEY` from the repository secret of that name. That install step is
-`continue-on-error`, because an experiment must not be able to cost the day's
-report: without it a PyPI hiccup or a yanked version would fail the job before
-the run started, and with it the CLI simply skips the shadow the way it does on
-any machine where the package is unavailable. Three more things keep the
-experiment from changing what the job is: the key is passed to the SDK as an
-environment variable and written nowhere, so it reaches neither the log nor the
-state file nor an artifact; the CLI calls the experiment only after
-`scout-state.json` is written, so a slow or failed evaluation cannot keep the
-state commit from running; and the SDK is not part of the pinned requirements, so
-removing the experiment is deleting that install step and the two variables.
-Scout's own model and provider configuration is untouched: `DEEPSEEK_API_KEY` is
-still the only thing the judgment calls use.
+The first run after this migration needs two repository secrets:
 
-What the experiment did in a scheduled run is one line in the step summary —
-`🔬 Jev shadow: N evaluated, N failed, N not attempted` — alongside the per-candidate
-`🔬 scout_jev_shadow` lines in the log. The record file itself is gitignored and
-never uploaded, so those two are what the run leaves behind.
+1. Generate and store a strong `SCOUT_STATE_PASSPHRASE`.
+2. Seed `SCOUT_STATE_BOOTSTRAP_B64` with the base64 encoding of the last tracked
+   `scout-state.json`. The workflow uses that seed only when no prior artifact
+   exists. After the first successful artifact upload, delete the bootstrap
+   secret; subsequent runs restore the artifact and fail closed if it is absent.
 
-Without the `TYPESAFE_API_KEY` secret the run stays green: the shadow reports
-`⚠️  scout_jev_shadow_unavailable (TYPESAFE_API_KEY is not set)` and stops there,
-which is what makes the experiment safe to enable before the credential exists and
-safe to leave enabled afterwards.
+A local operator can inspect a downloaded artifact without placing plaintext in
+the repository:
 
-Bluesky app passwords are not scopeable, so Scout logs in with the same
-credential the publisher uses: the job only calls `login` and `search_posts`, but
-a dedicated app password for Scout is what would make revoking or auditing one
-consumer independent of the other.
+```bash
+gpg --batch --output scout-private-state.tar.gz --decrypt scout-private-state.tar.gz.gpg
+tar -xzf scout-private-state.tar.gz
+```
+
+The full private report remains available after a failed Scout invocation because
+encryption and upload use `if: always()`. Public logs contain only generic
+completion/failure text, and the final step still turns the job red when the Scout
+command failed. A missing passphrase, missing prior artifact after bootstrap, or
+decryption failure stops the run rather than silently starting with empty memory.
+There is no separate monitoring service; the workflow failure notification is
+the alert.
+
+The optional Jev shadow experiment retains the same authority boundary. Its SDK
+is installed in a best-effort step, it runs only after Scout has written state,
+and its output is captured into the encrypted report/bundle instead of public
+logs. `TYPESAFE_API_KEY` still comes directly from the repository secret and is
+scrubbed before persistence.
 
 ## Relationship with evergreen distribution
 
