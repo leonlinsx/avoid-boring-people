@@ -13,7 +13,7 @@ export interface LocaleDef {
   code: 'ja' | 'ko' | 'es' | 'pt-BR' | 'fr' | 'zh-Hans';
   /** Short URL prefix: `/<prefix>/writing/<slug>`. */
   prefix: 'ja' | 'ko' | 'es' | 'pt' | 'fr' | 'zh';
-  /** Azure Translator target language. */
+  /** Google Cloud Translation target language. */
   translatorTarget: string;
   /** Own-language display name (no flags, no icons). */
   label: string;
@@ -67,7 +67,7 @@ export const LOCALES: LocaleDef[] = [
   {
     code: 'zh-Hans',
     prefix: 'zh',
-    translatorTarget: 'zh-Hans',
+    translatorTarget: 'zh-CN',
     label: '中文（简体）',
     ogLocale: 'zh_CN',
     dateLocale: 'zh-CN',

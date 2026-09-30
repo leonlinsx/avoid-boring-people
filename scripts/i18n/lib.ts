@@ -1,6 +1,6 @@
 // Shared helpers for the translation CLI (`translations:translate`) and the
-// informational status command (`translations:status`). Azure Translator (F0)
-// only; no paid services, runtime translation, or new dependencies.
+// informational status command (`translations:status`). Google Cloud
+// Translation NMT only; no runtime translation or fallback provider.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,6 +11,7 @@ import remarkGfm from 'remark-gfm';
 import remarkFootnotes from 'remark-footnotes';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
+import { GoogleAuth } from 'google-auth-library';
 import { computeCleanSlug } from '../../src/utils/slug-helpers.ts';
 import {
   LOCALES,
@@ -28,11 +29,10 @@ export const REPO_ROOT = path.resolve(
 export const BLOG_DIR = path.join(REPO_ROOT, 'src/content/blog');
 export const I18N_DIR = path.join(REPO_ROOT, 'src/content/i18n');
 
-const TRANSLATOR_API_VERSION = '3.0';
 export const MAX_CHUNK_CHARS = 10_000;
 const TRANSLATOR_WINDOW_MS = 60_000;
 
-/** Conservative share of the F0 ~2M chars/hour rate, consumed evenly. */
+/** Conservative local pacing limit, consumed evenly. */
 export const TRANSLATOR_MAX_CHARS_PER_MINUTE = 25_000;
 /** Small bounded number of retries on HTTP 429 before giving up. */
 export const TRANSLATOR_MAX_RETRIES = 5;
@@ -54,7 +54,7 @@ const realClock: ThrottleClock = {
 
 /**
  * Rolling-window pacer for submitted source characters. One instance is
- * shared across every request in a run so the F0 per-minute rate is consumed
+ * shared across every request in a run so the local per-minute budget is consumed
  * evenly instead of arriving in bursts that draw HTTP 429s.
  */
 export class TranslationThrottle {
@@ -112,30 +112,36 @@ function parseRetryAfterMs(value: string | null): number | undefined {
 }
 
 export interface TranslatorCredentials {
-  key: string;
-  region: string;
+  projectId: string;
   endpoint: string;
+  getAccessToken(): Promise<string | null | undefined>;
 }
 
 /** Fail clearly before any file is touched when credentials are missing. */
 export function readTranslatorCredentials(
   env: NodeJS.ProcessEnv = process.env,
 ): TranslatorCredentials {
-  const key = (env.AZURE_TRANSLATOR_KEY ?? '').trim();
-  const region = (env.AZURE_TRANSLATOR_REGION ?? '').trim();
-  if (!key || !region) {
+  const projectId = (
+    env.GOOGLE_CLOUD_PROJECT ??
+    env.GCLOUD_PROJECT ??
+    ''
+  ).trim();
+  if (!projectId) {
     throw new Error(
-      'Azure Translator credentials are unavailable: set AZURE_TRANSLATOR_KEY ' +
-        'and AZURE_TRANSLATOR_REGION (the F0 free tier is enough). No files were modified.',
+      'Google Cloud Translation credentials are unavailable: set GOOGLE_CLOUD_PROJECT and configure local Application Default Credentials. No files were modified.',
     );
   }
-  const endpoint = (env.AZURE_TRANSLATOR_ENDPOINT ?? '')
+  const endpoint = (env.GOOGLE_TRANSLATION_ENDPOINT ?? '')
     .trim()
     .replace(/\/+$/, '');
+  const auth = new GoogleAuth({
+    projectId,
+    scopes: ['https://www.googleapis.com/auth/cloud-translation'],
+  });
   return {
-    key,
-    region,
-    endpoint: endpoint || 'https://api.cognitive.microsofttranslator.com',
+    projectId,
+    endpoint: endpoint || 'https://translation.googleapis.com',
+    getAccessToken: () => auth.getAccessToken(),
   };
 }
 
@@ -352,29 +358,39 @@ export async function translateTexts(
   const chars = pending.reduce((sum, { text }) => sum + text.length, 0);
   if (chars > MAX_CHUNK_CHARS) {
     throw new Error(
-      `Azure Translator request exceeds ${MAX_CHUNK_CHARS} source characters. No files were modified for this article.`,
+      `Google Cloud Translation request exceeds ${MAX_CHUNK_CHARS} source characters. No files were modified for this article.`,
     );
   }
   await throttle.pace(chars);
-  const url =
-    `${credentials.endpoint}/translate?api-version=${TRANSLATOR_API_VERSION}` +
-    `&from=en&to=${encodeURIComponent(target)}&textType=plain`;
-  const body = JSON.stringify(pending.map(({ text }) => ({ Text: text })));
+  const location = `projects/${credentials.projectId}/locations/global`;
+  const url = `${credentials.endpoint}/v3/${location}:translateText`;
+  const body = JSON.stringify({
+    sourceLanguageCode: 'en',
+    targetLanguageCode: target,
+    contents: pending.map(({ text }) => text),
+    mimeType: 'text/plain',
+    model: `${location}/models/general/nmt`,
+  });
   for (let attempt = 0; ; attempt += 1) {
     let response: Response;
     try {
+      const accessToken = await credentials.getAccessToken();
+      if (!accessToken)
+        throw new Error(
+          'Application Default Credentials returned no access token',
+        );
       response = await fetchImpl(url, {
         method: 'POST',
         headers: {
-          'Ocp-Apim-Subscription-Key': credentials.key,
-          'Ocp-Apim-Subscription-Region': credentials.region,
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
+          'x-goog-user-project': credentials.projectId,
         },
         body,
       });
     } catch (error) {
       throw new Error(
-        `Azure Translator request failed (${target}): ${(error as Error).message}. No files were modified for this article.`,
+        `Google Cloud Translation request failed (${target}): ${(error as Error).message}. No files were modified for this article.`,
       );
     }
     if (response.status === 429 && attempt < TRANSLATOR_MAX_RETRIES) {
@@ -392,30 +408,31 @@ export async function translateTexts(
       const detail = (await response.text().catch(() => '')).slice(0, 200);
       if (response.status === 429) {
         throw new Error(
-          `Azure Translator request failed (${target}): HTTP 429${detail ? ` ${detail}` : ''}. ` +
-            `The request was throttled ${TRANSLATOR_MAX_RETRIES} times; the F0 per-minute rate is likely exceeded ` +
-            'rather than the monthly quota — wait a minute and rerun to resume (completed translations are kept). ' +
+          `Google Cloud Translation request failed (${target}): HTTP 429${detail ? ` ${detail}` : ''}. ` +
+            `The request was throttled ${TRANSLATOR_MAX_RETRIES} times; wait a minute and rerun to resume (completed translations are kept). ` +
             'No files were modified for this article.',
         );
       }
       throw new Error(
-        `Azure Translator request failed (${target}): HTTP ${response.status}${detail ? ` ${detail}` : ''}. ` +
-          'The free F0 quota may be exhausted. No files were modified for this article.',
+        `Google Cloud Translation request failed (${target}): HTTP ${response.status}${detail ? ` ${detail}` : ''}. No files were modified for this article.`,
       );
     }
-    const payload = (await response.json()) as Array<{
-      translations?: Array<{ text?: string }>;
-    }>;
-    if (!Array.isArray(payload) || payload.length !== pending.length) {
+    const payload = (await response.json()) as {
+      translations?: Array<{ translatedText?: string }>;
+    };
+    if (
+      !Array.isArray(payload.translations) ||
+      payload.translations.length !== pending.length
+    ) {
       throw new Error(
-        `Azure Translator returned an unexpected response (${target}). No files were modified for this article.`,
+        `Google Cloud Translation returned an unexpected response (${target}). No files were modified for this article.`,
       );
     }
     pending.forEach(({ index }, position) => {
-      const translation = payload[position]?.translations?.[0]?.text;
+      const translation = payload.translations?.[position]?.translatedText;
       if (typeof translation !== 'string') {
         throw new Error(
-          `Azure Translator returned an unexpected response (${target}, item ${position}). No files were modified for this article.`,
+          `Google Cloud Translation returned an unexpected response (${target}, item ${position}). No files were modified for this article.`,
         );
       }
       results[index] = translation;
@@ -485,7 +502,7 @@ function proseSpans(body: string, tree: MarkdownNode): ProseSpan[] {
       const trailing = raw.match(/\s*$/u)?.[0].length ?? 0;
       const core = raw.slice(leading, raw.length - trailing);
       if (!core) return;
-      // A text node is one Azure item unless its core exceeds the request cap.
+      // A text node is one API item unless its core exceeds the request cap.
       let offset = start + leading;
       for (const part of splitIntoChunks(core)) {
         const prefix = part.match(/^\s*/u)?.[0].length ?? 0;
@@ -734,7 +751,7 @@ export function validateMarkdownStructure(
   return { severity: 'pass' };
 }
 
-/** Keep Azure prose literal when placed back into Markdown source. */
+/** Keep translated prose literal when placed back into Markdown source. */
 function escapeMarkdownText(text: string): string {
   // GFM autolinks URL/email-like text even when Markdown punctuation is escaped or entity-encoded.
   // Insert U+2060 only where necessary to preserve the source text-node structure; it may survive
@@ -807,7 +824,7 @@ export async function translateProtectedBody(
       path.join('/tmp', `abp-i18n-rejected-${target}-article.md`);
     fs.writeFileSync(rejectedPath, translatedBody, 'utf-8');
     throw new Error(
-      `Azure Translator changed Markdown structure: ${validation.detail}. Rejected candidate: ${rejectedPath}. No files were modified for this article.`,
+      `Google Cloud Translation changed Markdown structure: ${validation.detail}. Rejected candidate: ${rejectedPath}. No files were modified for this article.`,
     );
   }
   if (validation.severity === 'warning')

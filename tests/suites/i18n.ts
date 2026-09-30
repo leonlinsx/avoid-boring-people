@@ -84,7 +84,7 @@ export function testLocaleDefinitions() {
     );
     assert.ok(
       locale.translatorTarget,
-      `${locale.code} needs an Azure Translator target`,
+      `${locale.code} needs a Google Cloud Translation target`,
     );
   }
   assert.equal(ENGLISH.code, 'en');
@@ -96,6 +96,19 @@ export function testLocaleDefinitions() {
   assert.equal(localeByCode('pt-BR')?.prefix, 'pt');
   assert.equal(localeByCode('zh-Hans')?.prefix, 'zh');
   assert.equal(localeByPrefix('en'), undefined);
+  assert.deepEqual(
+    Object.fromEntries(
+      LOCALES.map((locale) => [locale.code, locale.translatorTarget]),
+    ),
+    {
+      ja: 'ja',
+      ko: 'ko',
+      es: 'es',
+      'pt-BR': 'pt',
+      fr: 'fr',
+      'zh-Hans': 'zh-CN',
+    },
+  );
   assert.equal(localizedPathname('ja', 'kelly'), '/ja/writing/kelly');
   assert.equal(localizedPathname('pt', 'kelly'), '/pt/writing/kelly');
   assert.equal(englishPathname('kelly'), '/writing/kelly');
@@ -388,17 +401,13 @@ export async function testSyntaxAwareMarkdownTranslation() {
   ].join('\n');
   const submitted: string[] = [];
   const translating = (async (_url: unknown, options: { body: string }) => {
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    const items = requestContents(options);
     assert.ok(
-      items.reduce((sum, item) => sum + item.Text.length, 0) <= MAX_CHUNK_CHARS,
+      items.reduce((sum, item) => sum + item.length, 0) <= MAX_CHUNK_CHARS,
     );
-    submitted.push(...items.map((item) => item.Text));
+    submitted.push(...items.map((item) => item));
     return new Response(
-      JSON.stringify(
-        items.map((item) => ({
-          translations: [{ text: item.Text.replaceAll('alpha', '翻訳') }],
-        })),
-      ),
+      googleResponse(items.map((item) => item.replaceAll('alpha', '翻訳'))),
       { headers: { 'content-type': 'application/json' } },
     );
   }) as unknown as typeof fetch;
@@ -448,15 +457,10 @@ export async function testSyntaxAwareMarkdownTranslation() {
   }
 
   const corrupting = (async (_url: unknown, options: { body: string }) => {
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
-    return new Response(
-      JSON.stringify(
-        items.map(() => ({
-          translations: [{ text: 'x' }],
-        })),
-      ),
-      { headers: { 'content-type': 'application/json' } },
-    );
+    const items = requestContents(options);
+    return new Response(googleResponse(items.map(() => 'x')), {
+      headers: { 'content-type': 'application/json' },
+    });
   }) as unknown as typeof fetch;
   const diagnosticDir = fs.mkdtempSync(
     path.join(os.tmpdir(), 'abp-i18n-diagnostic-'),
@@ -503,14 +507,10 @@ export async function testTextNodeMappingAndEmptyResult() {
   ].join('\n');
   const requests: string[][] = [];
   const translating = (async (_url: unknown, options: { body: string }) => {
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
-    requests.push(items.map((item) => item.Text));
+    const items = requestContents(options);
+    requests.push(items.map((item) => item));
     return new Response(
-      JSON.stringify(
-        items.map((item, index) => ({
-          translations: [{ text: `訳${index}:${item.Text}` }],
-        })),
-      ),
+      googleResponse(items.map((item, index) => `訳${index}:${item}`)),
       { headers: { 'content-type': 'application/json' } },
     );
   }) as unknown as typeof fetch;
@@ -539,13 +539,9 @@ export async function testTextNodeMappingAndEmptyResult() {
     let calls = 0;
     const emptyFetch = (async (_url: unknown, options: { body: string }) => {
       calls += 1;
-      const items = JSON.parse(options.body) as Array<{ Text: string }>;
+      const items = requestContents(options);
       return new Response(
-        JSON.stringify(
-          items.map((item) => ({
-            translations: [{ text: item.Text === 'Gamma' ? empty : item.Text }],
-          })),
-        ),
+        googleResponse(items.map((item) => (item === 'Gamma' ? empty : item))),
         { headers: { 'content-type': 'application/json' } },
       );
     }) as unknown as typeof fetch;
@@ -599,12 +595,11 @@ export async function testTranslatedProseEscapesMarkdownSyntax() {
   const parser = unified().use(remarkParse).use(remarkGfm);
   for (const { source, translated } of cases) {
     const translating = (async (_url: unknown, options: { body: string }) => {
-      const items = JSON.parse(options.body) as Array<{ Text: string }>;
+      const items = requestContents(options);
       assert.equal(items.length, 1);
-      return new Response(
-        JSON.stringify([{ translations: [{ text: translated }] }]),
-        { headers: { 'content-type': 'application/json' } },
-      );
+      return new Response(googleResponse([translated]), {
+        headers: { 'content-type': 'application/json' },
+      });
     }) as unknown as typeof fetch;
     const output = await translateProtectedBody(
       source,
@@ -672,20 +667,15 @@ export async function testLongArticleChunksAndAtomicFailure() {
   const translating = (async (_url: unknown, options: { body: string }) => {
     active += 1;
     assert.equal(active, 1, 'body requests must be sequential');
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    const items = requestContents(options);
     assert.ok(
-      items.reduce((sum, item) => sum + item.Text.length, 0) <= MAX_CHUNK_CHARS,
+      items.reduce((sum, item) => sum + item.length, 0) <= MAX_CHUNK_CHARS,
     );
-    submitted.push(...items.map((item) => item.Text));
+    submitted.push(...items.map((item) => item));
     active -= 1;
-    return new Response(
-      JSON.stringify(
-        items.map((item) => ({ translations: [{ text: item.Text }] })),
-      ),
-      {
-        headers: { 'content-type': 'application/json' },
-      },
-    );
+    return new Response(googleResponse(items.map((item) => item)), {
+      headers: { 'content-type': 'application/json' },
+    });
   }) as unknown as typeof fetch;
   const clock = makeVirtualClock();
   const result = await translateProtectedBody(
@@ -720,13 +710,10 @@ export async function testLongArticleChunksAndAtomicFailure() {
   const failing = (async (_url: unknown, options: { body: string }) => {
     calls += 1;
     if (calls === 2) return new Response('failed', { status: 500 });
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
-    return new Response(
-      JSON.stringify(
-        items.map((item) => ({ translations: [{ text: item.Text }] })),
-      ),
-      { headers: { 'content-type': 'application/json' } },
-    );
+    const items = requestContents(options);
+    return new Response(googleResponse(items.map((item) => item)), {
+      headers: { 'content-type': 'application/json' },
+    });
   }) as unknown as typeof fetch;
   await assert.rejects(
     translateProtectedBody(body, 'ja', paceCredentials, failing, {
@@ -772,11 +759,13 @@ export function testFailedChunkDoesNotWriteArticle() {
     writeFile(
       root,
       'fake-fetch.mjs',
-      `let bodyCalls = 0;
+      `import { GoogleAuth } from 'google-auth-library';
+       GoogleAuth.prototype.getAccessToken = async () => 'test-token';
+       let bodyCalls = 0;
        globalThis.fetch = async (_url, options) => {
-         const [{ Text }] = JSON.parse(options.body);
-         if (Text.length > 1000 && ++bodyCalls === 2) return new Response('failed', { status: 500 });
-         return new Response(JSON.stringify([{ translations: [{ text: Text }] }]), {
+         const [text] = JSON.parse(options.body).contents;
+         if (text.length > 1000 && ++bodyCalls === 2) return new Response('failed', { status: 500 });
+         return new Response(JSON.stringify({ translations: [{ translatedText: text }] }), {
            headers: { 'content-type': 'application/json' },
          });
        };`,
@@ -800,8 +789,7 @@ export function testFailedChunkDoesNotWriteArticle() {
         env: {
           ...process.env,
           TS_NODE_PROJECT: path.join(root, 'tsconfig.json'),
-          AZURE_TRANSLATOR_KEY: 'test',
-          AZURE_TRANSLATOR_REGION: 'test',
+          GOOGLE_CLOUD_PROJECT: 'test-project',
         },
       },
     );
@@ -824,11 +812,13 @@ export function testFailedChunkDoesNotWriteArticle() {
     writeFile(
       root,
       'fake-fetch.mjs',
-      `globalThis.fetch = async (_url, options) => {
-         const items = JSON.parse(options.body);
-         return new Response(JSON.stringify(items.map(({ Text }) => ({
-           translations: [{ text: Text === 'Alpha' ? '' : Text }],
-         }))), { headers: { 'content-type': 'application/json' } });
+      `import { GoogleAuth } from 'google-auth-library';
+       GoogleAuth.prototype.getAccessToken = async () => 'test-token';
+       globalThis.fetch = async (_url, options) => {
+         const items = JSON.parse(options.body).contents;
+         return new Response(JSON.stringify({ translations: items.map((text) => ({
+           translatedText: text === 'Alpha' ? '' : text,
+         })) }), { headers: { 'content-type': 'application/json' } });
        };`,
     );
     const emptyRun = spawnSync(
@@ -850,8 +840,7 @@ export function testFailedChunkDoesNotWriteArticle() {
         env: {
           ...process.env,
           TS_NODE_PROJECT: path.join(root, 'tsconfig.json'),
-          AZURE_TRANSLATOR_KEY: 'test',
-          AZURE_TRANSLATOR_REGION: 'test',
+          GOOGLE_CLOUD_PROJECT: 'test-project',
         },
       },
     );
@@ -930,22 +919,72 @@ export function testComposeTranslatedFile() {
 export function testMissingCredentialsFailClearly() {
   assert.throws(
     () => readTranslatorCredentials({} as NodeJS.ProcessEnv),
-    /AZURE_TRANSLATOR_KEY and AZURE_TRANSLATOR_REGION.*No files were modified/,
-  );
-  assert.throws(
-    () =>
-      readTranslatorCredentials({
-        AZURE_TRANSLATOR_KEY: 'key',
-      } as NodeJS.ProcessEnv),
-    /AZURE_TRANSLATOR_REGION/,
+    /GOOGLE_CLOUD_PROJECT.*Application Default Credentials.*No files were modified/,
   );
   const credentials = readTranslatorCredentials({
-    AZURE_TRANSLATOR_KEY: 'key',
-    AZURE_TRANSLATOR_REGION: 'region',
+    GOOGLE_CLOUD_PROJECT: 'test-project',
   } as NodeJS.ProcessEnv);
+  assert.equal(credentials.projectId, 'test-project');
+  assert.equal(credentials.endpoint, 'https://translation.googleapis.com');
+
+  const custom = readTranslatorCredentials({
+    GOOGLE_CLOUD_PROJECT: 'test-project',
+    GOOGLE_TRANSLATION_ENDPOINT: 'https://example.invalid/',
+  } as NodeJS.ProcessEnv);
+  assert.equal(custom.endpoint, 'https://example.invalid');
+}
+
+export async function testGoogleTranslationRequestAndResponse() {
+  let requestedUrl = '';
+  let requestedInit: RequestInit | undefined;
+  const googleFetch = (async (
+    url: string | URL | Request,
+    init?: RequestInit,
+  ) => {
+    requestedUrl = String(url);
+    requestedInit = init;
+    return new Response(googleResponse(['こんにちは', '世界']), {
+      headers: { 'content-type': 'application/json' },
+    });
+  }) as unknown as typeof fetch;
+
+  assert.deepEqual(
+    await translateTexts(
+      ['Hello', '', 'world'],
+      'ja',
+      paceCredentials,
+      googleFetch,
+    ),
+    ['こんにちは', '', '世界'],
+  );
   assert.equal(
-    credentials.endpoint,
-    'https://api.cognitive.microsofttranslator.com',
+    requestedUrl,
+    'https://example.invalid/v3/projects/test-project/locations/global:translateText',
+  );
+  assert.equal(requestedInit?.method, 'POST');
+  assert.equal(
+    new Headers(requestedInit?.headers).get('authorization'),
+    'Bearer test-token',
+  );
+  assert.equal(
+    new Headers(requestedInit?.headers).get('x-goog-user-project'),
+    'test-project',
+  );
+  assert.deepEqual(JSON.parse(String(requestedInit?.body)), {
+    sourceLanguageCode: 'en',
+    targetLanguageCode: 'ja',
+    contents: ['Hello', 'world'],
+    mimeType: 'text/plain',
+    model: 'projects/test-project/locations/global/models/general/nmt',
+  });
+
+  const malformed = (async () =>
+    new Response(JSON.stringify({ translations: [{}] }), {
+      headers: { 'content-type': 'application/json' },
+    })) as unknown as typeof fetch;
+  await assert.rejects(
+    translateTexts(['Hello'], 'ja', paceCredentials, malformed),
+    /unexpected response \(ja, item 0\).*No files were modified/,
   );
 }
 
@@ -953,9 +992,9 @@ export async function testTranslatorFailureModifiesNothing() {
   const failingFetch = (async () =>
     new Response('quota exceeded', { status: 429 })) as unknown as typeof fetch;
   const credentials = {
-    key: 'key',
-    region: 'region',
+    projectId: 'test-project',
     endpoint: 'https://example.invalid',
+    getAccessToken: async () => 'test-token',
   };
   // Virtual sleep: the retry backoff must not really wait in tests.
   const clock = makeVirtualClock();
@@ -988,13 +1027,10 @@ export async function testTranslatorFailureModifiesNothing() {
 
   // A successful call translates chunks and restores protected spans.
   const okFetch = (async (_url: unknown, options: { body: string }) => {
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
-    return new Response(
-      JSON.stringify(
-        items.map((item) => ({ translations: [{ text: `TR:${item.Text}` }] })),
-      ),
-      { headers: { 'content-type': 'application/json' } },
-    );
+    const items = requestContents(options);
+    return new Response(googleResponse(items.map((item) => `TR:${item}`)), {
+      headers: { 'content-type': 'application/json' },
+    });
   }) as unknown as typeof fetch;
   const translated = await translateProtectedBody(
     'Hello [world](https://example.com/x).',
@@ -1458,24 +1494,33 @@ function makeVirtualClock() {
   };
 }
 
+function requestContents(options: { body: string }): string[] {
+  const body = JSON.parse(options.body) as { contents?: unknown };
+  assert.ok(Array.isArray(body.contents));
+  assert.ok(body.contents.every((item) => typeof item === 'string'));
+  return body.contents as string[];
+}
+
+function googleResponse(translations: string[]): string {
+  return JSON.stringify({
+    translations: translations.map((translatedText) => ({ translatedText })),
+  });
+}
+
 function successFetch(prefix: string) {
   return (async (_url: unknown, options: { body: string }) => {
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
+    const items = requestContents(options);
     return new Response(
-      JSON.stringify(
-        items.map((item) => ({
-          translations: [{ text: `${prefix}:${item.Text}` }],
-        })),
-      ),
+      googleResponse(items.map((item) => `${prefix}:${item}`)),
       { headers: { 'content-type': 'application/json' } },
     );
   }) as unknown as typeof fetch;
 }
 
 const paceCredentials = {
-  key: 'key',
-  region: 'region',
+  projectId: 'test-project',
   endpoint: 'https://example.invalid',
+  getAccessToken: async () => 'test-token',
 };
 
 export async function testTranslationPacing() {
@@ -1547,15 +1592,10 @@ export async function testTranslatorRetriesOn429() {
   const flaky = (async (_url: unknown, options: { body: string }) => {
     calls += 1;
     if (calls <= 2) return new Response('slow down', { status: 429 });
-    const items = JSON.parse(options.body) as Array<{ Text: string }>;
-    return new Response(
-      JSON.stringify(
-        items.map((item) => ({
-          translations: [{ text: `TR:${item.Text}` }],
-        })),
-      ),
-      { headers: { 'content-type': 'application/json' } },
-    );
+    const items = requestContents(options);
+    return new Response(googleResponse(items.map((item) => `TR:${item}`)), {
+      headers: { 'content-type': 'application/json' },
+    });
   }) as unknown as typeof fetch;
 
   // The same request is retried rather than terminating immediately.
@@ -1578,10 +1618,9 @@ export async function testTranslatorHonorsRetryAfter() {
         headers: { 'retry-after': '45' },
       });
     }
-    return new Response(
-      JSON.stringify([{ translations: [{ text: 'TR:hello' }] }]),
-      { headers: { 'content-type': 'application/json' } },
-    );
+    return new Response(googleResponse(['TR:hello']), {
+      headers: { 'content-type': 'application/json' },
+    });
   }) as unknown as typeof fetch;
 
   const result = await translateTexts(
@@ -1639,6 +1678,7 @@ export async function runI18nTests() {
   testFailedChunkDoesNotWriteArticle();
   testComposeTranslatedFile();
   testMissingCredentialsFailClearly();
+  await testGoogleTranslationRequestAndResponse();
   await testTranslatorFailureModifiesNothing();
   await testTranslationPacing();
   await testTranslateTextsSharesPacing();
