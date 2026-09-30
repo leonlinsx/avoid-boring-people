@@ -1,4 +1,4 @@
-// One small translation command (Azure Translator F0 only):
+// One small translation command (Google Cloud Translation NMT only):
 // `npm run translations:translate [-- --locale <code|prefix>] [-- --slug <slug>] [-- --force]`
 //
 // - Translates title, description, and Markdown body; URLs, code, images,
@@ -6,10 +6,10 @@
 // - Writes static translated files (committed to Git) plus colocated assets.
 // - Records a deterministic source hash; skips current translations unless
 //   `--force` is passed; translates missing/stale files only.
-// - Paces requests to a conservative share of the F0 rate and retries
+// - Paces requests conservatively and retries
 //   throttled (HTTP 429) requests with backoff before giving up.
-// - Fails clearly without modifying files when Azure credentials are
-//   unavailable or the free quota/API fails. Never runs in builds or CI.
+// - Fails clearly without modifying files when local Google credentials are
+//   unavailable or the API fails. Never runs in builds or CI.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -41,7 +41,7 @@ function printUsage(): void {
   console.log(
     'Usage: npm run translations:translate -- [--locale <code|prefix>] [--slug <slug>] [--force]\n' +
       'Locales: ja, ko, es, pt-BR, fr, zh-Hans (prefixes ja, ko, es, pt, fr, zh).\n' +
-      'Requires AZURE_TRANSLATOR_KEY and AZURE_TRANSLATOR_REGION (F0 free tier).',
+      'Requires GOOGLE_CLOUD_PROJECT and local Application Default Credentials.',
   );
 }
 
@@ -126,8 +126,8 @@ async function main(): Promise<void> {
   // rolling per-minute window.
   const throttle = new TranslationThrottle();
 
-  // Probe the API before writing anything: a bad key or an exhausted free
-  // quota must fail here, not halfway through the corpus.
+  // Probe the API before writing anything: bad credentials or quota must fail
+  // here, not halfway through the corpus.
   const first = plan[0];
   if (!first) return;
   const probeTarget =

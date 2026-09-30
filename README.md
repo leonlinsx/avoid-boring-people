@@ -98,6 +98,8 @@ All commands run from the repo root.
 | Restore a hidden comment | `npm run comments:restore -- <comment-id>` |
 | Delete a comment and its replies | `npm run comments:delete -- <comment-id> --confirm-delete` |
 | Post an author reply | `npm run comments:reply -- --parent <comment-id> --body "..." --confirm-reply` |
+| Translation status | `npm run translations:status` |
+| Translate one article | `npm run translations:translate -- --locale <code> --slug <slug>` (local Google ADC only; see [docs/translations.md](docs/translations.md)) |
 | Scout dry run (no side effects) | `python -m scripts.scout run --dry-run` |
 | Scout run | `python -m scripts.scout run` (needs `DEEPSEEK_API_KEY`; run `--dry-run --no-llm` to inspect discovery without one) |
 | Scout queue | `python -m scripts.scout list`, `python -m scripts.scout dismiss <url>`, `python -m scripts.scout acted <url> --outcome "..."` |
@@ -163,6 +165,7 @@ Vercel deploys never send email or social posts.
 | [docs/newsletter-analytics.md](docs/newsletter-analytics.md) | First-party attribution model, metric definitions, and the local report CLI |
 | [docs/discussion.md](docs/discussion.md) | First-party article discussion: data model, identity, abuse controls, API, moderation CLI |
 | [docs/contact.md](docs/contact.md) | Contact notes: submission flow, notification email, schema, Lin Check handoff contract |
+| [docs/translations.md](docs/translations.md) | Local Google Cloud Translation setup and resumable article CLI |
 | [docs/scout.md](docs/scout.md) | Lin Scout: sources, matching and gates, judgment contract, state, scheduling |
 | [docs/github-action-evaluation.md](docs/github-action-evaluation.md) | Workflow coverage, quality signals, known gaps |
 | [docs/email_digest_evaluation.md](docs/email_digest_evaluation.md) | Summarizer/ranking assessment and opportunities |
