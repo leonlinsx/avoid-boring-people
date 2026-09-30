@@ -21,6 +21,8 @@ import {
 import { contactAlertKinds } from '../../src/lib/contact/alerting.ts';
 import {
   createContactSubmission,
+  createContactSubmissionWithinLimit,
+  MAX_CONTACT_SUBMISSIONS_PER_HOUR,
   markContactLinCheckSynced,
   markContactNotified,
 } from '../../src/lib/contact/store.ts';
@@ -620,13 +622,14 @@ export async function testContactHandlers() {
 
   // Stored first, then notified: the row is the durable record of what someone
   // wrote, and it is written with the validated, normalized values.
-  assert.equal(happy.queries.length, 2);
+  assert.equal(happy.queries.length, 3);
   const insert = soleQuery(happy.queries, /INSERT INTO contact_submissions/);
   assert.deepEqual(insert.values, [
     'Leon Lin',
     'leon@example.com',
     'Hello\nworld',
     '/now',
+    MAX_CONTACT_SUBMISSIONS_PER_HOUR,
   ]);
   assert.deepEqual(notified, [
     {
@@ -935,6 +938,40 @@ export async function testContactHandlers() {
     ['contact_alert', { kind: 'submission_store_failure', errorName: 'Error' }],
   ]);
 
+  // --- the global abuse circuit is open ------------------------------------
+  captured.push(
+    await withCapturedLogs(async () => {
+      let notifiedCount = 0;
+      const db = makeFakeDb(() => []);
+      const response = await postContactNote(
+        CONTACT_NOTE,
+        contactDeps({
+          db: db.db,
+          notify: async () => {
+            notifiedCount += 1;
+          },
+        }),
+      );
+      assert.equal(response.status, 503);
+      assert.equal((await jsonOf(response)).error, 'unavailable');
+      assert.equal(notifiedCount, 0);
+      assert.equal(
+        db.queries.length,
+        2,
+        'only the lock and guarded insert run',
+      );
+      assert.ok(
+        !db.queries.some((query) =>
+          /UPDATE contact_submissions/.test(query.text),
+        ),
+        'an exceeded request has no delivery or handoff bookkeeping',
+      );
+    }),
+  );
+  assert.deepEqual(captured[7], [
+    ['contact_refused', { reason: 'rate_limited' }],
+  ]);
+
   // --- the note that could not be delivered ---------------------------------
   captured.push(
     await withCapturedLogs(async () => {
@@ -957,14 +994,14 @@ export async function testContactHandlers() {
       });
       // The row stays unfinished, so the note is still findable and answerable by
       // hand, and the handoff is not attempted for a note that did not go out.
-      assert.equal(db.queries.length, 1);
+      assert.equal(db.queries.length, 2);
       assert.match(
-        db.queries[0]?.text ?? '',
+        db.queries[1]?.text ?? '',
         /INSERT INTO contact_submissions/,
       );
     }),
   );
-  assert.deepEqual(captured[7], [
+  assert.deepEqual(captured[8], [
     ['contact_alert', { kind: 'notification_failure', errorName: 'Error' }],
   ]);
 
@@ -981,14 +1018,14 @@ export async function testContactHandlers() {
           contactDeps({ db: db.db, notify: undefined }),
         );
         assert.equal(response.status, 503);
-        assert.equal(db.queries.length, 1);
+        assert.equal(db.queries.length, 2);
       }),
     );
   } finally {
     if (originalRegion === undefined) delete process.env.AWS_REGION;
     else process.env.AWS_REGION = originalRegion;
   }
-  assert.deepEqual(captured[8], [
+  assert.deepEqual(captured[9], [
     ['contact_alert', { kind: 'notification_failure', errorName: 'Error' }],
   ]);
 
@@ -1040,7 +1077,7 @@ export async function testContactHandlers() {
       assert.equal(response.status, 200);
     }),
   );
-  assert.deepEqual(captured[9], [
+  assert.deepEqual(captured[10], [
     ['contact_alert', { kind: 'lin_check_failure' }],
   ]);
   // A failed handoff records the delivery and nothing else: the row is
@@ -1056,6 +1093,7 @@ export async function testContactHandlers() {
   captured.push(
     await withCapturedLogs(async () => {
       const db = makeFakeDb((query) => {
+        if (/pg_advisory_xact_lock/.test(query.text)) return [];
         if (/INSERT INTO contact_submissions/.test(query.text))
           return [{ id: CONTACT_ID, created_at: '2026-09-17T10:00:00.000Z' }];
         throw new Error('update failed');
@@ -1067,7 +1105,7 @@ export async function testContactHandlers() {
       assert.equal(response.status, 200);
     }),
   );
-  assert.deepEqual(captured[10], [
+  assert.deepEqual(captured[11], [
     ['contact_alert', { kind: 'delivery_record_failure', errorName: 'Error' }],
   ]);
 
@@ -1125,6 +1163,42 @@ export async function testContactHandlers() {
 }
 
 export async function testContactStoreSql() {
+  const limited = contactDbStub();
+  const accepted = await createContactSubmissionWithinLimit(limited.db, {
+    name: 'Leon Lin',
+    email: 'leon@example.com',
+    message: 'Hello',
+    sourcePage: '/now',
+  });
+  assert.deepEqual(accepted, {
+    id: CONTACT_ID,
+    createdAt: '2026-09-17T10:00:00.000Z',
+  });
+  assert.equal(limited.queries.length, 2);
+  assert.match(limited.queries[0]?.text ?? '', /pg_advisory_xact_lock/);
+  assert.match(
+    limited.queries[1]?.text ?? '',
+    /created_at >= now\(\) - INTERVAL '1 hour'/,
+  );
+  assert.deepEqual(limited.queries[1]?.values, [
+    'Leon Lin',
+    'leon@example.com',
+    'Hello',
+    '/now',
+    MAX_CONTACT_SUBMISSIONS_PER_HOUR,
+  ]);
+
+  const exceeded = makeFakeDb(() => []);
+  assert.equal(
+    await createContactSubmissionWithinLimit(exceeded.db, {
+      name: 'Leon Lin',
+      email: 'leon@example.com',
+      message: 'Hello',
+      sourcePage: '/now',
+    }),
+    null,
+  );
+
   const insert = contactDbStub();
   const stored = await createContactSubmission(insert.db, {
     name: 'Leon Lin',

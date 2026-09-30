@@ -14,7 +14,7 @@ import type { NeonDb } from '../neon.ts';
 import { handOffToLinCheck } from './lin-check.ts';
 import { sendContactNotification, type ContactNotification } from './notify.ts';
 import {
-  createContactSubmission,
+  createContactSubmissionWithinLimit,
   markContactLinCheckSynced,
   markContactNotified,
 } from './store.ts';
@@ -60,7 +60,8 @@ type RefusalReason =
   | 'db_unconfigured'
   | 'turnstile_unconfigured'
   | 'turnstile_unavailable'
-  | 'turnstile_invalid';
+  | 'turnstile_invalid'
+  | 'rate_limited';
 
 // A refusal with no log is indistinguishable from one reader's mistake, so every
 // refusal is recorded. The reason is the only field: no name, address, or
@@ -144,10 +145,12 @@ export async function handleContactNote(
 
   let stored: { id: string; createdAt: string };
   try {
-    stored = await createContactSubmission(deps.db, {
+    const accepted = await createContactSubmissionWithinLimit(deps.db, {
       ...validated.value,
       sourcePage,
     });
+    if (!accepted) return unavailable('rate_limited');
+    stored = accepted;
   } catch (error) {
     contactAlert('submission_store_failure', {
       errorName: error instanceof Error ? error.name : 'unknown',

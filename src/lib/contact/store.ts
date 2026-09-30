@@ -6,6 +6,13 @@ export type StoredContactNote = {
   createdAt: string;
 };
 
+// This is a circuit breaker, not a measure of reader identity. Twenty-five
+// accepted notes in one hour is far above normal inbound while keeping a
+// bypassed Turnstile from creating unbounded writes and notifications.
+export const MAX_CONTACT_SUBMISSIONS_PER_HOUR = 25;
+
+const CONTACT_RATE_LIMIT_LOCK_NAMESPACE = 1668247156;
+
 // The inserted row is the durable record of the note. Delivery happens after it,
 // so a failed notification leaves evidence behind instead of losing what someone
 // wrote.
@@ -29,6 +36,35 @@ export async function createContactSubmission(
   const row = rows[0];
   if (!row) throw new Error('Contact submission was not stored.');
   return { id: row.id, createdAt: toIso(row.created_at) };
+}
+
+// The transaction lock makes the count-and-insert decision global even when
+// several serverless requests arrive together. It carries no reader identity
+// and disappears at commit; the existing submission rows remain the only state.
+export async function createContactSubmissionWithinLimit(
+  db: NeonDb,
+  input: {
+    name: string;
+    email: string;
+    message: string;
+    sourcePage: string;
+  },
+): Promise<StoredContactNote | null> {
+  const [, rows] = (await db.transaction((tx) => [
+    tx`SELECT pg_advisory_xact_lock(${CONTACT_RATE_LIMIT_LOCK_NAMESPACE})`,
+    tx`
+      INSERT INTO contact_submissions (name, email, message, source_page)
+      SELECT ${input.name}, ${input.email}, ${input.message}, ${input.sourcePage}
+      WHERE (
+        SELECT count(*)
+        FROM contact_submissions
+        WHERE created_at >= now() - INTERVAL '1 hour'
+      ) < ${MAX_CONTACT_SUBMISSIONS_PER_HOUR}
+      RETURNING id, created_at`,
+  ])) as [unknown[], Array<{ id: string; created_at: string | Date }>];
+
+  const row = rows[0];
+  return row ? { id: row.id, createdAt: toIso(row.created_at) } : null;
 }
 
 // Neon hands timestamps back as either a `Date` or a string depending on the
