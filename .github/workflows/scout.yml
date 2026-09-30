@@ -113,9 +113,16 @@ jobs:
           python -m scripts.scout run "${args[@]}"
       # A dry run records nothing, so there is nothing to commit and a run with
       # no new opportunities leaves the file untouched.
+      - name: Create social-state GitHub App token
+        id: social-state-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.SOCIAL_STATE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.SOCIAL_STATE_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Commit scout state
         env:
-          PUSH_TOKEN: ${{ github.token }}
+          PUSH_TOKEN: ${{ steps.social-state-token.outputs.token }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
@@ -123,7 +130,10 @@ jobs:
           git add scout-state.json
           git diff --cached --quiet || git commit -m 'chore: update scout-state.json [skip ci]'
           git pull --rebase origin main
-          git push origin main
+          if ! git push origin main; then
+            echo '::error::GitHub App token could not update protected main; verify the GitHub App installation, Contents write permission, and ruleset bypass permission for the GitHub App'
+            exit 1
+          fi
       - name: Report scout failure
         if: steps.scout.outcome == 'failure'
         run: exit 1
