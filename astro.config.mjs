@@ -70,11 +70,14 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [
-      visualizer({
-        filename: 'dist/stats.html',
-        template: 'treemap', // or 'sunburst', 'network'
-      }),
-    ],
+    plugins:
+      process.env.ANALYZE === 'true'
+        ? [
+            visualizer({
+              filename: 'dist/stats.html',
+              template: 'treemap', // or 'sunburst', 'network'
+            }),
+          ]
+        : [],
   },
 });

@@ -36,6 +36,8 @@ export function makeFakeDb(
     queries.push(query);
     return handler(query);
   };
+  db.transaction = async (build: (tx: typeof db) => Promise<unknown[]>[]) =>
+    Promise.all(build(db));
   return { db, queries };
 }
 
