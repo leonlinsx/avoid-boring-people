@@ -1,6 +1,7 @@
 import { canonicalSiteOrigin } from '../site-origin.ts';
 
-// Preserve Astro 5's origin-check behavior except for the machine-to-machine
+// After the Astro 7 migration, retain the existing same-origin checks for
+// form-like requests, except for the machine-to-machine
 // POSTs whose bodies carry their own authorization. SNS authenticates a signature;
 // RFC one-click unsubscribe authenticates the high-entropy token in the URL/body;
 // the Instagram media upload authenticates a bearer secret held only by CI.
