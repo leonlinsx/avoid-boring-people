@@ -8,7 +8,8 @@ const blog = defineCollection({
   loader: glob({
     pattern: '**/*.{md,mdx}',
     base: './src/content/blog',
-    // Keep the Astro 5 IDs used by search-index.json and image paths.
+    // After the Astro 7 migration, retain relative-path IDs (including extensions)
+    // so search-index.json, publish ledgers, and image paths remain compatible.
     generateId: ({ entry }) => entry,
   }),
   schema: ({ image }) =>
