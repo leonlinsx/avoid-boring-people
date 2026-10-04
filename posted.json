@@ -707,6 +707,14 @@
         "remote_id": "18101504144625632",
         "remote_url": "https://www.threads.com/@leon.lin.s/post/DdhxQCfmqPp"
       },
+      "tumblr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-01T19:01:58Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "829299169027129344",
+        "remote_url": "https://avoidboringpeople/post/829299169027129344"
+      },
       "twitter": {
         "count": 1,
         "last_mode": "new",
