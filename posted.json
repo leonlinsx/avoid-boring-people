@@ -49,6 +49,14 @@
         "last_posted_at": "2026-09-13T06:24:00Z",
         "remote_id": "18377539966228635",
         "remote_url": "https://www.threads.com/@leon.lin.s/post/DdN6LePlfF1"
+      },
+      "tumblr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-05T00:09:52Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "829590330977533952",
+        "remote_url": "https://avoidboringpeople/post/829590330977533952"
       }
     },
     "2017_04_06_convert/index.md": {
