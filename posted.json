@@ -596,6 +596,60 @@
     "2021_03_13_internet/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-06T19:02:52Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mxa4mnvjyx2t",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mxa4mnvjyx2t"
+      },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-06T19:02:54Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "0xab9867222d78b81d1186e05752840783fc71dfc5"
+      },
+      "instagram": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-06T19:11:03Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18058805408547831",
+        "remote_url": "https://www.instagram.com/p/DeKgRbkD1j_/"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-06T19:02:54Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "117395513292751602",
+        "remote_url": "https://mastodon.social/@leonlins/117395513292751602"
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-06T19:04:00Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "ad3f3091453f343d27f667f05862ab2ca38249979fd713d499afddca0a12dccb"
+      },
+      "threads": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-06T19:04:24Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "17951902260271064",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/DeKfeyojy_U"
+      },
+      "tumblr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-06T19:11:04Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "829752726436052992",
+        "remote_url": "https://avoidboringpeople/post/829752726436052992"
       }
     },
     "2021_04_03_ergodicity/index.md": {
