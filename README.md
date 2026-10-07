@@ -1,7 +1,7 @@
 # Avoid Boring People — leonlins.com
 
 Leon Lin's personal website and publishing platform, published under the
-**Avoid Boring People** identity. An Astro 5 static site for essays, plus two
+**Avoid Boring People** identity. An Astro 7 static site for essays, plus two
 owned-distribution systems — automated social posting and a self-hosted
 newsletter — a first-party article discussion, and a small contact flow for
 inbound notes. This repository is public;
@@ -14,13 +14,15 @@ The repo holds six systems:
    `src/content/blog` render at `/writing/[slug]`; `/writing` is the canonical
    archive. Search, RSS, sitemap, and static publishing are built in.
 2. **Autopost** — `scripts/automation/` publishes each article to the social
-   channels in `DEFAULT_PLATFORMS` (currently Bluesky, Mastodon, DEV,
-   Farcaster, Nostr, Threads, Instagram). One author-voice distillation per
+   channels in `scripts/automation/routing.py`’s `DEFAULT_PLATFORMS`,
+   the canonical default destination set. One author-voice distillation per
    article is rendered per platform: an X/Bluesky thread with the link framed
    as the final reply, single self-contained posts with inline links on
    Mastodon/Farcaster/Nostr, a standalone idea plus link self-reply on
    Threads, a full-body DEV syndication with canonical URL, and a rendered
-   carousel on Instagram with a link-in-bio caption. Details and per-channel
+   carousel on Instagram with a link-in-bio caption, and a native summary
+   with a link card on Tumblr. LinkedIn drafting is manual; experimental and
+   dormant adapters are not default destinations. Details and per-channel
    rationale: [docs/social-distribution.md](docs/social-distribution.md).
 3. **Newsletter subscription** — an owned list (Neon Postgres + Amazon SES)
    being migrated off Substack, currently in controlled validation. Public
@@ -160,7 +162,7 @@ Vercel deploys never send email or social posts.
 | Doc | What it is |
 | --- | --- |
 | [docs/social-distribution.md](docs/social-distribution.md) | Autopost design: copy engine, per-channel formats, link placement, token rotation, local review |
-| [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md) | Owned-newsletter design, phased gates, data/consent rules |
+| [docs/newsletter-migration-plan.md](docs/newsletter-migration-plan.md) | Migration design/history and phased acceptance gates; use the AWS runbook for operations |
 | [docs/newsletter-aws-runbook.md](docs/newsletter-aws-runbook.md) | SES/SNS/Vercel setup and the local production-send workflow |
 | [docs/newsletter-analytics.md](docs/newsletter-analytics.md) | First-party attribution model, metric definitions, and the local report CLI |
 | [docs/discussion.md](docs/discussion.md) | First-party article discussion: data model, identity, abuse controls, API, moderation CLI |

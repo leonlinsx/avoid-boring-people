@@ -1,5 +1,7 @@
 # Newsletter migration plan
 
+> Migration design and phase history. Runtime versions below describe the migration baseline, not the current stack. See [../README.md](../README.md) and `package.json` for the current system, [newsletter-aws-runbook.md](newsletter-aws-runbook.md) for operations, and [newsletter-analytics.md](newsletter-analytics.md) for analytics.
+
 ## Objective and boundaries
 
 Move **Avoid Boring People by Leon Lin** from Substack as its operational newsletter system to an owned system while retaining Substack as an optional manual cross-post/discovery channel during transition. `/writing` and the existing Markdown/MDX content remain canonical; every newsletter is the full article rendered for email.
@@ -8,9 +10,9 @@ The owned system is deliberately narrow: Neon managed Postgres for subscriber an
 
 Recorded exception (2026-09-17): first-party **attribution and analytics** were added ahead of cutover, and they are intentionally not "custom tracking" in the excluded sense. Attribution is first-touch evidence captured in the reader's own browser and written only on an owned signup; the report is read-only over stored rows; there is no pixel, no click rewriting, no third-party analytics dependency, and no dashboard. See [newsletter-analytics.md](newsletter-analytics.md).
 
-## Current state and target runtime
+## Migration baseline and target runtime
 
-The repository runs Astro 5.13.7 with static output. Phase 1 added the compatible Vercel adapter only to support isolated on-demand newsletter lifecycle routes; all normal pages remain static. `src/pages/newsletter.astro` is presently superseded by the `/newsletter -> /#subscribe` redirect, while `SubscribeForm.astro` and `src/pages/api/subscribe.ts` use the production Substack endpoint. Do not change signup behavior in Phases 0–4.5. One exception is recorded: `src/pages/api/subscribe.ts` carries `export const prerender = false` so the Substack fallback route deploys on the static-default site; this changes no signup behavior.
+At the start of this migration, the repository ran Astro 5.13.7 with static output. Phase 1 added the compatible Vercel adapter only to support isolated on-demand newsletter lifecycle routes; all normal pages remain static. `src/pages/newsletter.astro` is presently superseded by the `/newsletter -> /#subscribe` redirect, while `SubscribeForm.astro` and `src/pages/api/subscribe.ts` use the production Substack endpoint. Do not change signup behavior in Phases 0–4.5. One exception is recorded: `src/pages/api/subscribe.ts` carries `export const prerender = false` so the Substack fallback route deploys on the static-default site; this changes no signup behavior.
 
 When owned endpoints are introduced, install and configure the current compatible `@astrojs/vercel` adapter, retain static output, and add `export const prerender = false` only to dynamic newsletter endpoints. Do not use Astro's removed `output: 'hybrid'` mode or convert the full site to server output without a documented framework requirement.
 
