@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import signalInterface from '../assets/signal-interface.webp';
 import { serializeJsonLd } from '../utils/jsonld';
 
 const canonical = 'https://leonlinsx.com/signal';
@@ -69,15 +71,24 @@ const product = {
         against the evidence used to generate the brief. Historical context
         advances only after successful delivery.
       </p>
-      <div class="preview" role="note" aria-label="Product preview status">
-        <p class="preview-label">Product preview</p>
-        <p>
-          A public screenshot of the private daily brief is not yet available.
-        </p>
-        <p class="muted">
-          The brief is currently used as a personal production system.
-        </p>
-      </div>
+      <figure class="preview">
+        <a
+          href={signalInterface.src}
+          aria-label="View the illustrative Signal Brief interface at full size"
+        >
+          <Image
+            src={signalInterface}
+            alt="Illustrative Signal Brief dashboard showing daily developments with source links, worldview updates, and a selected market tape."
+            widths={[480, 768, 1536]}
+            sizes="(max-width: 772px) calc(100vw - 32px), 740px"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption class="muted">
+          Illustrative Signal Brief interface · Product mock
+        </figcaption>
+      </figure>
     </section>
 
     <section aria-labelledby="models-title">
@@ -94,18 +105,13 @@ const product = {
     <section aria-labelledby="about-title">
       <h2 id="about-title">Built by Leon Lin</h2>
       <p>
-        Signal Brief is an actively developed independent software product,
+        Signal Brief is an actively developed independent software product
         launched in 2026 and currently in private beta. It is built by
         <a href="https://leonlins.com/about">Leon Lin</a>.
       </p>
-      <p class="muted">
-        This product lives on Leon’s longstanding personal/project domain,
-        leonlinsx.com, registered in January 2019. Signal Brief’s 2026 launch
-        refers to the product, not the domain or an older legal entity.
-      </p>
       <p>
-        For product questions, <a href="https://leonlins.com/contact"
-          >contact Leon</a
+        For product questions, <a href="mailto:support@leonlinsx.com"
+          >support@leonlinsx.com</a
         >.
       </p>
     </section>
@@ -161,15 +167,16 @@ const product = {
     color: var(--color-text-muted);
   }
   .preview {
-    padding: var(--space-lg);
-    margin-top: var(--space-md);
-    border: 1px dashed var(--color-border);
+    margin: var(--space-md) 0 0;
+  }
+  .preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
   }
-  .preview-label {
-    font-weight: 700;
-  }
-  .preview p:last-child {
-    margin-bottom: 0;
+  .preview figcaption {
+    margin-top: var(--space-sm);
   }
 </style>
