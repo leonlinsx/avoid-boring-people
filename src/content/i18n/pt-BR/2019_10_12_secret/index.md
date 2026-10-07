@@ -4,7 +4,7 @@ description: "O que outras pessoas sabem que você não sabe"
 pubDate: 2019-10-12
 category: Culture
 tags: ['investing']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2019_10_12_secret/s_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'secret'
 sourceHash: 'd64c0ba7070818e68be344fcb4146ce72540f99fe2925d4395f37835e4902c3c'

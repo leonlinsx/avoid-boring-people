@@ -5,7 +5,7 @@ pubDate: 2020-07-01
 category: Culture
 tags: ['investing', 'tech', 'startups']
 featured: true
-heroImage: './story_6.webp'
+heroImage: '../../../blog/2020_07_01_stories/story_6.webp'
 locale: 'ko'
 sourceSlug: 'stories'
 sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
@@ -21,7 +21,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 [Bestselling author Kurt Vonnegut](https://en.wikipedia.org/wiki/Kurt_Vonnegut 'Kurt') 그는 『도살장 5』\, 『캣츠 크래들』 등 여러 작품으로 잘 알려져 있다\. 그의 자서전에서\, [he claimed that this was his greatest contribution to culture:](https://books.google.com/books?id=Zd_9o3uyoVsC&pg=PA285&dq=vonnegut+shape+story+thesis&hl=en&sa=X&ei=tasCU8yjEML-oQSXloKIBQ#v=onepage&q=vonnegut%20shape%20story%20thesis&f=false 'book')
 
-![post](./story_1.webp)
+![post](../../../blog/2020_07_01_stories/story_1.webp)
 
 그래서\, _이야기는 형태를 가지고 있다\,_ 그가 말한다\.
 
@@ -29,7 +29,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 그래프를 상상해 보세요\. 한쪽에는 행운과 나쁜 행운이 있고\, 다른 쪽에는 처음부터 끝까지 이야기의 진행 상황이 나타난 것 같아요\.
 
-![post](./story_2.webp)
+![post](../../../blog/2020_07_01_stories/story_2.webp)
 
 이 그래프 위의 어떤 이야기든 그 형태를 볼 수 있습니다\. 그리고 전 세계의 모든 이야기를 그래프로 그려보면 몇 가지 공통된 패턴이 나타납니다\.
 
@@ -37,25 +37,25 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 이것을 그래프에 그려서 \'구덩이 속의 남자\' 이야기라고 부르겠습니다\. 인간은 잘하고 있다가 구멍에 빠졌다가 빠져나와 이전보다 더 좋아집니다\.
 
-![post](./story_3.webp)
+![post](../../../blog/2020_07_01_stories/story_3.webp)
 
 반면에\, [About Time,](<https://en.wikipedia.org/wiki/About_Time_(2013_film)> 'About Time') [^2] 주인공들은 사랑에 빠졌다가 서로를 잃었다가 일련의 사건 끝에 다시 만나게 됩니다\.
 
 이것을 \'남자가 여자를 만나는\' 이야기라고 부르겠습니다\. 상상할 수 있듯이\, 많은 로맨스 영화에서 흔히 볼 수 있는 일입니다\.
 
-![post](./story_4.webp)
+![post](../../../blog/2020_07_01_stories/story_4.webp)
 
 그리고 이런 이야기에서는 [The Metamorphosis,](https://en.wikipedia.org/wiki/The_Metamorphosis 'Kafka') 주인공은 벌레로 변해 죽으며 상황은 점점 더 악화됩니다\. 이것은 \'비극\'이 될 것입니다\.
 
-![post](./story_5.webp)
+![post](../../../blog/2020_07_01_stories/story_5.webp)
 
 위의 형태 외에도\, 커트는 몇 가지 더 효과가 있을 만한 아이디어를 생각했다\. \"가난에서 부자로\" 이야기는 꾸준한 상승\, ["icarus" story](https://en.wikipedia.org/wiki/Icarus 'icarus') 상승과 하락을 포함할 수 있고\, ["oedipus" story](https://en.wikipedia.org/wiki/Oedipus 'oedipus') 추락\, 상승\, 그리고 다시 추락이 반복될 수 있습니다\.
 
-![post](./story_6.webp)
+![post](../../../blog/2020_07_01_stories/story_6.webp)
 
 이 아이디어를 바탕으로\, [a team of researchers from Vermont and Adelaide used machine learning to classify 1,327 famous stories](https://arxiv.org/pdf/1606.07772.pdf 'paper') 온 [Project Gutenberg](https://www.gutenberg.org/ 'proj')\. 그들은 대부분의 이야기가 실제로 몇 가지 주요 유형으로 분류될 수 있음을 발견했다\. 그들의 방법론에 대한 자세한 내용은 각주를 참조하세요 [^3]\.
 
-![post](./story_7.webp)
+![post](../../../blog/2020_07_01_stories/story_7.webp)
 
 여기서 \'소년이 소녀를 만난다\'는 표현을 \'신데렐라\'로 바꿨지만\, 본질적으로 보네거트가 옳았다는 걸 보여준다 [^4]\. _이야기에는 형태가 있고\, 몇 가지 표준적인 형태가 있습니다\._
 
@@ -75,7 +75,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 X 회사는 주로 앱 구독으로 수익을 올리는 인터넷 회사로\, 확장되는 소비자 부문에서의 독점권을 가지고 있습니다\. 총 가입자는 700만 명이며\, 그중 300만 명은 메인 앱 구독자입니다\. 매출은 전년 대비 \~30\% 성장하고 있습니다\. EBITDA\(일종의 수익 지표\) 마진은 40\%입니다\. 주가는 사상 최고치를 기록했으며\, 지난 1년간 두 배 이상 상승했습니다 [^6]\.
 
-![post](./story_8.webp)
+![post](../../../blog/2020_07_01_stories/story_8.webp)
 
 꽤 괜찮아 보이니\, 소유하고 싶은지 더 조사해보는 것도 좋을 것 같아요\.
 
@@ -83,7 +83,7 @@ X 회사는 주로 앱 구독으로 수익을 올리는 인터넷 회사로\, �
 
 X 회사는 인터넷 회사로\, 주로 앱 구독으로 수익을 올리며 확장되는 소비자 부문에서 독점권을 보유하고 있습니다\. 총 가입자 수는 700만 명이며\, 이 중 300만 명은 메인 앱 구독자입니다\. 매출은 전년 대비 \~30\% 성장하고 있습니다\. EBITDA\(일종의 수익 지표\) 마진은 40\%입니다\. 주가는 사상 최고치를 기록했으며\, 지난 1년간 두 배 이상 상승했습니다\. _[Facebook just announced they're planning to enter the category](https://techcrunch.com/2018/05/01/facebook-dating/ 'FB')_
 
-![post](./story_9.webp)
+![post](../../../blog/2020_07_01_stories/story_9.webp)
 
 기업의 펀더멘털은 변하지 않았지만\, 하루 만에 22\% 가격이 하락한 것은 분명히 드러납니다 _뭔가_ 그랬다\. 그게 바로 바로 _스토리_ 투자자들이 주식에 대해 이야기하고 있다는 점입니다\.
 
@@ -95,11 +95,11 @@ X 회사는 인터넷 회사로\, 주로 앱 구독으로 수익을 올리며 �
 
 익숙하게 들리나요\?
 
-![post](./story_10.webp)
+![post](../../../blog/2020_07_01_stories/story_10.webp)
 
 이 경우 그 회사는 Match\.com\, 틴더의 모회사였고\, 그 하락 후 약 1년 후 주가가 다시 두 배로 올랐습니다\. 남자와 여자가 만나는 관계는 잘 맞았습니다\.
 
-![post](./story_11.webp)
+![post](../../../blog/2020_07_01_stories/story_11.webp)
 
 5월 1일\, 두 이야기 모두 똑같이 타당했고\, 똑똑한 투자자들이 그 거래 양쪽을 택했다\. 중요한 점은\, 매치의 사업에 실제 변화가 일어나기 전부터 주가가 반응했다는 것이다\. 이야기는 갈림길에 섰고\, 투자자들은 이제 서로 다른 편을 선택했다\. \"이카루스\"처럼 질 거라 생각한 이들과 달리 얻는 이들\. 이야기가 변함에 따라 주가도 변한다\.
 
@@ -169,7 +169,7 @@ X 회사는 인터넷 회사로\, 주로 앱 구독으로 수익을 올리며 �
 
 익숙하게 들리나요\?
 
-![post](./story_12.webp)
+![post](../../../blog/2020_07_01_stories/story_12.webp)
 
 그런데 이게 무슨 이야기일까요\?
 

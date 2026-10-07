@@ -4,7 +4,7 @@ description: "광고 타겟팅은 생각만큼 강력하지 않습니다"
 pubDate: 2019-06-16
 category: Technology
 tags: ['business']
-heroImage: './a_1.png'
+heroImage: '../../../blog/2019_06_16_ad/a_1.png'
 locale: 'ko'
 sourceSlug: 'ad'
 sourceHash: 'dc13e280c424181607da2dc708f7376d9ab461e55c3e7c3451f085786412207a'

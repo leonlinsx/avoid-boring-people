@@ -4,7 +4,7 @@ description: "비디오 게임, 포트폴리오 재균형, 그리고 확률"
 pubDate: 2019-11-30
 category: Technology
 tags: ['finance', 'vr', 'behaviour']
-heroImage: './g_3.webp'
+heroImage: '../../../blog/2019_11_30_vr/g_3.webp'
 locale: 'ko'
 sourceSlug: 'vr'
 sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
@@ -33,7 +33,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 음\:
 
-![post](./g_1.webp)
+![post](../../../blog/2019_11_30_vr/g_1.webp)
 
 게임은 필름보다 크지만 여전히 더 빠르게 성장합니다\. [global sports industry at $500bn in size](https://www.businesswire.com/news/home/20190514005472/en/Sports---614-Billion-Global-Market-Opportunities 'Sports')스포츠 규모에 도달하기 전에 게임이 성장할 여지가 충분합니다\.
 
@@ -41,7 +41,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 음 [^3]\:
 
-![post](./g_2.webp)
+![post](../../../blog/2019_11_30_vr/g_2.webp)
 
 저만 게임에 대해 낙관적인 것은 아닙니다\. 잘 알려진 벤처 캐피털 회사인 A16Z가 게임에 대한 관심을 높였습니다 [wrote about some trends they believe in](https://a16z.com/2019/10/16/trends-revolutionizing-games/ 'a16z') [^4]\:
 
@@ -79,11 +79,11 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 즉\, 회전율이 높거나\, 재밸런싱 빈도가 적거나\, 제약 조건이 적을수록 리밸런싱 타이밍이 최종 수익에 미치는 영향이 커집니다\. 아래 화살표는 가장 좋은 성과를 내는 변동과 가장 낮은 성적 변동의 차이를 나타냅니다\. _같은 포트폴리오 소속_\.
 
-![post](./g_3.webp)
+![post](../../../blog/2019_11_30_vr/g_3.webp)
 
 또한 다양한 투자 전략 간 델타를 보여주는 요약표도 제시합니다\. 아래를 이해하자면\, \"향상된 가치\" 포트폴리오의 \$1이 \$4\.45에서 \$5\.45로 수익을 낼 수 있었고\, 그 \$1 차이는 리밸런싱 시 운에 따른 것입니다\.
 
-![post](./g_4.webp)
+![post](../../../blog/2019_11_30_vr/g_4.webp)
 
 그들은 다음과 같이 결론짓습니다\:
 
@@ -145,7 +145,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 즉\, 위 예시에서 70\%까지 평균을 내지만\, 그 수치적 예측을 구두 예측으로 변환하면 예측 수를 \"세고\" 평균 대신 \"매우 확률\"로 계산합니다\. 연구진은 이것이 행동에 영향을 미치며\, 예측이 제시되는 방식에 따라 소비자가 상품을 구매하도록 영향을 받을 수 있음을 보여줍니다\.
 
-![post](./g_5.webp)
+![post](../../../blog/2019_11_30_vr/g_5.webp)
 
 하지만 \"카운트\"를 할지\, \"평균\"을 내야 할지는 전문가들이 가진 정보가 비슷한지 다르는지에 달려 있습니다\. 만약 그들이 같은 정보를 바탕으로 한다면\, \"평균화\"가 특이한 오차를 상쇄하는 데 더 효과적입니다\. 그렇지 않다면\, \"카운팅\"은 개인 예측을 개선하는 베이지안 전략의 근사일 수 있습니다\.
 
@@ -162,7 +162,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 2. [What the WSJ got wrong in their investigation of Google's search algorithms](https://searchengineland.com/misquoted-and-misunderstood-why-we-the-search-community-dont-believe-the-wsj-about-google-search-325241 'SEL')
 3. [How has the dating market changed?](https://gallery.mailchimp.com/2506bda6ca9a8b7ce8b3c54b4/files/1a8cc94c-6198-4f3d-b27d-8a6060ed6c5d/Tyro_Dating_Market_Thesis_Final_For_Twitter_Pub_v2.pdf 'Tyro')
 
-   ![post](./g_6.webp)
+   ![post](../../../blog/2019_11_30_vr/g_6.webp)
 
    > 위 차트에서 \'술집이나 식당에서 만났다\'는 숫자가 급등한 것을 주목하세요\. 데이터 과학에서는 이러한 신고자들을 \'거짓말쟁이\'라고 부르는 기술적 용어입니다\.
 

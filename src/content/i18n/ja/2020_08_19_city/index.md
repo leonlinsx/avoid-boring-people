@@ -5,7 +5,7 @@ pubDate: 2020-08-19
 category: Culture
 tags: ['predictions']
 evergreen: false
-heroImage: './c_3.png'
+heroImage: '../../../blog/2020_08_19_city/c_3.png'
 locale: 'ja'
 sourceSlug: 'city'
 sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
@@ -23,7 +23,7 @@ sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
 
 私は大都市がこれを乗り越えるというより楽観的です。その言葉を数値化するために言うと、私はニューヨーク市が現在よりも5年後に人口が増えると80%の信頼[^1]持っています。参考までに、最近までニューヨーク市は年率0.30%の成長率でした。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_08_19_city/c_1.webp)
 
 <a href='https://www.macrotrends.net/cities/23083/new-york-city/population'>New ヨーク市メトロエリア 人口 1950-2020</a>
 
@@ -35,7 +35,7 @@ sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
 
 しかし最近、都市は人々を引きつけるほとんどすべての要素を失ってしまいました。あなたは変わらず、同じものを望んでいるかもしれませんが、都市自体は変わりました。[pace layer](/writing/pace 'pace')の議論を思い出すなら、この場合「ガバナンス」「インフラ」「商業」の層が予想以上に速く動きました。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_08_19_city/c_2.webp)
 
 この変動性は人々の考え方の変化をもたらしました。かつては遠隔作業の場所を渋っていたものが、オースティン(テキサス州)で家賃がどれだけ使えるかを熱心に評価するようになりました。多くの人にとって、かつては考えられなかったことが今や論理的な選択肢となっています。
 

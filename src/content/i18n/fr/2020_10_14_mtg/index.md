@@ -4,7 +4,7 @@ description: "Monétisation et problèmes communautaires dans le plus ancien jeu
 pubDate: 2020-10-14
 category: Culture
 tags: ['business', 'games']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_10_14_mtg/m_1.webp'
 featured: false
 locale: 'fr'
 sourceSlug: 'mtg'
@@ -21,7 +21,7 @@ Combien peut coûter le carton \?
 
 Si c’est la carte [Black Lotus](https://mtg.gamepedia.com/Black_Lotus 'black') Du jeu de cartes à collectionner [Magic: The Gathering,](https://en.wikipedia.org/wiki/Magic:_The_Gathering 'MTG') Tu pourrais en acheter un pour 27 000 \$\.
 
-![post](./m_1.webp)
+![post](../../../blog/2020_10_14_mtg/m_1.webp)
 
 Et cela pourrait même être une affaire\, compte tenu d’un exemplaire vendu à un prix [$166,000 at auction](https://www.ebay.com/itm/1993-Magic-The-Gathering-MTG-Alpha-Black-Lotus-R-A-BGS-9-5-GEM-MINT-PWCC-/143136537077?_trksid=p2047675.m43663.l10137&nordt=true&rt=nc&orig_cvip=true 'ebay') [^1]\. Ça fait 166 000 \$ pour un morceau de carton de la taille d’une carte à jouer\.
 
@@ -43,7 +43,7 @@ Les cartes sont publiées sur le **Marché principal** par [Wizards](https://mag
 
 Par exemple\, vous pourriez acheter un pack en espérant obtenir une carte rare ["Uro, Titan of Nature's Wrath"](https://scryfall.com/card/thb/229/uro-titan-of-natures-wrath 'Uro') et à la place ["Bronzehide Lion."](https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=476461 'Lion')
 
-![post](./m_2.webp)
+![post](../../../blog/2020_10_14_mtg/m_2.webp)
 
 Comme beaucoup de gens préfèrent acheter une carte sans compter sur la chance\, il y a aussi un **marché secondaire\.** Les traders achètent des cartes et les revendent avec une marge de majoration\. Avec le temps\, cela s’est même développé en quelque chose [stock market for the cards](https://www.mtgstocks.com/news 'MTG')\, avec son propre club de spéculateurs\. Comme mentionné précédemment\, certaines de ces cartes peuvent être extrêmement coûteuses\.
 
@@ -65,7 +65,7 @@ Les règles des commandants sont régies par une communauté ["rules committee,"
 
 Le comité n’applique pas les règles\, car ce serait impossible pour les parties occasionnelles\, mais cela sert de règle standard que les joueurs suivent\. Par exemple\, il pourrait être dit que « Uro » est interdit\. Si vous jouiez une partie de Commandant contre un inconnu et utilisiez Uro\, elle ne voudrait probablement pas continuer\. Cependant\, vous pourriez aussi simplement accepter de jouer avec toutes les cartes que vous voulez\, Uro inclus\.
 
-![post](./m_3.webp)
+![post](../../../blog/2020_10_14_mtg/m_3.webp)
 
 Nous savons maintenant ce qu’est Magic \: un jeu de cartes à collectionner où de nouvelles cartes sont régulièrement imprimées\, les prix des cartes sont fixés par le marché\, et différentes restrictions de format donnent lieu à différents métajeux\. Développons ce dernier concept\.
 
@@ -83,7 +83,7 @@ Dans un méta équilibré\, il y aura quelques decks qui sont « meilleurs » qu
 
 Dans un méta déséquilibré\, il n’y aura qu’un seul deck qui est « meilleur » que tout le reste\. Par exemple\, votre deck élémentaire pourrait avoir des chances favorables face à n’importe quel autre deck\. Quand cela arrive\, c’est rationnel pour [everyone to start playing that deck if they want to win.](https://magic.gg/news/2020-season-grand-finals-metagame-breakdown 'mtg') Comme vous pouvez l’imaginer\, **Ça devient vite ennuyeux\.**
 
-![post](./m_4.webp)
+![post](../../../blog/2020_10_14_mtg/m_4.webp)
 
 Dans ce cas\, une solution consiste à interdire les cartes « trop puissantes »\. Comme mentionné précédemment\, pour les formats officiels\, Wizards indiquera quelles cartes ne peuvent plus être utilisées\. Pour le format non officiel « Commandant »\, le comité des règles de la communauté choisira les cartes\. **Les bannissements sont un moyen d’équilibrer\.**
 
@@ -93,15 +93,15 @@ C’est là que commence la controverse actuelle\.
 
 La plupart du temps\, les nouvelles cartes imprimées font partie d’un multivers Magic plus large\, étant Magic IP et créées à l’origine pour Magic\. Magic est principalement basé sur la fantasy\, ce qui a conduit à des cartes comme les anges et les dragons \:
 
-![post](./m_5.webp)
+![post](../../../blog/2020_10_14_mtg/m_5.webp)
 
 Plus récemment [^13]\, Wizards a développé davantage de partenariats externes\. Cela implique généralement la création d’une carte personnalisée basée sur d’autres propriétés intellectuelles\. Par exemple\, [a My Little Pony series](https://magic.wizards.com/en/articles/archive/news/magic-extra-life-2019-10-03 'pony') Pour collecter des fonds à des fins caritatives \:
 
-![post](./m_6.webp)
+![post](../../../blog/2020_10_14_mtg/m_6.webp)
 
 Ou un [Godzilla themed series as alternate art for some cards:](https://articles.starcitygames.com/news/all-19-godzilla-series-monster-cards-revealed/ 'zilla')
 
-![post](./m_7.webp)
+![post](../../../blog/2020_10_14_mtg/m_7.webp)
 
 Maintenant\, mettez\-vous à la place du Comité des Règles du Commandant\. Quand ces cartes seront publiées\, devriez\-vous les autoriser dans ce format \?
 
@@ -114,7 +114,7 @@ Historiquement\, Wizards évitait l’ambiguïté en faisant quelques choses \:
 
 **Voici la controverse\.** Wizards vient de sortir un [limited edition set of new cards in partnership with TV show The Walking Dead.](https://secretlair.wizards.com/us/product/612738/secret-lair-x-the-walking-dead 'dead') Ces cartes uniques ne sont disponibles que pendant un certain temps avant que Wizards ne cesse de les imprimer\. Il est important de noter qu’elles sont bordées de noir \(« légales »\)\, mais ne sont disponibles nulle part ailleurs qu’en achetant ce coffret\. Comme on pouvait s’y attendre\, le coffret est vendu à un prix élevé\.
 
-![post](./m_8.webp)
+![post](../../../blog/2020_10_14_mtg/m_8.webp)
 
 **Ces cartes doivent\-elles être légales \?** Le site officiel de Wizards indique \:
 
@@ -124,13 +124,13 @@ Pour clarifier ce qui précède\, Wizards dénonce explicitement le format « Co
 
 On comprend pourquoi cela a été le cas [made many players upset, ](https://twitter.com/wizards_magic/status/1312987380115148805?s=20 'twitter') [calling for the cards to be banned immediately.](https://www.reddit.com/r/magicTCG/comments/j1glk8/petition_for_the_commander_rules_committee_to_ban/ 'ban')
 
-![post](./m_9.webp)
+![post](../../../blog/2020_10_14_mtg/m_9.webp)
 
 Attends\, tu dis\, je pensais que le _Comité des règles_ décider quelles cartes étaient autorisées ou non \? En effet\, certains joueurs espéraient que le Comité agirait de manière indépendante et déclarerait les cartes criminelles dans Commander\.
 
 [Unfortunately not.](https://mtgcommander.net/index.php/2020/10/02/rc-statement-on-secret-lair-the-walking-dead/ 'dead')
 
-![post](./m_10.webp)
+![post](../../../blog/2020_10_14_mtg/m_10.webp)
 
 Vous avez probablement une idée des incitations contradictoires ici\. Examinons de plus près le [main complaints first](https://twitter.com/ghirapurigears/status/1313145100319494145?s=20 'twitter') [^15]\:
 
@@ -142,15 +142,15 @@ Vous avez probablement une idée des incitations contradictoires ici\. Examinons
 
 Et maintenant\, regardons la justification de Wizard \:
 
-![post](./m_11.webp)
+![post](../../../blog/2020_10_14_mtg/m_11.webp)
 
 Ah attendez\, mauvaise image \:
 
-![post](./m_12.webp)
+![post](../../../blog/2020_10_14_mtg/m_12.webp)
 
 Oui\, je n’ai rien trouvé\, c’est une façon assez flagrante de faire de l’argent\. Quand on considère l’objectif de Hasbro \(la maison mère de Wizards\) [doubling Wizards revenue over the next five years,](https://investor.hasbro.com/static-files/88b2a83b-2368-463a-9489-6cf31dc209ac 'wizards') Pas étonnant que l’équipe de Wizards soit incitée à explorer des moyens de vendre plus de cartes à un prix plus élevé [^16]\. Plus grand volume\, prix plus élevés\, multiplicité de valorisation plus élevée\. Si les gens sont prêts à payer 100 \$ au prix du marché pour une carte\, pourquoi ne pas simplement imprimer les cartes et les vendre directement au lieu de les faire dans des boosters \?
 
-![post](./m_13.webp)
+![post](../../../blog/2020_10_14_mtg/m_13.webp)
 
 Les sorciers auraient pu 1\) rendre les cartes bordées argentées et « illégales »\, ou même 2\) faire des versions artistiques alternatives d’autres cartes « légales »\. Ils n’ont pas fait 1\) parce que les cartes à bordure argentée se vendent moins que les cartes à bordure noire\, et n’ont pas fait 2\) pour une raison magique que je ne comprends pas\, mais probablement de l’argent
 

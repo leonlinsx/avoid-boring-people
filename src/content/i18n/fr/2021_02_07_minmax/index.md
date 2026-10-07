@@ -5,7 +5,7 @@ pubDate: 2021-02-07
 category: Risk & Decision Making
 tags: ['skill']
 featured: false
-heroImage: './min_2.webp'
+heroImage: '../../../blog/2021_02_07_minmax/min_2.webp'
 locale: 'fr'
 sourceSlug: 'minmax'
 sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
@@ -51,7 +51,7 @@ Il est difficile de mesurer objectivement le bonheur\, et je vais utiliser [dopa
 
 J’ai essayé de chercher des événements provoquant des pics élevés de dopamine\, que je supposais être induits par la drogue\. Il était difficile de trouver le potentiel de plaisir des narcotiques sur les humains en ligne\, comme si les gens ne voulaient pas que vous preniez de la drogue ou autre\. Ce que j’ai finalement trouvé\, c’est une étude sur des rats sur [heroin](https://onlinelibrary.wiley.com/doi/abs/10.1002/syn.890210207 'heroin')\, montrant une augmentation de 4 fois la dopamine lorsqu’il est dopé [^6]\. C’est élevé\, mais plus bas que ce à quoi je m’attendais et ce n’est toujours pas le 10x que nous voulons [^7]\.
 
-![min](./min_1.webp)
+![min](../../../blog/2021_02_07_minmax/min_1.webp)
 
 Nous devons finalement quitter nos domaines de physique\, chimie et biologie\, pour aller vers des domaines plus abstraits [^8]\.
 
@@ -67,7 +67,7 @@ Ronaldo compte 264 millions d’abonnés sur Instagram\, contre un nombre moyen 
 
 C’est clairement plus de 10 fois\, même en sous\-estimant beaucoup\. J’ai tracé ces nouvelles zones par rapport aux zones physiques\, en utilisant une échelle logarithmique pour tenir compte des énormes différences de magnitude \; chaque ligne représente une augmentation de 10 fois\. Voir les notes de bas de page pour les sources [^9]\.
 
-![min](./min_2.webp)
+![min](../../../blog/2021_02_07_minmax/min_2.webp)
 
 Nous avons trouvé des voies où nos efforts peuvent évoluer\, et les rendements marginaux décroissants ne diminuent pas aussi rapidement\. Le plafond est beaucoup plus élevé dans une telle zone\, et nous avons une plus grande probabilité de différenciation par rapport à la moyenne\.
 
@@ -86,7 +86,7 @@ Distribution plus rapide\, croissance plus élevée\, résultats plus solides\.
 
 Certains d’entre vous pourraient relier cela aux lois de puissance\, et au fait que les réseaux peuvent comporter des parties bien plus importantes que d’autres\. [There's some debate over whether power laws exist in real life](https://www.quantamagazine.org/scant-evidence-of-power-laws-found-in-real-world-networks-20180215/ 'real')\, mais c’est bien le même concept – il existe des systèmes où les personnes\, les choses ou les parties sont bien plus significatives [^10]\.
 
-![min](./min_3.webp)
+![min](../../../blog/2021_02_07_minmax/min_3.webp)
 
 Pour être clair\, je ne dis pas que la vie n’a qu’à maximiser son influence ou sa richesse\. Cependant\, connaître la limite supérieure potentielle d’un domaine aide à déterminer combien d’efforts vous voudrez fournir et où vous devez s’arrêter\. Être dix fois meilleur implique généralement de s’éloigner du physique pour passer à la technologie\.
 

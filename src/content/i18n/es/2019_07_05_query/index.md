@@ -5,7 +5,7 @@ pubDate: 2019-07-05
 category: Technology
 tags: ['startups']
 evergreen: false
-heroImage: './q_7.webp'
+heroImage: '../../../blog/2019_07_05_query/q_7.webp'
 locale: 'es'
 sourceSlug: 'query'
 sourceHash: '3fc778dfdea24281ee5cf541bc31ef90551b9702605aeed7740bd9b212d5e9f0'
@@ -25,25 +25,25 @@ Así que la intención por ahora es tener un formato de preguntas y respuestas p
 
 La página de destino es sencilla\, ordena las preguntas en orden cronológico\, con el día más reciente primero\. No estoy seguro de cómo se ordenan las preguntas dentro del propio día\. Supongo que el orden se corrige una vez publicadas las preguntas\, ya que el horario indicado para las actualizaciones no parece afectar al pedido\. El sitio funciona bien también en móvil\.
 
-![post](./q_1.webp)
+![post](../../../blog/2019_07_05_query/q_1.webp)
 
 Al hacer clic en los temas individuales\, accedes a una página de preguntas y respuestas más detallada sobre el tema\. Cada página de preguntas y respuestas tiene su propia URL\. La página contiene un breve resumen del tema de la noticia\, la cita de la fuente\, seguido de un índice de las preguntas y las propias preguntas\.
 
-![post](./q_2.webp)
+![post](../../../blog/2019_07_05_query/q_2.webp)
 
 Hay varias preguntas para plantear una pregunta\, que es tan sencillo como escribirla en el campo de la pregunta\. Por lo que veo\, no hay moderación inmediata en la pregunta\, y tu pregunta se publica en la página inmediatamente\. La web facilita hacer una pregunta\.
 
-![post](./q_3.webp)
+![post](../../../blog/2019_07_05_query/q_3.webp)
 
 Por ejemplo\, cuando publiqué la siguiente pregunta\, apareció al final de la lista de preguntas una vez que la página se actualizaba\, lo cual la página hacía automáticamente tras publicarla\.
 
-![post](./q_4.webp)
+![post](../../../blog/2019_07_05_query/q_4.webp)
 
-![post](./q_5.webp)
+![post](../../../blog/2019_07_05_query/q_5.webp)
 
 Parece que no puedes responder directamente a las preguntas por tu cuenta en este momento\, pero sí puedes \'sugerir una actualización\' que envía tu comentario a un editor\:
 
-![post](./q_6.webp)
+![post](../../../blog/2019_07_05_query/q_6.webp)
 
 Puedes consultar tú mismo la lista actual de temas y preguntas [here](https://query.news/ 'Query')\, y mira si hay alguna sobre la que te gustaría comentar\. ¡Parece una idea interesante\! La mayoría de las noticias son unilaterales\, buscando difundir un mensaje a las masas\. La sección de comentarios en línea suele ser un desastre\. Al hacer de la discusión el foco del sitio en lugar de un producto añadido\, esperemos que lleve a casos de uso más productivos\. Si alguna vez has leído algo y te has preguntado \'¿pero qué pasa con X\?\'\, Query te sería útil\.
 
@@ -77,15 +77,15 @@ Puedes consultar tú mismo la lista actual de temas y preguntas [here](https://q
 
 1. Clavar al [Query self-referential Q&A page](https://query.news/s/we-launched-kinda/ 'Query Q&A') en la página principal\. Alguien que aparezca en la página principal por primera vez no tendrá una idea clara de qué trata el sitio\. Tener una pestaña \"Acerca de\" justo arriba probablemente ayudará a la gente a entender lo que el sitio intenta hacer\, y podría ser un simple enlace a la página de preguntas y respuestas\.
 
-   ![post](./q_7.webp)
+   ![post](../../../blog/2019_07_05_query/q_7.webp)
 
 2. Aclarando qué hace exactamente la opción de \'seguir\'\. No estoy seguro de si introducir mi correo electrónico me suscribe a todas las preguntas de ese tema de noticia\, a todas las preguntas de Query o solo a una pregunta sobre el tema
 
-   ![post](./q_8.webp)
+   ![post](../../../blog/2019_07_05_query/q_8.webp)
 
    Incluso después de hacer clic en \'seguir\'\, no sé qué se supone que debe hacer unirse\:
 
-   ![post](./q_9.webp)
+   ![post](../../../blog/2019_07_05_query/q_9.webp)
 
 3. Etiquetar preguntas y tener una función de búsqueda parece algo que será útil o incluso necesario cuando esto crezca
 

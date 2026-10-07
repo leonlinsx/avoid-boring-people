@@ -4,7 +4,7 @@ description: "行動的エッジの難しさ"
 pubDate: 2021-02-06
 category: Risk & Decision Making
 tags: ['finance', 'games', 'risk']
-heroImage: './g_3.png'
+heroImage: '../../../blog/2021_02_06_gambling_size/g_3.png'
 featured: false
 locale: 'ja'
 sourceSlug: 'gambling_size'
@@ -35,7 +35,7 @@ sourceHash: '6c4aa4a154b35a9efefc547de8010057f4b9d7daf4df3d4723815d449b29cf9d'
 
 その「感覚」の違いこそが、人々が大きな金額を稼げる理由です。複利は効果を発揮するのに時間がかかります。忍耐に対して報酬がもらえます。
 
-![post](./g_1.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_1.webp)
 
 **リスクと破滅。**長期的な投資を考えるとき、どれだけ稼いでも全てを失えば意味がありません。1万%の利益の後に100%の下落が続くのは、やはりひどい結果です。破産のリスクを避け、「ゲームにとどまる」ことだけが大切なのです。私の言うことを鵜呑みにしないでください、こちらはハワード・マークスとチャーリー・マンガーの両方です:
 
@@ -57,7 +57,7 @@ sourceHash: '6c4aa4a154b35a9efefc547de8010057f4b9d7daf4df3d4723815d449b29cf9d'
 
 だからこそ、私たちの生涯でAmazonのような株が100倍も>見られ、アクティブマネージャーは同じことをしないのです。もし他の誰もが仕事を守るために取引をしなければならないなら、何もしないことがむしろ有利になるかもしれません。
 
-![post](./g_2.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_2.webp)
 
 **退屈 vs ワクワクする。** なぜ上記の行動が難しいのでしょうか?それは「退屈」だからです。私たちは活動が好きで、じっとしているのが嫌いです。カクテルパーティーで自分の成長が小さくてゆっくりで、シンプルだと自慢するのは難しいです。["sin stocks" need to have higher expected excess returns](https://www.aqr.com/Insights/Perspectives/Virtue-is-its-Own-Reward-Or-One-Mans-Ceiling-is-Another-Mans-Floor 'asness')と同様に、「退屈」のストック行動も優位性を与えてくれます。
 

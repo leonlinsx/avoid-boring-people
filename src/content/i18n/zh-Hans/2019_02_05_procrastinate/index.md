@@ -4,7 +4,7 @@ description: "为成功构建你的拖延"
 pubDate: 2019-02-05
 category: Culture
 tags: ['behaviour']
-heroImage: './pro_1.png'
+heroImage: '../../../blog/2019_02_05_procrastinate/pro_1.png'
 locale: 'zh-Hans'
 sourceSlug: 'procrastinate'
 sourceHash: '2afff221eb30ecefc6024021cc1be7111f01a2e08c748254a9bf804ca07cd584'

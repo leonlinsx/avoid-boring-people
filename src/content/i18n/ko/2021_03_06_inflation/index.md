@@ -4,7 +4,7 @@ description: "인과관계, 측정 및 조정"
 pubDate: 2021-03-06
 category: Investing
 tags: ['inflation']
-heroImage: './i_3.webp'
+heroImage: '../../../blog/2021_03_06_inflation/i_3.webp'
 locale: 'ko'
 sourceSlug: 'inflation'
 sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
@@ -24,7 +24,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 말도 안 된다고 할 수도 있겠죠\, 세상에는 정말 많은 사람들이 있습니다 [making policy based on inflation targets](https://www.federalreserve.gov/faqs/economy_14400.htm 'fed')\, 말하는 거 [hedging against inverted yield curves](https://www.chathamfinancial.com/insights/hedging-in-an-inverted-yield-curve-environment 'yield')그리고 구글 트렌드를 믿는다면\, 소닉 더 헤지혹 게임도 있을 거예요 [(apparently some weird nsfw meme).](https://tvtropes.org/pmwiki/pmwiki.php/VideoGame/SonicInflationAdventure 'sonic')
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_06_inflation/i_1.webp)
 
 네\, 하지만 그렇다고 해서 그들이 어떻게 돌아가는지 안다는 뜻은 아닙니다\. 제 업무 경험이 가르쳐준 게 있다면\, 사람들은 자신이 무엇을 하는지 이해하지 못한 채 엄청난 양의 일을 할 수 있다는 점입니다 [^1]\. 나심 탈렙은 이전에 금융 트레이더가 녹색 목재 거래에 성공한 이야기를 썼습니다 [without understanding what it was.](https://fs.blog/2016/11/green-lumber-fallacy/ 'taleb')
 
@@ -46,7 +46,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 인플레이션의 또 다른 큰 문제는 **기대에 의해 영향을 받았다\.** 수학적 법칙을 따르길 바라는 것은 주식시장이 미래 현금 흐름의 현재 가치를 완벽하게 반영하기를 기대하는 것과 같습니다\. 그래서 인플레이션 목표를 목표로 삼기가 매우 어려운 것입니다\:
 
-![post](./i_2.webp)
+![post](../../../blog/2021_03_06_inflation/i_2.webp)
 
 미국 연준은 2\% 목표를 가지고 있어서\, 위 첫 문장은 1\) 연준이 업무를 형편없다거나 2\) 진짜로 어려운 일로 해석될 수 있습니다\. 저는 시스템의 복잡성을 고려할 때 후자라고 믿는 편입니다 [^3]\.
 
@@ -56,7 +56,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 사람들이 자신감을 잃으면 다음과 같은 상황이 생깁니다\:
 
-![post](./i_3.webp)
+![post](../../../blog/2021_03_06_inflation/i_3.webp)
 
 인플레이션에 대해 제가 편하게 말할 수 있는 유일한 점은 이것뿐인 것 같습니다\:
 

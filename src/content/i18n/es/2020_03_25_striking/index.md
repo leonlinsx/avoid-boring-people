@@ -4,7 +4,7 @@ description: "Conviértete en la copa"
 pubDate: 2020-03-25
 category: Culture
 tags: ['behaviour']
-heroImage: './b_1.webp'
+heroImage: '../../../blog/2020_03_25_striking/b_1.webp'
 locale: 'es'
 sourceSlug: 'striking'
 sourceHash: 'ca42f075d918a163ac98333b3828d4ba37c875e70b4b606cbdc462140576c51e'

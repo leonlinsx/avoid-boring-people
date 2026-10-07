@@ -4,7 +4,7 @@ description: "Comprendre les types d’amélioration des processus"
 pubDate: 2020-08-26
 category: System Design
 tags: ['business']
-heroImage: './p_6.webp'
+heroImage: '../../../blog/2020_08_26_process/p_6.webp'
 locale: 'fr'
 sourceSlug: 'process'
 sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
@@ -18,7 +18,7 @@ Michael Filler et Matthew Realff proposent que tous les processus proviennent de
 
 Si on vous demandait de comparer l’objet à gauche avec celui de droite\, quels arguments soulèveriez\-vous \?
 
-![post](./p_1.webp)
+![post](../../../blog/2020_08_26_process/p_1.webp)
 
 L’une des premières choses que vous remarqueriez serait le matériau\. La gauche est en pierre\, la droite en bronze\.
 
@@ -30,7 +30,7 @@ En me concentrant sur ce sujet du processus\, [Michael Filler and Matthew Realff
 
 Les auteurs proposent que des améliorations dans les processus ont permis de réaliser de grands progrès visibles pour l’humanité\. Cependant\, les gens négligent les changements dans le processus intangible et se concentrent trop sur les changements du produit physique\. Dans notre exemple de pointe de flèche ci\-dessus\, les gens se concentrent sur le résultat pierre vs bronze\, sans examiner l’amélioration du procédé de coupe vs fusion [^1]\. Ces innovations à fort impact dans les processus sont ce qu’on appelle FMPI\.
 
-![post](./p_2.webp)
+![post](../../../blog/2020_08_26_process/p_2.webp)
 
 Il est difficile de remarquer les améliorations des processus car elles sont intangibles et nécessitent de voir la situation sous un autre angle\. On s’abstrait des détails et on essaie de trouver des relations de haut niveau pour représenter ce que l’on fait\. C’est un peu comme la théorie des groupes en mathématiques qui essaie d’abstractionner de l’application pratique\.
 
@@ -60,7 +60,7 @@ Vous pouvez combiner plusieurs étapes \(type 5\) ou transformer une étape en p
 
 Enfin\, vous pouvez éliminer des éléments en étant soustractif \(type 7\) ou ajouter des éléments en étant additif \(type 8\)
 
-![post](./p_3.webp)
+![post](../../../blog/2020_08_26_process/p_3.webp)
 
 En utilisant différentes variantes des 8 types ci\-dessus\, vous pouvez améliorer votre façon de faire les choses\. Regardons des exemples plus concrets\.
 
@@ -70,13 +70,13 @@ Le travail de Jean Hoerni et Robert Noyce chez Fairchild Semiconductor à la fin
 
 Le processus de fabrication comprend également de nombreuses étapes de soustraction \(type 7\) et d’addition \(type 8\)\. Dans le schéma ci\-dessous de [Electronics Tutorial](https://www.electronics-tutorial.net/CMOS-Processing-Technology/planar-process-technology/ 'Elec')\, on peut voir l’élimination du silicium \(SiO2\) et l’ajout de matériau dopant pour créer des propriétés semi\-conductrices pour ce matériau\.
 
-![post](./p_4.webp)
+![post](../../../blog/2020_08_26_process/p_4.webp)
 
 ### Le séquençage de l’ADN a été amélioré par parallélisation
 
 Dans les années 1970\, le séquençage de l’ADN était lent et exigeait beaucoup de travail\, car on pensait qu’il fallait travailler séquentiellement sur toute la chaîne d’ADN\. Joachim Messing et Peter Seeburg ont développé un [shotgun approach](https://en.wikipedia.org/wiki/Joachim_Messing 'DNA')\, qui décompose l’ADN en fragments aléatoires pour permettre un séquençage plus rapide\. En effectuant plusieurs fragments qui se chevauchent\, cela a permis la parallélisation \(type 1\) dans le processus de séquençage\, augmentant considérablement la vitesse\, réduisant le coût et diminuant la quantité d’ADN requise [^4]\.
 
-![post](./p_5.webp)
+![post](../../../blog/2020_08_26_process/p_5.webp)
 
 ### L’impression 3D est un changement de mentalité de la soustraction à l’addition
 
@@ -86,13 +86,13 @@ Comme vous pouvez l’imaginer\, cela crée des déchets de matériaux\. Pour de
 
 En revanche\, [3D printing](https://3dprintingindustry.com/3d-printing-basics-free-beginners-guide '3D') est additif \(type 8\)\. Cela signifie qu’il y a beaucoup moins de déchets dans la production\, puisque vous imprimez presque exactement ce dont vous avez besoin de bas en bas\. [Besides the cost savings, this also allows creation of more complicated structures in fewer steps.](https://bitfab.io/blog/additive-manufacturing/ 'bit')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_08_26_process/p_6.webp)
 
 ### Questions ouvertes sur le FMPI
 
 Les auteurs affirment que les améliorations des procédés ci\-dessus ont été essentielles à la réduction des coûts dans ces secteurs\, comme on le voit ci\-dessous\.
 
-![post](./p_7.webp)
+![post](../../../blog/2020_08_26_process/p_7.webp)
 
 Outre la possibilité de permettre une évolution technologique\, le FMPI présente les caractéristiques suivantes \:
 

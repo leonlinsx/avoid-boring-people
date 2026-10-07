@@ -4,7 +4,7 @@ description: "Pourquoi la plupart des entreprises, même dans la tech, sont mauv
 pubDate: 2020-07-15
 category: Technology
 tags: ['business', 'startups']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_07_15_turtle/t_3.webp'
 locale: 'fr'
 sourceSlug: 'turtle'
 sourceHash: '350a3fc3117a588d40ffda1e362a4272b665ee57cf4be889be526c4129f66586'
@@ -22,13 +22,13 @@ Je vais considérer que tout le monde connaît bien le [tortoise vs hare fable.]
 
 Faisons une piste de course de 1 km\. On suppose que la tortue met 100 minutes à courir 1 km\, et que le lièvre met 20 minutes à courir 1 km\. Cependant\, le rythme de sommeil du lièvre a été perturbé à cause du covid et il y a 95 \% de chances qu’il dorme à chaque bloc de 20 minutes\. Autrement dit\, il y a 5 \% de chances qu’il soit éveillé pendant les minutes 0 à 20\, puis 5 \% de chances qu’il soit éveillé pendant les minutes 20 à 40\, et 5 \% de chances qu’il soit éveillé pendant les minutes 40 à 60\, etc\.
 
-![post](./t_1.webp)
+![post](../../../blog/2020_07_15_turtle/t_1.webp)
 
 Quelle est la chance que le lièvre batte la tortue \?
 
 Pour ceux d’entre vous qui se souviennent de la probabilité au lycée\, nous pouvons calculer cela avec un [binomial distribution formula.](https://online.stat.psu.edu/stat414/lesson/10/10.3 'binom') La formule ressemble à ceci \:
 
-![post](./t_2.webp)
+![post](../../../blog/2020_07_15_turtle/t_2.webp)
 
 Mais cela fait peur avec des signes de sommation et des points d’exclamation\, et j’ai promis de garder les calculs simples\. Une façon de raccourcir le calcul est d’observer qu’il y a 5 « blocs de 20 minutes » pour que le lièvre s’endorme ou soit éveillé\, puisque le lièvre est 5 fois plus rapide que la tortue\. Tant que le lièvre est réveillé une fois\, il gagnera\. Donc\, la seule fois où le lièvre perd\, c’est quand il dort toutes ces fois\. C’est un calcul beaucoup plus simple\, puisque cela ne fait que 95 \% de sa propre multiplication par 5 fois\, soit 0\,95 fois la puissance de 5 [^3]\.
 
@@ -40,11 +40,11 @@ Il n’y a qu’un seul cas où aucun lièvre ne gagne\, c’est\-à\-dire lorsq
 
 En d’autres termes\, il est presque garanti qu’au moins une fois\, un lièvre gagnera\.
 
-![post](./t_3.webp)
+![post](../../../blog/2020_07_15_turtle/t_3.webp)
 
 J’ai mis les calculs dans un google sheet [here](https://docs.google.com/spreadsheets/d/1-_LV1ewb0D4DsERENaM_xp0oy8pHH7xWmAvNX8H9bdE/edit?usp=sharing 'sheet') Avec laquelle tu peux jouer [^4]\. Vous pouvez aussi voir sur le graphique ci\-dessous qu’il ne faut même pas autant de courses pour que les chances qu’au moins un lièvre gagne approchent 100 \%\. Rappelez\-vous\, c’est un lièvre qui gagne\, pas la majorité des lièvres qui gagnent\.
 
-![post](./t_4.webp)
+![post](../../../blog/2020_07_15_turtle/t_4.webp)
 
 Les mathématiques sont moins importantes que les conclusions à retenir\. **Ce que nous avons déduit\, c’est que même lorsque les chances qu’un événement se produise seul\(e\) sont faibles\, une partie répétée garantira probablement que l’événement se produise une seule fois\.** Tout comme il est peu probable que vous gagniez à la loterie\, il est probable qu’il y ait au moins un gagnant\.
 

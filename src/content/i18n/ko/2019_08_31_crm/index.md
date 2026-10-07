@@ -4,7 +4,7 @@ description: "페어 트레이드, 개인 CRM, 그리고 자기 인식"
 pubDate: 2019-08-31
 category: System Design
 tags: ['software', 'investing']
-heroImage: './c_4.webp'
+heroImage: '../../../blog/2019_08_31_crm/c_4.webp'
 locale: 'ko'
 sourceSlug: 'crm'
 sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
@@ -26,21 +26,21 @@ sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
 
 Overstock\.com 를 또 다른 예로 들어봅시다\. 그들의 이전 [CEO resigned so he could let everyone know he'd dated a Russian spy,](https://www.forbes.com/sites/laurendebter/2019/08/22/the-exclusive-inside-story-of-the-fall-of-overstocks-mad-king-patrick-byrne/#176918ea53a5 'Forbes') [^3] 그는 2017년에 회사를 구하기 위해 블록체인으로 전환하려 했습니다\. 만약 Overstock도 이 부분에서 실패할 것이라고 생각해 2017년 8월에 20달러에 Overstock을 매도했다고 가정해 봅시다\:
 
-![post](./c_1.webp)
+![post](../../../blog/2019_08_31_crm/c_1.webp)
 
 주가가 서서히 오르면서\, 당신은 이 상태가 오래가지 못할 것이라는 확신에 두 배로 가격을 내립니다\. 어쩐지 오래가고\, 2017년 11월에 60달러의 주가를 마주하게 됩니다\:
 
-![post](./c_2.webp)
+![post](../../../blog/2019_08_31_crm/c_2.webp)
 
 앗\. 서류상 손실뿐만 아니라\, 노출 금액이 처음 보유하고 편안했던 것의 배수가 됩니다\. 지금 포지션을 청산하면 현재 60달러에서 처음 벌었던 20달러를 뺀 40달러를 잃게 됩니다\. 이제 원한이 생기고 이 주식을 완전히 공매도하거나 파산할 결심을 하고 있어서 다음 해까지 버지합니다\:
 
-![post](./c_3.webp)
+![post](../../../blog/2019_08_31_crm/c_3.webp)
 
 중개인이 휴가에서 돌아왔는데 당신에게 발급하는 것을 깜빡했다는 것을 깨닫습니다 [margin call](https://www.investopedia.com/ask/answers/05/shortmarginrequirements.asp 'margin') 그동안 이렇게 공황 상태에서 벌어지고 있습니다\. 주식을 공매도할 때는 보통 주식 가치의 약 130\%를 담보로 필요로 하는 백업 자금입니다 [^4]\. 주식이 20달러였을 때는 26달러를 따로 떼어놓는 것이 문제가 되지 않았습니다\. 하지만 지금은 104달러를 따로 떼어놓아야 하고\, 중개인은 78달러의 차액\(104달러에서 26달러을 뺀 금액\)을 보완하길 원합니다\. 초기에 가지고 있던 돈에 따라\, 이 추가 78달러\(초기 노출의 3배\!\)는 쉽게 당신을 파산시킬 수 있습니다\. 당신은 포지션을 청산하고 Go Fund Me를 설정하여 차액을 메워야 합니다\.
 
 그리고 물론 이런 일이 벌어집니다\:
 
-![post](./c_4.webp)
+![post](../../../blog/2019_08_31_crm/c_4.webp)
 
 여기서 핵심은 당신이 옳았다는 점입니다 \- Overstock이 시도한 블록체인 피벗은 효과가 없었습니다\. 하지만 타이밍이 잘못되어 돈과 평판을 잃었습니다\. 주식을 공매도하는 것이 \'명백한\' 일일 때조차도\, 예를 들어 [bad quality companies changing their name to get a price bump](https://www.winton.com/longer-view/the-history-of-company-names 'names')\, 그 [time period](https://www.sciencedirect.com/science/article/pii/S0165176519301703 'time') 논문이 진행되기 위해 필요한 조건이 미리 파산할 수도 있습니다\.
 
@@ -84,15 +84,15 @@ Overstock\.com 를 또 다른 예로 들어봅시다\. 그들의 이전 [CEO res
 
 성장 [Superhuman](https://techcrunch.com/2019/06/27/my-six-months-with-30-month-email-service-superhuman/ 'techcrunch')혁신적인 경험을 제공하는 대가로 요금을 부과하는 이메일 앱이 큰 열풍을 불러일으켰습니다 [premium subscription services](https://techcrunch.com/2019/08/27/kleiner-perkins-bets-on-a-premium-email-service-thats-bringing-slack-groups-into-gmail/ 'kleiner')\. 최근 기술 트위터에서는 개인 CRM\(고객 관계 관리\)이라는 개념이 부활했는데\, 이는 개인 관계를 관리하는 데 도움을 주는 소프트웨어입니다\.
 
-![post](./c_5.webp)\)
+![post](../../../blog/2019_08_31_crm/c_5.webp)\)
 
 의견이 갈렸다\. 어떤 사람들은\.\.\. 미지근했다
 
-![post](./c_6.webp)
+![post](../../../blog/2019_08_31_crm/c_6.webp)
 
 다른 이들은 트위터가 이미 개인 CRM 역할을 한다고 주장했습니다
 
-![post](./c_7.webp)
+![post](../../../blog/2019_08_31_crm/c_7.webp)
 
 [And some people pointed out how this recurring idea continues to attract new startups](https://twitter.com/devahaz/status/1164224618602758144 'twitter')
 
@@ -100,7 +100,7 @@ Overstock\.com 를 또 다른 예로 들어봅시다\. 그들의 이전 [CEO res
 
 아\, 잠깐만요\.
 
-![post](./c_8.webp)
+![post](../../../blog/2019_08_31_crm/c_8.webp)
 
 당신이 생각하든 말든 [Facebook has Zucked the world](https://www.theguardian.com/books/2019/feb/07/zucked-waking-up-to-facebook-catastrophe 'FB')그 성공은 사람들이 개인 관계를 관리할 방법을 원한다는 것을 보여줍니다\. 개인 CRM은 어리석은 생각이 아니며\, 저는 그것을 완전히 무시하지도 않을 것입니다\. 문제는 기존 시스템에서 어떻게 혁신할지\, 그리고 사람들이 비용을 지불하도록 만드는 데 있습니다\.
 

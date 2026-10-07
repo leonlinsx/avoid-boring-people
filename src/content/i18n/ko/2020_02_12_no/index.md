@@ -4,7 +4,7 @@ description: "답장하지 않는 것이 아니며, 그래서 사람들을 보�
 pubDate: 2020-02-12
 category: Culture
 tags: ['community']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2020_02_12_no/n_1.webp'
 locale: 'ko'
 sourceSlug: 'no'
 sourceHash: '72931589cd8d53126553f8231f70fa7ca4c25614b1d09260165fd3b3dcbd72f9'

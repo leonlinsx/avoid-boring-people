@@ -5,7 +5,7 @@ pubDate: 2020-08-19
 category: Culture
 tags: ['predictions']
 evergreen: false
-heroImage: './c_3.png'
+heroImage: '../../../blog/2020_08_19_city/c_3.png'
 locale: 'zh-Hans'
 sourceSlug: 'city'
 sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
@@ -23,7 +23,7 @@ sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
 
 我更乐观地认为大城市能够挺过这一困境。作为一个量化方式——我有80\%的信心认为五年后纽约市的人口会比现在更多 [^1]\.作为背景介绍，直到最近，纽约市的年增长率一直是0\.30\%。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_08_19_city/c_1.webp)
 
 <a href='https://www.macrotrends.net/cities/23083/new-york-city/population'>纽约市大都会区人口 1950\-2020</a>
 
@@ -35,7 +35,7 @@ sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
 
 不过最近，城市几乎失去了所有吸引人们的东西。你可能保持不变，想要同样的东西，但城市已经改变了。如果你还记得我们的 [pace layer](/writing/pace 'pace') 讨论中，“治理”、“基础设施”和“商业”层的进展都比预期更快。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_08_19_city/c_2.webp)
 
 这种波动导致人们的观念发生了变化。过去对远程办公地点的犹豫，如今变成了对租金在德克萨斯州奥斯汀还能用多少的热情评估。对许多人来说，曾经难以想象的事情现在成了理所当然的选择。
 

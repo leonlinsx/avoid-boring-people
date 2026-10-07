@@ -4,7 +4,7 @@ description: "Por que a maioria das empresas, mesmo na área de tecnologia, é r
 pubDate: 2020-07-15
 category: Technology
 tags: ['business', 'startups']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_07_15_turtle/t_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'turtle'
 sourceHash: '350a3fc3117a588d40ffda1e362a4272b665ee57cf4be889be526c4129f66586'
@@ -22,13 +22,13 @@ Vou dar como certo que todos conhecem o [tortoise vs hare fable.](http://read.go
 
 Vamos ter uma pista de corrida de 1 km\. Vamos supor que a tartaruga leva 100 minutos para correr 1 km\, e a lebre leva 20 minutos para correr 1 km\. No entanto\, o horário de sono da lebre foi bagunçado por causa da covid e há 95\% de chance de ela dormir em cada bloco separado de 20 minutos\. Em outras palavras\, há 5\% de chance de ela estar acordada nos minutos 0\-20\, e depois mais 5\% de chance de estar acordada nos minutos 20\-40\, e mais 5\% de chance de estar acordada nos minutos 40\-60\, etc\.
 
-![post](./t_1.webp)
+![post](../../../blog/2020_07_15_turtle/t_1.webp)
 
 Qual a chance da lebre vencer a tartaruga\?
 
 Para quem lembra da probabilidade do ensino médio\, podemos calcular isso com um [binomial distribution formula.](https://online.stat.psu.edu/stat414/lesson/10/10.3 'binom') A fórmula é a seguinte\:
 
-![post](./t_2.webp)
+![post](../../../blog/2020_07_15_turtle/t_2.webp)
 
 Mas isso parece assustador com sinais de soma e pontos de exclamação\, e eu prometi manter a matemática simples\. Uma forma de apontar o cálculo é observar que há 5 \"blocos de 20 minutos\" para a lebre adormecer ou ficar acordada\, já que a lebre é 5 vezes mais rápida que a tartaruga\. Desde que a lebre esteja acordada uma vez\, ela vence\. Então\, a única vez que a lebre perde é quando dorme todas essas vezes\. Esse é um cálculo muito mais fácil\, já que isso é apenas 95\% vezes 5 vezes a si mesma\, ou 0\,95 vezes o poder de 5 [^3]\.
 
@@ -40,11 +40,11 @@ Só existe um caso em que nenhuma lebre vence\, que é quando todas as corridas 
 
 Em outras palavras\, é quase garantido que pelo menos uma vez uma lebre vença\.
 
-![post](./t_3.webp)
+![post](../../../blog/2020_07_15_turtle/t_3.webp)
 
 Coloquei a matemática em uma planilha do Google [here](https://docs.google.com/spreadsheets/d/1-_LV1ewb0D4DsERENaM_xp0oy8pHH7xWmAvNX8H9bdE/edit?usp=sharing 'sheet') que você pode brincar [^4]\. Você também pode ver no gráfico abaixo que nem são necessárias tantas corridas para que as chances de pelo menos uma lebre vencer se aproximem de 100\%\. Lembre\-se\, essa é uma lebre vencendo\, não a maioria das lebres vencendo\.
 
-![post](./t_4.webp)
+![post](../../../blog/2020_07_15_turtle/t_4.webp)
 
 A matemática é menos importante do que a lição\, porém\. **O que inferimos é que\, mesmo quando as chances de algo acontecer sozinho são baixas\, um jogo repetido provavelmente garantirá que o evento aconteça uma vez\.** Assim como é improvável que você ganhe na loteria\, é provável que haja pelo menos um vencedor da loteria\.
 

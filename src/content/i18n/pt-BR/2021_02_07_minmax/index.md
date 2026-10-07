@@ -5,7 +5,7 @@ pubDate: 2021-02-07
 category: Risk & Decision Making
 tags: ['skill']
 featured: false
-heroImage: './min_2.webp'
+heroImage: '../../../blog/2021_02_07_minmax/min_2.webp'
 locale: 'pt-BR'
 sourceSlug: 'minmax'
 sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
@@ -51,7 +51,7 @@ Só por diversão\, queria ver se podíamos encontrar experiências que nos dess
 
 Tentei procurar eventos que causassem picos altos de dopamina\, que eu presumia serem induzidos por drogas\. Foi difícil encontrar o potencial de prazer dos narcóticos em humanos online\, quase como se as pessoas não quisessem que você usasse drogas ou algo assim\. O que acabei encontrando foi um estudo com ratos em [heroin](https://onlinelibrary.wiley.com/doi/abs/10.1002/syn.890210207 'heroin')\, mostrando um aumento de 4 vezes na dopamina quando dopado [^6]\. Isso é alto\, mas menor do que eu esperava e ainda assim não é o 10x que queremos [^7]\.
 
-![min](./min_1.webp)
+![min](../../../blog/2021_02_07_minmax/min_1.webp)
 
 Acabamos tendo que deixar nossos domínios de física\, química e biologia e\, em vez disso\, ir para áreas mais abstratas [^8]\.
 
@@ -67,7 +67,7 @@ Ronaldo tem 264 milhões de seguidores no Instagram\, comparado à média de usu
 
 Isso é definitivamente mais de 10x\, mesmo desconsiderando bastante\. Tracei essas novas áreas em relação às físicas\, usando uma escala logarítmica para considerar as enormes diferenças de magnitude\; cada linha representa um aumento de 10x\. Veja as notas de rodapé para as fontes [^9]\.
 
-![min](./min_2.webp)
+![min](../../../blog/2021_02_07_minmax/min_2.webp)
 
 Encontramos algumas vias onde nossos esforços podem escalar\, e os retornos marginais decrescentes não diminuem tão rapidamente\. O teto é muito maior nessa área\, e temos uma possibilidade maior de diferenciação em comparação com a média\.
 
@@ -86,7 +86,7 @@ Distribuição mais rápida\, crescimento maior\, resultados mais fortes\.
 
 Alguns de vocês podem relacionar isso às leis de potência\, e como as redes podem ter partes que são dramaticamente mais importantes que outras\. [There's some debate over whether power laws exist in real life](https://www.quantamagazine.org/scant-evidence-of-power-laws-found-in-real-world-networks-20180215/ 'real')\, mas é realmente o mesmo conceito – existem sistemas onde pessoas\, coisas ou partes são muito mais significativas [^10]\.
 
-![min](./min_3.webp)
+![min](../../../blog/2021_02_07_minmax/min_3.webp)
 
 Para deixar claro\, não estou dizendo que tudo o que existe na vida é maximizar sua influência ou riqueza\. No entanto\, saber o limite superior potencial de uma área ajuda a descobrir quanto esforço você pode querer colocar e onde parar\. Ser 10 vezes melhor geralmente envolve se afastar do físico e entrar no tecnológico\.
 

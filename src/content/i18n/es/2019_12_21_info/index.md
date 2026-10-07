@@ -4,7 +4,7 @@ description: "La rentabilidad decreciente de muchos modelos de negocio dependien
 pubDate: 2019-12-21
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_12_21_info/i_1.webp'
 locale: 'es'
 sourceSlug: 'info'
 sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
@@ -36,7 +36,7 @@ No estoy seguro de si estoy entendiendo bien el argumento aquí\, y de hecho dis
 
 Las reflexiones sobre esto están en proceso\, pero algo como lo siguiente\:
 
-![post](./i_1.webp)
+![post](../../../blog/2019_12_21_info/i_1.webp)
 
 > En nuestro nuevo mundo abundante en información\, parece más difícil para cualquier empresa o persona acaparar y explotar el valor de la información propietaria\. \\\[\.\.\.\\\] Lo que parece quedar para los inversores son los problemas de información que no escalan \(hiper\-local\) y los que sí \(hiper\-escalan\)\.
 

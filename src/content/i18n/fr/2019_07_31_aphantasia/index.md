@@ -4,7 +4,7 @@ description: "Aphantasie et différences de visualisation"
 pubDate: 2019-07-31
 category: Culture
 tags: ['science']
-heroImage: './a_2.png'
+heroImage: '../../../blog/2019_07_31_aphantasia/a_2.png'
 locale: 'fr'
 sourceSlug: 'aphantasia'
 sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
@@ -14,7 +14,7 @@ sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
 
 J’ai juste appris que chacun visualise différemment\. Faites ce test de 10 secondes \:
 
-![post](./a_1.webp)
+![post](../../../blog/2019_07_31_aphantasia/a_1.webp)
 
 Je suis à 3 à 4\, alors que ma cousine jure qu’elle est à 6 [^1]\. Cela explique en grande partie ma confusion chaque fois que les gens me demandaient de visualiser les choses\.\.\. Je n’ai jamais réussi à obtenir le niveau de détail et la clarté que tout le monde semblait ressentir\.
 

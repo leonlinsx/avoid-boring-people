@@ -4,7 +4,7 @@ description: "Ce n’est pas la question de savoir si Vermeer a vraiment utilis�
 pubDate: 2019-06-23
 category: Culture
 tags: ['art']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_06_23_tim/t_1.webp'
 locale: 'fr'
 sourceSlug: 'tim'
 sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
@@ -14,9 +14,9 @@ Je viens d’apprendre [Tim's Vermeer](https://sonyclassics.com/timsvermeer/ 'we
 
 Si vous êtes comme moi et que vous ne connaissez pas grand\-chose à l’art\, voici un peu de contexte \: [Johannes Vermeer](https://en.wikipedia.org/wiki/Johannes_Vermeer 'wiki') était un peintre néerlandais qui a vécu de 1632 à 1675\. Il est aujourd’hui reconnu comme l’un des plus grands peintres de son époque\, notamment pour sa [realistic paintings and usage of light.](https://www.artble.com/artists/johannes_vermeer/more_information/style_and_technique 'vermeer style') [^1] Parmi les peintures célèbres figurent [^2]\:
 
-![post](./t_1.webp)
+![post](../../../blog/2019_06_23_tim/t_1.webp)
 
-![post](./t_2.webp)
+![post](../../../blog/2019_06_23_tim/t_2.webp)
 
 Il y a quelque temps\, David Hockney et Philip Steadman ont suggéré que **Vermeer et d’autres artistes auraient pu [used lenses and mirrors to achieve the realism in their paintings.](https://www.vanityfair.com/culture/2013/11/vermeer-secret-tool-mirrors-lenses 'Vanity Fair link')** La controverse suscitée a amené les gens à douter à la fois des hypothèses et des hypothèses de processus \:
 

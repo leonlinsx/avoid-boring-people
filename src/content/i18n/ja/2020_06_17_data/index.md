@@ -4,7 +4,7 @@ description: "プロの投資家が使うツール"
 pubDate: 2020-06-17
 category: Investing
 tags: ['data']
-heroImage: './data_9.webp'
+heroImage: '../../../blog/2020_06_17_data/data_9.webp'
 locale: 'ja'
 sourceSlug: 'data'
 sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
@@ -36,7 +36,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 これは投資リサーチのプロセスの一部であり、誰もができる公開情報の発見と活用です。以上から、企業の財務モデルを構築し、トレンドを分析し、投資の主張を形成するのに十分なデータがすでに手に入ります。実際、多くの個人投資家はこの部分を超えずに成功しています。前にも述べたように、投資で成功する方法は多岐にわたります。
 
-![post](./data_1.webp)
+![post](../../../blog/2020_06_17_data/data_1.webp)
 
 ### 公開データへのアクセス
 
@@ -52,7 +52,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 例えば、ある会社の収益を時間経過で素早く見たいとしましょう。Edgarで従来の方法で行うと、会社を検索しなければならず、次のようなページができます。
 
-![post](./data_2.webp)
+![post](../../../blog/2020_06_17_data/data_2.webp)
 
 その後、欲しい各申告書類を探してすべてダウンロードし、スプレッドシートにデータをコピーしなければなりません [^4].データをクリーンアップし、行を追加して年ごとの計算を行うと、ついに望む傾向が得られます。
 
@@ -60,13 +60,13 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 一つの会社の収益を見つけるために行ったすべての作業?FactSetでは、すべての上場企業向けに提供されています:
 
-![post](./data_3.webp)
+![post](../../../blog/2020_06_17_data/data_3.webp)
 
 もちろん、保存されるデータが常に完璧とは限りません [^5].しかし、すぐに参照できるものが必要な場合、すでにすべての作業を分かりやすくまとめてくれたプラットフォームは非常に貴重です。数回のキーストロークでデータが見つかれば、何時間もかけてデータを引き出す必要はありません。この利便性が、プラットフォームが粘着的な加入者数を請求できる理由の一つです [^6]とはいえ、ディスラプターは [Koyfin](https://www.koyfin.com/ 'koy') 彼らを下回ろうとしている。
 
 また、BamSECやLast10Kのような会社もあり、申請書類の検索を容易にしています。例えば、BamSECは異なる種類の提出書類をまとめて分類し、提出書類のタイトルを表示し、過去の申請書の発行版を素早く見つけることができます。これらの企業は上記のプラットフォームほど機能が充実していませんが、それでもアナリストの時間を節約できます。
 
-![post](./data_4.webp)
+![post](../../../blog/2020_06_17_data/data_4.webp)
 
 ### 売り手側のリサーチデータへのアクセス
 
@@ -82,7 +82,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 もちろん、誰も本当にそれをやりたくはないでしょう [^9]研究者たちはこのデータをプラットフォームに提供し、プラットフォームが投資家コミュニティに示します。売り手側のコンセンサスがどこにあるかの簡単な要約も、数回のキーストロークで確認できます。
 
-![post](./data_5.webp)
+![post](../../../blog/2020_06_17_data/data_5.webp)
 
 ### 企業経営へのアクセス
 
@@ -94,7 +94,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 いや、違う。バフェットの年次株主総会が、 [attracting 40k people yearly](https://www.investopedia.com/articles/investing/121715/how-attend-berkshire-hathaways-annual-meeting.asp 'Buffett')インサイダー取引ですか?もし違うなら、上記の会議は何が違うのでしょうか?パーティーに招待されなかったからといって違法というわけではありません。経営陣が何を言えるかを規制するルールはありますが、この慣習は長い間続いています。
 
-![post](./data_6.webp)
+![post](../../../blog/2020_06_17_data/data_6.webp)
 
 ### 業界の専門家
 
@@ -106,7 +106,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 いいえ、違います。もし医療会社に投資したいとしたら、医者の友人に会社について尋ねることはインサイダー取引だと思いますか?そうでなければ、なぜ上記のことが違うのでしょうか?仲介業者を使えないからといって違法とは限りません [^10].
 
-![post](./data_7.webp)
+![post](../../../blog/2020_06_17_data/data_7.webp)
 
 ### 業界データ
 
@@ -118,7 +118,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 店で客を数えに出かけることは違法でしょうか?
 
-![post](./data_8.webp)
+![post](../../../blog/2020_06_17_data/data_8.webp)
 
 ### これが個人投資家にとって何を意味するのか
 
@@ -146,7 +146,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 あなたがすべきことは、普通のプロがやろうとしがたいことを探すことです。プロがあなたよりも多くのリソースにアクセスできる世界では、望ましくない分野で有利な面を探す必要があります。下のチャートを見て、隙間を見つけてください。
 
-![post](./data_9.webp)
+![post](../../../blog/2020_06_17_data/data_9.webp)
 
 [^1]: 私はクオンツ系企業での経験がないので、個人的にはその点については話せません。クオンツについては知っています [pay for order flow though,](https://www.institutionalinvestor.com/article/b1m2p1cv68bx56/Twitter-Freaked-Out-Over-Robinhood-Selling-Its-Trade-Flow-But-the-App-and-Others-Have-Been-Doing-It-for-Years 'order') そして、それはおそらく300億ドルの数字に含まれているでしょう。別に、ヘッジファンドのような投資会社は投資銀行とは異なります。ほとんどの投資アナリストは、投資銀行家とは全く異なる仕事をしています。 [Sellside equity research is the role most similar to a hedge fund analyst, but researchers don't actually invest money.](/writing/time 'Sellside')
 

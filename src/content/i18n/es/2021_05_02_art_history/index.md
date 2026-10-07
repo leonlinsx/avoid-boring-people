@@ -4,7 +4,7 @@ description: "Diferentes definiciones de arte a lo largo de la historia"
 pubDate: 2021-05-02
 category: Culture
 tags: ['art']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2021_05_02_art_history/a_1.webp'
 locale: 'es'
 sourceSlug: 'art_history'
 sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
@@ -28,23 +28,23 @@ Supongamos que alguien se te acercara y dijera\: \"Estoy harto del arte falso de
 
 Quizá se los enseñes [The School of Athens,](https://en.wikipedia.org/wiki/The_School_of_Athens 'school') una pintura de Rafael durante el apogeo del Renacimiento italiano en el siglo XVI\. Con su representación realista de filósofos famosos y su uso de [linear perspective](<https://en.wikipedia.org/wiki/Perspective_(graphical)> 'perspective') para que todo parezca tridimensional\, el famoso fresco se considera una obra maestra que ejemplifica el Renacimiento\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_05_02_art_history/a_1.webp)
 
 O quizá rechazarías los temas históricos\, pensando que el arte no debería necesitar una lección moral asociada\. En cambio\, muestras una pintura del siglo XIX de Dominique Ingres que es puro placer y fantasía\, afirmando que el arte real no tiene por qué ser realista\. [La Grand Odalisque looks realistic on first glance, but taking a closer look shows that the spine is weirdly long, and the back leg is attached at a weird angle.](https://en.wikipedia.org/wiki/Grande_Odalisque 'wiki')
 
-![post](./a_2.webp)
+![post](../../../blog/2021_05_02_art_history/a_2.webp)
 
 Se podría decir que el placer es superficial\, y que es más puro conmemorar el sufrimiento moderno\, como en el siglo XIX de Goya [The Third of May](https://en.wikipedia.org/wiki/The_Third_of_May_1808 'may')\. Es menos realista que las obras anteriores\, con las figuras más planas y menos terminadas\. Tampoco es ya una fantasía\, ya que representa una tragedia real de la época de Goya [^2]\. Fue un cambio tan grande respecto a la tradición anterior que se la ha llamado \"una de las primeras pinturas de la era moderna\"\.
 
-![post](./a_3.webp)
+![post](../../../blog/2021_05_02_art_history/a_3.webp)
 
 Pero\, ¿por qué limitar la pintura a mostrar solo una instantánea en el tiempo\? ¿Y si\, en cambio\, vieras un objeto desde todo tipo de ángulos e intentaras plasmarlo en el lienzo plano\? Piensa en el bullet time de Matrix\, pero como pintura\; ¿no sería eso más fiel al objeto\? Mostrar una pieza cubista como la de Picasso en el siglo XX [Girl with a Mandolin](https://www.pablopicasso.org/girl-with-mandolin.jsp 'girl') sería una buena elección entonces\, con su intento de mostrar a alguien en 3D desde múltiples puntos de vista sobre una superficie 2D\.
 
-![post](./a_4.webp)
+![post](../../../blog/2021_05_02_art_history/a_4.webp)
 
 Y se podría decir que todo lo anterior es pretencioso\, y que el arte es solo colores y líneas sobre lienzo\. Mostrar a un Mondrian del siglo XX deja claro que no debemos engañarnos con el realismo\. El arte puro son formas platónicas [^3]\.
 
-![post](./a_5.webp)
+![post](../../../blog/2021_05_02_art_history/a_5.webp)
 
 Podría seguir\; hay tantos movimientos artísticos como criptomonedas\. El punto principal que quiero destacar es que el arte es subjetivo\, y mantener la mente abierta es esencial\. Debatir si algo es arte o no es una de esas preguntas filosóficas sin respuesta\.
 
@@ -65,11 +65,11 @@ Empecé con [draw a box](https://drawabox.com/ 'draw')\, y luego pasó a [New Ma
 
 Como apunte\, si [aphantasia is real](/writing/aphantasia 'abp')\, probablemente lo tenga\, ya que estoy en un 3\-4 en el examen de abajo\. No ha sido un obstáculo al dibujar desde referencias\, aunque puede serlo cuando dibujo desde la imaginación\.
 
-![post](./a_6.webp)
+![post](../../../blog/2021_05_02_art_history/a_6.webp)
 
 Aproximadamente un año de práctica diaria y 600 hojas de papel después [^8]\, aquí tienes una foto de progreso\. Y sí\, se supone que son la misma persona\:
 
-![post](./a_7.webp)
+![post](../../../blog/2021_05_02_art_history/a_7.webp)
 
 Y esto es lo que he aprendido en el camino\:
 

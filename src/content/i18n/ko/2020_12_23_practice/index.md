@@ -4,7 +4,7 @@ description: "개선 과정을 개선하는 방법"
 pubDate: 2020-12-23
 category: System Design
 tags: ['behaviour']
-heroImage: './p_1.webp'
+heroImage: '../../../blog/2020_12_23_practice/p_1.webp'
 locale: 'ko'
 sourceSlug: 'practice'
 sourceHash: '83d92533e1852a96e9a14531fd19964e22effd24ea5d03d0e06149c338b1ee69'

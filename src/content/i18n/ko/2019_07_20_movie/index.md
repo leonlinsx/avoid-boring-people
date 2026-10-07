@@ -4,7 +4,7 @@ description: "100년 후에야 개봉한 영화를 보시겠습니까?"
 pubDate: 2019-07-20
 category: Culture
 tags: ['movie']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2019_07_20_movie/m_1.webp'
 locale: 'ko'
 sourceSlug: 'movie'
 sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
@@ -16,9 +16,9 @@ sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
 
 하지만 일반 대중의 평가는 그리 긍정적이지 않았습니다\:
 
-![post](./m_2.webp)
+![post](../../../blog/2019_07_20_movie/m_2.webp)
 
-![post](./m_3.webp)
+![post](../../../blog/2019_07_20_movie/m_3.webp)
 
 영화가 아마 별로일 거라는 말\, 자위 광고라는 말\, 혹은 100년 후 관객들이 이 영화를 좋아하길 기대하는 게 자기중심적이라는 말까지 다양했다\.
 

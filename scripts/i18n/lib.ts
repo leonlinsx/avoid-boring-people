@@ -887,24 +887,76 @@ export function composeTranslatedFile(options: {
   return `---\n${[...head, ...lines, ...tail].join('\n')}\n---\n\n${translatedBody.replace(/^\n+/, '')}`;
 }
 
-/** Copy colocated assets (images, …) so relative body/hero paths keep working. */
-export function copyMissingAssets(sourceDir: string, targetDir: string): void {
-  let files: string[];
-  try {
-    files = fs.readdirSync(sourceDir);
-  } catch {
-    return;
-  }
-  for (const file of files) {
-    if (/^index\.mdx?$/i.test(file)) continue;
-    const from = path.join(sourceDir, file);
-    const to = path.join(targetDir, file);
-    try {
-      if (fs.statSync(from).isFile() && !fs.existsSync(to)) {
-        fs.copyFileSync(from, to);
+/** Rebase local Markdown asset destinations onto the English source files.
+ * Only existing files are changed; prose, alt text, titles, code, remote URLs,
+ * and public-root URLs retain their original bytes. No assets are copied.
+ */
+export function reuseSourceAssets(
+  content: string,
+  sourcePath: string,
+  translatedPath: string,
+): string {
+  const rebase = (url: string): string => {
+    if (/^(?:[a-z][a-z0-9+.-]*:|[/#])/i.test(url)) return url;
+    const [, pathname = '', suffix = ''] = url.match(/^([^?#]*)(.*)$/) ?? [];
+    const asset = path.resolve(path.dirname(sourcePath), decodeURI(pathname));
+    if (!fs.existsSync(asset) || !fs.statSync(asset).isFile()) return url;
+    return (
+      path
+        .relative(path.dirname(translatedPath), asset)
+        .split(path.sep)
+        .map(encodeURIComponent)
+        .join('/') + suffix
+    );
+  };
+  // Frontmatter hero paths are kept correct even though the localized route
+  // currently gets its hero from the English post.
+  const frontmatterEnd = content.startsWith('---\n')
+    ? content.indexOf('\n---', 4)
+    : -1;
+  const bodyStart = frontmatterEnd < 0 ? 0 : frontmatterEnd + 4;
+  const head = content
+    .slice(0, bodyStart)
+    .replace(
+      /^(heroImage:\s*)(['"]?)([^'"\n]+)\2$/gm,
+      (_match, key: string, quote: string, url: string) =>
+        `${key}${quote}${rebase(url)}${quote}`,
+    );
+  const body = content.slice(bodyStart);
+  const edits: Array<{ start: number; end: number; value: string }> = [];
+  const visit = (node: MarkdownNode): void => {
+    if (
+      ['image', 'link', 'definition'].includes(node.type) &&
+      typeof node.url === 'string'
+    ) {
+      const value = rebase(node.url);
+      if (value !== node.url) {
+        const { start, end } = sourceOffsets(node);
+        const raw = body.slice(start, end);
+        // A link label can itself contain an image with the same destination.
+        // Start after the label's children so only the outer URL is rewritten.
+        const labelEnd = node.children?.at(-1)?.position?.end.offset;
+        const destinationStart =
+          node.type === 'definition'
+            ? raw.indexOf(']:') + 2
+            : raw.indexOf('](', labelEnd === undefined ? 0 : labelEnd - start) +
+              2;
+        const offset = raw.indexOf(node.url, destinationStart);
+        if (offset < 0)
+          throw new Error(`Cannot rebase asset destination: ${node.url}`);
+        edits.push({
+          start: start + offset,
+          end: start + offset + node.url.length,
+          value,
+        });
       }
-    } catch {
-      // A missing asset must never fail translation; the build surfaces it.
     }
+    node.children?.forEach(visit);
+  };
+  visit(parseMarkdown(body));
+  let output = body;
+  for (const edit of edits.sort((a, b) => b.start - a.start)) {
+    output = output.slice(0, edit.start) + edit.value + output.slice(edit.end);
   }
+  return head + output;
 }

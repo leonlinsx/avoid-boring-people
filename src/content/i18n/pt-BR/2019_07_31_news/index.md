@@ -4,7 +4,7 @@ description: "O que está por trás do aumento da popularidade dos boletins info
 pubDate: 2019-07-31
 category: Technology
 tags: ['newsletter']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2019_07_31_news/n_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'news'
 sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
@@ -24,7 +24,7 @@ A estratequiaria tem [written before](https://stratechery.com/2015/why-web-pages
 
 Como [the CNBC article](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc') Observa\, porém\, alguns fatores levaram ao surgimento de modelos alternativos baseados em assinatura\. **O domínio e a eficácia do Google e do Facebook na publicidade digital fazem com que a publicidade em produtores tradicionais de conteúdo\, como sites de notícias\, tenha se tornado menos eficaz\.** Como anunciante\, prefiro gastar mais do meu orçamento de anúncios em onde 60\% da internet vai passar e obter um retorno maior sobre meus gastos com anúncios\.
 
-![post](./n_1.webp)
+![post](../../../blog/2019_07_31_news/n_1.webp)
 
 O controle absoluto do tráfego pelo Google e Facebook também pode resultar em um custo para adquirir o usuário marginal\, implicando que o custo marginal para servir não é mais zero\. Para o site de mídia comum\, você agora enfrenta um cenário em que o tráfego orgânico está diminuindo e o relacionamento com seu cliente é reduzido\, mas ainda enfrenta os problemas de uma abundância de conteúdo gratuito pela concorrência que dificulta sua diferenciação\.
 

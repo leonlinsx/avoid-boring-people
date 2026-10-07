@@ -4,7 +4,7 @@ description: "真的会因为心碎而死吗？"
 pubDate: 2019-06-08
 category: Culture
 tags: ['science']
-heroImage: './broken_1.png'
+heroImage: '../../../blog/2019_06_08_heart/broken_1.png'
 locale: 'zh-Hans'
 sourceSlug: 'heart'
 sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
@@ -20,7 +20,7 @@ sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
 
 文章还引用了一项关于所谓“寡妇效应”的元分析。我相信 [this](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0023465 'paper') 是引用的2011年论文，尽管我无法确认，因为Nautilus遗憾地没有提供来源。主要发现总结在下表中。如果我理解没错，RR栏暗示该行的相对死亡风险，例如男性在配偶去世后死亡的可能性是平均男性的1\.22倍。 [^3] [^4]
 
-![post](./broken_1.png)
+![post](../../../blog/2019_06_08_heart/broken_1.png)
 
 显然这种情况是半频繁发生的：
 

@@ -4,7 +4,7 @@ description: "どんな信念が時の試練に耐えうるのか"
 pubDate: 2019-05-04
 category: Culture
 tags: ['behaviour']
-heroImage: './m_2.webp'
+heroImage: '../../../blog/2019_05_04_microwave/m_2.webp'
 locale: 'ja'
 sourceSlug: 'microwave'
 sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
@@ -14,7 +14,7 @@ sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
 
 ノートルダム大火の後、消防士たちは木造建築よりも遺物の保存を優先したという話が広まりました。 [since oak trees from Versailles were intended as replacements](https://medium.com/the-long-now-foundation/long-now-lessons-from-notre-dame-925d27441bdc 'long now')\.
 
-![post](./m_1.webp)
+![post](../../../blog/2019_05_04_microwave/m_1.webp)
 
 リンクが示すように、これには実質的な根拠はほとんどありませんでした。しかし人々はそれが真実であってほしいと望み、その行動が意図的だと信じたがっていました。
 
@@ -54,7 +54,7 @@ sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
 
 > 何かを考えて心の表象を作るのではなく、何かをしようとして失敗し、修正し、何度も何度も挑戦することで構築します。終わったとき、あなたは開発していたスキルの効果的な精神的表象を身につけただけでなく、そのスキルに関連する多くの情報を吸収しています。
 
-![post](./m_2.webp)
+![post](../../../blog/2019_05_04_microwave/m_2.webp)
 
 重力はしばらく続くでしょう [^6]、そして私たちの食事の必要性や社会的交流の必要性も同様に理解しやすいでしょう。物理的・生物学的な原理はおそらく識別しやすいですが、社会的なサンプルサイズが難しい部分だと思います。人間は合理的に行動します\.\.\.そうでなくなるまでは。もし驚くような社会原理の例があれば教えてください。
 

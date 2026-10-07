@@ -4,7 +4,7 @@ description: "도마뱀 인간은 대형 하드론 충돌기를 만들었습니�
 pubDate: 2019-02-18
 category: Culture
 tags: ['behaviour']
-heroImage: './b_1.png'
+heroImage: '../../../blog/2019_02_18_why/b_1.png'
 locale: 'ko'
 sourceSlug: 'why'
 sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
@@ -14,7 +14,7 @@ sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
 
 지금은 주류 대중이 웃을 만한 \'미친\' 믿음들이 많습니다\. [Flat earthers.](https://en.wikipedia.org/wiki/Modern_flat_Earth_societies 'wiki page') [Moon landing deniers.](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories 'another wiki page') [Shape-shifting lizard people.](https://en.wikipedia.org/wiki/Reptilian_humanoid 'more wiki pages') [^1] 하지만 대부분의 사람들은 그것이 미친 일이라고 생각하지 않습니다 [70% of Americans](http://www.pewforum.org/religious-landscape-study/ 'religious breakdown') 존재를 지배하는 전능한 존재를 믿으며\, 대부분의 사람들이 그렇지 않다고 믿는다\. [^2] 생명은 어떤 형태의 미세한 조립 라인을 포함한다고 생각한다 [unzipping, squishing together, and re-zipping](https://www.youtube.com/watch?v=yqESR7E4b_8&t=1m50s 'DNA replication video')\. 저에게 흥미로운 점은 각 신앙마다 이단자에 맞서 자신의 신앙을 지키려는 열렬한 신자들이 있다는 것입니다\. 여기서 저는 종교\, 과학\, 철학 또는 기타 영역에서 \'신앙\'이라는 단어를 자유롭게 사용하고 있다는 점을 참고하세요\. 정치\, 종교\, 뉴욕 최고의 베이글 가게에 관한 열띤 토론이 얼마나 열띤 채로 발전하는지 보세요\.
 
-![post](./b_1.png)
+![post](../../../blog/2019_02_18_why/b_1.png)
 
 그렇다면 왜 우리는 정체성의 많은 부분을 형성하는 문제들을 믿는 걸까요\? 그럴 만한 이유가 있는지는 잘 모르겠습니다\. 많은 사람들에게 자란 환경이 대부분의 신념을 결정합니다\. 두 가지에는 상관관계가 있습니다\. [having religious parents and becoming religious](http://www.pewforum.org/2016/10/26/links-between-childhood-religious-upbringing-and-current-religious-identity/ 'religious upbringing')\, 몇 가지 증거가 [political views also transmit to children](https://www.researchgate.net/publication/231788296_Politics_Across_Generations_Family_Transmission_Reexamined 'politics across gens') [^3]\, 그리고 가능성도 있다 [your career choice might not really be your own.](https://waitbutwhy.com/2018/04/picking-career.html 'was it really me?') 만약 우리가 기본적으로 살지 않고 스스로 선택한 삶을 살고 싶어 한다면\, 이는 문제가 될 수 있습니다\. [Unexamined life not worth living and all that.](https://www.theguardian.com/theguardian/2005/may/12/features11.g24 'unexamined life')
 

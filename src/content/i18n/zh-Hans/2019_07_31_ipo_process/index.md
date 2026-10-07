@@ -4,7 +4,7 @@ description: "走进IPO流程"
 pubDate: 2019-07-31
 category: Investing
 tags: ['finance']
-heroImage: './ipo_1.webp'
+heroImage: '../../../blog/2019_07_31_ipo_process/ipo_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'ipo_process'
 sourceHash: '6f3cd57a4e491a255b96899fc1df5935004e873af2dce6466b146bd23825b416'
@@ -38,6 +38,6 @@ sourceHash: '6f3cd57a4e491a255b96899fc1df5935004e873af2dce6466b146bd23825b416'
 
 有人会认为，如果需求在46美元，BYND或许应该定价46美元，从而从投资者那里获得更多现金。比尔·格利则主张采用直接上市来匹配所有供需。
 
-![post](./ipo_1.webp)
+![post](../../../blog/2019_07_31_ipo_process/ipo_1.webp)
 
 我同意桌上还有钱，但想想另一种选择。假设BYND一开始定价100美元。那就没什么可行的了，但IPO后价格下跌的可能性更大。如果价格下跌，也许价格动能会让价格继续下跌。我们不知道BYND当前交易价格中有多少是动能造成的，我觉得情况也可能相反。公众仍然认为FB、GOOG和Uber的IPO是失败的，因为缺乏“爆发”。你可能会说谁在乎公众，但公司内部员工士气也受到了影响。 **我的观点是，目前公司对定价的动力较少，而且谁也不知道合适的价格是多少？**

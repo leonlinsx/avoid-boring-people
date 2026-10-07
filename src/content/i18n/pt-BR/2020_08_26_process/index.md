@@ -4,7 +4,7 @@ description: "Entendendo os tipos de melhoria de processos"
 pubDate: 2020-08-26
 category: System Design
 tags: ['business']
-heroImage: './p_6.webp'
+heroImage: '../../../blog/2020_08_26_process/p_6.webp'
 locale: 'pt-BR'
 sourceSlug: 'process'
 sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
@@ -18,7 +18,7 @@ Michael Filler e Matthew Realff propõem que todos os processos vêm de 8 tipos 
 
 Se você fosse questionado para comparar o objeto à esquerda com o objeto à direita\, quais pontos você faria\?
 
-![post](./p_1.webp)
+![post](../../../blog/2020_08_26_process/p_1.webp)
 
 Uma das primeiras coisas que você notaria seria o material\. A esquerda é feita de pedra\, a direita de bronze\.
 
@@ -30,7 +30,7 @@ Focando neste tema do processo\, [Michael Filler and Matthew Realff propose that
 
 Os autores propõem que há melhorias nos processos que resultaram em grande progresso visível para a humanidade\. No entanto\, as pessoas ignoram as mudanças no processo intangível e focam excessivamente nas mudanças no produto físico\. No nosso exemplo da ponta de flecha acima\, as pessoas focam no resultado entre pedra e bronze\, sem olhar para a melhoria do processo de corte versus fundição [^1]\. Essas inovações de processos de alto impacto são o que eles chamam de FMPI\.
 
-![post](./p_2.webp)
+![post](../../../blog/2020_08_26_process/p_2.webp)
 
 É difícil perceber melhorias no processo porque são intangíveis e exigem que você veja a situação de um ponto de vista diferente\. Você está abstraindo os detalhes e tentando encontrar relações de alto nível para representar o que está fazendo\. É um pouco como a teoria dos grupos em matemática tentando abstrair da aplicação prática\.
 
@@ -60,7 +60,7 @@ Você pode combinar vários passos \(tipo 5\) ou fatorar um passo em vários \(t
 
 Por fim\, você pode remover coisas sendo subtrativo \(tipo 7\) ou adicionar coisas sendo aditivo \(tipo 8\)
 
-![post](./p_3.webp)
+![post](../../../blog/2020_08_26_process/p_3.webp)
 
 Usando várias variações dos 8 tipos acima\, você pode mudar a forma como faz as coisas para melhor\. Vamos analisar exemplos mais concretos\.
 
@@ -70,13 +70,13 @@ O trabalho de Jean Hoerni e Robert Noyce na Fairchild Semiconductor no final dos
 
 O processo de fabricação também inclui muitas etapas de subtração \(tipo 7\) e adição \(tipo 8\)\. No diagrama abaixo\, de [Electronics Tutorial](https://www.electronics-tutorial.net/CMOS-Processing-Technology/planar-process-technology/ 'Elec')\, você pode ver a remoção de silício \(SiO2\) e a adição de material dopante para criar propriedades semicondutoras para o material\.
 
-![post](./p_4.webp)
+![post](../../../blog/2020_08_26_process/p_4.webp)
 
 ### O sequenciamento de DNA foi melhorado por meio de paralelização
 
 Na década de 1970\, o sequenciamento de DNA era lento e trabalhoso\, já que se pensava que era preciso trabalhar sequencialmente em toda a cadeia de DNA\. Joachim Messing e Peter Seeburg desenvolveram um [shotgun approach](https://en.wikipedia.org/wiki/Joachim_Messing 'DNA')\, que quebra o DNA em fragmentos aleatórios para permitir um sequenciamento mais rápido\. Ao fazer múltiplos fragmentos sobrepostos\, isso permitiu a paralelização \(tipo 1\) no processo de sequenciamento\, aumentando muito a velocidade\, diminuindo o custo e diminuindo a quantidade de DNA necessária [^4]\.
 
-![post](./p_5.webp)
+![post](../../../blog/2020_08_26_process/p_5.webp)
 
 ### A impressão 3D é uma mudança de mentalidade da subtração para a adição
 
@@ -86,13 +86,13 @@ Como você pode imaginar\, isso gera desperdício de material\. Para muitas empr
 
 Em contraste\, [3D printing](https://3dprintingindustry.com/3d-printing-basics-free-beginners-guide '3D') é aditivo \(tipo 8\)\. Isso significa que há muito menos desperdício na produção\, já que você imprime quase exatamente o que precisa de baixo para cima\. [Besides the cost savings, this also allows creation of more complicated structures in fewer steps.](https://bitfab.io/blog/additive-manufacturing/ 'bit')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_08_26_process/p_6.webp)
 
 ### Perguntas abertas sobre FMPI
 
 Os autores afirmam que as melhorias de processo acima foram fundamentais para a redução de custos nesses setores\, como visto abaixo\.
 
-![post](./p_7.webp)
+![post](../../../blog/2020_08_26_process/p_7.webp)
 
 Além de permitir um caminho para que as tecnologias escalem\, o FMPI possui as seguintes características\:
 

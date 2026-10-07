@@ -4,7 +4,7 @@ description: "As ferramentas que investidores profissionais utilizam"
 pubDate: 2020-06-17
 category: Investing
 tags: ['data']
-heroImage: './data_9.webp'
+heroImage: '../../../blog/2020_06_17_data/data_9.webp'
 locale: 'pt-BR'
 sourceSlug: 'data'
 sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
@@ -36,7 +36,7 @@ Além dos dados públicos mencionados acima\, um analista passaria um tempo cons
 
 Essa é uma parte do processo de pesquisa de investimentos\, a descoberta e o uso de informações públicas disponíveis que todos também podem fazer\. A partir do que foi dito acima\, você já tem dados suficientes para construir um modelo financeiro da empresa\, analisar tendências e formar uma tese de investimento\. Na verdade\, muitos investidores de varejo nunca vão além dessa parte e ainda assim se saem bem\. Como já mencionei antes\, existem muitas maneiras de ter sucesso no investimento\.
 
-![post](./data_1.webp)
+![post](../../../blog/2020_06_17_data/data_1.webp)
 
 ### Acesso a dados públicos
 
@@ -52,7 +52,7 @@ Nesta seção vou discutir o primeiro ponto\, o da experiência do usuário\.
 
 Digamos que você queira olhar rapidamente para a receita de uma empresa ao longo do tempo\. Se você fizesse do jeito tradicional no Edgar\, teria que procurar pela empresa\, resultando em uma página como esta\:
 
-![post](./data_2.webp)
+![post](../../../blog/2020_06_17_data/data_2.webp)
 
 Você então teria que procurar cada arquivo que quisesse\, baixar todos e copiar os dados para uma planilha [^4]\. Depois de limpar os dados e adicionar linhas para fazer os cálculos ano a ano\, você finalmente obteria as tendências que queria\.
 
@@ -60,13 +60,13 @@ Isso foi muito trabalho por muito pouco retorno\, por isso existem empresas como
 
 Todo aquele trabalho que você fez para encontrar a receita de uma empresa\? O FactSet tem isso disponível para todas as empresas abertas\:
 
-![post](./data_3.webp)
+![post](../../../blog/2020_06_17_data/data_3.webp)
 
 Claro\, os dados armazenados nem sempre são perfeitos [^5]\. No entanto\, para todas as vezes em que você precisa de algo rápido para consultar\, plataformas que já fizeram todo o trabalho em um formato fácil de digerir são inestimáveis\. Você não precisa gastar horas extraindo dados quando eles estão disponíveis com apenas alguns toques de teclas\. Esse fator de conveniência é uma das razões pelas quais as plataformas podem cobrar uma base de assinantes fixa [^6]\, embora disruptores como [Koyfin](https://www.koyfin.com/ 'koy') estão tentando enfraquecê\-los\.
 
 Também existem empresas como BamSEC e Last10K\, que facilitam a localização dos registros\. Por exemplo\, o BamSEC categoriza diferentes tipos de registros juntos\, mostra os títulos dos registros e permite que você encontre rapidamente edições anteriores dos registros\. Essas empresas não têm tantos recursos quanto as plataformas acima\, mas ainda assim economizam tempo para um analista\.
 
-![post](./data_4.webp)
+![post](../../../blog/2020_06_17_data/data_4.webp)
 
 ### Acesso a dados de pesquisa do lado da venda
 
@@ -82,7 +82,7 @@ Se você é um investidor profissional\, sempre pode simplesmente enviar um e\-m
 
 Obviamente\, ninguém realmente quer fazer isso [^9]\, então os pesquisadores fornecem esses dados às plataformas\, que então os mostram para a comunidade de investidores\. Se você quiser um resumo rápido de onde está o consenso do lado da venda\, isso também está disponível em alguns clichões\.
 
-![post](./data_5.webp)
+![post](../../../blog/2020_06_17_data/data_5.webp)
 
 ### Acesso à gestão da empresa
 
@@ -94,7 +94,7 @@ Os investidores podem atualizar seus modelos financeiros ou visão sobre a empre
 
 Não\, não é\. Você acharia que a conferência anual de acionistas do Buffett\, [attracting 40k people yearly](https://www.investopedia.com/articles/investing/121715/how-attend-berkshire-hathaways-annual-meeting.asp 'Buffett')\, é uso de informação privilegiada\? Se não\, o que torna as conferências acima diferentes\? Só porque você não é convidado para uma festa\, não significa que seja ilegal\. Existem regras que regem o que a administração pode dizer\, mas essa prática já acontece há muito tempo\.
 
-![post](./data_6.webp)
+![post](../../../blog/2020_06_17_data/data_6.webp)
 
 ### Especialistas do setor
 
@@ -106,7 +106,7 @@ Investidores também têm interesse em conversar com funcionários dos setores q
 
 Não\, não é\. Se você tivesse interesse em investir em uma empresa de saúde\, acharia que perguntar aos seus amigos médicos sobre a empresa é uso de informação privilegiada\? Se não\, por que o que foi dito acima deveria ser diferente\? Só porque você não pode pagar o intermediário\, não significa que seja ilegal [^10]\.
 
-![post](./data_7.webp)
+![post](../../../blog/2020_06_17_data/data_7.webp)
 
 ### Dados da indústria
 
@@ -118,7 +118,7 @@ Tem um [large market of sellers for such data](https://alternativedata.org/data-
 
 Sair e contar clientes em uma loja seria ilegal\?
 
-![post](./data_8.webp)
+![post](../../../blog/2020_06_17_data/data_8.webp)
 
 ### O que isso significa para o investidor varejista
 
@@ -146,7 +146,7 @@ Se você fizesse visitas anônimas às fábricas da empresa para ver o quão mov
 
 O que você precisa fazer é encontrar as coisas que um profissional normal relutaria em fazer\. Em um mundo onde profissionais têm acesso a mais recursos do que você\, você precisa buscar vantagens nas áreas menos desejáveis\. Veja o gráfico abaixo e identifique as lacunas\.
 
-![post](./data_9.webp)
+![post](../../../blog/2020_06_17_data/data_9.webp)
 
 [^1]: Não tenho experiência em uma empresa quantitativa\, então não posso falar sobre isso pessoalmente\. Eu conheço quants [pay for order flow though,](https://www.institutionalinvestor.com/article/b1m2p1cv68bx56/Twitter-Freaked-Out-Over-Robinhood-Selling-Its-Trade-Flow-But-the-App-and-Others-Have-Been-Doing-It-for-Years 'order') E isso provavelmente está incluído no número de 30 bilhões de dólares\. Separadamente\, note que uma firma de investimentos como um fundo de hedge é diferente de um banco de investimento\; a maioria dos analistas de investimentos faz trabalhos muito diferentes dos banqueiros de investimento\. [Sellside equity research is the role most similar to a hedge fund analyst, but researchers don't actually invest money.](/writing/time 'Sellside')
 

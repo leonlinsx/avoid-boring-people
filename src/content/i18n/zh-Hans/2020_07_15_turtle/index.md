@@ -4,7 +4,7 @@ description: "为什么大多数公司，即使是科技行业，也不擅长创
 pubDate: 2020-07-15
 category: Technology
 tags: ['business', 'startups']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_07_15_turtle/t_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'turtle'
 sourceHash: '350a3fc3117a588d40ffda1e362a4272b665ee57cf4be889be526c4129f66586'
@@ -22,13 +22,13 @@ sourceHash: '350a3fc3117a588d40ffda1e362a4272b665ee57cf4be889be526c4129f66586'
 
 我们设一个1公里的赛道。假设陆龟跑1公里需要100分钟，野兔跑1公里需要20分钟。然而，由于新冠疫情，兔子的睡眠时间被打乱了，每隔20分钟时有95\%的概率会睡觉。换句话说，在第0到20分钟有5\%的几率它是醒着的，另外5\%的概率在第20到40分钟是清醒的，还有5\%的几率在第40到60分钟是清醒的，依此类推。
 
-![post](./t_1.webp)
+![post](../../../blog/2020_07_15_turtle/t_1.webp)
 
 兔子打败的几率有多大？
 
 对于那些还记得中学概率的人，我们可以用 [binomial distribution formula.](https://online.stat.psu.edu/stat414/lesson/10/10.3 'binom') 公式如下：
 
-![post](./t_2.webp)
+![post](../../../blog/2020_07_15_turtle/t_2.webp)
 
 但用求和符号和感叹号看起来很吓人，我也答应过数学简单。简化计算的一个方法是观察兔子有5个“20分钟区块”，因为兔子比快5倍。只要兔子醒一次，它就会赢。所以，兔子唯一输的时候是它连续睡觉的次数。这计算简单多了，因为那只是95\%乘以自身5次方，也就是0\.95的5次方 [^3]\.
 
@@ -40,11 +40,11 @@ sourceHash: '350a3fc3117a588d40ffda1e362a4272b665ee57cf4be889be526c4129f66586'
 
 换句话说，几乎可以肯定至少有一次，野兔会赢。
 
-![post](./t_3.webp)
+![post](../../../blog/2020_07_15_turtle/t_3.webp)
 
 我已经把数学数据放进了谷歌表格 [here](https://docs.google.com/spreadsheets/d/1-_LV1ewb0D4DsERENaM_xp0oy8pHH7xWmAvNX8H9bdE/edit?usp=sharing 'sheet') 你可以随意玩弄 [^4]\.你还可以从下面的图表看到，甚至不需要多少场比赛，至少有一只野兔获胜的几率就接近100\%。记住，这是一只野兔赢的，而不是大多数野兔赢。
 
-![post](./t_4.webp)
+![post](../../../blog/2020_07_15_turtle/t_4.webp)
 
 不过数学本身不如要点重要。 **我们推断出，即使某件事本身发生的概率很低，重复游戏也很可能会确保事件发生一次。** 就像你中彩票的可能性不大，但很可能至少会有一位彩票中奖者。
 

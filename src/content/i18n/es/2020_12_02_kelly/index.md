@@ -4,7 +4,7 @@ description: "Uso de matemáticas para estimar el tamaño óptimo de la cartera"
 pubDate: 2020-12-02
 category: Risk & Decision Making
 tags: ['investing', 'risk', 'math']
-heroImage: './kel_7.webp'
+heroImage: '../../../blog/2020_12_02_kelly/kel_7.webp'
 featured: true
 locale: 'es'
 sourceSlug: 'kelly'
@@ -26,11 +26,11 @@ Sarah se da cuenta de que tiene múltiples opciones y no sabe qué hacer\. Va a 
 
 La fórmula Kelly fue desarrollada por John Kelly en Bell Labs\. Requiere unas pocas entradas y te devuelve el **El porcentaje óptimo de tu capital para apostar en algo\,** Suponiendo que quieras maximizar los rendimientos a largo plazo\. He publicado una deducción simplificada en el apéndice\, y también puedes encontrarla [here](https://blogs.cfainstitute.org/investor/2018/06/14/the-kelly-criterion-you-dont-know-the-half-of-it/ 'derive') o en el artículo original\.
 
-![post](./kel_1.webp)
+![post](../../../blog/2020_12_02_kelly/kel_1.webp)
 
 Sé que las matemáticas dan miedo\, así que vamos a ilustrarlo con un ejemplo\. Quieres saber cuánto apostar en un lanzamiento de moneda\, donde o bien duplicas tu dinero o pierdes la apuesta\. Si introduces los números\:
 
-![post](./kel_2.webp)
+![post](../../../blog/2020_12_02_kelly/kel_2.webp)
 
 Sí\, has leído bien\. Kelly dice que deberías evitar arriesgarte en absoluto\. ¿Por qué\?
 
@@ -38,7 +38,7 @@ Como no tienes ventaja y el riesgo\/recompensa está bien dimensionado\, la mejo
 
 Ahora\, imagina que el mismo lanzamiento de moneda te paga un retorno de 11 veces \(1000\%\) en tu apuesta\, y todo lo demás sigue igual\. Si introduces los números\:
 
-![post](./kel_3.webp)
+![post](../../../blog/2020_12_02_kelly/kel_3.webp)
 
 Kelly dice que deberías apostar el 45\% de tu capital total\. Fíjate que\, incluso con cuotas tan atractivas\, no estás apostando todo tu dinero [^2]\. También puedes ver que en juegos donde puedes perder todas tus apuestas\, nunca vas a apostarlo todo a menos que creas que tienes un 100\% de posibilidades de ganar\.
 
@@ -52,11 +52,11 @@ Kelly dice que deberías apostar el 45\% de tu capital total\. Fíjate que\, inc
 
 Sabemos que Kelly toma tres entradas\: nuestra creencia sobre cuál es la probabilidad de ganar\, el porcentaje de pérdida y el porcentaje de beneficio\. [Correlation Ventures and Seth Levine](https://www.sethlevine.com/archives/2020/10/vc-fund-returns-are-more-skewed-than-you-think.html 'Seth') tengo un gráfico interesante abajo mostrando los rendimientos de los capitalistas de riesgo a lo largo del tiempo\, y usaré eso como base para mis suposiciones\.
 
-![post](./kel_4.webp)
+![post](../../../blog/2020_12_02_kelly/kel_4.webp)
 
 Para simplificar\, voy a considerar cualquier cosa que tenga un retorno 10x \(900\%\) o más como una victoria\, y todo lo demás como una pérdida\. Según el gráfico\, eso significa que ganamos aproximadamente el 5\% de las veces\. Simplificaré aún más asumiendo que perdemos el 100\% de nuestra apuesta en una pérdida\, y ganamos ese 900\% de beneficio con una victoria\. Bajo estas suposiciones iniciales\, obtenemos\:
 
-![post](./kel_5.webp)
+![post](../../../blog/2020_12_02_kelly/kel_5.webp)
 
 Bueno\. Eso no es bueno\. Bajo nuestras suposiciones actuales\, Kelly dice que invertir en capital riesgo es un mal negocio\. Cuando vi esto por primera vez\, me quedé mirando dos veces y luego me pregunté cómo iba a terminar de escribir este número del boletín [^4]\. La respuesta a la que llegué fue hacer trampas\. Mucho\.
 
@@ -64,7 +64,7 @@ En lugar de la tasa de victoria del 5\%\, supongamos que los inversores ángel e
 
 En otras palabras\, ignoraremos toda esa parte \<1x en el gráfico y asumiremos que nuestro universo es solo el resto\. Ese 5\% de tasa de victorias salta a aproximadamente el 14\% [^5]\. Mantendremos todo lo demás constante\. Bajo estas nuevas suposiciones\, obtenemos\:
 
-![post](./kel_6.webp)
+![post](../../../blog/2020_12_02_kelly/kel_6.webp)
 
 Al menos es algo con lo que podemos trabajar\. Aguanta con las suposiciones por ahora y las revisaremos más adelante\.
 
@@ -72,7 +72,7 @@ Para ver cómo podrían ser nuestros rendimientos\, supongamos también que hace
 
 No es de extrañar que nuestro juego amañado nos muestre ganando mucho dinero\:
 
-![post](./kel_7.webp)
+![post](../../../blog/2020_12_02_kelly/kel_7.webp)
 
 Sin embargo\, hay algunas cosas a tener en cuenta\. Fíjate en las enormes caídas \(todas las caídas\) que ocurren\. Muchas carteras pierden más de la mitad de su dinero al final\. Los rendimientos tienen picos de volatilidad enormes\.
 
@@ -82,13 +82,13 @@ Para reducir el riesgo\, muchas personas suelen adoptar un enfoque de \"Kelly Fr
 
 Echemos un vistazo más de cerca a la distribución de los rendimientos de ambos casos\. Es difícil de ver\, pero los diagramas de caja muestran los rangos típicos del 25º\, mediana\, percentil 75 de retornos\. Empezamos en 100 dólares\:
 
-![post](./kel_8.webp)
+![post](../../../blog/2020_12_02_kelly/kel_8.webp)
 
 Si ignoramos los casos atípicos\, podemos ver que el percentil 25 al 75 de los rendimientos para todas las simulaciones está en un rango mucho menor\.
 
 Y si nos centramos en el enfoque \"más seguro\"\, de Half Kelly\, vemos que la mayoría de las veces obtienes menos de 5x retornos\.
 
-![post](./kel_9.webp)
+![post](../../../blog/2020_12_02_kelly/kel_9.webp)
 
 **La conclusión es que\, si inviertes como ángel\, necesitas mucha convicción\, probablemente querrás hacer muchas inversiones y solo invertir pequeños porcentajes de tu capital a la vez\.** Aun así\, la probabilidad de obtener el mítico retorno de 100x sigue siendo baja\. Ten en cuenta que esta es la estrategia óptima de apuestas\, y ya manipulamos el juego de varias maneras\:
 
@@ -114,7 +114,7 @@ Si quieres profundizar\, hay un artículo de Vasili Nekrasov [here](https://pape
 
 Pasaremos de un modelo lleno de suposiciones a otro modelo lleno de suposiciones\. Recientemente oí hablar de la empresa [HASH.ai](https://hash.ai/ 'hash')\, que te permite \"construir simulaciones multiagente en minutos\.\" Con eso se refieren a crear múltiples objetos que puedan interactuar entre sí y luego ver qué ocurre\. Puedes leer más sobre modelado basado en agentes [here](https://hash.ai/blog/what-is-agent-based-modeling 'hash')
 
-![post](./kel_10.webp)
+![post](../../../blog/2020_12_02_kelly/kel_10.webp)
 
 Quería experimentar con la herramienta [^7]\, simulando algunas de las suposiciones que hicimos en las secciones anteriores\. Algunas razones por las que invertir en capital riesgo es difícil son porque muchas empresas fracasan o no crecen lo suficientemente rápido en relación con las expectativas\. Vamos a modelar algunas empresas que crecen en una economía\.
 
@@ -124,19 +124,19 @@ De nuevo\, haré suposiciones simplificadoras\:
 - Con base en eso\, también dedujo una tasa diaria de fracaso
 - También conocemos las tasas medias de crecimiento de ingresos de la empresa anuales\. De eso deduzco una tasa de crecimiento diaria improvisada
 
-![post](./kel_11.webp)
+![post](../../../blog/2020_12_02_kelly/kel_11.webp)
 
 Puse todo eso en un proyecto HASH\.ai\, modificando una de sus plantillas\. Me costó mucho trastear porque muchos archivos están en Javascript y\.\.\. No sé Javascript\. Pero creo que al final conseguí que funcionara en su mayoría [^8]\.
 
 El modelo simula a las empresas como cajas verdes\, que crecen en altura cada día\, con la altura representando el tamaño de la empresa\. En cualquier momento\, existe la posibilidad de que la empresa fracase\, representada por la caja ardiendo en llamas [^9]\. Podemos ver cuántas empresas sobreviven durante largos periodos de tiempo\. Aquí tienes una muestra de ejemplo\:
 
-![post](./kel_12.webp)
+![post](../../../blog/2020_12_02_kelly/kel_12.webp)
 
 Bajo las suposiciones actuales\, hubo muchos más supervivientes de los que pensaba\, aunque tardamos mucho en ver empresas cien veces\. Probablemente podríamos retroceder y ajustar las suposiciones\.
 
 HASH\.ai también te permite graficar estadísticas a lo largo del tiempo\. Mi modelo actual muestra un estado estable de supervivientes frente a fracasos\.
 
-![post](./kel_13.webp)
+![post](../../../blog/2020_12_02_kelly/kel_13.webp)
 
 De nuevo\, esto era solo por diversión\, y la mayoría de las suposiciones necesitan ajustarse\. El modelo final es [here](https://core.hash.ai/@leonlinsx/wildfires-regrowth-3/main 'model') Si quieres experimentar con ello\. Me interesaría ver a alguien crear un modelo más sofisticado de crecimiento de startups\.
 
@@ -150,7 +150,7 @@ De nuevo\, esto era solo por diversión\, y la mayoría de las suposiciones nece
 
 ## Apéndice
 
-![post](./kel_14.webp)
+![post](../../../blog/2020_12_02_kelly/kel_14.webp)
 
 [^1]: Sarah lo está petando en el apartado de amigos
 

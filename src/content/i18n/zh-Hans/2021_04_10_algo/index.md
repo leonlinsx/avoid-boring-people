@@ -4,7 +4,7 @@ description: "我们如何应用算法来改善现实生活中的决策？"
 pubDate: 2021-04-10
 category: Risk & Decision Making
 tags: ['behaviour', 'tech']
-heroImage: './a_3.webp'
+heroImage: '../../../blog/2021_04_10_algo/a_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'algo'
 sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
@@ -42,7 +42,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 
 那是数学上最优的点，最有可能选出最适合这份工作的人选。如果你太早停止，可能会错过后续面试的人。如果太晚停止，你就会浪费时间 [^4]\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_04_10_algo/a_1.webp)
 
 ## 探索漏洞
 
@@ -79,7 +79,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 
 在这种情况下，将最近使用的物品放在小而快速的区域是最佳选择，因为有一种叫做 [temporal locality](https://www.geeksforgeeks.org/difference-between-spatial-locality-and-temporal-locality/ 'temp')\.你更可能需要再次使用最近用过的软件。比如，Google Drive会高亮你常用的文件以便快速访问。
 
-![post](./a_2.webp)
+![post](../../../blog/2021_04_10_algo/a_2.webp)
 
 ## 排程
 
@@ -112,7 +112,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 - 正常：早期事件令人惊讶，晚期事件是预期中的。例如，我们会对早逝的人感到惊讶，而晚年去世的人则不会感到惊讶。
 - Erlang：事件从不更令人惊讶或更不惊讶。例如，轮盘的无记忆分布，或者 [the coin flips we discussed last week](/writing/ergodicity 'sub')
 
-![post](./a_3.webp)
+![post](../../../blog/2021_04_10_algo/a_3.webp)
 
 ## 博弈论
 

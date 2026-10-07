@@ -4,7 +4,7 @@ description: "Explication des réseaux de neurones"
 pubDate: 2020-06-10
 category: Technology
 tags: ['AI']
-heroImage: './m_13.webp'
+heroImage: '../../../blog/2020_06_10_ml/m_13.webp'
 locale: 'fr'
 sourceSlug: 'ml'
 sourceHash: '64e8f42b756e4bd61f396d4f2062d356d37f6d015af99ef364cf1236ab1c95cc'
@@ -20,21 +20,21 @@ Nous entendons parler tout le temps d’apprentissage automatique \(ML\)\, d’a
 
 D’après les intérêts de recherche \:
 
-![post](./m_1.webp)
+![post](../../../blog/2020_06_10_ml/m_1.webp)
 
 À des mentions dans les livres \:
 
-![post](./m_2.webp)
+![post](../../../blog/2020_06_10_ml/m_2.webp)
 
 Aux gros titres des journaux sur des robots qui prennent le contrôle de nos emplois \:
 
-![post](./m_3.webp)
+![post](../../../blog/2020_06_10_ml/m_3.webp)
 
 L’intérêt pour le ML est croissant\, et il semble qu’un jour sur deux\, une nouvelle startup récolte 100 millions de dollars grâce à leur nouvelle technologie ML\.
 
 Cependant\, la plupart des gens sont intimidés par le ML\, l’assimilant à une magie que seules les startups de pointe font\. Cela n’aide pas que les calculs puissent être intimidants \:
 
-![post](./m_4.webp)
+![post](../../../blog/2020_06_10_ml/m_4.webp)
 
 Aujourd’hui\, je veux vous aider à mieux comprendre le ML\, en regardant d’abord une entreprise utilisant le ML\, puis en passant en revue les bases du fonctionnement d’un réseau de neurones\. Mon objectif à la fin de tout ceci est que vous ayez moins peur chaque fois que quelqu’un utilise le terme « ML » comme s’il était trop cool pour l’école\.
 
@@ -64,33 +64,33 @@ Maintenant que nous savons où l’apprentissage automatique est utilisé\, voyo
 
 Les réseaux de neurones sont modélisés d’après les neurones du cerveau\, il sera donc utile de comprendre comment fonctionne cette connexion\. Voici à quoi ressemble un neurone \:
 
-![post](./m_5.webp)
+![post](../../../blog/2020_06_10_ml/m_5.webp)
 
 Tant que nous sommes encore [aren't quite sure how the brain works, a leading theory is that the neurons can take inputs, do some computation, and then send outputs.](https://www.quantamagazine.org/neural-dendrites-reveal-their-computational-power-20200114/ 'neural') [^3] Une façon simplifiée de représenter deux neurones interagissant pourrait être la suivante\. Imaginez que le cercle est le corps principal\, et que cette droite est l’axone qui se connecte aux autres neurones \:
 
-![post](./m_6.webp)
+![post](../../../blog/2020_06_10_ml/m_6.webp)
 
 Et si vous aviez trois paires de neurones\, cela pourrait ressembler à ceci \:
 
-![post](./m_7.webp)
+![post](../../../blog/2020_06_10_ml/m_7.webp)
 
 Et si les neurones pouvaient interagir entre eux\, cela pourrait ressembler à ceci [^4]\:
 
-![post](./m_8.webp)
+![post](../../../blog/2020_06_10_ml/m_8.webp)
 
 Gardons cette image à l’esprit\, alors que nous réfléchissons à la façon dont cela pourrait se rapporter aux ordinateurs et au ML\.
 
 Prenons une équation mathématique simple\, comme 2 x 3 \= 6\. Fixons « 2 » comme données d’entrée\, « x 3 » comme fonction que nous voulons exécuter\, et « 6 » comme données de sortie\. Cela nous donne quelque chose comme ceci \:
 
-![post](./m_9.webp)
+![post](../../../blog/2020_06_10_ml/m_9.webp)
 
 Et si vous aviez plus d’une donnée d’entrée \? Vous pourriez faire \(2 \+ 5\) x 3 \= 21\. Cela nous donne quelque chose comme ceci \:
 
-![post](./m_10.webp)
+![post](../../../blog/2020_06_10_ml/m_10.webp)
 
 Et encore une fois\, nous pouvons combiner plusieurs fonctions interagissant sur plusieurs entrées\, ainsi \:
 
-![post](./m_11.webp)
+![post](../../../blog/2020_06_10_ml/m_11.webp)
 
 Vous pouvez voir que cela ressemble au diagramme d’interaction neuronale ci\-dessus\, d’où le nom « réseau de neurones »\.
 
@@ -100,7 +100,7 @@ Vous pouvez également faire une sorte de fonction mathématique sur ces points 
 
 Voici \:
 
-![post](./m_12.webp)
+![post](../../../blog/2020_06_10_ml/m_12.webp)
 
 Dans cet exemple\, on peut voir qu’un « 1 » a été retourné pour la sortie initialement notée X\. « 0 » a été retourné pour les autres sorties\. Cela nous indique que X est la valeur prédite\, basée sur les entrées des 3 pixels \(0\, 100\, 255\) que nous lui avons donnés\.
 
@@ -108,7 +108,7 @@ Vous pouvez imaginer étendre un tel cadre à toutes les lettres de l’alphabet
 
 Vous n’êtes pas limité à seulement deux couches d’entrée et de sortie\. Vous pouvez aussi inclure plus de « couches cachées » qui prennent l’entrée par la gauche\, puis retournent une sortie à la droite\. Tant que vous configurez vos fonctions de façon à ce qu’elles retournent « 1 » et « 0 » à la dernière couche\, vous êtes bon\. Il peut y avoir n’importe quel nombre de couches cachées\, et chaque couche peut avoir n’importe quel nombre d’éléments\, sans avoir besoin d’être identique à l’entrée ou à la sortie\.
 
-![post](./m_13.webp)
+![post](../../../blog/2020_06_10_ml/m_13.webp)
 
 Et c’est tout \! Vous avez vu comment un processus peut convertir des entrées de données \(comme les valeurs de pixels des images\) en sorties \(alphabets et adresses\)\. Vous comprenez maintenant comment fonctionnent la plupart des réseaux de neurones\. De nombreuses implémentations de ML utilisent des réseaux de neurones\, ce qui signifie que vous connaissez désormais aussi le concept sous\-jacent qui motive ces entreprises de ML\.
 

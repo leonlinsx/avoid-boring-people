@@ -5,7 +5,7 @@ pubDate: 2019-05-19
 category: Technology
 tags: ['newsletter', 'writing']
 evergreen: false
-heroImage: './s_8.webp'
+heroImage: '../../../blog/2019_05_19_substack/s_8.webp'
 locale: 'pt-BR'
 sourceSlug: 'substack'
 sourceHash: 'fb2f37b08d38af6a6c970e59d679e03ef6420f74f17eed1b21a180f8e13f7453'
@@ -26,19 +26,19 @@ Neste post eu abordo\:
 
    > Você pode montar uma lista de discussão pelo Substack e levá\-la com você a qualquer momento\. Se você já tem uma lista de e\-mails\, pode importá\-la pelas configurações com um clique de um botão\.
 
-   ![post](./s_1.webp)
+   ![post](../../../blog/2019_05_19_substack/s_1.webp)
 
    Após importar a lista\, você pode ver o status de cada assinante individual e suas atividades recentes
 
-   ![post](./s_2.webp)
+   ![post](../../../blog/2019_05_19_substack/s_2.webp)
 
    E você pode clicar em cada assinante para ver mais detalhes e editar o tipo de assinatura deles
 
-   ![post](./s_3.webp)
+   ![post](../../../blog/2019_05_19_substack/s_3.webp)
 
 2. É uma maneira mais fácil para leitores desinteressados se desinscriverem e menos constrangimento do que me enviar um e\-mail direto [^1]\.
 
-   ![post](./s_4.webp)
+   ![post](../../../blog/2019_05_19_substack/s_4.webp)
 
    Eu preferiria que o texto fosse mais óbvio do que um pouco escondido\. Sim\, na verdade quero facilitar para as pessoas cancelarem a inscrição\. As pessoas não gostam de spam\, e eu preferiria não enviar algo para alguém que não queira\. Se pudesse\, moveria a opção de cancelar inscrição direto para o início da newsletter\. Entendo que provavelmente sou uma minoria que pensa assim\.
 
@@ -46,19 +46,19 @@ Neste post eu abordo\:
 
    > É fácil incorporar vídeos do YouTube e Vimeo\, faixas do Spotify e tweets nas suas postagens\. Basta copiar e colar as URLs relevantes e as incorporações aparecerão como mágica\. Você também pode arrastar e soltar imagens e gifs\.
 
-   ![post](./s_5.webp)
+   ![post](../../../blog/2019_05_19_substack/s_5.webp)
 
    Muito mais fácil do que adicionar mídia ao Gmail ou a este site\. Gif criado via [LICEcap](https://www.cockos.com/licecap/ 'LICEcap') Aliás\.
 
 4. Análises da minha base de leitores\, como taxas de cliques\. Imagino que isso vai melhorar com o tempo à medida que mais funcionalidades forem adicionadas\.
 
-   ![post](./s_6.webp)
+   ![post](../../../blog/2019_05_19_substack/s_6.webp)
 
 5. Potencial para monetização eventual [^2]\. O modelo de negócio também é simples\, com a Substack recebendo uma redução de 10\% assim que você começa a cobrar dos assinantes\. A Substack também permite preços mensais e anuais\. Os pagamentos são processados via Stripe\, então você precisa abrir uma conta lá se ainda não tiver uma\.
 
    > Depois que você conecta uma conta Stripe ao Substack\, gerenciamos seus pagamentos de forma confiável e segura\.
 
-   ![post](./s_7.webp)
+   ![post](../../../blog/2019_05_19_substack/s_7.webp)
 
 ## Outras coisas que gosto incluem
 
@@ -74,19 +74,19 @@ Neste post eu abordo\:
 
    > Os rankings ajudam os leitores a descobrir ótimas publicações e também ajudam as editoras a encontrar novos leitores\.
 
-   ![post](./s_8.webp)
+   ![post](../../../blog/2019_05_19_substack/s_8.webp)
 
    Há também perfis curtos dos principais editores [^3]\.
 
-   ![post](./s_9.webp)
+   ![post](../../../blog/2019_05_19_substack/s_9.webp)
 
 4. A página de boas\-vindas da sua newsletter incentiva o leitor a se inscrever\, mas não força a questão\, o que faz sentido para mim\. Eu não gostaria de assinar algo sem ter lido uma amostra antes\.
 
-   ![post](./s_10.webp)
+   ![post](../../../blog/2019_05_19_substack/s_10.webp)
 
 5. Depois que você se cadastrar como editor\, o fundador também oferece suas informações de contato caso você não consiga responder suas dúvidas no FAQ\. Ainda não tentei enviar e\-mails\, então não sei se eles realmente respondem\.
 
-   ![post](./s_11.webp)
+   ![post](../../../blog/2019_05_19_substack/s_11.webp)
 
 6. Também há um recurso de assinatura em grupo se você pretende um público mais corporativo\.
 
@@ -96,25 +96,25 @@ Neste post eu abordo\:
 
 1. Não parecia haver uma maneira fácil de enviar toda a sua lista de e\-mails como assinantes gratuitos\, já que o formulário só permitia que os e\-mails fossem enviados um de cada vez\. Tive que alternar manualmente as configurações de assinatura para toda a minha base de leitores depois de enviar os e\-mails deles [^4]\. Isso era duplamente irritante porque eu não podia alternar as configurações para vários leitores ao mesmo tempo\, e precisava mudar cada um individualmente\. Um recurso que me permitisse editar vários assinantes ao mesmo tempo teria sido bom\.
 
-   ![post](./s_12.webp)
+   ![post](../../../blog/2019_05_19_substack/s_12.webp)
 
 2. Enviar posts antigos também era doloroso\. Como as configurações de data e hora eram mais profundas no layout de edição\, levava tempo para enviar as postagens e depois retroceder individualmente para a data correta que eu queria\. Eu tinha apenas alguns posts\, mas não consigo imaginar como alguém com um histórico de publicações mais longo se daria ao trabalho de colocar seu conteúdo antigo com as datas corretas\.
 
    > Por fim\, se você importar posts de arquivos de outros sites\, pode retrodatar para que sejam publicados na ordem correta e associados às datas corretas\. Para isso\, depois de publicar um post\, acesse as Configurações desse post \(logo à esquerda do botão Publicar\) e selecione a data desejada
 
-   ![post](./s_13.webp)
+   ![post](../../../blog/2019_05_19_substack/s_13.webp)
 
 3. Tive problemas iniciais ao criar uma conta e fazer login\. Não sei por que \'link de login por e\-mail\' é a opção padrão\, o que me levou a um ciclo de solicitar um link por e\-mail que me direcionava para a mesma página de login e prompt\. Isso foi confuso\.
 
-   ![post](./s_14.webp)
+   ![post](../../../blog/2019_05_19_substack/s_14.webp)
 
 4. A página inicial tem um link para o blog\, que traz mais informações sobre o serviço\. Depois que você clica para acessar o blog\, não há uma maneira intuitiva de voltar para a página inicial do substack sem pressionar o botão de voltar do navegador\. O menu suspenso não permite voltar e não há botão de retorno no texto principal\.
 
-   ![post](./s_15.webp)
+   ![post](../../../blog/2019_05_19_substack/s_15.webp)
 
 5. Não parece haver uma forma de editar URLs de postagem\. No exemplo abaixo\, eu estava editando o post provisório de \'em breve\'\, mas não consegui corrigir a URL apesar de ter mudado o título do post\.
 
-   ![post](./s_16.webp)
+   ![post](../../../blog/2019_05_19_substack/s_16.webp)
 
 6. Um simples texto sobre o que eles definem como \'abrir\' e \'cliques\' também seria útil\. Estou supondo que seja próximo o suficiente do que pensaríamos se usássemos bom senso\, mas seria bom ter clareza aqui\.
 

@@ -4,7 +4,7 @@ description: "ニュースレターの人気上昇の背景には何がありま
 pubDate: 2019-07-31
 category: Technology
 tags: ['newsletter']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2019_07_31_news/n_1.webp'
 locale: 'ja'
 sourceSlug: 'news'
 sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
@@ -24,7 +24,7 @@ sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
 
 として [the CNBC article](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc') ただし、いくつかの要因が代替的なサブスクリプション型モデルの台頭につながっています。 **GoogleやFacebookがデジタル広告で支配的かつ効果的であるため、ニュースサイトなどの伝統的なコンテンツ制作者への広告効果は低下しています。** 広告主としては、インターネットの60\%が通過する場所に広告予算を多く使い、広告費のROIを上げたいと思っています。
 
-![post](./n_1.webp)
+![post](../../../blog/2019_07_31_news/n_1.webp)
 
 GoogleやFacebookによるトラフィックの支配は、限界ユーザー獲得にコストがかかる可能性もあり、サービス提供のための限界コストがゼロではなくなっていることを意味します。通常のメディアサイトでは、オーガニックトラフィックが減少し顧客との関係が減少する一方で、競合他社による無料コンテンツの過剰供給という問題に直面し、差別化が難しい状況に直面しています。
 

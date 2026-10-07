@@ -4,7 +4,7 @@ description: "トカゲの人間が大型ハドロン衝突型加速器を作り
 pubDate: 2019-02-18
 category: Culture
 tags: ['behaviour']
-heroImage: './b_1.png'
+heroImage: '../../../blog/2019_02_18_why/b_1.png'
 locale: 'ja'
 sourceSlug: 'why'
 sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
@@ -14,7 +14,7 @@ sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
 
 今では主流の大衆が笑うような「狂った」信念はたくさんあります。 [Flat earthers.](https://en.wikipedia.org/wiki/Modern_flat_Earth_societies 'wiki page') [Moon landing deniers.](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories 'another wiki page') [Shape-shifting lizard people.](https://en.wikipedia.org/wiki/Reptilian_humanoid 'more wiki pages') [^1] それでも多くの人はそれを狂っているとは思いません [70% of Americans](http://www.pewforum.org/religious-landscape-study/ 'religious breakdown') 存在を支配する全能の存在を信じていると信じている人もいないし、ほとんどの人はそうも思わない [^2] 人生は何らかの微細な組み立てラインを含んでいると思います [unzipping, squishing together, and re-zipping](https://www.youtube.com/watch?v=yqESR7E4b_8&t=1m50s 'DNA replication video').私にとって興味深いのは、各信仰に異端者から信仰を守る熱心な信者がいることです。ここで私は宗教、科学、哲学、その他の分野を横断して「信仰」という言葉を自由に使っています。政治や宗教、ニューヨークで一番のベーグル屋についての熱い議論がどれほど激しくなるかをご覧ください。
 
-![post](./b_1.png)
+![post](../../../blog/2019_02_18_why/b_1.png)
 
 それならなぜ、私たちは自分のアイデンティティの多くを形作る問題を信じるのでしょうか?正当な理由があるかどうかはわかりません。多くの人にとって、育った環境が信念の大部分を決定づけています。相関関係があります [having religious parents and becoming religious](http://www.pewforum.org/2016/10/26/links-between-childhood-religious-upbringing-and-current-religious-identity/ 'religious upbringing')、いくつかの証拠 [political views also transmit to children](https://www.researchgate.net/publication/231788296_Politics_Across_Generations_Family_Transmission_Reexamined 'politics across gens') [^3]、そして可能性さえある [your career choice might not really be your own.](https://waitbutwhy.com/2018/04/picking-career.html 'was it really me?') これは、私たちが自分の選択で生きたいなら問題です。 [Unexamined life not worth living and all that.](https://www.theguardian.com/theguardian/2005/may/12/features11.g24 'unexamined life')
 

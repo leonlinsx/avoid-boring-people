@@ -4,7 +4,7 @@ description: "投资股息公司的成本"
 pubDate: 2020-07-08
 category: Investing
 tags: ['dividends']
-heroImage: './d_6.webp'
+heroImage: '../../../blog/2020_07_08_dividend/d_6.webp'
 locale: 'zh-Hans'
 sourceSlug: 'dividend'
 sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
@@ -40,7 +40,7 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 我一如既往地简化了，上述行动是公司主要用钱做的事情。CS的一张图表显示了这些行为组合随时间的变化：
 
-![post](./d_1.webp)
+![post](../../../blog/2020_07_08_dividend/d_1.webp)
 
 今天我们将重点关注第五项行动，即股息支付。我就跳过资本结构理论上的无关讨论了 [^5]但你可以阅读莫迪利亚尼·米勒的复习 [here.](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.2.4.99 'MM')
 
@@ -58,13 +58,13 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 顺便说一句，按惯例我们会收取12个月的股息。大多数公司按季度发放股息，所以如果一家公司每季度支付1美元，那么他们的年股息就是4美元。我们也忽略税收 [^6]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_07_08_dividend/d_2.webp)
 
 除了让我们能够评估派息股票的股息收益率外，这种收益率还让我们能够与其他证券进行比较。毕竟收益率就像预期回报。所以我们可以比较4\%的股息收益率和1\%的债券，说在其他条件相同的情况下，股息股票给我们的收入更高。
 
 这正是我们看到的 [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')，下面的图表显示 **过去10\+年，股息收益率一直高于债券收益率。**
 
-![post](./d_3.webp)
+![post](../../../blog/2020_07_08_dividend/d_3.webp)
 
 仔细看，现在看起来更好了。一个比债券还多的现金返还期？我们是不是应该都找股息率最高的股票全部买下？有什么陷阱吗？
 
@@ -74,7 +74,7 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 在下面的例子中，你会更满意1\%的股息率而非50\%，因为导致这种情况的具体情况。由于第二种情况中价格下跌，你实际上损失的钱远远超过了从股息收益率“增加”中获得的。
 
-![post](./d_4.webp)
+![post](../../../blog/2020_07_08_dividend/d_4.webp)
 
 你甚至不能确定高收益是否会持续，因为股息金额并不保证未来。确实，公司不喜欢削减股息，因为他们担心股东抛售他们的股票。 [However, that also menas that a company can cut its dividend when things are so bad they have no choice.](https://www.cnbc.com/2018/12/07/ge-makes-it-official-lowers-dividend-to-a-penny.html 'GE')
 
@@ -84,11 +84,11 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 令人惊讶的是，我们发现的情况并非如此。在同一个地方 [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')作者将股票按高到低的四个类别分类。然后他们比较了股息与价格的回报。我们看到了 **资本回报对总回报的贡献更大，** 即使包括高股息股票。
 
-![post](./d_5.webp)
+![post](../../../blog/2020_07_08_dividend/d_5.webp)
 
 更有趣的是，一个 [Miller Howard report](https://mhinvest.com/download.html?docId=2246 'Miller') 显示当你将股息股票拆分为10个类别时，大多数实际上 **表现不佳** 过去十年的标普指数。更糟的是，股息收益率最高的投资组合反而表现最差。这意味着投资策略与我们之前的设想完全相反。
 
-![post](./d_6.webp)
+![post](../../../blog/2020_07_08_dividend/d_6.webp)
 
 ### 相关因素
 
@@ -102,17 +102,17 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 该 [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van') 区分了两种股息股类型：1）高股息收益率，2）高股息增长。然后他们比较了这些群体与我们上述提到的一些共同因素的相关性 [^7]\.
 
-![post](./d_7.webp)
+![post](../../../blog/2020_07_08_dividend/d_7.webp)
 
 事实证明，无论是第一组还是第二组，许多特征是相关的。换句话说，如果你忽略股息因子，只考虑这些其他因素，你就能大大捕捉到股息股的回报。
 
 [Meb Faber went ahead to do just that,](https://www.cambriainvestments.com/wp-content/uploads/2017/10/DTAX-10.23.17.pdf 'Meb') 通过创建能够复制股息股的综合投资组合，而不必真正是股息股。这意味着他找到了与股息股回报相同但实际上不支付股息的股票。他的发现表明 **此类投资组合的回报优于股息投资组合。** 将黑框列与右侧其他列进行比较：
 
-![post](./d_8.webp)
+![post](../../../blog/2020_07_08_dividend/d_8.webp)
 
 这些结果在他对比税后申报表时依然成立：
 
-![post](./d_9.webp)
+![post](../../../blog/2020_07_08_dividend/d_9.webp)
 
 ## 结论与并发症
 

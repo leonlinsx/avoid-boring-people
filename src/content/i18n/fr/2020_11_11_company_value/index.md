@@ -4,7 +4,7 @@ description: "Choisissez les personnes, pas l’entreprise"
 pubDate: 2020-11-11
 category: Culture
 tags: ['generalists']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2020_11_11_company_value/c_1.webp'
 locale: 'fr'
 sourceSlug: 'company_value'
 sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
@@ -22,7 +22,7 @@ Dans le journal ["Are Inventors or Firms the Engines of Innovation?"](https://pa
 
 Nous pouvons penser aux entreprises comme jouant un rôle d’intermédiaire consistant à « mettre les gens en relation »\, rassemblant des personnes avec des idées et des personnes qui veulent exécuter\. Il y a tout un [Theory of the Firm](https://en.wikipedia.org/wiki/Theory_of_the_firm 'Theory') sur la manière dont les entreprises existent pour réduire les coûts de transaction \[\^1\]\. Dans ce cadre\, nous pourrions essayer de répartir l’effet de l’innovation entre les personnes et l’entreprise\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_11_11_company_value/c_1.webp)
 
 Que les entreprises ou les humains méritent plus de crédit peut le faire **Aidez\-nous à savoir sur quoi nous concentrer** Si nous voulons obtenir plus d’innovation \:
 
@@ -38,7 +38,7 @@ Ils examinent ensuite un sous\-ensemble d’entreprises dont les inventeurs ont 
 
 Le tableau ci\-dessous contient beaucoup de chiffres\, et ignorons\-les tous sauf les deux dans la case rouge\. Cette comparaison entre 0\,341 pour les inventeurs et 0\,032 pour les entreprises est ce à quoi font référence les chercheurs dans la citation ci\-dessus \; des chiffres plus élevés signifient plus de pouvoir explicatif pour le nombre de brevets\. Pour nos besoins\, pensez simplement aux effets fixes comme signifiant « effet »\, mais vous pouvez en savoir plus sur la définition réelle [here](http://www.jblumenstock.com/files/courses/econ174/FEModels.pdf 'fixed')\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_11_11_company_value/c_2.webp)
 
 Si ce qui précède est vrai\, cela signifie qu’en tant qu’individus\, **Nous devrions chercher à travailler avec des coéquipiers solides\, plutôt qu’avec des entreprises solides** Si nous voulons être plus innovants\. Autrement dit\, c’est un point de données sur pourquoi il faut beaucoup se soucier des personnes avec qui vous allez travailler directement\, plutôt que de la réputation de l’entreprise\.
 

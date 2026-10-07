@@ -4,7 +4,7 @@ description: "A queda da lucratividade de muitos modelos de negócios dependente
 pubDate: 2019-12-21
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_12_21_info/i_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'info'
 sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
@@ -36,7 +36,7 @@ Não tenho certeza se estou entendendo corretamente o argumento aqui e\, na verd
 
 As reflexões sobre isso ainda estão em desenvolvimento\, mas algo como o seguinte\:
 
-![post](./i_1.webp)
+![post](../../../blog/2019_12_21_info/i_1.webp)
 
 > Em nosso novo mundo abundante em informação\, parece mais difícil para qualquer empresa ou pessoa acumular e explorar o valor de informações proprietárias\. \\\[\.\.\.\\\] O que parece restar para os investidores são os problemas de informação que não escalam \(hiper\-local\) e aqueles que escalam \(hiper\-scale\)\.
 

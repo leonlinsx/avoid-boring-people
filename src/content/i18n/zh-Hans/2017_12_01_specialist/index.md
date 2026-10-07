@@ -4,7 +4,7 @@ description: "大部分时间专注于某一领域，但也要花时间理解更
 pubDate: 2017-12-01
 category: Culture
 tags: ['generalists']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2017_12_01_specialist/s_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'specialist'
 sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
@@ -30,7 +30,7 @@ sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
 
 就我个人而言，我只是觉得 **好奇和学习随机事物很有趣，** 这也是我喜欢的原因 [this comic](https://xkcd.com/1053/ 'xkcd comic')\.
 
-![post](./s_1.webp)
+![post](../../../blog/2017_12_01_specialist/s_1.webp)
 
 这确实意味着我会“浪费”一些时间在无关紧要的文章或作品上，比如莎士比亚，但我认为（希望？）整体回报是净收益。
 

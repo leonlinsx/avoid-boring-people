@@ -4,7 +4,7 @@ description: "Especializarme la mayor parte del tiempo, pero dedicar tiempo a en
 pubDate: 2017-12-01
 category: Culture
 tags: ['generalists']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2017_12_01_specialist/s_1.webp'
 locale: 'es'
 sourceSlug: 'specialist'
 sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
@@ -30,7 +30,7 @@ Mientras que otros también podrían decir eso **Estar expuesto a más áreas in
 
 Y personalmente\, simplemente creo **Tener curiosidad y aprender sobre cosas aleatorias es divertido\,** por eso me encanta [this comic](https://xkcd.com/1053/ 'xkcd comic')\.
 
-![post](./s_1.webp)
+![post](../../../blog/2017_12_01_specialist/s_1.webp)
 
 Significa que \'pierdo\' tiempo en artículos irrelevantes o en obras que nunca entenderé\, por ejemplo Shakespeare\, pero creo \(¿espero\?\) que el retorno global ha sido un beneficio neto\.
 

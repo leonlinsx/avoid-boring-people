@@ -5,7 +5,7 @@ pubDate: 2019-07-05
 category: Technology
 tags: ['startups']
 evergreen: false
-heroImage: './q_7.webp'
+heroImage: '../../../blog/2019_07_05_query/q_7.webp'
 locale: 'fr'
 sourceSlug: 'query'
 sourceHash: '3fc778dfdea24281ee5cf541bc31ef90551b9702605aeed7740bd9b212d5e9f0'
@@ -25,25 +25,25 @@ L’intention pour l’instant est donc d’avoir un format Q\&A pour les évén
 
 La page d’accueil est simple\, ordonnant les questions dans l’ordre chronologique\, avec le jour le plus récent en premier\. Je ne sais pas comment les questions sont triées dans la journée même\. Je suppose que l’ordre est corrigé une fois les questions postées\, puisque le calendrier indiqué pour les mises à jour ne semble pas affecter l’ordre\. Le site fonctionne bien aussi sur mobile\.
 
-![post](./q_1.webp)
+![post](../../../blog/2019_07_05_query/q_1.webp)
 
 Cliquer sur les sujets individuels vous mène à une page de questions\-réponses plus détaillée sur le sujet\. Chaque page de questions\-réponses possède sa propre URL\. La page contient un court résumé du sujet d’actualité\, la citation de la source\, suivi d’une table des matières pour les questions\, ainsi que des questions elles\-mêmes\.
 
-![post](./q_2.webp)
+![post](../../../blog/2019_07_05_query/q_2.webp)
 
 Il y a plusieurs suggestions pour poser une question\, ce qui est aussi simple que de la taper dans le champ de la question\. Autant que je puisse en juger\, il n’y a pas de modération immédiate sur la question\, et votre question est immédiatement publiée sur la page\. Le site facilite la pose d’une question\.
 
-![post](./q_3.webp)
+![post](../../../blog/2019_07_05_query/q_3.webp)
 
 Par exemple\, lorsque j’ai posté la question ci\-dessous\, elle est apparue en bas de la liste des questions une fois la page rafraîchie\, ce que la page a fait automatiquement après publication\.
 
-![post](./q_4.webp)
+![post](../../../blog/2019_07_05_query/q_4.webp)
 
-![post](./q_5.webp)
+![post](../../../blog/2019_07_05_query/q_5.webp)
 
 Il ne semble pas que vous puissiez répondre directement vous\-même pour le moment\, mais vous pouvez « suggérer une mise à jour » qui envoie votre commentaire à un éditeur \:
 
-![post](./q_6.webp)
+![post](../../../blog/2019_07_05_query/q_6.webp)
 
 Vous pouvez consulter vous\-même la liste actuelle des sujets et des questions [here](https://query.news/ 'Query')\, et voyez s’il y en a un sur lequel vous souhaitez commenter\. Cela semble être une idée intéressante \! La plupart des actualités sont à sens unique\, cherchant à diffuser un message au grand public\. La section des commentaires en ligne est généralement un désastre\. En faisant de la discussion le centre du site plutôt qu’un produit ajouté à la va\-vite\, cela mènera à des cas d’usage plus productifs\. Si vous avez déjà lu quelque chose et vous êtes demandé « mais qu’en est\-il de X »\, Query vous serait utile\.
 
@@ -77,15 +77,15 @@ Passons aux questions et suggestions \!
 
 1. Immobiliser le [Query self-referential Q&A page](https://query.news/s/we-launched-kinda/ 'Query Q&A') sur la page d’accueil\. Quelqu’un qui atterrit sur la page d’accueil pour la première fois n’aura pas une bonne idée de ce que le site est censé être\. Avoir un onglet « À propos » en haut aidera probablement les gens à comprendre ce que le site essaie de faire\, et cela pourrait être un simple lien vers la page Q\&R\.
 
-   ![post](./q_7.webp)
+   ![post](../../../blog/2019_07_05_query/q_7.webp)
 
 2. Clarifier exactement ce que sert l’option « suivre »\. Je ne sais pas si entrer mon e\-mail m’abonne à toutes les questions de ce sujet d’actualité\, à toutes les questions sur Query\, ou seulement à une question sur le sujet
 
-   ![post](./q_8.webp)
+   ![post](../../../blog/2019_07_05_query/q_8.webp)
 
    Même après avoir cliqué sur « suivre »\, je ne sais pas ce que l’adhésion est censée faire \:
 
-   ![post](./q_9.webp)
+   ![post](../../../blog/2019_07_05_query/q_9.webp)
 
 3. Taguer les questions et avoir une fonction de recherche semble être utile\, voire nécessaire\, quand cela prendra de l’ampleur
 

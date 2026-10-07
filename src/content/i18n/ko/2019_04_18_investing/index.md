@@ -4,7 +4,7 @@ description: "더 많은 정보를 갖는 것이 더 나은 투자 결정을 내
 pubDate: 2019-04-18
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_04_18_investing/i_1.webp'
 locale: 'ko'
 sourceSlug: 'investing'
 sourceHash: '2b5ae4861e38024857b715159729cb06f4235c024c4fe9cfbab981130ab0f1d2'
@@ -16,7 +16,7 @@ sourceHash: '2b5ae4861e38024857b715159729cb06f4235c024c4fe9cfbab981130ab0f1d2'
 
 경쟁사보다 더 많은 정보를 가지고 있다고 생각하는지는 제쳐두고\, 더 많은 정보를 갖는 것이 더 나은 투자 결정을 내리는 데 도움이 될까요\? [This post](https://behaviouralinvestment.com/2019/01/09/can-more-information-lead-to-worse-investment-decisions/amp/ 'behavioural investment') 인용한 연구들은 다음과 같습니다\. [although individuals have increased confidence with increased information, their accuracy of outcomes doesn't change:](https://pdfs.semanticscholar.org/dfe1/e71649951fc8aeda52eac460976bfe02f305.pdf 'Tsai, C. I., Klayman, J., & Hastie, R. 2008')
 
-![post](./i_1.webp)
+![post](../../../blog/2019_04_18_investing/i_1.webp)
 
 차이\, 클레이먼\, 헤이스티의 위 그래프 연구는 이 차이의 두 가지 주요 이유를 제시합니다\:
 

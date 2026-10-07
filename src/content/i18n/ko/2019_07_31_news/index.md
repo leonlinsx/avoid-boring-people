@@ -4,7 +4,7 @@ description: "뉴스레터 인기가 높아진 배경"
 pubDate: 2019-07-31
 category: Technology
 tags: ['newsletter']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2019_07_31_news/n_1.webp'
 locale: 'ko'
 sourceSlug: 'news'
 sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
@@ -24,7 +24,7 @@ sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
 
 As [the CNBC article](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc') 참고로\, 몇 가지 요인이 대안적이고 구독 기반 모델의 등장을 이끌었습니다\. **구글과 페이스북이 디지털 광고에서 지배적이고 효과적이면서\, 뉴스 사이트와 같은 전통적인 콘텐츠 제작자에서의 광고는 점점 덜 효과적이게 되었습니다\.** 광고주로서 저는 광고 예산의 60\%가 통과할 곳에 더 많은 광고 예산을 쓰고 광고 투자 대비 수익률을 높이고 싶습니다\.
 
-![post](./n_1.webp)
+![post](../../../blog/2019_07_31_news/n_1.webp)
 
 구글과 페이스북이 트래픽을 장악하는 것은 또한 한계 사용자 확보 비용을 초래할 수 있어\, 서비스 제공 한계 비용이 더 이상 0이 아님을 의미합니다\. 일반 미디어 사이트에서는 유기적 트래픽이 감소하고 고객과의 관계가 약화되면서도\, 경쟁사의 무료 콘텐츠 과잉 문제로 차별화하기 어려운 상황에 직면해 있습니다\.
 

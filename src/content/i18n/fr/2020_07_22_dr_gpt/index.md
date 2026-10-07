@@ -5,7 +5,7 @@ pubDate: 2020-07-22
 category: Technology
 tags: ['AI', 'computer science', 'math']
 evergreen: false
-heroImage: './gpt_28.webp'
+heroImage: '../../../blog/2020_07_22_dr_gpt/gpt_28.webp'
 featured: true
 locale: 'fr'
 sourceSlug: 'dr_gpt'
@@ -51,7 +51,7 @@ Puisqu’il s’agit d’un modèle général\, on pourrait aussi penser que GPT
 
 De façon étonnante et impressionnante\, ce n’est pas toujours le cas\. Voici le tableau du [GPT paper](https://arxiv.org/pdf/2005.14165.pdf 'GPT') avec les résultats d’un test de traduction\. Pour simplifier\, on peut simplement comparer la première ligne représentant un modèle « State Of The Art » à la dernière ligne représentant le modèle GPT le mieux performant [^2]\. Un nombre plus élevé est mieux ici\. On peut le voir pour certaines tâches de traduction \(notamment pour la traduction _à_ Anglais\)\, **GPT est aussi bon\, voire meilleur\, que les modèles State Of The Point\.**
 
-![post](./gpt_1.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_1.webp)
 
 OpenAI a testé GPT sur une grande variété d’autres tâches\, comme la prédiction de texte\, des questions de culture générale sans le laisser rechercher dans un jeu de données séparé\, ou déterminer à quel mot un pronom fait référence [^3]\. Bien que GPT ne gagne pas dans tous les cas\, il obtient d’excellents résultats dans la plupart d’entre eux\. **Si vous ne pouviez choisir qu’un seul modèle\, vous voudriez probablement utiliser GPT\.** C’est le [Simone Biles](https://www.nytimes.com/2019/10/13/sports/simone-biles-worlds.html 'Simone') de la communauté IA\, étant le meilleur lors de nombreux événements et excellent dans le reste\.
 
@@ -59,15 +59,15 @@ Voyons quelques exemples\.
 
 Dans cette première image ci\-dessous\, le modèle reçoit une invite en haut\, puis apparaît avec le reste du texte en dessous\. Le texte dure plus longtemps \; je l’ai juste coupé pour l’affichage\. C’est vraiment génial ce qu’il a fait\, non \?
 
-![post](./gpt_2.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_2.webp)
 
 Dans cette deuxième image\, on voit un autre texte d’exemple généré à partir du modèle\, cette fois montrant qu’il peut aussi produire de la poésie\. C’est probablement mieux que ce que j’écrirais moi\-même\.
 
-![post](./gpt_3.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_3.webp)
 
 Incroyable\, donc tout le battage médiatique est justifié \? Était\-ce un moment charnière\, quand la capacité de l’IA a franchi une limite artificielle \? Twitter et Google Trends semblent certainement le penser\.
 
-![post](./gpt_4.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_4.webp)
 
 Eh bien\.\.\. Oui et non\.
 
@@ -106,7 +106,7 @@ Max entre dans plus de détails [here](https://minimaxir.com/2020/07/gpt3-expect
 
 Une autre préoccupation est le coût de la formation d’un tel modèle\. Fait amusant\, [Yannic on youtube](https://www.youtube.com/watch?v=SY5PvZrJhLE&feature=youtu.be 'Yannic') Ils ont souligné que les chercheurs avaient commis une erreur dans certaines collectes de données\, et ne s’en étaient rendu compte qu’après avoir déjà entraîné le modèle\. Plutôt que de recommencer\, ils ont dû corriger ce problème d’autres manières\, puisque **il était trop coûteux de réentraîner le modèle\.**
 
-![post](./gpt_5.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_5.webp)
 
 C’est fou\. Les gens espèrent que les coûts d’entraînement des modèles diminueront\, à mesure que le matériel rattrapera les exigences de l’algorithme\. Sinon\, cela signifiera que seules les grandes entreprises pourront personnaliser les modèles pour leurs propres usages\.
 
@@ -126,43 +126,43 @@ Commençons par les populaires\, les plus anciens [sequence to sequence model.](
 
 Supposons que nous ayons une phrase et que nous voulions prédire la phrase suivante\. Nous paserions notre phrase dans notre algorithme\, qui est une série de fonctions\, puis obtenions la sortie prédite\.
 
-![post](./gpt_6.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_6.webp)
 
 Chaque mot compte\, donc nous devons diviser la phrase d’entrée et la considérer mot par mot\. Par exemple\, « Had we but world enough and time » a des connotations différentes de « Had we but world enough and limes »
 
-![post](./gpt_7.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_7.webp)
 
 Désencombrons le diagramme\, et regardons simplement le premier mot\. Nous faisons passer ce mot à travers une fonction\, puis obtenons une sortie temporaire\. Nous savons que nous pouvons représenter les mots comme des nombres\, puisque c’est ainsi que les ordinateurs traitent les mots [^8]\. Pensez donc au mot transformé en un certain nombre de nombres\, avec des calculs calculés dessus\, puis un autre ensemble de nombres après cela\. Par exemple \(1\, 2\, 3\) multiplié par 2 égale à \(2\, 4\, 6\)\.
 
 Si vous vous souvenez des mathématiques du lycée\, il s’agit de multiplication matricielle ou d’algèbre linéaire\. **Presque toutes les mathématiques ci\-dessous peuvent également être représentées sous une forme de multiplication matricielle\, pour cette section et la suivante\.**
 
-![post](./gpt_8.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_8.webp)
 
 La fonction utilisée est une [neural network, so it's more complicated than just multiplying by two.](https://towardsdatascience.com/learn-how-recurrent-neural-networks-work-84e975feaaf7 'neural') Je vais passer un peu sur le fonctionnement précis car j’ai déjà passé en revue l’intuition [here](/writing/ml 'ML')\, et cela compliquera trop cette explication\. Abonnements gratuits\, envoyez\-moi un mail et je vous transmettrai la suite\.
 
 Ce qui est plus important à comprendre ici\, c’est que le mot est transformé en autre chose\. Le modèle peut contrôler à la fois comment le mot est initialement transformé en nombres\, et la fonction que nous exécutons\. Par exemple\, au lieu de \(1\, 2\, 3\) multiplié par 2\, on pourrait avoir « Had » en \(2\, 3\, 4\)\, puis multiplié par 3 pour égaler \(6\, 9\, 12\)
 
-![post](./gpt_9.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_9.webp)
 
 Nous avons terminé avec le premier mot\, alors passons au second\. Ce qui est différent ici\, c’est que nous avons cette sortie temporaire 1 du premier mot [^9]\. Nous allons combiner cela\, avec le second mot\, appliquer à nouveau notre fonction\, et obtenir une nouvelle sortie temporaire 2\.
 
-![post](./gpt_10.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_10.webp)
 
 À ce stade\, vous pouvez déduire où nous allons pour le reste de la séquence\. En effet\, nous continuons ainsi jusqu’au dernier mot de notre entrée\. Nous utilisons la sortie temporaire d’un mot pour aider à générer la sortie temporaire du suivant de manière récurrente\.
 
-![post](./gpt_11.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_11.webp)
 
 En utilisant cette sortie temporaire\, nous appliquons une fonction différente\, ce qui nous donne deux choses\. Nous obtenons le premier mot de notre sortie \(après l’avoir reconverti à partir des chiffres\)\, puis une autre sortie temporaire \(toujours en nombres\)\. Dans notre exemple\, nous obtenons le mot « ceci »\. Super\, enfin un progrès tangible \!
 
-![post](./gpt_12.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_12.webp)
 
 Nous avons maintenant une sortie temporaire\, une sortie réelle\, et notre nouvelle fonction\. Comme vous l’aurez deviné\, nous pouvons répéter cette même étape pour obtenir le prochain mot prédit\, puis une autre sortie temporaire\. C’est à nouveau un schéma récurrent\.
 
-![post](./gpt_13.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_13.webp)
 
 Et comme dans le scénario d’entrée précédent\, répétez jusqu’à la fin de la phrase\.
 
-![post](./gpt_14.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_14.webp)
 
 Et nous en avons fini avec l’ancien modèle \! C’était beaucoup\, et évidemment trop simplifié\, mais nous avons acquis une compréhension générale du processus\. Pour plus de détails\, vous pouvez consulter l’article original [here](https://arxiv.org/abs/1409.3215 'paper')
 
@@ -180,17 +180,17 @@ Cependant\, ce que j’ai appris juste avant de publier ce billet\, c’est que 
 
 Pour le nouveau modèle\, nous reviendrons au début\, avec nos mots d’entrée et essayons d’en obtenir la sortie\.
 
-![post](./gpt_15.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_15.webp)
 
 Maintenant\, cependant\, nous voulons évaluer tous les mots d’entrée en même temps\, en parallèle plutôt qu’en séquence\. Cela nous fera gagner beaucoup de temps pour calculer le résultat\, car nous pouvons utiliser des mathématiques matricielles pour calculer cela en un seul coup\.
 
 Nous convertissons à nouveau nos mots d’entrée en nombres\, comme toujours\. Cette fois\, cependant\, nous faisons passer ces nombres à travers 3 fonctions différentes\, obtenant 3 sorties temporaires pour chaque mot\, a\, b et c\. Notez que c’est simplement pour simplifier que nos mots et sorties ont 3 nombres \; en pratique\, ils font des centaines de nombres\. Nous verrons bientôt comment ces 3 sorties seront utilisées [^11]\.
 
-![post](./gpt_16.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_16.webp)
 
 Désencombrons le diagramme et faisons ces calculs pour tous les mots d’entrée\. Nous avons maintenant a\, b et c pour tous nos mots d’entrée\.
 
-![post](./gpt_17.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_17.webp)
 
 Voici maintenant le problème auquel nous rencontrons lorsque nous ne considérons pas l’entrée séquentiellement \; les chercheurs étaient bloqués là\-dessus depuis longtemps avant le nouveau modèle\. Comme mentionné précédemment\, **La position ainsi que le contexte des mots comptent\. Comment obtenir cela si nous n’évaluons pas séquentiellement \?**
 
@@ -198,15 +198,15 @@ Par exemple\, prenons la phrase « L’auteur a bu encore plus de café pour fin
 
 Remarquez dans le diagramme que nous avons calculé toutes ces sorties temporaires simultanément\, et aucune ne dépend l’une de l’autre\. Ce que nous allons faire ensuite\, c’est prendre la première sortie temporaire du premier mot\, et appliquer une fonction sur cette sortie avec toutes les secondes sorties temporaires de tous les mots\. Dans le diagramme\, j’ai représenté les résultats de ces résultats comme le premier « point » de sortie temporaire\, la deuxième sortie temporaire\, par exemple 1a\.2b
 
-![post](./gpt_18.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_18.webp)
 
 Nous avons pris quelque chose qui était lié au premier mot\, et l’avons lié à quelque chose qui était lié à tous les autres mots\. Il est important de noter que nous n’avons pas à faire ces calculs séquentiellement\, puisque le résultat de l’un ne se glisse pas dans l’autre\. Nous pouvons répéter cela pour le reste des mots\. Ici\, je montre la même étape pour le mot 2\, juste pour plus de clarté\.
 
-![post](./gpt_19.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_19.webp)
 
 Revenons au premier mot\. Nous avons terminé avec les sorties a et b\, mais il reste encore c\. Sans surprise\, nous appliquons encore une autre fonction à toutes ces sorties temporaires à points et à toutes les sorties c\. Ensuite\, nous utilisons une autre fonction pour transformer toutes ces sorties séparées en une seule sortie\. Par exemple\, dans ce cas\, nous sommes passés de 7 sorties à 1 sortie unique 1z\.
 
-![post](./gpt_20.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_20.webp)
 
 Ok\, ça a demandé beaucoup de travail\. Je te jure\, ça a du sens pour ceux qui l’ont imaginé\. Ce qu’on vient de faire est passé par là [the steps of calculating "attention" for our words](http://jalammar.github.io/illustrated-gpt2/ 'attention') [^12]\. La quantité d\'« attention » que le mot A a pour un autre mot correspond à la quantité de temps que le mot A doit se concentrer dessus et donc à quel point il doit recevoir de contexte\. En associant les composants des mots à tous les autres mots\, on résout plus tôt le problème de contexte\. Je vais passer la solution du problème de position pour simplifier\, pensez\-y simplement comme s’ils ajoutaient plus de chiffres au mot original en fonction de la position du mot [^13]\.
 
@@ -214,11 +214,11 @@ Nous avons maintenant cette nouvelle sortie\, z\, qui contient des informations 
 
 **Nous allons résumer toutes les étapes que nous venons de faire et les appeler une étape d\'« encodage »\.** Lors de l\'« encodage »\, nous transformons nos premiers nombres pour le mot en nouveaux nombres qui incluent plus de contexte que les autres mots autour\. Par exemple \(1\, 2\, 3\) devient \(5\, 7\, 0\)\. Rappel que chaque mot est en réalité composé de centaines de chiffres\, pas seulement trois\.
 
-![post](./gpt_21.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_21.webp)
 
 La sortie z\\\* contient le même nombre d’éléments que lorsque nous avons d’abord transformé le mot en nombres\. Le nouveau modèle prend ce résultat et le fait passer à travers tout le processus d’encodage à plusieurs reprises\. Pensez\-y comme plusieurs couches d’encodage\, par exemple en effectuant le processus 96 fois\.
 
-![post](./gpt_22.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_22.webp)
 
 Après tout cet entraînement\, nous avons une sortie finale de l’encodage\. Appelons\-les vf\. Notez que le calcul de la vf d’un mot reste indépendant du calcul de la vf d’un autre mot\. Cette parallélisation nous a fait gagner beaucoup de temps\. Par exemple\, je peux calculer 7\_vf sans savoir 1\_vf d’abord\.
 
@@ -226,15 +226,15 @@ Nous pouvons maintenant utiliser ces sorties finales pour commencer à prédire 
 
 J’ai mis ici un seul gros bloc pour les « fonctions de décodage »\, mais le nouveau modèle répète ce processus autant de fois que le processus d’encodage\. Par exemple\, s’il avait 96 couches de codage\, il en aura 96\.
 
-![post](./gpt_23.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_23.webp)
 
 Maintenant que nous avons notre premier mot prédit\, nous allons utiliser ce mot avec les résultats finaux\, puis les faire passer à nouveau par la fonction de décodage\. Si vous plissez les yeux\, cela ressemble beaucoup au processus de la section précédente sur les anciens modèles\.
 
-![post](./gpt_24.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_24.webp)
 
 Et une fois que vous répétez ce processus pour tous les mots\, vous obtenez la phrase finale\. Enfin\.
 
-![post](./gpt_25.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_25.webp)
 
 Bon\, voilà donc le _Généralités_ Modèle de transformateur\. Maintenant\, mettons tout cela de côté et recommençons de zéro pour la version de GPT\-3\.
 
@@ -242,7 +242,7 @@ Je plaisante\, ne panique pas [^16]\.
 
 GPT\-3 combine le processus d’encodage et de décodage\, pour obtenir un [Transformer Decoder](https://arxiv.org/pdf/1801.10198.pdf 'TD')\. Ils combinent la séquence d’entrée et de sortie attendue en une seule « phrase » puis la passent à travers les couches de décodage\. GPT\-3 possède 96 de ces couches de décodage [^17]\. Le modèle sert à prédire la prochaine entrée et la prochaine sortie\.
 
-![post](./gpt_26.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_26.webp)
 
 Si cela semble un peu vague\, c’est parce que c’est le cas\. Je ne trouve aucune explication en ligne sur la façon dont ils combinent les étapes\, à part le [original paper,](https://arxiv.org/pdf/1801.10198.pdf 'paper') [this post](http://jalammar.github.io/illustrated-gpt2/ 'Jay')\, et ce jeu aléatoire [github comment as confused as I am](https://github.com/openai/gpt-2/issues/157 'github')\. Il semble que la façon dont ils prédisent un mot à la fois impliquerait aussi que nous revenons au problème récursif\, à savoir traiter le texte séquentiellement\. Peut\-être que simplement mettre assez de puissance de calcul sur le problème était la solution\. Si quelqu’un en sait plus\, merci de m’envoyer un e\-mail\.
 
@@ -252,13 +252,13 @@ Si vous êtes toujours avec moi\, il y a deux autres caractéristiques important
 
 Tout d’abord\, vous vous souvenez quand on a divisé le mot en 3 caractéristiques différentes\, a\, b et c \? Le nouveau modèle fait cela 96 fois dès le départ [^18]\. Chaque fois\, il utilise une fonction différente\, de sorte que 96 triplets différents sont générés\. Comme ceux\-ci sont indépendants\, il fait passer tous ces éléments simultanément par les couches d’encodage\/décodage\, pour tous les mots d’entrée\. Les résultats de ces éléments sont fusionnés lors de l’obtention de cette sortie de la fonction d’encodage\/décodage\, z\. Ceci est connu sous le nom de « multiples têtes d’attention »\.
 
-![post](./gpt_27.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_27.webp)
 
 Deuxièmement\, chaque fois que je mentionne la fonction dans cette section\, vous pouvez la considérer comme un poids ou un paramètre sur un certain nombre\. **Quand on additionne tous les poids\, le nouveau modèle en compte 175 milliards\.** Non\, ce n’est pas une faute de frappe\. Quand les gens parlent du nombre de paramètres utilisés par GPT\-3\, et de son ampleur bien plus grande que les modèles précédents\, c’est à cela qu’ils font référence\.
 
 Par exemple\, si chaque mot était représenté par une liste de 1000 nombres\, il vous faudrait alors autant de paramètres pour passer par une seule fonction dans l’ensemble du processus décrit ci\-dessus\. Vous pouvez facilement voir comment avoir un processus avec 96 couches et 96 alternatives dans chaque couche vous permet d’atteindre un nombre gigantesque de paramètres requis\.
 
-![post](./gpt_28.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_28.webp)
 
 C’était une longue déviation\, mais vous avez maintenant plus d’intuition sur ce que fait GPT\-3\. Il prend des entrées de mots\, effectue plusieurs itérations de transformations via des mathématiques matricielles\, et utilise cela pour prédire ou traduire des mots\.
 
@@ -266,7 +266,7 @@ Si c’était un peu trop compliqué\, pensez à cet exemple plus simple\. Imagi
 
 Après avoir travaillé tout cela\, l’architecture du transformateur de l’article original est ci\-dessous pour référence\. Vous pouvez voir comment certaines parties correspondent au diagramme simplifié que nous venons de penser\, avec quelques cases que j’ai laissées de côté pour simplifier [^19]\. GPT\-3 utilise uniquement le côté droit de ce schéma\. Si vous souhaitez en savoir plus\, il y a des références supplémentaires au bas de cet article\.
 
-![post](./gpt_29.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_29.webp)
 
 ## 4\. Comment pouvons\-nous détecter GPT\-3 \?
 
@@ -276,19 +276,19 @@ Il s’avère qu’il existe des méthodes étonnamment simples pour y parvenir\
 
 Tout d’abord\, [because of the hyperparameters used in GPT-3,](https://medium.com/analytics-vidhya/understanding-the-gpt-2-source-code-part-1-4481328ee10b 'temp') **La fréquence des mots générés ne suivra pas les distributions attendues chez les humains normaux\.** Dans la capture d’écran ci\-dessous\, Gwern explique que cela fait apparaître encore plus de mots courants que prévu\, et que des mots rares n’apparaissent pas du tout\. La température contrôle l’aléatoire\, et l’hyperparamètre top\-k contrôle où se situe le point de coupure de fréquence pour les mots du haut choisis\.
 
-![post](./gpt_30.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_30.webp)
 
 Pour ceux qui ne connaissent pas la loi de Zipf\, je l’ai déjà abordée [here](/writing/zipf 'Zipf') Quand on parle de recherche d’extraterrestres \(oui\, des extraterrestres\. Les abonnements gratuits m’envoyent un mail et je transmettrai la conversation\)\. Essentiellement\, il est indiqué que dans un grand échantillon de texte\, la fréquence d’un mot est inversement proportionnelle à son rang\, classée par fréquence d’occurrence\. Par exemple\, le mot le plus courant est \~2 fois plus fréquent que le deuxième mot le plus fréquent\.
 
 J’ai déjà tracé la loi de Zipf pour ma newsletter\, et cela ressemble au graphique du haut\. Si GPT\-3 devait écrire mes articles\, on s’attendrait à quelque chose comme le bas \(avec plus de mots bien sûr\, l’exemple est juste à titre illustratif\)\.
 
-![post](./gpt_31.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_31.webp)
 
 Ensuite\, vous pouvez utiliser un autre modèle pour vérifier le texte\. Analytics Vidhya a publié un post il y a quelque temps [how to detect computer generated articles.](https://www.analyticsvidhya.com/blog/2019/12/detect-fight-neural-fake-news-nlp/ 'Vidhya') Ils fournissent quelques outils tels qu’un modèle de détecteur GPT\-2 ou [Grover,](https://grover.allenai.org/detect 'Grover') Cela peut prendre des exemples de texte et vous indiquer s’ils pensent que c’est généré par machine [^20]\. Ces outils ont été lancés avant GPT\-3 et n’ont pas encore été calibrés pour celui\-ci\, mais fonctionnent toujours bien\. Ils fonctionnent parce que **Les modèles connaissent les particularités que d’autres modèles utilisent pour générer du texte\.**
 
 Voici une démonstration\. Je suis allé voir le premier échantillon en annexe du [GPT 3 paper (page 49)](https://arxiv.org/pdf/2005.14165.pdf 'GPT')\, et a copié le poème généré par machine là\-bas\. En le saisissant sur le site de Grover\, on voit que Grover pense que c’était généré par machine\. Je n’aurais probablement pas deviné correctement\.
 
-![post](./gpt_32.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_32.webp)
 
 Bien sûr\, aucune de ces méthodes n’est infaillible\. Si vous n’avez pas un échantillon assez grand\, il est difficile de faire une analyse de fréquence ou de la vérifier via les modèles de vérification\. Si quelqu’un vous envoie un mur de texte juridique standard une seule fois\, il se peut qu’il n’y ait pas assez de données pour en être certain\. Je me demande à quel point il serait insultant de répondre en demandant s’il s’agit d’un bot\.\.\.
 
@@ -308,7 +308,7 @@ L’accès à l’API GPT\-3 est actuellement disponible [subject to a waitlist,
 
 Nous devrions nous attendre à ce que davantage de personnes aient accès à des capacités similaires à GPT\-3\, et que les modèles de langage généraux continuent de s’améliorer\. Les modèles pourraient ne pas réussir un [Turing Test](https://plato.stanford.edu/entries/turing-test/ 'Turing') Pourtant\, comme [Kevn Lacker shows.](http://lacker.io/ai/2020/07/06/giving-gpt-3-a-turing-test.html 'Lacker') Cependant\, il semble que nous nous rapprochions chaque jour\. Il deviendra de plus en plus difficile pour les humains seuls de savoir si quelque chose a été fabriqué par machine\.
 
-![post](./gpt_33.webp)
+![post](../../../blog/2020_07_22_dr_gpt/gpt_33.webp)
 
 Les cas d’usage futurs de GPT seront probablement encore plus créatifs que nous ne le pensons\. [Tyler Cowen gives some thoughts here](https://marginalrevolution.com/marginalrevolution/2020/07/the-case-for-gpt-3.html 'Cowen') sur les diagnostics médicaux et les thérapies\, et nous commençons probablement encore à comprendre ce qui pourrait être possible à grande échelle avec GPT ou des modèles similaires\. Les démonstrations vont continuer à nous surprendre\. Nous nous demanderons ce que signifie être intelligent\.
 

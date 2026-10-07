@@ -4,7 +4,7 @@ description: "Causalité, mesure et ajustements"
 pubDate: 2021-03-06
 category: Investing
 tags: ['inflation']
-heroImage: './i_3.webp'
+heroImage: '../../../blog/2021_03_06_inflation/i_3.webp'
 locale: 'fr'
 sourceSlug: 'inflation'
 sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
@@ -24,7 +24,7 @@ Je comprends bien l’idée que les prix augmentent\. Mais pendant longtemps\, j
 
 C’est ridicule\, on pourrait dire\, il y a tout un groupe de personnes dehors [making policy based on inflation targets](https://www.federalreserve.gov/faqs/economy_14400.htm 'fed')\, en parlant de [hedging against inverted yield curves](https://www.chathamfinancial.com/insights/hedging-in-an-inverted-yield-curve-environment 'yield')\, et si l’on en croit Google Trends\, un jeu Sonic the Hedgehog [(apparently some weird nsfw meme).](https://tvtropes.org/pmwiki/pmwiki.php/VideoGame/SonicInflationAdventure 'sonic')
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_06_inflation/i_1.webp)
 
 Oui\, mais cela ne veut pas dire qu’ils savent comment ça fonctionne\. Si mon expérience professionnelle m’a appris quelque chose\, c’est que les gens peuvent faire énormément de travail sans comprendre ce qu’ils font [^1]\. Nassim Taleb en a déjà parlé\, dans l’histoire d’un négociant financier qui a réussi à trader du bois vert [without understanding what it was.](https://fs.blog/2016/11/green-lumber-fallacy/ 'taleb')
 
@@ -46,7 +46,7 @@ De même\, ce que vous définissez comme l’inflation a de grands effets sur le
 
 Un autre gros problème avec l’inflation est qu’elle est **Influencé par les attentes\.** Espérer qu’elle suive une loi mathématique\, c’est comme s’attendre à ce que le marché boursier représente parfaitement la valeur actuelle des flux de trésorerie futurs\. C’est pourquoi il est si difficile de viser un objectif d’inflation \:
 
-![post](./i_2.webp)
+![post](../../../blog/2021_03_06_inflation/i_2.webp)
 
 La Fed américaine a un objectif de 2 \%\, donc la première phrase ci\-dessus peut soit être interprétée comme 1\) la Fed est nulle dans son travail\, soit 2\) c’est vraiment difficile à faire\. Je suis enclin à croire la seconde option\, compte tenu de la complexité du système [^3]\.
 
@@ -56,7 +56,7 @@ Cela leur donne de la flexibilité\, car il y a tellement de choses dans l’éc
 
 Et quand les gens perdent confiance\, on se retrouve dans des situations comme celle\-ci \:
 
-![post](./i_3.webp)
+![post](../../../blog/2021_03_06_inflation/i_3.webp)
 
 J’ai l’impression que ce sont les seules choses que je suis à l’aise de dire à propos de l’inflation \:
 

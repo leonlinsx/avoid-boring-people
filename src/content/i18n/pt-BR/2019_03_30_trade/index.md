@@ -4,7 +4,7 @@ description: "Aumento de impostos, tarifas e ambições"
 pubDate: 2019-03-30
 category: Investing
 tags: ['finance', 'tariff', 'behaviour']
-heroImage: './r_2.png'
+heroImage: '../../../blog/2019_03_30_trade/r_2.png'
 locale: 'pt-BR'
 sourceSlug: 'trade'
 sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
@@ -46,7 +46,7 @@ Sou um dos bobos que dá conteúdo do Google Maps de graça [^3]\, então espero
 
 > O Que Vem é que é uma incubadora de ídolos\, e quanto mais votos os competidores receberem de seus fãs\, mais recursos receberão para se tornarem celebridades\. Os membros da plateia recebem apenas 1 voto por dia\, porém\, se comprassem produtos One Leaf\, recebiam votos extras\. E se comprassem produtos específicos\, podiam receber 5 votos extras\.
 
-![post](./r_1.webp)
+![post](../../../blog/2019_03_30_trade/r_1.webp)
 
 Faz tempo que não assisto a reality shows\, mas isso parece um novo conceito de vendas\. Estou assumindo que a compra é feita pelo mesmo app onde estão transmitindo o programa\, criando uma experiência conveniente\.
 

@@ -4,7 +4,7 @@ description: "关于为什么投资、科技和社会都是亲戚的游戏，而
 pubDate: 2020-05-07
 category: Risk & Decision Making
 tags: ['investing', 'luck', 'skill']
-heroImage: './rel_4.webp'
+heroImage: '../../../blog/2020_05_07_relative_billionaire/rel_4.webp'
 featured: false
 locale: 'zh-Hans'
 sourceSlug: 'relative_billionaire'
@@ -23,7 +23,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 投资分析师会研究公司，决定买卖哪些股票。你已经做过功课了 [Tencent](https://en.wikipedia.org/wiki/Tencent 'tencent')一家中国互联网公司，得出结论认为其业务、管理和宏观趋势都很好。游戏与网络娱乐 [will continue increasing in importance](https://www.statista.com/outlook/203/117/video-games/china 'stat')\, [the executive team is experienced](https://chinachannel.co/a-deep-dive-into-tencents-restructuring-the-struggle-to-master-b2b/ 'tencent')人口增长则是顺风 [for at least ten years.](https://ourworldindata.org/future-population-growth 'population')
 
-![rel](./rel_1.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_1.webp)
 
 你用Excel建模所有这些。写一份简单的5页投资备忘录。准备50页复杂的复杂图表以备不时之需 [^2]\.
 
@@ -49,7 +49,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 在投资方面， [you want to bet on the mispriced horse, not the horse most likely to win.](https://www.oaktreecapital.com/docs/default-source/memos/you-bet.pdf 'bet')
 
-![rel](./rel_2.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_2.webp)
 
 **这既适用于微观层面的个别股票推介，也适用于宏观层面的投资公司业绩。** 绝对的技巧并不重要。关键是基金的技能 _相对于竞争_ 这决定了它是否能获得高于平均水平的回报。
 
@@ -61,7 +61,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 投资中，一切都是相对的。
 
-![rel](./rel_3.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_3.webp)
 
 ## 2\. 你的技术亲戚是个八岁的孩子
 
@@ -85,7 +85,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 这也是原因 [word of mouth and customer loyalty is important](https://medium.com/@gavin_baker/scale-and-loyalty-are-more-important-online-than-offline-which-drives-much-of-the-winner-take-992345be93a9 'loyalty')，因为它允许你暂时推迟相对比较的影响。当CAC处于0美元下限时，它不再是限制因素 [^6]\.
 
-![rel](./rel_4.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_4.webp)
 
 这不仅适用于客户获取，还涉及公司各个环节，从你雇佣的人才到产品质量。仅仅了解他们的优势而不了解他们与他人的比较，是没有意义的。
 
@@ -105,7 +105,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 即使是谷歌，“不要拿自己和别人比较”结果也只有18亿条，而“如何拿自己和别人比较”结果只有4亿条。而后者的热门结果全是关于如何比较的文章 _停下_ 比较。
 
-![rel](./rel_5.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_5.webp)
 
 这是真的。你应该专注于提升自己，并努力去做 [be 1% better every day.](https://heleo.com/get-1-better-every-day/19161/ '1%')
 

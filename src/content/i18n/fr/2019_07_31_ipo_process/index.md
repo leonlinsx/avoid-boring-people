@@ -4,7 +4,7 @@ description: "Parcourir le processus d’introduction en bourse"
 pubDate: 2019-07-31
 category: Investing
 tags: ['finance']
-heroImage: './ipo_1.webp'
+heroImage: '../../../blog/2019_07_31_ipo_process/ipo_1.webp'
 locale: 'fr'
 sourceSlug: 'ipo_process'
 sourceHash: '6f3cd57a4e491a255b96899fc1df5935004e873af2dce6466b146bd23825b416'
@@ -38,6 +38,6 @@ Pour expliquer davantage le ["money on the table" issue](http://www.underpricing
 
 Certains diraient que s’il y avait eu une demande à 46 \$\, peut\-être que BYND aurait dû simplement fixer un prix à 46 \$ et obtenir plus d’argent des investisseurs\. Bill Gurley préférerait plutôt utiliser une cotation directe pour répondre à toute l’offre et la demande\.
 
-![post](./ipo_1.webp)
+![post](../../../blog/2019_07_31_ipo_process/ipo_1.webp)
 
 Je suis d’accord qu’il reste de l’argent sur la table\, mais réfléchissez à l’alternative\. Supposons que BYND soit fixé à 100 \$ dès le départ\. Cela ne laisse rien à perdre\, mais il y a maintenant une chance bien plus élevée que le prix baisse après l’introduction en bourse\. Et s’il baisse\, peut\-être que l’élan du prix continue de le faire baisser\. Nous ne savons pas quelle part du prix actuel de BYND est due à la dynamique\, et il me semble que cela aurait pu aller dans l’autre sens aussi\. Le grand public considère toujours les introductions en bourse de FB\, GOOG et Uber comme des échecs dus à l’absence de « pop »\. On pourrait se demander qui se soucie du public\, mais le moral des employés au sein de l’entreprise en est aussi affecté\. **Ce que je veux dire\, c’est qu’il y a actuellement moins d’incitation pour les entreprises à fixer les prix exacts\, et qui sait quel est le bon prix de toute façon \?**

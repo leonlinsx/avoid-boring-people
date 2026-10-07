@@ -4,7 +4,7 @@ description: "Utiliser le cadre de la couche Pace pour expliquer pourquoi les en
 pubDate: 2020-03-04
 category: System Design
 tags: ['frameworks', 'pace layers']
-heroImage: './p_2.webp'
+heroImage: '../../../blog/2020_03_04_pace/p_2.webp'
 locale: 'fr'
 sourceSlug: 'pace'
 sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
@@ -30,7 +30,7 @@ Et l’emplacement du bâtiment lui\-même\, cette géographie reste essentielle
 
 En 1994\, [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand 'Stewart') de la [Long Now Foundation](http://longnow.org/ 'Long Now') On a proposé le modèle ci\-dessus comme une façon de réfléchir à la façon dont les bâtiments apprennent et évoluent [^1]\. Un bâtiment peut être considéré comme comportant plusieurs couches\, chacune changeant à des rythmes différents\. **Un bâtiment sain permettra des interactions contrôlées entre les couches\, chacune évoluant à son propre rythme\.**
 
-![post](./p_1.webp)
+![post](../../../blog/2020_03_04_pace/p_1.webp)
 
 En 1999\, Stewart a élargi davantage le cadre pour s’appliquer aux civilisations\. **Quelles parties de la civilisation évoluent avec le temps \? À quelle vitesse changent\-elles \? Comment interagissent\-elles \?**
 
@@ -45,7 +45,7 @@ Par ordre du niveau le plus rapide au plus lent\, ces niveaux sont \:
 - Culture
 - Nature
 
-![post](./p_2.webp)
+![post](../../../blog/2020_03_04_pace/p_2.webp)
 
 La mode évolue rapidement\, la nature avance lentement\. Stewart décrit comment ces couches interagissent \:
 

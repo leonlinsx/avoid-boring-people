@@ -4,7 +4,7 @@ description: "Comment améliorer les relations et obtenir ce que chacun veut"
 pubDate: 2021-01-06
 category: Culture
 tags: ['behaviour']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2021_01_06_nonviolent/n_1.webp'
 locale: 'fr'
 sourceSlug: 'nonviolent'
 sourceHash: 'ab385e3db1f9d407d011a7b1a1869b90ad552d52dff05dba828867b2b782c47d'
@@ -55,6 +55,6 @@ Que quelque chose soit une demande ou une demande dépend des conséquences du n
 
 Le livre NVC explique aussi comment faire plus d’empathie\, exprimer la colère et exprimer de la reconnaissance\, mais je vais laisser cela de côté pour rester concis\. J’ai cependant une inquiétude qui n’a pas été abordée – on suppose que tout le monde agit avec de bonnes intentions et peut développer de l’empathie\. Si j’avais lu ceci avant la pandémie\, j’aurais été enclin à être d’accord\. Au lieu de cela\, je me demande maintenant quelle est la bonne approche si d’autres n’agissent pas de bonne foi\. Je n’ai pas de bonnes idées à ce sujet – peut\-être simplement éviter ces personnes \?
 
-![post](./n_1.webp)
+![post](../../../blog/2021_01_06_nonviolent/n_1.webp)
 
 La conviction fondamentale de NVC est que les gens doivent être compris et qu’une communication plus empathique aide\. En nous comprenant mieux et en nous comprenant les autres\, nous pouvons améliorer la qualité de nos relations au travail et à la maison\. Je souhaite l’utiliser à l’avenir pour rendre mes communications plus efficaces et moins menaçantes\.

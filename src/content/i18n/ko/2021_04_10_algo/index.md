@@ -4,7 +4,7 @@ description: "현실에서 의사결정을 개선하기 위해 알고리즘을 �
 pubDate: 2021-04-10
 category: Risk & Decision Making
 tags: ['behaviour', 'tech']
-heroImage: './a_3.webp'
+heroImage: '../../../blog/2021_04_10_algo/a_3.webp'
 locale: 'ko'
 sourceSlug: 'algo'
 sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
@@ -42,7 +42,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 
 그것이 수학적으로 가장 적합한 인재를 뽑을 가능성이 가장 높은 지점입니다\. 너무 일찍 그만두면 나중에 면접을 놓칠 수 있습니다\. 너무 늦게 그만두면 시간을 낭비하게 됩니다 [^4]\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_04_10_algo/a_1.webp)
 
 ## 익스플로잇 탐색
 
@@ -79,7 +79,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 
 이 경우\, 가장 최근에 사용한 아이템을 작고 빠른 구역에 두는 것이 최적의 선택입니다\. 이는 다음과 같은 이유로 [temporal locality](https://www.geeksforgeeks.org/difference-between-spatial-locality-and-temporal-locality/ 'temp')\. 최근에 사용한 무언가가 다시 필요할 가능성이 더 큽니다\. 예를 들어\, 구글 드라이브는 자주 사용하는 파일을 하이라이트해 빠르게 접근할 수 있게 합니다\.
 
-![post](./a_2.webp)
+![post](../../../blog/2021_04_10_algo/a_2.webp)
 
 ## 일정
 
@@ -112,7 +112,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 - 일반\: 초기 사건은 놀라우고\, 늦은 사건은 예상된다\. 예를 들어\, 우리는 인생 초기에 죽는 사람에게는 놀라움을 느끼지만\, 늦게 죽는 사람은 놀라지 않는다\.
 - 얼랑\: 사건은 결코 더 놀랍거나 덜 놀랍지 않다\. 예를 들어\, 룰렛 휠의 기억 없는 분배나 [the coin flips we discussed last week](/writing/ergodicity 'sub')
 
-![post](./a_3.webp)
+![post](../../../blog/2021_04_10_algo/a_3.webp)
 
 ## 게임 이론
 

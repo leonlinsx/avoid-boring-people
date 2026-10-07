@@ -4,7 +4,7 @@ description: "香港株式開示の抜け穴"
 pubDate: 2019-04-14
 category: Investing
 tags: ['risk']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2019_04_14_stock/s_1.webp'
 locale: 'ja'
 sourceSlug: 'stock'
 sourceHash: '487562600faaeef6835f0fc2d4f4b58b41b6c6e6e5244c191918b3d35c5db223'

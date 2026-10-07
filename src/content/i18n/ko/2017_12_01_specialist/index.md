@@ -4,7 +4,7 @@ description: "대부분은 전문화되되, 더 큰 그림을 이해하는 데 �
 pubDate: 2017-12-01
 category: Culture
 tags: ['generalists']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2017_12_01_specialist/s_1.webp'
 locale: 'ko'
 sourceSlug: 'specialist'
 sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
@@ -30,7 +30,7 @@ sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
 
 개인적으로는 그냥 **호기심을 갖고 무작위로 배우는 것은 재미있습니다\,** 그래서 저는 이 점을 좋아합니다 [this comic](https://xkcd.com/1053/ 'xkcd comic')\.
 
-![post](./s_1.webp)
+![post](../../../blog/2017_12_01_specialist/s_1.webp)
 
 이 때문에 셰익스피어 같은 관련 없는 글이나 작품에 시간을 낭비하는 경우가 있지만\, 전체적인 수익은 긍정적이라고 생각합니다\(희망하라면\)\.
 

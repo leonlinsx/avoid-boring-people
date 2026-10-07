@@ -4,7 +4,7 @@ description: "La difficulté de l’avantage comportemental"
 pubDate: 2021-02-06
 category: Risk & Decision Making
 tags: ['finance', 'games', 'risk']
-heroImage: './g_3.png'
+heroImage: '../../../blog/2021_02_06_gambling_size/g_3.png'
 featured: false
 locale: 'fr'
 sourceSlug: 'gambling_size'
@@ -35,7 +35,7 @@ En moyenne\, vous auriez gagné \~8 \% par an\. Cela semble être un petit chiff
 
 Cette différence de « ressenti » là\-bas explique pourquoi les gens peuvent gagner le grand chiffre\. La capitalisation prend du temps à faire son travail \; on est payé pour la patience\.
 
-![post](./g_1.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_1.webp)
 
 **Risque contre ruine\.** Quand on pense à investir sur le long terme\, peu importe combien vous gagnez si vous le perdez tout\. Un gain de 10 000 \% suivi d’une chute de 100 \% reste un résultat horrible\. Éviter le risque de ruine\, et « rester dans le jeu »\, c’est la seule chose qui compte\. Ne me croyez pas\, voici Howard Marks et Charlie Munger \:
 
@@ -57,7 +57,7 @@ Cette différence de « ressenti » là\-bas explique pourquoi les gens peuvent 
 
 C’est pourquoi nous voyons des actions comme Amazon \> 100 fois au cours de notre vie\, et que nous ne voyons pas les gestionnaires actifs faire de même\. Si tout le monde _a_ Pour effectuer des échanges afin de garder leur emploi\, ne rien faire peut en fait vous donner un avantage\.
 
-![post](./g_2.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_2.webp)
 
 **Ennuyeux vs excitant\.** Pourquoi les comportements ci\-dessus sont\-ils difficiles \? Parce qu’ils le sont _ennuyeux_\. Nous aimons l’activité et détestons rester immobiles\. Il est difficile de se vanter lors d’un cocktail que ses gains sont petits\, lents et simples\. Tout comme ["sin stocks" need to have higher expected excess returns](https://www.aqr.com/Insights/Perspectives/Virtue-is-its-Own-Reward-Or-One-Mans-Ceiling-is-Another-Mans-Floor 'asness')\, les comportements « d’ennui » en stock vous donnent aussi un avantage\.
 

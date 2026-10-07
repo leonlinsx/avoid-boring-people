@@ -4,7 +4,7 @@ description: "ゲートキーパーの門番は自分自身をゲートキープ
 pubDate: 2020-10-28
 category: Culture
 tags: ['finance', 'behaviour']
-heroImage: './g_5.webp'
+heroImage: '../../../blog/2020_10_28_gatekeep/g_5.webp'
 locale: 'ja'
 sourceSlug: 'gatekeep'
 sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
@@ -21,23 +21,23 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 初心者で、目を見輝き、気持ちが高ぶる人は、その分野の始め方についてアドバイスを求めて来るでしょう。
 
-![post](./g_1.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_1.webp)
 
 そして多くの専門家は、それは不可能だと言い、何年もかけて前提条件を学ぶべきだと言い、そもそも質問をしたことを恥ずかしく思うべきだと言[emerge from the depths](https://youtu.be/Y2fwe0rnHak?t=118 'balrog')。_「学費を払わずに済むと思った人たちの厚かましさ。」_
 
 一部の「専門家」は、初心者向けのコースを始める際に不満の理由を見つけ出します。
 
-![post](./g_2.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_2.webp)
 
 ゲートキーピングはいつも見られますが、それは主に地位を守るために行われています。正当なゲートキーピングの形態もいくつかあり、それについては後ほど触れます。しかしほとんどの場合、それは人を排除し意地悪をするために行われます。面白いことに、ゲートキーパーたちは自分たちも排除される可能性があることに気づいていないようです。
 
 例えば、微積分、統計学、線形代数を学ばなければ機械学習を始められないと言えるでしょう。これは上のコメントにもあるように。
 
-![post](./g_3.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_3.webp)
 
 また、線形代数を始めるには群論を学ばないと言えるかもしれませんが、[matrices are a ring](https://www.youtube.com/watch?v=_RTHvweHlhE 'ring')や、[when to work with linear groups or not](https://www.youtube.com/watch?v=AJTRwhSZJWw 'group') [^1]
 
-![post](./g_4.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_4.webp)
 
 さらに言えば、上記のことは学[set theory](https://plato.stanford.edu/entries/set-theory/ 'set')、[Peano axioms](https://en.wikipedia.org/wiki/Peano_axioms 'Peano')、[philosophy](https://plato.stanford.edu/entries/philosophy-mathematics/ 'philo')によって異なると言えるでしょう。コメント投稿者は学部時代にどれだけ勉強したのか気になりますね。
 
@@ -51,7 +51,7 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 ただし、門番たちの言うことは完全に間違っているわけではありません。**実際、彼らの提案はしばしば理にかなっています。** 例えば、機械学習を学ぶ際に線形代数を知っておくと非常に役立ちます。そして専門家になりたいなら、必要な数学をすべて習得しなければなりません[^3]。しかし、人為的に科目を始めるのを妨げることは誰の助けにもなりません。より良い対応は「はい、始めるにはもっと簡単なコースがあります。後で基礎を見直しに戻ってきてください」というものだったでしょう。無効にするのではなく、有効にする。
 
-![post](./g_5.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_5.webp)
 
 もしゲートキーピングに偏っているなら、コミュニティのためになっているのか、それとも自分自身を助けているのかを考え[^4]。もし自分でこのニュースレターを読むことを選んだなら、もっと良い選択肢が出せるはずです。
 
@@ -77,7 +77,7 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 まずマージン要件[^8]を見て、危機に応じてどのように変化するかを観察します。予想通り、(ここでコストの役割を担う)マージンは不確実性が高いほど流動性が低くなり、不確実性が低いほど流動性が高くなります。
 
-![post](./g_6.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_6.webp)
 
 流動性を減らすもう一つの方法は、参加者の資本を減らすことです:
 
@@ -85,7 +85,7 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 これが流動性の低下の悪循環を二通りに引き起こす可能性があります。
 
-![post](./g_7.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_7.webp)
 
 >まず、市場の流動性不足でマージンが増加する場合、「マージンスパイラル」が発生します。投機家の富の減少が市場の流動性を低下させ、マージンが上昇し、投機家の資金調達の制約がさらに厳しくなる、という具合です
 

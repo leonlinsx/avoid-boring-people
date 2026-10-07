@@ -4,7 +4,7 @@ description: "フェルメールが本当にティムの手法を使っていた
 pubDate: 2019-06-23
 category: Culture
 tags: ['art']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_06_23_tim/t_1.webp'
 locale: 'ja'
 sourceSlug: 'tim'
 sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
@@ -14,9 +14,9 @@ sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
 
 私のようにアートについてあまり知らない方のために、背景を説明します。 [Johannes Vermeer](https://en.wikipedia.org/wiki/Johannes_Vermeer 'wiki') 彼は1632年から1675年まで生きたオランダの画家です。彼は現在、特に [realistic paintings and usage of light.](https://www.artble.com/artists/johannes_vermeer/more_information/style_and_technique 'vermeer style') [^1] 有名な絵画には以下があります [^2]\:
 
-![post](./t_1.webp)
+![post](../../../blog/2019_06_23_tim/t_1.webp)
 
-![post](./t_2.webp)
+![post](../../../blog/2019_06_23_tim/t_2.webp)
 
 しばらく前に、デイヴィッド・ホックニーとフィリップ・ステッドマンがこう提案しました **フェルメールや他の芸術家たちなら、 [used lenses and mirrors to achieve the realism in their paintings.](https://www.vanityfair.com/culture/2013/11/vermeer-secret-tool-mirrors-lenses 'Vanity Fair link')** この論争は、仮説を立てる人々と仮説を立てた過程の両方に疑問を持つ人々を生み出しました。
 

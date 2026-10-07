@@ -4,7 +4,7 @@ description: "이벤트, 뉴스레터, 투자에서의 커뮤니티 대 개성"
 pubDate: 2020-09-02
 category: Culture
 tags: ['newsletter', 'investing', 'community']
-heroImage: './c_9.webp'
+heroImage: '../../../blog/2020_09_02_community_covid/c_9.webp'
 locale: 'ko'
 sourceSlug: 'community_covid'
 sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
@@ -52,11 +52,11 @@ sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
 
 > 많은 기업들이 여행 예산을 줄이고\, \'친환경\'에 대한 집중이 커지면서 경제 침체가 결합되어 가상 전시회가 컨퍼런스 비즈니스에 현실적인 시도가 되었습니다\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_02_community_covid/c_1.webp)
 
 그리고 우리 대부분은 [MSN messenger, ](https://www.hulldailymail.co.uk/news/hull-east-yorkshire-news/msn-messenger-logged-back-in-3393323 'msn') [online forums](https://www.makeuseof.com/tag/how-we-talk-online-a-history-of-online-forums-from-cavemen-days-to-the-present/ 'forum')그리고 오늘날 소셜 미디어도 모두 사람들이 온라인에서 서로를 찾게 된 방법이다\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_02_community_covid/c_2.webp)
 
 주요 아이디어 자체는 새롭지 않지만\, 기술 발전과 사회적 규범 변화로 개념의 실행이 향상되었습니다\. 먼저 행사가 어떻게 적응했는지 살펴보고\, 그 다음에 그룹에 대해 살펴보겠습니다\.
 
@@ -78,31 +78,31 @@ sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
 
 큰 그룹이 있고 사람들이 스스로 상호작용하기를 원한다면\, [2020 Nebula Awards](https://events.sfwa.org/ 'SFWA') 그랬다\. 성운은 [one of the most prestigious Sci Fi awards,](https://en.wikipedia.org/wiki/Nebula_Award 'Nebula') 그리고 올해는 전체 컨퍼런스를 온라인으로 진행했습니다\. 그들은 단일 링크에서 다양한 크기의 줌 브레이크아웃 룸을 엄청나게 많이 주최했습니다\. 그리고 모든 참석자에게 공동 진행 권한을 주어\, 참석자들이 분과 회의실을 자유롭게 이동하며 흥미롭다고 생각하는 행사에 참여할 수 있게 했습니다\. 메인 스피커룸 외에도 바텐더가 레시피를 가르치는 바\, 글쓰기실\, 강아지 라이브 스트림 같은 무작위 방들도 있었습니다\. 아래에서 유명한 SF 작가와 함께 브레이크아웃 룸에 있는 저를 볼 수 있습니다 [Lois Bujold](https://en.wikipedia.org/wiki/Lois_McMaster_Bujold 'Lois') \(다른 사람들은 사생활 보호를 위해 블랙아웃했어요\)\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_02_community_covid/c_3.webp)
 
 좀 더 실험적인 아이디어 중 하나가 있었는데\, 복잡한 감정을 가지고 있었어요\. [Online Town](https://theonline.town/ 'Online')\, 그리고 [Long Now Foundation](https://longnow.org/seminars/ 'Long') 세미나 후에 시도해봤습니다\. Online Town에서는 화면에 아바타로 표현되어 실제처럼 방 안을 돌아다닐 수 있습니다\. 들을 수 있는 대화는 근접성에 기반하여 현실을 더욱 시뮬레이션합니다\. 이 아이디어가 흥미롭다고 생각했고\, 더 독특한 경험을 위해서는 훨씬 더 높은 사용자 교육이 필요합니다\.
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_02_community_covid/c_4.webp)
 
 지금까지 우리는 \'업무\' 관련 행사를 다뤘지만\, 연예인들도 가상으로도 적응했습니다\.
 
 예를 들어\, 제가 본 적이 있습니다\. [Ellie Goulding live virtual concert recently.](https://inews.co.uk/culture/music/ellie-goulding-live-review-victoria-and-albert-museum-london-brightest-blue-613122 'Ellie') 그녀는 그것을 들고 있었다\. [Victoria and Albert Museum](https://www.vam.ac.uk/ 'VAM') 런던에서 박물관 안을 돌아다니며 환상적인 쇼를 선보였어요\. 제작 퀄리티도 훌륭했고\, 소셜 미디어에서 좋은 반응을 얻었어요\.
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_02_community_covid/c_5.webp)
 
 또 다른 예는 [Tomorrowland](https://www.tomorrowland.com/global/ 'TMR')\, 최고의 DJ 페스티벌\. 그들은 또한 프로덕션 퀄리티를 높였다\, [creating visual experiences](https://www.youtube.com/watch?v=BinQqIX3aig 'alan') 관객들이 DJ가 라이브로 연주하는 것을 들으며 즐길 수 있었던 것들\. 저는 참석하지 않았지만\, 참석한 사람이 즐거웠다고 말했습니다\.
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_02_community_covid/c_6.webp)
 
 하지만 저는 우리가 더 나은 작품을 만들 수 있다고 생각합니다\. 엘리의 콘서트는 훌륭했고\, 투모로우랜드는 재미있어 보이지만\, 두 작품 모두 팬들과의 소통이 부족했습니다 [^5]\. 라이브 이벤트를 한다면 최대한 활용해야 합니다\. 디지털 경험은 소통을 단순화하며\, 저는 이를 강력히 추천합니다 **엔터테인먼트 행사는 위에서 언급한 \'전문적\' 행사들처럼 상호작용을 목표로 해야 합니다\.** 라이브 이벤트가 제작 가치만 높다는 장점이라면\, 차라리 제 시간에 리플레이를 보는 게 낫겠어요\.
 
 KT 턴스톨이 이를 잘 보여주었다\. [her live session with the Royal Albert Hall](https://www.youtube.com/watch?v=T_FHtCvpTOI 'KT')\. 위 두 예시에 비해 제작 품질이 낮다는 것을 알 수 있지만\, 진짜 차이를 만든 것은 라이브 채팅이었습니다\. 팬들이 서로 그리고 그녀와 소통할 수 있게 해주어 특별한 친밀한 세션을 만들어냈습니다\. 라이브 스트리밍은\.\.\. 주류가 되었습니다\.
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_02_community_covid/c_7.webp)
 
 만약 그것이 대규모로 지속 가능하다고 믿지 않는다면\, 다음을 살펴보세요 [what KPop groups such as Super Junior are doing.](https://www.youtube.com/watch?v=3H_MiOghwJw&fbclid=IwAR3nFY0s2ccu6tXA4dig9_e37jvNC3QGxCNOL9WE9E-DyJeRMrWtoMAQUIo 'Kpop') \(가브리엘 탄 공모\) 그들은 콘서트 경험을 재구상했고\, 특히 콘서트 내 팬과의 상호작용을 계획하고 있습니다\. 팬들을 특별하게 느끼게 하는 것이 훨씬 쉬워졌고\, 연예인들도 이 점에서 배워야 합니다\. 아시아 기업들이 소비자 경험 혁신을 선도하고 있다는 느낌이 점점 커지고 있으며\, 이것이 서구 기업들의 또 다른 사례 연구 같아요 [^6]\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_02_community_covid/c_8.webp)
 
 이것이 대면 행사 시장에 어떤 의미가 있을까요\? [Rafat Ali of Skift believes that this is a watershed moment for the industry](https://skift.com/2020/08/26/the-event-industry-is-being-confronted-by-its-napster-moment/ 'Skift')음악에 대한 Napster와 마찬가지입니다\. 그는 비즈니스 여행의 10\%가 영구적으로 시장에서 떠날 수 있다고 생각하며\, 가상 이벤트가 대면 행사의 약 4분의 1 정도의 수익을 올릴 것으로 추정하기 때문에 시장은 새로운 경제 상황에 적응해야 할 것이라고 합니다\.
 
@@ -118,7 +118,7 @@ KT 턴스톨이 이를 잘 보여주었다\. [her live session with the Royal Al
 
 예를 들어\, MSN 연락처는 너무 선별적이었고\, 페이스북 그룹은 충분히 선별적이지 않습니다\. 경영대학은 선택성이 내포하는 브랜드 가치에 관한 것입니다\. 레딧의 가벼운 중재는 어느 정도 선택성을 낳습니다\. 평균적으로 가까운 친구의 일요일 브런치 그룹보다 학교 네트워크에서 더 많은 전문적 가치를 얻거나\, 레딧 스레드에서 더 많은 정보를 얻을 수 있습니다 [180,000 member Facebook group about genuinely stoked goats](https://www.facebook.com/genuinelystokedgoats/ 'goat') 가입한 것도 기억 못 하잖아 [^7]\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_02_community_covid/c_9.webp)
 
 우리는 이 문제를 해결하려는 시도로 큐레이션 커뮤니티가 점점 인기를 얻고 있는 것을 보고 있습니다\. 이러한 커뮤니티의 목표는 가치와 선별성의 균형을 맞추는 곡선의 최적 위치를 찾는 것입니다\. 이들은 보통 회원을 심사하는 어떤 형태의 입회 절차를 가지고 있습니다\. 이들이 활동할 때는 피드백 루프가 형성되어 뛰어난 회원이 커뮤니티에 더 많은 관심을 불러일으키고\, 이는 더 많은 질 높은 회원으로 이어집니다\. 특히 커뮤니티가 작을 때는 모두가 협력해 성공하도록 동기부여가 있어 회원 자부심을 느낄 수 있습니다\.
 
@@ -134,7 +134,7 @@ KT 턴스톨이 이를 잘 보여주었다\. [her live session with the Royal Al
 
 이 점을 잘 이해하는 산업 중 하나가 바로 게임 시장입니다\. 마인크래프트\, 포트나이트\, 로블록스 등 다양한 회사들이 어떻게 타깃 고객을 확보했는지 살펴보세요\. [Minecraft has 126mm monthly active users](https://www.theverge.com/2020/5/18/21262045/minecraft-sales-monthly-players-statistics-youtube 'Minecraft')\. [Fortnite is still breaking attendance records for its in game concerts](https://www.gamesradar.com/how-many-people-play-fortnite/ 'Fortnite')\. [Roblox makes >$1bn in rev and is played by half of all children in the US](https://www.thegamer.com/roblox-played-by-most-american-kids/ 'Roblox')\. 많은 게임에서 사람들은 친구들이 있기 때문에 그곳으로 향합니다\. 그들은 2020년의 새로운 MSN입니다 [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_02_community_covid/c_10.webp)
 
 가치와 선택성 외에\, 가상 그룹에서 제가 마지막으로 생각하는 요소는 **성장 잠재력\.** 성장은 보통 선택성을 희생하는 대가로 이루어집니다\; 그룹이 성장할수록 다음 구성원이 추가하는 가치는 평균적으로 낮아집니다\.
 
@@ -195,7 +195,7 @@ KT 턴스톨이 이를 잘 보여주었다\. [her live session with the Royal Al
 
 하지만 소규모 사업을 운영하는 데 괜찮다면\, 뉴스레터 작성은 신뢰할 만한 선택이 될 수 있습니다\. **저는 5년 구독 뉴스레터 재무 모델을 만들었습니다 [here](https://docs.google.com/spreadsheets/d/1QS2lKHhDDCe5vwHiJPd7QpDjQRxJ3mHl4VgCq6e8Q6M/edit?usp=sharing 'model')** 경제적 상황이 어떻게 될지 직접 실험해볼 수 있습니다\. 만약 원글을 원한다면 복사본을 만들어 주시고\, 원본을 편집하려 하지 마세요\. 감사합니다 [Jacob Donnelly](https://www.amediaoperator.com/ 'Jacob') 그리고 [Josh Constine](https://constine.substack.com/ 'Josh') 모델에 대한 의견을 얻기 위해서입니다\.
 
-![post](./c_11.webp)
+![post](../../../blog/2020_09_02_community_covid/c_11.webp)
 
 모델은 시트에 명시된 가정에 매우 민감하며\, 이 각주에서 간단히 다루겠습니다 [^12]\. 현재는 구독과 광고 비즈니스 모델을 가정하고 있지만\, 이를 변경할 수 있습니다\. 5년 만에 30만 달러 가치 평가를 받는 것은 어렵지만 합리적이라는 의미이며\, 뉴스레터 제작자에게는 목표가 될 수 있습니다\.
 

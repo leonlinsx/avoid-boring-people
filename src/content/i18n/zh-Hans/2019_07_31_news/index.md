@@ -4,7 +4,7 @@ description: "通讯受欢迎程度上升的背后原因"
 pubDate: 2019-07-31
 category: Technology
 tags: ['newsletter']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2019_07_31_news/n_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'news'
 sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
@@ -24,7 +24,7 @@ sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
 
 作为 [the CNBC article](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc') 不过，有一些因素促使了替代订阅模式的兴起。 **谷歌和脸书在数字广告中的主导地位和效果意味着传统内容生产者如新闻网站的广告效果有所下降。** 作为广告主，我更愿意把更多广告预算花在60\%互联网流量通过的地方，从而获得更高的广告投资回报率。
 
-![post](./n_1.webp)
+![post](../../../blog/2019_07_31_news/n_1.webp)
 
 谷歌和Facebook对流量的垄断也可能导致获取边缘用户的成本，这意味着边际服务成本不再是零。对于普通媒体网站来说，你现在面临的是一个场景：自然流量下降，与客户的关系减少，但竞争对手免费内容过剩，这让你难以区分。
 

@@ -4,7 +4,7 @@ description: "배당금 지급 기업에 투자하는 데 드는 비용"
 pubDate: 2020-07-08
 category: Investing
 tags: ['dividends']
-heroImage: './d_6.webp'
+heroImage: '../../../blog/2020_07_08_dividend/d_6.webp'
 locale: 'ko'
 sourceSlug: 'dividend'
 sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
@@ -40,7 +40,7 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 항상 그렇듯이 단순화했지만\, 위의 행동들이 기업들이 자금으로 주로 하는 일들입니다\. CS의 그래프는 시간이 지나면서 이러한 행동들의 조합이 어떻게 변했는지 보여줍니다\:
 
-![post](./d_1.webp)
+![post](../../../blog/2020_07_08_dividend/d_1.webp)
 
 오늘은 다섯 번째 행동\, 배당 지급에 집중하겠습니다\. 자본 구조의 이론적 무관성에 대해서는 생략하겠습니다 [^5]하지만 모딜리아니 밀러에 대한 복습 자료를 읽어보실 수 있습니다 [here.](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.2.4.99 'MM')
 
@@ -58,13 +58,13 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 참고로\, 관례상 배당금은 1200만 달러를 받습니다\. 대부분의 회사는 분기별로 배당금을 지급하므로\, 만약 한 회사가 분기당 1달러를 지급한다면\, 연간 배당금은 4달러입니다\. 세금도 무시하겠습니다 [^6]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_07_08_dividend/d_2.webp)
 
 배당을 지급하는 주식들 사이의 배당 수익률을 평가할 수 있게 해주는 것 외에도\, 이 수익률은 다른 증권들 사이에서도 비교할 수 있게 해줍니다\. 결국 수익률은 기대 수익률과 같으니까요\. 그래서 4\%의 배당 수익률과 1\%의 수익률을 비교해보고\, 다른 조건이 같으면 배당주가 더 높은 수익을 제공한다고 말할 수 있습니다\.
 
 이것이 바로 우리가 이 작품에서 볼 수 있는 것입니다 [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')아래 그래프는 다음을 보여줍니다\. **지난 10\+년간 배당 수익률이 채권 수익률보다 높았습니다\.**
 
-![post](./d_3.webp)
+![post](../../../blog/2020_07_08_dividend/d_3.webp)
 
 다시 보니 지금은 더 좋아 보입니다\. 채권보다 더 많은 현금 환급을 받는 장기간 기간인가요\? 그냥 모두 배당 수익률이 높은 주식을 찾아서 다 사야 할까요\? 무슨 함정이 있나요\?
 
@@ -74,7 +74,7 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 아래 예시에서는\, 50\%보다 1\% 분할 수익률이 훨씬 더 만족스러웠을 것입니다\. 그 이유는 그 상황이 그로 이어졌기 때문입니다\. 두 번째 경우의 가격 하락으로 인해\, 배당 수익률 \'증가\'로 인해 얻은 돈보다 훨씬 더 많은 돈을 잃게 되었습니다\.
 
-![post](./d_4.webp)
+![post](../../../blog/2020_07_08_dividend/d_4.webp)
 
 고수익률이 지속될지조차 확신할 수 없습니다\. 왜냐하면 그 배당금이 미래에 보장되지 않기 때문입니다\. 기업들이 배당금을 삭감하는 것을 꺼리는 것은 사실입니다\. 주주들이 주식을 처분할까 두려워하기 때문입니다\. [However, that also menas that a company can cut its dividend when things are so bad they have no choice.](https://www.cnbc.com/2018/12/07/ge-makes-it-official-lowers-dividend-to-a-penny.html 'GE')
 
@@ -84,11 +84,11 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 놀랍게도\, 우리가 발견한 것은 그렇지 않습니다\. 그 속에서 [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')저자들은 주식을 높은 배당률부터 낮은 배당률까지 4개의 버킷으로 분류했습니다\. 그 후 배당금 수익률과 가격을 비교했습니다\. 우리는 이를 확인할 수 있습니다 **자본 수익률이 총수익에 더 많이 기여했습니다\.** 고배당주도 포함해서요\.
 
-![post](./d_5.webp)
+![post](../../../blog/2020_07_08_dividend/d_5.webp)
 
 더 흥미로운 점은\, [Miller Howard report](https://mhinvest.com/download.html?docId=2246 'Miller') 배당주를 10개의 버킷으로 나누면 대부분이 실제로 **성과가 저조했다** 지난 10년간의 S\&P 지수입니다\. 더 나쁜 점은\, 배당 수익률이 가장 높은 상위 지수가 가장 부진하다는 것입니다\. 이는 우리가 이전에 생각했던 것과는 완전히 반대되는 투자 전략을 의미합니다\.
 
-![post](./d_6.webp)
+![post](../../../blog/2020_07_08_dividend/d_6.webp)
 
 ### 상관관계 요인
 
@@ -102,17 +102,17 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 그 [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van') 배당주를 두 가지 유형\, 1\) 높은 배당 수익률\, 2\) 높은 배당 성장률을 구분했습니다\. 그 후 이 그룹들이 위에서 언급한 공통 요인들과 얼마나 상관관계가 있는지 비교했습니다 [^7]\.
 
-![post](./d_7.webp)
+![post](../../../blog/2020_07_08_dividend/d_7.webp)
 
 알고 보니 그룹 1이든 그룹 2든 많은 특징들이 상관관계가 있습니다\. 다시 말해\, 배당 요소를 무시하고 다른 요소들만 고려하면 배당주로부터 수익을 얻는 데 크게 도움이 될 것입니다\.
 
 [Meb Faber went ahead to do just that,](https://www.cambriainvestments.com/wp-content/uploads/2017/10/DTAX-10.23.17.pdf 'Meb') 실제로 배당주가 아니더라도 배당주의 프로필을 복제할 수 있는 복합 포트폴리오를 만드는 것입니다\. 즉\, 그는 배당주와 같은 수익을 주는 주식을 찾았지만 실제로 배당을 지급하지 않는다는 뜻입니다\. 그의 연구 결과는 다음을 보여줍니다\. **이러한 포트폴리오의 수익률은 배당 포트폴리오를 능가합니다\.** 검은 박스 열을 오른쪽 나머지 열과 비교해 보세요\:
 
-![post](./d_8.webp)
+![post](../../../blog/2020_07_08_dividend/d_8.webp)
 
 그리고 그 결과는 세금 신고 후 비교에서도 여전히 유효했습니다\:
 
-![post](./d_9.webp)
+![post](../../../blog/2020_07_08_dividend/d_9.webp)
 
 ## 결론과 합병증
 

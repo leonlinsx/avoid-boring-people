@@ -4,7 +4,7 @@ description: "なぜ私が元のブログを始めたのか"
 pubDate: 2019-03-10
 category: Culture
 tags: ['writing']
-heroImage: './w_3.png'
+heroImage: '../../../blog/2019_03_10_write/w_3.png'
 locale: 'ja'
 sourceSlug: 'write'
 sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
@@ -67,7 +67,7 @@ sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
 
 しばらく考えていた機能の一つはコメントを許可するかどうかでした。しかし、私の経験上、公開投稿のコメント欄はスパムや無関係なものになりがちなので、やめました。例えば、最近ザッカーバーグがFacebookの新しい優先事項について投稿したトップコメントをご覧ください:
 
-![post](./w_1.webp)
+![post](../../../blog/2019_03_10_write/w_1.webp)
 
 コメントについての私の考えはこうです。 [shared](https://optinmonster.com/to-allow-blog-comments-or-not-heres-what-the-data-shows/ 'nice but not necessary') 著者 [others](https://avc.com/2019/02/rethinking-avc/ 'avc comments').別途モデレート付きのフォーラムが理想的ですが、このブログがそれを必要とするほど人気になることはまずないと思います。その間、ここでの内容について議論したい方は、Twitterでメールやメッセージを送ってください。
 
@@ -89,7 +89,7 @@ sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
 
 7. Githubの主な機能の一つは、コミットによる更新の仕組みです。まだ理解できず、メインテーマのコミットをリポジトリにプッシュする方法がわかりません。すべてのファイルを個別にコピーせずに済みます。助けてください。
 
-![post](./w_2.png)
+![post](../../../blog/2019_03_10_write/w_2.png)
 
 すべてのセットアップは非常にフラストレーションが溜まり、上記の画像を追加するだけでも時間がかかりました。まだ後悔はしていません。ウェブの仕組みについて少しだけ学び、学びの成果物も持てるからです [^13].もう一つの驚きの特典は、将来書きたいアイデアや記事を正式に記録するシステムができたことです。リストをつけることが役立つと気づいたからです。ポール・グラハムが指摘したように、インターネットはこれを [golden age of the essay](http://www.paulgraham.com/essay.html 'essay')これが私の個人ブランドと個性化の主張をさらに支えています。このアイデアがどこに向かうのか楽しみで、これからも執筆を続けたいと思っています。
 

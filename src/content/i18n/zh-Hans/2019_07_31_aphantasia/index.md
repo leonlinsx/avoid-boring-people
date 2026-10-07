@@ -4,7 +4,7 @@ description: "心像缺失症与视觉化的差异"
 pubDate: 2019-07-31
 category: Culture
 tags: ['science']
-heroImage: './a_2.png'
+heroImage: '../../../blog/2019_07_31_aphantasia/a_2.png'
 locale: 'zh-Hans'
 sourceSlug: 'aphantasia'
 sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
@@ -14,7 +14,7 @@ sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
 
 我刚了解到，人们的视觉化方式不同。做这个10秒测试：
 
-![post](./a_1.webp)
+![post](../../../blog/2019_07_31_aphantasia/a_1.webp)
 
 我是3到4分，而我表妹坚称她是6分 [^1]\.这很大程度上解释了我为什么每次别人让我去想象事物时的困惑\.\.\.\.\.\.我从未能得到别人那种细节和清晰度。
 

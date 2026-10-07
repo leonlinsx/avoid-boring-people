@@ -4,7 +4,7 @@ description: "如何改善关系，获得大家想要的东西"
 pubDate: 2021-01-06
 category: Culture
 tags: ['behaviour']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2021_01_06_nonviolent/n_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'nonviolent'
 sourceHash: 'ab385e3db1f9d407d011a7b1a1869b90ad552d52dff05dba828867b2b782c47d'
@@ -55,6 +55,6 @@ NVC还提出了一个关于情感成长的有趣观点，说我们经历三个�
 
 NVC的书还涵盖了如何更好地同理、表达愤怒和感激，但我会省略这些内容，保持简洁。不过我有一个顾虑，但没有被提及——人们假设每个人都是出于好意，并且能培养同理心。如果我在疫情前读过这本书，我会倾向于同意。但现在我在想，如果别人不善意行事，正确的做法是什么。我在这方面没有什么好主意——也许干脆避开这些人？
 
-![post](./n_1.webp)
+![post](../../../blog/2021_01_06_nonviolent/n_1.webp)
 
 NVC的核心信念是人们需要被理解，拥有更多同理心的沟通会有所帮助。通过更好地理解自己和他人，我们可以提升工作和家庭关系的质量。我希望未来能利用这一点，使我的沟通更有效、减少威胁性。

@@ -5,7 +5,7 @@ pubDate: 2019-06-30
 category: Technology
 tags: ['finance', 'crypto', 'career']
 evergreen: false
-heroImage: './f_4.png'
+heroImage: '../../../blog/2019_06_30_libra/f_4.png'
 locale: 'zh-Hans'
 sourceSlug: 'libra'
 sourceHash: '30eb7adb66372db28b024e7c64cf3213fa2932df319a9a9b58c32b21e3f4e4f2'
@@ -55,7 +55,7 @@ _什么。_ 我们从“民主化系统”变成了“100家公司应控制”�
 
 看看金融的未来。说实话，挺可爱的。
 
-![post](./f_1.webp)
+![post](../../../blog/2019_06_30_libra/f_1.webp)
 
 > 它将由一系列低波动资产支持，如银行存款和来自稳定信誉良好的中央银行的短期政府货币证券。需要强调的是，这意味着一个天秤座并不总能兑换成相同金额的本地货币
 
@@ -148,7 +148,7 @@ SEC的意图是这样的，罚款金额将由陪审团决定
 
 1. [Causes of death vs media coverage](https://ourworldindata.org/does-the-news-reflect-what-we-die-from?linkId=68864855 'media')
 
-![post](./f_2.webp)
+![post](../../../blog/2019_06_30_libra/f_2.webp)
 
 2. ["But every trend has a shelf life, and as quickly as Instagram ushered in pink walls and pastel macaroons, it’s now turning on them."](https://www.theatlantic.com/technology/archive/2019/04/influencers-are-abandoning-instagram-look/587803/ 'insta') 好吧，我成为瞬间成名的希望破灭了
 3. ["Another strategy, one we term “manclusion,” involves including men in meetings simply to induce better behavior from the men on the other side of the table."](http://clsbluesky.law.columbia.edu/2019/06/06/venture-bearding/ 'venture bearding') 我简直不敢相信这事儿居然存在。
@@ -158,7 +158,7 @@ SEC的意图是这样的，罚款金额将由陪审团决定
 
 5. [Reconstructing facial images based on voice data](https://arxiv.org/pdf/1905.09773.pdf 'face')\.注意，目的不是恢复精确图像，而是与语音属性相关的共同视觉特征。
 
-![post](./f_3.webp)
+![post](../../../blog/2019_06_30_libra/f_3.webp)
 
 6. [Celebrity cameos for sale.](https://www.cameo.com/faq 'cameo') 如果有人送我一个Jenna Coleman的，那会是个很棒的圣诞礼物\.\.\.\.\.\.只是说说 [^12]
 

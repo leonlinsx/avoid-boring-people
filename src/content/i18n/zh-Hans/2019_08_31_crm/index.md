@@ -4,7 +4,7 @@ description: "配对交易、个人客户关系管理与自我认知"
 pubDate: 2019-08-31
 category: System Design
 tags: ['software', 'investing']
-heroImage: './c_4.webp'
+heroImage: '../../../blog/2019_08_31_crm/c_4.webp'
 locale: 'zh-Hans'
 sourceSlug: 'crm'
 sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
@@ -26,21 +26,21 @@ sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
 
 我们再举 Overstock\.com 为例。在他们之前 [CEO resigned so he could let everyone know he'd dated a Russian spy,](https://www.forbes.com/sites/laurendebter/2019/08/22/the-exclusive-inside-story-of-the-fall-of-overstocks-mad-king-patrick-byrne/#176918ea53a5 'Forbes') [^3] 他在2017年试图通过转向区块链来拯救公司。假设你认为Overstock也会失败，并在2017年8月以20美元做空Overstock：
 
-![post](./c_1.webp)
+![post](../../../blog/2019_08_31_crm/c_1.webp)
 
 随着股价缓慢上涨，你加码，坚信这种状态不会持续太久。不知怎的，它确实持续了，你看到的是2017年11月的60美元价格：
 
-![post](./c_2.webp)
+![post](../../../blog/2019_08_31_crm/c_2.webp)
 
 哎呀。你不仅有纸面亏损，而且你的风险暴露是你最初持有且舒适的倍数。如果你现在清仓，你会损失40美元——当前60美元减去你最初赚的20美元。你现在怀有仇恨，决心做空这只股票，否则会破产，所以你坚持到下一年：
 
-![post](./c_3.webp)
+![post](../../../blog/2019_08_31_crm/c_3.webp)
 
 你的经纪人度假回来后发现忘了给你发一张 [margin call](https://www.investopedia.com/ask/answers/05/shortmarginrequirements.asp 'margin') 这段时间，现在却慌了。做空股票时，通常需要约130\%的股票价值作为抵押，作为备用资金 [^4]\.当股票价格为20美元时，预留26美元并不是问题。但现在，你需要预留104美元，经纪人要求你补足78美元的差额（104美元减去26美元）。根据你最初拥有的资金，这额外的78美元（是初始敞口的3倍！）很容易让你破产。你被迫清仓，并通过设置Go Fund Me来弥补差额。
 
 然后当然会发生这样的事：
 
-![post](./c_4.webp)
+![post](../../../blog/2019_08_31_crm/c_4.webp)
 
 关键是你说得对——Overstock尝试的区块链枢纽行不通。但你时机错了，损失了资金和声誉。即使做空股票是“显而易见”的，比如 [bad quality companies changing their name to get a price bump](https://www.winton.com/longer-view/the-history-of-company-names 'names')， [time period](https://www.sciencedirect.com/science/article/pii/S0165176519301703 'time') 论文的必要条件可能会让你提前破产。
 
@@ -84,15 +84,15 @@ Byrne总结说，并非所有泡沫都有上述第三种情况，且很难找到
 
 发展 [Superhuman](https://techcrunch.com/2019/06/27/my-six-months-with-30-month-email-service-superhuman/ 'techcrunch')一款收取费用以换取所谓革命性体验的电子邮件应用，引发了一场热潮 [premium subscription services](https://techcrunch.com/2019/08/27/kleiner-perkins-bets-on-a-premium-email-service-thats-bringing-slack-groups-into-gmail/ 'kleiner')\.最近，科技推特重新提出了个人CRM（客户关系管理）的概念，即一种可以帮助你管理个人关系的软件。
 
-![post](./c_5.webp)\)
+![post](../../../blog/2019_08_31_crm/c_5.webp)\)
 
 意见分歧。有些人\.\.\.\.\.\.态度冷淡
 
-![post](./c_6.webp)
+![post](../../../blog/2019_08_31_crm/c_6.webp)
 
 还有人声称Twitter已经是一个个人CRM平台
 
-![post](./c_7.webp)
+![post](../../../blog/2019_08_31_crm/c_7.webp)
 
 [And some people pointed out how this recurring idea continues to attract new startups](https://twitter.com/devahaz/status/1164224618602758144 'twitter')
 
@@ -100,7 +100,7 @@ Byrne总结说，并非所有泡沫都有上述第三种情况，且很难找到
 
 哦，等等。
 
-![post](./c_8.webp)
+![post](../../../blog/2019_08_31_crm/c_8.webp)
 
 无论你是否认为 [Facebook has Zucked the world](https://www.theguardian.com/books/2019/feb/07/zucked-waking-up-to-facebook-catastrophe 'FB')它的成功告诉我，人们确实需要一种方式来管理个人关系。个人CRM并不是一个愚蠢的想法，我也不会直接否定它。难点在于如何在现有系统上创新，以及如何让人们为此付费。
 

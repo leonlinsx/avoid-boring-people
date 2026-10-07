@@ -4,7 +4,7 @@ description: "Comment Notion essaie littéralement de mettre tout le monde sur l
 pubDate: 2020-08-23
 category: Technology
 tags: ['business', 'startups']
-heroImage: './n_5.webp'
+heroImage: '../../../blog/2020_08_23_notion/n_5.webp'
 locale: 'fr'
 sourceSlug: 'notion'
 sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
@@ -20,7 +20,7 @@ sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
 
 Dans le film [Inception by Christopher Nolan,](https://en.wikipedia.org/wiki/Inception 'Inception') Les personnages principaux errent à travers des couches imbriquées de rêves pour accomplir une tâche\. Leurs actions au sein de cette couche affectent la couche elle\-même\, ainsi que celles au\-dessus ou en dessous\. Parfois\, vous vous intéressez à ce qui se passe dans cette couche\, parfois à l’influence d’autres couches\.
 
-![post](./n_1.webp)
+![post](../../../blog/2020_08_23_notion/n_1.webp)
 
 Je veux que tu gardes ce cadre en tête \- **des couches\, l’interaction au sein des couches\, et l’interaction entre les couches\.** Nous y reviendrons bientôt [^1]\.
 
@@ -50,7 +50,7 @@ Cela a cependant mis un certain temps à arriver là\, car cela a nécessité de
 
 Un grand changement fut le **[graphical user interface](https://www.youtube.com/watch?time_continue=39&v=BFlop4sP8Os&feature=emb_title 'GUI')\.** Avant cela\, [people were interacting with computers via a command line interface,](https://www.wired.com/1997/12/web-101-a-history-of-the-gui/#:~:text=In%201979%2C%20the%20Xerox%20Palo,first%20prototype%20for%20a%20GUI.&text=When%20Jobs%20saw%20this%20prototype,expensive%3B%20no%20one%20bought%20it. 'CLI') Un peu comme ce qui suit\.
 
-![post](./n_2.webp)
+![post](../../../blog/2020_08_23_notion/n_2.webp)
 
 Comme vous pouvez le voir\, ce n’est pas la manière la plus intuitive de travailler avec un ordinateur\. Je prétends avoir laissé cette erreur comme un moment d’apprentissage \; en vérité\, j’ai oublié la bonne syntaxe\. L’interaction en ligne de commande peut être puissante\, mais pose une barrière d’entrée élevée pour la plupart des utilisateurs\. En repensant l’usage autour d’une expérience visuelle\, [Apple achieved a breakthrough](https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface 'Apple') Dans la fabrication de l’informatique pour le marché de masse [^5]\. Les progrès informatiques auraient été considérablement ralentis si nous avions continué à ne travailler qu’en ligne de commande\.
 
@@ -66,7 +66,7 @@ Avec le [low cost of capital](/writing/capital 'low')\, des marges potentielles 
 
 C’est là que Notion entre en jeu\. **[Notion wants to be your all-in-one workspace,](https://www.notion.so/product 'Notion')** Le principal endroit où vous écrivez\, planifiez et organisez votre travail\. Tous ces logiciels séparés dont nous venons de parler \? Notion veut tous les regrouper et vous offrir une expérience utilisateur cohérente avec suffisamment de flexibilité pour répondre à la plupart de vos tâches\.
 
-![post](./n_3.webp)
+![post](../../../blog/2020_08_23_notion/n_3.webp)
 
 Vous voulez un wiki d’entreprise \? Vous pouvez le créer dans Notion\.
 
@@ -90,11 +90,11 @@ Il reste une dernière couche principale par\-dessus tout ça\. Appelons ça le 
 
 Au fur et à mesure que les données circulent dans l’entreprise à travers ces couches\, **elle devient plus visible et visible\,** ce qui permet à plus de personnes d’interagir avec lui\. Les outils de la couche de synchronisation des données\, par nature d’être les plus « orientés vers l’utilisateur final »\, adoptent généralement une approche de conception plus orientée visuelle\, ce qui les rend plus faciles à prendre en main pour le grand public\. Par exemple\, l’email est facile\, [hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop 'hadoop') c’est difficile\.
 
-![post](./n_4.webp)
+![post](../../../blog/2020_08_23_notion/n_4.webp)
 
 Le cadre ci\-dessus nous donne une meilleure idée de la valeur ajoutée de Notion\. **Notion est actuellement dans la couche de synchronisation des données\, et à moitié en train de s’introduire dans la couche de visualisation des données\.** J’avais déjà affirmé que c’était un grand marché\, alors justifions cela avant d’explorer des opportunités d’expansion\.
 
-![post](./n_5.webp)
+![post](../../../blog/2020_08_23_notion/n_5.webp)
 
 La couche de synchronisation des données essaie de résoudre un **Problème de coordination de l’information à toutes les échelles**\, des petits groupes de l’entreprise aux parties prenantes externes\. L’objectif est de s’assurer que tout le monde est sur la même longueur d’onde sur un problème\. Avoir une application de messagerie permet à votre équipe de s’accorder sur les prochaines étapes\, et avoir un site web public permet à vos clients d’obtenir des informations sur votre entreprise\. Slack est une entreprise de 15 milliards de dollars de plafonnement de mkt axée sur la messagerie \; Wix est une entreprise de 13 milliards de dollars de capacité de mkt qui crée des sites web\. Nous pouvons lister plus d’entreprises pour des wikis\, des tableaux d’activité\, des prises de notes\, mais je pense que cela suffit à montrer qu’il y a ici des opportunités de plusieurs milliards\.
 
@@ -106,11 +106,11 @@ Quel est le marché que cela débloquerait\-il \?
 
 Microsoft déclare les revenus d’Office dans le segment « Productivité et Processus métier »\, en regroupant Office Commercial\, Office Consumer et quelques autres petites entreprises\. Dans leur [recent annual report](https://www.microsoft.com/investor/reports/ar19/index.html 'ar')\, ils ont généré 41 milliards de dollars de revenus pour l’ensemble du segment\, avec 16 milliards de dollars de bénéfices d’exploitation\, avec une marge de 39 \%\. Bien sûr\, ce n’est pas uniquement le chiffre d’affaires des bureaux\, mais c’est probablement le plus grand sous\-segment [^8]\.
 
-![post](./n_6.webp)
+![post](../../../blog/2020_08_23_notion/n_6.webp)
 
 Google rapporte les revenus de G Suite dans le segment « Google Cloud »\, écrasant également Google Cloud et d’autres services d’entreprise dans cette ligne\. Dans leur récent [10K](https://abc.xyz/investor/static/pdf/20200204_alphabet_10K.pdf?cache=cdd6dbf 'Google') Ils ont montré 9 milliards de dollars pour ce segment\. Google Cloud représente probablement la majorité des revenus ici\, et je pense que G Suite se situe entre 1 milliard de dollars ou plus\.
 
-![post](./n_7.webp)
+![post](../../../blog/2020_08_23_notion/n_7.webp)
 
 De toute évidence\, le marché « Word\, Powerpoint\, Excel » est de plusieurs milliards en termes de chiffre d’affaires\, et est probablement bien plus important\. La taille du marché en est la raison **Je dirais que Notion offre plus de capacités analytiques** Avec le temps\. Vous voulez couvrir autant que possible votre cas d’utilisation client\.
 
@@ -122,7 +122,7 @@ Si l’on repense à l’analogie d’Inception\, on ne s’intéresse pas seule
 
 Il y a probablement un [pace layer](/writing/pace 'pace') comparaison à faire ici aussi\, avec les couches supérieures et plus rapides qui bougent plus vite et dominent le cycle d’attention\.
 
-![post](./n_8.webp)
+![post](../../../blog/2020_08_23_notion/n_8.webp)
 
 Quand je réfléchissais à cet article\, j’avais initialement voulu faire un modèle financier pour Notion\, [like the one I did for newsletters](/writing/community 'news')\. Cependant\, vu le manque de données\, je ferais trop d’hypothèses\. J’ai lu qu’ils sont déjà rentables avec un taux de revenus de [$30mm](https://www.forbes.com/sites/davidjeans/2020/04/01/buzzy-work-app-notion-hits-2-billion-valuation/#15da831578ec '30')\, et je peux les voir réaliser 10 fois plus de revenus avec une marge de 40 \%\, tout en continuant à croître à deux chiffres\. Nous devrons attendre plus de données\, mais pas étonnant que les gens soient enthousiastes [^9]\.
 
@@ -132,43 +132,43 @@ C’est une justification suffisante ci\-dessus pour l’évaluation de Notion\,
 
 Se connecter à Notion est simple\, mais commencer ne l’est pas\, ce qui est un problème sur lequel je reviendrai plus tard dans la section suggestions\. Vous pouvez vous connecter avec votre compte Google\, puis choisir si vous configurez un espace de travail pour vous\-même ou pour une équipe\.
 
-![post](./n_9.webp)
+![post](../../../blog/2020_08_23_notion/n_9.webp)
 
 Au\-delà\, vous verrez une page « Débuts »\, avec des conseils pour commencer à travailler dans Notion au milieu\. À gauche\, vous verrez que vous commencez avec quelques modèles prédéfinis comme une liste de tâches ou une liste de lecture\.
 
-![post](./n_10.webp)
+![post](../../../blog/2020_08_23_notion/n_10.webp)
 
 **L’unité de base de Notion est un bloc\.** Réfléchissez à la façon dont une cellule dans Excel est fondamentale pour y travailler\. Les blocs dans Notion sont comme ça\, mais avec beaucoup plus de fonctionnalités\. Les blocs sont personnalisables à la fois dans ce qu’ils affichent et dans la façon dont ils sont affichés\. La clé à retenir est que Notion est une application visuelle basée sur le design\, donc vous devriez pouvoir organiser les blocs et les modifier selon vos besoins\.
 
-![post](./n_11.webp)
+![post](../../../blog/2020_08_23_notion/n_11.webp)
 
 Vous pouvez transformer un bloc en plusieurs choses\, comme une liste de tâches\, un calendrier ou un tableau\. Ce sont eux\-mêmes des blocs\, vous pouvez donc déplacer le lien créé sur votre page d’origine\.
 
 **Vous pouvez imbriquer un bloc\/page sous un autre\,** Ce qui facilite la création d’un réseau lié de tout votre travail\. Si vous êtes du genre à aimer les cartes mentales et à créer des liens entre tout ce que vous croisez\, ce style de design est fait pour vous\.
 
-![post](./n_12.webp)
+![post](../../../blog/2020_08_23_notion/n_12.webp)
 
 Outre la possibilité de créer des pages autonomes à partir de blocs\, une autre fonctionnalité que j’ai appréciée était la **Bloc à bascule**\. Si vous aimez regrouper et dégrouper les lignes dans Excel [^10]\, vous apprécierez cette fonction qui consiste à afficher des vues résumées puis détaillées\.
 
-![post](./n_13.webp)
+![post](../../../blog/2020_08_23_notion/n_13.webp)
 
 Nous avons parlé de la façon dont Notion a **Des blocs modulaires qui vous permettent d’interagir visuellement avec la page que vous construisez\.** Par le passé\, si vous vouliez changer l’apparence d’une page web\, vous étiez limité par les fonctionnalités fournies par votre éditeur web\. Par exemple\, Substack a des options de mise en forme de texte limitées\. Pour aller au\-delà de cela\, il fallait coder vous\-même le HTML\/javascript\/CSS\.
 
-![post](./n_14.webp)
+![post](../../../blog/2020_08_23_notion/n_14.webp)
 
 Avec Notion\, vous gagnez énormément de fonctionnalités et de flexibilité\, permettant aux non\-programmeurs front\-end de construire davantage\. **Cela a également conduit à une large sélection de modèles\, car les utilisateurs sont fiers de partager ce sur quoi ils ont travaillé\.** Par exemple\, si vous retourniez à l’école\, vous pourriez utiliser un modèle pré\-établi pour planifier tous vos cours\.
 
-![post](./n_15.webp)
+![post](../../../blog/2020_08_23_notion/n_15.webp)
 
 **Les modèles Notion sont actuellement une grande force\, et aussi potentiellement une grande faiblesse\.** Nous aborderons d’abord les points forts\, puis les faiblesses dans la section suggestions\. L’avantage d’avoir des modèles est qu’une fois que quelqu’un a compris ce qu’il veut et choisi son modèle\, il est rapide de se mettre à niveau\, car la plupart des fonctionnalités souhaitées doivent déjà être créées\. Par exemple\, il n’est pas nécessaire de créer des pages et des sections de zéro si vous voulez créer un tableau des tâches\, puisqu’il existe déjà un modèle pour cela\.
 
 Dans ce qui suit\, je trouve un modèle de liste de tâches sur Notion \:
 
-![post](./n_16.webp)
+![post](../../../blog/2020_08_23_notion/n_16.webp)
 
 Et ensuite je peux rapidement y ajouter mes propres tâches\. Remarquez qu’au sein d’une tâche\, je peux créer des sous\-tâches imbriquées\, ce qui aide à l’organisation\.
 
-![post](./n_17.webp)
+![post](../../../blog/2020_08_23_notion/n_17.webp)
 
 C’est tout pour la vue d’ensemble de Notion\, et vous pouvez consulter leur [youtube page](https://www.youtube.com/c/Notion/featured 'youtube') Pour en savoir plus sur ce que vous pouvez créer dans Notion\. Maintenant\, je veux passer en revue les problèmes liés à Notion\, et conclure avec quelques suggestions de rêves pour l’entreprise\.
 
@@ -199,7 +199,7 @@ En termes de communication\, cela signifie que les images sont le strict minimum
 ### Problème 3 \: Manque de fonctionnalités de base d’analyse des données
 
 J’ai déjà souligné ce point plus tôt\, à propos du fait que Notion ne rivalise pas avec Excel en termes de fonctionnalités\. Comme [RadReads](https://radreads.co/notion-formulas/ 'Rad') souligne que Notion agit comme une base de données\. Ce n’est pas censé être Excel\, et donc il ne vous donne que des vues de fonctions de sections entières\. Par exemple\, vous ne pouvez pas faire un calcul uniquement sur deux cellules\, il faut l’appliquer à toute la colonne [^11]
-![post](./n_18.webp)
+![post](../../../blog/2020_08_23_notion/n_18.webp)
 
 Si vous regardez l’image ci\-dessus où j’essaie d’ajouter deux nombres\, vous pouvez aussi voir à quel point la formule semble peu élégante\. Les formules dans Notion semblent venir d’un état d’esprit de programmation\, avec des fonctions prenant des variables en entrée sur une longue ligne\. Cela contraste complètement avec l’approche du design visuel de Notion\, et cela m’a surpris\.
 
@@ -217,7 +217,7 @@ Ce qui suit est plus pointilleux\, donc je vais tous les lister ensemble\. Notio
 
 **Espace blanc étrange \:** C’est une préférence personnelle de conception\. Toutes les pages\/blocs de Notion ont suffisamment d’espaces blancs à gauche et à droite du bloc\. Un utilisateur devrait penser qu’il ne se passera rien s’il clique là\, puisqu’il est vide après tout\. À la place\, la zone de sélection d’un bloc s’étend au\-delà de la zone visuelle\, donc vous finez par cliquer sur le bloc\, selon le gif ci\-dessous\.
 
-![post](./n_19.webp)
+![post](../../../blog/2020_08_23_notion/n_19.webp)
 
 Nous avons abordé quelques problèmes\, regardons quelques idées\. Je vais les diviser en idées communautaires\/marketing plus concrètes\, et idées de produits plus tirées par les cheveux\.
 
@@ -247,7 +247,7 @@ J’ai déjà abordé cela ci\-dessus en parlant d’Excel\.
 
 Plus généralement\, si je faisais tourner un produit chez Notion\, je regarderais tout ce qu’ils permettent d’intégrer\. Je les considérerais à la fois comme des échecs pour Notion\, et des opportunités d’expansion\. Vous pourriez même utiliser cela comme feuille de route pour le produit à grande vision\. Par exemple\, toutes les capacités de Google Drive pourraient un jour être dupliquées\. Cela prendra des années\, et l’objectif final est que vous n’ayez à quitter Notion pour rien au monde\.
 
-![post](./n_20.webp)
+![post](../../../blog/2020_08_23_notion/n_20.webp)
 
 ### Idée produit 2 \: Email
 
@@ -265,7 +265,7 @@ Notion est une approche visuelle basée sur le design qui vise à repenser notre
 
 Il est aussi intéressant de réfléchir aux compromis pour Notion\. Les entreprises font généralement face à un trilemme entre croissance\, rentabilité et qualité\. Dans le cas de Notion\, elles auraient déjà atteint la rentabilité\, et compte tenu de la force de l’adoption précoce\, la croissance ne sera probablement pas un problème dans les trois prochaines années\. **L’étape déterminante du taux est alors la qualité** du produit\, ce qui expliquerait pourquoi Notion propose des fonctionnalités plus lentes que ses concurrents\.
 
-![post](./n_21.webp)
+![post](../../../blog/2020_08_23_notion/n_21.webp)
 
 Qu’est\-ce que Notion vous permet de créer\, quel type de personnalisation est disponible\, et quel contrôle avez\-vous sur la conception finale \? Repousser les limites de ces questions permettra à la manière de travailler de Notion de s’infiltrer dans plus de domaines de nos vies\.
 

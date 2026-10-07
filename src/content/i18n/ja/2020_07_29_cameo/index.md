@@ -4,7 +4,7 @@ description: "ある人のゴミは別の人の宝物だ"
 pubDate: 2020-07-29
 category: Technology
 tags: ['startups', 'business']
-heroImage: './c_2.webp'
+heroImage: '../../../blog/2020_07_29_cameo/c_2.webp'
 locale: 'ja'
 sourceSlug: 'cameo'
 sourceHash: 'e93e8afa6d1f315f2accfbf1f8efc95072617d9d2672e902e3bdafe40116ab2c'
@@ -26,7 +26,7 @@ Wired誌の共同創設者[Kevin Kelly,](https://kk.org/biography 'Kevin')、何
 
 したがって、憂鬱な犬の演技市場について話す代わりに、今日はそれらを支えるプラットフォームを見たいと思います。特に、パーソナライズされたセレブ動画メッセージを提供するマーケットプレイス[Cameo,](https://www.cameo.com/ 'cameo')詳しく見ていきたいと思います。30ドルという安価な価格で、Kirpa Sudick、Kevin Fortenberry、またはParis the mini pig [^2]からの3本の(!!)動画を手に入れることができます。人々は通常、家族や友人に誕生日や卒業、その他のお祝いの言葉を贈るためにそれらをもらいます[to the delight of the recipients.](https://www.youtube.com/watch?v=VeYm5TZknsc 'reaction')
 
-![post](./c_1.webp)
+![post](../../../blog/2020_07_29_cameo/c_1.webp)
 
 私は最初にカメオ[about a year ago](/writing/cameo 'Cameo')を紹介しました。ジェナ・コールマンのカメオ[^3]を買ってもらおうとして罪悪感を抱かせようとしたときで、彼らはロングテールの恩恵を受けている良い例です。このマーケットプレイスが機能しているのは、これらのセレブたちの個々のリターンは単独では低いのに対し、全員の合計リターンが高いからです。ミニピッグのパリスは単独ではオーナー分の収入は難しいでしょうが、彼女をカバのフィオナやローラ・ザ・ナマケモノと組み合わせれば、サービスを提供するプラットフォームにとって実質的なビジネスが生まれるかもしれません。
 
@@ -50,7 +50,7 @@ Wired誌の共同創設者[Kevin Kelly,](https://kk.org/biography 'Kevin')、何
 
 もっと多くのAリストが参加することに抵抗を感じる転換点に達することは可能でしょうか?これはAirBnBやUberが始めたばかりの頃の不快感のようなもので、時間とともにその考えが当たり前になるのではないかと思います。すでにエライジャ・ウッド(『ロード・オブ・ザ・リング』で有名)、サラ・ジェシカ・パーカー(『セックス・アンド・ザ・シティ』で有名)、スヌープ・ドッグ(マリファナ吸いで有名)のような人たちがプラットフォームに入っているので、そこで拡大を続けるのはそれほど無理があるとは思えません。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_07_29_cameo/c_2.webp)
 
 需要と供給の理由を明確に示しました[product market fit.](https://a16z.com/2017/02/18/12-things-about-product-market-fit/ 'pmf')プラットフォーム自体の経済性はどうでしょうか?
 
@@ -100,7 +100,7 @@ Cameoは、[most marketplaces face](https://www.slideshare.net/jbreinlinger/mark
 
 カメオを予約するためにユーザープロフィールを作る価値があるのかはわかりません。確かにFacebookと連携してアカウント作成を簡単にすることはできますが、ゲストアカウントを使うのも効果的そうです。過去のカメオを参考にして、ユーザーが気に入るかもしれないカメオを提案することには何か利点があるのかもしれません。
 
-![post](./c_3.webp)
+![post](../../../blog/2020_07_29_cameo/c_3.webp)
 
 国際展開は次の明らかなステップのように思えます。ヨーロッパが最も自然な次の地理的でしょう。難しいのは、その地域で営業チームを立ち上げ、最初の数名の地元有名人を受け入れることでしょう。大きなローカリゼーションの問題は見当たりませんが、間違っているかもしれません。一部のマーケットプレイスがローカルネットワーク効果しか持たないのに対し、Cameoはより広範なネットワーク効果があるようです。なぜなら、英国の有名人を迎えることで、イギリスの番組を視聴するアメリカの顧客からの需要が生まれるからです。ある程度は、英語圏以外の国々での拡大にも恩恵があります。なぜなら、現地の人々からの国際的な有名人カメオの需要は依然として残る可能性が高いからです。[Lotta avengers fans in China.](https://www.wikiwand.com/en/List_of_highest-grossing_films_in_China 'China')
 

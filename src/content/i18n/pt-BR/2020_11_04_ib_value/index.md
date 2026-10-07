@@ -4,7 +4,7 @@ description: "O que os bancos de investimento realmente fazem?"
 pubDate: 2020-11-04
 category: Culture
 tags: ['investment banking']
-heroImage: './i_2.webp'
+heroImage: '../../../blog/2020_11_04_ib_value/i_2.webp'
 locale: 'pt-BR'
 sourceSlug: 'ib_value'
 sourceHash: 'c27ba4251de29cd4bbcb5900adbd73319b0f46a7511f8a32eb2454d3a8b02ec0'
@@ -18,13 +18,13 @@ O banco de investimento raramente se trata de investir\, e sim de conectar fonte
 
 Tive que explicar para algumas pessoas sobre o que realmente é o banco de investimentos recentemente\, e achei que valia a pena fazer um breve resumo aqui também\. Especialmente considerando a incompatibilidade entre expectativas e realidade\, espero que isso ajude a esclarecer as coisas\.
 
-![post](./i_1.webp)
+![post](../../../blog/2020_11_04_ib_value/i_1.webp)
 
 **O banco de investimento geralmente não é sobre investir\,** apesar dos meus pais nunca parecerem ter entendido isso\. Observação\: Tenho tentado descobrir a etimologia de quando \"merchant banking\" virou \"investment banking\"\, mas até agora não tive sorte\. Se você souber\, por favor\, entre em contato\.
 
 Um banco de \"serviço completo\" como o JP Morgan é enorme\. Você pode pensar nisso como quatro principais linhas de negócio\:
 
-![post](./i_2.webp)
+![post](../../../blog/2020_11_04_ib_value/i_2.webp)
 
 Quando me refiro a banco de investimento ou bancos neste artigo\, estou falando especificamente do negócio azul à direita\. E para facilitar minha vida\, vou focar apenas na caixa \"Banker\"\, excluindo a discussão sobre pesquisa de ações e os braços de vendas e negociação para simplificar\. Mencionei pesquisa de ações [here](/writing/sellside 'er') Antes\, ao discutir o impacto dos roboadvisors\.
 
@@ -40,7 +40,7 @@ O mundo também tem muitas pessoas que precisam de capital\. Por exemplo\, uma e
 
 O negócio do banco é **Faça um mercado** entre os dois grupos\.
 
-![post](./i_3.webp)
+![post](../../../blog/2020_11_04_ib_value/i_3.webp)
 
 Por exemplo\, se o Google está tentando aumentar dívidas\, o banco trabalha com ela para descobrir quanto pode levantar\, quem vai comprar a dívida e em quais termos ela será emitida\.
 

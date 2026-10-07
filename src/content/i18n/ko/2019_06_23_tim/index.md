@@ -4,7 +4,7 @@ description: "베르메르가 정말로 팀의 기법을 사용했는지는 중�
 pubDate: 2019-06-23
 category: Culture
 tags: ['art']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_06_23_tim/t_1.webp'
 locale: 'ko'
 sourceSlug: 'tim'
 sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
@@ -14,9 +14,9 @@ sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
 
 저처럼 미술에 대해 잘 모르는 분들을 위해 배경 설명을 드리겠습니다\: [Johannes Vermeer](https://en.wikipedia.org/wiki/Johannes_Vermeer 'wiki') 1632년부터 1675년까지 살았던 네덜란드 화가였다\. 그는 특히 그의 시대 최고의 화가 중 한 명으로 인정받고 있다\. [realistic paintings and usage of light.](https://www.artble.com/artists/johannes_vermeer/more_information/style_and_technique 'vermeer style') [^1] 유명한 그림들로는 다음과 같은 것들이 있습니다 [^2]\:
 
-![post](./t_1.webp)
+![post](../../../blog/2019_06_23_tim/t_1.webp)
 
-![post](./t_2.webp)
+![post](../../../blog/2019_06_23_tim/t_2.webp)
 
 얼마 전\, 데이비드 호크니와 필립 스티드먼이 다음과 같이 제안했습니다 **베르메르와 다른 예술가들도 그럴 수 있었을 것이다 [used lenses and mirrors to achieve the realism in their paintings.](https://www.vanityfair.com/culture/2013/11/vermeer-secret-tool-mirrors-lenses 'Vanity Fair link')** 이 논란은 가설을 세우는 사람들과 가설을 세운 과정 모두에 의문을 제기하게 만들었습니다\:
 

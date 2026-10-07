@@ -5,7 +5,7 @@ pubDate: 2021-01-30
 category: Technology
 tags: ['startups', 'software']
 featured: false
-heroImage: './plaid_3.webp'
+heroImage: '../../../blog/2021_01_30_plaid/plaid_3.webp'
 locale: 'ko'
 sourceSlug: 'plaid'
 sourceHash: 'daae66d786d14dbfb4c0c831358b5f6fed3ca4b971461b077f61a7895375e9cd'
@@ -23,7 +23,7 @@ Plaid는 다른 기업들이 은행 데이터를 연결하도록 돕는 금융 �
 
 많은 돈을 벌기 위한 획기적인 앱 아이디어가 있다고 가정해 봅시다\. 사용자가 키보드의 F2 키를 누를 때마다 무언가가 일어나고 이익을 내도록 앱을 코딩합니다\:
 
-![plaid](./plaid_1.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_1.webp)
 
 노트북에서 테스트해보니 모두 잘 작동하고\, 돈을 벌기 시작한다\. 너무 잘 작동해서 친구들에게 알리고\, 친구들도 참여하고 싶어 한다\. 코드를 보내고 번창하라고 말한다\.
 
@@ -31,7 +31,7 @@ Plaid는 다른 기업들이 은행 데이터를 연결하도록 돕는 금융 �
 
 알고 보니 맥에는 이상한 문제가 있습니다 [Touch Bar thing](https://support.apple.com/en-gb/guide/mac-help/mchlbfd5b039/mac 'touch') 기능 키를 위한 것으로\, 당신들이 보기에는 그 유일한 목적이 삶을 괴롭히는 것 같습니다\. 맥 사용자들을 위한 특별한 코드를 추가합니다\:
 
-![plaid](./plaid_2.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_2.webp)
 
 지금은 그에게 잘 맞고\, 그는 다음으로 넘어간다 [suing magazines for saying all hipsters look alike.](https://www.independent.co.uk/news/media/hipster-magazine-photo-lawsuit-mit-technology-review-a8813941.html 'hipster')
 
@@ -43,7 +43,7 @@ Plaid는 다른 기업들이 은행 데이터를 연결하도록 돕는 금융 �
 
 90년대 후반에 사람들은 이 문제에 대한 해결책을 깨달았습니다 \- 그 사이에 추가적인 층을 추가하는 것\, 즉 **다른 사람 문제로 돌리세요\.** [As Shimon Schocken explains,](https://www.youtube.com/watch?v=E28KczysecE 'Shimon') \"중개인\"이 있으면 작업이 훨씬 간단해집니다\. 모든 기기에 대해 코드를 작성하는 대신\, \"한 번 작성하면 어디서든 실행할 수 있다\"고 하며\, 그 중개인이 코드 호환성을 담당하게 합니다 [^1]\:
 
-![plaid](./plaid_3.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_3.webp)
 
 **큰 작업을 작은 작업으로 나누면 모두가 더 쉽게 할 수 있습니다\.** 당신은 문제의 일부를 추상화한 셈입니다\. 왜냐하면 \"고수준\" 코드를 작성하고 특정 구현 버그에 신경 쓰지 않으려 하기 때문입니다\. 다른 사람들은 \"저수준\" 구현 세부사항을 좋아하지만\, 그 위에 앱을 추가로 코딩하고 싶지 않을 수도 있습니다\. 각자의 능력에 따라\, 각자의 필요에 따라 각자 다르게 작성하는 식입니다\.
 
@@ -63,15 +63,15 @@ Plaid는 다른 기업들이 은행 데이터를 연결하도록 돕는 금융 �
 
 마지막으로\, 에이프릴이 임대 에어비앤비의 숨겨진 서비스 비용을 횡령하지 않는지 확인하기 위해 계좌 잔액을 확인하고 싶다고 가정해 봅시다\. 당신은 최근 입금내역을 스프레드시트에 입력하기 시작합니다\:
 
-![plaid](./plaid_4.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_4.webp)
 
 프로그래머로서 엑셀을 싫어하고 그 기능에 익숙하지 않다\. 하지만 \"\+\" 기호를 사용해 항목을 추가하는 것은 알고 있고\, 그렇게 수동으로 잔액을 계산하기 시작한다\:
 
-![plaid](./plaid_5.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_5.webp)
 
 백 칸과 한 시간 후\, 거의 끝나갈 무렵 친구가 당신에게 무엇을 하고 있냐고 묻습니다\. 그들은 sum\(\) 함수가 당신이 원하는 대로 작동한다고 설명합니다\:
 
-![plaid](./plaid_6.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_6.webp)
 
 또한 전체 **함수의 \"라이브러리\"** 엑셀이 수학을 더 쉽게 만들어야 한다는 점\, 예를 들어 avg\(\)\, count\(\) 등\. 멋진 점은 어떤 기기를 사용하든 같은 동작을 기대할 수 있다는 거예요 \- 윈도우 노트북\, 친구의 맥\, 아버지의 휴대폰 등\. 함수가 무엇을 하는지\, 어떻게 호출하는지 알게 되면 시간을 절약할 수 있습니다\. 엑셀이 어떻게 하는지 신경 쓰지 않고\, 어디서나 항상 작동하면 됩니다\.
 
@@ -87,11 +87,11 @@ Plaid는 다른 기업들이 은행 데이터를 연결하도록 돕는 금융 �
 
 As [Joshua Bloch](https://www.youtube.com/watch?v=LzMp6uQbmns 'Josh') 지적하듯\, 1952년에는 사람들이 좋아했습니다 [David Wheeler](<https://en.wikipedia.org/wiki/David_Wheeler_(computer_scientist)> 'David') [^2] 이미 이 아이디어를 제안하고 있습니다\. [having libraries of functions (sub-routines)](http://www.laputan.org/pub/papers/Wheeler.pdf 'wheeler')\:
 
-![plaid](./plaid_7.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_7.webp)
 
 **그 함수 라이브러리를 API라고 부르겠습니다 [^3]\.** 조슈아는 이 용어가 처음 사용되었다고 믿고 있습니다\. [a 1968 paper by Ira Cotton and Frank Greatorex:](https://www.computer.org/csdl/pds/api/csdl/proceedings/download-article/12OmNyRPgFZ/pdf 'ira')
 
-![plaid](./plaid_8.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_8.webp)
 
 이 용법은 우리가 예시에서 논의한 개념들과 관련이 있습니다\:
 
@@ -119,7 +119,7 @@ API가 무엇이며 왜 중요한지 이미 확립했습니다\. 그렇다면 Pl
 
 예를 들어\, 사용자의 지출 이력에 접근해야 하는 예산 앱을 만든다고 가정해 봅시다\. 만약 은행과 연결하기 위해 자신의 코드를 사용한다면\, 새로운 은행이 추가될 때마다 새로운 섹션을 완전히 작성해야 할 것입니다\. 새로운 기준이 계속 바뀌기 때문에\, 아마도 앱의 주요 기능보다 그 부분에 더 많은 시간을 쓸 것입니다\.
 
-![plaid](./plaid_9.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_9.webp)
 
 Plaid는 항상 작동하는 API와 은행에 연결할 때 사용자가 볼 수 있는 사용자 인터페이스를 제공할 수 있습니다 [(Plaid Link).](https://plaid.com/docs/link/ 'link') 당신의 문제는 그들의 문제가 되었습니다\.
 
@@ -127,19 +127,19 @@ Plaid의 Quickstart 가이드를 따라 이 시스템이 어떻게 생겼는지 
 
 하루 종일 문제 해결을 하고\, 여러 번 컴퓨터를 재부팅하며\, 거의 모든 프로그램을 무작정 설치한 후에야 [^4]\:
 
-![plaid](./plaid_10.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_10.webp)
 
 드디어 일부 기능을 작동시켜 테스트 은행 계좌와 연결했습니다\:
 
-![plaid](./plaid_11.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_11.webp)
 
 이 덕분에 은행 계좌 잔액 같은 더미 데이터를 볼 수 있었습니다\:
 
-![plaid](./plaid_12.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_12.webp)
 
 또는 최근 거래 데이터\:
 
-![plaid](./plaid_13.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_13.webp)
 
 만약 내가 ~~하고 싶어~~ 이 방법을 알고 있었고\, 이렇게 금융 앱을 계속 구축할 수 있었습니다\. 앱은 Plaid API를 사용해 잔액 데이터를 가져오고\, 거래를 기록하며\, 잔액을 업데이트할 수 있었습니다\. 하지만 이 시점에서 더 많은 버그를 만나고 ~~포기했다~~ 나중에 미뤄뒀다\.
 
@@ -153,7 +153,7 @@ Plaid를 사용하기 시작하면\, **바꿀 가능성은 낮아요\,** 왜냐�
 
 비현실적으로 들린다면\, 초기 프로그래밍 언어인 Fortran을 생각해 보세요\. 그 함수 라이브러리는 [defined in **1958**](http://ed-thelen.org/LaFarr/IBM-FORTRAN-II-704-C28-6000-2-c-1958.pdf 'fortran')\, 그리고 오늘날까지도 사용되고 있습니다\. 한 번 구현되면 API는 오랜 기간 사용할 수 있습니다\:
 
-![plaid](./plaid_14.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_14.webp)
 
 오늘은 추상화의 직관\, API\, 그리고 Plaid가 하는 일에 대해 많이 다뤘습니다\. 주요 교훈은 다음과 같습니다 **사람들이 하기 싫어하는 일도 많고\, 그런 일들로 돈을 벌 수도 있죠\.** 뉴스레터에서는 지루한 사람들을 피하라고 하지만\, 이 경우 지루한 것을 만드는 일은 수십억 달러 규모의 사업입니다\.
 

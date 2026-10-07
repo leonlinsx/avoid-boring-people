@@ -4,7 +4,7 @@ description: "増税、関税、そして野望"
 pubDate: 2019-03-30
 category: Investing
 tags: ['finance', 'tariff', 'behaviour']
-heroImage: './r_2.png'
+heroImage: '../../../blog/2019_03_30_trade/r_2.png'
 locale: 'ja'
 sourceSlug: 'trade'
 sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
@@ -46,7 +46,7 @@ sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
 
 > Coming Oneはアイドルのインキュベーターであり、ファンから得られる票が多いほど、有名人になるためのリソースも増えます。観客は1日に1票しか与えられませんが、One Leafの商品を購入すれば追加票がもらえます。特定の商品を購入した場合は5票の追加票を得ることができます。
 
-![post](./r_1.webp)
+![post](../../../blog/2019_03_30_trade/r_1.webp)
 
 しばらくリアリティ番組を見ていませんでしたが、これは新しい販売コンセプトのように思えます。購入は配信しているのと同じアプリを通じて行われているので、便利な体験になっているのだと思います。
 

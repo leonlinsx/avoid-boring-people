@@ -4,7 +4,7 @@ description: "Regarderiez-vous un film sorti seulement après 100 ans ?"
 pubDate: 2019-07-20
 category: Culture
 tags: ['movie']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2019_07_20_movie/m_1.webp'
 locale: 'fr'
 sourceSlug: 'movie'
 sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
@@ -16,9 +16,9 @@ C’est pourquoi je m’intéressais [this reddit post](https://www.reddit.com/r
 
 Cependant\, les commentaires du public général n’étaient pas aussi positifs \:
 
-![post](./m_2.webp)
+![post](../../../blog/2019_07_20_movie/m_2.webp)
 
-![post](./m_3.webp)
+![post](../../../blog/2019_07_20_movie/m_3.webp)
 
 Avec des commentaires allant du fait que le film risque d’être mauvais\, qu’il s’agit d’une publicité masturbatoire\, ou qu’il était égocentrique d’attendre que le public dans 100 ans l’apprécie\.
 

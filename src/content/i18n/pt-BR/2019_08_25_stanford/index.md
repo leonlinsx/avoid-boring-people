@@ -4,7 +4,7 @@ description: "A SPE sobreviveu por quase 50 anos porque nenhum pesquisador passo
 pubDate: 2019-08-25
 category: Culture
 tags: ['behaviour', 'science']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2019_08_25_stanford/s_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'stanford'
 sourceHash: '172f6abb138b00c19ebfd8d9fcaa61eab4ddb5d05c8c2354f300b09a1704b12d'

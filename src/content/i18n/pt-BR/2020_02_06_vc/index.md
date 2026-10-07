@@ -4,7 +4,7 @@ description: "O que os fundadores devem saber sobre capital de risco"
 pubDate: 2020-02-06
 category: Investing
 tags: ['startups', 'vc']
-heroImage: './v_1.webp'
+heroImage: '../../../blog/2020_02_06_vc/v_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'vc'
 sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
@@ -34,7 +34,7 @@ Scott\'s [mentioned this publicly before](https://www.quora.com/What-are-some-co
 
 Como lembrete\, mesmo que você seja mais conservador na distribuição dos retornos do que acima\, esses retornos 100x ainda vão te dar sucesso\:
 
-![post](./v_1.webp)
+![post](../../../blog/2020_02_06_vc/v_1.webp)
 
 > Como você avalia uma equipe fundadora\? Diferentes VCs\, claro\, fazem as coisas de forma diferente\, mas há algumas áreas comuns de investigação\:
 
@@ -78,7 +78,7 @@ Algumas empresas têm balanços com pouca dívida\, outras têm muita dívida\. 
 
 [Carta](https://carta.com/blog/getting-funded-how-long-does-it-actually-take/ 'carta') e [Crunchbase](https://news.crunchbase.com/news/the-time-between-vc-rounds-is-shrinking/ 'Crunchbase') Mostram períodos de tempo bastante semelhantes também\.
 
-![post](./v_2.webp)
+![post](../../../blog/2020_02_06_vc/v_2.webp)
 
 > Um grande erro que nós\, da a16z\, vimos empreendedores cometerem é levantar uma quantia muito pequena em uma avaliação agressiva\, que é exatamente o que você não quer fazer\. Isso estabelece a avaliação de alto nível\, mas sem os recursos financeiros para alcançar os objetivos de negócio necessários para elevar sua próxima rodada com segurança muito acima da avaliação atual\.
 

@@ -4,7 +4,7 @@ description: "配当を支払う企業への投資コスト"
 pubDate: 2020-07-08
 category: Investing
 tags: ['dividends']
-heroImage: './d_6.webp'
+heroImage: '../../../blog/2020_07_08_dividend/d_6.webp'
 locale: 'ja'
 sourceSlug: 'dividend'
 sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
@@ -40,7 +40,7 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 いつも通り簡略化しましたが、上記の行動は企業が資金で行っている主なことです。CSのグラフは、これらの行動の組み合わせが時間とともにどのように変化してきたかを示しています\:
 
-![post](./d_1.webp)
+![post](../../../blog/2020_07_08_dividend/d_1.webp)
 
 今日はアクション5、配当支払いに焦点を当てます。資本構造の理論的無関係性については省きます [^5]しかし、モディリアーニ・ミラーの復習は読むことができます [here.](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.2.4.99 'MM')
 
@@ -58,13 +58,13 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 ちなみに、慣例としては配当は1200万分の配当を受け取る。ほとんどの企業は四半期ごとに配当を支払うので、もし会社が四半期ごとに1ドルを支払った場合、年間配当は4ドルになる。税金も無視しよう [^6]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_07_08_dividend/d_2.webp)
 
 配当を支払う株の配当利回りを評価するだけでなく、その利回りは他の証券間での比較にも役立ちます。利回りは期待リターンのようなものです。ですから、配当利回り4\%と1\%の債券を比較し、他の条件が同じなら配当株の方が収入が高いと言えます。
 
 これが今回の状況です [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')以下のグラフは **過去10\+年間で配当利回りは債券利回りよりも高くなっています。**
 
-![post](./d_3.webp)
+![post](../../../blog/2020_07_08_dividend/d_3.webp)
 
 よく見ると、今の方がさらに良さそうです。債券よりも多くのキャッシュバックを得られる長期間の長期化\?私たちは皆、最も高い配当利回りの株を見つけて全部買うべきでしょうか\?何か裏があるのでしょうか\?
 
@@ -74,7 +74,7 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 以下の例では、50\%の配当利回りよりも1\%の配分利回りの方がはるかに満足していたでしょう。なぜなら、そこに至るまでの状況からです。後者の場合の価格下落により、配当利回りの「増加」による得る利益よりも実際には多くの損失を被っています。
 
-![post](./d_4.webp)
+![post](../../../blog/2020_07_08_dividend/d_4.webp)
 
 高利回りが将来保証されているわけではないため、その配当が持続するかどうかも保証できません。確かに企業は株主が株を売り払うのを恐れて配当を減らすのを嫌います。 [However, that also menas that a company can cut its dividend when things are so bad they have no choice.](https://www.cnbc.com/2018/12/07/ge-makes-it-official-lowers-dividend-to-a-penny.html 'GE')
 
@@ -84,11 +84,11 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 驚くべきことに、私たちが見つかるものとは違います。同じものの中で [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')著者らは株を高い配当利回りから低い配当利回りの4つのバケットに分けました。そして配当利回りと価格を比較しました。これがわかります **資本収益率はトータルリターンに大きく寄与しています。** 高配当株を含めても。
 
-![post](./d_5.webp)
+![post](../../../blog/2020_07_08_dividend/d_5.webp)
 
 さらに興味深いことに、 [Miller Howard report](https://mhinvest.com/download.html?docId=2246 'Miller') 配当株を10のバケツに分けると、その多くは実際には **パフォーマンスが下回りました** 過去10年間のS\&P指数です。さらに悪いことに、最も高い配当利回りを持つ銘柄が最もパフォーマンスを発揮していません。これは、私たちが以前考えていたものとはまったく逆の投資戦略を意味しています。
 
-![post](./d_6.webp)
+![post](../../../blog/2020_07_08_dividend/d_6.webp)
 
 ### 相関要因
 
@@ -102,17 +102,17 @@ sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
 
 その [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van') 配当株の2種類、1\) 高い配当利回り、2\) 高い配当成長を区別しました。そして、これらのグループが上記の共通要因と相関しているかを比較しました [^7]\.
 
-![post](./d_7.webp)
+![post](../../../blog/2020_07_08_dividend/d_7.webp)
 
 多くの特徴は相関関係があり、グループ1でもグループ2でも関係しています。言い換えれば、配当率を無視して他の要素だけを考慮しれば、配当株からのリターンを大きく捉えられるでしょう。
 
 [Meb Faber went ahead to do just that,](https://www.cambriainvestments.com/wp-content/uploads/2017/10/DTAX-10.23.17.pdf 'Meb') 配当株ではなく、配当株のプロファイルを再現できる複合ポートフォリオを作成することでした。つまり、配当株と同じリターンを得られる株を見つけたが、実際には配当を支払わない株も見つけたということです。彼の調査結果は、 **このようなポートフォリオのリターンは配当ポートフォリオを上回ります。** 黒いボックス列を右側の他の列と比較してください\:
 
-![post](./d_8.webp)
+![post](../../../blog/2020_07_08_dividend/d_8.webp)
 
 そして、税申告後の比較でもその結果は変わらず一致しました。
 
-![post](./d_9.webp)
+![post](../../../blog/2020_07_08_dividend/d_9.webp)
 
 ## 結論と合併症
 

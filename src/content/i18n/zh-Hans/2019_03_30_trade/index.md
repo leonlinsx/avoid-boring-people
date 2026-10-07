@@ -4,7 +4,7 @@ description: "提高税收、关税与野心"
 pubDate: 2019-03-30
 category: Investing
 tags: ['finance', 'tariff', 'behaviour']
-heroImage: './r_2.png'
+heroImage: '../../../blog/2019_03_30_trade/r_2.png'
 locale: 'zh-Hans'
 sourceSlug: 'trade'
 sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
@@ -46,7 +46,7 @@ sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
 
 > Coming One是偶像孵化器，选手从粉丝那里获得的投票越多，获得的资源就越多，帮助他们成为名人。观众每天只有1票，但如果购买了One Leaf的产品，可以获得额外投票。如果购买特定产品，可以获得额外5票。
 
-![post](./r_1.webp)
+![post](../../../blog/2019_03_30_trade/r_1.webp)
 
 我有一阵子没看真人秀了，但这似乎是个新的销售概念。我猜购买是通过他们流媒体播放的同一个应用完成的，这样体验更方便。
 

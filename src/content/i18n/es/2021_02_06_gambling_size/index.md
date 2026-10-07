@@ -4,7 +4,7 @@ description: "La dificultad del borde conductual"
 pubDate: 2021-02-06
 category: Risk & Decision Making
 tags: ['finance', 'games', 'risk']
-heroImage: './g_3.png'
+heroImage: '../../../blog/2021_02_06_gambling_size/g_3.png'
 featured: false
 locale: 'es'
 sourceSlug: 'gambling_size'
@@ -35,7 +35,7 @@ Sin embargo\, de media\, habrías ganado un \~8\% al año\. Eso suena a una cifr
 
 Esa diferencia en el \"sentimiento\" es la razón por la que la gente puede ganar el gran número\. La composición compuestiva lleva tiempo para hacer su trabajo\; te pagan por paciencia\.
 
-![post](./g_1.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_1.webp)
 
 **Riesgo vs ruina\.** Cuando piensas en invertir a largo plazo\, no importa cuánto ganes\, si lo pierdes todo\. Un aumento del 10\.000\% seguido de una caída del 100\% sigue siendo un resultado horrible\. Evitar el riesgo de arruinar y \"mantenerse en el juego\" es lo único que importa\. No me lo digas a mí\, aquí están tanto Howard Marks como Charlie Munger\:
 
@@ -57,7 +57,7 @@ Esa diferencia en el \"sentimiento\" es la razón por la que la gente puede gana
 
 Por eso vemos acciones como Amazon \>100x en nuestra vida\, y no vemos a los gestores activos hacer lo mismo\. Si todos los demás _tiene_ Para hacer intercambios y mantener su trabajo\, no hacer nada podría darte una ventaja\.
 
-![post](./g_2.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_2.webp)
 
 **Aburrido vs emocionante\.** ¿Por qué son difíciles los comportamientos anteriores\? Porque son _aburrido_\. Nos gusta la actividad y odiamos quedarnos quietos\. Es difícil presumir en una fiesta de cóctel de que tus avances son pequeños\, lentos y sencillos\. Igual que cuando ["sin stocks" need to have higher expected excess returns](https://www.aqr.com/Insights/Perspectives/Virtue-is-its-Own-Reward-Or-One-Mans-Ceiling-is-Another-Mans-Floor 'asness')\, los comportamientos de \"aburrimiento\" en stock también te dan ventaja\.
 

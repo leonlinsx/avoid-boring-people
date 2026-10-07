@@ -4,7 +4,7 @@ description: "专业投资者使用的工具"
 pubDate: 2020-06-17
 category: Investing
 tags: ['data']
-heroImage: './data_9.webp'
+heroImage: '../../../blog/2020_06_17_data/data_9.webp'
 locale: 'zh-Hans'
 sourceSlug: 'data'
 sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
@@ -36,7 +36,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 这是投资研究过程的一部分，即发现和利用公开信息，每个人都可以做到。基于以上，你已经拥有足够的数据来构建公司财务模型、分析趋势并形成投资论点。事实上，许多散户投资者从未超过这一部分，仍然能为自己做得不错。正如我之前提到的，成功投资有很多途径。
 
-![post](./data_1.webp)
+![post](../../../blog/2020_06_17_data/data_1.webp)
 
 ### 公共数据访问
 
@@ -52,7 +52,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 假设你想快速查看一家公司的长期收入。如果你用Edgar的传统方式，你得搜索该公司，结果会是这样的页面：
 
-![post](./data_2.webp)
+![post](../../../blog/2020_06_17_data/data_2.webp)
 
 然后你需要查找每个你想要的申报文件，下载所有文件，并将数据复制到电子表格中 [^4]\.清理数据并添加行进行逐年计算后，你终于得到了想要的趋势。
 
@@ -60,13 +60,13 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 你为寻找一家公司收入所做的所有工作？FactSet为所有上市公司提供了：
 
-![post](./data_3.webp)
+![post](../../../blog/2020_06_17_data/data_3.webp)
 
 当然，存储的数据并不总是完美无缺 [^5]\.然而，对于所有需要快速查阅资料的人来说，已经以易于理解格式完成所有工作工作的平台是无价的。只要几键就能找到数据，你就不需要花费数小时提取数据。这种便利性是平台能够吸引粘性订阅者的原因之一 [^6]，尽管破坏者喜欢 [Koyfin](https://www.koyfin.com/ 'koy') 他们试图压低他们。
 
 还有像BamSEC和Last10K这样的公司，让查找申报更方便。例如，BamSEC会将不同类型的申报归类归类，显示申报的标题，并让你快速查找之前的申报版本。这些公司的功能不如上述平台丰富，但仍能节省分析师的时间。
 
-![post](./data_4.webp)
+![post](../../../blog/2020_06_17_data/data_4.webp)
 
 ### 卖方研究数据的访问
 
@@ -82,7 +82,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 显然没人真的想这么做 [^9]研究人员将这些数据提供给平台，平台再向投资者展示。如果你想快速总结卖方共识的位置，也只需几个关键点击即可获得。
 
-![post](./data_5.webp)
+![post](../../../blog/2020_06_17_data/data_5.webp)
 
 ### 公司管理层的访问
 
@@ -94,7 +94,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 不，不是。你会觉得巴菲特的年度股东大会， [attracting 40k people yearly](https://www.investopedia.com/articles/investing/121715/how-attend-berkshire-hathaways-annual-meeting.asp 'Buffett')，算是内幕交易吗？如果不是，上述会议有什么不同？没被邀请参加派对并不代表违法。管理层有规定可以说什么，但这种做法已经存在很久了。
 
-![post](./data_6.webp)
+![post](../../../blog/2020_06_17_data/data_6.webp)
 
 ### 行业专家
 
@@ -106,7 +106,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 不，不是。如果你有兴趣投资一家医疗公司，你会觉得向医生朋友询问这家公司是内幕交易吗？如果不是，那为什么上述情况会不同？仅仅因为你负担不起中间商，并不意味着这是违法的 [^10]\.
 
-![post](./data_7.webp)
+![post](../../../blog/2020_06_17_data/data_7.webp)
 
 ### 行业数据
 
@@ -118,7 +118,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 去商店数顾客会违法吗？
 
-![post](./data_8.webp)
+![post](../../../blog/2020_06_17_data/data_8.webp)
 
 ### 这对零售投资者意味着什么
 
@@ -146,7 +146,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 你要做的是找到那些普通职业选手不愿意做的事情。在一个职业选手能获得比你更多资源的世界里，你需要在那些不太理想的领域寻找优势。看看下面的图表，发现那些漏洞。
 
-![post](./data_9.webp)
+![post](../../../blog/2020_06_17_data/data_9.webp)
 
 [^1]: 我没有量化公司的经验，所以不能亲自发言。我确实认识量化分析师 [pay for order flow though,](https://www.institutionalinvestor.com/article/b1m2p1cv68bx56/Twitter-Freaked-Out-Over-Robinhood-Selling-Its-Trade-Flow-But-the-App-and-Others-Have-Been-Doing-It-for-Years 'order') 这很可能包含在300亿美元的数字中。另外，注意像对冲基金这样的投资公司与投资银行不同\;大多数投资分析师的工作与投资银行家完全不同。 [Sellside equity research is the role most similar to a hedge fund analyst, but researchers don't actually invest money.](/writing/time 'Sellside')
 

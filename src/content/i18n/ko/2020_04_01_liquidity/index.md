@@ -4,7 +4,7 @@ description: "금융 위기는 자본이 아니라 유동성에 관한 것입니
 pubDate: 2020-04-01
 category: Investing
 tags: ['liquidity', 'risk']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_04_01_liquidity/m_1.webp'
 locale: 'ko'
 sourceSlug: 'liquidity'
 sourceHash: '67efb2924cca16f71bf7d832e0079c4ee89e15ef1867bbd74d62b0bc2c5af106'

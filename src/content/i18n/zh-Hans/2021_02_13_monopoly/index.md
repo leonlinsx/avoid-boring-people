@@ -4,7 +4,7 @@ description: "真的有那么多垄断吗？"
 pubDate: 2021-02-13
 category: Investing
 tags: ['business']
-heroImage: './m_4.png'
+heroImage: '../../../blog/2021_02_13_monopoly/m_4.png'
 locale: 'zh-Hans'
 sourceSlug: 'monopoly'
 sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
@@ -18,7 +18,7 @@ sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
 
 Turtle Ventures的风险投资人Josh Breinlinger在他的网站上有一篇简短的帖子，内容是 [how most marketplaces are not "winner takes all":](https://acrowdedspace.com/post/642666403989684224/winner-take-all-or-not 'win')
 
-![post](./m_1.webp)
+![post](../../../blog/2021_02_13_monopoly/m_1.webp)
 
 我倾向于同意。我们经常听说“赢家通吃”。这就引出了一个问题，为什么没有更多的垄断？
 
@@ -36,7 +36,7 @@ Turtle Ventures的风险投资人Josh Breinlinger在他的网站上有一篇简�
 
 以下是本·埃文斯对此话题的分析：
 
-![post](./m_2.webp)
+![post](../../../blog/2021_02_13_monopoly/m_2.webp)
 
 起步越难，现有企业增长和保持市场份额就越容易。
 
@@ -58,7 +58,7 @@ Turtle Ventures的风险投资人Josh Breinlinger在他的网站上有一篇简�
 
 在广告方面，我们都说顶尖公司现在领先势不可挡，但如果十年前我们这么说，那就算是前五名公司 [we'd have been wrong on 3 out of 5 names.](https://www.emarketer.com/Article/US-Digital-Ad-Spending-Top-37-Billion-2012-Market-Consolidates/1009362 'ad') 我觉得很难说现在的“垄断”未来会是同样的。
 
-![post](./m_3.webp)
+![post](../../../blog/2021_02_13_monopoly/m_3.webp)
 
 关于在线图书销售，可能有更强有力的反驳理由。但话说回来，这并不是买书的唯一方式。乍一看，这似乎又回到了物理学的世界——有限的空间，内容无限。
 

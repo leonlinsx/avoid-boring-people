@@ -4,7 +4,7 @@ description: "情報理論の父"
 pubDate: 2017-07-20
 category: Technology
 tags: ['entropy']
-heroImage: './c_1.jpg'
+heroImage: '../../../blog/2017_07_20_claude/c_1.jpg'
 locale: 'ja'
 sourceSlug: 'claude'
 sourceHash: '57cf6791ecc6fbebebc8c69623e94c4bf4a14bec74a4fd1d79a23790e22c1af5'

@@ -4,7 +4,7 @@ description: "폴리나 마리노바가 생각하는 좋은 글쓰기에 필요�
 pubDate: 2020-10-09
 category: Culture
 tags: ['writing']
-heroImage: './p_1.webp'
+heroImage: '../../../blog/2020_10_09_polina/p_1.webp'
 locale: 'ko'
 sourceSlug: 'polina'
 sourceHash: '15efb46a14fb3bbde17a65c519efdb281628e189d6a02a53d9ac02a3fff124f4'

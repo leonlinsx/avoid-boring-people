@@ -4,7 +4,7 @@ description: "凯根的成人发展理论"
 pubDate: 2020-04-22
 category: Culture
 tags: ['behaviour']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2020_04_22_kegan/a_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'kegan'
 sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
@@ -46,7 +46,7 @@ sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
 
    凯根认为，人们在40岁之前不会达到这一阶段，大多数人甚至从未达到这一阶段。举个例子，社会或个人如何开始意识到某些法律的重要性，比如平等权利
 
-![post](./a_1.webp)
+![post](../../../blog/2020_04_22_kegan/a_1.webp)
 
 ## 应用
 

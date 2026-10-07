@@ -4,7 +4,7 @@ description: "La trampa del margen de las empresas de IA, los conceptos de inver
 pubDate: 2020-04-29
 category: Technology
 tags: ['AI', 'business', 'investing']
-heroImage: './her_1.webp'
+heroImage: '../../../blog/2020_04_29_her/her_1.webp'
 locale: 'es'
 sourceSlug: 'her'
 sourceHash: '140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199'
@@ -84,7 +84,7 @@ Si la IA tiene casos de uso limitados\, el mercado total al que puedes dirigir e
 
 > Las empresas de servicios no se valoran como las de software\. A los capitalistas de riesgo les encantan los negocios de software\; trabajan duro desde el principio para resolver un problema\, imprimen dinero para siempre\. Por eso reciben valoraciones de ingresos de 10\-20 veces\. ¿Empresas de servicios\? ¿Por qué invertir en una empresa de servicios\? Su crecimiento está inherentemente limitado por costes laborales y problemas extraños y abordables de mercado\. \- Scott
 
-![post](./her_1.webp)
+![post](../../../blog/2020_04_29_her/her_1.webp)
 
 Las empresas suelen valorarse en función de un múltiplo de algún indicador financiero como ingresos\, EBITDA o beneficio neto\. Las empresas de software suelen valorarse con un múltiplo más alto que las empresas de servicios\, por las razones mencionadas anteriormente\. [Higher gross margins matter, as described by Two Sigma](https://twosigmaventures.com/blog/article/why-gross-margins-matter/ 'Two')
 

@@ -5,7 +5,7 @@ pubDate: 2020-09-16
 category: Investing
 tags: ['risk']
 evergreen: false
-heroImage: './c_8.webp'
+heroImage: '../../../blog/2020_09_16_capital/c_8.webp'
 locale: 'pt-BR'
 sourceSlug: 'capital'
 sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
@@ -29,7 +29,7 @@ Para quem não sabe o que é custo de capital\, não se preocupe\. Vou fornecer 
 
 Imagine que você teve uma ideia\. Pode ser uma nova ideia de negócio\, um plano de expansão ou até algum investimento que você estava pensando\. O que importa é que isso exige dinheiro \(capital\) e\, com sorte\, te retorne mais dinheiro do que você investiu\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_16_capital/c_1.webp)
 
 Como você consegue esse dinheiro\? Existem duas principais fontes de capital\: dívida e patrimônio [^1]\.
 
@@ -39,13 +39,13 @@ Quando você recebe dinheiro em troca de ações\, não precisa pagar em dinheir
 
 Os custos combinados dessas duas principais fontes de capital se combinam para obter seu custo de capital\. Esse é o custo médio que você terá ao tentar a ideia\. Por exemplo\, se seu custo de capital for 5\%\, você está \"perdendo\" 5\% a cada ano\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_16_capital/c_2.webp)
 
 Também se segue que você quer ganhar mais do que seu custo de capital\. Se você está perdendo 5\% ao ano\, precisa ganhar mais de 5\% para obter um retorno positivo\. Se seu negócio retorna 1\% ao ano enquanto custa 5\%\, você perde dinheiro com o tempo\.
 
 Essa foi uma explicação simplificada\, mas deve dar intuição suficiente para o restante do artigo\. Se você tem interesse em ler mais\, o rei da avaliação\, o Prof\. Damodaran da NYU\, [has a paper explaining this in detail](http://people.stern.nyu.edu/adamodar/pdfiles/papers/costofcapital.pdf 'Cost')\, que inclui gráficos como os abaixo\, que estendem rigorosamente a estrutura que discutimos acima\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_16_capital/c_3.webp)
 
 Em outras palavras\: queremos ganhar dinheiro\. Precisamos de dinheiro\. Esse dinheiro tem um custo\, que é o custo do capital\.
 
@@ -55,15 +55,15 @@ Primeiro\, vamos estabelecer o argumento de que agora é menos custoso conseguir
 
 Estes são os últimos 10 anos do rendimento TIPS de 10 anos\, [pulled from the Fed](https://fred.stlouisfed.org/series/DFII10 'Fed') [^4]\. Para quem não conhece as DICAS\, elas são um [inflation linked, "safe" type of debt](https://www.investopedia.com/terms/t/tips.asp 'tips')\. Como podemos ver\, os rendimentos estão atualmente negativos\, tendo tendido a cair ao longo do tempo\.
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_16_capital/c_4.webp)
 
 Estes são os últimos 10 anos do custo da hipoteca de taxa fixa de 30 anos\, [also pulled from the Fed](https://fred.stlouisfed.org/graph/?g=NUh 'Fed') [^5]\. Podemos ver que o custo de empréstimos para uma casa também caiu\.
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_16_capital/c_5.webp)
 
 E se você acha que estou escolhendo a dedo ao olhar apenas para 10 anos\, vamos olhar para os últimos 54 anos e olhar para a taxa do tesouro de 10 anos\. Você pode ver o pico nas taxas antes [Volcker killed inflation](https://en.wikipedia.org/wiki/Paul_Volcker 'Volcker')\, e a tendência de queda contínua desde então\.
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_16_capital/c_6.webp)
 
 Neste ponto\, acho que já mostramos o custo de **dívida** diminuiu\. E quanto ao custo do patrimônio\?
 
@@ -71,7 +71,7 @@ Tive mais dificuldade para encontrar o custo médio do patrimônio\, mas sabemos
 
 [Damodaran has a table in pg 142 of this report](https://poseidon01.ssrn.com/delivery.php?ID=425124115112025116020118020011112064052051040011030092064114074119081098025103109118097012061055040113125093125106096026106103051022049037045010068078022028103006044010102031118000094024104112069074071073106074113116005029084117013074087122064008&EXT=pdf 'Damodaran') mostrando um leve aumento no prêmio de risco ao longo do tempo\. Para uma versão mais visual\, [KPMG has the numbers below.](https://assets.kpmg/content/dam/kpmg/nl/pdf/2020/services/equitiy-market-risk-premium-research-summary-march-2020.pdf 'KPMG') Eles não se atam exatamente\, mas são relativamente consistentes\.
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_16_capital/c_7.webp)
 
 Houve um leve aumento nos últimos meses\, mas os prêmios de risco de ações no geral não subiram tanto quanto o custo da dívida diminuiu\. Isso implica que\, no geral\, o custo de **Patrimônio** ou ficou estável\, ou piorou\.
 
@@ -89,7 +89,7 @@ Vamos analisar o que ele quer dizer\, já que isso não é imediatamente óbvio\
 
 Se você tinha dinheiro e estava emprestando\, está emprestando pelo custo de mercado\. Se você investiu na economia em geral\, está obtendo crescimento de mercado\. Se esse custo for menor que a média de crescimento \(taxa de retorno\)\, você obteve um ativo de rendimento menor comparado ao que tinha maior rendimento antes\. O inverso é o contrário\, se o custo for maior que a taxa de crescimento\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_16_capital/c_8.webp)
 
 Isso tem implicações diferentes no crescimento futuro\, bem como na desigualdade de riqueza\. Os ricos economizam mais\, então custos reduzidos resultam em uma transferência de riqueza dos ricos para os pobres\. Isso é compensado pelo aumento da especulação sobre ativos\, que desloca a riqueza para o outro lado\. O efeito líquido disso depende do tamanho relativo de cada um\. Pettis não faz esse ponto\, mas **Acredito que a parte da especulação compensou mais do que o primeiro efeito\, e isso é uma causa do aumento da desigualdade de riqueza\.**
 
@@ -99,7 +99,7 @@ Isso tem implicações diferentes no crescimento futuro\, bem como na desigualda
 
 Os dados reais são mais ruidosos\. O [Fed data on business applications](https://fred.stlouisfed.org/series/BUSAPPSAUS 'Biz') parece validar minha suposição [^7]\, mas também li [that the quality of businesses has declined](https://www.census.gov/newsroom/blogs/research-matters/2018/02/bfs.html 'decline')\. Com base no [inflation of valuations for private companies trying to raise money](https://news.crunchbase.com/news/its-not-just-you-seed-rounds-are-actually-getting-bigger/ 'inflatoin')\, ainda acredito que mais pessoas estão assumindo riscos a um custo menor\, mas me avise se discordar\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_16_capital/c_9.webp)
 
 Maior tolerância ao risco também implica **Mais especulação sobre ativos investidos\.** Acredito que essa é uma das razões pelas quais continuamos vendo o preço das ações públicas subir\, à medida que as pessoas buscam retorno e impulsionam o mercado de ações para cima\.
 
@@ -111,7 +111,7 @@ A primeira é que a maior tolerância ao risco vem com o compromisso de **Mais f
 
 A segunda é que ouvi dizer que o custo de capital reduzido é **Distribuída de forma desigual entre setores\.** Supostamente\, empréstimos para pequenas empresas ainda são caros\. Não sou especialista nisso\, e os dados iniciais que analisei [here](https://cdcloans.com/lender/504-rate-history/ 'rate') parece mostrar o contrário\, mas consigo ver isso como um fenômeno plausível\. Por exemplo\, sempre me incomodou que as taxas de empréstimos pessoais ainda sejam positivas\, comparadas às taxas negativas em média [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_16_capital/c_10.webp)
 
 A lição geral\, então\, é que todo indivíduo agora deveria **aumentar a tolerância ao risco e participar de atividades mais arriscadas**\, já que o custo base deles diminuiu\. Se isso significa mais investimento em ações públicas\, classes alternativas de ativos ou no novo negócio do seu amigo\, cabe a você decidir\. Como sempre\, isso não é um conselho de investimento\, e estou interessado em ver contra\-argumentos ao que foi dito acima\.
 

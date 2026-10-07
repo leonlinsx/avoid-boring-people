@@ -4,7 +4,7 @@ description: "Comunidad vs individualidad en eventos, boletines e inversiones"
 pubDate: 2020-09-02
 category: Culture
 tags: ['newsletter', 'investing', 'community']
-heroImage: './c_9.webp'
+heroImage: '../../../blog/2020_09_02_community_covid/c_9.webp'
 locale: 'es'
 sourceSlug: 'community_covid'
 sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
@@ -52,11 +52,11 @@ Los eventos y grupos virtuales no son nuevos\. Este artículo de _2009_ Analiza 
 
 > La economía en dificultades que ha obligado a muchas empresas a reducir sus presupuestos de viaje y un mayor enfoque en ser \"verdes\" \\\[\.\.\.\\\] se han unido para hacer que los espectáculos virtuales sean una apuesta realista para el negocio de las conferencias\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_02_community_covid/c_1.webp)
 
 Y la mayoría de nosotros estamos familiarizados con [MSN messenger, ](https://www.hulldailymail.co.uk/news/hull-east-yorkshire-news/msn-messenger-logged-back-in-3393323 'msn') [online forums](https://www.makeuseof.com/tag/how-we-talk-online-a-history-of-online-forums-from-cavemen-days-to-the-present/ 'forum')y las redes sociales hoy en día\, todas ellas formas en que la gente se encontró en línea\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_02_community_covid/c_2.webp)
 
 Aunque las ideas principales en sí no son nuevas\, las mejoras tecnológicas y los cambios en las normas sociales han llevado a una mejor ejecución de los conceptos\. Primero veamos cómo se han adaptado los eventos y luego analizemos los grupos\.
 
@@ -78,31 +78,31 @@ Si tienes un grupo pequeño y quieres facilitar que la gente conecte uno a uno\,
 
 Si tienes un grupo grande y aún quieres que la gente interactúe por su cuenta\, quizá quieras seguir lo que [2020 Nebula Awards](https://events.sfwa.org/ 'SFWA') Lo hizo\. Las Nebulas son [one of the most prestigious Sci Fi awards,](https://en.wikipedia.org/wiki/Nebula_Award 'Nebula') Y este año hicieron toda su conferencia online\. Organizaron una enorme cantidad de salas de grupos de trabajo por Zoom de diferentes tamaños\, desde un solo enlace\. Luego dieron a cada asistente poderes de co\-anfitriones para que pudieran moverse por las salas y unirse a lo que les pareciera interesante\. Además de tener una sala principal de ponentes\, tenían salas aleatorias como un bar con un camarero enseñando recetas\, una sala de escritura y una retransmisión en directo de cachorros\. A continuación podéis verme en una sala de grupos con un famoso autor de ciencia ficción [Lois Bujold](https://en.wikipedia.org/wiki/Lois_McMaster_Bujold 'Lois') \(He bloqueado a los demás para tener privacidad\)\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_02_community_covid/c_3.webp)
 
 Una idea más experimental sobre la que tuve sentimientos encontrados fue [Online Town](https://theonline.town/ 'Online')\, que el [Long Now Foundation](https://longnow.org/seminars/ 'Long') Probé después de uno de sus seminarios\. En Online Town\, te representa un avatar en la pantalla\, y puedes caminar por una sala igual que en la vida real\. Las conversaciones que puedes escuchar se basan en la proximidad\, simulando aún más la realidad\. Me pareció interesante la idea\, y requiere una educación de usuario mucho mayor para una experiencia más única\.
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_02_community_covid/c_4.webp)
 
 Hasta ahora hemos cubierto eventos relacionados con el \"trabajo\"\, pero los artistas también se han adaptado virtualmente\.
 
 Por ejemplo\, vi un [Ellie Goulding live virtual concert recently.](https://inews.co.uk/culture/music/ellie-goulding-live-review-victoria-and-albert-museum-london-brightest-blue-613122 'Ellie') Lo sostuvo en el [Victoria and Albert Museum](https://www.vam.ac.uk/ 'VAM') en Londres\, montando un espectáculo fantástico que se movió por el museo\. La calidad de producción fue increíble y recibió una gran respuesta en redes sociales\.
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_02_community_covid/c_5.webp)
 
 Otro ejemplo es [Tomorrowland](https://www.tomorrowland.com/global/ 'TMR')\, el festival de DJ más importante\. También elevaron la calidad de producción\, [creating visual experiences](https://www.youtube.com/watch?v=BinQqIX3aig 'alan') que los asistentes pudieran disfrutar mientras escuchaban a sus DJs tocar su set en directo\. Yo no fui\, pero una persona que sí dijo que le gustó\.
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_02_community_covid/c_6.webp)
 
 Sin embargo\, creo que podemos hacerlo aún mejor\. El concierto de Ellie fue excelente\, y Tomorrowland parece divertido\, pero ambos carecieron de interacción con los fans [^5]\. Si vas a organizar un evento en directo\, deberías aprovecharlo al máximo\. Las experiencias digitales simplifican la comunicación\, y yo lo recomendaría **Los eventos de entretenimiento deberían buscar la interacción\, igual que los eventos \"profesionales\" mencionados anteriormente\.** Si todo lo que tiene tu evento en vivo es un alto valor de producción\, mejor puedo ver la repetición en mi tiempo libre\.
 
 KT Tunstall ejemplificó esto en [her live session with the Royal Albert Hall](https://www.youtube.com/watch?v=T_FHtCvpTOI 'KT')\. Se puede ver la menor calidad de producción en comparación con los dos ejemplos anteriores\, pero lo que realmente marcó la diferencia fue el chat en directo\. Permitía a los fans interactuar tanto entre ellos como con ella\, creando una sesión muy íntima y especial\. La retransmisión en directo se ha convertido\.\.\. en el mainstream\.
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_02_community_covid/c_7.webp)
 
 Si no crees que eso sea sostenible a gran escala\, échale un vistazo a [what KPop groups such as Super Junior are doing.](https://www.youtube.com/watch?v=3H_MiOghwJw&fbclid=IwAR3nFY0s2ccu6tXA4dig9_e37jvNC3QGxCNOL9WE9E-DyJeRMrWtoMAQUIo 'Kpop') \(agradecimientos a Gabriel Tan\) Han reimaginado la experiencia del concierto y planean específicamente la interacción con los fans en el concierto\. Ahora es mucho más fácil hacer que los fans se sientan especiales\, y los artistas deberían aprender de esto\. Cada vez me parece más que las empresas asiáticas están liderando el camino en la innovación en experiencias para consumidores\, y esto parece otro caso de estudio para las empresas occidentales [^6]\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_02_community_covid/c_8.webp)
 
 ¿Qué significa esto para el mercado de eventos presenciales\? [Rafat Ali of Skift believes that this is a watershed moment for the industry](https://skift.com/2020/08/26/the-event-industry-is-being-confronted-by-its-napster-moment/ 'Skift')\, igual que Napster para la música\. Cree que el 10\% de los viajes de negocios pueden abandonar el mercado de forma permanente\, y también estima que los eventos virtuales generan aproximadamente una cuarta parte de los ingresos que los presenciales\, por lo que el mercado tendrá que adaptarse a la nueva economía\.
 
@@ -118,7 +118,7 @@ A nivel individual\, el problema con las comunidades es **Una cuestión de selec
 
 Por ejemplo\, tus contactos en MSN eran un grupo demasiado selectivo\, mientras que los grupos de Facebook no lo son lo suficiente\. Las escuelas de negocios se centran en el valor de marca que implica la selectividad\. La moderación ligera de Reddit resulta en cierto grado de selectividad\. De media\, obtienes más valor profesional de la red de tu colegio comparado con tu grupo de brunch de amigos cercanos del domingo\, o más valor informativo de los hilos de Reddit que de tu [180,000 member Facebook group about genuinely stoked goats](https://www.facebook.com/genuinelystokedgoats/ 'goat') ni siquiera recuerdas haberte unido [^7]\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_02_community_covid/c_9.webp)
 
 Estamos viendo cómo las comunidades seleccionadas crecen en popularidad como intento de resolver ese problema\. El objetivo de estas comunidades es encontrar ese punto óptimo en la curva para equilibrar valor y selectividad\. Normalmente tienen algún tipo de proceso de admisión para seleccionar a sus miembros\. Cuando trabajan\, hay un bucle de retroalimentación donde tener miembros destacados genera más interés en la comunidad\, lo que resulta en miembros de mayor calidad\. Especialmente cuando las comunidades son pequeñas\, hay un incentivo para que todos hagan que las cosas funcionen\, para que puedas sentirte orgulloso de tu membresía\.
 
@@ -134,7 +134,7 @@ A nivel empresarial\, **Construir una comunidad es similar a poseer a tu audienc
 
 Una industria que entiende bien esto es el mercado de los videojuegos\. Fíjate en cómo las empresas detrás de Minecraft\, Fortnite o Roblox han conseguido fijar a sus clientes objetivo\. [Minecraft has 126mm monthly active users](https://www.theverge.com/2020/5/18/21262045/minecraft-sales-monthly-players-statistics-youtube 'Minecraft')\. [Fortnite is still breaking attendance records for its in game concerts](https://www.gamesradar.com/how-many-people-play-fortnite/ 'Fortnite')\. [Roblox makes >$1bn in rev and is played by half of all children in the US](https://www.thegamer.com/roblox-played-by-most-american-kids/ 'Roblox')\. En muchos de estos juegos\, la gente va allí porque sus amigos están allí\. Son el nuevo MSN de 2020 [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_02_community_covid/c_10.webp)
 
 Además del valor y la selectividad\, el último factor en el que pensaría para los grupos virtuales es **Potencial de crecimiento\.** El crecimiento suele ir a costa de la selectividad\; a medida que el grupo crece\, el valor añadido por el siguiente miembro es menor de media\.
 
@@ -195,7 +195,7 @@ Eso suena a mucho\, pero piénsalo de nuevo\. Estar entre los mejores del mundo 
 
 Sin embargo\, si te conformas con dirigir un pequeño negocio\, escribir boletines puede ser una opción fiable\. **He creado un modelo financiero de boletín a 5 años [here](https://docs.google.com/spreadsheets/d/1QS2lKHhDDCe5vwHiJPd7QpDjQRxJ3mHl4VgCq6e8Q6M/edit?usp=sharing 'model')** Con eso puedes experimentar para ver cómo podría ser la economía\. Si lo haces\, por favor haz una copia y no intentes editar el original\. Gracias a [Jacob Donnelly](https://www.amediaoperator.com/ 'Jacob') y [Josh Constine](https://constine.substack.com/ 'Josh') para aportar información sobre el modelo\.
 
-![post](./c_11.webp)
+![post](../../../blog/2020_09_02_community_covid/c_11.webp)
 
 El modelo es muy sensible a las suposiciones\, que se enumeran en la hoja y que cubriré brevemente en esta nota al pie [^12]\. Actualmente asume un modelo de negocio de suscripción más anuncios\, pero puedes cambiarlo\. Implica que conseguir una valoración de 300\.000 dólares en 5 años es difícil pero razonable\, lo cual podría ser algo a lo que aspirar los creadores de boletines\.
 

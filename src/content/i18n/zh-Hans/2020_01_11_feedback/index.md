@@ -4,7 +4,7 @@ description: "我们很不擅长接受反馈，以下是提升的方法"
 pubDate: 2020-01-11
 category: Culture
 tags: ['feedback', 'behaviour']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_01_11_feedback/t_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'feedback'
 sourceHash: '91a9d0e512c9f37a9acd1d22cda31f4585a8b9402f6c1ab8e2bc778a615941e2'
@@ -32,7 +32,7 @@ sourceHash: '91a9d0e512c9f37a9acd1d22cda31f4585a8b9402f6c1ab8e2bc778a615941e2'
   - 这些都是合理的。我们的触发反应不是因为不合理而成为障碍，而是因为它们阻碍了我们参与对话。
   - 提高接受反馈的能力并不意味着你必须把反馈当作绝对的真实
 
-![post](./t_1.webp)
+![post](../../../blog/2020_01_11_feedback/t_1.webp)
 
 _LL：我以前绝对没有接受过反馈，那是我感到被触发时对我不利的。仅仅因为我不喜欢那个人，并不意味着反馈不准确。意识到为什么会发生这种情况并学会识别，是我自己变得更好的第一步。_
 
@@ -44,7 +44,7 @@ _LL：我以前绝对没有接受过反馈，那是我感到被触发时对我�
   - 评估你的立场 [^1]
   - 我们需要三种，但经常得到的类型和我们想要的不一样
 
-![post](./t_2.webp)
+![post](../../../blog/2020_01_11_feedback/t_2.webp)
 
 _LL：我非常喜欢在工作中接受辅导或评估，但显然并非所有人都如此。这解释了很多人们为什么感到被忽视或被误解的原因。这让我想起了 [Five Love Languages framework](https://www.5lovelanguages.com/ 'Five')\.我开始明确要求教练和评估，而不是在工作中被认可。_
 
@@ -90,7 +90,7 @@ _LL：你和你的死对头可能都很有能力，但因为你们组织中激�
   - 当你收到反馈时，挥杆距离基线的距离，比如挥杆越多，对负反馈的敏感度越高
   - 你恢复到基线需要多长时间
 
-![post](./t_3.webp)
+![post](../../../blog/2020_01_11_feedback/t_3.webp)
 
 - 更好地应对反馈的一些方法包括：
   - 提前想想这可能是什么，检查自己，发作时放慢节奏
@@ -153,7 +153,7 @@ _LL：这对我来说是新的，但很重要。从某人那里得到反馈，�
 
 _LL：有些东西是我们无法改变的。你阻止不了我涂满 [ridiculous amounts of butter at every dinner](https://www.thecitycook.com/articles/2015-10-12-bordier-butter 'butter')\.注意，虽然作者认为这样没问题，但你仍然需要减少对他人的负面影响。别当混蛋。_
 
-![post](./t_4.webp)
+![post](../../../blog/2020_01_11_feedback/t_4.webp)
 
 - 在组织的背景下，以下是一些有助于反馈的事项：
   - 解释权衡，而不仅仅是好处

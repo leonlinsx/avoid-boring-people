@@ -4,7 +4,7 @@ description: "你可以带来比你想象的更大的改变"
 pubDate: 2020-04-01
 category: Culture
 tags: ['behaviour']
-heroImage: './f_1.webp'
+heroImage: '../../../blog/2020_04_01_fluctuat/f_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'fluctuat'
 sourceHash: 'f75683cc7c0eca5b009fc03e06fb2463e64a0470c11f77c950429b0f7b859aa9'

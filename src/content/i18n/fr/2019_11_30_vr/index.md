@@ -4,7 +4,7 @@ description: "Jeux vidéo, rééquilibrage de portefeuille et probabilités"
 pubDate: 2019-11-30
 category: Technology
 tags: ['finance', 'vr', 'behaviour']
-heroImage: './g_3.webp'
+heroImage: '../../../blog/2019_11_30_vr/g_3.webp'
 locale: 'fr'
 sourceSlug: 'vr'
 sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
@@ -33,7 +33,7 @@ Voici pourquoi vous devriez vous en soucier\. Je crois que les jeux vidéo et l�
 
 Eh bien \:
 
-![post](./g_1.webp)
+![post](../../../blog/2019_11_30_vr/g_1.webp)
 
 Les jeux sont plus grands que le film mais évoluent encore plus rapidement\. Avec le [global sports industry at $500bn in size](https://www.businesswire.com/news/home/20190514005472/en/Sports---614-Billion-Global-Market-Opportunities 'Sports')\, il y a beaucoup de place pour que les jeux évoluent avant d’atteindre la même taille que les sports\.
 
@@ -41,7 +41,7 @@ Pour que les jeux le fassent\, il faudrait aller au\-delà du simple fait que le
 
 Eh bien [^3]\:
 
-![post](./g_2.webp)
+![post](../../../blog/2019_11_30_vr/g_2.webp)
 
 Je ne suis pas le seul à être optimiste sur le jeu\. A16Z\, une société de capital\-risque bien connue\, a accru son intérêt pour le jeu\, et [wrote about some trends they believe in](https://a16z.com/2019/10/16/trends-revolutionizing-games/ 'a16z') [^4]\:
 
@@ -79,11 +79,11 @@ Ils constatent que \:
 
 En d’autres termes\, si vous avez un fort turnover\, que vous rééquilibrez moins fréquemment ou que vous avez moins de contraintes\, plus l’impact du calendrier du rééquilibrage aura sur vos rendements finaux sera important\. La flèche ci\-dessous représente la différence entre la variation la plus performante et la moins performante\, _du même portefeuille_\.
 
-![post](./g_3.webp)
+![post](../../../blog/2019_11_30_vr/g_3.webp)
 
 Ils présentent également un tableau résumé montrant cet écart entre différentes stratégies d’investissement\. Pour comprendre ce qui suit\, il s’agit de dire qu’un dollar dans le portefeuille « Valeur Améliorée » aurait pu vous rapporter de 4\,45 \$ à 5\,45 \$\, et que toute cette différence de 1 \$ est due à la chance lors du rééquilibrage\.
 
-![post](./g_4.webp)
+![post](../../../blog/2019_11_30_vr/g_4.webp)
 
 Ils concluent en disant \:
 
@@ -145,7 +145,7 @@ Les chercheurs ont constaté que les gens combinaient différemment les probabil
 
 En d’autres termes\, nous atteignons en moyenne 70 \% dans l’exemple ci\-dessus\, mais une fois que vous convertissez ces prédictions numériques en prédictions verbales\, nous « comptons » le nombre de prédictions et obtenons « très probable » au lieu de faire la moyenne\. Les chercheurs montrent également que cela influence le comportement\, et que les consommateurs peuvent être influencés à acheter un article selon la manière dont les prédictions sont présentées\.
 
-![post](./g_5.webp)
+![post](../../../blog/2019_11_30_vr/g_5.webp)
 
 Cependant\, la question de savoir si vous devez « compter » ou « faire la moyenne » dépend de la diversité de vos experts\. S’ils travaillent sur les mêmes informations\, la « moyenne » compense mieux les erreurs idiosyncratiques\. Si ce n’est pas le cas\, alors le « comptage » pourrait être une approximation d’une stratégie bayésienne qui améliore votre prévision personnelle\.
 
@@ -162,7 +162,7 @@ Cependant\, la question de savoir si vous devez « compter » ou « faire la moy
 2. [What the WSJ got wrong in their investigation of Google's search algorithms](https://searchengineland.com/misquoted-and-misunderstood-why-we-the-search-community-dont-believe-the-wsj-about-google-search-325241 'SEL')
 3. [How has the dating market changed?](https://gallery.mailchimp.com/2506bda6ca9a8b7ce8b3c54b4/files/1a8cc94c-6198-4f3d-b27d-8a6060ed6c5d/Tyro_Dating_Market_Thesis_Final_For_Twitter_Pub_v2.pdf 'Tyro')
 
-   ![post](./g_6.webp)
+   ![post](../../../blog/2019_11_30_vr/g_6.webp)
 
    > Notez dans les graphiques ci\-dessus le pic de « rencontrés dans un bar ou un restaurant »\. En data science\, le terme technique pour ces personnes qui signalent est « menteurs »\.
 

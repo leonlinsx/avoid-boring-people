@@ -4,7 +4,7 @@ description: "哪些信念经得起时间的考验"
 pubDate: 2019-05-04
 category: Culture
 tags: ['behaviour']
-heroImage: './m_2.webp'
+heroImage: '../../../blog/2019_05_04_microwave/m_2.webp'
 locale: 'zh-Hans'
 sourceSlug: 'microwave'
 sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
@@ -14,7 +14,7 @@ sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
 
 巴黎圣母院火灾后，有个传言称消防员优先保护遗物而非木结构， [since oak trees from Versailles were intended as replacements](https://medium.com/the-long-now-foundation/long-now-lessons-from-notre-dame-925d27441bdc 'long now')\.
 
-![post](./m_1.webp)
+![post](../../../blog/2019_05_04_microwave/m_1.webp)
 
 正如链接所示，这背后几乎没有实质性依据。但人们希望这是真的，想相信这个行为是有意为之。
 
@@ -54,7 +54,7 @@ sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
 
 > 你不是通过思考某件事来构建心理表征\;你是通过尝试做某件事、失败、修改、再尝试来构建它们的。完成后，你不仅为正在发展的技能建立了有效的心理表征，还吸收了大量与该技能相关的信息。
 
-![post](./m_2.webp)
+![post](../../../blog/2019_05_04_microwave/m_2.webp)
 
 重力还会持续一段时间 [^6]我们的进食需求和社交需求也会如此。物理和生物学原理可能更容易识别，但我认为社会样本量才是更难的部分。人类行事理性\.\.\.\.\.\.直到他们不再理性。如果你有让你感到惊讶的社会原则例子，请告诉我。
 

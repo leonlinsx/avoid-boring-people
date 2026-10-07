@@ -4,7 +4,7 @@ description: "ペアトレード、パーソナルCRM、そして自己認識"
 pubDate: 2019-08-31
 category: System Design
 tags: ['software', 'investing']
-heroImage: './c_4.webp'
+heroImage: '../../../blog/2019_08_31_crm/c_4.webp'
 locale: 'ja'
 sourceSlug: 'crm'
 sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
@@ -26,21 +26,21 @@ sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
 
 別の例として Overstock.com を挙げましょう。彼らの前に [CEO resigned so he could let everyone know he'd dated a Russian spy,](https://www.forbes.com/sites/laurendebter/2019/08/22/the-exclusive-inside-story-of-the-fall-of-overstocks-mad-king-patrick-byrne/#176918ea53a5 'Forbes') [^3] 彼は2017年にブロックチェーンに転換して会社を救おうとしていました。もしあなたがオーバーストックもこれで失敗すると思い、2017年8月に20ドルでオーバーストックを空売りしたとしたらどうでしょうか?
 
-![post](./c_1.webp)
+![post](../../../blog/2019_08_31_crm/c_1.webp)
 
 株価がゆっくりと上昇する中、あなたはそれが長くは続かないと確信してさらに値下げします。なぜか、それは続き、2017年11月の価格は60ドルに達しています。
 
-![post](./c_2.webp)
+![post](../../../blog/2019_08_31_crm/c_2.webp)
 
 やばい。帳面上の損失があるだけでなく、リスクも最初に持っていて安心していたものの倍にもなります。もし今ポジションを清算したら、現在の60ドルから最初に稼いだ20ドルを差し引いた40ドルを失うことになります。あなたは今、この株を空売りするか破産する決意を固めており、翌年まで持ちこたえています。
 
-![post](./c_3.webp)
+![post](../../../blog/2019_08_31_crm/c_3.webp)
 
 あなたのブローカーが休暇から戻ってきて、あなたに発行し忘れたことに気づきます [margin call](https://www.investopedia.com/ask/answers/05/shortmarginrequirements.asp 'margin') これまでずっと、そして今になってパニック状態に陥っています。株を空売りするときは、通常、株価の約130%を担保としてバックアップ資金として必要になります [^4].株価が20ドルだった頃は、26ドルを確保できても問題ありませんでした。しかし今は104ドルを確保し、ブローカーは78ドルの差額(104ドルから26ドルを引いた額)を補足してほしいと言っています。最初に持っていた資金の量によっては、この追加で78ドル(初期エクスポージャーの3倍!)が簡単に全てを失う可能性があります。あなたはポジションを清算し、その差額をGo Fund Meを設定して補う必要があります。
 
 そしてもちろん、こうなります:
 
-![post](./c_4.webp)
+![post](../../../blog/2019_08_31_crm/c_4.webp)
 
 ここでの鍵は、あなたが正しかったことです。Overstockが試みたブロックチェーンのピボットはうまくいきませんでした。しかし、タイミングが間違っていて、お金も評判も失いました。たとえ株を空売りすることが『明白』であっても、例えば [bad quality companies changing their name to get a price bump](https://www.winton.com/longer-view/the-history-of-company-names 'names')、 [time period](https://www.sciencedirect.com/science/article/pii/S0165176519301703 'time') 論文が成立するために必要とされるものは、事前に破産する可能性もあります。
 
@@ -84,15 +84,15 @@ sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
 
 成長 [Superhuman](https://techcrunch.com/2019/06/27/my-six-months-with-30-month-email-service-superhuman/ 'techcrunch')革命的な体験と見返りに料金を請求するメールアプリが、ブームを巻き起こしました [premium subscription services](https://techcrunch.com/2019/08/27/kleiner-perkins-bets-on-a-premium-email-service-thats-bringing-slack-groups-into-gmail/ 'kleiner').最近、テックTwitterでパーソナルCRM(カスタマーリレーションシップマネジメント)というアイデアが復活しました。これは、個人的な関係管理を支援するソフトウェアです。
 
-![post](./c_5.webp))
+![post](../../../blog/2019_08_31_crm/c_5.webp))
 
 意見は分かれていた。中には...冷たい人もいた
 
-![post](./c_6.webp)
+![post](../../../blog/2019_08_31_crm/c_6.webp)
 
 また、Twitterはすでに個人的なCRMであると主張する人もいます
 
-![post](./c_7.webp)
+![post](../../../blog/2019_08_31_crm/c_7.webp)
 
 [And some people pointed out how this recurring idea continues to attract new startups](https://twitter.com/devahaz/status/1164224618602758144 'twitter')
 
@@ -100,7 +100,7 @@ sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
 
 あ、待って。
 
-![post](./c_8.webp)
+![post](../../../blog/2019_08_31_crm/c_8.webp)
 
 あなたがそう思うかどうかに関わらず [Facebook has Zucked the world](https://www.theguardian.com/books/2019/feb/07/zucked-waking-up-to-facebook-catastrophe 'FB')その成功は、人々が個人的な人間関係を管理する方法を望んでいることを示しています。個人CRMは愚かなアイデアではなく、完全に否定するつもりはありません。難しさは既存のシステムでどのように革新するか、そして人々にそれにお金を払ってもらうことにあります。
 

@@ -5,7 +5,7 @@ pubDate: 2020-02-02
 category: Investing
 tags: ['finance']
 evergreen: false
-heroImage: './i_4.webp'
+heroImage: '../../../blog/2020_02_02_ipo/i_4.webp'
 locale: 'pt-BR'
 sourceSlug: 'ipo'
 sourceHash: 'd8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5'
@@ -37,13 +37,13 @@ Aqui eu me inclino mais para o lado do Damodaran\. Em defesa do banco\, no papel
 
 Concordo com Damodaran\, embora\, como ele sugeriu\, a maior parte disso seja por razões legais\. As seções de risco em prospectos são mais para proteção legal e menos para dizer o que é importante [^3]\. Conheço ex\-colegas que passaram muito tempo elaborando seções para a empresa\, mas **É difícil agregar valor significativo aqui** \(desculpa\, pessoal\)\, especialmente se a empresa que abriu capital também for cheia de ex\-banqueiros\.
 
-![post](./i_1.webp)
+![post](../../../blog/2020_02_02_ipo/i_1.webp)
 
 > **Precificação do IPO\:** Os bancos argumentam que podem ajudar a diminuir a lacuna entre a última rodada privada e o preço público pretendido\, encontrar o conjunto de empresas comparável certo\, escolher os múltiplos de avaliação apropriados e identificar preocupações dos investidores\.
 
 > Damodaran argumenta que os bancos fazem um trabalho ruim na precificação\, como visto no IPO da WeWork\. Isso ocorre porque eles escolhem as comparações ou múltiplas erradas\, conversam com investidores errados ou têm tendenciosos no processo de precificação\, sendo o último o mais provável\.
 
-![post](./i_2.webp)
+![post](../../../blog/2020_02_02_ipo/i_2.webp)
 
 Escolher o conjunto ou múltiplo errado de empresas comparáveis é menos fator\. O conjunto de comparação é socializado entre investidores antes\, então geralmente há um consenso amplo [^4]\. Existem apenas alguns múltiplos comuns \(EV\/Rev\, EV\/EBITDA\, P\/E\)\, então o tipo de múltiplo também é amplamente compreendido\.
 
@@ -59,7 +59,7 @@ A primeira é subjetiva\; Slack e Spotify podem se divulgar\, [SiTime likely can
 
 Lembrando que [the median IPO offering size is ~$100mm](https://www.statista.com/statistics/251149/median-deal-size-of-ipos-in-the-united-states/ 'Statista')\, e que [IPOs sell ~20% of the company](https://corpgov.law.harvard.edu/2017/05/25/2017-ipo-report/ 'Harvard')\, podemos inferir que a maioria dos IPOs não são os grandes nomes conhecidos que você já conhece\. Você pode navegar [the list of recent IPOs](https://www.nyse.com/ipo-center/recent-ipo 'NYSE') E veja quantos você reconhece\. **A maioria das empresas provavelmente se beneficia de um banco divulgá\-las e entrar em contato com investidores\.**
 
-![post](./i_3.webp)
+![post](../../../blog/2020_02_02_ipo/i_3.webp)
 
 O segundo ponto parece irrelevante\. Se você é um investidor profissional \(buyside\)\, não está tomando uma decisão baseada em recomendações de pesquisa de ações \(sellside\) \(desculpem\, amigos sellside\)\. Se você é um investidor de varejo\, não recebe essa informação\.
 
@@ -81,7 +81,7 @@ Concordo que há ineficiência nos preços\, mas a maioria das empresas prefere 
 
 As empresas parecem dispostas a trocar a ineficiência por um moral melhor\. Claro\, você poderia ter recebido \$20 na abertura e depois a negociação de ações estagnada\, mas o aumento de \$10 para \$20 \(irracionalmente\) deixa as pessoas mais felizes\. Além disso\, e se você abrir em \$20 e negociar para \$10 três meses depois\? Qual era o preço certo então\?
 
-![post](./i_4.webp)
+![post](../../../blog/2020_02_02_ipo/i_4.webp)
 
 Damodaran conclui apresentando razões pelas quais o status quo das IPOs se mantinha\, citando **inércia\, medo de prejudicar a relação bancária e empresas precisando de alguém para culpar\.** Concordo com isso\. No fim das contas\, depende da sua empresa\; uma listagem direta tem\, por definição\, mais eficiência de preços\. Se você é grande e conhecido\, provavelmente pode fazer listagem direta e não deveria seguir conselhos de newsletters por e\-mail de qualquer forma\. Se você é pequeno e não\, provavelmente precisa de banqueiros para ajudar a divulgar e conectar você com investidores\. Tenho 80\% de certeza de que IPOs ainda serão a maioria das listagens daqui a três anos\.
 

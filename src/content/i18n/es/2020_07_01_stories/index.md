@@ -5,7 +5,7 @@ pubDate: 2020-07-01
 category: Culture
 tags: ['investing', 'tech', 'startups']
 featured: true
-heroImage: './story_6.webp'
+heroImage: '../../../blog/2020_07_01_stories/story_6.webp'
 locale: 'es'
 sourceSlug: 'stories'
 sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
@@ -21,7 +21,7 @@ Empecemos con una historia sobre historias\.
 
 [Bestselling author Kurt Vonnegut](https://en.wikipedia.org/wiki/Kurt_Vonnegut 'Kurt') es conocido por Matadero\-Cinco\, La cuna del gato y muchas otras obras\. En su autobiografía\, [he claimed that this was his greatest contribution to culture:](https://books.google.com/books?id=Zd_9o3uyoVsC&pg=PA285&dq=vonnegut+shape+story+thesis&hl=en&sa=X&ei=tasCU8yjEML-oQSXloKIBQ#v=onepage&q=vonnegut%20shape%20story%20thesis&f=false 'book')
 
-![post](./story_1.webp)
+![post](../../../blog/2020_07_01_stories/story_1.webp)
 
 Así que\, _Las historias tienen formas\,_ dice\.
 
@@ -29,7 +29,7 @@ Así que\, _Las historias tienen formas\,_ dice\.
 
 Imagina que tienes un gráfico\, con buena y mala suerte en un lado\, y en el otro lado que muestra el progreso de la historia de principio a fin\.
 
-![post](./story_2.webp)
+![post](../../../blog/2020_07_01_stories/story_2.webp)
 
 Podrías trazar cualquier historia en este gráfico para ver su forma\. Y si representaras todas las historias del mundo\, surgirían un par de patrones comunes\.
 
@@ -37,25 +37,25 @@ Por ejemplo\, en [The Godfather,](https://en.wikipedia.org/wiki/The_Godfather 'G
 
 Lo representaremos en el gráfico y lo llamaremos una historia del tipo \"hombre en un agujero\"\. El hombre va bien\, cae en un agujero\, luego sale y está mejor que antes\.
 
-![post](./story_3.webp)
+![post](../../../blog/2020_07_01_stories/story_3.webp)
 
 Por otro lado\, en [About Time,](<https://en.wikipedia.org/wiki/About_Time_(2013_film)> 'About Time') [^2] Los protagonistas se enamoran\, se pierden y luego se reencuentran tras una serie de acontecimientos\.
 
 Llamaremos a esto una historia del tipo \"chico conoce chica\"\. Como puedes imaginar\, esto es típico en muchas películas románticas\.
 
-![post](./story_4.webp)
+![post](../../../blog/2020_07_01_stories/story_4.webp)
 
 Y en una historia como [The Metamorphosis,](https://en.wikipedia.org/wiki/The_Metamorphosis 'Kafka') Las cosas solo empeoran para nuestro protagonista mientras se convierte en un bicho y muere\. Esto sería una \"tragedia\"\.
 
-![post](./story_5.webp)
+![post](../../../blog/2020_07_01_stories/story_5.webp)
 
 Además de las formas anteriores\, Kurt pensó en algunas más que podrían funcionar\. Una historia de \"la pobreza a la riqueza\" podría implicar un ascenso constante\, un ["icarus" story](https://en.wikipedia.org/wiki/Icarus 'icarus') podría implicar un ascenso y luego un descenso\, y un ["oedipus" story](https://en.wikipedia.org/wiki/Oedipus 'oedipus') Podría implicar una caída\, un ascenso y otra caída\.
 
-![post](./story_6.webp)
+![post](../../../blog/2020_07_01_stories/story_6.webp)
 
 Siguiendo con esta idea\, [a team of researchers from Vermont and Adelaide used machine learning to classify 1,327 famous stories](https://arxiv.org/pdf/1606.07772.pdf 'paper') en [Project Gutenberg](https://www.gutenberg.org/ 'proj')\. Descubrieron que la mayoría de las historias podían agruparse en algunos tipos principales\. Consulta la nota al pie para detalles sobre su metodología [^3]\.
 
-![post](./story_7.webp)
+![post](../../../blog/2020_07_01_stories/story_7.webp)
 
 Aquí han sustituido \"chico conoce chica\" por \"cenicienta\"\, pero básicamente demuestra que Vonnegut tenía razón [^4]\. _Las historias tienen formas\, y hay algunas formas estándar\._
 
@@ -75,7 +75,7 @@ Consideremos esta empresa a fecha de 30 de abril de 2018\:
 
 La empresa X es una empresa de internet\, que principalmente obtiene beneficios de suscripciones a aplicaciones gracias a su monopolio en una categoría de consumidores en expansión\. Cuenta con 7 millones de suscriptores en total\, de los cuales 3 millones son suscriptores de su aplicación principal\. Sus ingresos crecen \~ 30\% interanual\. Los márgenes EBITDA \(un tipo de métrica de beneficios\) son del 40\%\. El precio de la acción está en un máximo histórico\, habiéndose más que duplicado en el último año [^6]\.
 
-![post](./story_8.webp)
+![post](../../../blog/2020_07_01_stories/story_8.webp)
 
 Tiene buena pinta\, quizá valga la pena investigar más para ver si te gustaría tenerla\.
 
@@ -83,7 +83,7 @@ También considera la misma empresa a fecha de 1 de mayo de 2018\:
 
 La empresa X es una empresa de internet\, que principalmente obtiene beneficios de suscripciones a apps gracias a su monopolio en una categoría de consumidores en expansión\. Cuenta con 7 millones de suscriptores en total\, de los cuales 3 millones son suscriptores de su aplicación principal\. Está aumentando sus ingresos \~ 30\% interanual\. Los márgenes EBITDA \(un tipo de métrica de beneficios\) son del 40\%\. El precio de la acción está en un máximo histórico\, habiéndose más que duplicado en el último año\. _[Facebook just announced they're planning to enter the category](https://techcrunch.com/2018/05/01/facebook-dating/ 'FB')_
 
-![post](./story_9.webp)
+![post](../../../blog/2020_07_01_stories/story_9.webp)
 
 Los fundamentos de la empresa no han cambiado\, pero esa caída del 22\% en el precio en un día se demuestra claramente _algo_ ha\. Eso\, por supuesto\, es el _Historia_ que los inversores están hablando de la acción\.
 
@@ -95,11 +95,11 @@ El 1 de mayo\, la historia llegó a un punto muerto\. Podrías decir que Faceboo
 
 ¿Te suena familiar\?
 
-![post](./story_10.webp)
+![post](../../../blog/2020_07_01_stories/story_10.webp)
 
 La empresa en este caso era Match\.com\, la empresa matriz de Tinder\, y volvería a duplicar su precio de acciones aproximadamente un año después de esa caída\. Chico conoce chica funcionó\.
 
-![post](./story_11.webp)
+![post](../../../blog/2020_07_01_stories/story_11.webp)
 
 El 1 de mayo\, ambas historias eran igualmente válidas\, y había inversores inteligentes que tomaban ambos bandos en esa operación\. Lo importante es que el precio de la acción reaccionó incluso antes de que ocurriera algún cambio real en el negocio de Match\. La historia había llegado a una encrucijada y los inversores ahora elegían bandos diferentes\. Los que pensaban que sería como \"Ícaro\" perdieron\, y los que pensaban lo contrario ganaron\. A medida que cambian las historias\, también lo hacen los precios de las acciones\.
 
@@ -169,7 +169,7 @@ Terminemos con una historia sobre el yo\.
 
 ¿Te suena familiar\?
 
-![post](./story_12.webp)
+![post](../../../blog/2020_07_01_stories/story_12.webp)
 
 ¿Pero qué historia es esta\?
 

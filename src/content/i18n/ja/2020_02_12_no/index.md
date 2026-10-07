@@ -4,7 +4,7 @@ description: "返信しないことは「いいえ」ではなく、人を手放
 pubDate: 2020-02-12
 category: Culture
 tags: ['community']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2020_02_12_no/n_1.webp'
 locale: 'ja'
 sourceSlug: 'no'
 sourceHash: '72931589cd8d53126553f8231f70fa7ca4c25614b1d09260165fd3b3dcbd72f9'

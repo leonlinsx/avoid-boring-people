@@ -4,7 +4,7 @@ description: "Crises financeiras são sobre liquidez e não capital"
 pubDate: 2020-04-01
 category: Investing
 tags: ['liquidity', 'risk']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_04_01_liquidity/m_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'liquidity'
 sourceHash: '67efb2924cca16f71bf7d832e0079c4ee89e15ef1867bbd74d62b0bc2c5af106'

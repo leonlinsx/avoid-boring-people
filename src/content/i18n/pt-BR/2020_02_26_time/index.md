@@ -4,7 +4,7 @@ description: "Você não encontra tempo de qualidade procurando por isso"
 pubDate: 2020-02-26
 category: Culture
 tags: ['behaviour']
-heroImage: './q_3.webp'
+heroImage: '../../../blog/2020_02_26_time/q_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'time'
 sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
@@ -24,11 +24,11 @@ Se devemos valorizar cada momento\, e o conceito de tempo de qualidade então\? 
 
 Tempo de qualidade é um conceito que existe há algum tempo\, com o interesse crescendo com o tempo\.
 
-![post](./q_1.webp)
+![post](../../../blog/2020_02_26_time/q_1.webp)
 
 É [even one of the love languages.](https://www.5lovelanguages.com/ 'love')
 
-![post](./q_2.webp)
+![post](../../../blog/2020_02_26_time/q_2.webp)
 
 Isso significa que estamos vivendo em uma ilusão coletiva\, tentando perseguir algo que não existe\? Ryan acha que sim\, citando Jerry Seinfeld\:
 
@@ -42,7 +42,7 @@ Em contraste\, você provavelmente terá uma surpresa positiva quando tem expect
 
 Se você não consegue criar tempo de qualidade\, e é mais uma questão de eventos aleatórios\, isso significa que você quer aumentar a frequência com que tais eventos acontecem\. Você não pode aumentar a probabilidade\, mas pode aumentar a duração para que tais eventos ocorram\. Em outras palavras\, **Você quer aumentar a quantidade de tempo\, e não o tempo de qualidade de engenharia\.**
 
-![post](./q_3.webp)
+![post](../../../blog/2020_02_26_time/q_3.webp)
 
 Ryan insinua indiretamente que a duração é a chave\, citando outro orientador sobre como encontrar esse tempo comum\:
 

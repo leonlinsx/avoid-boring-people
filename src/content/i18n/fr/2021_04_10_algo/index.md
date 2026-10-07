@@ -4,7 +4,7 @@ description: "Comment pouvons-nous appliquer des algorithmes pour améliorer la 
 pubDate: 2021-04-10
 category: Risk & Decision Making
 tags: ['behaviour', 'tech']
-heroImage: './a_3.webp'
+heroImage: '../../../blog/2021_04_10_algo/a_3.webp'
 locale: 'fr'
 sourceSlug: 'algo'
 sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
@@ -42,7 +42,7 @@ Dans ce cas\, il y a un pourcentage précis à utiliser\. Vous devriez attendre 
 
 C’est le point mathématiquement optimal avec la plus grande chance de choisir la meilleure personne pour le poste\. Si vous arrêtez trop tôt\, vous risquez de manquer quelqu’un lors de l’entretien plus tard\. Si vous arrêtez trop tard\, vous perdez du temps [^4]\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_04_10_algo/a_1.webp)
 
 ## Exploit exploré
 
@@ -79,7 +79,7 @@ Comment décidez\-vous quels objets doivent être placés dans la section rapide
 
 Dans ce cas\, garder les articles les plus récents dans la section petite et rapide est le choix optimal\, en raison de ce qu’on appelle [temporal locality](https://www.geeksforgeeks.org/difference-between-spatial-locality-and-temporal-locality/ 'temp')\. Vous aurez plus de chances d’avoir besoin de quelque chose que vous avez utilisé récemment\. Par exemple\, Google Drive met en surbrillance vos fichiers fréquemment utilisés pour un accès rapide\.
 
-![post](./a_2.webp)
+![post](../../../blog/2021_04_10_algo/a_2.webp)
 
 ## Programmation
 
@@ -112,7 +112,7 @@ Expliquer la règle de Bayes prendrait probablement un article à part entière\
 - Normal \: les premiers événements sont surprenants\, les événements tardifs sont attendus\. Par exemple\, nous serions surpris par des personnes qui meurent tôt dans la vie\, et non par celles qui meurent tard\.
 - Erlang \: les événements ne sont jamais plus ni moins surprenants\. Par exemple\, une distribution sans mémoire d’une roulette ou [the coin flips we discussed last week](/writing/ergodicity 'sub')
 
-![post](./a_3.webp)
+![post](../../../blog/2021_04_10_algo/a_3.webp)
 
 ## Théorie des jeux
 

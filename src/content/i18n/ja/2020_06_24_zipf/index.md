@@ -4,7 +4,7 @@ description: "ジップの法則と情報エントロピーを用いて異星人
 pubDate: 2020-06-24
 category: Technology
 tags: ['information']
-heroImage: './z_3.webp'
+heroImage: '../../../blog/2020_06_24_zipf/z_3.webp'
 locale: 'ja'
 sourceSlug: 'zipf'
 sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
@@ -48,7 +48,7 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 これらすべてを総合すると、私たちが考え出したのは [Drake equation](https://en.wikipedia.org/wiki/Drake_equation#:~:text=The%20Drake%20equation%20is%20a%20statement%20that%20stimulates%20intellectual%20curiosity,a%20part%20of%20that%20universe. 'Drake')知的生命体を推定する有名な方法 [^2]\.今回触れたすべてのポイントを掛け合わせて、どれだけの賢いエイリアンがいるかを推測しているのに注目してください\:
 
-![post](./z_1.webp)
+![post](../../../blog/2020_06_24_zipf/z_1.webp)
 
 ### 範囲の狭まり
 
@@ -70,11 +70,11 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 このような法則があれば、その言語のサンプルテキストで検証できます。例えば、『ロミオとジュリエット』の単語の頻度をプロットした人がいます\:
 
-![post](./z_2.webp)
+![post](../../../blog/2020_06_24_zipf/z_2.webp)
 
 インターネットの見知らぬ人に頼るのに満足せず、自分のニュースレター投稿を分析してみました。簡単なPythonコードで [^4]私はすべてのサブスタック投稿からテキストを抽出し、使った上位50語を抽出して、それらの頻度に対してグラフ化しました。この関係は完璧ではありませんが、ジップフの法則が予測するものにかなり近いです。ご想像の通り、「the」「to」「a」「and」「of」は頻繁に現れます。
 
-![post](./z_3.webp)
+![post](../../../blog/2020_06_24_zipf/z_3.webp)
 
 よし、これで一つの法則ができた。イルカやクジラのような動物に対してそれを試してみて、まだ有効かどうか確かめられる。 [Researchers did that,](https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipf's%20Law%20distribution%20of%20signals.&text=In%20other%20words%2C%20baby%20bottlenose,start%20to%20whistle%20like%20adults. 'dolphin') そして、その通りだとわかりました\! [^5] 言い換えれば、ジップの法則は異星言語にも適用される可能性が高いのです。宇宙からの信号に適用することで、ノイズの一部を除去できます。
 
@@ -86,7 +86,7 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 これらのスコアをプロットすることで、ほとんどの言語がどの範囲に属するかを把握できます。以前と同じプロセスでイルカやクジラのスコアリングを行い、それらの言語がどのように機能するかも確認できます\:
 
-![post](./z_4.webp)
+![post](../../../blog/2020_06_24_zipf/z_4.webp)
 
 ご覧の通り、ほとんどの言語には一定の範囲があります。同じスコアリングシステムを信号に適用すれば、言語である可能性が低いものも除外できます。
 

@@ -5,7 +5,7 @@ pubDate: 2020-09-16
 category: Investing
 tags: ['risk']
 evergreen: false
-heroImage: './c_8.webp'
+heroImage: '../../../blog/2020_09_16_capital/c_8.webp'
 locale: 'ko'
 sourceSlug: 'capital'
 sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
@@ -29,7 +29,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 만약 당신이 아이디어를 떠올렸다고 상상해 보세요\. 그것이 새로운 사업 아이디어일 수도 있고\, 확장 계획일 수도 있으며\, 심지어 당신이 생각하던 투자일 수도 있습니다\. 중요한 것은 그것이 돈\(자본\)을 필요로 하고\, 투자한 것보다 더 많은 수익을 가져다주길 바란다는 점입니다\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_16_capital/c_1.webp)
 
 이 돈을 어떻게 구하나요\? 자본의 주요 출처는 두 가지가 있습니다\: 부채와 자본입니다 [^1]\.
 
@@ -39,13 +39,13 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 이 두 주요 자본 원천의 혼합 비용이 합쳐져 당신의 자본 원가가 됩니다\. 이것이 아이디어를 시도할 때 발생하는 평균 비용입니다\. 예를 들어\, 자본 비용이 5\%라면\, 매년 5\%를 \"잃는\" 셈입니다\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_16_capital/c_2.webp)
 
 또한 자본 비용보다 더 많은 수익을 내고 싶다는 뜻이기도 합니다\. 연간 5\% 손실을 본다면\, 긍정적인 수익을 얻으려면 5\% 이상의 수익을 내야 합니다\. 사업이 연간 1\%만 수익을 내고 5\%의 비용을 부담한다면\, 시간이 지남에 따라 손실을 봅니다\.
 
 설명은 단순화된 것이었지만\, 나머지 글에 충분한 직관을 제공할 것입니다\. 더 읽고 싶으시다면\, 평가의 왕\, NYU 다모다란 교수님\, [has a paper explaining this in detail](http://people.stern.nyu.edu/adamodar/pdfiles/papers/costofcapital.pdf 'Cost')아래와 같은 그래픽들이 위에서 논의한 프레임워크를 엄격하게 확장한 것입니다\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_16_capital/c_3.webp)
 
 다르게 말하면\: 우리는 돈을 벌고 싶습니다\. 돈이 필요합니다\. 그 돈에는 자본의 비용이 따릅니다\.
 
@@ -55,15 +55,15 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 이것은 10년 TIPS 수익률 중 지난 10년간의 기록입니다\. [pulled from the Fed](https://fred.stlouisfed.org/series/DFII10 'Fed') [^4]\. TIPS에 익숙하지 않은 분들을 위해 설명하자면\, TIPS는 [inflation linked, "safe" type of debt](https://www.investopedia.com/terms/t/tips.asp 'tips')\. 보시다시피\, 수익률은 현재 마이너스이며\, 시간이 지남에 따라 하락세를 보이고 있습니다\.
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_16_capital/c_4.webp)
 
 이것은 30년 고정 금리 주택담보대출 비용 중 지난 10년간의 것입니다\. [also pulled from the Fed](https://fred.stlouisfed.org/graph/?g=NUh 'Fed') [^5]\. 집 대출 비용도 하락한 것을 볼 수 있습니다\.
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_16_capital/c_5.webp)
 
 만약 제가 10년만 보고 일부를 골라낸다고 생각한다면\, 지난 54년으로 확대해서 10년 만기 국채 금리를 살펴보죠\. 금리 급등은 이전에 볼 수 있습니다 [Volcker killed inflation](https://en.wikipedia.org/wiki/Paul_Volcker 'Volcker')그리고 그 이후로도 계속되는 하락세가 이어지고 있습니다\.
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_16_capital/c_6.webp)
 
 이 시점에서 우리는 그 비용을 보여준 것 같습니다 **부채** 감소했습니다\. 자본의 비용은 어떻습니까\?
 
@@ -71,7 +71,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 [Damodaran has a table in pg 142 of this report](https://poseidon01.ssrn.com/delivery.php?ID=425124115112025116020118020011112064052051040011030092064114074119081098025103109118097012061055040113125093125106096026106103051022049037045010068078022028103006044010102031118000094024104112069074071073106074113116005029084117013074087122064008&EXT=pdf 'Damodaran') 시간이 지남에 따라 위험 보험료가 약간 상승하는 모습을 보입니다\. 좀 더 시각적인 버전으로는\, [KPMG has the numbers below.](https://assets.kpmg/content/dam/kpmg/nl/pdf/2020/services/equitiy-market-risk-premium-research-summary-march-2020.pdf 'KPMG') 완전히 맞지는 않지만 비교적 일관성이 있습니다\.
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_16_capital/c_7.webp)
 
 최근 몇 달간 약간의 증가가 있었지만\, 전체 주식 위험 프리미엄은 부채 비용이 하락한 만큼 크게 오르지 않았습니다\. 이는 순이익으로 보면 **형평성** 정체되었거나 감소했다\.
 
@@ -89,7 +89,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 만약 당신이 돈을 가지고 있고 그것을 대출했다면\, 시장 비용으로 빌려주는 것입니다\. 만약 그 돈을 광범위한 경제에 투자했다면\, 시장 성장을 얻고 있는 것입니다\. 만약 그 비용이 평균 성장률\(수익률\)보다 낮다면\, 이전에 높은 수익률을 낸 자산에 비해 낮은 수익률을 가진 자산을 얻게 됩니다\. 반대로 비용이 성장률보다 높으면 마찬가지입니다\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_16_capital/c_8.webp)
 
 이는 미래 성장과 부의 불평등에 대해 서로 다른 영향을 미칩니다\. 부유층이 더 많이 저축하기 때문에 비용이 줄어들면 부가 부자에서 가난한 층으로 이전됩니다\. 이는 자산에 대한 투기 증가로 상쇄되며\, 이는 부의 반대 방향으로 이동시킵니다\. 이로 인한 순효과는 각 자산의 상대적 규모에 따라 달라집니다\. 페티스는 이 점을 언급하지 않지만\, **저는 투기 관련 부분이 전자의 효과를 충분히 상쇄했으며\, 이것이 부의 불평등 심화의 원인이라고 믿습니다\.**
 
@@ -99,7 +99,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 실제 데이터는 더 잡음이 많습니다\. 그 [Fed data on business applications](https://fred.stlouisfed.org/series/BUSAPPSAUS 'Biz') 제 가정이 맞아떨어지는 것 같아요 [^7]\, 하지만 저도 읽은 적 있어요 [that the quality of businesses has declined](https://www.census.gov/newsroom/blogs/research-matters/2018/02/bfs.html 'decline')\. 다음에 기반합니다\. [inflation of valuations for private companies trying to raise money](https://news.crunchbase.com/news/its-not-just-you-seed-rounds-are-actually-getting-bigger/ 'inflatoin')저는 여전히 더 많은 사람들이 더 낮은 비용으로 위험을 감수하고 있다고 믿지만\, 동의하지 않으시면 알려주세요\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_16_capital/c_9.webp)
 
 위험 감수 능력 증가는 또한 **투자 가능한 자산에 대한 투기가 더 많아졌다\.** 이것이 사람들이 수익을 추구하고 주식시장을 더 끌어올리면서 공공 주식 가격이 계속 상승하는 이유 중 하나라고 생각합니다\.
 
@@ -111,7 +111,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 두 번째는 자본 비용이 낮아졌다는 이야기를 들었기 때문입니다\. **섹터에 고르게 분포되어 있습니다\.** 소규모 사업자 대출은 여전히 비싸다고 합니다\. 저는 전문가가 아니며\, 제가 본 초기 데이터는 [here](https://cdcloans.com/lender/504-rate-history/ 'rate') 그렇지 않은 것 같지만\, 저는 이것이 충분히 그럴듯한 현상이라고 봅니다\. 예를 들어\, 저는 개인 대출 금리가 평균적으로 음수 금리에 비해 여전히 긍정적인 점이 항상 불만스러웠습니다 [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_16_capital/c_10.webp)
 
 따라서 전체적인 교훈은\, 이제 모든 개인이 그래야 한다는 것입니다 **위험 감수성을 높이고 더 위험한 활동에 참여하세요**\, 기본 비용이 내려갔기 때문입니다\. 그것이 공개 주식\, 대체 자산군\, 아니면 친구의 새로운 사업에 더 투자해야 할지는 여러분의 판단에 달려 있습니다\. 항상 그렇듯이\, 이것은 투자 조언이 아니며\, 위에 언급된 것에 대한 반론도 보고 싶습니다\.
 

@@ -4,7 +4,7 @@ description: "伯纳德·阿尔诺如何看待创造力"
 pubDate: 2020-08-05
 category: Culture
 tags: ['fashion', 'art', 'business']
-heroImage: './l_3.webp'
+heroImage: '../../../blog/2020_08_05_lvmh/l_3.webp'
 featured: false
 locale: 'zh-Hans'
 sourceSlug: 'lvmh'
@@ -19,11 +19,11 @@ sourceHash: '5963492c6b0a6e44992d58cad67110759eb3bc6f30128d64bb81152648b224dc'
 
 [LVMH](https://en.wikipedia.org/wiki/LVMH 'LVMH') 是我们熟悉的许多奢侈品牌的母公司。 [Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ '1987') 通过“路易威登”与“酩悦香槟和轩尼诗”的合并，如今拥有70多个品牌，涵盖葡萄酒、时尚、珠宝等多个领域。与其最近的竞争对手克林相比 [^1]\, [LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html 'rev')
 
-![post](./l_1.webp)
+![post](../../../blog/2020_08_05_lvmh/l_1.webp)
 
 而在这一切的顶端是 [Bernard Arnault](https://en.wikipedia.org/wiki/Bernard_Arnault 'Bernard')自1990年以来，他一直担任该集团负责人。这对他来说非常有利，使他成为世界上最富有的人之一。
 
-![post](./l_2.webp)
+![post](../../../blog/2020_08_05_lvmh/l_2.webp)
 
 [Brett Bivens tweeted this HBR interview of Bernard a while back](https://twitter.com/brettbivens/status/1251505408960794624?s=20 'Brett')今天我想在那篇文章基础上补充一些资料。我们将更好地理解 **伯纳德如何看待创造力——哪里允许混沌，哪里限制控制。**
 
@@ -113,7 +113,7 @@ sourceHash: '5963492c6b0a6e44992d58cad67110759eb3bc6f30128d64bb81152648b224dc'
 
 ## 打造长期品牌
 
-![post](./l_3.webp)
+![post](../../../blog/2020_08_05_lvmh/l_3.webp)
 
 我们探讨了伯纳德所面临的三个二元性，源自他打造品牌的经验。通过允许创意与控制、理念执行以及传统与现代的融合，伯纳德相信他正在为LVMH打造长期发展：
 
@@ -121,7 +121,7 @@ sourceHash: '5963492c6b0a6e44992d58cad67110759eb3bc6f30128d64bb81152648b224dc'
 
 到目前为止，这对他来说奏效了，至少从股价和LVMH的市场份额来看是这样：
 
-![post](./l_4.webp)
+![post](../../../blog/2020_08_05_lvmh/l_4.webp)
 
 他的框架中有多少适用于其他企业？我大体同意强调创造力，但也强调运营卓越。根据最近的说明 [why companies are bad at innovating](/writing/turtle 'turtle') 不过，我不确定大多数公司是否愿意接受更多创意带来的波动性。我不确定过去与现在的二元对立是否容易实现，除了某种做作噱头的营销活动。
 

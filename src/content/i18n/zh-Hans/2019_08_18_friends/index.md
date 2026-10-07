@@ -4,7 +4,7 @@ description: "坦诚、支持、互动和积极态度来维系友谊"
 pubDate: 2019-08-18
 category: Culture
 tags: ['behaviour']
-heroImage: './f_1.webp'
+heroImage: '../../../blog/2019_08_18_friends/f_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'friends'
 sourceHash: '927a41d27f036c8bdb9243f1c9cfacc1a96ee050e3ba65e65b8ed9c3c664a562'

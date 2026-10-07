@@ -5,7 +5,7 @@ pubDate: 2021-03-07
 category: Technology
 tags: ['business', 'data', 'software']
 evergreen: false
-heroImage: './d_1.webp'
+heroImage: '../../../blog/2021_03_07_data_landscape/d_1.webp'
 locale: 'ko'
 sourceSlug: 'data_landscape'
 sourceHash: '3ceeb4d616b74fcc264ff995790c97a06de33969f39d827a51204c59697972d0'
@@ -59,7 +59,7 @@ dbt\, Matillion\, Looker 같은 데이터 모델러는 원시 데이터를 웨�
 
 모든 것을 종합해 보면\:
 
-![post](./d_1.webp)
+![post](../../../blog/2021_03_07_data_landscape/d_1.webp)
 
 폴 튠\, 재귀 센터 참가자인 셰이 마티스 에리슨\, 오리 딘 번스타인\, 미켈 폴슨\, 스티븐 리\, 라이언 프라이어\, 루크 바로네\-아데시\, 치라그 다베\, 네이선 골드바움\, 그리고 Locally Optimistic 멤버인 제이콥 매트슨\, 아르핏 초드후리\, 고든 웡\, 케빈 후\, 잇토 코르네키에게 감사드립니다\.
 

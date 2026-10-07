@@ -4,7 +4,7 @@ description: "CAC para reduzir seu CAC"
 pubDate: 2021-04-17
 category: Culture
 tags: ['community']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2021_04_17_community/c_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'community'
 sourceHash: '2e5f790934239d57a0545315c3efdb5c86b2d0c1ef90b4f2a0dec10870a1ca7f'

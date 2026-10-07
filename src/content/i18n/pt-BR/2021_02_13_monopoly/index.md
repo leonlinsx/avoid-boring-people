@@ -4,7 +4,7 @@ description: "Será que existem realmente tantos monopólios assim?"
 pubDate: 2021-02-13
 category: Investing
 tags: ['business']
-heroImage: './m_4.png'
+heroImage: '../../../blog/2021_02_13_monopoly/m_4.png'
 locale: 'pt-BR'
 sourceSlug: 'monopoly'
 sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
@@ -18,7 +18,7 @@ Monopólios naturais são raros\, e a regulamentação geralmente prejudica mais
 
 Josh Breinlinger\, um investidor de capital da Turtle Ventures\, fez uma breve postagem em seu site sobre [how most marketplaces are not "winner takes all":](https://acrowdedspace.com/post/642666403989684224/winner-take-all-or-not 'win')
 
-![post](./m_1.webp)
+![post](../../../blog/2021_02_13_monopoly/m_1.webp)
 
 Tendo a concordar\. Ouvimos falar de \"vencedor leva tudo\" o tempo todo\. O que levanta a questão\: por que não existem mais monopólios\?
 
@@ -36,7 +36,7 @@ O problema de ter definições vagas é que isso leva a suposições diferentes 
 
 Aqui está Ben Evans sobre o assunto\:
 
-![post](./m_2.webp)
+![post](../../../blog/2021_02_13_monopoly/m_2.webp)
 
 Quanto mais difícil for começar\, mais fácil será para as empresas estabelecidas crescerem e manterem a participação de mercado\.
 
@@ -58,7 +58,7 @@ Farmacêutica\, álcool e óculos são indústrias altamente reguladas\, o que n
 
 Sobre publicidade\, todos dizemos que as principais empresas têm uma vantagem intransponível agora\, mas se tivéssemos dito isso entre as cinco maiores uma década atrás [we'd have been wrong on 3 out of 5 names.](https://www.emarketer.com/Article/US-Digital-Ad-Spending-Top-37-Billion-2012-Market-Consolidates/1009362 'ad') Acho difícil demais dizer que os \"monopólios\" de hoje serão os mesmos no futuro\.
 
-![post](./m_3.webp)
+![post](../../../blog/2021_02_13_monopoly/m_3.webp)
 
 Provavelmente há um contra\-argumento mais forte para as vendas de livros online\. Mas\, por outro lado\, essa não é a única forma de comprar livros\. À primeira vista\, isso parece o mundo da física voltando a entrar em cena – espaço limitado para conteúdo ilimitado\.
 

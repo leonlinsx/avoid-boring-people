@@ -4,7 +4,7 @@ description: "Sobre por qué invertir, la tecnología y la sociedad son juegos d
 pubDate: 2020-05-07
 category: Risk & Decision Making
 tags: ['investing', 'luck', 'skill']
-heroImage: './rel_4.webp'
+heroImage: '../../../blog/2020_05_07_relative_billionaire/rel_4.webp'
 featured: false
 locale: 'es'
 sourceSlug: 'relative_billionaire'
@@ -23,7 +23,7 @@ Imagina que eres analista de inversiones [^1]\.
 
 Los analistas de inversiones investigan empresas y deciden qué acciones comprar o vender\. Ya has hecho tu trabajo [Tencent](https://en.wikipedia.org/wiki/Tencent 'tencent')\, una empresa china de internet\, concluyendo que las tendencias empresariales\, de gestión y macro parecen buenas\. Juegos y entretenimiento online [will continue increasing in importance](https://www.statista.com/outlook/203/117/video-games/china 'stat')\, [the executive team is experienced](https://chinachannel.co/a-deep-dive-into-tencents-restructuring-the-struggle-to-master-b2b/ 'tencent')\, y el crecimiento poblacional proporciona un viento a favor [for at least ten years.](https://ourworldindata.org/future-population-growth 'population')
 
-![rel](./rel_1.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_1.webp)
 
 Modelas todo eso en Excel\. Escribe un sencillo memorando de inversión de 5 páginas\. Prepara 50 páginas de gráficos complicados de bolsillo por si acaso [^2]\.
 
@@ -49,7 +49,7 @@ Y por eso conocer ilegalmente los beneficios de la empresa con antelación [does
 
 En la inversión\, [you want to bet on the mispriced horse, not the horse most likely to win.](https://www.oaktreecapital.com/docs/default-source/memos/you-bet.pdf 'bet')
 
-![rel](./rel_2.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_2.webp)
 
 **Esto se aplica tanto a nivel micro a las presentaciones individuales de acciones como a nivel macro al rendimiento de las firmas de inversión\.** La habilidad absoluta no importa\. Es la habilidad del fondo _Relativo a la competencia_ Eso determina si puede obtener rendimientos superiores a la media\.
 
@@ -61,7 +61,7 @@ Y es por eso [the overall outperformance (alpha) for hedge funds has stagnated,]
 
 En la inversión\, todo es relativo\.
 
-![rel](./rel_3.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_3.webp)
 
 ## 2\. Tu familiar tecnológico tiene ocho años
 
@@ -85,7 +85,7 @@ Por eso las cuotas de mercado relativas son más importantes que las absolutas\.
 
 Y es por eso [word of mouth and customer loyalty is important](https://medium.com/@gavin_baker/scale-and-loyalty-are-more-important-online-than-offline-which-drives-much-of-the-winner-take-992345be93a9 'loyalty')\, ya que permite posponer temporalmente los efectos de las comparaciones relativas\. Cuando el CAC está en un mínimo de \$0\, ya no es el factor limitante [^6]\.
 
-![rel](./rel_4.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_4.webp)
 
 Esto se aplica no solo a la captación de clientes\, sino a todas las partes de la empresa\, desde el talento que contratas hasta la calidad del producto que haces\. Conocer sus fortalezas por sí solo\, sin saber cómo se comparan con otros\, no tiene sentido\.
 
@@ -105,7 +105,7 @@ Has leído los libros de autoayuda\, has ido a ese retiro zen y has visto esa ch
 
 Incluso Google devuelve 1\.800 millones de resultados para \"no compararte con los demás\" frente a 0\.400 millones para \"cómo compararte con los demás\"\. Y los mejores resultados de estos últimos son todos artículos sobre cómo hacerlo _¡Para_ comparando\.
 
-![rel](./rel_5.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_5.webp)
 
 Y eso es cierto\. Deberías centrarte en mejorar y en intentar [be 1% better every day.](https://heleo.com/get-1-better-every-day/19161/ '1%')
 

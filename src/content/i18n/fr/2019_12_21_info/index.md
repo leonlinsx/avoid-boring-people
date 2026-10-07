@@ -4,7 +4,7 @@ description: "La rentabilité déclinante de nombreux modèles économiques dép
 pubDate: 2019-12-21
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_12_21_info/i_1.webp'
 locale: 'fr'
 sourceSlug: 'info'
 sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
@@ -36,7 +36,7 @@ Je ne suis pas sûr de bien comprendre l’argument ici\, et je suis même parti
 
 Les réflexions à ce sujet sont encore en cours\, mais quelque chose comme les suivants \:
 
-![post](./i_1.webp)
+![post](../../../blog/2019_12_21_info/i_1.webp)
 
 > Dans notre nouveau monde riche en information\, il semble plus difficile pour une entreprise ou une personne de thésauriser et d’exploiter la valeur des informations propriétaires\. \\\[\.\.\.\\\] Ce qui semble rester aux investisseurs\, ce sont les problèmes d’information qui ne s’étendent pas \(hyper\-local\) et ceux qui le font \(hyper\-scaler\)\.
 

@@ -4,7 +4,7 @@ description: "Quais crenças resistem ao teste do tempo"
 pubDate: 2019-05-04
 category: Culture
 tags: ['behaviour']
-heroImage: './m_2.webp'
+heroImage: '../../../blog/2019_05_04_microwave/m_2.webp'
 locale: 'pt-BR'
 sourceSlug: 'microwave'
 sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
@@ -14,7 +14,7 @@ Uma vez li sobre uma pessoa tão focada em eficiência que ela apertava o mesmo 
 
 Após o incêndio em Notre Dame\, espalhou\-se a história de que os bombeiros priorizavam salvar relíquias em vez das estruturas de madeira\, [since oak trees from Versailles were intended as replacements](https://medium.com/the-long-now-foundation/long-now-lessons-from-notre-dame-925d27441bdc 'long now')\.
 
-![post](./m_1.webp)
+![post](../../../blog/2019_05_04_microwave/m_1.webp)
 
 Como o link mostra\, havia pouca base substancial por trás disso\. Mas as pessoas queriam que fosse verdade\, queriam acreditar que a ação foi deliberada\.
 
@@ -54,7 +54,7 @@ Em que podemos acreditar então\? O que é mais provável de resistir ao teste d
 
 > Você não constrói representações mentais pensando em algo\; você as constrói tentando fazer algo\, falhando\, revisando e tentando de novo\, repetidas vezes\. Quando termina\, não só desenvolveu uma representação mental eficaz da habilidade que estava desenvolvendo\, como também absorveu muita informação relacionada a essa habilidade\.
 
-![post](./m_2.webp)
+![post](../../../blog/2019_05_04_microwave/m_2.webp)
 
 A gravidade vai ficar por um tempo [^6]\, assim como nossa necessidade de comer e nossa necessidade de interação social\. Os princípios físicos e biológicos provavelmente são mais fáceis de identificar\, mas acho que o tamanho da amostra social é a parte difícil\. Os humanos agem racionalmente\.\.\. até que deixam de agir\. Se você tiver exemplos de princípios sociais que te surpreenderam\, me avise\.
 

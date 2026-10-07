@@ -4,7 +4,7 @@ description: "외계인 탐색에서 집프의 법칙과 정보 엔트로피를 
 pubDate: 2020-06-24
 category: Technology
 tags: ['information']
-heroImage: './z_3.webp'
+heroImage: '../../../blog/2020_06_24_zipf/z_3.webp'
 locale: 'ko'
 sourceSlug: 'zipf'
 sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
@@ -48,7 +48,7 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 이 모든 것을 종합해 보면\, 우리가 한 일은 [Drake equation](https://en.wikipedia.org/wiki/Drake_equation#:~:text=The%20Drake%20equation%20is%20a%20statement%20that%20stimulates%20intellectual%20curiosity,a%20part%20of%20that%20universe. 'Drake')\, 지적 생명체를 추정하는 유명한 방법 [^2]\. 방금 다룬 모든 포인트를 곱해서 지능적인 외계인이 몇 명인지 추측할 수 있는 것을 주목하세요\:
 
-![post](./z_1.webp)
+![post](../../../blog/2020_06_24_zipf/z_1.webp)
 
 ### 범위 좁히기
 
@@ -70,11 +70,11 @@ Zipf의 법칙은 모든 언어에 대해 단어의 등장 빈도가 단어의 �
 
 이런 법칙을 통해 우리는 그 언어의 샘플 텍스트로 이를 검증할 수 있다\. 예를 들어\, 누군가가 로미오와 줄리엣에서 단어의 빈도를 그래프로 그렸다\:
 
-![post](./z_2.webp)
+![post](../../../blog/2020_06_24_zipf/z_2.webp)
 
 인터넷에서 만난 낯선 사람에게 의존하는 데 만족하지 않고\, 저는 제 뉴스레터 게시물을 직접 분석하기 시작했습니다\. 간단한 파이썬 코드로 [^4]저는 모든 서브스택 게시물에서 텍스트를 추출하고\, 사용한 상위 50개 단어를 뽑아 빈도에 대해 그래프로 표시했습니다\. 이 관계가 완벽하지는 않지만\, Zipf의 법칙이 예측하는 것과 꽤 가깝습니다\. 상상할 수 있듯이\, \"the\"\, \"to\"\, \"a\"\, \"and\"\, \"of\" 모두 자주 나타납니다\.
 
-![post](./z_3.webp)
+![post](../../../blog/2020_06_24_zipf/z_3.webp)
 
 좋아요\, 이제 하나의 법칙이 생겼네요\. 돌고래나 고래 같은 동물을 대상으로 시험해 보고 여전히 유효한지 확인할 수 있습니다\. [Researchers did that,](https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipf's%20Law%20distribution%20of%20signals.&text=In%20other%20words%2C%20baby%20bottlenose,start%20to%20whistle%20like%20adults. 'dolphin') 그리고 그들이 그들을 발견했다\! [^5] 즉\, 집프의 법칙은 외계 언어에도 적용될 가능성이 큽니다\. 우주 신호에 적용하면 일부 잡음을 걸러낼 수 있습니다\.
 
@@ -86,7 +86,7 @@ Zipf의 법칙은 모든 언어에 대해 단어의 등장 빈도가 단어의 �
 
 점수를 그래프로 표시함으로써 대부분의 언어가 어느 범위에 속하는지 알 수 있습니다\. 이전과 마찬가지로 돌고래와 고래를 점수 짓고\, 그들의 언어가 어떻게 작동하는지 확인할 수 있습니다\:
 
-![post](./z_4.webp)
+![post](../../../blog/2020_06_24_zipf/z_4.webp)
 
 보시다시피\, 대부분의 언어가 그 범위에 속합니다\. 같은 점수 체계를 신호에 적용하면\, 언어가 될 가능성이 낮은 신호도 걸러낼 수 있습니다\.
 

@@ -5,7 +5,7 @@ pubDate: 2019-06-30
 category: Technology
 tags: ['finance', 'crypto', 'career']
 evergreen: false
-heroImage: './f_4.png'
+heroImage: '../../../blog/2019_06_30_libra/f_4.png'
 locale: 'ko'
 sourceSlug: 'libra'
 sourceHash: '30eb7adb66372db28b024e7c64cf3213fa2932df319a9a9b58c32b21e3f4e4f2'
@@ -55,7 +55,7 @@ _뭐라고\._ 우리는 \'민주화된 시스템\'에서 \'100개 기업이 통�
 
 금융의 미래를 보라\. 솔직히 말해서\, 꽤 귀엽다\.
 
-![post](./f_1.webp)
+![post](../../../blog/2019_06_30_libra/f_1.webp)
 
 > 이 자산은 은행 예금이나 안정적이고 신뢰할 수 있는 중앙은행의 단기 정부 증권 등 변동성이 낮은 자산들을 기반으로 할 것입니다\. 이는 한 리브라가 항상 동일한 현지 통화 금액으로 환전할 수 없다는 점을 강조하는 것이 중요합니다
 
@@ -148,7 +148,7 @@ SEC가 원하는 것은 다음과 같습니다\. 벌금은 배심원단이 결�
 
 1. [Causes of death vs media coverage](https://ourworldindata.org/does-the-news-reflect-what-we-die-from?linkId=68864855 'media')
 
-![post](./f_2.webp)
+![post](../../../blog/2019_06_30_libra/f_2.webp)
 
 2. ["But every trend has a shelf life, and as quickly as Instagram ushered in pink walls and pastel macaroons, it’s now turning on them."](https://www.theatlantic.com/technology/archive/2019/04/influencers-are-abandoning-instagram-look/587803/ 'insta') 그럼 내 즉각적인 유명세가 될 희망은 사라졌다
 3. ["Another strategy, one we term “manclusion,” involves including men in meetings simply to induce better behavior from the men on the other side of the table."](http://clsbluesky.law.columbia.edu/2019/06/06/venture-bearding/ 'venture bearding') 이런 일이 있다니 믿기지 않아\.
@@ -158,7 +158,7 @@ SEC가 원하는 것은 다음과 같습니다\. 벌금은 배심원단이 결�
 
 5. [Reconstructing facial images based on voice data](https://arxiv.org/pdf/1905.09773.pdf 'face')\. 이 아이디어는 정확한 이미지를 복원하는 것이 아니라\, 음성 속성과 관련된 공통 시각적 특징을 복원하는 것이었습니다\.
 
-![post](./f_3.webp)
+![post](../../../blog/2019_06_30_libra/f_3.webp)
 
 6. [Celebrity cameos for sale.](https://www.cameo.com/faq 'cameo') 누가 제나 콜먼 선물 사주면 정말 좋은 선물이 될 텐데\.\.\. 그냥 하는 말이야 [^12]
 

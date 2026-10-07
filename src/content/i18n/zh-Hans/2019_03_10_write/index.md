@@ -4,7 +4,7 @@ description: "我为什么开始写最初的博客"
 pubDate: 2019-03-10
 category: Culture
 tags: ['writing']
-heroImage: './w_3.png'
+heroImage: '../../../blog/2019_03_10_write/w_3.png'
 locale: 'zh-Hans'
 sourceSlug: 'write'
 sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
@@ -67,7 +67,7 @@ sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
 
 我考虑了一段时间的一个功能是是否允许评论。我最终放弃了，因为根据我的经验，公开帖子的评论区往往沦为垃圾信息或无关紧要。例如，看看扎克伯格最近关于Facebook新优先事项的帖子中的热门评论：
 
-![post](./w_1.webp)
+![post](../../../blog/2019_03_10_write/w_1.webp)
 
 我对评论的看法是 [shared](https://optinmonster.com/to-allow-blog-comments-or-not-heres-what-the-data-shows/ 'nice but not necessary') 作者 [others](https://avc.com/2019/02/rethinking-avc/ 'avc comments')\.理想情况下，有一个独立的管理论坛，尽管我怀疑这个博客是否会流行到需要这样做。与此同时，有兴趣讨论这里内容的人可以通过推特给我发邮件或私信。
 
@@ -89,7 +89,7 @@ sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
 
 7. Github 的主要功能之一是通过提交进行更新。我仍然不明白这一点，也不知道如何在不逐个复制每个文件的情况下，将主主题上的提交推送到我的仓库。帮助。
 
-![post](./w_2.png)
+![post](../../../blog/2019_03_10_write/w_2.png)
 
 设置一切非常令人沮丧，甚至连添加上面那些图片这么简单的事情也花了不少时间。我还不后悔这个决定，因为我已经学到了一些关于网络运作的小细节，也有了产品可以展示给我的学习成果 [^13]\.另一个惊喜是，我现在有了正式的记录系统，记录未来想写的想法和文章，因为我意识到保持清单会很有帮助。正如保罗·格雷厄姆所说，互联网可能会让这成为 [golden age of the essay](http://www.paulgraham.com/essay.html 'essay')这进一步支持了我的个人品牌和个性化论点。我对这个想法的未来感到兴奋，也希望能继续写作。
 

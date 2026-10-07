@@ -5,7 +5,7 @@ pubDate: 2020-07-01
 category: Culture
 tags: ['investing', 'tech', 'startups']
 featured: true
-heroImage: './story_6.webp'
+heroImage: '../../../blog/2020_07_01_stories/story_6.webp'
 locale: 'zh-Hans'
 sourceSlug: 'stories'
 sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
@@ -21,7 +21,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 [Bestselling author Kurt Vonnegut](https://en.wikipedia.org/wiki/Kurt_Vonnegut 'Kurt') 以《第五号屠宰场》、《猫的摇篮》及许多其他作品闻名。在他的自传中， [he claimed that this was his greatest contribution to culture:](https://books.google.com/books?id=Zd_9o3uyoVsC&pg=PA285&dq=vonnegut+shape+story+thesis&hl=en&sa=X&ei=tasCU8yjEML-oQSXloKIBQ#v=onepage&q=vonnegut%20shape%20story%20thesis&f=false 'book')
 
-![post](./story_1.webp)
+![post](../../../blog/2020_07_01_stories/story_1.webp)
 
 所以， _故事有形状，_ 他说。
 
@@ -29,7 +29,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 想象你有一个图表，一边是好运和坏运，另一边显示故事从头到尾的进展。
 
-![post](./story_2.webp)
+![post](../../../blog/2020_07_01_stories/story_2.webp)
 
 你可以在这个图表上绘制任何故事，看看它的形状。如果你绘制世界上所有的故事，会出现几个共同的模式。
 
@@ -37,25 +37,25 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 我们把这个画在图表上，称之为“洞里的人”故事。人过得不错，掉进洞里，然后出来后比以前更好。
 
-![post](./story_3.webp)
+![post](../../../blog/2020_07_01_stories/story_3.webp)
 
 另一方面，在 [About Time,](<https://en.wikipedia.org/wiki/About_Time_(2013_film)> 'About Time') [^2] 主角们相爱，失去彼此，然后在一系列事件后重新相遇。
 
 我们称之为“男孩遇见女孩”类型的故事。你可以想象，这在许多爱情电影中很常见。
 
-![post](./story_4.webp)
+![post](../../../blog/2020_07_01_stories/story_4.webp)
 
 而且在这样的故事中 [The Metamorphosis,](https://en.wikipedia.org/wiki/The_Metamorphosis 'Kafka') 主角的处境越来越糟，他变成了虫子并死去。这将是一场“悲剧”。
 
-![post](./story_5.webp)
+![post](../../../blog/2020_07_01_stories/story_5.webp)
 
 除了上面的形状，库尔特还想到了几个可能的。一个“白手起家”的故事可以涉及稳步上升，一个 ["icarus" story](https://en.wikipedia.org/wiki/Icarus 'icarus') 可能包括上升然后下降，以及 ["oedipus" story](https://en.wikipedia.org/wiki/Oedipus 'oedipus') 可能包括跌落、上升，再跌落。
 
-![post](./story_6.webp)
+![post](../../../blog/2020_07_01_stories/story_6.webp)
 
 基于这个想法， [a team of researchers from Vermont and Adelaide used machine learning to classify 1,327 famous stories](https://arxiv.org/pdf/1606.07772.pdf 'paper') 关于 [Project Gutenberg](https://www.gutenberg.org/ 'proj')\.他们发现大多数故事确实可以归类为几种主要类型。有关其方法论的详细信息，请参见脚注 [^3]\.
 
-![post](./story_7.webp)
+![post](../../../blog/2020_07_01_stories/story_7.webp)
 
 他们把“男孩遇见女孩”换成了“灰姑娘”，但这本质上证明了冯内古特是对的 [^4]\. _故事有形状，有几种标准形状。_
 
@@ -75,7 +75,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 X公司是一家互联网公司，主要通过应用订阅赚钱，凭借其在不断扩大的消费品类别中的垄断地位。其总订阅用户有700万，其中300万是主应用的订阅者。其收入同比增长\~30\%。EBITDA（一种盈利指标）的利润率为40\%。股价创历史新高，过去一年已翻倍多 [^6]\.
 
-![post](./story_8.webp)
+![post](../../../blog/2020_07_01_stories/story_8.webp)
 
 看起来挺不错的，也许值得进一步研究看看你是否愿意拥有它。
 
@@ -83,7 +83,7 @@ X公司是一家互联网公司，主要通过应用订阅赚钱，凭借其在�
 
 X公司是一家互联网公司，主要通过应用订阅赚钱，凭借其在不断扩大的消费品类中的垄断地位。其总订阅用户数为700万，其中300万是其主应用的订阅者。其收入同比增长\~30\%。EBITDA（一种盈利指标）的利润率为40\%。股价创历史新高，过去一年已翻倍以上。 _[Facebook just announced they're planning to enter the category](https://techcrunch.com/2018/05/01/facebook-dating/ 'FB')_
 
-![post](./story_9.webp)
+![post](../../../blog/2020_07_01_stories/story_9.webp)
 
 公司基本面未变，但一天内22\%的价格下跌明显 _什么东西_ 有。那当然就是 _故事_ 投资者正在谈论这只股票。
 
@@ -95,11 +95,11 @@ X公司是一家互联网公司，主要通过应用订阅赚钱，凭借其在�
 
 听起来熟悉吗？
 
-![post](./story_10.webp)
+![post](../../../blog/2020_07_01_stories/story_10.webp)
 
 这家公司是 Match\.com，Tinder的母公司，在那次下跌大约一年后，股价又翻了一倍。男孩遇见女孩，结果很顺利。
 
-![post](./story_11.webp)
+![post](../../../blog/2020_07_01_stories/story_11.webp)
 
 5月1日，这两个故事同样真实，聪明的投资者在这笔交易中支持了双方。重要的是，股价甚至在Match的业务发生任何实际变化之前就已经做出反应。故事已经到了十字路口，投资者开始选择不同的阵营。那些认为会像《伊卡洛斯》那样失败的人，而认为相反的人则获益。随着故事的变化，股价也在变化。
 
@@ -169,7 +169,7 @@ X公司是一家互联网公司，主要通过应用订阅赚钱，凭借其在�
 
 听起来熟悉吗？
 
-![post](./story_12.webp)
+![post](../../../blog/2020_07_01_stories/story_12.webp)
 
 但这到底是什么故事？
 

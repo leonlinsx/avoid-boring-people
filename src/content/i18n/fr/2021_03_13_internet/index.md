@@ -4,7 +4,7 @@ description: "Histoires sur la fondation d’internet"
 pubDate: 2017-12-01
 category: Technology
 tags: ['business', 'startups']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2021_03_13_internet/i_1.webp'
 locale: 'fr'
 sourceSlug: 'internet'
 sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
@@ -68,7 +68,7 @@ Internet Explorer de Microsoft a délogé Netscape\, malgré l’avance de 70 \%
 
 Et nous savons maintenant que Chrome supplanterait IE\. De même\, Facebook supplanterait MySpace\, Apple remplacerait Blackberry\, et ainsi de suite\.
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_13_internet/i_1.webp)
 
 Une raison simple est que les choses changent rapidement\, nécessitant un changement de stratégie commerciale\. Imaginez si votre modèle économique avait supposé que les taux de clics publicitaires étaient « conservateurs » dans les 40 \% pour l’avenir \? Étant donné qu’ils sont maintenant \<5 \%\, vous auriez été à l’écart de grandur\.
 

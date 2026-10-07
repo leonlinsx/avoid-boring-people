@@ -4,7 +4,7 @@ description: "Acompanhando o processo de IPO"
 pubDate: 2019-07-31
 category: Investing
 tags: ['finance']
-heroImage: './ipo_1.webp'
+heroImage: '../../../blog/2019_07_31_ipo_process/ipo_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'ipo_process'
 sourceHash: '6f3cd57a4e491a255b96899fc1df5935004e873af2dce6466b146bd23825b416'
@@ -38,6 +38,6 @@ Para explicar melhor o ["money on the table" issue](http://www.underpricing.de/D
 
 Algumas pessoas argumentariam que\, se houvesse demanda em \$46\, talvez a BYND devesse simplesmente ter colocado um preço de \$46 e recebido mais dinheiro dos investidores\. Bill Gurley argumentaria usar uma listagem direta para atender a toda a oferta e demanda\.
 
-![post](./ipo_1.webp)
+![post](../../../blog/2019_07_31_ipo_process/ipo_1.webp)
 
 Concordo que ainda há dinheiro em jogo\, mas pense na alternativa\. Suponha que a BYND tenha um preço de \$100 desde o início\. Isso não deixa nada em jogo\, mas agora há uma chance muito maior de o preço cair após o IPO\. E se ele cair\, talvez o momentum do preço continue afundando para baixo\. Não sabemos quanto do preço atual de negociação da BYND se deve ao momentum\, e me parece que poderia ter ido para o outro lado também\. O público em geral ainda vê os IPOs da FB\, GOOG e Uber como fracassos devido à falta de um \"pop\"\. Você pode argumentar quem se importa com o público em geral\, mas o moral dos funcionários dentro da empresa também é afetado\. **Meu ponto aqui é que atualmente há menos incentivo para as empresas acertarem os preços exatos\, e quem sabe qual é o preço certo\, afinal\?**

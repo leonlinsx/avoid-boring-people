@@ -5,7 +5,7 @@ pubDate: 2019-06-30
 category: Technology
 tags: ['finance', 'crypto', 'career']
 evergreen: false
-heroImage: './f_4.png'
+heroImage: '../../../blog/2019_06_30_libra/f_4.png'
 locale: 'fr'
 sourceSlug: 'libra'
 sourceHash: '30eb7adb66372db28b024e7c64cf3213fa2932df319a9a9b58c32b21e3f4e4f2'
@@ -55,7 +55,7 @@ Imaginons une entreprise dont le seul but est de suivre le nombre de personnes v
 
 Voici l’avenir de la finance\. Je ne vais pas mentir\, c’est plutôt mignon\.
 
-![post](./f_1.webp)
+![post](../../../blog/2019_06_30_libra/f_1.webp)
 
 > Elle sera garantie par un ensemble d’actifs à faible volatilité\, tels que des dépôts bancaires et des titres d’État à court terme en devises provenant de banques centrales stables et réputées\. Il est important de souligner que cela signifie qu’une Balance ne pourra pas toujours se convertir en le même montant d’une devise locale donnée
 
@@ -148,7 +148,7 @@ Je donnerais plusieurs reins pour avoir à nouveau 18 ans\. Et je suis sûr que 
 
 1. [Causes of death vs media coverage](https://ourworldindata.org/does-the-news-reflect-what-we-die-from?linkId=68864855 'media')
 
-![post](./f_2.webp)
+![post](../../../blog/2019_06_30_libra/f_2.webp)
 
 2. ["But every trend has a shelf life, and as quickly as Instagram ushered in pink walls and pastel macaroons, it’s now turning on them."](https://www.theatlantic.com/technology/archive/2019/04/influencers-are-abandoning-instagram-look/587803/ 'insta') Eh bien\, adieu mon espoir de devenir instantanément célèbre
 3. ["Another strategy, one we term “manclusion,” involves including men in meetings simply to induce better behavior from the men on the other side of the table."](http://clsbluesky.law.columbia.edu/2019/06/06/venture-bearding/ 'venture bearding') Je n’arrive pas à croire que ça existe\.
@@ -158,7 +158,7 @@ Je donnerais plusieurs reins pour avoir à nouveau 18 ans\. Et je suis sûr que 
 
 5. [Reconstructing facial images based on voice data](https://arxiv.org/pdf/1905.09773.pdf 'face')\. Notez que l’idée n’était pas de récupérer une image exacte\, mais de retrouver des caractéristiques visuelles communes liées aux attributs de la parole\.
 
-![post](./f_3.webp)
+![post](../../../blog/2019_06_30_libra/f_3.webp)
 
 6. [Celebrity cameos for sale.](https://www.cameo.com/faq 'cameo') Ce serait un super cadeau de Noël si quelqu’un m’en offrait un de Jenna Coleman\.\.\. Je dis ça juste [^12]
 

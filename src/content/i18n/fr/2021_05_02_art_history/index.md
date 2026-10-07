@@ -4,7 +4,7 @@ description: "Différentes définitions de l’art au fil de l’histoire"
 pubDate: 2021-05-02
 category: Culture
 tags: ['art']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2021_05_02_art_history/a_1.webp'
 locale: 'fr'
 sourceSlug: 'art_history'
 sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
@@ -28,23 +28,23 @@ Que leur montreriez\-vous \?
 
 Peut\-être leur montreriez\-vous [The School of Athens,](https://en.wikipedia.org/wiki/The_School_of_Athens 'school') une peinture de Raphaël au plus fort de la Renaissance italienne au XVIe siècle\. Avec sa représentation réaliste de philosophes célèbres et son usage de [linear perspective](<https://en.wikipedia.org/wiki/Perspective_(graphical)> 'perspective') pour donner un aspect 3D\, la célèbre fresque est considérée comme un chef\-d’œuvre incarnant la Renaissance\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_05_02_art_history/a_1.webp)
 
 Ou peut\-être rejetteriez\-vous les sujets historiques\, pensant que l’art ne devrait pas avoir besoin d’une leçon morale\. Au lieu de cela\, vous montrez un tableau des années 1800 de Dominique Ingres qui est pur plaisir et fantaisie\, affirmant que l’art réel n’a pas besoin d’être réaliste\. [La Grand Odalisque looks realistic on first glance, but taking a closer look shows that the spine is weirdly long, and the back leg is attached at a weird angle.](https://en.wikipedia.org/wiki/Grande_Odalisque 'wiki')
 
-![post](./a_2.webp)
+![post](../../../blog/2021_05_02_art_history/a_2.webp)
 
 On pourrait dire que le plaisir est superficiel\, et qu’il est plus pur de commémorer la souffrance moderne\, comme au XIXe siècle de Goya [The Third of May](https://en.wikipedia.org/wiki/The_Third_of_May_1808 'may')\. C’est moins réaliste que les œuvres précédentes\, les figures étant plus plates et moins abouties\. Ce n’est plus non plus une fiction\, car elle dépeint une véritable tragédie à l’époque de Goya [^2]\. C’était un tel écart avec la tradition précédente qu’on l’a qualifiée de « l’une des premières peintures de l’ère moderne »\.
 
-![post](./a_3.webp)
+![post](../../../blog/2021_05_02_art_history/a_3.webp)
 
 Mais pourquoi limiter la peinture à ne montrer qu’un seul instantané dans le temps \? Et si\, au lieu de cela\, vous voyiez un objet sous tous les angles\, et essayiez de le poser sur la toile plate \? Pensez au bullet time de Matrix\, mais en tant que peinture \; ne serait\-ce pas plus fidèle à l’objet \? Montrant une œuvre cubiste comme celle de Picasso dans les années 1900 [Girl with a Mandolin](https://www.pablopicasso.org/girl-with-mandolin.jsp 'girl') ce serait donc un bon choix\, avec sa tentative de montrer à une personne en 3D sous plusieurs points de vue sur une surface 2D\.
 
-![post](./a_4.webp)
+![post](../../../blog/2021_05_02_art_history/a_4.webp)
 
 On pourrait dire que tout ce qui précède est prétentieux\, et que l’art n’est que des couleurs et des lignes sur toile\. Montrer un Mondrian des années 1900 souligne qu’il ne faut pas se tromper avec le réalisme\. L’art pur\, ce sont des formes platoniques [^3]\.
 
-![post](./a_5.webp)
+![post](../../../blog/2021_05_02_art_history/a_5.webp)
 
 Je pourrais continuer \; il y a autant de mouvements artistiques que de cryptomonnaies\. Le point principal que je veux souligner\, c’est que l’art est subjectif\, et que garder l’esprit ouvert est essentiel\. Discuter de savoir si quelque chose est de l’art ou non est l’une de ces questions philosophiques sans réponse\.
 
@@ -65,11 +65,11 @@ J’ai commencé par [draw a box](https://drawabox.com/ 'draw')\, puis est pass�
 
 En passant\, si [aphantasia is real](/writing/aphantasia 'abp')\, je l’ai probablement\, puisque je suis à 3\-4 au test ci\-dessous\. Ce n’a pas été un obstacle en dessinant à partir de références\, même si cela peut l’être quand on dessine à partir de l’imagination\.
 
-![post](./a_6.webp)
+![post](../../../blog/2021_05_02_art_history/a_6.webp)
 
 Environ un an de pratique quotidienne et 600 feuilles de papier plus tard [^8]\, voici une photo de progression\. Et oui\, ils sont censés être la même personne \:
 
-![post](./a_7.webp)
+![post](../../../blog/2021_05_02_art_history/a_7.webp)
 
 Et voici ce que j’ai appris en chemin \:
 

@@ -4,7 +4,7 @@ description: "多くの情報依存型ビジネスモデルの収益性低下"
 pubDate: 2019-12-21
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_12_21_info/i_1.webp'
 locale: 'ja'
 sourceSlug: 'info'
 sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
@@ -36,7 +36,7 @@ sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
 
 この件についての考えはまだ進行中ですが、以下のような内容を考えています。
 
-![post](./i_1.webp)
+![post](../../../blog/2019_12_21_info/i_1.webp)
 
 > 情報が豊富になった新しい世界では、どんな企業や個人も独自情報の価値を独占し搾取することはより難しく思えます。投資家に残されたのは、スケールしない情報問題\(ハイパーローカル\)とスケールする\(ハイパースケール\)の問題のようです。
 

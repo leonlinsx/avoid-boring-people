@@ -4,7 +4,7 @@ description: "베르나르 아르노가 창의성을 바라보는 관점"
 pubDate: 2020-08-05
 category: Culture
 tags: ['fashion', 'art', 'business']
-heroImage: './l_3.webp'
+heroImage: '../../../blog/2020_08_05_lvmh/l_3.webp'
 featured: false
 locale: 'ko'
 sourceSlug: 'lvmh'
@@ -19,11 +19,11 @@ LVMH의 CEO인 베르나르 아르노는 스타 브랜드가 아이디어에 대
 
 [LVMH](https://en.wikipedia.org/wiki/LVMH 'LVMH') 저희가 잘 아는 여러 럭셔리 브랜드의 모회사입니다\. [Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ '1987') \"루이비통\"과 \"모에 에 샹동 앤 헤네시\"의 합병을 통해 현재 와인\, 패션\, 보얼리 등 70개 이상의 브랜드가 입주하고 있습니다\. 가장 가까운 경쟁자인 케링과 비교해 [^1]\, [LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html 'rev')
 
-![post](./l_1.webp)
+![post](../../../blog/2020_08_05_lvmh/l_1.webp)
 
 그리고 그 모든 것의 꼭대기에는 [Bernard Arnault](https://en.wikipedia.org/wiki/Bernard_Arnault 'Bernard')그는 1990년부터 이 그룹의 수장을 맡고 있다\. 그 덕분에 그는 세계에서 가장 부유한 사람 중 한 명이 되었다\.
 
-![post](./l_2.webp)
+![post](../../../blog/2020_08_05_lvmh/l_2.webp)
 
 [Brett Bivens tweeted this HBR interview of Bernard a while back](https://twitter.com/brettbivens/status/1251505408960794624?s=20 'Brett')오늘은 그 글을 바탕으로 몇 가지 더 많은 출처를 소개하고자 합니다\. 우리는 더 잘 이해할 수 있을 것입니다\. **버나드가 창의성을 어떻게 바라보는지\, 혼돈을 허용하는 부분과 통제를 제한하는 부분\.**
 
@@ -113,7 +113,7 @@ LVMH의 CEO인 베르나르 아르노는 스타 브랜드가 아이디어에 대
 
 ## 장기적인 브랜드 구축
 
-![post](./l_3.webp)
+![post](../../../blog/2020_08_05_lvmh/l_3.webp)
 
 우리는 버나드가 브랜드를 구축하는 경험에서 비롯된 세 가지 이중성을 다루었습니다\. 창의성을 통제와 함께 허용하고\, 아이디어를 실행하며\, 전통과 현대를 조화롭게 함으로써 버나드는 LVMH를 장기적으로 구축하고 있다고 믿습니다\:
 
@@ -121,7 +121,7 @@ LVMH의 CEO인 베르나르 아르노는 스타 브랜드가 아이디어에 대
 
 그리고 지금까지는 적어도 주가와 LVMH의 시장 점유율을 기준으로 그에게 효과가 있었다\:
 
-![post](./l_4.webp)
+![post](../../../blog/2020_08_05_lvmh/l_4.webp)
 
 그의 프레임워크 중 얼마나 다른 비즈니스에도 적용 가능한가요\? 저는 창의성뿐만 아니라 운영 우수성의 강조점에 대체로 동의합니다\. 최근 노트에 따르면\, [why companies are bad at innovating](/writing/turtle 'turtle') 하지만 대부분의 회사들이 더 많은 창의성을 받아들이는 데 따른 변동성을 받아들일 의향이 있는지는 확신하지 못합니다\. 과거와 현재의 이중성이 단순한 마케팅 캠페인 외에는 쉽게 구현될 수 있을지 확신이 서지 않습니다\.
 

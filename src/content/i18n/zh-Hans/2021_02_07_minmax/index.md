@@ -5,7 +5,7 @@ pubDate: 2021-02-07
 category: Risk & Decision Making
 tags: ['skill']
 featured: false
-heroImage: './min_2.webp'
+heroImage: '../../../blog/2021_02_07_minmax/min_2.webp'
 locale: 'zh-Hans'
 sourceSlug: 'minmax'
 sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
@@ -51,7 +51,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 我试图寻找导致高多巴胺激增的事件，我以为那是药物引起的。在网上很难找到麻醉药对人体的快感潜力，几乎就像人们不希望你吸毒一样。我最终找到的是一项关于大鼠的研究 [heroin](https://onlinelibrary.wiley.com/doi/abs/10.1002/syn.890210207 'heroin')显示兴奋剂后多巴胺增加了4倍 [^6]\.这个数字很高，但比我预期的要低，而且还没达到我们想要的10倍 [^7]\.
 
-![min](./min_1.webp)
+![min](../../../blog/2021_02_07_minmax/min_1.webp)
 
 我们最终不得不离开物理、化学和生物学的领域，转而进入更抽象的领域 [^8]\.
 
@@ -67,7 +67,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 即使大幅降低，这肯定超过10倍。我用对数刻度将这些新区域与物理区域绘制出来，以考虑巨大幅度差异\;每条线代表10倍的增长。相关资料请见脚注 [^9]\.
 
-![min](./min_2.webp)
+![min](../../../blog/2021_02_07_minmax/min_2.webp)
 
 我们找到了一些可以扩大努力的途径，边际收益递减不会那么快消失。在这样的领域，天花板更高，我们获得的差异化可能性也比平均水平更高。
 
@@ -86,7 +86,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 你们中有些人可能会把这与幂律联系起来，网络中某些部分可能比其他部分更为重要。 [There's some debate over whether power laws exist in real life](https://www.quantamagazine.org/scant-evidence-of-power-laws-found-in-real-world-networks-20180215/ 'real')但这确实是同一个概念——有些系统中，人、物或部分的重要性远远超过这些 [^10]\.
 
-![min](./min_3.webp)
+![min](../../../blog/2021_02_07_minmax/min_3.webp)
 
 说清楚点，我并不是说生活唯一的意义就是最大化你的影响力或财富。然而，了解某个领域的潜在上限有助于判断你愿意投入多少努力，以及在哪里停下来。变得更优秀十倍通常意味着远离物理层面，转向技术层面。
 

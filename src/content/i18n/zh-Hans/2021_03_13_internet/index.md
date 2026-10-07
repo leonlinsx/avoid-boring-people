@@ -4,7 +4,7 @@ description: "关于互联网诞生的故事"
 pubDate: 2017-12-01
 category: Technology
 tags: ['business', 'startups']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2021_03_13_internet/i_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'internet'
 sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
@@ -68,7 +68,7 @@ sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
 
 我们现在知道Chrome会取代IE。同样，Facebook会取代MySpace，苹果会取代Blackberry，等等。
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_13_internet/i_1.webp)
 
 原因很简单，因为变化很快，需要改变商业战略。想象一下，如果你的商业模式在未来“保守”地假设广告点击率在40多处？考虑到现在是\<5\%，你会误差一个数量级。
 

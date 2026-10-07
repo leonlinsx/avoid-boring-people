@@ -4,7 +4,7 @@ description: "AI 기업들의 마진 함정, 가치 투자 개념, 그리고 트
 pubDate: 2020-04-29
 category: Technology
 tags: ['AI', 'business', 'investing']
-heroImage: './her_1.webp'
+heroImage: '../../../blog/2020_04_29_her/her_1.webp'
 locale: 'ko'
 sourceSlug: 'her'
 sourceHash: '140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199'
@@ -84,7 +84,7 @@ AI의 사용 사례가 제한적이라면\, AI 제품을 판매할 수 있는 �
 
 > 서비스 회사들은 소프트웨어 회사만큼 가치 있지 않아\. VC들은 소프트웨어 사업을 좋아해\; 문제를 해결하기 위해 처음부터 열심히 일하고\, 돈을 계속 찍어내지\. 그래서 10\-20배의 매출 평가를 받는 거야\. 서비스 회사\? 왜 서비스 회사에 투자하겠어\? 그들의 성장은 본질적으로 인건비와 이상한 해결 가능한 시장 문제들에 의해 제약받기 때문이야\. \- 스콧
 
-![post](./her_1.webp)
+![post](../../../blog/2020_04_29_her/her_1.webp)
 
 기업은 종종 매출\, EBITDA\, 순이익과 같은 재무 지표의 배수를 기준으로 평가됩니다\. 위에서 언급한 이유로 소프트웨어 회사는 서비스 회사보다 보통 더 높은 배수로 평가됩니다\. [Higher gross margins matter, as described by Two Sigma](https://twosigmaventures.com/blog/article/why-gross-margins-matter/ 'Two')
 

@@ -4,7 +4,7 @@ description: "p值到底是什么意思"
 pubDate: 2019-09-04
 category: Risk & Decision Making
 tags: ['math']
-heroImage: './p_1.webp'
+heroImage: '../../../blog/2019_04_09_pvalue/p_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'pvalue'
 sourceHash: '4a1fb3af69e0e255c81d9e518a885d55d00cff57669f82853377e51b1475ee32'

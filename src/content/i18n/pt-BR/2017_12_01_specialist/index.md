@@ -4,7 +4,7 @@ description: "Especialize-se na maior parte do tempo, mas dedique um tempo para 
 pubDate: 2017-12-01
 category: Culture
 tags: ['generalists']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2017_12_01_specialist/s_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'specialist'
 sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
@@ -30,7 +30,7 @@ Enquanto outros também podem dizer isso **Ser exposto a mais áreas vai inspira
 
 E\, pessoalmente\, eu simplesmente acho **Ser curioso e aprender sobre coisas aleatórias é divertido\,** por isso eu amo [this comic](https://xkcd.com/1053/ 'xkcd comic')\.
 
-![post](./s_1.webp)
+![post](../../../blog/2017_12_01_specialist/s_1.webp)
 
 Isso significa que eu \'perco\' algum tempo com artigos ou obras irrelevantes que nunca vou entender\, como Shakespeare\, mas acho \(espero\?\) que o retorno geral tem sido um benefício líquido\.
 

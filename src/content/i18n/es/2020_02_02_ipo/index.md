@@ -5,7 +5,7 @@ pubDate: 2020-02-02
 category: Investing
 tags: ['finance']
 evergreen: false
-heroImage: './i_4.webp'
+heroImage: '../../../blog/2020_02_02_ipo/i_4.webp'
 locale: 'es'
 sourceSlug: 'ipo'
 sourceHash: 'd8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5'
@@ -37,13 +37,13 @@ Me inclino más hacia Damodaran aquí\. En defensa del banco\, en su papel de in
 
 Estoy de acuerdo con Damodaran\, aunque como él insinuó\, la mayoría de esto se debe a razones legales\. Las secciones de riesgo en los prospectos son más para protección legal y menos para decirte qué es importante [^3]\. Conozco excompañeros que pasaron mucho tiempo redactando secciones para la empresa\, pero **Es difícil aportar un valor significativo aquí** \(lo siento\, chicos\)\, especialmente si la empresa que sale a bolsa también está llena de exbanqueros\.
 
-![post](./i_1.webp)
+![post](../../../blog/2020_02_02_ipo/i_1.webp)
 
 > **Precios de la OPV\:** Los bancos argumentan que pueden ayudar a salvar la brecha entre la última ronda privada y el precio público previsto\, encontrar el conjunto de empresas comparables adecuado\, elegir los múltiplos de valoración adecuados e identificar las preocupaciones de los inversores\.
 
 > Damodaran sostiene que los bancos hacen un mal trabajo con los precios\, como se vio en la OPV de WeWork\. Esto se debe a que eligen las comparables o múltiples equivocadas\, hablan con inversores equivocados o tienen un sesgo en el proceso de fijación de precios\, siendo lo último lo más probable\.
 
-![post](./i_2.webp)
+![post](../../../blog/2020_02_02_ipo/i_2.webp)
 
 Elegir el conjunto o múltiples de empresas comparables equivocados es menos relevante\. El conjunto de compensación se socializa entre inversores de antemano\, así que normalmente hay un amplio acuerdo ahí [^4]\. Solo hay un puñado de múltiplos comunes \(EV\/Rev\, EV\/EBITDA\, P\/E\)\, así que el tipo de múltiplo también se entiende en términos generales\.
 
@@ -59,7 +59,7 @@ La primera es subjetiva\; Slack y Spotify pueden promocionarse a sí mismos\, [S
 
 Teniendo en cuenta que [the median IPO offering size is ~$100mm](https://www.statista.com/statistics/251149/median-deal-size-of-ipos-in-the-united-states/ 'Statista')\, y que [IPOs sell ~20% of the company](https://corpgov.law.harvard.edu/2017/05/25/2017-ipo-report/ 'Harvard')\, podemos inferir que la mayoría de las OPVs no son los nombres grandes que ya conoces\. Puedes consultar [the list of recent IPOs](https://www.nyse.com/ipo-center/recent-ipo 'NYSE') Y mira cuántos reconoces\. **La mayoría de las empresas probablemente se benefician de que un banco las promocione y contacte con inversores\.**
 
-![post](./i_3.webp)
+![post](../../../blog/2020_02_02_ipo/i_3.webp)
 
 El segundo punto parece irrelevante\. Si eres un inversor profesional \(buyside\)\, no estás tomando una decisión basándote en recomendaciones de investigación de renta variable \(sellside\) \(lo siento\, amigos sellside\)\. Si eres inversor minorista\, no obtienes esa información\.
 
@@ -81,7 +81,7 @@ Estoy de acuerdo en que hay ineficiencia en los precios\, pero la mayoría de la
 
 Las empresas parecen dispuestas a sacrificar la ineficiencia por una mejor moral\. Claro\, podrías haber conseguido 20 dólares en la apertura y luego mantener la bolsa estancada\, pero el aumento de 10 a 20 dólares hace \(irracionalmente\) a la gente más feliz\. Además\, ¿y si abres a 20 dólares y bajas a 10 tres meses después\? ¿Cuál era el precio correcto entonces\?
 
-![post](./i_4.webp)
+![post](../../../blog/2020_02_02_ipo/i_4.webp)
 
 Damodaran concluye exponiendo razones por las que se ha mantenido el statu quo de las OPI\, citando **inercia\, miedo a dañar la relación bancaria y empresas necesitando a alguien a quien culpar\.** Estoy de acuerdo con estos\. Al final depende de tu empresa\; una cotización directa tiene por definición más eficiencia en precios\. Si eres grande y conocido\, probablemente puedas hacer una lista directa y no deberías seguir consejos de un boletín por correo electrónico de todas formas\. Si eres pequeño y no\, probablemente necesites banqueros que te ayuden a promocionarte y conectar con inversores\. Estoy un 80\% seguro de que las OPIs seguirán siendo la mayoría de las cotizaciones dentro de tres años\.
 

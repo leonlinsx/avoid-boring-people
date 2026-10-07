@@ -4,7 +4,7 @@ description: "なぜ企業は株を空売りしやすくするのか"
 pubDate: 2017-04-06
 category: Investing
 tags: ['investment banking']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2017_04_06_convert/c_1.webp'
 locale: 'ja'
 sourceSlug: 'convert'
 sourceHash: '8765938dfa8f047d3f3c1024532dbf78363302cdc4aa70338006faf561b150a1'

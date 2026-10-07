@@ -4,7 +4,7 @@ description: "피카소가 오늘날 우리에게 중요한 영향을 미쳤나�
 pubDate: 2020-04-08
 category: Culture
 tags: ['art']
-heroImage: './p_8.webp'
+heroImage: '../../../blog/2020_04_08_picasso/p_8.webp'
 locale: 'ko'
 sourceSlug: 'picasso'
 sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
@@ -18,7 +18,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 게티 박물관은 대중에게 도전했다 [to recreate famous works of art recently,](https://blogs.getty.edu/iris/getty-artworks-recreated-with-household-items-by-creative-geniuses-the-world-over/ 'Getty') 이런 재미있는 글들이 레딧에 올라오게 되었습니다 [^1]
 
-![post](./p_1.webp)
+![post](../../../blog/2020_04_08_picasso/p_1.webp)
 
 왼쪽 원본 이미지의 스타일은 독특하며\, 대부분의 분들은 피카소의 작품일 거라고 추측하실 겁니다\. 비록 이전에 본 적이 없더라도\(저도 본 적이 없었습니다\)\. [You'd be right](https://www.wikiart.org/en/pablo-picasso/woman-with-bird-1970 'Woman with bird')\.
 
@@ -28,7 +28,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 대부분의 예술은 맥락을 가지고 이해하는 것이 가장 좋으니\, 피카소의 배경부터 시작해 보겠습니다\. [Picasso was born in 1881 to two artistic parents,](https://mymodernmet.com/pablo-picasso-periods/ 'Met') 당시 예술에서 사실주의가 여전히 인기를 끌던 시기였습니다\. 여기에는 아래에 있는 \"예술가의 어머니 초상\"이나 \"과학과 자선\"과 같은 걸작들이 포함되었으며\, 분명히 재능 있는 사람이 그렸습니다\. 이 작품들은 특정 시점에서 장면을 바라보는 듯한 순간을 포착하도록 그려졌습니다\. 질감과 색채의 생생한 디테일\, 깊이와 3D 느낌의 착시\, 그리고 그림자를 드리우면서 빛이 어디서 오는지 알 수 있게 해주는 점도 눈에 띄었습니다\. 마치 한 각도에서 사진을 찍은 것 같습니다\.
 
-![post](./p_2.webp)
+![post](../../../blog/2020_04_08_picasso/p_2.webp)
 
 \"과학과 자선\"에서 침대 시트의 구겨진 부분이 앞에 있는 부분과 뒤에 있는 부분을 암시하는 것을 주목할 수 있다\. 베개의 음영 때문에 머리가 움푹 들어간 자국을 만드는 것처럼 착각한다\. 남자의 털 솔에 자국이 자국을 남기며 아이의 곱슬머리에 다른 질감을 준다\.
 
@@ -38,7 +38,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 이제 위 두 작품 후에 그린 또 다른 피카소를 보자\:
 
-![post](./p_3.webp)
+![post](../../../blog/2020_04_08_picasso/p_3.webp)
 
 무엇이 다른가요\? 우선\, 색이 변해서 저처럼 색맹인 사람도 구분할 수 있을 정도입니다\. 이로 인해 큰 분위기 변화가 생겼고\, 그림 전체가 어둡고 슬프며 고통스럽게 느껴집니다\. 이미지도 이전보다 덜 사실적이고 디테일도 줄었지만\, 여전히 기타를 든 사람임을 알아볼 수 있습니다\.
 
@@ -50,7 +50,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 1907년 피카소는 스캔들성이 강한 세잔과 아프리카 미술에서 영감을 받은 작품을 그렸다\. ["Les Demoiselles d'Avignon."](https://www.pablopicasso.org/avignon.jsp#prettyPhoto 'Avignon') 이 작품은 바르셀로나 매춘업소에서 창녀들을 그린 작품으로\, 입체파의 시작이 되었다\. [one of the most influential movements in art and a new way of representing reality.](https://www.tate.org.uk/art/art-terms/c/cubism 'Tate')
 
-![post](./p_4.webp)
+![post](../../../blog/2020_04_08_picasso/p_4.webp)
 
 도대체 무슨 일이 벌어지고 있는 걸까요\? 피카소는 더 이상 사실주의를 추구하지 않는 것이 분명합니다\. 이미지의 많은 부분이 2차원적이고 평면적으로 느껴지는데\, 그는 더 이상 3차원 공간의 환상을 주려 하지 않기 때문입니다\.
 
@@ -60,7 +60,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 > 피카소는 \'머리는 눈\, 코\, 입의 문제로\, 원하는 대로 분배할 수 있다\'고 말했다\.
 
-![post](./p_5.webp)
+![post](../../../blog/2020_04_08_picasso/p_5.webp)
 
 위의 \"만돌린을 든 소녀\" 같은 작품들은 한 시점이 아닙니다\. 대신\, 한 지점에서 코를 그린 후 몇 미터 왼쪽으로 이동해 그 지점에서 본 눈을 그린다고 상상해 보세요\. 그리고 그 사람 위로 이동해 위에서 본 입술을 그립니다\. 기이한 요소들의 혼합\, 그림자가 사방에 드리워지고 아무것도 이해가 되지 않는 모습을 보게 될 것입니다\. [as shown in this video by MoMa](https://www.youtube.com/watch?v=rGZYfSzvPvs 'Moma')\.
 
@@ -70,7 +70,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 거의 같은 시기에 피카소와 [Georges Braque](https://cubismsite.com/georges-braque-cubism/ 'Braque') 또한 시작 [popularising collages.](https://cubismsite.com/picasso-collage/ 'collage') 이 작품은 여러 매체를 사용하는 최초의 예술 유형 중 하나로\, 단순히 물감뿐만 아니라 다른 사물들도 캔버스에 붙여 놓았습니다\. 여러 시점이 쌓이면서 그가 욕구를 갖게 되는 과정을 볼 수 있습니다 [to put a collection of things together in search of meaning for a coherent whole.](https://www.artsy.net/article/matthew-the-birth-of-collage-and-mixed-media 'artsy')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_04_08_picasso/p_6.webp)
 
 \"Still Life with Chair Caning\"에서는 피카소가 그림 가장자리에 실제 밧줄을 두었고\, 그 밧줄에는 의자 지팡이 모양\(왼쪽 아래 의자에 쓰이는 갈색 소재\)도 있고\, 위에 기묘한 장면을 그렸습니다\. 그는 최소 세 가지 종류의 것들로 콜라주를 만들고 있습니다\.
 
@@ -84,7 +84,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 > \"나는 사물을 내가 보는 대로 그리지 않고\, 생각하는 대로 그려본다\.\"
 
-![post](./p_7.webp)
+![post](../../../blog/2020_04_08_picasso/p_7.webp)
 
 그때부터 사망할 때까지 피카소는 예술을 계속 창작했다\. [mixing his styles and continuing to experiment.](https://en.wikipedia.org/wiki/Pablo_Picasso#Later_works_to_final_years:_1949%E2%80%931973 'Picasso') 추정치는 [he did >13k paintings in his lifetime, which excludes tens of thousands more prints and illustrations.](https://www.picassomio.com/art-articles/picasso-how-many-artworks-did-picasso-create-in-his-life-time.html 'Total') 그의 생전에 일부 작품은 혹평을 받았지만\, 이후 다른 예술 운동의 선구자로 여겨지게 되었다\.
 
@@ -102,7 +102,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 결정은 여러분이 하게 하겠습니다\.
 
-![post](./p_8.webp)
+![post](../../../blog/2020_04_08_picasso/p_8.webp)
 
 [^1]: [Source is here](https://www.reddit.com/r/pics/comments/fvx8ko/recreation_of_pablo_picassos_painting_a_woman/ 'Reddit')\. 레딧은 모르는 사람들을 위해 온라인 포럼입니다\.
 

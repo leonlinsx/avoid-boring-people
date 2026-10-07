@@ -4,7 +4,7 @@ description: "Lo que se ha mantenido igual y lo que ha cambiado en la historia d
 pubDate: 2020-12-09
 category: Culture
 tags: ['art']
-heroImage: './a_2.webp'
+heroImage: '../../../blog/2020_12_09_art/a_2.webp'
 locale: 'es'
 sourceSlug: 'art'
 sourceHash: 'a6c47ae85952097514661cd1a1d807471c621d639a7c0b2b4d9f635be7a39e33'
@@ -28,13 +28,13 @@ Encontré [Smarthistory](https://smarthistory.org/) ser una web accesible pero c
 
 Con eso en mente\, echemos un vistazo a tres piezas con un tema similar y veamos cómo el contexto histórico puede darnos una mejor comprensión de lo que el artista intentaba hacer\.
 
-![post](./a_1.webp)
+![post](../../../blog/2020_12_09_art/a_1.webp)
 
 Arriba vemos tres desnudos reclinados\, un tema popular entre artistas durante mucho tiempo [^1]\. En orden horario tenemos un Tiziano del siglo XVI\, un Dominique\-Ingres de principios del siglo XIX y un Manet de finales del siglo XIX\. Todos estos artistas eran famosos entonces\, y lo siguen siendo ahora\. \"Venus\" fue bastante poco controvertida en su época\, pero las otras dos \"La Grande Odalisca\" y \"Olympia\" recibieron muchas más críticas\. ¿Por qué\?
 
 Para responder a esa pregunta\, será útil entender el [hierarchy of art genres](http://www.visual-arts-cork.com/history-of-art/hierarchy-of-genres.htm 'hierarchy') A la que la gente se había adherido durante siglos\:
 
-![post](./a_2.webp)
+![post](../../../blog/2020_12_09_art/a_2.webp)
 
 Durante mucho tiempo\, el tipo de arte tenía cierto \"rango\"\, y la gente automáticamente juzgaba una pintura de bodegones como menos importante que una pintura de una escena religiosa\. No es del todo sorprendente\, teniendo en cuenta que la iglesia fue un gran mecenas del arte en tiempos históricos\.
 
@@ -42,13 +42,13 @@ Echemos un vistazo más de cerca a Venus y al pensamiento que Ticiano puso detr�
 
 Para hacer la pintura más interesante visualmente\, Tiziano también contrastó la curva del cuerpo con las líneas rectas del fondo\. También observa cómo las líneas negras también dirigen nuestra atención hacia la figura\. Las líneas rojas en el fondo no son del todo paralelas por voluntad\, ya que esto crea [perspective](https://www.tate.org.uk/art/art-terms/p/perspective 'perspective') para la imagen y que parezca más 3D\.
 
-![post](./a_3.webp)
+![post](../../../blog/2020_12_09_art/a_3.webp)
 
 Ahora veamos Odalisca \(que significa concubina\) y veamos qué se ha mantenido igual y qué ha cambiado\. La postura es similar\, y el uso del tono de piel en Odalisca y Venus hace que ambas parezcan realistas\.
 
 Dominique\-Ingres ha añadido más detalles al primer plano\, como las plumas de pavo real o las gemas\. También fíjate que no utiliza tantas líneas rectas para contraste o perspectiva\. En cambio\, la pintura gira en torno a las curvas\:
 
-![post](./a_4.webp)
+![post](../../../blog/2020_12_09_art/a_4.webp)
 
 Si miras el cuerpo el tiempo suficiente\, también empezarás a notar que algo es extraño\. El cuerpo se ha alargado durante la postura\, seguro\, pero ¿no parece bastante _también_ ¿Largo\? Las proporciones de la figura no son del todo correctas\. Si miras la pierna izquierda de la figura\, también te darás cuenta de que el lugar a lo que se une en el cuerpo también está desajustado\. Ingres hizo esto intencionadamente para que el espectador tuviera una percepción más aguda de la forma de la figura\, frente a lo que podría ser posible con cuerpos \"realistas\"\.
 
@@ -56,7 +56,7 @@ Por último\, Ingres tituló la obra \"La Grande Odalisca\"\, y no en honor a al
 
 Ahora\, por último\, veamos la obra de Manet\. Aquí se pueden ver fácilmente las referencias a Venus\, desde las poses similares\, los cojines e incluso esa línea vertical de fondo para atraer contraste y atención\.
 
-![post](./a_5.webp)
+![post](../../../blog/2020_12_09_art/a_5.webp)
 
 Al mismo tiempo\, esta es también una pintura muy diferente\. La mayoría diría que tanto Venus como Odalisca parecían más \"terminadas\" y \"realistas\"\, mientras que Olimpia parece incompleta\. No es terrible\, pero tampoco es tan \"bonita\" como las pinturas anteriores\.
 

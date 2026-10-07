@@ -5,7 +5,7 @@ pubDate: 2020-10-21
 category: Investing
 tags: ['business']
 evergreen: false
-heroImage: './d_1.webp'
+heroImage: '../../../blog/2020_10_21_disney/d_1.webp'
 locale: 'fr'
 sourceSlug: 'disney'
 sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
@@ -39,7 +39,7 @@ Je n’ai jamais couvert Disney quand j’investissais à long ou court \; un co
 
 Disney rapporte quatre segments majeurs \: réseaux médiatiques\, parcs\, divertissement en studio et Direct\-to\-Consumer \(DTC\)
 
-![post](./d_1.webp)
+![post](../../../blog/2020_10_21_disney/d_1.webp)
 
 Mes premières réflexions à ce sujet sont \:
 
@@ -52,7 +52,7 @@ Si l’on regarde les marges opérationnelles de ces segments\, elles sont assez
 
 Si les profils de marge sont effectivement similaires\, la direction devrait être indifférente à investir dans l’un d’eux \; préférant peut\-être les médias en raison de la marge légèrement supérieure [^4]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_10_21_disney/d_2.webp)
 
 Disney utilise 17 pages de son rapport annuel pour décrire son activité [^5]\, donc je vais les résumer pour éviter que vous ne partiez tous avant même de commencer\.
 
@@ -87,7 +87,7 @@ Une énorme complication est l’impact du Covid sur l’entreprise\. [For the f
 - Studio a également disparu\, en baisse de 55 \% de qoq et étonnamment en hausse de 3 \% depuis l’année
 - Les chiffres DTC ne sont pas comparables à cause de l’acquisition\, mais je suppose que le taux de croissance reste rapide
 
-![post](./d_3.webp)
+![post](../../../blog/2020_10_21_disney/d_3.webp)
 
 J’ai mis les finances de Disney dans un modèle simple [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit?usp=sharing 'goog') au cas où certains d’entre vous voudraient jouer avec les chiffres\. Notez que les hypothèses sont juste des chiffres fictifs et non des vérifications\.
 
@@ -121,7 +121,7 @@ Je n’ai pas assez de contexte ici\, car je ne sais pas combien ces pairs dépe
 
 Et ils incluent un graphique montrant l’augmentation multiple\. Un multiple est une façon d’évaluer une entreprise\, montrant combien les gens sont prêts à payer pour votre action\. Plus c’est généralement élevé\, mieux c’est [^9]\.
 
-![post](./d_4.webp)
+![post](../../../blog/2020_10_21_disney/d_4.webp)
 
 > Enfin\, nous pensons que Disney devrait maintenir son focus sur la transition vers une source de revenus DTC basée sur les abonnements et éviter la tentation de maximiser les profits à court terme grâce à des stratégies de tarification transactionnelle VOD\.
 
@@ -145,7 +145,7 @@ Donc ils disent de ne pas accepter tout de suite la suggestion de Third Point\, 
 
 Ce sont des options assez classiques d’allocation de capital\. En fait\, les trois premières sont des choses que je m’attendrais normalement à ce qu’un militant demande\, et avant de lire la lettre de Third Point\, je pensais qu’ils allaient dire quelque chose comme ça\. Voici une image rapide pour vous rafraîchir la mémoire sur l’allocation du capital\, de Michael Mauboussin \:
 
-![post](./d_5.webp)
+![post](../../../blog/2020_10_21_disney/d_5.webp)
 
 Revenons à Semper \:
 
@@ -169,7 +169,7 @@ Avec la grande réserve que je ne parle pas de Disney et que je ne l’ai jamais
 - Je ne connais pas la structure complète de la dette de Disney\, mais les 10K montrent que leurs taux actuels ne sont pas vraiment mauvais \(voir image ci\-dessous\)\. Je ne sais pas si rembourser agressivement la dette a vraiment du sens
 - Surtout dans notre environnement actuel de taux bas\, si Disney avait besoin de liquidités pour financer une acquisition ou un rachat d’actions\, je suppose qu’il leur est facile d’emprunter à bas prix
 
-![post](./d_6.webp)
+![post](../../../blog/2020_10_21_disney/d_6.webp)
 
 Encore une précision\, ceci n’est pas un conseil d’investissement et que je connais moins bien le secteur\, mais c’est mon opinion actuelle\. Comme mentionné\, vous pouvez faire une copie du modèle financier que j’ai élaboré [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit#gid=0 'goog') pour jouer avec les chiffres\. Les hypothèses que j’y ai faites sont des chiffres factices\, donc s’il vous plaît\, ne vous y attachez pas [^12]\.
 

@@ -4,7 +4,7 @@ description: "¿Qué hay detrás del aumento de popularidad de los boletines?"
 pubDate: 2019-07-31
 category: Technology
 tags: ['newsletter']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2019_07_31_news/n_1.webp'
 locale: 'es'
 sourceSlug: 'news'
 sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
@@ -24,7 +24,7 @@ La estratequería ha [written before](https://stratechery.com/2015/why-web-pages
 
 Como [the CNBC article](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc') Sin embargo\, algunos factores han llevado al auge de modelos alternativos basados en suscripción\. **El dominio y la eficacia de Google y Facebook en la publicidad digital hacen que la publicidad en productores tradicionales de contenido\, como los sitios de noticias\, se haya vuelto menos efectiva\.** Como anunciante\, prefiero dedicar más de mi presupuesto publicitario a donde pasará el 60\% de internet y obtener un mayor retorno de inversión en mi gasto publicitario\.
 
-![post](./n_1.webp)
+![post](../../../blog/2019_07_31_news/n_1.webp)
 
 El control absoluto del tráfico por parte de Google y Facebook también puede suponer un coste para adquirir el usuario marginal\, lo que implica que el coste marginal de servicio ya no es cero\. Para el sitio de medios normal\, ahora te enfrentas a un escenario en el que el tráfico orgánico disminuye y la relación con tu cliente disminuye\, pero sigues enfrentando el problema de un exceso de contenido gratuito por parte de la competencia que dificulta diferenciarte\.
 

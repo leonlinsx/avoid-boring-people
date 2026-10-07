@@ -4,7 +4,7 @@ description: "本当にそんなに多くの独占があるのでしょうか?"
 pubDate: 2021-02-13
 category: Investing
 tags: ['business']
-heroImage: './m_4.png'
+heroImage: '../../../blog/2021_02_13_monopoly/m_4.png'
 locale: 'ja'
 sourceSlug: 'monopoly'
 sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
@@ -18,7 +18,7 @@ sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
 
 Turtle VenturesのVCであるジョシュ・ブラインリンガーは、自身のサイトで[how most marketplaces are not "winner takes all":](https://acrowdedspace.com/post/642666403989684224/winner-take-all-or-not 'win')について短い投稿をしています
 
-![post](./m_1.webp)
+![post](../../../blog/2021_02_13_monopoly/m_1.webp)
 
 私も同意する傾向があります。「勝者総取り」という言葉はよく耳にします。では、なぜ独占がもっと増えないのかという疑問が生まれます。
 
@@ -36,7 +36,7 @@ Turtle VenturesのVCであるジョシュ・ブラインリンガーは、自身
 
 ベン・エヴァンスがこの件について述べています:
 
-![post](./m_2.webp)
+![post](../../../blog/2021_02_13_monopoly/m_2.webp)
 
 スタートが難しいほど、既存企業が成長し市場シェアを維持するのが容易になります。
 
@@ -58,7 +58,7 @@ Turtle VenturesのVCであるジョシュ・ブラインリンガーは、自身
 
 広告に関しては、今やトップ企業が圧倒的なリードを持っていると誰もが言いますが、もし10年[we'd have been wrong on 3 out of 5 names.](https://www.emarketer.com/Article/US-Digital-Ad-Spending-Top-37-Billion-2012-Market-Consolidates/1009362 'ad')前にトップ5企業のうちそう言っていたら、今の「独占」が将来も同じものになるとは断言しにくいと思います。
 
-![post](./m_3.webp)
+![post](../../../blog/2021_02_13_monopoly/m_3.webp)
 
 オンライン書籍販売にはもっと強い反論があるかもしれません。しかし、それだけが本を買う方法ではありません。一見すると、これは物理学の世界が再び働き始めているように思えます。無限のコンテンツのための限られたスペースです。
 

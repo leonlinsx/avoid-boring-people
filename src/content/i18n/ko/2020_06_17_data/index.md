@@ -4,7 +4,7 @@ description: "전문 투자자들이 사용하는 도구들"
 pubDate: 2020-06-17
 category: Investing
 tags: ['data']
-heroImage: './data_9.webp'
+heroImage: '../../../blog/2020_06_17_data/data_9.webp'
 locale: 'ko'
 sourceSlug: 'data'
 sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
@@ -36,7 +36,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 이것은 투자 조사 과정의 한 부분으로\, 모두가 할 수 있는 공개된 정보를 발견하고 활용하는 것입니다\. 위 내용을 통해 이미 기업 재무 모델을 구축하고 추세를 분석하며 투자 논지를 형성할 충분한 데이터를 갖추게 됩니다\. 사실 많은 개인 투자자들은 이 단계를 넘어서지 않고도 스스로 잘 운영됩니다\. 앞서 말했듯이\, 투자에서 성공하는 방법은 여러 가지가 있습니다\.
 
-![post](./data_1.webp)
+![post](../../../blog/2020_06_17_data/data_1.webp)
 
 ### 공공 데이터 접근
 
@@ -52,7 +52,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 예를 들어\, 한 회사의 매출을 빠르게 시간에 따른 결과를 보고 싶다고 가정해 봅시다\. 전통적인 방법으로 Edgar에서 했다면 회사를 검색해야 하므로 다음과 같은 페이지가 나올 것입니다\:
 
-![post](./data_2.webp)
+![post](../../../blog/2020_06_17_data/data_2.webp)
 
 그 후 원하는 각 신고를 찾아 모두 다운로드한 뒤 스프레드시트에 데이터를 복사해야 합니다 [^4]\. 데이터를 정리하고 연도 대비 계산을 위해 행을 추가한 후에야 원하는 추세가 나올 수 있었습니다\.
 
@@ -60,13 +60,13 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 한 회사의 수익을 찾기 위해 한 모든 노력은\? FactSet에서는 모든 상장 기업에 대해 확인할 수 있습니다\:
 
-![post](./data_3.webp)
+![post](../../../blog/2020_06_17_data/data_3.webp)
 
 물론 저장된 데이터가 항상 완벽한 것은 아닙니다 [^5]\. 하지만 빠르게 참고할 수 있는 자료가 필요할 때\, 이미 모든 작업을 쉽게 소화할 수 있는 형식으로 처리한 플랫폼은 매우 소중합니다\. 몇 번의 키로 데이터를 얻을 수 있을 때 몇 시간씩 데이터를 가져올 필요가 없습니다\. 이러한 편리함 덕분에 플랫폼이 고정된 구독자 기반을 확보할 수 있는 이유 중 하나입니다 [^6]\, 하지만 파괴자들은 [Koyfin](https://www.koyfin.com/ 'koy') 그들을 깎아내리려 하고 있어\.
 
 또한 BamSEC나 Last10K 같은 회사들이 있어 제출 서류를 찾기 쉽게 만듭니다\. 예를 들어\, BamSEC는 서로 다른 유형의 제출 서류를 분류하고\, 제출 제목을 보여주며\, 이전 제출 판본을 빠르게 찾을 수 있게 해줍니다\. 이 회사들은 위 플랫폼들만큼 기능이 많지는 않지만\, 분석가 시간을 절약해 줍니다\.
 
-![post](./data_4.webp)
+![post](../../../blog/2020_06_17_data/data_4.webp)
 
 ### 매도 측 연구 데이터 접근
 
@@ -82,7 +82,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 분명히 아무도 그렇게 하고 싶어 하지 않아요 [^9]연구자들은 이 데이터를 플랫폼에 제공하고\, 플랫폼은 이를 투자자 커뮤니티에 보여줍니다\. 셀사이드 컨센서스가 어디에 있는지 간단히 요약하고 싶다면\, 몇 번의 키로 확인할 수 있습니다\.
 
-![post](./data_5.webp)
+![post](../../../blog/2020_06_17_data/data_5.webp)
 
 ### 회사 경영진에 대한 접근
 
@@ -94,7 +94,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 아니\, 그렇지 않아\. 버핏의 연례 주주총회가 그럴 거라고 생각해\? [attracting 40k people yearly](https://www.investopedia.com/articles/investing/121715/how-attend-berkshire-hathaways-annual-meeting.asp 'Buffett')\, 내부자 거래인가요\? 만약 아니라면\, 위 컨퍼런스들이 다른 이유는 무엇인가요\? 파티에 초대받지 못했다고 해서 불법인 것은 아닙니다\. 경영진이 말할 수 있는 내용을 규율하는 규칙이 있지만\, 이런 관행은 오래전부터 이어져 왔습니다\.
 
-![post](./data_6.webp)
+![post](../../../blog/2020_06_17_data/data_6.webp)
 
 ### 업계 전문가들
 
@@ -106,7 +106,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 아니요\, 그렇지 않습니다\. 만약 의료 회사에 투자하고 싶다면\, 의사 친구들에게 회사에 대해 묻는 것이 내부자 거래라고 생각하시겠습니까\? 그렇지 않다면\, 위 내용이 왜 다를 수 있을까요\? 중개인을 감당할 수 없다고 해서 불법인 것은 아닙니다 [^10]\.
 
-![post](./data_7.webp)
+![post](../../../blog/2020_06_17_data/data_7.webp)
 
 ### 산업 데이터
 
@@ -118,7 +118,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 가게에서 손님을 세는 것이 불법일까요\?
 
-![post](./data_8.webp)
+![post](../../../blog/2020_06_17_data/data_8.webp)
 
 ### 이것이 개인 투자자에게 의미하는 바
 
@@ -146,7 +146,7 @@ sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
 
 당신이 해야 할 일은 일반 프로가 꺼려할 만한 것들을 찾아내는 것입니다\. 프로들이 당신보다 더 많은 자원을 사용할 수 있는 세상에서\, 덜 바람직한 부분에서 이점을 찾아야 합니다\. 아래 차트를 보고 빈틈을 찾아보세요\.
 
-![post](./data_9.webp)
+![post](../../../blog/2020_06_17_data/data_9.webp)
 
 [^1]: 저는 퀀트 회사 경험이 없어서 개인적으로는 말씀드리기 어렵습니다\. 퀀트 관련해서는 알고 있습니다 [pay for order flow though,](https://www.institutionalinvestor.com/article/b1m2p1cv68bx56/Twitter-Freaked-Out-Over-Robinhood-Selling-Its-Trade-Flow-But-the-App-and-Others-Have-Been-Doing-It-for-Years 'order') 그리고 이는 300억 달러라는 수치에 포함될 가능성이 큽니다\. 별도로\, 헤지펀드 같은 투자 회사는 투자은행과 다릅니다\; 대부분의 투자 애널리스트는 투자 은행가와 완전히 다른 업무를 수행합니다\. [Sellside equity research is the role most similar to a hedge fund analyst, but researchers don't actually invest money.](/writing/time 'Sellside')
 

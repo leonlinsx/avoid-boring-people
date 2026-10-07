@@ -4,7 +4,7 @@ description: "Causalidade, medição e ajustes"
 pubDate: 2021-03-06
 category: Investing
 tags: ['inflation']
-heroImage: './i_3.webp'
+heroImage: '../../../blog/2021_03_06_inflation/i_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'inflation'
 sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
@@ -24,7 +24,7 @@ Eu entendo o conceito de preços subindo\, claro\. Mas por muito tempo eu não e
 
 Isso é ridículo\, pode\-se dizer\, tem um grupo inteiro de pessoas por aí [making policy based on inflation targets](https://www.federalreserve.gov/faqs/economy_14400.htm 'fed')\, falando sobre [hedging against inverted yield curves](https://www.chathamfinancial.com/insights/hedging-in-an-inverted-yield-curve-environment 'yield')\, e se o Google Trends for confiável\, algum jogo do Sonic the Hedgehog [(apparently some weird nsfw meme).](https://tvtropes.org/pmwiki/pmwiki.php/VideoGame/SonicInflationAdventure 'sonic')
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_06_inflation/i_1.webp)
 
 Sim\, mas isso não significa que eles saibam como as coisas funcionam\. Se minha experiência profissional me ensinou algo\, é que as pessoas podem fazer uma quantidade enorme de trabalho sem entender o que estão fazendo [^1]\. Nassim Taleb já escreveu sobre isso antes\, em uma história de um trader financeiro que se tornou bem\-sucedido negociando madeira verde [without understanding what it was.](https://fs.blog/2016/11/green-lumber-fallacy/ 'taleb')
 
@@ -46,7 +46,7 @@ Da mesma forma\, o que você define como inflação tem grandes efeitos nas pol�
 
 Outro grande problema com a inflação é que ela é **influenciado pelas expectativas\.** Esperar que siga alguma lei matemática é como esperar que o mercado de ações represente perfeitamente o valor presente dos fluxos de caixa futuros\. Por isso é tão difícil mirar em uma meta de inflação\:
 
-![post](./i_2.webp)
+![post](../../../blog/2021_03_06_inflation/i_2.webp)
 
 O Fed dos EUA tem uma meta de 2\%\, então a primeira frase acima pode ser interpretada como 1\) o Fed é péssimo no que faz ou 2\) é realmente algo difícil de se fazer\. Tendo a acreditar na segunda opção\, dada a complexidade do sistema [^3]\.
 
@@ -56,7 +56,7 @@ Fazer isso lhes dá flexibilidade\, já que há muito sobre a economia que não 
 
 E quando as pessoas perdem a confiança\, surgem situações como estas\:
 
-![post](./i_3.webp)
+![post](../../../blog/2021_03_06_inflation/i_3.webp)
 
 Sinto que essas são as únicas coisas que me sinto confortável em dizer sobre inflação\:
 

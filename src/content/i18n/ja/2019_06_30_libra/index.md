@@ -5,7 +5,7 @@ pubDate: 2019-06-30
 category: Technology
 tags: ['finance', 'crypto', 'career']
 evergreen: false
-heroImage: './f_4.png'
+heroImage: '../../../blog/2019_06_30_libra/f_4.png'
 locale: 'ja'
 sourceSlug: 'libra'
 sourceHash: '30eb7adb66372db28b024e7c64cf3213fa2932df319a9a9b58c32b21e3f4e4f2'
@@ -55,7 +55,7 @@ _何だって\?_ 「民主化されたシステム」から「100社がこれを
 
 金融の未来をご覧ください。正直、ちょっと可愛いですね。
 
-![post](./f_1.webp)
+![post](../../../blog/2019_06_30_libra/f_1.webp)
 
 > 銀行預金や安定的で信頼できる中央銀行の短期国有証券など、低ボラティリティの資産群によって裏付けられます。これは、1つのリブラが常に同じ額の現地通貨に換算できるわけではないことを強調することが重要です
 
@@ -148,7 +148,7 @@ SECが望んでいるのは、罰金は陪審員によって決定されると�
 
 1. [Causes of death vs media coverage](https://ourworldindata.org/does-the-news-reflect-what-we-die-from?linkId=68864855 'media')
 
-![post](./f_2.webp)
+![post](../../../blog/2019_06_30_libra/f_2.webp)
 
 2. ["But every trend has a shelf life, and as quickly as Instagram ushered in pink walls and pastel macaroons, it’s now turning on them."](https://www.theatlantic.com/technology/archive/2019/04/influencers-are-abandoning-instagram-look/587803/ 'insta') これで一気に有名になる望みは消えた
 3. ["Another strategy, one we term “manclusion,” involves including men in meetings simply to induce better behavior from the men on the other side of the table."](http://clsbluesky.law.columbia.edu/2019/06/06/venture-bearding/ 'venture bearding') こんなことが起こるなんて信じられません。
@@ -158,7 +158,7 @@ SECが望んでいるのは、罰金は陪審員によって決定されると�
 
 5. [Reconstructing facial images based on voice data](https://arxiv.org/pdf/1905.09773.pdf 'face')\.このアイデアは正確な画像を復元することではなく、音声属性に関連する共通の視覚的特徴を復元することだったことに注意してください。
 
-![post](./f_3.webp)
+![post](../../../blog/2019_06_30_libra/f_3.webp)
 
 6. [Celebrity cameos for sale.](https://www.cameo.com/faq 'cameo') もし誰かがジェナ・コールマンのやつをくれたら、最高のクリスマスプレゼントになるな\.\.\.ただ言ってみただけだ [^12]
 

@@ -5,7 +5,7 @@ pubDate: 2019-11-10
 category: Technology
 tags: ['business', 'marketplace']
 evergreen: false
-heroImage: './h_11.webp'
+heroImage: '../../../blog/2019_11_10_hoppin/h_11.webp'
 locale: 'fr'
 sourceSlug: 'hoppin'
 sourceHash: 'e931eb2053ffb03653f33e0107361bd29eccdfaeadd9f5a2fad6856c64297096'
@@ -25,43 +25,43 @@ Je vais commencer par décrire le processus de réservation\, puis mon expérien
 
 Le site propose une fonction de recherche pour vous permettre de parcourir les expériences dans votre domaine d’intérêt\. L’exemple ci\-dessous est celui où j’étais à la fin des résultats de recherche pour « marketplace »\. Regardez simplement ce corgi\.
 
-![post](./h_1.webp)
+![post](../../../blog/2019_11_10_hoppin/h_1.webp)
 
 Après avoir choisi une expérience qui vous intéresse\, vous êtes amené à un profil de la personne et de l’expérience\. Dans cet exemple [^2]\, vous pouvez voir de brèves informations sur le poste\, la durée\, le lieu\, etc\. en ci\-dessus\, puis plus de détails en dessous\.
 
-![post](./h_2.webp)
+![post](../../../blog/2019_11_10_hoppin/h_2.webp)
 
-![post](./h_3.webp)
+![post](../../../blog/2019_11_10_hoppin/h_3.webp)
 
 Après avoir cliqué pour réserver\, vous pouvez sélectionner vos centres d’intérêt dans une liste préremplie\, fournie par l’hôte lors de la création de son propre compte\.
 
-![post](./h_4.webp)
+![post](../../../blog/2019_11_10_hoppin/h_4.webp)
 
 Vous sélectionnez ensuite les dates qui vous conviennent \:
 
-![post](./h_5.webp)
+![post](../../../blog/2019_11_10_hoppin/h_5.webp)
 
 Et vous pouvez donner des réponses libres sur votre intention après cela\. Petite réflexion \- peut\-être que cela peut être combiné avec la section « sélectionnez vos intérêts » \? Cela semble avoir un but similaire
 
-![post](./h_6.webp)
+![post](../../../blog/2019_11_10_hoppin/h_6.webp)
 
 L’étape suivante consiste à remplir vos coordonnées et tous les autres profils de réseaux sociaux que vous souhaitez lier\. Ici\, vous voyez que\, pour plus de commodité\, ils récupèrent des informations que j’avais déjà remplies dans mon profil\.
 
-![post](./h_7.webp)
+![post](../../../blog/2019_11_10_hoppin/h_7.webp)
 
 Hoppin essaie de se réorienter vers le B2B\, d’où cette prochaine étape de demande de coupon\. Ce n’était pas là quand j’ai fait ma réservation quelques semaines plus tôt\. Je suppose que l’application du coupon vous amène à un flux légèrement différent de celui que je décris ensuite \; probablement directement sur une page de confirmation \?
 
-![post](./h_8.webp)
+![post](../../../blog/2019_11_10_hoppin/h_8.webp)
 
 La dernière étape concerne les détails du paiement\. J’ai occulté les chiffres ici car ils travaillent encore sur les prix\. Personnellement\, je préférerais voir le prix d’emblée\, directement sur la page des expériences\, mais je comprends pourquoi il est là dans le flux
 
-![post](./h_9.webp)
+![post](../../../blog/2019_11_10_hoppin/h_9.webp)
 
 Vous recevez un email de confirmation après la réservation\, et apparemment un reçu aussi [^3]\. Ensuite\, ils envoient un email de rappel la semaine même\, ainsi qu’un message le jour même pour vous inciter à partager votre expérience\.
 
 En plus de cela\, j’ai aussi reçu un e\-mail de mon hôte \(Bilyana\, la fondatrice\) avec mon agenda\. J’ai trouvé cela utile pour apaiser mes inquiétudes sur ce à quoi m’attendre [^4]\. J’ai aussi trouvé génial qu’elle ait clairement organisé une expérience qui correspondait à ce qui m’intéressait\. L’équipe Hoppin a mentionné qu’elle comptait que l’hôte prenne contact en premier puisque l’hôte est payé \; l’équipe veut que cela soit plus évident pour les hôtes à l’avenir\.
 
-![post](./h_10.webp)
+![post](../../../blog/2019_11_10_hoppin/h_10.webp)
 
 ## Expérience d’observation professionnelle
 

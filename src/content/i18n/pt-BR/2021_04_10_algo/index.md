@@ -4,7 +4,7 @@ description: "Como podemos aplicar algoritmos para melhorar a tomada de decisão
 pubDate: 2021-04-10
 category: Risk & Decision Making
 tags: ['behaviour', 'tech']
-heroImage: './a_3.webp'
+heroImage: '../../../blog/2021_04_10_algo/a_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'algo'
 sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
@@ -42,7 +42,7 @@ Nesse caso\, há uma porcentagem precisa a ser usada\. Você deve esperar depois
 
 Esse é o ponto matematicamente ótimo com maior chance de escolher a melhor pessoa para o trabalho\. Se você parar cedo demais\, pode perder alguém na entrevista mais tarde\. Se parar tarde demais\, perde tempo [^4]\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_04_10_algo/a_1.webp)
 
 ## Explorar exploit
 
@@ -79,7 +79,7 @@ Como você decide quais itens devem ser colocados na seção rápida e quais na 
 
 Nesse caso\, manter os itens mais usados recentemente na seção pequena e rápida é a escolha ideal\, devido a algo conhecido como [temporal locality](https://www.geeksforgeeks.org/difference-between-spatial-locality-and-temporal-locality/ 'temp')\. É mais provável que você precise de algo novamente que tenha usado recentemente\. Por exemplo\, o Google Drive destaca seus arquivos usados com frequência para acesso rápido\.
 
-![post](./a_2.webp)
+![post](../../../blog/2021_04_10_algo/a_2.webp)
 
 ## Programação
 
@@ -112,7 +112,7 @@ Explicar a regra de Bayes provavelmente exigiria um artigo sozinho\, então vamo
 - Normal\: eventos iniciais são surpreendentes\, eventos tardios são esperados\. Por exemplo\, seríamos surpreendidos com pessoas que morrem cedo na vida\, e não com pessoas que morrem tarde na vida\.
 - Erlang\: eventos nunca são mais ou menos surpreendentes\. Por exemplo\, uma distribuição sem memória de uma roleta ou [the coin flips we discussed last week](/writing/ergodicity 'sub')
 
-![post](./a_3.webp)
+![post](../../../blog/2021_04_10_algo/a_3.webp)
 
 ## Teoria dos jogos
 

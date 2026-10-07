@@ -4,7 +4,7 @@ description: "危険な状況では時間がゆっくりと流れますか?"
 pubDate: 2019-03-24
 category: Culture
 tags: ['science', 'time']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_03_24_time_illusion/t_1.webp'
 locale: 'ja'
 sourceSlug: 'time_illusion'
 sourceHash: 'ed957469baf2ed553e13eaee70c4b17e133a059083e5a76d57315495bb495136'

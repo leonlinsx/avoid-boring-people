@@ -4,7 +4,7 @@ description: "세금 인상, 관세, 그리고 야망"
 pubDate: 2019-03-30
 category: Investing
 tags: ['finance', 'tariff', 'behaviour']
-heroImage: './r_2.png'
+heroImage: '../../../blog/2019_03_30_trade/r_2.png'
 locale: 'ko'
 sourceSlug: 'trade'
 sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
@@ -46,7 +46,7 @@ sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
 
 > 다가오는 이유는 아이돌 인큐베이터라는 점이며\, 참가자들이 팬들로부터 더 많은 표를 받을수록 더 많은 자원을 받아 연예인이 될 수 있다는 점입니다\. 관객들은 하루에 1표만 받을 수 있지만\, One Leaf 제품을 구매하면 추가 표를 받을 수 있습니다\. 특정 제품을 구매하면 5표를 더 받을 수 있습니다\.
 
-![post](./r_1.webp)
+![post](../../../blog/2019_03_30_trade/r_1.webp)
 
 한동안 리얼리티 쇼를 안 봤는데\, 이건 새로운 판매 개념인 것 같아요\. 구매가 스트리밍하는 앱에서 이루어져서 편리한 경험을 제공하는 것 같아요\.
 

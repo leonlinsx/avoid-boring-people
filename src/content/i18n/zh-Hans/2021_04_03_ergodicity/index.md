@@ -4,7 +4,7 @@ description: "为什么集合平均和时间平均的差异对投资和风险很
 pubDate: 2021-04-03
 category: Risk & Decision Making
 tags: ['finance', 'math', 'ergodicity', 'risk']
-heroImage: './ergo_5.webp'
+heroImage: '../../../blog/2021_04_03_ergodicity/ergo_5.webp'
 featured: true
 locale: 'zh-Hans'
 sourceSlug: 'ergodicity'
@@ -27,17 +27,17 @@ sourceHash: '21143a194f39fe05b038cc5b0476f7a05b3d37c12908a3f3543493131322abd1'
 
 假设有个随机的人掷硬币5次，出现正面和反面。我们可以通过计算一个人在一段时间内的平均正面数来计算这个模拟的时间平均值。5次掷中有3次正面，所以是0\.6正面（3除以5）。
 
-![ergo img](./ergo_1.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_1.webp)
 
 假设我们让更多人来掷硬币。下面我们会得到类似的情况，我为方便起见，正面表示为1，反面表示为0：
 
-![ergo img](./ergo_2.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_2.webp)
 
 这里可以使用两种类型的平均值。第一种是之前的时间平均值，我们得到 **一个人在某个时间段内的平均值。**
 
 第二种是集合平均，其中我们得到 **多个人在同一时间段内的平均值。**
 
-![ergo img](./ergo_3.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_3.webp)
 
 能历性试图回答的一个重要问题是： **我们是否应该预期这两种平均值从长远来看会是一样的？**
 
@@ -47,11 +47,11 @@ sourceHash: '21143a194f39fe05b038cc5b0476f7a05b3d37c12908a3f3543493131322abd1'
 
 我们基于这个例子，让大家下注掷硬币。每个人起始1美元，赢了可获得50\%的利润，输了则支付40\%的奖金。例如：
 
-![ergo img](./ergo_4.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_4.webp)
 
 与其看掷硬币的结果本身，不如考虑每个人将拥有的财富。如果我们绘制这些， **我们是否应该预期一个人财富的时间平均值与长期来看所有人财富的整体平均值相同？**
 
-![ergo img](./ergo_5.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_5.webp)
 
 换句话说： **你愿意打这样的赌吗？** 如果反复提供呢？
 
@@ -59,13 +59,13 @@ sourceHash: '21143a194f39fe05b038cc5b0476f7a05b3d37c12908a3f3543493131322abd1'
 
 我在这里编写了一个抛硬币模拟 [jupyter notebook](https://colab.research.google.com/drive/1KI_PPhtXVQDfVGRFbi4pl0ZIhL2Y4x2X?usp=sharing 'colab') [^5] \.用上述情景让一个人掷100次硬币，我们注意到他们的财富会增加到最多4美元，然后几乎降到0美元。
 
-![ergo img](./ergo_6.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_6.webp)
 
 嗯，也许我们遇到了个倒霉的情况。我们用100个人重复这个过程，依然做100次硬币掷硬币。我还会计算每次抛硬币时的平均财富（整体平均值），并用虚线红线表示 [^6] \.
 
 下面的两张图表数据完全相同\;我只是用对数轴重新调整比例，以便更好地可视化。
 
-![ergo img](./ergo_7.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_7.webp)
 
 发生了一些奇怪的事情。我们看到一个幸运的例外值达到了1000美元，同时也看到平均财富（虚线红线）在不断增加。不过，请注意 **这些人中的大多数都亏损了！** 在这个模拟中，100名参与者中有94人最终的奖金低于他们最初的1美元。
 

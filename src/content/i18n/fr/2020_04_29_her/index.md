@@ -4,7 +4,7 @@ description: "Le piège à marge des entreprises d’IA, les concepts d’invest
 pubDate: 2020-04-29
 category: Technology
 tags: ['AI', 'business', 'investing']
-heroImage: './her_1.webp'
+heroImage: '../../../blog/2020_04_29_her/her_1.webp'
 locale: 'fr'
 sourceSlug: 'her'
 sourceHash: '140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199'
@@ -84,7 +84,7 @@ Si l’IA a des cas d’utilisation limités\, le marché total adressable dans 
 
 > Les entreprises de services ne sont pas aussi valorisées que les entreprises de logiciels\. Les VCs adorent les entreprises de logiciels \; travaillent dur dès le départ pour résoudre un problème\, impriment de l’argent pour toujours\. C’est pourquoi ils obtiennent des valorisations de revenus 10\-20 fois supérieures\. Les entreprises de services \? Pourquoi investir dans une entreprise de services \? Leur croissance est intrinsèquement limitée par les coûts de main\-d’œuvre et des problèmes de marché étranges et abordables\. \- Scott
 
-![post](./her_1.webp)
+![post](../../../blog/2020_04_29_her/her_1.webp)
 
 Les entreprises sont souvent évaluées sur la base d’un multiple d’un indicateur financier tel que le chiffre d’affaires\, l’EBITDA ou le bénéfice net\. Les entreprises de logiciels sont généralement évaluées à un multiple supérieur à celui des entreprises de services\, pour les raisons mentionnées ci\-dessus\. [Higher gross margins matter, as described by Two Sigma](https://twosigmaventures.com/blog/article/why-gross-margins-matter/ 'Two')
 

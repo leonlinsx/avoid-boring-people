@@ -4,7 +4,7 @@ description: "Le ciblage publicitaire n’est pas aussi puissant qu’on pourrai
 pubDate: 2019-06-16
 category: Technology
 tags: ['business']
-heroImage: './a_1.png'
+heroImage: '../../../blog/2019_06_16_ad/a_1.png'
 locale: 'fr'
 sourceSlug: 'ad'
 sourceHash: 'dc13e280c424181607da2dc708f7376d9ab461e55c3e7c3451f085786412207a'

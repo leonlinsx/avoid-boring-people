@@ -4,7 +4,7 @@ description: "무작위성은 무작위처럼 보이지 않는다"
 pubDate: 2017-02-23
 category: Risk & Decision Making
 tags: ['risk', 'math']
-heroImage: './f_1.webp'
+heroImage: '../../../blog/2017_02_23_random/f_1.webp'
 locale: 'ko'
 sourceSlug: 'random'
 sourceHash: 'fd8b3b6a1c967dc984c00ac75aaca1a14faadaf974e01bd06f3c369ae205f2ad'

@@ -4,7 +4,7 @@ description: "选择人，而非公司"
 pubDate: 2020-11-11
 category: Culture
 tags: ['generalists']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2020_11_11_company_value/c_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'company_value'
 sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
@@ -22,7 +22,7 @@ sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
 
 我们可以把公司看作是“撮合人”的中间人，把有想法的人和愿意执行的人聚集在一起。有一个整体 [Theory of the Firm](https://en.wikipedia.org/wiki/Theory_of_the_firm 'Theory') 关于公司如何存在以降低交易成本\[\^1\]。在这个框架下，我们可以尝试将创新的影响在人与企业之间分离。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_11_11_company_value/c_1.webp)
 
 企业还是人力应获得更多认可，都可能 **帮助我们确定该关注哪些方面** 如果我们想获得更多创新：
 
@@ -38,7 +38,7 @@ sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
 
 下表包含大量数字，我们忽略除红框中的两个数字外的所有数字。研究人员在上述引用中指的是发明人0\.341与企业0\.032的比较\;数字越高，专利计数的解释力越强。就我们而言，将固定效应理解为“效应”，但你可以阅读更多关于实际定义的内容 [here](http://www.jblumenstock.com/files/courses/econ174/FEModels.pdf 'fixed')\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_11_11_company_value/c_2.webp)
 
 如果上述情况成立，那么作为个体， **我们应该关注与强大的团队伙伴合作，而非强大的公司** 如果我们想变得更具创新性。换句话说，这也是一个数据点，说明为什么你应该更关心你将直接合作的人，而不是公司的声誉。
 

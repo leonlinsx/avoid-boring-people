@@ -4,7 +4,7 @@ description: "ペースレイヤーフレームワークを用いて、なぜ企
 pubDate: 2020-03-04
 category: System Design
 tags: ['frameworks', 'pace layers']
-heroImage: './p_2.webp'
+heroImage: '../../../blog/2020_03_04_pace/p_2.webp'
 locale: 'ja'
 sourceSlug: 'pace'
 sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
@@ -30,7 +30,7 @@ sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
 
 1994年、 [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand 'Stewart') の [Long Now Foundation](http://longnow.org/ 'Long Now') 上記のモデルは、建物がどのように学習し進化するかを考える方法として提案されました [^1]\.建物は複数の層で構成されており、それぞれ異なる速度で変化していると考えられます。 **健全な建物は、各層がそれぞれのペースで動く制御された相互作用を可能にします。**
 
-![post](./p_1.webp)
+![post](../../../blog/2020_03_04_pace/p_1.webp)
 
 1999年には、スチュワートはこの枠組みをさらに文明に適用できるように拡張しました。 **文明のどの部分が時間とともに変化するのか\?どれくらいの速さで変化するのか\?どのように相互作用するのか\?**
 
@@ -45,7 +45,7 @@ sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
 - 文化
 - 自然
 
-![post](./p_2.webp)
+![post](../../../blog/2020_03_04_pace/p_2.webp)
 
 ファッションは速く動き、自然はゆっくりと動きます。スチュワートはこれらの層がどのように相互作用するかを次のように説明しています。
 

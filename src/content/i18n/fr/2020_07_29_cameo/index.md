@@ -4,7 +4,7 @@ description: "Le vulgaire de l’un est le trésor de l’autre"
 pubDate: 2020-07-29
 category: Technology
 tags: ['startups', 'business']
-heroImage: './c_2.webp'
+heroImage: '../../../blog/2020_07_29_cameo/c_2.webp'
 locale: 'fr'
 sourceSlug: 'cameo'
 sourceHash: 'e93e8afa6d1f315f2accfbf1f8efc95072617d9d2672e902e3bdafe40116ab2c'
@@ -26,7 +26,7 @@ Je vais monter dans la vague des écrivains qui nomment des frameworks\, et appe
 
 Ainsi\, plutôt que de parler des marchés déprimants du jeu d’acteur canin\, aujourd’hui je souhaite examiner les plateformes qui les alimentent\. En particulier\, je souhaite examiner de plus près [Cameo,](https://www.cameo.com/ 'cameo') Un marché qui propose des messages vidéo personnalisés de célébrités\. Pour le prix abordable de 30 \$\, vous pouvez obtenir un message vidéo personnalisé de Kirpa Sudick\, Kevin Fortenberry\, ou trois \( \!\!\) vidéos de Paris le petit cochon [^2]\. Les gens les font généralement souhaiter un joyeux anniversaire à la famille et aux amis\, à la remise des diplômes ou à une autre fête\, [to the delight of the recipients.](https://www.youtube.com/watch?v=VeYm5TZknsc 'reaction')
 
-![post](./c_1.webp)
+![post](../../../blog/2020_07_29_cameo/c_1.webp)
 
 J’ai d’abord mentionné Cameo [about a year ago](/writing/cameo 'Cameo') tout en essayant de culpabiliser les gens pour qu’ils m’achètent un caméo de Jenna Coleman [^3]\, et ils sont un bon exemple de bénéficiaire de la longue traîne\. Le marché fonctionne parce que le rendement individuel de ces célébrités est faible\, mais le rendement combiné de toutes est élevé\. Paris la mini cochonne seule ne rapportera probablement pas assez pour son propriétaire\, mais en la combinant avec Fiona l’Hippopotame ou Lola la Paresseuse\, vous pourriez réellement avoir une entreprise viable pour la plateforme fournissant le service\.
 
@@ -50,7 +50,7 @@ Mais est\-ce suffisant \? Cameo a décollé en travaillant sur la longue queue\,
 
 Peuvent\-ils atteindre un point de bascule où davantage de stars se sentent à l’aise de rejoindre \? Je suppose que c’est comme l’inconfort d’AirBnB ou Uber au début\, et que l’idée va se normaliser avec le temps\. Ils ont déjà recruté des gens comme Elijah Wood \(célèbre pour Le Seigneur des Anneaux\)\, Sarah Jessica Parker \(célèbre pour Sex and the City\) ou Snoop Dogg \(célèbre pour fumer de l’herbe\) sur la plateforme\, donc ce n’est pas si difficile de continuer à s’y développer\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_07_29_cameo/c_2.webp)
 
 Nous avons établi l’argument en faveur de la demande et de l’offre\, en constatant qu’il y a une clarté [product market fit.](https://a16z.com/2017/02/18/12-things-about-product-market-fit/ 'pmf') Qu’en est\-il de l’économie de la plateforme elle\-même \?
 
@@ -100,7 +100,7 @@ Cameo ne semble pas non plus offrir d’options de tri efficaces pour le moment\
 
 Je ne suis pas sûr que créer un profil utilisateur pour réserver des caméos en vaille la peine\. Bien sûr\, vous pouvez le lier à Facebook pour faciliter la création d’un compte\, mais il semble que créer des comptes invités fonctionnerait aussi\. Je suppose qu’il y a un certain avantage à suggérer plus de caméos que l’utilisateur pourrait apprécier\, d’après les précédents\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_07_29_cameo/c_3.webp)
 
 L’expansion internationale semble être une étape évidente\, l’Europe étant probablement la géographie la plus naturelle suivante\. La difficulté est probablement de mettre en place l’équipe commerciale à cet endroit et d’intégrer les premières célébrités locales\. Je ne vois pas de problèmes majeurs de localisation ici\, mais je peux me tromper\. Contrairement à certains marketplaces qui n’ont que des effets réseau locaux\, Cameo semble avoir des effets réseau plus larges\, car obtenir une célébrité britannique générera une demande de la part d’un client américain qui regarde des émissions britanniques\. Dans une certaine mesure\, cela bénéficiera aussi à l’expansion dans les pays non anglophones\, car il y aura probablement encore une demande pour des apparitions de célébrités internationales de la part de la population locale\. [Lotta avengers fans in China.](https://www.wikiwand.com/en/List_of_highest-grossing_films_in_China 'China')
 

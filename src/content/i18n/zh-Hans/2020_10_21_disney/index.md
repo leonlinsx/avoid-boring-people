@@ -5,7 +5,7 @@ pubDate: 2020-10-21
 category: Investing
 tags: ['business']
 evergreen: false
-heroImage: './d_1.webp'
+heroImage: '../../../blog/2020_10_21_disney/d_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'disney'
 sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
@@ -39,7 +39,7 @@ sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
 
 迪士尼报告了四个主要细分领域：媒体网络、公园、工作室娱乐和直销消费者（DTC）
 
-![post](./d_1.webp)
+![post](../../../blog/2020_10_21_disney/d_1.webp)
 
 我对上述内容的第一印象是：
 
@@ -52,7 +52,7 @@ sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
 
 如果保证金组合确实相似，管理层应对投资其中任何一种持无动于衷\;或许会更倾向于因利润率稍高的媒体 [^4]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_10_21_disney/d_2.webp)
 
 迪士尼在其年度报告中用17页来描述其业务 [^5]我来总结一下，避免你们还没开始就跳了。
 
@@ -87,7 +87,7 @@ sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
 - 工作室也倒闭了，同比下降了55\%，年初至今意外上涨了3\%
 - 由于收购，DTC数字无法比较，但我猜增长速度仍然很快
 
-![post](./d_3.webp)
+![post](../../../blog/2020_10_21_disney/d_3.webp)
 
 我把迪士尼的财务状况做成了一个简单的模型 [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit?usp=sharing 'goog') 如果你们有人想玩弄这些数字。注意这些假设只是虚拟数字，没有经过严格计算。
 
@@ -121,7 +121,7 @@ sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
 
 他们还附上了一张图表，显示了涨幅的倍数。倍数是评估公司价值的一种方式，显示人们愿意为你的股票支付多少。通常越高越好 [^9]\.
 
-![post](./d_4.webp)
+![post](../../../blog/2020_10_21_disney/d_4.webp)
 
 > 最后，我们认为迪士尼应继续专注于向订阅主导的DTC收入流转型，避免通过交易性VOD定价策略最大化短期利润。
 
@@ -145,7 +145,7 @@ sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
 
 这些都是相当标准的资本配置选项。事实上，前三种是我通常会期待活动家提出的要求，在读到第三点的信之前，我猜他们会说类似的话。这里有一张快速图片，帮助你回顾一下关于资本配置的记忆，来自迈克尔·莫布辛：
 
-![post](./d_5.webp)
+![post](../../../blog/2020_10_21_disney/d_5.webp)
 
 回到Semper：
 
@@ -169,7 +169,7 @@ Semper更倾向于迪士尼注重质量而非数量。
 - 我不清楚迪士尼的完整债务结构，但10K显示他们目前的利率其实并不差（见下图）。我不确定积极还债是否合理
 - 尤其是在我们当前低利率环境下，如果迪士尼需要现金来融资收购或股票回购，我认为他们很容易以低价借款
 
-![post](./d_6.webp)
+![post](../../../blog/2020_10_21_disney/d_6.webp)
 
 再次声明，这不是投资建议，我对这个行业了解不多，但这是我目前的看法。如前所述，你可以复制我整理的财务模型 [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit#gid=0 'goog') 玩弄数字。我放进去的假设是假数字，请不要依赖它们 [^12]\.
 

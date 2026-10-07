@@ -4,7 +4,7 @@ description: "¿El guardián de los porteros se guarda él mismo?"
 pubDate: 2020-10-28
 category: Culture
 tags: ['finance', 'behaviour']
-heroImage: './g_5.webp'
+heroImage: '../../../blog/2020_10_28_gatekeep/g_5.webp'
 locale: 'es'
 sourceSlug: 'gatekeep'
 sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
@@ -21,23 +21,23 @@ Ya lo has visto antes\.
 
 Un principiante\, con los ojos brillantes y con la cola tupida\, vendrá buscando consejos sobre cómo empezar en una materia\.
 
-![post](./g_1.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_1.webp)
 
 Y un montón de expertos lo harán [emerge from the depths](https://youtu.be/Y2fwe0rnHak?t=118 'balrog') decirles que no se puede hacer\, que deberían volver atrás y pasar años aprendiendo los requisitos previos\, y que deberían avergonzarse por hacer la pregunta en primer lugar\. _\"Qué descaro de algunas personas\, pensando que podrían evitar pagar sus cuotas\.\"_
 
 Algunos \"expertos\" incluso encuentran motivos para quejarse cuando otros lanzan cursos para ayudar a los principiantes a hacer precisamente eso\.
 
-![post](./g_2.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_2.webp)
 
 Nos encontramos con el gatekeeping todo el tiempo\, y sobre todo se hace para preservar el estatus\. Hay algunas formas válidas de gatekeeping\, y ya hablaré de eso en un momento\. Pero casi siempre se hace para excluir a la gente y ser cruel\. Curiosamente\, los guardianes nunca parecen darse cuenta de que ellos también pueden ser excluidos\.
 
 Por ejemplo\, podrías decir que no puedes empezar con aprendizaje automático a menos que aprendas cálculo\, estadística y álgebra lineal\, igual que el comentario anterior\.
 
-![post](./g_3.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_3.webp)
 
 Y también podrías decir que no puedes empezar álgebra lineal a menos que aprendas teoría de grupos\, cómo [matrices are a ring](https://www.youtube.com/watch?v=_RTHvweHlhE 'ring')\, y [when to work with linear groups or not](https://www.youtube.com/watch?v=AJTRwhSZJWw 'group') [^1]
 
-![post](./g_4.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_4.webp)
 
 Y podrías hacer un control adicional y decir que lo anterior depende de [set theory](https://plato.stanford.edu/entries/set-theory/ 'set')\, [Peano axioms](https://en.wikipedia.org/wiki/Peano_axioms 'Peano')\, y [philosophy](https://plato.stanford.edu/entries/philosophy-mathematics/ 'philo')\. Me pregunto cuánto de ese comentarista dedicó el comentario a estudiar durante la carrera\.
 
@@ -51,7 +51,7 @@ Sin embargo\, más a menudo\, el gatekeeping es un intento de individuos del \"g
 
 Ahora\, ten en cuenta que los guardianes no están del todo equivocados\. **De hecho\, sus sugerencias suelen tener sentido\.** Por ejemplo\, sería tremendamente útil conocer álgebra lineal mientras estudias aprendizaje automático\. Y si quieres convertirte en un experto\, tienes que dominar todas las matemáticas requeridas [^3]\. Pero impedir artificialmente que la gente empiece una asignatura no ayuda a nadie\. Una mejor respuesta habría sido\: \"Sí\, aquí tienes cursos más sencillos para empezar\, vuelve y revisa los fundamentos después\.\" Habilita en lugar de desactivar\.
 
-![post](./g_5.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_5.webp)
 
 Si has tenido un sesgo hacia el acceso a la puerta de acceso\, te animaría a pensar si estás ayudando a la comunidad o a ti mismo [^4]\. Si te has decidido por ti mismo leer este boletín\, puedes hacerlo mejor\.
 
@@ -77,7 +77,7 @@ Markus y Lasse analizan qué causa estas espirales de iliquidez\, encontrando qu
 
 Primero analizan los requisitos de margen [^8]\, y observa cómo cambian en respuesta a las crisis\. Como era de esperar\, los márgenes \(que aquí toman el papel de los costes\) se vuelven menos líquidos cuando hay más incertidumbre\, y se vuelven más líquidos cuando hay menos incertidumbre\.
 
-![post](./g_6.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_6.webp)
 
 Otra forma de reducir la liquidez es disminuir el capital de los participantes\:
 
@@ -85,7 +85,7 @@ Otra forma de reducir la liquidez es disminuir el capital de los participantes\:
 
 Lo que puede llevar a espirales de iliquidez de dos maneras\:
 
-![post](./g_7.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_7.webp)
 
 > Primero\, surge una \"espiral de márgenes\" si los márgenes están aumentando en la iliquidez del mercado porque una reducción en la riqueza de los especuladores disminuye la liquidez del mercado\, lo que conduce a márgenes más altos\, endureciendo aún más la restricción de financiación de los especuladores\, y así sucesivamente
 

@@ -4,7 +4,7 @@ description: "AI企業のマージントラップ、バリュー投資の概念�
 pubDate: 2020-04-29
 category: Technology
 tags: ['AI', 'business', 'investing']
-heroImage: './her_1.webp'
+heroImage: '../../../blog/2020_04_29_her/her_1.webp'
 locale: 'ja'
 sourceSlug: 'her'
 sourceHash: '140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199'
@@ -84,7 +84,7 @@ AIのユースケースが限られている場合、AI製品を販売できる�
 
 > サービス会社はソフトウェア企業ほど評価されていません。VCはソフトウェアビジネスが大好きです。問題解決のために最初から一生懸命働き、永遠にお金を刷り続けるのです。だからこそ、10〜20倍の収益評価を得ています。サービス会社?なぜサービス会社に投資するのですか?彼らの成長は本質的に労働コストや複雑な市場問題に制約されています。- スコット
 
-![post](./her_1.webp)
+![post](../../../blog/2020_04_29_her/her_1.webp)
 
 企業はしばしば収益、EBITDA、純利益などの財務指標の倍数に基づいて評価されます。ソフトウェア企業は、上記の理由からサービス会社よりも高い倍数で評価されることが多いです。 [Higher gross margins matter, as described by Two Sigma](https://twosigmaventures.com/blog/article/why-gross-margins-matter/ 'Two')
 

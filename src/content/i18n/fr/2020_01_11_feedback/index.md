@@ -4,7 +4,7 @@ description: "On n’est pas bons pour prendre les retours, voici comment s’am
 pubDate: 2020-01-11
 category: Culture
 tags: ['feedback', 'behaviour']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_01_11_feedback/t_3.webp'
 locale: 'fr'
 sourceSlug: 'feedback'
 sourceHash: '91a9d0e512c9f37a9acd1d22cda31f4585a8b9402f6c1ab8e2bc778a615941e2'
@@ -32,7 +32,7 @@ J’ai résumé le livre ci\-dessous et ajouté quelques\-unes de mes propres r�
   - Tout cela est raisonnable\. Nos réactions déclenchées ne sont pas des obstacles parce qu’elles sont déraisonnables\, mais parce qu’elles nous empêchent de participer à la conversation\.
   - Devenir meilleur pour recevoir des retours ne signifie pas que vous devez les prendre comme une vérité absolue
 
-![post](./t_1.webp)
+![post](../../../blog/2020_01_11_feedback/t_1.webp)
 
 _LL \: Je n’ai certainement jamais accepté de retour auparavant\, à mon détriment\, quand je me sentais déclenché\. Ce n’est pas parce que je n’aime pas la personne que ce retour est inexact\. Prendre conscience de pourquoi cela arrive et apprendre à l’identifier est la première étape pour m’améliorer moi\-même\._
 
@@ -44,7 +44,7 @@ _LL \: Je n’ai certainement jamais accepté de retour auparavant\, à mon dét
   - Évaluation de votre situation [^1]
   - Nous avons besoin des trois\, mais nous avons souvent un type différent de ce que nous voulons
 
-![post](./t_2.webp)
+![post](../../../blog/2020_01_11_feedback/t_2.webp)
 
 _LL \: Je préfère largement recevoir du coaching ou une évaluation au travail\, mais ce n’est évidemment pas le cas pour tout le monde\. Cela explique beaucoup de choses sur pourquoi les gens se sentent sous\-estimés ou incompris\. Cela me rappelle un peu la [Five Love Languages framework](https://www.5lovelanguages.com/ 'Five')\. Je commence à demander explicitement du coaching et de l’évaluation plutôt que de l’appréciation au travail\._
 
@@ -90,7 +90,7 @@ _LL \: Vous et votre ennemi juré êtes peut\-être tous les deux compétents\, 
   - À quelle distance tu balances par rapport à ta ligne de base quand tu obtiens un retour d’information\, par exemple plus de swing signifie plus de sensibilité aux retours négatifs
   - Combien de temps faut\-il pour revenir à la normale
 
-![post](./t_3.webp)
+![post](../../../blog/2020_01_11_feedback/t_3.webp)
 
 - Voici quelques moyens d’être mieux préparé aux retours \:
   - Réfléchis à l’avance à ce que ça pourrait être\, prends de tes nouvelles et ralentis un peu quand tu vas l’avoir
@@ -153,7 +153,7 @@ _LL \: C’est nouveau pour moi mais important\. Il peut être écrasant d’obt
 
 _LL \: Il y a des choses qu’on ne peut tout simplement pas changer chez nous\-mêmes\. Tu ne peux pas m’empêcher de taper [ridiculous amounts of butter at every dinner](https://www.thecitycook.com/articles/2015-10-12-bordier-butter 'butter')\. Notez que même si les auteurs pensent que c’est acceptable\, « vous devez quand même réduire l’effet négatif que vous avez sur les autres »\. Ne soyez pas désagréable\._
 
-![post](./t_4.webp)
+![post](../../../blog/2020_01_11_feedback/t_4.webp)
 
 - Dans le contexte d’une organisation\, voici quelques éléments qui peuvent aider à donner des retours \:
   - Expliquez les compromis\, pas seulement les avantages

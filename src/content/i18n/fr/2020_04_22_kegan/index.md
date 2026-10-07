@@ -4,7 +4,7 @@ description: "La théorie de Kegan sur le développement adulte"
 pubDate: 2020-04-22
 category: Culture
 tags: ['behaviour']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2020_04_22_kegan/a_1.webp'
 locale: 'fr'
 sourceSlug: 'kegan'
 sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
@@ -46,7 +46,7 @@ Les cinq étapes qu’il propose\, après une phase initiale de « nouveau\-né 
 
    Kegan pense que les gens n’atteignent pas ce stade avant la quarantaine\, et que la plupart n’atteignent jamais ce stade\. Un exemple serait comment la société ou les individus ont commencé à prendre conscience de l’importance de certaines lois telles que l’égalité des droits
 
-![post](./a_1.webp)
+![post](../../../blog/2020_04_22_kegan/a_1.webp)
 
 ## Applications
 

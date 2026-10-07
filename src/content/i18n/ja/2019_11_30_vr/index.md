@@ -4,7 +4,7 @@ description: "ビデオゲーム、ポートフォリオリバランス、そし
 pubDate: 2019-11-30
 category: Technology
 tags: ['finance', 'vr', 'behaviour']
-heroImage: './g_3.webp'
+heroImage: '../../../blog/2019_11_30_vr/g_3.webp'
 locale: 'ja'
 sourceSlug: 'vr'
 sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
@@ -33,7 +33,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 さて、
 
-![post](./g_1.webp)
+![post](../../../blog/2019_11_30_vr/g_1.webp)
 
 ゲームはフィルムより大きいですが、それでも成長は速いです。と [global sports industry at $500bn in size](https://www.businesswire.com/news/home/20190514005472/en/Sports---614-Billion-Global-Market-Opportunities 'Sports')スポーツと同じ規模になる前に、ゲームが成長する余地は十分にあります。
 
@@ -41,7 +41,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 ええと [^3]\:
 
-![post](./g_2.webp)
+![post](../../../blog/2019_11_30_vr/g_2.webp)
 
 ゲームに強気なのは私だけではありません。有名なベンチャーキャピタル会社A16Zはゲームへの関心を高めており、 [wrote about some trends they believe in](https://a16z.com/2019/10/16/trends-revolutionizing-games/ 'a16z') [^4]\:
 
@@ -79,11 +79,11 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 つまり、ターンオーバーが高く、リバランスの頻度が低く、制約が少ないほど、リバランスのタイミングが最終的なリターンに与える影響は大きくなります。下の矢印は、最もパフォーマンスが良いバリバーションと最もパフォーマンスが悪いバリエーションの差を表しています。 _同じポートフォリオの_\.
 
-![post](./g_3.webp)
+![post](../../../blog/2019_11_30_vr/g_3.webp)
 
 また、異なる投資戦略間でのデルタを示す要約表も提示しています。以下の内容を理解するために言うと、「エンハンスト・バリュー」ポートフォリオの1ドルが4\.45ドルから5\.45ドルにリターンできた可能性があり、その1ドルの差はリバランス後の運によるものです。
 
-![post](./g_4.webp)
+![post](../../../blog/2019_11_30_vr/g_4.webp)
 
 彼らは次のように締めくくっています。
 
@@ -145,7 +145,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 言い換えれば、上記の例では平均を70\%にしますが、数値的な予測を口頭の予測に変換すると、予測の数を「カウント」し、平均化するのではなく「非常にありそう」に到達します。研究者たちはまた、これが行動に影響を与え、予測の提示方法によって消費者が商品を購入するよう促すことも示しています。
 
-![post](./g_5.webp)
+![post](../../../blog/2019_11_30_vr/g_5.webp)
 
 ただし、「カウント」か「平均」かは、専門家が似た情報を持っているか異なるかによります。同じ情報に基づいている場合は、「平均化」が独特な誤差を打ち消すのに効果的です。そうでなければ、「カウント」はベイズ戦略の近似であり、個人的な予測を改善する効果があります。
 
@@ -162,7 +162,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 2. [What the WSJ got wrong in their investigation of Google's search algorithms](https://searchengineland.com/misquoted-and-misunderstood-why-we-the-search-community-dont-believe-the-wsj-about-google-search-325241 'SEL')
 3. [How has the dating market changed?](https://gallery.mailchimp.com/2506bda6ca9a8b7ce8b3c54b4/files/1a8cc94c-6198-4f3d-b27d-8a6060ed6c5d/Tyro_Dating_Market_Thesis_Final_For_Twitter_Pub_v2.pdf 'Tyro')
 
-   ![post](./g_6.webp)
+   ![post](../../../blog/2019_11_30_vr/g_6.webp)
 
    > 上のチャートで「バーやレストランで会った」の急増に注目してください。データサイエンスでは、こうした報告者を「嘘つき」と呼ぶ専門用語です。
 

@@ -4,7 +4,7 @@ description: "卖方股票研究提供了哪些价值？"
 pubDate: 2020-02-26
 category: Investing
 tags: ['equity research', 'AI']
-heroImage: './s_3.webp'
+heroImage: '../../../blog/2020_02_26_sellside/s_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'sellside'
 sourceHash: '9e9b2f343e79497b5aa89e766fd1869c1ccc8a0e1b36178d4de6e0c099372832'
@@ -18,19 +18,19 @@ sourceHash: '9e9b2f343e79497b5aa89e766fd1869c1ccc8a0e1b36178d4de6e0c099372832'
 
 如果你想到 **金融作为资本来源与资本使用者之间的互动，** 高盛、摩根士丹利、摩根大通等投资银行处于中间地带，促进有钱人和需要钱人之间的交易。
 
-![post](./s_1.webp)
+![post](../../../blog/2020_02_26_sellside/s_1.webp)
 
 银行有专门负责特定金融产品（股票、债务、并购等）或特定行业（消费、医疗、科技等）的银行家，并安排其覆盖范围内的公司融资交易。
 
 在这些交易之外， **银行通常设有股票研究小组，负责发布股票观点** 基于对公司的调研并与公司管理层保持关系。这些是你在新闻中看到的“买入\/持有\/卖出”价格目标。请注意，这些是建议，研究团队并未持有公司头寸，这使他们区别于专业投资者 [^1]\.
 
-![post](./s_2.webp)
+![post](../../../blog/2020_02_26_sellside/s_2.webp)
 
 股票研究会被卖给专业投资者，理论上他们会利用这些信息来做出投资决策。不过这些投资者也会自行进行研究，因此他们是否会从银行研究中吸收多少尚不确定。重要的是，他们支付股票研究费用并非基于推荐的准确性，而是通过银行通过交易佣金间接支付。
 
 **因此，投资者究竟为何付出代价仍是一个悬而未决的问题：1）研究，2）与公司的关系，或3）投资推荐 [^2]\.** 我的卖方（研究）朋友会说是全部，买方（投资者）朋友可能会说是（2），而我的散户投资者朋友可能会说是（3），因为他们没有提供（1）和（2）。
 
-![post](./s_3.webp)
+![post](../../../blog/2020_02_26_sellside/s_3.webp)
 
 如果你假设最大的增值来自（3）， [this paper by Braiden Coleman, Kenneth Merkley, Joseph Pacelli on computer programmed equity research](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3514879 'Robots') 会很有趣。 **他们研究“机器人分析师”——即由人类分析师辅助的自动化研究分析计算机程序——如何与人类研究分析师对抗** 通过分析两者推荐的差异。
 

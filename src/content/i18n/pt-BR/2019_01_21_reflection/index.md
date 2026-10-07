@@ -4,7 +4,7 @@ description: "Como eu pensei sobre 2018"
 pubDate: 2019-02-21
 category: Culture
 tags: ['behaviour', 'reflection']
-heroImage: './r_1.webp'
+heroImage: '../../../blog/2019_01_21_reflection/r_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'reflection'
 sourceHash: 'b6b6886fd0eb2255c5781ef5ff9b13e3befe9e1d113adda6803a17de01f1ba9c'

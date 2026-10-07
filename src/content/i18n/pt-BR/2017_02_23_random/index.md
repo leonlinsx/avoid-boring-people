@@ -4,7 +4,7 @@ description: "Aleatoriedade não parece aleatória"
 pubDate: 2017-02-23
 category: Risk & Decision Making
 tags: ['risk', 'math']
-heroImage: './f_1.webp'
+heroImage: '../../../blog/2017_02_23_random/f_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'random'
 sourceHash: 'fd8b3b6a1c967dc984c00ac75aaca1a14faadaf974e01bd06f3c369ae205f2ad'

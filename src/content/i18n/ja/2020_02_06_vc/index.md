@@ -4,7 +4,7 @@ description: "創業者がベンチャーキャピタルについて知ってお
 pubDate: 2020-02-06
 category: Investing
 tags: ['startups', 'vc']
-heroImage: './v_1.webp'
+heroImage: '../../../blog/2020_02_06_vc/v_1.webp'
 locale: 'ja'
 sourceSlug: 'vc'
 sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
@@ -34,7 +34,7 @@ sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
 
 念のために言うと、上記よりもリターンの分配を保守的に考えても、100倍のリターンは成功をもたらします\:
 
-![post](./v_1.webp)
+![post](../../../blog/2020_02_06_vc/v_1.webp)
 
 > 創業チームをどのように評価しますか\?もちろんVCによってやり方は異なりますが、共通して調査する分野がいくつかあります。
 
@@ -78,7 +78,7 @@ VCリターンについて前述のべき乗則のダイナミクスを考えれ
 
 [Carta](https://carta.com/blog/getting-funded-how-long-does-it-actually-take/ 'carta') および [Crunchbase](https://news.crunchbase.com/news/the-time-between-vc-rounds-is-shrinking/ 'Crunchbase') また、比較的似た時代も描かれています。
 
-![post](./v_2.webp)
+![post](../../../blog/2020_02_06_vc/v_2.webp)
 
 > a16zで起業家が犯しがちな大きな間違いの一つは、積極的な評価額で資金調達が少すぎることです。これはまさに避けるべきことです。これにより高い評価額が確立されますが、次のラウンドの評価額を安全に引き上げるために必要な財務資源が不足しています。
 
