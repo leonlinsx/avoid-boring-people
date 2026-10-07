@@ -5,7 +5,7 @@ pubDate: 2021-02-07
 category: Risk & Decision Making
 tags: ['skill']
 featured: false
-heroImage: './min_2.webp'
+heroImage: '../../../blog/2021_02_07_minmax/min_2.webp'
 locale: 'ko'
 sourceSlug: 'minmax'
 sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
@@ -51,7 +51,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 도파민 급증이 높아지는 사건을 찾아보려 했는데\, 약물 유발일 거라 생각했어요\. 온라인에서 마약성 약물의 쾌감 가능성을 찾기가 어려웠는데\, 마치 사람들이 약물을 하지 말라고 하는 것 같았어요\. 결국 찾은 건 쥐를 대상으로 한 연구였어요 [heroin](https://onlinelibrary.wiley.com/doi/abs/10.1002/syn.890210207 'heroin')도파민이 4배 증가하는 것을 보여줍니다 [^6]\. 그 수치는 높긴 하지만 예상보다 적고\, 여전히 우리가 원하는 10배는 아닙니다 [^7]\.
 
-![min](./min_1.webp)
+![min](../../../blog/2021_02_07_minmax/min_1.webp)
 
 결국 우리는 물리학\, 화학\, 생물학의 영역을 떠나 더 추상적인 영역으로 들어가야 합니다 [^8]\.
 
@@ -67,7 +67,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 이는 크게 할인해도 확실히 10배 이상입니다\. 저는 이 새로운 영역들을 물리적 영역과 대비하여 로그 스케일을 사용해 큰 크기 차이를 반영했습니다\; 각 선은 10배 증가를 나타냅니다\. 출처는 각주를 참조하세요 [^9]\.
 
-![min](./min_2.webp)
+![min](../../../blog/2021_02_07_minmax/min_2.webp)
 
 우리는 노력을 확장할 수 있는 몇 가지 경로를 찾았고\, 한계수익 체감이 그렇게 빨리 줄어들지 않습니다\. 이런 영역의 한계는 훨씬 높고\, 평균에 비해 차별화될 가능성이 더 높습니다\.
 
@@ -86,7 +86,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 여러분 중 일부는 이 점을 멱법칙과 연관 지을 수도 있고\, 네트워크가 다른 부분보다 훨씬 더 중요한 부분을 가질 수 있다는 점에 대해 말씀하실 수 있습니다\. [There's some debate over whether power laws exist in real life](https://www.quantamagazine.org/scant-evidence-of-power-laws-found-in-real-world-networks-20180215/ 'real')하지만 사실 같은 개념입니다 \- 사람\, 사물\, 또는 부분이 훨씬 더 중요한 시스템들이 있습니다 [^10]\.
 
-![min](./min_3.webp)
+![min](../../../blog/2021_02_07_minmax/min_3.webp)
 
 명확히 하자면\, 인생이 단지 영향력이나 부를 극대화하는 것뿐이라는 뜻은 아닙니다\. 하지만 한 분야의 잠재적 상한선을 아는 것은 얼마나 노력을 기울이고 어디서 멈출지 결정하는 데 도움이 됩니다\. 10배 더 나아지려면 보통 물리적인 것에서 벗어나 기술적인 영역으로 나아가는 것이 필요합니다\.
 

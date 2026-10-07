@@ -4,7 +4,7 @@ description: "페이스 레이어 프레임워크를 활용해 기업이 빠르�
 pubDate: 2020-03-04
 category: System Design
 tags: ['frameworks', 'pace layers']
-heroImage: './p_2.webp'
+heroImage: '../../../blog/2020_03_04_pace/p_2.webp'
 locale: 'ko'
 sourceSlug: 'pace'
 sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
@@ -30,7 +30,7 @@ sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
 
 1994년\, [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand 'Stewart') of the [Long Now Foundation](http://longnow.org/ 'Long Now') 위의 모델을 건물이 학습하고 진화하는 방식을 생각하는 방법으로 제안했습니다 [^1]\. 건물은 여러 층으로 이루어져 있으며\, 각각의 층이 서로 다른 속도로 변화하는 것으로 생각할 수 있습니다\. **건강한 건물은 각 층이 각자의 속도로 움직이는 통제된 상호작용을 허용합니다\.**
 
-![post](./p_1.webp)
+![post](../../../blog/2020_03_04_pace/p_1.webp)
 
 1999년\, 스튜어트는 이 틀을 문명에 적용하도록 확장했다\. **문명의 어떤 부분이 시간이 지나면서 변하나요\? 얼마나 빠르게 변하나요\? 어떻게 상호작용하나요\?**
 
@@ -45,7 +45,7 @@ sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
 - 문화
 - 자연
 
-![post](./p_2.webp)
+![post](../../../blog/2020_03_04_pace/p_2.webp)
 
 패션은 빠르게 움직이고\, 자연은 느리게 움직인다\. 스튜어트는 이 층들이 어떻게 상호작용하는지 설명한다\:
 

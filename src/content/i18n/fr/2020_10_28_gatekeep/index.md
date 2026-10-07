@@ -4,7 +4,7 @@ description: "Le gardien des portes se garde-t-il lui-même ?"
 pubDate: 2020-10-28
 category: Culture
 tags: ['finance', 'behaviour']
-heroImage: './g_5.webp'
+heroImage: '../../../blog/2020_10_28_gatekeep/g_5.webp'
 locale: 'fr'
 sourceSlug: 'gatekeep'
 sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
@@ -21,23 +21,23 @@ Vous avez déjà vu ça\.
 
 Un débutant\, passionné et motivé\, viendra chercher des conseils pour débuter dans une matière\.
 
-![post](./g_1.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_1.webp)
 
 Et une multitude d’experts le feront [emerge from the depths](https://youtu.be/Y2fwe0rnHak?t=118 'balrog') de leur dire que c’est impossible\, qu’ils devraient revenir en arrière et passer des années à apprendre les prérequis\, et qu’ils devraient avoir honte d’avoir posé la question en premier lieu\. _« Quel culot de certaines personnes qui pensent pouvoir éviter de payer leur dette\. »_
 
 Certains « experts » trouvent même des raisons de se plaindre quand d’autres lancent des cours pour aider les débutants à faire exactement cela\.
 
-![post](./g_2.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_2.webp)
 
 Nous sommes confrontés à des filtres de surveillance tout le temps\, et c’est surtout pour préserver le statut\. Il existe des formes valides de surveillance\, et j’y reviendrai dans un instant\. Mais c’est presque toujours fait pour exclure les gens et être méchant\. Assez drôle\, les gardiens ne semblent jamais réaliser qu’ils peuvent aussi être exclus\.
 
 Par exemple\, on pourrait dire que vous ne pouvez pas commencer l’apprentissage automatique à moins d’apprendre le calcul\, les statistiques et l’algèbre linéaire\, comme le commentateur ci\-dessus\.
 
-![post](./g_3.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_3.webp)
 
 Et on pourrait aussi dire qu’on ne peut pas commencer l’algèbre linéaire à moins d’apprendre la théorie des groupes\, comment [matrices are a ring](https://www.youtube.com/watch?v=_RTHvweHlhE 'ring')\, et [when to work with linear groups or not](https://www.youtube.com/watch?v=AJTRwhSZJWw 'group') [^1]
 
-![post](./g_4.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_4.webp)
 
 Et vous pourriez encore faire un gatekeeping en disant que ce qui précède dépend de [set theory](https://plato.stanford.edu/entries/set-theory/ 'set')\, [Peano axioms](https://en.wikipedia.org/wiki/Peano_axioms 'Peano')\, et [philosophy](https://plato.stanford.edu/entries/philosophy-mathematics/ 'philo')\. Je me demande combien de temps le commentateur a passé ses études de premier cycle pendant ses études\.
 
@@ -51,7 +51,7 @@ Mais le plus souvent\, le gatekeeping est une tentative des individus du « grou
 
 Notez que les gardiens n’ont pas totalement tort\. **En fait\, leurs suggestions ont souvent du sens\.** Par exemple\, il serait extrêmement utile de connaître l’algèbre linéaire tout en étudiant l’apprentissage automatique\. Et si vous voulez devenir un expert\, il faut maîtriser toutes les mathématiques requises [^3]\. Mais empêcher artificiellement les gens de commencer une matière n’aide personne\. Une meilleure réponse aurait été « Oui\, voici des cours plus simples pour commencer\, revenez et revenez sur les fondamentaux ensuite\. » Activez plutôt que désactivez\.
 
-![post](./g_5.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_5.webp)
 
 Si vous avez eu un biais en faveur du gatekeeping\, je vous encourage à réfléchir à savoir si vous aidez la communauté ou vous aidez vous\-même [^4]\. Si vous vous êtes choisi de lire cette newsletter\, vous pouvez faire mieux\.
 
@@ -77,7 +77,7 @@ Markus et Lasse examinent ce qui cause ces spirales d’illiquidité\, en décou
 
 Ils examinent d’abord les exigences de marge [^8]\, et observer comment elles évoluent en réponse aux crises\. Comme prévu\, les marges \(qui jouent ici le rôle des coûts\) deviennent moins liquides lorsqu’il y a plus d’incertitude\, et deviennent plus liquides lorsqu’il y a moins d’incertitude\.
 
-![post](./g_6.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_6.webp)
 
 Une autre façon de réduire la liquidité est de diminuer le capital des participants \:
 
@@ -85,7 +85,7 @@ Une autre façon de réduire la liquidité est de diminuer le capital des partic
 
 Ce qui peut entraîner des spirales d’illiquidité de deux manières \:
 
-![post](./g_7.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_7.webp)
 
 > Premièrement\, une « spirale de marges » apparaît si les marges augmentent dans l’illiquidité du marché parce qu’une réduction de la richesse des spéculateurs diminue la liquidité du marché\, ce qui entraîne des marges plus élevées\, un resserrement des contraintes de financement des spéculateurs\, etc\.
 

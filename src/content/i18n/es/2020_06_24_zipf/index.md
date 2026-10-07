@@ -4,7 +4,7 @@ description: "Uso de la ley de Zipf y la entropía de la información en la bús
 pubDate: 2020-06-24
 category: Technology
 tags: ['information']
-heroImage: './z_3.webp'
+heroImage: '../../../blog/2020_06_24_zipf/z_3.webp'
 locale: 'es'
 sourceSlug: 'zipf'
 sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
@@ -48,7 +48,7 @@ Eso fue mucho\. Pero ahora tenemos todos los factores principales que necesitamo
 
 Juntando todo\, lo que hemos hecho es crear el [Drake equation](https://en.wikipedia.org/wiki/Drake_equation#:~:text=The%20Drake%20equation%20is%20a%20statement%20that%20stimulates%20intellectual%20curiosity,a%20part%20of%20that%20universe. 'Drake')\, una forma famosa de estimar la vida inteligente [^2]\. Fíjate cómo todos los puntos que acabamos de cubrir se multiplican para adivinar cuántos alienígenas inteligentes hay por ahí\:
 
-![post](./z_1.webp)
+![post](../../../blog/2020_06_24_zipf/z_1.webp)
 
 ### Reduciendo el alcance
 
@@ -70,11 +70,11 @@ Lo que propone la ley de Zipf es que para cada idioma\, la frecuencia de aparici
 
 Con tal ley\, podemos probarlo en textos de ejemplo de ese idioma\. Por ejemplo\, alguien graficó la frecuencia de palabras en Romeo y Julieta\:
 
-![post](./z_2.webp)
+![post](../../../blog/2020_06_24_zipf/z_2.webp)
 
 No contento de depender de algún desconocido de internet\, así que analizé mis propias publicaciones en el boletín\. Con algo de código simple en Python [^4]\, extraje el texto de todas mis publicaciones en substack\, extraje las 50 palabras principales que usé y las representé en función de su frecuencia\. La relación no es perfecta\, pero se acerca bastante a lo que predice la ley de Zipf\. Como puedes imaginar\, \"the\"\, \"to\"\, \"a\"\, \"y\"\, \"of\" aparecen con frecuencia\.
 
-![post](./z_3.webp)
+![post](../../../blog/2020_06_24_zipf/z_3.webp)
 
 Genial\, ahora tenemos una ley\. Podemos comprobarla con animales como delfines y ballenas\, y ver si sigue siendo válida\. [Researchers did that,](https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipf's%20Law%20distribution%20of%20signals.&text=In%20other%20words%2C%20baby%20bottlenose,start%20to%20whistle%20like%20adults. 'dolphin') ¡Y descubrí que sí\! [^5] En otras palabras\, es probable que la ley de Zipf también se aplique a las lenguas alienígenas\. Al aplicarla a señales del espacio exterior\, podemos filtrar parte del ruido\.
 
@@ -86,7 +86,7 @@ Sabiendo que hay alguna relación entre las palabras\, [we can also derive a way
 
 Al graficar esas puntuaciones\, podemos ver en qué rango se encuentran la mayoría de los idiomas\. Podemos hacer el mismo proceso que antes\, puntuando delfines y ballenas\, y observando cómo funcionan sus lenguas\:
 
-![post](./z_4.webp)
+![post](../../../blog/2020_06_24_zipf/z_4.webp)
 
 Como puedes ver\, hay un rango en el que la mayoría de los idiomas se encajan\. Si aplicamos el mismo sistema de puntuación a las señales\, también podemos filtrar aquellas que probablemente no sean idiomas\.
 

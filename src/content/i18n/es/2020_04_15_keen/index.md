@@ -5,7 +5,7 @@ pubDate: 2020-04-15
 category: Technology
 tags: ['business']
 evergreen: false
-heroImage: './k_2.webp'
+heroImage: '../../../blog/2020_04_15_keen/k_2.webp'
 locale: 'es'
 sourceSlug: 'keen'
 sourceHash: 'e13ad424105a5f585b1ef90045821cf9fb5012d71f4ff3575d2d28699e057d64'
@@ -25,11 +25,11 @@ Echemos un vistazo más detallado al producto\.
 
 El proceso de registro es sencillo si tienes una cuenta de Google y ya estás conectado en tu navegador\. No vi ninguna opción para personas sin cuentas de Google y supongo que eso cambiará cuando salgan de la Beta\.
 
-![post](./k_1.webp)
+![post](../../../blog/2020_04_15_keen/k_1.webp)
 
 Después de registrarte\, la primera vista es la de una pantalla en mosaicos\, con un gran signo de más a la izquierda\. Los otros mosaicos parecen tratar varios temas que podría interesarme consultar\. Si alguna vez hubo un argumento de que Google no te está espiando a ti y a tus datos\, podría ser este\, ya que ninguna de las sugerencias iniciales se acercaba a mis intereses\. ¿Quizá lo pre\-poblan según lo que pueda interesar al estadounidense medio\?
 
-![post](./k_2.webp)
+![post](../../../blog/2020_04_15_keen/k_2.webp)
 
 No estaba claro qué debía hacer primero entre el signo de más y las otras cartas\, así que hice clic en el signo de más\.
 
@@ -37,31 +37,31 @@ Esto me llevó a una opción de \"crear\"\, donde podía escribir lo que tenía 
 
 También había una opción al final para \"enviarme un correo sobre nuevos hallazgos\"\. Normalmente no querría más correos\, ni siquiera para un servicio nuevo\, pero dejé la casilla marcada porque quería ver cómo serían las sugerencias de correo\. Al momento de escribir esto aún no he recibido ningún correo\; actualizaré la publicación si hay algo importante que destacar\.
 
-![post](./k_3.webp)
+![post](../../../blog/2020_04_15_keen/k_3.webp)
 
 El siguiente paso aparecía un cuadro de texto para \"listar búsquedas o preguntas para las que quieres resultados\.\" No estaba seguro de si poner tantas búsquedas como fuera posible era mejor que tener solo una frase\, así que solo puse una consulta de búsqueda\. Supuse que esto me daría resultados más específicos comparado con poner una larga lista de frases\, pero no puedo confirmarlo\.
 
-![post](./k_4.webp)
+![post](../../../blog/2020_04_15_keen/k_4.webp)
 
 También podría añadir miembros a esta lista \(¿un Keen\?\)\. Los miembros podrían añadir gemas al Keen\. Como no tengo amigos\, dejé eso intacto\, igual que la mayoría de nosotros en cuarentena\.
 
-![post](./k_5.webp)
+![post](../../../blog/2020_04_15_keen/k_5.webp)
 
 Ese fue el último paso para crear esta ficha\/carta\/keen [^3]\. Acabé en una pantalla que me recordó un poco a Pinterest\. Había 3 elementos en el menú de navegación\: \"feed\"\, \"gems\" y \"following\"\. Debajo estaba la página y los elementos de lo que hubiera elegido en el menú\. En la captura de pantalla de abajo puedes ver que sigo en \"feed\"\.
 
 La web me pidió añadir una gema a mi colección y también gemar lo que me gustaba\. Así que vimos varias colecciones en la página inicial y podemos crear una colección nosotros mismos\. Dentro de una colección hay otra página que muestra varias gemas\, y también podemos crear gemas\.
 
-![post](./k_6.webp)
+![post](../../../blog/2020_04_15_keen/k_6.webp)
 
 Vamos a crear una joya entonces\. Volví a hacer clic en ese signo de más y apareció una ventana emergente que me indicaba \"añadir algo nuevo\"\. En ese momento estaba perdido\, ya que la interfaz parece una sola línea\, y me preguntaba si debería añadir un enlace\, una imagen\, un cuerpo de texto o algo más\. Si escribes mucho texto\, empieza a desplazarse hacia abajo\, pero sin una barra de desplazamiento visual a la derecha\. Supongo que es por motivos de diseño\. El cuadro de texto llega a un máximo de 4 líneas antes de desplazarse hacia abajo\, ya sea en móvil o en escritorio\, lo que supongo es para dejar suficiente espacio en blanco debajo para la vista previa de la publicación\.
 
 Al final miré las colecciones de otros antes de volver a esto\, que no parece un gran flujo de usuarios\. Según lo que hacían los demás\, puse un título\, un enlace al artículo y luego un montón de hashtags [^4]\. Intenté poner saltos de línea pero no aparecían cuando se publicó la gema\.
 
-![post](./k_7.webp)
+![post](../../../blog/2020_04_15_keen/k_7.webp)
 
 La ventana emergente muestra una vista previa del enlace tras un pequeño retraso\. No puedes editar esa vista previa\, y tampoco desaparece si eliminas todo el texto del cuadro\, a menos que empieces a escribir más texto\.
 
-![post](./k_8.webp)
+![post](../../../blog/2020_04_15_keen/k_8.webp)
 
 Después de hacer clic en guardar\, mi gema se creó\, y pude encontrarla haciendo clic en la opción \"gemas\" en el menú de navegación\, que supongo muestra todas las gemas que he creado\. Esto sería en comparación con \"feed\"\, que serían gemas que Keen cree que debería revisar\. La opción \"seguir\" me da la opción de añadir más búsquedas o preguntas a esta colección\.
 
@@ -73,11 +73,11 @@ Para navegar por gemas y colecciones que no son tuyas\, tienes que volver a la p
 
 Parecía que había colecciones públicas limitadas para que las revisara\, ya que seguía encontrando repeticiones\. Sin embargo\, nunca vi mi propia colección pública en la lista sugerida\, así que quizá esa suposición sea errónea\. Después de tirar varias veces y obtener resultados como \"cómo posar para fotos \(para chicas\)\" y \"planear un baby shower\"\, dejé de buscar nada relevante para finanzas o tecnología\, y me metí en una colección pública titulada \"mantente productivo\"\.
 
-![post](./k_9.webp)
+![post](../../../blog/2020_04_15_keen/k_9.webp)
 
 La colección mostraba gemas de un grupo de otros colaboradores\, que habían subido una mezcla de enlaces de YouTube y páginas web\. Cada carta de gemas te da la opción de compartir\, comentar o abrir\. Hacer clic en la parte superior de las cartas no sirve de nada\, pero al hacer clic en algunas partes de la imagen o título inferior se abre el enlace adjunto\.
 
-![post](./k_10.webp)
+![post](../../../blog/2020_04_15_keen/k_10.webp)
 
 Compartir mostraba un enlace para copiar o enviar por correo electrónico o WhatsApp\.
 
@@ -85,11 +85,11 @@ Al abrir\, me llevó a una nueva página\, con una versión ampliada de la tarje
 
 Comentar me llevó a la misma página que la apertura\, pero anclada al final de la tarjeta para que pudiera escribir un comentario\. Publiqué un comentario en una tarjeta solo para probar la funcionalidad\. Puedes editar o eliminar comentarios después de haberlos publicado\.
 
-![post](./k_11.webp)
+![post](../../../blog/2020_04_15_keen/k_11.webp)
 
 Después de abrir la tarjeta\, hay un espacio debajo donde Keen resalta \"más por explorar\"\. Estas parecían gemas de la misma colección\, aunque no podía asegurarlo\. No podía \"abrir\" estas gemas\, y al hacer clic en ellas me llevo directamente al enlace\, en lugar de a la página a la que te llevas al \"abrir\" una gema\.
 
-![post](./k_12.webp)
+![post](../../../blog/2020_04_15_keen/k_12.webp)
 
 Eso es todo en cuanto a navegar\. Si quieres volver atrás y explorar otras colecciones desde la página abierta de gemas\, no puedes volver directamente\, ya que el logo de Keen que normalmente está en la esquina superior izquierda no está\, ya que ha sido reemplazado por una flecha que te devuelve a la colección de gemas\. Desde ahí puedes volver a la página principal y seguir tirando los dados para más colecciones\.
 

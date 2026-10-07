@@ -4,7 +4,7 @@ description: "100年経って初めて公開された映画を観ますか?"
 pubDate: 2019-07-20
 category: Culture
 tags: ['movie']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2019_07_20_movie/m_1.webp'
 locale: 'ja'
 sourceSlug: 'movie'
 sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
@@ -16,9 +16,9 @@ sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
 
 しかし、一般の意見はそれほど肯定的ではありませんでした。
 
-![post](./m_2.webp)
+![post](../../../blog/2019_07_20_movie/m_2.webp)
 
-![post](./m_3.webp)
+![post](../../../blog/2019_07_20_movie/m_3.webp)
 
 「映画はきっとダメだろう」「自慰的な広告だ」「100年後に観客に評価してもらうのは自己中心的だ」といったコメントが寄せられました。
 

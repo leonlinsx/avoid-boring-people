@@ -3,7 +3,7 @@ title: "社会信用の裁判官モロク"
 description: "AI、MBTI、XI"
 pubDate: 2019-03-03
 category: Culture
-heroImage: './m_1.png'
+heroImage: '../../../blog/2019_03_03_moloch/m_1.png'
 tags: ['AI', 'China']
 locale: 'ja'
 sourceSlug: 'moloch'

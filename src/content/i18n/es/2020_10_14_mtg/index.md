@@ -4,7 +4,7 @@ description: "Monetización y problemas de la comunidad en el juego de cartas co
 pubDate: 2020-10-14
 category: Culture
 tags: ['business', 'games']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_10_14_mtg/m_1.webp'
 featured: false
 locale: 'es'
 sourceSlug: 'mtg'
@@ -21,7 +21,7 @@ Magic\: The Gathering es un negocio lucrativo de juegos de cartas que se ha enfr
 
 Si es la carta [Black Lotus](https://mtg.gamepedia.com/Black_Lotus 'black') del juego de cartas coleccionables [Magic: The Gathering,](https://en.wikipedia.org/wiki/Magic:_The_Gathering 'MTG') Quizá puedas comprar uno por 27\.000 dólares\.
 
-![post](./m_1.webp)
+![post](../../../blog/2020_10_14_mtg/m_1.webp)
 
 Y eso incluso podría ser una ganga\, teniendo en cuenta una copia vendida por [$166,000 at auction](https://www.ebay.com/itm/1993-Magic-The-Gathering-MTG-Alpha-Black-Lotus-R-A-BGS-9-5-GEM-MINT-PWCC-/143136537077?_trksid=p2047675.m43663.l10137&nordt=true&rt=nc&orig_cvip=true 'ebay') [^1]\. Son 166\.000 dólares por un trozo de cartón del tamaño de una carta de juego\.
 
@@ -43,7 +43,7 @@ Las cartas se publican en el **Mercado principal** por [Wizards](https://magic.w
 
 Por ejemplo\, podrías comprar un paquete con la esperanza de conseguir una carta rara ["Uro, Titan of Nature's Wrath"](https://scryfall.com/card/thb/229/uro-titan-of-natures-wrath 'Uro') y en su lugar consigue ["Bronzehide Lion."](https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=476461 'Lion')
 
-![post](./m_2.webp)
+![post](../../../blog/2020_10_14_mtg/m_2.webp)
 
 Como mucha gente prefiere comprar una tarjeta sin depender de la suerte\, también existe una **mercado secundario\.** Los traders compran cartas y las revenden con un margen de marge\. Con el tiempo\, eso incluso se ha convertido en esencialmente un [stock market for the cards](https://www.mtgstocks.com/news 'MTG')\, con su propio club de especuladores\. Como se señaló antes\, algunas de estas cartas pueden ser extremadamente caras\.
 
@@ -65,7 +65,7 @@ Las reglas de los comandantes están reguladas por una comunidad ["rules committ
 
 El comité no hace cumplir las reglas\, ya que eso sería imposible para partidas casuales\, pero sirve como una guía estándar que los jugadores siguen\. Por ejemplo\, podría decir que \"Uro\" está prohibido\. Si jugaras una partida de Commander contra un desconocido y usaras Uro\, probablemente no querría continuar\. Sin embargo\, también podrías aceptar jugar con las cartas que quieras\, incluido Uro\.
 
-![post](./m_3.webp)
+![post](../../../blog/2020_10_14_mtg/m_3.webp)
 
 Ahora sabemos qué es Magic\: un juego de cartas coleccionables donde se imprimen cartas nuevas regularmente\, los precios de las cartas se fijan por el mercado y diferentes restricciones de formato dan lugar a distintos metajuegos\. Vamos a ampliar ese último concepto\.
 
@@ -83,7 +83,7 @@ En un meta equilibrado\, habrá un par de mazos que sean \"mejores\" que el rest
 
 En un meta desequilibrado\, solo habrá un mazo que sea \"mejor\" que todo lo demás\. Por ejemplo\, tu mazo elemental podría tener probabilidades favorables frente a cualquier otro mazo\. Cuando esto ocurre\, es racional [everyone to start playing that deck if they want to win.](https://magic.gg/news/2020-season-grand-finals-metagame-breakdown 'mtg') Como puedes imaginar\, **Esto se vuelve aburrido rápido\.**
 
-![post](./m_4.webp)
+![post](../../../blog/2020_10_14_mtg/m_4.webp)
 
 Cuando esto ocurre\, una solución es prohibir las cartas que sean \"demasiado poderosas\"\. Como se mencionó antes\, para los formatos oficiales\, Wizards indicará qué cartas ya no pueden usarse\. Para el formato no oficial \"Commander\"\, el comité de normas de la comunidad elegirá las cartas\. **Los baneos son una forma de equilibrar\.**
 
@@ -93,15 +93,15 @@ Aquí es donde comienza la controversia actual\.
 
 La mayoría de las veces\, las nuevas cartas impresas forman parte de un multiverso más grande de Magic\, siendo Magic IP y creadas originalmente para Magic\. Magic está mayormente basada en fantasía\, lo que ha dado lugar a cartas como ángeles y dragones\:
 
-![post](./m_5.webp)
+![post](../../../blog/2020_10_14_mtg/m_5.webp)
 
 Más recientemente [^13]\, Wizards ha estado realizando más colaboraciones externas\. Esto suele implicar crear una tarjeta personalizada basada en otras IP\. Por ejemplo\, [a My Little Pony series](https://magic.wizards.com/en/articles/archive/news/magic-extra-life-2019-10-03 'pony') Para recaudar fondos para la caridad\:
 
-![post](./m_6.webp)
+![post](../../../blog/2020_10_14_mtg/m_6.webp)
 
 O un [Godzilla themed series as alternate art for some cards:](https://articles.starcitygames.com/news/all-19-godzilla-series-monster-cards-revealed/ 'zilla')
 
-![post](./m_7.webp)
+![post](../../../blog/2020_10_14_mtg/m_7.webp)
 
 Ahora\, ponte en el lugar del Comité de Reglas del Comandante\. Cuando se publiquen estas cartas\, ¿deberías permitirlas en ese formato\?
 
@@ -114,7 +114,7 @@ Históricamente\, los magos evitaban la ambigüedad haciendo algunas cosas\:
 
 **Aquí está la controversia\.** Wizards acaba de lanzar un [limited edition set of new cards in partnership with TV show The Walking Dead.](https://secretlair.wizards.com/us/product/612738/secret-lair-x-the-walking-dead 'dead') Estas cartas únicas solo están disponibles durante un tiempo antes de que Wizards deje de imprimirlas\. Es importante destacar que tienen borde negro \(\"legal\"\)\, pero no están disponibles en ningún otro lugar salvo comprando este box set\. Como era de esperar\, el box set tiene un precio elevado\.
 
-![post](./m_8.webp)
+![post](../../../blog/2020_10_14_mtg/m_8.webp)
 
 **¿Deberían estas tarjetas ser legales\?** La web oficial de Wizards dice\:
 
@@ -124,13 +124,13 @@ Para aclarar lo anterior\, Wizards está señalando explícitamente el formato c
 
 Puedes ver por qué ha sido así [made many players upset, ](https://twitter.com/wizards_magic/status/1312987380115148805?s=20 'twitter') [calling for the cards to be banned immediately.](https://www.reddit.com/r/magicTCG/comments/j1glk8/petition_for_the_commander_rules_committee_to_ban/ 'ban')
 
-![post](./m_9.webp)
+![post](../../../blog/2020_10_14_mtg/m_9.webp)
 
 Espera\, dices\, pensé que el _Comité de Reglas_ ¿decidió qué cartas estaban permitidas o no\? De hecho\, algunos jugadores mantenían la esperanza de que el Comité actuara de forma independiente y declarara las cartas criminales en Commander\.
 
 [Unfortunately not.](https://mtgcommander.net/index.php/2020/10/02/rc-statement-on-secret-lair-the-walking-dead/ 'dead')
 
-![post](./m_10.webp)
+![post](../../../blog/2020_10_14_mtg/m_10.webp)
 
 Probablemente tengas alguna pista de los incentivos contradictorios aquí\. Echemos un vistazo más de cerca a la [main complaints first](https://twitter.com/ghirapurigears/status/1313145100319494145?s=20 'twitter') [^15]\:
 
@@ -142,15 +142,15 @@ Probablemente tengas alguna pista de los incentivos contradictorios aquí\. Eche
 
 Y ahora veamos la justificación de Wizard\:
 
-![post](./m_11.webp)
+![post](../../../blog/2020_10_14_mtg/m_11.webp)
 
 Ah\, espera\, imagen equivocada\:
 
-![post](./m_12.webp)
+![post](../../../blog/2020_10_14_mtg/m_12.webp)
 
 Sí\, no tengo nada\, es una forma bastante evidente de sacar dinero\. Si consideras el objetivo de Hasbro \(empresa matriz de Wizards\) de [doubling Wizards revenue over the next five years,](https://investor.hasbro.com/static-files/88b2a83b-2368-463a-9489-6cf31dc209ac 'wizards') No es de extrañar que el equipo de Wizards esté incentivado a explorar formas de vender más cartas a un precio más alto [^16]\. Mayor volumen\, precios más altos\, múltiplo de valoración más alto\. Si la gente está dispuesta a pagar 100 dólares por una carta\, ¿por qué no imprimir las cartas y venderlas directamente en vez de a través de sobres\?
 
-![post](./m_13.webp)
+![post](../../../blog/2020_10_14_mtg/m_13.webp)
 
 Los magos podrían haber 1\) hecho las cartas con bordes plateados y \"ilegales\"\, o incluso 2\) hecho versiones artísticas alternativas de otras cartas \"legales\"\. No lo hicieron 1\) porque las cartas de borde plateado se venden menos que las cartas de borde negro\, y no lo hicieron 2\) por alguna razón mágica que no entiendo\, pero probablemente dinero
 

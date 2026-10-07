@@ -4,7 +4,7 @@ description: "Você realmente pode morrer de coração partido?"
 pubDate: 2019-06-08
 category: Culture
 tags: ['science']
-heroImage: './broken_1.png'
+heroImage: '../../../blog/2019_06_08_heart/broken_1.png'
 locale: 'pt-BR'
 sourceSlug: 'heart'
 sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
@@ -20,7 +20,7 @@ No mundo da não\-ficção\, e no extremo oposto do espectro\, Nautilus publicou
 
 O artigo segue citando uma meta\-análise desse chamado \"efeito viuvez\"\. Acredito [this](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0023465 'paper') é o artigo de 2011 referenciado\, embora eu não possa confirmar\, pois o Nautilus infelizmente não incluiu fontes\. Os principais achados estão resumidos na tabela abaixo\. Se estou lendo corretamente\, a coluna RR implica o risco relativo de morte para essa linha\, por exemplo\, um homem tem 1\,22 vezes mais chance de morrer após a morte do cônjuge em comparação com o homem médio\. [^3] [^4]
 
-![post](./broken_1.png)
+![post](../../../blog/2019_06_08_heart/broken_1.png)
 
 Aparentemente\, isso acontece com uma frequência semi\-frequente\:
 

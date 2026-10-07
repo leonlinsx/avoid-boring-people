@@ -4,7 +4,7 @@ description: "守门人的守门人会自己设门槛吗？"
 pubDate: 2020-10-28
 category: Culture
 tags: ['finance', 'behaviour']
-heroImage: './g_5.webp'
+heroImage: '../../../blog/2020_10_28_gatekeep/g_5.webp'
 locale: 'zh-Hans'
 sourceSlug: 'gatekeep'
 sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
@@ -21,23 +21,23 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 一个初学者，满怀憧憬、充满活力，会来寻求如何入门某个学科的建议。
 
-![post](./g_1.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_1.webp)
 
 而且还有许多专家会 [emerge from the depths](https://youtu.be/Y2fwe0rnHak?t=118 'balrog') 告诉他们这不可能完成，应该回去花几年时间学习先修课程，并且他们应该为一开始提出这个问题而感到尴尬。 _“有些人真是厚颜无耻，竟然以为能逃避缴纳会费。”_
 
 甚至有些“专家”在别人开设课程帮助初学者时，总能找到抱怨的理由。
 
-![post](./g_2.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_2.webp)
 
 我们经常遇到门槛设法，而这大多是为了维护地位。确实有一些有效的门槛设置，稍后我会详细说到。但几乎总是为了排斥别人、刻薄而做。有趣的是，守门人似乎从未意识到自己也可能被排除在外。
 
 比如，你可以说，除非你学好微积分、统计学和线性代数，否则无法开始机器学习，就像上面评论者说的那样。
 
-![post](./g_3.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_3.webp)
 
 你也可以说，除非你学会群论，否则你无法开始线性代数，怎么会这样 [matrices are a ring](https://www.youtube.com/watch?v=_RTHvweHlhE 'ring')， 和 [when to work with linear groups or not](https://www.youtube.com/watch?v=AJTRwhSZJWw 'group') [^1]
 
-![post](./g_4.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_4.webp)
 
 你还可以进一步设限，说上述情况取决于 [set theory](https://plato.stanford.edu/entries/set-theory/ 'set')\, [Peano axioms](https://en.wikipedia.org/wiki/Peano_axioms 'Peano')， 和 [philosophy](https://plato.stanford.edu/entries/philosophy-mathematics/ 'philo')\.不知道评论者本科期间花了多少时间学习这些内容。
 
@@ -51,7 +51,7 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 不过，要注意守门人说的也不完全错。 **事实上，他们的建议往往很有道理。** 比如，在学习机器学习时掌握线性代数会非常有帮助。如果你想成为专家，就必须掌握所有所需的数学知识 [^3]\.但人为阻止人们开始学习一门课对任何人都没有帮助。更好的回应是“是的，这里有一些更简单的课程，入门后回来复习基础。”启用而不是禁用。
 
-![post](./g_5.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_5.webp)
 
 如果你一直偏向于把关，我建议你思考你是在帮助社区，还是在帮助自己 [^4]\.如果你是自愿选择阅读这份通讯，你可以做得更好。
 
@@ -77,7 +77,7 @@ Markus和Lasse探讨了导致这些流动性低迷的原因，找出了资本成
 
 他们首先关注保证金要求 [^8]并注意它们如何随着危机变化。正如预期的那样，利润率（这里以成本为单位）在不确定性增加时流动性降低，不确定性减少时利润率变高。
 
-![post](./g_6.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_6.webp)
 
 减少流动性的另一种方法是减少参与者的资本：
 
@@ -85,7 +85,7 @@ Markus和Lasse探讨了导致这些流动性低迷的原因，找出了资本成
 
 这可能导致流动性低落，有两种方式：
 
-![post](./g_7.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_7.webp)
 
 > 首先，如果市场流动性不足导致利润率上升，投机者财富减少导致市场流动性下降，导致利润率上升，进一步收紧投机者的资金限制，便形成“保证金螺旋”，如此类推
 

@@ -5,7 +5,7 @@ pubDate: 2020-07-01
 category: Culture
 tags: ['investing', 'tech', 'startups']
 featured: true
-heroImage: './story_6.webp'
+heroImage: '../../../blog/2020_07_01_stories/story_6.webp'
 locale: 'fr'
 sourceSlug: 'stories'
 sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
@@ -21,7 +21,7 @@ Commençons par une histoire à propos d’histoires\.
 
 [Bestselling author Kurt Vonnegut](https://en.wikipedia.org/wiki/Kurt_Vonnegut 'Kurt') est connu pour Abattoir\-Cinq\, Le Berceau du Chat et de nombreuses autres œuvres\. Dans son autobiographie\, [he claimed that this was his greatest contribution to culture:](https://books.google.com/books?id=Zd_9o3uyoVsC&pg=PA285&dq=vonnegut+shape+story+thesis&hl=en&sa=X&ei=tasCU8yjEML-oQSXloKIBQ#v=onepage&q=vonnegut%20shape%20story%20thesis&f=false 'book')
 
-![post](./story_1.webp)
+![post](../../../blog/2020_07_01_stories/story_1.webp)
 
 Alors\, _Les histoires ont des formes\,_ dit\-il\.
 
@@ -29,7 +29,7 @@ Qu’est\-ce que ça veut dire \? Kurt explique [^1]\:
 
 Imaginez que vous aviez un graphique\, avec la bonne et la mauvaise fortune d’un côté\, et de l’autre côté montrant l’évolution de l’histoire du début à la fin\.
 
-![post](./story_2.webp)
+![post](../../../blog/2020_07_01_stories/story_2.webp)
 
 On pourrait tracer n’importe quelle histoire sur ce graphique pour en voir la forme\. Et si on trace toutes les histoires du monde\, quelques motifs communs apparaîtraient\.
 
@@ -37,25 +37,25 @@ Par exemple\, dans [The Godfather,](https://en.wikipedia.org/wiki/The_Godfather 
 
 Nous allons tracer cela sur le graphique et appeler cela une histoire du type « homme dans un trou »\. L’homme s’en sort bien\, tombe dans un trou\, puis sort et va mieux qu’avant\.
 
-![post](./story_3.webp)
+![post](../../../blog/2020_07_01_stories/story_3.webp)
 
 En revanche\, dans [About Time,](<https://en.wikipedia.org/wiki/About_Time_(2013_film)> 'About Time') [^2] Les personnages principaux tombent amoureux\, se perdent\, puis se retrouvent après une série d’événements\.
 
 On appellera cela une histoire du type « garçon rencontre fille »\. Comme vous pouvez l’imaginer\, c’est typique de nombreux films d’amour\.
 
-![post](./story_4.webp)
+![post](../../../blog/2020_07_01_stories/story_4.webp)
 
 Et dans une histoire telle que [The Metamorphosis,](https://en.wikipedia.org/wiki/The_Metamorphosis 'Kafka') Les choses ne font qu’empirer pour notre protagoniste alors qu’il se transforme en insecte et meurt\. Ce serait une « tragédie »\.
 
-![post](./story_5.webp)
+![post](../../../blog/2020_07_01_stories/story_5.webp)
 
 En plus des formes ci\-dessus\, Kurt pensa à quelques autres qui pourraient fonctionner\. Une histoire « de la misère à la richesse » pourrait impliquer une montée régulière\, un ["icarus" story](https://en.wikipedia.org/wiki/Icarus 'icarus') Cela peut impliquer une montée puis une descente\, et un ["oedipus" story](https://en.wikipedia.org/wiki/Oedipus 'oedipus') Cela peut impliquer une chute\, une ascension\, puis une chute à nouveau\.
 
-![post](./story_6.webp)
+![post](../../../blog/2020_07_01_stories/story_6.webp)
 
 En s’appuyant sur cette idée\, [a team of researchers from Vermont and Adelaide used machine learning to classify 1,327 famous stories](https://arxiv.org/pdf/1606.07772.pdf 'paper') sur [Project Gutenberg](https://www.gutenberg.org/ 'proj')\. Ils ont constaté que la majorité des histoires pouvaient effectivement être regroupées en quelques types majeurs\. Voir la note de bas de page pour plus de détails sur leur méthodologie [^3]\.
 
-![post](./story_7.webp)
+![post](../../../blog/2020_07_01_stories/story_7.webp)
 
 Ils ont remplacé « garçon rencontre fille » par « cendrillon » ici\, mais cela montre essentiellement que Vonnegut avait raison [^4]\. _Les histoires ont des formes\, et il y en a quelques classiques\._
 
@@ -75,7 +75,7 @@ Considérez cette entreprise au 30 avril 2018 \:
 
 La société X est une entreprise internet\, qui gagne principalement de l’argent grâce à ses abonnements aux applications grâce à son monopole dans une catégorie grand public en expansion\. Elle compte 7 millions d’abonnés au total\, dont 3 millions sont abonnés à son application principale\. Son chiffre d’affaires augmente de \~30 \% d’une année sur l’autre\. Les marges EBITDA \(un type de mesure de bénéfices\) sont de 40 \%\. Le cours de l’action est à un niveau historiquement élevé\, ayant plus que doublé au cours de l’année écoulée [^6]\.
 
-![post](./story_8.webp)
+![post](../../../blog/2020_07_01_stories/story_8.webp)
 
 Ça a l’air plutôt bien\, ça vaut peut\-être le coup de faire des recherches pour voir si tu veux l’avoir\.
 
@@ -83,7 +83,7 @@ Considérez également la même entreprise au 1er mai 2018 \:
 
 L’entreprise X est une entreprise internet\, qui tire principalement de l’argent grâce à ses abonnements aux applications grâce à son monopole dans une catégorie grand public en expansion\. Elle compte 7 millions d’abonnés au total\, dont 3 millions sont abonnés à son application principale\. Son chiffre d’affaires augmente de \~30 \% d’une année sur l’autre\. Les marges EBITDA \(un type de mesure de bénéfices\) sont de 40 \%\. Le cours de l’action est à un niveau historiquement élevé\, ayant plus que doublé au cours de l’année écoulée\. _[Facebook just announced they're planning to enter the category](https://techcrunch.com/2018/05/01/facebook-dating/ 'FB')_
 
-![post](./story_9.webp)
+![post](../../../blog/2020_07_01_stories/story_9.webp)
 
 Les fondamentaux de l’entreprise n’ont pas changé\, mais cette baisse de prix de 22 \% en une journée en est clairement visible _quelque chose_ a\. C’est\, bien sûr\, le _Histoire_ que les investisseurs parlent de l’action\.
 
@@ -95,11 +95,11 @@ Le 1er mai\, l’histoire a pris un tourne\-à\-chemin\. On pouvait soit dire qu
 
 Ça te dit quelque chose \?
 
-![post](./story_10.webp)
+![post](../../../blog/2020_07_01_stories/story_10.webp)
 
 Dans ce cas\, l’entreprise était Match\.com\, la société mère de Tinder\, et elle allait doubler à nouveau en cours d’action environ un an après cette baisse\. Le garçon rencontre fille a fonctionné\.
 
-![post](./story_11.webp)
+![post](../../../blog/2020_07_01_stories/story_11.webp)
 
 Le 1er mai\, les deux versions étaient également valables\, et vous aviez des investisseurs avisés prenant part et après cette transaction\. Il est important de noter que le cours de l’action a réagi avant même qu’un véritable changement n’ait lieu dans les affaires de Match\. L’histoire avait atteint un carrefour\, et les investisseurs choisissaient désormais des camps différents\. Ceux qui pensaient que ce serait comme « Icare » ont perdu\, et ceux qui pensaient le contraire ont gagné\. À mesure que les histoires changent\, les prix des actions changent aussi\.
 
@@ -169,7 +169,7 @@ Il était une fois une personne qui quitta sa maison pour explorer le monde\. El
 
 Ça te dit quelque chose \?
 
-![post](./story_12.webp)
+![post](../../../blog/2020_07_01_stories/story_12.webp)
 
 Mais quelle histoire est\-ce \?
 

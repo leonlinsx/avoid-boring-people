@@ -4,7 +4,7 @@ description: "Los hombres lagarto crearon el gran colisionador de hadrones"
 pubDate: 2019-02-18
 category: Culture
 tags: ['behaviour']
-heroImage: './b_1.png'
+heroImage: '../../../blog/2019_02_18_why/b_1.png'
 locale: 'es'
 sourceSlug: 'why'
 sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
@@ -14,7 +14,7 @@ sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
 
 Hay muchas creencias \"locas\" de las que el público general se reiría ahora\. [Flat earthers.](https://en.wikipedia.org/wiki/Modern_flat_Earth_societies 'wiki page') [Moon landing deniers.](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories 'another wiki page') [Shape-shifting lizard people.](https://en.wikipedia.org/wiki/Reptilian_humanoid 'more wiki pages') [^1] Sin embargo\, la mayoría de la gente no piensa que sea una locura [70% of Americans](http://www.pewforum.org/religious-landscape-study/ 'religious breakdown') creen en alguna forma de ser omnipotente que gobierna la existencia\, ni que la mayoría de la gente [^2] Piensa que la vida implica algún tipo de línea de montaje microscópica [unzipping, squishing together, and re-zipping](https://www.youtube.com/watch?v=yqESR7E4b_8&t=1m50s 'DNA replication video')\. Lo que también me resulta interesante es cómo cada fe tendrá creyentes fervientes dispuestos a defender sus creencias contra herejes\. Ten en cuenta que uso la palabra \'fe\' de forma liberal\, en ámbitos religiosos\, científicos\, filosóficos u otros\. Fíjate en cómo pueden acalorarse las discusiones sobre política\, religión o la mejor tienda de bagels de Nueva York\.
 
-![post](./b_1.png)
+![post](../../../blog/2019_02_18_why/b_1.png)
 
 ¿Por qué entonces creemos en los problemas que forman gran parte de nuestra identidad\? No estoy seguro de si tenemos una buena razón\. Para muchos\, el entorno en el que crecieron determina la mayoría de sus creencias\. Hay una correlación entre [having religious parents and becoming religious](http://www.pewforum.org/2016/10/26/links-between-childhood-religious-upbringing-and-current-religious-identity/ 'religious upbringing')\, alguna evidencia de que [political views also transmit to children](https://www.researchgate.net/publication/231788296_Politics_Across_Generations_Family_Transmission_Reexamined 'politics across gens') [^3]\, e incluso una posibilidad [your career choice might not really be your own.](https://waitbutwhy.com/2018/04/picking-career.html 'was it really me?') Esto es problemático si preferimos vivir una vida por nuestras propias decisiones y no por defecto\. [Unexamined life not worth living and all that.](https://www.theguardian.com/theguardian/2005/may/12/features11.g24 'unexamined life')
 

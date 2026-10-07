@@ -5,7 +5,7 @@ pubDate: 2020-09-16
 category: Investing
 tags: ['risk']
 evergreen: false
-heroImage: './c_8.webp'
+heroImage: '../../../blog/2020_09_16_capital/c_8.webp'
 locale: 'ja'
 sourceSlug: 'capital'
 sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
@@ -29,7 +29,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 もしアイデアがあったとしたらどうでしょうか。それは新しいビジネスアイデアかもしれませんし、拡張計画かもしれませんし、あるいはあなたが考えていた投資かもしれません。重要なのは、それが資金(資本)を必要とし、投資した金額よりも多くのリターンが得られることです。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_16_capital/c_1.webp)
 
 この資金はどのようにして得るのですか?資本の主な源泉は二つあります:債務と株式[^1]です。
 
@@ -39,13 +39,13 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 これら二つの主要な資本源の混合コストが組み合わさって、あなたの資本コストとなります。これが、アイデアを試す際にかかる平均的なコストです。例えば、資本コストが5%なら、毎年5%を「失っている」ことになります。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_16_capital/c_2.webp)
 
 また、資本コスト以上の利益を得たいという意味も導かれます。年間5%の損失があるなら、プラスのリターンを得るためには5%以上の利益が必要です。もしビジネスが年間1%のリターンで5%のコストを上げているなら、時間とともに損失を出します。
 
 これは簡略化した説明ですが、記事の残りの部分に十分な直感を与えるはずです。もっと読みたい方は、評価の王者であるNYUのダモダラン教授[has a paper explaining this in detail](http://people.stern.nyu.edu/adamodar/pdfiles/papers/costofcapital.pdf 'Cost')を参考にしてください。以下の図例は、上で述べた枠組みを厳密に拡張しています。
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_16_capital/c_3.webp)
 
 言い換えれば、私たちはお金を稼ぎたいのです。お金が必要です。そのお金にはコストが伴います。それが資本のコストです。
 
@@ -55,15 +55,15 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 これは10年TIPS利回りのうち過去10年間のこと[pulled from the Fed](https://fred.stlouisfed.org/series/DFII10 'Fed') [^4]です。TIPSをご存じない方のために説明すると、これは一[inflation linked, "safe" type of debt](https://www.investopedia.com/terms/t/tips.asp 'tips')です。ご覧の通り、利回りは現在マイナスで、時間とともに減少傾向にあります。
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_16_capital/c_4.webp)
 
 これは30年固定金利住宅ローンの過去10年間の費用です[also pulled from the Fed](https://fred.stlouisfed.org/graph/?g=NUh 'Fed') [^5]。住宅ローンの借入コストも下がっているのが見て取れます。
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_16_capital/c_5.webp)
 
 もし私が10年だけを見ているだけで選りすぐりだと思うなら、過去54年を遡って10年物の国債金利を見てみましょう。[Volcker killed inflation](https://en.wikipedia.org/wiki/Paul_Volcker 'Volcker')前の金利の急騰と、その後も続く下落傾向が見て取れます。
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_16_capital/c_6.webp)
 
 この時点で、**債務**のコストが下がったことは示していると思います。では、株式のコストはどうでしょうか?
 
@@ -71,7 +71,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 [Damodaran has a table in pg 142 of this report](https://poseidon01.ssrn.com/delivery.php?ID=425124115112025116020118020011112064052051040011030092064114074119081098025103109118097012061055040113125093125106096026106103051022049037045010068078022028103006044010102031118000094024104112069074071073106074113116005029084117013074087122064008&EXT=pdf 'Damodaran')時間とともにリスクプレミアムがわずかに上昇している様子が示されています。より視覚的なバージョンとしては、[KPMG has the numbers below.](https://assets.kpmg/content/dam/kpmg/nl/pdf/2020/services/equitiy-market-risk-premium-research-summary-march-2020.pdf 'KPMG')完全に一致するわけではありませんが、比較的一貫しています。
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_16_capital/c_7.webp)
 
 ここ数ヶ月でわずかな増加はありますが、全体的な株式リスクプレミアムは債務コストの減少ほど大きくは上がりていません。これは、純資産のコストが横ばいか減少しているか、減少していることを意味します。
 
@@ -89,7 +89,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 もしお金を持っていて貸し出すなら、それは市場原価で貸していることになります。もしそれを広範な経済に投資すれば、市場の成長を得ています。もしそのコストが平均成長率(リターン)より低い場合、以前の高利回り資産に比べて利回りが低い資産を手に入れたことになります。逆に、コストが成長率より高い場合は逆です。
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_16_capital/c_8.webp)
 
 これは将来の成長や富の格差に異なる影響をもたらします。富裕層はより多くの貯蓄をし、コストの低下は富裕層から貧困層への富の移転をもたらします。これは資産投機の増加によって相殺され、富は逆方向にシフトされます。この純効果はそれぞれの相対的な規模に依存します。ペティスはこの点を述べていませんが、私は投機の部分が前者の効果を十分に相殺しており、それが富の格差拡大の原因だと考えます。**
 
@@ -99,7 +99,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 実際のデータはよりノイズが多いです。[Fed data on business applications](https://fred.stlouisfed.org/series/BUSAPPSAUS 'Biz')は私の仮定を裏付けているようですが、[^7][that the quality of businesses has declined](https://www.census.gov/newsroom/blogs/research-matters/2018/02/bfs.html 'decline')も読んだことがあります。[inflation of valuations for private companies trying to raise money](https://news.crunchbase.com/news/its-not-just-you-seed-rounds-are-actually-getting-bigger/ 'inflatoin')に基づくと、より多くの人が低コストでリスクを取っていると私は考えていますが、もし異論があれば教えてください。
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_16_capital/c_9.webp)
 
 リスク許容度の向上は、投資可能資産への投機の増加も意味します。** これが、人々がリターンを求めて株式市場をさらに押し上げる中で、公開株式の価格が上昇し続けている理由の一つだと思います。
 
@@ -111,7 +111,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 二つ目は、資本コストの低下がセクターごとに不均等に分散していると聞いたことです。** 小規模事業のローンは依然として高額だと言われています。私は専門家ではなく、最初に見[here](https://cdcloans.com/lender/504-rate-history/ 'rate')たデータではそうはならないようですが、これはもっともらしい現象だと考えています。例えば、個人ローンの金利が依然としてプラスであることにずっと苛立ちを感じてきました。平均[^8]の全体的なマイナス金利と比べて。
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_16_capital/c_10.webp)
 
 つまり、すべての人が今や**リスク許容度を高め、よりリスクの高い活動に参加すべきだということです。基礎コストが下がったからです。それが株式への投資を増やすのか、代替資産クラスへの投資を増やすのか、それとも友人の新しいビジネスに投資するのかは、あなた次第です。いつものように、これは投資アドバイスではなく、上記の意見に対する反論も興味があります。
 

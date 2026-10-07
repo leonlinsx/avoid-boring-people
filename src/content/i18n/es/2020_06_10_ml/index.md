@@ -4,7 +4,7 @@ description: "Explicación de las redes neuronales"
 pubDate: 2020-06-10
 category: Technology
 tags: ['AI']
-heroImage: './m_13.webp'
+heroImage: '../../../blog/2020_06_10_ml/m_13.webp'
 locale: 'es'
 sourceSlug: 'ml'
 sourceHash: '64e8f42b756e4bd61f396d4f2062d356d37f6d015af99ef364cf1236ab1c95cc'
@@ -20,21 +20,21 @@ Ahora oímos hablar constantemente de aprendizaje automático \(ML\)\, deep lear
 
 De los intereses de búsqueda\:
 
-![post](./m_1.webp)
+![post](../../../blog/2020_06_10_ml/m_1.webp)
 
 A menciones en libros\:
 
-![post](./m_2.webp)
+![post](../../../blog/2020_06_10_ml/m_2.webp)
 
 A los titulares de los periódicos sobre robots que toman el control de nuestros empleos\:
 
-![post](./m_3.webp)
+![post](../../../blog/2020_06_10_ml/m_3.webp)
 
 Hay un interés creciente en el aprendizaje automático\, y parece que cada dos días surge una nueva startup que recauda 100 millones de dólares gracias a su nueva tecnología de aprendizaje automático\.
 
 Sin embargo\, la mayoría de la gente se intimida con el aprendizaje automático\, lo equipara con magia que solo hacen las startups de vanguardia\. No ayuda que las matemáticas puedan ser intimidantes\:
 
-![post](./m_4.webp)
+![post](../../../blog/2020_06_10_ml/m_4.webp)
 
 Hoy quiero ayudaros a tener una mejor intuición sobre el aprendizaje automático\, primero observando una empresa que utiliza el aprendizaje automático y luego repasando lo básico de cómo funciona una red neuronal\. Mi objetivo al final de esto es que os asustéis menos cuando alguien usa el término \"ML\" como si fuera demasiado guay para el colegio\.
 
@@ -64,33 +64,33 @@ Ahora que sabemos dónde se usa el ML\, vamos a ver cómo puede funcionar el ML\
 
 Las redes neuronales se modelan a partir de las neuronas del cerebro\, así que será útil entender cómo funciona esa conexión\. Así es como es una neurona\:
 
-![post](./m_5.webp)
+![post](../../../blog/2020_06_10_ml/m_5.webp)
 
 Mientras aún estemos [aren't quite sure how the brain works, a leading theory is that the neurons can take inputs, do some computation, and then send outputs.](https://www.quantamagazine.org/neural-dendrites-reveal-their-computational-power-20200114/ 'neural') [^3] Una forma simplificada de representar la interacción de dos neuronas podría ser así\. Imagina que el círculo es el cuerpo principal\, y esa línea es el axón que conecta con otras neuronas\:
 
-![post](./m_6.webp)
+![post](../../../blog/2020_06_10_ml/m_6.webp)
 
 Y si tuvieras tres pares de neuronas\, podría verse así\:
 
-![post](./m_7.webp)
+![post](../../../blog/2020_06_10_ml/m_7.webp)
 
 Y si las neuronas pudieran interactuar entre sí\, podría verse así [^4]\:
 
-![post](./m_8.webp)
+![post](../../../blog/2020_06_10_ml/m_8.webp)
 
 Tengamos esa imagen en cuenta mientras pensamos en cómo podría relacionarse esto con los ordenadores y el aprendizaje automático\.
 
 Tomemos una ecuación matemática sencilla\, como 2 x 3 \= 6\. Pongamos \"2\" como datos de entrada\, \"x 3\" como función que queremos realizar y \"6\" como datos de salida\. Esto nos da algo así\:
 
-![post](./m_9.webp)
+![post](../../../blog/2020_06_10_ml/m_9.webp)
 
 ¿Y si tuvieras más de un dato de entrada\? Podrías hacer \(2 \+ 5\) x 3 \= 21\. Esto nos da algo así\:
 
-![post](./m_10.webp)
+![post](../../../blog/2020_06_10_ml/m_10.webp)
 
 Y una vez más podemos combinar múltiples funciones que interactúan en múltiples entradas\, así\:
 
-![post](./m_11.webp)
+![post](../../../blog/2020_06_10_ml/m_11.webp)
 
 Puedes ver cómo esto se parece al diagrama de interacción neuronal anterior\, de ahí el nombre \"red neuronal\"\.
 
@@ -100,7 +100,7 @@ De forma similar puedes hacer algún tipo de función matemática sobre esos pun
 
 Esto se parece\:
 
-![post](./m_12.webp)
+![post](../../../blog/2020_06_10_ml/m_12.webp)
 
 En este ejemplo\, podemos ver que se devolvió un \"1\" para la salida originalmente denotada como X\. Se devolvió \"0\" para las otras salidas\. Esto nos indica que X es el valor predicho\, basado en las entradas de los 3 píxeles \(0\, 100\, 255\) que le damos\.
 
@@ -108,7 +108,7 @@ Puedes imaginar ampliar ese marco para todas las letras del alfabeto y para tant
 
 Tampoco estás limitado a solo dos capas de entrada y salida\. También puedes incluir más \"capas ocultas\" que toman la entrada desde la izquierda y luego devuelven una salida a la derecha\. Mientras configures tus funciones de modo que devuelvan \"1\" y \"0\" en la última capa\, estás bien\. Puede haber cualquier número de capas ocultas\, y cada capa puede tener cualquier número de elementos\, sin necesidad de ser igual a la entrada o a la salida\.
 
-![post](./m_13.webp)
+![post](../../../blog/2020_06_10_ml/m_13.webp)
 
 ¡Y eso es todo\! Has visto cómo un proceso puede convertir entradas de datos \(como los valores de píxeles de imágenes\) en salidas \(alfabetos y direcciones\)\. Ahora entiendes cómo funcionan la mayoría de las redes neuronales\. Muchas implementaciones de ML usan redes neuronales\, lo que significa que ahora también conoces el concepto subyacente que impulsa estas empresas de ML\.
 

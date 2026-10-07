@@ -4,7 +4,7 @@ description: "David Dunning explique l’effet qu’il a popularisé"
 pubDate: 2019-02-02
 category: Risk & Decision Making
 tags: ['behaviour']
-heroImage: './d_1.webp'
+heroImage: '../../../blog/2019_02_02_dunning/d_1.webp'
 locale: 'fr'
 sourceSlug: 'dunning'
 sourceHash: 'd34e142b7944bf50802aed3c9c9a83fc9d4a3f8cc637dd12a7277e9d260df7d4'

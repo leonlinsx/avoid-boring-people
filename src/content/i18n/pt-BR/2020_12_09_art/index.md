@@ -4,7 +4,7 @@ description: "O que permaneceu igual e o que mudou na história da arte"
 pubDate: 2020-12-09
 category: Culture
 tags: ['art']
-heroImage: './a_2.webp'
+heroImage: '../../../blog/2020_12_09_art/a_2.webp'
 locale: 'pt-BR'
 sourceSlug: 'art'
 sourceHash: 'a6c47ae85952097514661cd1a1d807471c621d639a7c0b2b4d9f635be7a39e33'
@@ -28,13 +28,13 @@ Eu encontrei [Smarthistory](https://smarthistory.org/) ser um site acessível\, 
 
 Com isso em mente\, vamos analisar três peças com um tema semelhante e ver como o contexto histórico pode nos dar uma melhor compreensão do que o artista tentou fazer\.
 
-![post](./a_1.webp)
+![post](../../../blog/2020_12_09_art/a_1.webp)
 
 Acima vemos três nus reclinados\, um tema popular entre artistas há muito tempo [^1]\. Em ordem horária\, temos um Titiano do século XVI\, um Dominique\-Ingres do início do século XIX e um Manet do final do século XIX\. Todos esses artistas eram famosos naquela época\, e ainda são hoje\. \"Vênus\" era relativamente pouco controversa em sua época\, mas as outras duas \"La Grande Odalisque\" e \"Olympia\" atraíram muito mais críticas\. Por quê\?
 
 Para responder a essa pergunta\, será útil entender o [hierarchy of art genres](http://www.visual-arts-cork.com/history-of-art/hierarchy-of-genres.htm 'hierarchy') Que as pessoas seguiram por séculos\:
 
-![post](./a_2.webp)
+![post](../../../blog/2020_12_09_art/a_2.webp)
 
 Por muito tempo\, o tipo de arte tinha um certo \"rango\"\, e as pessoas automaticamente julgavam uma pintura de naturezas\-mortas como menos importante do que uma pintura de uma cena religiosa\. Não é totalmente surpreendente\, considerando que a igreja foi uma grande patrona da arte na época\.
 
@@ -42,13 +42,13 @@ Vamos dar uma olhada mais de perto em Vênus e no pensamento que Ticiano colocou
 
 Para tornar a pintura visualmente mais interessante\, Ticiano também contrastou a curva do corpo contra as linhas retas do fundo\. Note também como as linhas pretas também direcionam nossa atenção para a figura\. As linhas vermelhas no fundo não são totalmente paralelas por intenção\, pois isso cria [perspective](https://www.tate.org.uk/art/art-terms/p/perspective 'perspective') para a imagem e faz parecer mais 3D\.
 
-![post](./a_3.webp)
+![post](../../../blog/2020_12_09_art/a_3.webp)
 
 Agora vamos olhar para Odalisca \(que significa concubina\) e ver o que permaneceu igual e o que mudou\. A pose é semelhante\, e o uso do tom de pele em Odalisca e Vênus faz com que ambas pareçam realistas\.
 
 Dominique\-Ingres adicionou mais detalhes ao primeiro plano\, como as penas de pavão ou as gemas\. Note também que ele não usa tantas linhas retas para contraste ou perspectiva\. Em vez disso\, a pintura é toda sobre as curvas\:
 
-![post](./a_4.webp)
+![post](../../../blog/2020_12_09_art/a_4.webp)
 
 Se você ficar olhando para o corpo por tempo suficiente\, também começará a sentir que algo está estranho\. O corpo se alongou durante a pose\, com certeza\, mas não parece bastante _também_ Longo\? As proporções da figura não estão exatamente corretas\. Se você olhar para a perna esquerda da figura\, também perceberá que onde ela se conecta no corpo também está errada\. Ingres fez isso intencionalmente para dar ao espectador uma noção mais aguçada da forma da figura\, em comparação com o que seria possível com corpos \"realistas\"\.
 
@@ -56,7 +56,7 @@ Por fim\, Ingres intitulou a obra \"La Grande Odalisque\"\, e não em homenagem 
 
 Agora\, finalmente\, vamos olhar para o trabalho de Manet\. Você pode facilmente ver as referências a Vênus aqui\, desde poses semelhantes\, almofadas e até aquela linha vertical ao fundo para chamar contraste e atenção\.
 
-![post](./a_5.webp)
+![post](../../../blog/2020_12_09_art/a_5.webp)
 
 Ao mesmo tempo\, esta também é uma pintura muito diferente\. A maioria das pessoas diria que tanto Vênus quanto Odalisca pareciam mais \"finalizadas\" e \"realistas\"\, enquanto Olímpia parece incompleta\. Não é terrível\, mas também não é tão \"bonita\" quanto as pinturas anteriores\.
 

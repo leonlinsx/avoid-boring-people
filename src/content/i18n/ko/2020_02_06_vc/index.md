@@ -4,7 +4,7 @@ description: "창업자들이 벤처 캐피털에 대해 알아야 할 점"
 pubDate: 2020-02-06
 category: Investing
 tags: ['startups', 'vc']
-heroImage: './v_1.webp'
+heroImage: '../../../blog/2020_02_06_vc/v_1.webp'
 locale: 'ko'
 sourceSlug: 'vc'
 sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
@@ -34,7 +34,7 @@ sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
 
 참고로\, 위보다 수익 분포에 대해 더 보수적이더라도 100배 수익률은 여전히 성공을 가져다줄 것입니다\:
 
-![post](./v_1.webp)
+![post](../../../blog/2020_02_06_vc/v_1.webp)
 
 > 창립 팀을 어떻게 평가하나요\? 물론 벤처 캐피털마다 다르지만\, 몇 가지 공통적인 조사 영역이 있습니다\:
 
@@ -78,7 +78,7 @@ sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
 
 [Carta](https://carta.com/blog/getting-funded-how-long-does-it-actually-take/ 'carta') 그리고 [Crunchbase](https://news.crunchbase.com/news/the-time-between-vc-rounds-is-shrinking/ 'Crunchbase') 또한 꽤 비슷한 시기를 보여줍니다\.
 
-![post](./v_2.webp)
+![post](../../../blog/2020_02_06_vc/v_2.webp)
 
 > a16z에서 기업가들이 저지르는 큰 실수 중 하나는 공격적인 평가에 너무 적은 금액을 조달하는 것인데\, 이는 바로 절대 해서는 안 되는 일입니다\. 이로 인해 최고 가치평가가 형성되지만\, 다음 라운드를 현재 평가보다 훨씬 높게 올리기 위한 사업 목표를 달성할 재정적 자원이 부족합니다\.
 

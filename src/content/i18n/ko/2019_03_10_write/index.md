@@ -4,7 +4,7 @@ description: "내가 원래 블로그를 시작한 이유"
 pubDate: 2019-03-10
 category: Culture
 tags: ['writing']
-heroImage: './w_3.png'
+heroImage: '../../../blog/2019_03_10_write/w_3.png'
 locale: 'ko'
 sourceSlug: 'write'
 sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
@@ -67,7 +67,7 @@ sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
 
 한동안 생각했던 기능 중 하나는 댓글을 허용할지 여부였습니다\. 하지만 제 경험상 공개 게시물의 댓글란은 스팸이나 무관한 내용으로 전락하는 경향이 있어 사용하지 않기로 했습니다\. 예를 들어\, 최근 저커버그가 페이스북의 새로운 우선순위에 대해 쓴 게시물의 주요 댓글을 참고하세요\:
 
-![post](./w_1.webp)
+![post](../../../blog/2019_03_10_write/w_1.webp)
 
 댓글에 대한 제 생각은 다음과 같습니다 [shared](https://optinmonster.com/to-allow-blog-comments-or-not-heres-what-the-data-shows/ 'nice but not necessary') 작성자 [others](https://avc.com/2019/02/rethinking-avc/ 'avc comments')\. 별도의 중재 포럼이 있으면 이상적이지만\, 이 블로그가 인기를 끌 만큼 인기를 끌 가능성은 낮다고 생각합니다\. 그동안 여기 내용에 대해 논의하고 싶은 분들은 트위터로 이메일이나 메시지를 보내주실 수 있습니다\.
 
@@ -89,7 +89,7 @@ sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
 
 7. Github의 주요 기능 중 하나는 커밋을 통한 업데이트가 어떻게 작동하는지입니다\. 아직도 그 부분을 이해하지 못하고\, 메인 테마의 커밋을 각 파일을 개별적으로 복사하지 않고 저장소로 푸시하는 방법도 모르겠습니다\. 도와주세요\.
 
-![post](./w_2.png)
+![post](../../../blog/2019_03_10_write/w_2.png)
 
 모든 것을 설정하는 데 매우 답답했고\, 위에 있는 이미지를 추가하는 간단한 작업조차 시간이 걸렸습니다\. 웹이 어떻게 작동하는지에 대해 조금씩 배웠고\, 배운 결과물도 보여드릴 수 있어 아직 후회하지 않습니다 [^13]\. 또 다른 놀라운 점은 앞으로 쓸 아이디어와 기사를 공식적으로 기록하는 체계가 생겼다는 것입니다\. 목록을 유지하는 것이 도움이 될 것임을 깨달았기 때문입니다\. 폴 그레이엄이 지적했듯이\, 인터넷이 이 글을 [golden age of the essay](http://www.paulgraham.com/essay.html 'essay')이 아이디어는 제 개인 브랜드와 개인화 논지를 더욱 뒷받침합니다\. 이 아이디어가 어디로 갈지 기대하며 앞으로도 계속 글을 쓰고 싶습니다\.
 

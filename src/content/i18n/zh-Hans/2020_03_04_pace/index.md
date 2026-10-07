@@ -4,7 +4,7 @@ description: "利用节奏层框架解释为什么企业变化快，政府变化
 pubDate: 2020-03-04
 category: System Design
 tags: ['frameworks', 'pace layers']
-heroImage: './p_2.webp'
+heroImage: '../../../blog/2020_03_04_pace/p_2.webp'
 locale: 'zh-Hans'
 sourceSlug: 'pace'
 sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
@@ -30,7 +30,7 @@ sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
 
 1994年， [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand 'Stewart') 关于 [Long Now Foundation](http://longnow.org/ 'Long Now') 提出上述模型，作为思考建筑如何学习和演变的方式 [^1]\.一座建筑可以被看作有多层，每层变化的速度都不同。 **健康的建筑允许层级间有控制的互动，各层以自己的节奏移动。**
 
-![post](./p_1.webp)
+![post](../../../blog/2020_03_04_pace/p_1.webp)
 
 1999年，斯图尔特进一步将该框架扩展到文明领域。 **文明的哪些部分会随着时间发生变化？它们变化的速度有多快？它们是如何相互作用的？**
 
@@ -45,7 +45,7 @@ sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
 - 文化
 - 自然
 
-![post](./p_2.webp)
+![post](../../../blog/2020_03_04_pace/p_2.webp)
 
 时尚移动迅速，自然流动缓慢。斯图尔特描述了这些层次如何相互作用：
 

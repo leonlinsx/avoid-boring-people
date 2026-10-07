@@ -5,7 +5,7 @@ pubDate: 2019-06-30
 category: Technology
 tags: ['finance', 'crypto', 'career']
 evergreen: false
-heroImage: './f_4.png'
+heroImage: '../../../blog/2019_06_30_libra/f_4.png'
 locale: 'pt-BR'
 sourceSlug: 'libra'
 sourceHash: '30eb7adb66372db28b024e7c64cf3213fa2932df319a9a9b58c32b21e3f4e4f2'
@@ -55,7 +55,7 @@ Vamos imaginar uma empresa cujo único propósito é rastrear quantos virtuais s
 
 Eis o futuro das finanças\. Não vou mentir\, meio fofo\.
 
-![post](./f_1.webp)
+![post](../../../blog/2019_06_30_libra/f_1.webp)
 
 > Ela será respaldada por uma coleção de ativos de baixa volatilidade\, como depósitos bancários e títulos do governo de curto prazo em moedas de bancos centrais estáveis e respeitáveis\. É importante destacar que isso significa que um Libra nem sempre poderá converter para o mesmo valor de uma determinada moeda local
 
@@ -148,7 +148,7 @@ Eu daria vários rins para ter 18 anos de novo\. E tenho certeza de que sentiria
 
 1. [Causes of death vs media coverage](https://ourworldindata.org/does-the-news-reflect-what-we-die-from?linkId=68864855 'media')
 
-![post](./f_2.webp)
+![post](../../../blog/2019_06_30_libra/f_2.webp)
 
 2. ["But every trend has a shelf life, and as quickly as Instagram ushered in pink walls and pastel macaroons, it’s now turning on them."](https://www.theatlantic.com/technology/archive/2019/04/influencers-are-abandoning-instagram-look/587803/ 'insta') Pois lá se foi minha esperança de me tornar instantaneamente famoso
 3. ["Another strategy, one we term “manclusion,” involves including men in meetings simply to induce better behavior from the men on the other side of the table."](http://clsbluesky.law.columbia.edu/2019/06/06/venture-bearding/ 'venture bearding') Não acredito que isso existe\.
@@ -158,7 +158,7 @@ Eu daria vários rins para ter 18 anos de novo\. E tenho certeza de que sentiria
 
 5. [Reconstructing facial images based on voice data](https://arxiv.org/pdf/1905.09773.pdf 'face')\. Note que a ideia não era recuperar uma imagem exata\, mas características visuais comuns que se conectavam com atributos de fala\.
 
-![post](./f_3.webp)
+![post](../../../blog/2019_06_30_libra/f_3.webp)
 
 6. [Celebrity cameos for sale.](https://www.cameo.com/faq 'cameo') Seria um ótimo presente de Natal se alguém me desse um da Jenna Coleman\.\.\. só dizendo [^12]
 

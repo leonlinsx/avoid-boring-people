@@ -4,7 +4,7 @@ description: "인터넷 창립에 관한 이야기들"
 pubDate: 2017-12-01
 category: Technology
 tags: ['business', 'startups']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2021_03_13_internet/i_1.webp'
 locale: 'ko'
 sourceSlug: 'internet'
 sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
@@ -68,7 +68,7 @@ sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
 
 그리고 이제 우리는 크롬이 IE를 대체할 것임을 알고 있습니다\. 마찬가지로 페이스북이 마이스페이스를 대체하고\, 애플이 블랙베리를 대체할 것입니다\.
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_13_internet/i_1.webp)
 
 그 이유는 상황이 빠르게 변하기 때문에 비즈니스 전략을 바꿔야 하기 때문입니다\. 만약 당신의 비즈니스 모델이 광고 클릭률을 앞으로 40\%대에 \'보수적으로\' 가정했다면 어떨까요\? 지금 클릭률이 \<5\%라는 점을 고려하면\, 상당한 규모의 차이가 있었을 것입니다\.
 

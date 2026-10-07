@@ -4,7 +4,7 @@ description: "Historias sobre la fundación de internet"
 pubDate: 2017-12-01
 category: Technology
 tags: ['business', 'startups']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2021_03_13_internet/i_1.webp'
 locale: 'es'
 sourceSlug: 'internet'
 sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
@@ -68,7 +68,7 @@ Internet Explorer de Microsoft desplazó a Netscape\, a pesar de la ventaja inic
 
 Y ahora sabemos que Chrome desplazaría a IE\. De manera similar\, Facebook desplazaría a MySpace\, Apple a Blackberry\, y así sucesivamente\.
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_13_internet/i_1.webp)
 
 Una razón sencilla para ello es que las cosas cambian rápidamente\, lo que requiere un cambio en la estrategia empresarial\. ¿Imagina que tu modelo de negocio hubiera asumido tasas de clics publicitarios de forma \"conservadora\" en los 40 para el futuro\? Teniendo en cuenta que ahora son \<5\%\, te habrías equivocado bastante\.
 

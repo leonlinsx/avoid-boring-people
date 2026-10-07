@@ -4,7 +4,7 @@ description: "Diferentes definições de arte ao longo da história"
 pubDate: 2021-05-02
 category: Culture
 tags: ['art']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2021_05_02_art_history/a_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'art_history'
 sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
@@ -28,23 +28,23 @@ O que você mostraria para eles\?
 
 Talvez você possa mostrar para eles [The School of Athens,](https://en.wikipedia.org/wiki/The_School_of_Athens 'school') uma pintura de Rafael durante o auge do Renascimento italiano no século XVI\. Com sua representação realista de filósofos famosos e uso de [linear perspective](<https://en.wikipedia.org/wiki/Perspective_(graphical)> 'perspective') para fazer as coisas parecerem 3D\, o famoso afresco é visto como uma obra\-prima que personifica o Renascimento\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_05_02_art_history/a_1.webp)
 
 Ou talvez você rejeite temas históricos\, pensando que a arte não deveria precisar de uma lição moral\. Em vez disso\, você mostra uma pintura dos anos 1800 de Dominique Ingres que é puro prazer e fantasia\, afirmando que a arte real não precisa ser realista\. [La Grand Odalisque looks realistic on first glance, but taking a closer look shows that the spine is weirdly long, and the back leg is attached at a weird angle.](https://en.wikipedia.org/wiki/Grande_Odalisque 'wiki')
 
-![post](./a_2.webp)
+![post](../../../blog/2021_05_02_art_history/a_2.webp)
 
 Você poderia dizer que o prazer é superficial\, e que é mais puro comemorar o sofrimento moderno\, como no século XIX de Goya [The Third of May](https://en.wikipedia.org/wiki/The_Third_of_May_1808 'may')\. É menos realista do que as obras anteriores\, com as figuras mais planas e menos acabadas\. Também não é mais uma fantasia\, já que retrata uma tragédia real da época de Goya [^2]\. Foi uma ruptura tão grande com a tradição anterior que foi chamada de \"uma das primeiras pinturas da era moderna\.\"
 
-![post](./a_3.webp)
+![post](../../../blog/2021_05_02_art_history/a_3.webp)
 
 Mas por que limitar a pintura a mostrar apenas um instantâneo no tempo\? E se\, em vez disso\, você visse um objeto de todos os ângulos e tentasse colocar isso na tela plana\? Pense em bullet time de Matrix\, mas como pintura\; isso não seria mais fiel ao objeto\? Mostrar uma peça cubista como a de Picasso nos anos 1900 [Girl with a Mandolin](https://www.pablopicasso.org/girl-with-mandolin.jsp 'girl') seria uma boa escolha então\, com sua tentativa de mostrar alguém 3D de múltiplos pontos de vista em uma superfície 2D\.
 
-![post](./a_4.webp)
+![post](../../../blog/2021_05_02_art_history/a_4.webp)
 
 E você poderia dizer que tudo isso é pretensioso\, e que a arte é apenas cores e linhas em tela\. Mostrar um Mondrian dos anos 1900 mostra que não devemos nos enganar com realismo\. A arte pura são formas platônicas [^3]\.
 
-![post](./a_5.webp)
+![post](../../../blog/2021_05_02_art_history/a_5.webp)
 
 Eu poderia continuar\; existem tantos movimentos artísticos quanto criptomoedas\. O ponto principal que quero destacar\, porém\, é que a arte é subjetiva\, e manter a mente aberta é essencial\. Discutir se algo é arte ou não é uma daquelas questões filosóficas sem resposta\.
 
@@ -65,11 +65,11 @@ Comecei com [draw a box](https://drawabox.com/ 'draw')\, e então passou para [N
 
 Como observação\, se [aphantasia is real](/writing/aphantasia 'abp')\, provavelmente tenho\, já que estou com nota 3\-4 no teste abaixo\. Não foi um obstáculo ao desenhar a partir de referência\, embora possa ser um quando desenho por imaginação\.
 
-![post](./a_6.webp)
+![post](../../../blog/2021_05_02_art_history/a_6.webp)
 
 Cerca de um ano de prática diária e 600 folhas de papel depois [^8]\, aqui está uma foto do progresso\. E sim\, eles são a mesma pessoa\:
 
-![post](./a_7.webp)
+![post](../../../blog/2021_05_02_art_history/a_7.webp)
 
 E aqui está o que aprendi ao longo do caminho\:
 

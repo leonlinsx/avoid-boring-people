@@ -5,7 +5,7 @@ pubDate: 2021-01-30
 category: Technology
 tags: ['startups', 'software']
 featured: false
-heroImage: './plaid_3.webp'
+heroImage: '../../../blog/2021_01_30_plaid/plaid_3.webp'
 locale: 'ja'
 sourceSlug: 'plaid'
 sourceHash: 'daae66d786d14dbfb4c0c831358b5f6fed3ca4b971461b077f61a7895375e9cd'
@@ -23,7 +23,7 @@ Plaidは、他の企業が銀行データとつながるのを支援する金融
 
 例えば、画期的なアプリのアイデアで大金を稼ぐとします。ユーザーがキーボードのF2キーを押すたびに何かが起こり、利益を得るようにアプリをコーディングします:
 
-![plaid](./plaid_1.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_1.webp)
 
 これをノートパソコンでテストし、すべて順調に動作し、収益を上げ始めます。あまりにもうまくいくので、参加したい友人たちに話すのです。コードを送って、成功しろと伝えます。
 
@@ -31,7 +31,7 @@ Plaidは、他の企業が銀行データとつながるのを支援する金融
 
 Macにはファンクションキー用の奇妙な[Touch Bar thing](https://support.apple.com/en-gb/guide/mac-help/mchlbfd5b039/mac 'touch')があり、その唯一の目的は生活を困らせることだけのようです。Macユーザー向けに特別なコードを追加します:
 
-![plaid](./plaid_2.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_2.webp)
 
 今はそれが彼に合い、彼は[suing magazines for saying all hipsters look alike.](https://www.independent.co.uk/news/media/hipster-magazine-photo-lawsuit-mit-technology-review-a8813941.html 'hipster')に進みます
 
@@ -43,7 +43,7 @@ Macにはファンクションキー用の奇妙な[Touch Bar thing](https://sup
 
 90年代後半には解決策が見つかりました。つまり、その間にもう一層、つまり**他人の問題にする*という方法です。** [As Shimon Schocken explains,](https://www.youtube.com/watch?v=E28KczysecE 'Shimon')「仲介者」がいることで作業が簡素化されます。すべてのデバイス向けにコードを書く代わりに、「一度書いてどこでも動く」という形で、その仲介者がコードの互換性を担当する[^1]:
 
-![plaid](./plaid_3.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_3.webp)
 
 **大きなタスクを小さなタスクに分割することで、みんなにとって楽になります。** あなたは問題の一部を抽象化してしまいました。なぜなら「高レベル」なコードを書きたいので、特定の実装バグを気にしなくていいからです。他の人は「低レベルの」実装の詳細は好きでも、その上にアプリを書くのは嫌がるかもしれません。それぞれの能力に応じて、それぞれのニーズに応じて、そういった流れです。
 
@@ -63,15 +63,15 @@ Macにはファンクションキー用の奇妙な[Touch Bar thing](https://sup
 
 最後に、もしあなたがアカウント残高を確認したいとしたら、エイプリルがレンタルAirBNBの隠れたサービス料を横領していないか確認したいのです。あなたはスプレッドシートに最近の入金を入力し始めます:
 
-![plaid](./plaid_4.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_4.webp)
 
 プログラマーなのでExcelが嫌いで、その機能に詳しくありません。ただし、追加用の「+」記号は知っていて、その方法で手動で残高を計算し始めます。
 
-![plaid](./plaid_5.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_5.webp)
 
 100セルと1時間後、ほぼ終わろうとしたとき、友人が「何をしているの?」と尋ねます。彼らはsum()関数があなたの望むことをすると説明します:
 
-![plaid](./plaid_6.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_6.webp)
 
 また、エクセルが数学を楽にするための「ライブラリ」機能(例えばavg()、count(など)についても教えてくれます。面白いのは、どのデバイスを使っていても、Windowsノートパソコンでも友人のMacでも、お父さんの携帯電話でも同じ動作が期待できることです。関数の動作や呼び方がわかれば、時間の節約になります。Excelがどうやって使うかは気にせず、どこでもいつでも動作すればいいだけです。
 
@@ -87,11 +87,11 @@ Macにはファンクションキー用の奇妙な[Touch Bar thing](https://sup
 
 [Joshua Bloch](https://www.youtube.com/watch?v=LzMp6uQbmns 'Josh')が指摘するように、1952年にはすでに[David Wheeler](<https://en.wikipedia.org/wiki/David_Wheeler_(computer_scientist)> 'David') [^2]のような人々がこの[having libraries of functions (sub-routines)](http://www.laputan.org/pub/papers/Wheeler.pdf 'wheeler')の考えを提案していました。
 
-![plaid](./plaid_7.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_7.webp)
 
 **その関数ライブラリをAPI[^3]と呼びます。**ジョシュアはこの用語が[a 1968 paper by Ira Cotton and Frank Greatorex:](https://www.computer.org/csdl/pds/api/csdl/proceedings/download-article/12OmNyRPgFZ/pdf 'ira')年に初めて使われたと考えています
 
-![plaid](./plaid_8.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_8.webp)
 
 この用法は、私たちが例で議論した概念に触れています。
 
@@ -119,7 +119,7 @@ APIとは何か、なぜ重要なのかを確立しました。では、Plaidは
 
 例えば、予算アプリを作っているとしましょう。ユーザーの支出履歴にアクセスする必要があります。もし自分のコードを銀行と接続するなら、新しい銀行が追加されるたびに新しいセクションを書く必要があります。新しい基準が常に変わっているため、アプリの主要な機能よりも多くの時間をかけることになるでしょう。
 
-![plaid](./plaid_9.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_9.webp)
 
 Plaidは常に動作するAPIを提供し、銀行に接続した際にユーザーが見ることができるユーザーインターフェースも提供します[(Plaid Link).](https://plaid.com/docs/link/ 'link')あなたの問題が彼らの問題に変わったのです。
 
@@ -127,19 +127,19 @@ Plaidのクイックスタートガイド[here](https://plaid.com/docs/quickstar
 
 一日のトラブルシューティング、複数回の再起動、そしてほぼすべてのプログラムを無差別にインストールした後[^4]:
 
-![plaid](./plaid_10.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_10.webp)
 
 ついに一部を動かし、テスト用の銀行口座に接続しました:
 
-![plaid](./plaid_11.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_11.webp)
 
 これにより、銀行口座残高などのダミーデータを見ることができました:
 
-![plaid](./plaid_12.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_12.webp)
 
 または最近の取引データ:
 
-![plaid](./plaid_13.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_13.webp)
 
 もし私が~~やり方を知っていれば~~金融アプリを作り続けることもできました。アプリはPlaid APIを使って残高データを取得し、取引を記録し、残高を更新します。しかしこの時点でさらにバグに遭遇し、~~諦めました~~はまた別の機会にしておきました。
 
@@ -153,7 +153,7 @@ Plaidのクイックスタートガイド[here](https://plaid.com/docs/quickstar
 
 もしこれが非現実的に聞こえるなら、初期のプログラミング言語であるFortranを考えてみてください。その関数ライブラリは[defined in **1958**](http://ed-thelen.org/LaFarr/IBM-FORTRAN-II-704-C28-6000-2-c-1958.pdf 'fortran')され、現在も使われ続けています。一度実装されると、APIは長く使えます:
 
-![plaid](./plaid_14.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_14.webp)
 
 今日は多くのことを扱いました。抽象化の直感、API、そしてPlaidが何をしているのか。主な教訓は、**人々がやりたくないことがたくさんあり、そういったことで多くのお金が稼げるということです。** ニュースレターは退屈な人を避けるように言っていますが、この場合、退屈なものを作ることは数十億ドルのビジネスです。
 

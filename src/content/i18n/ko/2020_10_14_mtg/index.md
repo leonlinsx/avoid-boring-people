@@ -4,7 +4,7 @@ description: "가장 오래된 트레이딩 카드 게임에서의 수익화 및
 pubDate: 2020-10-14
 category: Culture
 tags: ['business', 'games']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_10_14_mtg/m_1.webp'
 featured: false
 locale: 'ko'
 sourceSlug: 'mtg'
@@ -21,7 +21,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 카드 문제라면 [Black Lotus](https://mtg.gamepedia.com/Black_Lotus 'black') 트레이딩 카드 게임에서 [Magic: The Gathering,](https://en.wikipedia.org/wiki/Magic:_The_Gathering 'MTG') 27\,000달러에 살 수 있을지도 몰라\.
 
-![post](./m_1.webp)
+![post](../../../blog/2020_10_14_mtg/m_1.webp)
 
 그리고 이 책이 몇 가지 가격에 팔린 것을 고려하면 오히려 큰 성가일 수도 있습니다 [$166,000 at auction](https://www.ebay.com/itm/1993-Magic-The-Gathering-MTG-Alpha-Black-Lotus-R-A-BGS-9-5-GEM-MINT-PWCC-/143136537077?_trksid=p2047675.m43663.l10137&nordt=true&rt=nc&orig_cvip=true 'ebay') [^1]\. 카드 크기 판지 한 장에 16만 6천 달러가 들었네요\.
 
@@ -43,7 +43,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 예를 들어\, 희귀 카드를 얻으려고 팩을 구매할 수 있습니다 ["Uro, Titan of Nature's Wrath"](https://scryfall.com/card/thb/229/uro-titan-of-natures-wrath 'Uro') 대신 ["Bronzehide Lion."](https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=476461 'Lion')
 
-![post](./m_2.webp)
+![post](../../../blog/2020_10_14_mtg/m_2.webp)
 
 많은 사람들이 운에 의존하지 않고 카드를 구매하는 것을 선호하기 때문에\, **중고 시장\.** 트레이더들은 카드를 구매해 마진에 따라 재판매합니다\. 시간이 지나면서 이것은 본질적으로 [stock market for the cards](https://www.mtgstocks.com/news 'MTG')\, 그리고 자체 투기꾼 클럽을 가지고 있습니다\. 앞서 언급했듯이\, 이 카드들 중 일부는 매우 비쌀 수 있습니다\.
 
@@ -65,7 +65,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 위원회는 규칙을 강제하지 않는데\, 캐주얼 게임에서는 불가능하기 때문입니다\. 하지만 플레이어들이 따르는 표준 지침 역할을 합니다\. 예를 들어\, \"우로\"는 금지된다고 적혀 있을 수 있습니다\. 만약 당신이 낯선 사람과 커맨더 게임을 하면서 우로를 사용한다면\, 그녀는 아마 계속하고 싶어 하지 않을 것입니다\. 하지만 우로를 포함해 원하는 카드로 플레이하는 데 동의할 수도 있습니다\.
 
-![post](./m_3.webp)
+![post](../../../blog/2020_10_14_mtg/m_3.webp)
 
 이제 우리는 매직이 무엇인지 알게 되었습니다 \- 새 카드가 정기적으로 인쇄되고\, 카드 가격이 시장에 의해 결정되며\, 다양한 포맷 제한이 다른 메타게임을 만드는 트레이딩 카드 게임입니다\. 마지막 개념을 좀 더 확장해 보겠습니다\.
 
@@ -83,7 +83,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 불균형한 메타에서는 단 하나의 덱이 다른 모든 덱보다 \'더 낫다\'고 할 수 있습니다\. 예를 들어\, 당신의 원소 덱이 다른 덱에 유리한 확률을 가질 수 있습니다\. 이럴 때는 합리적입니다 [everyone to start playing that deck if they want to win.](https://magic.gg/news/2020-season-grand-finals-metagame-breakdown 'mtg') 상상할 수 있듯이\, **이건 금방 지루해져\.**
 
-![post](./m_4.webp)
+![post](../../../blog/2020_10_14_mtg/m_4.webp)
 
 이럴 때 한 가지 해결책은 \'지나치게 강력한 카드\'를 금지하는 것입니다\. 앞서 언급했듯이\, 공식 포맷에서는 위저즈가 더 이상 사용할 수 없는 카드를 지정합니다\. 비공식 포맷인 \'커맨더\'에서는 커뮤니티 규칙 위원회가 카드를 선택합니다\. **밴은 균형을 맞추는 방법이에요\.**
 
@@ -93,15 +93,15 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 대부분의 경우\, 새로 인쇄된 카드들은 매직 IP로서 원래 매직을 위해 만들어진 더 큰 매직 멀티버스의 일부입니다\. 매직은 대부분 판타지 기반이라 천사와 용 같은 카드가 등장합니다\:
 
-![post](./m_5.webp)
+![post](../../../blog/2020_10_14_mtg/m_5.webp)
 
 최근에는 [^13]위저즈는 외부 파트너십을 더 많이 진행하고 있습니다\. 이는 보통 다른 IP를 기반으로 한 맞춤형 카드를 만드는 것을 포함합니다\. 예를 들어\, [a My Little Pony series](https://magic.wizards.com/en/articles/archive/news/magic-extra-life-2019-10-03 'pony') 자선 기금 마련\:
 
-![post](./m_6.webp)
+![post](../../../blog/2020_10_14_mtg/m_6.webp)
 
 아니면 [Godzilla themed series as alternate art for some cards:](https://articles.starcitygames.com/news/all-19-godzilla-series-monster-cards-revealed/ 'zilla')
 
-![post](./m_7.webp)
+![post](../../../blog/2020_10_14_mtg/m_7.webp)
 
 이제 지휘관 규칙 위원회의 입장이 되어 보세요\. 이 카드들이 공개될 때\, 포맷에 허용해야 할까요\?
 
@@ -114,7 +114,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 **여기서 논란이 있습니다\.** 위저즈가 방금 출시했습니다\. [limited edition set of new cards in partnership with TV show The Walking Dead.](https://secretlair.wizards.com/us/product/612738/secret-lair-x-the-walking-dead 'dead') 이 고유 카드들은 위저즈가 인쇄를 중단하기 전까지만 판매됩니다\. 중요한 점은 이 카드들이 검은색 테두리\(\"합법적\"\)이며\, 이 박스 세트를 구매할 때만 다른 곳에서는 구할 수 없다는 것입니다\. 예상하셨겠지만\, 박스 세트는 프리미엄 가격에 책정되어 있습니다\.
 
-![post](./m_8.webp)
+![post](../../../blog/2020_10_14_mtg/m_8.webp)
 
 **이 카드들이 합법이어야 할까요\?** 위저즈 공식 사이트에는 이렇게 적혀 있습니다\:
 
@@ -124,13 +124,13 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 왜 이런 상황이 일어났는지 알 수 있습니다 [made many players upset, ](https://twitter.com/wizards_magic/status/1312987380115148805?s=20 'twitter') [calling for the cards to be banned immediately.](https://www.reddit.com/r/magicTCG/comments/j1glk8/petition_for_the_commander_rules_committee_to_ban/ 'ban')
 
-![post](./m_9.webp)
+![post](../../../blog/2020_10_14_mtg/m_9.webp)
 
 잠깐만\, 네가 말하길\, 내가 생각하기에 _규칙 위원회_ 어떤 카드가 허용되는지 결정했나요\? 실제로 일부 플레이어들은 위원회가 독립적으로 행동하여 커맨더에서 카드를 범죄로 선언하기를 기대했습니다\.
 
 [Unfortunately not.](https://mtgcommander.net/index.php/2020/10/02/rc-statement-on-secret-lair-the-walking-dead/ 'dead')
 
-![post](./m_10.webp)
+![post](../../../blog/2020_10_14_mtg/m_10.webp)
 
 아마도 상충되는 동기가 있다는 힌트를 느끼실 수 있을 겁니다\. 이제 좀 더 자세히 살펴보겠습니다 [main complaints first](https://twitter.com/ghirapurigears/status/1313145100319494145?s=20 'twitter') [^15]\:
 
@@ -142,15 +142,15 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 이제 위저드의 논리를 살펴보겠습니다\:
 
-![post](./m_11.webp)
+![post](../../../blog/2020_10_14_mtg/m_11.webp)
 
 아\, 잠깐만요\, 잘못된 이미지네요\:
 
-![post](./m_12.webp)
+![post](../../../blog/2020_10_14_mtg/m_12.webp)
 
 네\, 아무것도 모르겠어요\. 꽤 노골적인 돈벌이 수단이에요\. Hasbro\(Wizards의 모회사\)의 목표를 고려하면 [doubling Wizards revenue over the next five years,](https://investor.hasbro.com/static-files/88b2a83b-2368-463a-9489-6cf31dc209ac 'wizards') 위저즈 팀이 더 높은 가격에 더 많은 카드를 판매하는 방법을 모색하는 것도 당연합니다 [^16]\. 더 많은 양\, 더 높은 가격\, 더 높은 가치 배수\. 사람들이 카드 한 장에 100달러 시가를 지불할 의향이 있다면\, 왜 부스터 팩 대신 카드를 직접 인쇄해서 판매하지 않나요\?
 
-![post](./m_13.webp)
+![post](../../../blog/2020_10_14_mtg/m_13.webp)
 
 위저드들은 1\) 카드를 은색 테두리로 \'불법\'으로 만들거나\, 2\) 다른 \'합법적인\' 카드의 대체 아트 버전을 만들 수도 있었을 거예요\. 1\) 은색 테두리 카드가 검은색 테두리 카드보다 팔리기 때문이고\, 2\) 어떤 마법적 이유 때문인데\, 아마도 돈 때문일 거예요
 

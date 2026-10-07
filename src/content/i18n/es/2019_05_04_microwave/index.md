@@ -4,7 +4,7 @@ description: "Qué creencias resisten el paso del tiempo"
 pubDate: 2019-05-04
 category: Culture
 tags: ['behaviour']
-heroImage: './m_2.webp'
+heroImage: '../../../blog/2019_05_04_microwave/m_2.webp'
 locale: 'es'
 sourceSlug: 'microwave'
 sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
@@ -14,7 +14,7 @@ Una vez leí sobre una persona tan centrada en la eficiencia que pulsaba el mism
 
 Tras el incendio de Notre Dame\, se difundió la noticia de que los bomberos priorizaban salvar los restos sobre las estructuras de madera\, [since oak trees from Versailles were intended as replacements](https://medium.com/the-long-now-foundation/long-now-lessons-from-notre-dame-925d27441bdc 'long now')\.
 
-![post](./m_1.webp)
+![post](../../../blog/2019_05_04_microwave/m_1.webp)
 
 Como muestra el enlace\, había poca base sustantiva detrás de esto\. Pero la gente quería que fuera cierto\, quería creer que la acción fue deliberada\.
 
@@ -54,7 +54,7 @@ Parece que nuestra narrativa sobre la educación superior podría cambiar\. Aún
 
 > No construyes representaciones mentales pensando en algo\; las construyes intentando hacer algo\, fallando\, revisando y volviendo a intentarlo\, una y otra vez\. Cuando terminas\, no solo has desarrollado una representación mental efectiva de la habilidad que estabas desarrollando\, sino que también has absorbido mucha información relacionada con esa habilidad\.
 
-![post](./m_2.webp)
+![post](../../../blog/2019_05_04_microwave/m_2.webp)
 
 La gravedad estará presente durante un tiempo [^6]\, igual que nuestra necesidad de comer y nuestra necesidad de interacción social\. Los principios físicos y biológicos probablemente sean más fáciles de identificar\, pero creo que el tamaño de la muestra social es la parte difícil\. Los humanos actúan racionalmente\.\.\. hasta que no lo hacen\. Si tienes ejemplos de principios sociales que te han sorprendido\, házmelo saber\.
 

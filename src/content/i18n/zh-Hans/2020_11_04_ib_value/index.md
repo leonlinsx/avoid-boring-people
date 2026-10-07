@@ -4,7 +4,7 @@ description: "投资银行到底做些什么？"
 pubDate: 2020-11-04
 category: Culture
 tags: ['investment banking']
-heroImage: './i_2.webp'
+heroImage: '../../../blog/2020_11_04_ib_value/i_2.webp'
 locale: 'zh-Hans'
 sourceSlug: 'ib_value'
 sourceHash: 'c27ba4251de29cd4bbcb5900adbd73319b0f46a7511f8a32eb2454d3a8b02ec0'
@@ -18,13 +18,13 @@ sourceHash: 'c27ba4251de29cd4bbcb5900adbd73319b0f46a7511f8a32eb2454d3a8b02ec0'
 
 最近我不得不向几个人解释投资银行到底是什么，我想这里也做个简短的入门介绍。尤其是在期望与现实的落差的情况下，希望这能帮助大家理清思路。
 
-![post](./i_1.webp)
+![post](../../../blog/2020_11_04_ib_value/i_1.webp)
 
 **投资银行通常不是关于投资，** 尽管我父母似乎从未理解这一点。顺便说一句：我一直在试图找出“merchant banking”（商业银行）什么时候变成“investment banking”的词源，但到目前为止还没找到。如果你知道，请联系我。
 
 像摩根大通这样的“全方位服务”银行规模庞大。你可以把它看作四大主要业务线：
 
-![post](./i_2.webp)
+![post](../../../blog/2020_11_04_ib_value/i_2.webp)
 
 当我在本文中提到投资银行或银行业务时，我特别指的是右侧的蓝色业务。为了让我更方便，我只关注“银行家”这个框，为了简化，排除了股票研究以及销售和交易部门的讨论。我提到了股票研究 [here](/writing/sellside 'er') 之前讨论机器人顾问的影响时。
 
@@ -40,7 +40,7 @@ sourceHash: 'c27ba4251de29cd4bbcb5900adbd73319b0f46a7511f8a32eb2454d3a8b02ec0'
 
 银行的业务是 **打造市场** 介于两组人之间。
 
-![post](./i_3.webp)
+![post](../../../blog/2020_11_04_ib_value/i_3.webp)
 
 例如，如果谷歌试图筹集债务，银行会与之合作，确定他们能筹集多少，谁会购买债务，以及债务将以何种条款发行。
 

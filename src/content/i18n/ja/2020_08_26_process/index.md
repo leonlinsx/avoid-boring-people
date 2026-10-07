@@ -4,7 +4,7 @@ description: "プロセス改善の種類を理解する"
 pubDate: 2020-08-26
 category: System Design
 tags: ['business']
-heroImage: './p_6.webp'
+heroImage: '../../../blog/2020_08_26_process/p_6.webp'
 locale: 'ja'
 sourceSlug: 'process'
 sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
@@ -18,7 +18,7 @@ sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
 
 もし左側の物体と右側の物体を比較するように言われたら、どんなポイントを挙げますか?
 
-![post](./p_1.webp)
+![post](../../../blog/2020_08_26_process/p_1.webp)
 
 最初に気づくのは素材です。左は石で、右は青銅でできています。
 
@@ -30,7 +30,7 @@ sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
 
 著者らは、人類にとって大きな目に見える進歩をもたらしたプロセスの改善があると提案しています。しかし、人々は無形のプロセスの変化を見落とし、物理的な製品の変化に過度に注目しがちです。上記の矢じりの例では、人々は石と青銅の結果に注目し、切削と精錬のプロセス改善[^1]を見ていません。これらの高インパクトのプロセス革新を、いわゆるFMPIと呼びます。
 
-![post](./p_2.webp)
+![post](../../../blog/2020_08_26_process/p_2.webp)
 
 プロセスの改善に気づくのは難しいです。なぜならそれらは目に見えないものであり、状況を別の視点から見る必要があるからです。細部から抽象化し、自分のやっていることを表現する高次の関係性を探そうとしているのです。これは数学の群論が実用的な応用から抽象化しようとするのと似ています。
 
@@ -60,7 +60,7 @@ FMPIの研究は重要です。なぜなら、人類の進歩をもたらした�
 
 最後に、減法(タイプ7)で物を除去したり、加法(タイプ8)で物を加算したりすることができます
 
-![post](./p_3.webp)
+![post](../../../blog/2020_08_26_process/p_3.webp)
 
 上記の8つのタイプのさまざまなバリエーションを使うことで、より良い方向に物事のやり方を変えることができます。もっと具体的な例を見てみましょう。
 
@@ -70,13 +70,13 @@ FMPIの研究は重要です。なぜなら、人類の進歩をもたらした�
 
 製造プロセスには多くの減算(タイプ7)と加算(タイプ8)の工程も含まれます。[Electronics Tutorial](https://www.electronics-tutorial.net/CMOS-Processing-Technology/planar-process-technology/ 'Elec')の下の図では、シリコン(SiO2)の除去とドーピング材料の追加が見て取れます。
 
-![post](./p_4.webp)
+![post](../../../blog/2020_08_26_process/p_4.webp)
 
 ### DNA配列決定は並列化によって改良されました
 
 1970年代には、DNAシーケンスは全鎖を順番に処理しなければならないと考えられていたため、時間がかかり作業集約的でした。ヨアヒム・メッシングとペーター・ゼーブルグは、DNAをランダムな断片に分解してより速いシーケンスを可能にする[shotgun approach](https://en.wikipedia.org/wiki/Joachim_Messing 'DNA')を開発しました。複数の重なり合う断片を行うことで、シーケンス過程における並列化(タイプ1)が可能となり、速度が大幅に向上しコストを抑え、[^4]に必要なDNA量も減少しました。
 
-![post](./p_5.webp)
+![post](../../../blog/2020_08_26_process/p_5.webp)
 
 ### 3Dプリンティングは、引き算から加算への考え方の変化です
 
@@ -86,13 +86,13 @@ FMPIの研究は重要です。なぜなら、人類の進歩をもたらした�
 
 対照的に、[3D printing](https://3dprintingindustry.com/3d-printing-basics-free-beginners-guide '3D')は加算式(タイプ8)です。つまり、生産時の無駄はずっと少なく、ほぼ正確に下から印刷できるからです。[Besides the cost savings, this also allows creation of more complicated structures in fewer steps.](https://bitfab.io/blog/additive-manufacturing/ 'bit')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_08_26_process/p_6.webp)
 
 ### FMPIで質問解除
 
 著者らは、上記のプロセス改善がこれらの産業におけるコスト削減に不可欠であると主張しています。
 
-![post](./p_7.webp)
+![post](../../../blog/2020_08_26_process/p_7.webp)
 
 技術のスケーリング経路を可能にすることに加え、FMPIは以下の特徴を持っています。
 

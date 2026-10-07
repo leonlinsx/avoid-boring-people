@@ -4,7 +4,7 @@ description: "蜥蜴人制造了大型强子对撞机"
 pubDate: 2019-02-18
 category: Culture
 tags: ['behaviour']
-heroImage: './b_1.png'
+heroImage: '../../../blog/2019_02_18_why/b_1.png'
 locale: 'zh-Hans'
 sourceSlug: 'why'
 sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
@@ -14,7 +14,7 @@ sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
 
 现在主流公众会嘲笑许多“疯狂”的信念。 [Flat earthers.](https://en.wikipedia.org/wiki/Modern_flat_Earth_societies 'wiki page') [Moon landing deniers.](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories 'another wiki page') [Shape-shifting lizard people.](https://en.wikipedia.org/wiki/Reptilian_humanoid 'more wiki pages') [^1] 然而大多数人并不觉得这很疯狂 [70% of Americans](http://www.pewforum.org/religious-landscape-study/ 'religious breakdown') 相信某种全能存在统治存在，也相信大多数人不相信 [^2] 我认为生命涉及某种微观的流水线 [unzipping, squishing together, and re-zipping](https://www.youtube.com/watch?v=yqESR7E4b_8&t=1m50s 'DNA replication video')\.我也觉得有趣的是，每个信仰都有热忱的信徒愿意为自己的信仰辩护，抵御异端。请注意，这里我用“信仰”一词是比较宽泛的，涵盖宗教、科学、哲学或其他领域。看看关于政治、宗教或纽约最好的百吉饼店的激烈讨论会有多激烈。
 
-![post](./b_1.png)
+![post](../../../blog/2019_02_18_why/b_1.png)
 
 那么，为什么我们还要相信那些构成我们身份的重要问题呢？我不确定我们是否有充分的理由。对许多人来说，他们成长的环境决定了他们大部分的信念。两者之间存在相关性 [having religious parents and becoming religious](http://www.pewforum.org/2016/10/26/links-between-childhood-religious-upbringing-and-current-religious-identity/ 'religious upbringing')，一些证据表明 [political views also transmit to children](https://www.researchgate.net/publication/231788296_Politics_Across_Generations_Family_Transmission_Reexamined 'politics across gens') [^3]，甚至还有一种可能性 [your career choice might not really be your own.](https://waitbutwhy.com/2018/04/picking-career.html 'was it really me?') 如果我们更愿意按照自己的选择生活，而不是默认选择，那就有问题了。 [Unexamined life not worth living and all that.](https://www.theguardian.com/theguardian/2005/may/12/features11.g24 'unexamined life')
 

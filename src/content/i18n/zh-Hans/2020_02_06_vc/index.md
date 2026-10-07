@@ -4,7 +4,7 @@ description: "创始人应了解的风险投资"
 pubDate: 2020-02-06
 category: Investing
 tags: ['startups', 'vc']
-heroImage: './v_1.webp'
+heroImage: '../../../blog/2020_02_06_vc/v_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'vc'
 sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
@@ -34,7 +34,7 @@ sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
 
 提醒一下，即使你对回报分布比上面更保守，那些100倍的回报依然会让你取得成功：
 
-![post](./v_1.webp)
+![post](../../../blog/2020_02_06_vc/v_1.webp)
 
 > 你如何评估创始团队？当然，不同的风险投资人做事方式不同，但有几个共同的研究领域：
 
@@ -78,7 +78,7 @@ sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
 
 [Carta](https://carta.com/blog/getting-funded-how-long-does-it-actually-take/ 'carta') 以及 [Crunchbase](https://news.crunchbase.com/news/the-time-between-vc-rounds-is-shrinking/ 'Crunchbase') 也显示了相当相似的时期。
 
-![post](./v_2.webp)
+![post](../../../blog/2020_02_06_vc/v_2.webp)
 
 > a16z看到创业者犯的一个大错误是以激进估值筹集过少资金，而这正是你不希望做的事。这确立了高标准估值，但缺乏足够的财务资源来实现安全提升下一轮估值远高于当前估值的业务目标。
 

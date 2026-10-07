@@ -4,7 +4,7 @@ description: "より多くの情報を持つことで、より良い投資判断
 pubDate: 2019-04-18
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_04_18_investing/i_1.webp'
 locale: 'ja'
 sourceSlug: 'investing'
 sourceHash: '2b5ae4861e38024857b715159729cb06f4235c024c4fe9cfbab981130ab0f1d2'
@@ -16,7 +16,7 @@ sourceHash: '2b5ae4861e38024857b715159729cb06f4235c024c4fe9cfbab981130ab0f1d2'
 
 競合他社より情報を持っていると思っているかどうかはさておき、より多くの情報を持つことでより良い投資判断が下せるのでしょうか? [This post](https://behaviouralinvestment.com/2019/01/09/can-more-information-lead-to-worse-investment-decisions/amp/ 'behavioural investment') 以下の研究を引用しています。 [although individuals have increased confidence with increased information, their accuracy of outcomes doesn't change:](https://pdfs.semanticscholar.org/dfe1/e71649951fc8aeda52eac460976bfe02f305.pdf 'Tsai, C. I., Klayman, J., & Hastie, R. 2008')
 
-![post](./i_1.webp)
+![post](../../../blog/2019_04_18_investing/i_1.webp)
 
 ツァイ、クレイマン、ヘイスティの研究は上記のグラフを用いて、この発散の主な理由を2つ挙げています。
 

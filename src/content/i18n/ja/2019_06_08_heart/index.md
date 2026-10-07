@@ -4,7 +4,7 @@ description: "本当に失恋で死ぬことがあるのでしょうか?"
 pubDate: 2019-06-08
 category: Culture
 tags: ['science']
-heroImage: './broken_1.png'
+heroImage: '../../../blog/2019_06_08_heart/broken_1.png'
 locale: 'ja'
 sourceSlug: 'heart'
 sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
@@ -20,7 +20,7 @@ sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
 
 記事はさらに、いわゆる「未亡人効果」のメタ分析を引用しています。私はそう信じています [this](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0023465 'paper') は参照されている2011年の論文ですが、残念ながらノーチラスには出典が含まれていなかったため確認できません。主な発見は以下の表にまとめられています。もし私の読み方が正しければ、RR列はその行の相対的な死亡リスクを示しているように思えます。例えば、配偶者の死後に男性が死亡する確率は平均的な男性の1\.22倍高いということです。 [^3] [^4]
 
-![post](./broken_1.png)
+![post](../../../blog/2019_06_08_heart/broken_1.png)
 
 どうやら半ば頻繁に起こるようです\:
 

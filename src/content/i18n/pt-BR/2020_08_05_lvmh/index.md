@@ -4,7 +4,7 @@ description: "Como Bernard Arnault vê a criatividade"
 pubDate: 2020-08-05
 category: Culture
 tags: ['fashion', 'art', 'business']
-heroImage: './l_3.webp'
+heroImage: '../../../blog/2020_08_05_lvmh/l_3.webp'
 featured: false
 locale: 'pt-BR'
 sourceSlug: 'lvmh'
@@ -19,11 +19,11 @@ Como CEO da LVMH\, Bernard Arnault acredita que marcas estrelas exigem criativid
 
 [LVMH](https://en.wikipedia.org/wiki/LVMH 'LVMH') é a empresa\-mãe de muitas marcas de luxo que conhecemos\. [Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ '1987') por meio da fusão da \"Louis Vuitton\" com a \"Moët et Chandon and Hennessy\"\, agora abriga mais de 70 marcas nos setores de vinhos\, moda\, joias e mais\. Comparado ao seu concorrente mais próximo\, a Kering [^1]\, [LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html 'rev')
 
-![post](./l_1.webp)
+![post](../../../blog/2020_08_05_lvmh/l_1.webp)
 
 E no topo de tudo isso está [Bernard Arnault](https://en.wikipedia.org/wiki/Bernard_Arnault 'Bernard')\, que é o chefe do grupo desde 1990\. Isso deu muito bom para ele\, tornando\-o um dos homens mais ricos do mundo\.
 
-![post](./l_2.webp)
+![post](../../../blog/2020_08_05_lvmh/l_2.webp)
 
 [Brett Bivens tweeted this HBR interview of Bernard a while back](https://twitter.com/brettbivens/status/1251505408960794624?s=20 'Brett')\, e hoje quero ampliar esse artigo com mais algumas fontes\. Vamos entender melhor **como Bernard vê a criatividade – onde ele permite o caos e onde restringe o controle\.**
 
@@ -113,7 +113,7 @@ Esta é a terceira dualidade\: passado vs presente\. Bernard acredita que os con
 
 ## Construindo uma marca para o longo prazo
 
-![post](./l_3.webp)
+![post](../../../blog/2020_08_05_lvmh/l_3.webp)
 
 Abordamos 3 dualidades com as quais Bernard lida\, decorrentes da experiência que teve construindo a marca\. Ao permitir criatividade com controle\, execução de ideias e mesclar tradição e modernidade\, Bernard acredita que está construindo a LVMH para o longo prazo\:
 
@@ -121,7 +121,7 @@ Abordamos 3 dualidades com as quais Bernard lida\, decorrentes da experiência q
 
 E isso até agora tem funcionado para ele\, pelo menos com base no preço das ações e na participação de mercado da LVMH\:
 
-![post](./l_4.webp)
+![post](../../../blog/2020_08_05_lvmh/l_4.webp)
 
 Quanto da estrutura dele é aplicável a outros negócios\? Concordo em grande parte com a ênfase na criatividade\, mas também na excelência operacional\. Conforme a nota recente sobre [why companies are bad at innovating](/writing/turtle 'turtle') Porém\, não sei se a maioria das empresas está disposta a aceitar a volatilidade que implica aceitar mais criatividade\. Não sei se a dualidade passado\/presente é facilmente implementada\, além de alguma campanha de marketing só para enfeite\.
 

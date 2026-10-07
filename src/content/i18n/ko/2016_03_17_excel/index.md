@@ -4,7 +4,7 @@ description: "엑셀 속도 팁에 관한 노트"
 pubDate: 2016-03-17
 category: System Design
 tags: ['investment banking']
-heroImage: './e_1.png'
+heroImage: '../../../blog/2016_03_17_excel/e_1.png'
 locale: 'ko'
 sourceSlug: 'excel'
 sourceHash: '658f73ba1e40df367c86978fb2e3fde6def4efdf9bf18e1d34975fed5dc10592'

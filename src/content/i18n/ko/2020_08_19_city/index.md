@@ -5,7 +5,7 @@ pubDate: 2020-08-19
 category: Culture
 tags: ['predictions']
 evergreen: false
-heroImage: './c_3.png'
+heroImage: '../../../blog/2020_08_19_city/c_3.png'
 locale: 'ko'
 sourceSlug: 'city'
 sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
@@ -23,7 +23,7 @@ sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
 
 저는 대도시들이 이 상황을 견뎌낼 것이라고 더 낙관적입니다\. 이 말을 수치로 표현하자면\, 저는 뉴욕시가 5년 후에 지금보다 인구가 더 많아질 것이라고 80\% 확신합니다 [^1]\. 참고로\, 최근까지 뉴욕은 연평균 0\.30\%의 성장률을 유지해왔습니다\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_08_19_city/c_1.webp)
 
 <a href='https://www.macrotrends.net/cities/23083/new-york-city/population'>뉴욕시 대도시권 인구 1950\-2020</a>
 
@@ -35,7 +35,7 @@ sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
 
 하지만 최근에는 도시들이 사람들을 끌어들였던 거의 모든 것을 잃었습니다\. 당신은 변하지 않고 같은 것을 원했을지 모르지만\, 도시는 변했습니다\. 기억한다면\, [pace layer](/writing/pace 'pace') 논의 중이지만\, 이 경우 \"거버넌스\"\, \"인프라\"\, \"상업\" 계층이 예상보다 훨씬 빠르게 진행되었습니다\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_08_19_city/c_2.webp)
 
 이러한 변동성은 사람들의 사고방식 변화를 초래했습니다\. 원격 근무 장소에 대한 꺼려졌던 생각은 오스틴\, 텍사스에서 임대료가 얼마나 더 쓸 수 있는지에 대한 열정적인 평가로 변했습니다\. 많은 사람들에게 예전에는 상상할 수 없었던 일이 이제는 논리적인 선택이 되었습니다\.
 

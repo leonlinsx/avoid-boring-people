@@ -5,7 +5,7 @@ pubDate: 2020-09-16
 category: Investing
 tags: ['risk']
 evergreen: false
-heroImage: './c_8.webp'
+heroImage: '../../../blog/2020_09_16_capital/c_8.webp'
 locale: 'zh-Hans'
 sourceSlug: 'capital'
 sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
@@ -29,7 +29,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 想象一下你有一个想法。这可能是新的商业想法、扩展计划，甚至是你正在考虑的投资。重要的是，这需要资金（资本），并且希望能让你获得比投入更多的回报。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_16_capital/c_1.webp)
 
 你如何获得这笔钱？资本主要有两种来源：债务和股权 [^1]\.
 
@@ -39,13 +39,13 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 这两种主要资本来源的混合成本结合起来，给出了你的资本成本。这就是你尝试这个想法时平均会产生的成本。例如，如果你的资本成本是5\%，你每年都在“损失”5\%。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_16_capital/c_2.webp)
 
 这也意味着你希望赚得比资本成本更高。如果你每年亏损5\%，你需要赚超过5\%，才能获得正回报。如果你的企业每年只赚1\%，而成本是5\%，你会随着时间亏损。
 
 这只是一个简化的解释，但应该能为文章的后续内容提供足够的直觉。如果你有兴趣了解更多，估值之王，纽约大学达莫达兰教授， [has a paper explaining this in detail](http://people.stern.nyu.edu/adamodar/pdfiles/papers/costofcapital.pdf 'Cost')其中包括像下面这样严格扩展我们上述框架的图形。
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_16_capital/c_3.webp)
 
 换句话说：我们想赚钱。我们需要钱。这笔钱是有代价的，那就是资本的成本。
 
@@ -55,15 +55,15 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 这是十年期TIPS收益率的过去10年， [pulled from the Fed](https://fred.stlouisfed.org/series/DFII10 'Fed') [^4]\.对于不熟悉TIPS的人来说，它们是 [inflation linked, "safe" type of debt](https://www.investopedia.com/terms/t/tips.asp 'tips')\.正如我们所见，收益率目前处于负值状态，且随着时间呈下降趋势。
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_16_capital/c_4.webp)
 
 这是过去10年30年固定利率抵押贷款的成本， [also pulled from the Fed](https://fred.stlouisfed.org/graph/?g=NUh 'Fed') [^5]\.我们也可以看到，买房的借贷成本也在下降。
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_16_capital/c_5.webp)
 
 如果你觉得我只看10年期是在挑选，那我们就往过去54年里看看10年期国债利率。你可以看到之前利率的飙升 [Volcker killed inflation](https://en.wikipedia.org/wiki/Paul_Volcker 'Volcker')，并且此后持续下跌趋势。
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_16_capital/c_6.webp)
 
 到现在，我认为我们已经展示了 **债务** 已经下降了。股权成本呢？
 
@@ -71,7 +71,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 [Damodaran has a table in pg 142 of this report](https://poseidon01.ssrn.com/delivery.php?ID=425124115112025116020118020011112064052051040011030092064114074119081098025103109118097012061055040113125093125106096026106103051022049037045010068078022028103006044010102031118000094024104112069074071073106074113116005029084117013074087122064008&EXT=pdf 'Damodaran') 显示风险溢价随时间略有上升。想要更直观的版本， [KPMG has the numbers below.](https://assets.kpmg/content/dam/kpmg/nl/pdf/2020/services/equitiy-market-risk-premium-research-summary-march-2020.pdf 'KPMG') 它们不会完全对齐，但相对稳定。
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_16_capital/c_7.webp)
 
 近几个月略有上升，但整体股权风险溢价的上涨幅度并未超过债务成本的下降。这意味着从净值来看，成本 **公平** 要么持平，要么有所下滑。
 
@@ -89,7 +89,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 如果你有钱并且放贷出去，你是在以市场成本放出。如果你把钱投资到整体经济，你得到了市场增长。如果成本低于平均增长率（收益率），你得到的资产收益率会低于之前的高收益资产。反过来，如果成本高于增长率，则相反。
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_16_capital/c_8.webp)
 
 这对未来增长和财富不平等有不同的影响。富人储蓄更多，因此成本降低导致财富从富人转移到穷人。这被资产投机增加抵消，财富向相反方向转移。这种净效应取决于双方的相对规模。佩蒂斯没有提出这一点，但 **我相信投机部分已经远远抵消了前者的影响，而这正是财富不平等加剧的原因。**
 
@@ -99,7 +99,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 实际数据噪声更大。该 [Fed data on business applications](https://fred.stlouisfed.org/series/BUSAPPSAUS 'Biz') 这似乎证实了我的假设 [^7]但我也读过 [that the quality of businesses has declined](https://www.census.gov/newsroom/blogs/research-matters/2018/02/bfs.html 'decline')\.基于 [inflation of valuations for private companies trying to raise money](https://news.crunchbase.com/news/its-not-just-you-seed-rounds-are-actually-getting-bigger/ 'inflatoin')我仍然认为更多人以更低成本承担风险，但如果你不同意，请告诉我。
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_16_capital/c_9.webp)
 
 更高的风险容忍度也意味着 **更多关于可投资资产的投机。** 我认为这也是为什么我们持续看到公开股价上涨的原因之一，因为人们寻求回报并推动股市进一步上涨。
 
@@ -111,7 +111,7 @@ sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
 
 第二，我听说资本成本降低是 **分布不均。** 据说小企业贷款仍然很贵。我不是专家，我查阅的初步数据 [here](https://cdcloans.com/lender/504-rate-history/ 'rate') 但似乎情况并非如此，但我能理解这是一个合理的现象。例如，我一直对个人贷款利率仍然处于正值感到恼火，而整体平均利率则为负 [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_16_capital/c_10.webp)
 
 总体结论是，每个人都应该 **提高风险承受能力，参与更具风险的活动**，因为基础成本下降了。这是否意味着对公开股、另类资产类别的更多投资，还是你朋友的新业务，由你自己决定。一如既往，这不是投资建议，我很想听听对方的反驳意见。
 

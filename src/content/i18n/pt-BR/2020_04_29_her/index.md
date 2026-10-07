@@ -4,7 +4,7 @@ description: "A armadilha da margem das empresas de IA, conceitos de investiment
 pubDate: 2020-04-29
 category: Technology
 tags: ['AI', 'business', 'investing']
-heroImage: './her_1.webp'
+heroImage: '../../../blog/2020_04_29_her/her_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'her'
 sourceHash: '140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199'
@@ -84,7 +84,7 @@ Se a IA tem casos de uso limitados\, o mercado total endereçável para vender s
 
 > Empresas de serviços não são valorizadas como as empresas de software\. Os VCs adoram negócios de software\; trabalham duro no início para resolver um problema\, imprimem dinheiro para sempre\. É por isso que recebem avaliações de receita 10\-20x\. Empresas de serviços\? Por que investir em uma empresa de serviços\? O crescimento delas é inerentemente limitado por custos de mão de obra e problemas estranhos e abordáveis de mercado\. \- Scott
 
-![post](./her_1.webp)
+![post](../../../blog/2020_04_29_her/her_1.webp)
 
 Empresas geralmente são avaliadas com base em um múltiplo de algum indicador financeiro\, como receita\, EBITDA ou lucro líquido\. Empresas de software geralmente são avaliadas em um múltiplo mais alto do que empresas de serviços\, devido aos motivos mencionados acima\. [Higher gross margins matter, as described by Two Sigma](https://twosigmaventures.com/blog/article/why-gross-margins-matter/ 'Two')
 

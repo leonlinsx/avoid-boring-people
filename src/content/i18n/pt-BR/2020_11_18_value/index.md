@@ -4,7 +4,7 @@ description: "O AQR investiga por que o investimento em valor é como é"
 pubDate: 2020-11-18
 category: Investing
 tags: ['value investing']
-heroImage: './v_3.webp'
+heroImage: '../../../blog/2020_11_18_value/v_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'value'
 sourceHash: '63801c13ba46db20ef3700fd0c87bb184a0a914bcc5134f893c28bf55cdd0665'
@@ -52,7 +52,7 @@ Se tudo isso passou despercebido\, tudo bem\. Pense nisso como se o AQR criasse 
 
 Parece que deve funcionar\, né\? Bem\, vamos ver\.
 
-![post](./v_1.webp)
+![post](../../../blog/2020_11_18_value/v_1.webp)
 
 ## Críticas
 
@@ -62,7 +62,7 @@ O que eles descobrem é\:
 
 Você pode ver isso no gráfico deles\, onde apresentam os índices de Sharpe para todas as diferentes estratégias de valor ao longo do tempo\. Para quem não conhece os índices de Sharpe\, basta pensar neles como \"retorno excedente\"\, quanto maior melhor\. Repare como\, no gráfico abaixo de 2011\, **Todos os retornos caem e ficam baixos\. Isso é ruim\.**
 
-![post](./v_2.webp)
+![post](../../../blog/2020_11_18_value/v_2.webp)
 
 Por que isso está acontecendo\? A equipe do AQR analisa cinco críticas comuns a uma estratégia de \"investimento sistemático em valor\" que poderiam explicar isso\. Eles acabam rejeitando a maioria dessas críticas e propondo sua própria explicação\.
 
@@ -110,7 +110,7 @@ O que nos leva à conclusão da AQR\, sobre o que eles acham estar causando o ba
 
 Lembre\-se do nosso modelo simples de como o investimento de valor pode funcionar\. Se 1\) sua métrica já precifica tudo de forma justa\, ou 2\) os preços nunca convergem para o valor fundamental\, a estratégia de investimento vai fracassar\.
 
-![post](./v_3.webp)
+![post](../../../blog/2020_11_18_value/v_3.webp)
 
 Os AQRs funcionam acima das afirmações de que \(1\) não é verdadeiro\, e que é \(2\) a causa\. Em outras palavras\, atualmente existe um período estendido de tempo em que os preços se movem sem relação com informações fundamentais\:
 
@@ -120,7 +120,7 @@ Eles comprovam isso ao fazer portfólios de investimento baseados em \"informaç
 
 Como estão usando \"informações perfeitas\"\, a carteira tem bom desempenho – se você soubesse os relatórios de lucros da empresa com antecedência\, ganharia em média \[\^9\]\. Agora a questão interessante é\: quanto dinheiro extra você ganharia e como isso mudaria ao longo do tempo\? O AQR constata que esse \"retorno excessivo\" também diminuiu nos últimos anos\, o que implica que as informações fundamentais de lucros têm sido menos relevantes recentemente\. Note como o gráfico abaixo tem tendência para baixo desde 2007\:
 
-![post](./v_4.webp)
+![post](../../../blog/2020_11_18_value/v_4.webp)
 
 Não é uma explicação muito satisfatória\, pois é o equivalente a dizer \"menos pessoas acreditam na importância do valor\, portanto funciona menos\.\" No entanto\, há uma boa parte da verdade nisso\. Lembre\-se do artigo anterior sobre [stories and stocks](/writing/stories 'story')\, no qual argumento a importância das histórias\. Se as pessoas como um todo decidiram que o \"crescimento\" é o que mais importa\, isso gera um ciclo de retroalimentação auto\-reforçador nos mercados\. Isso normalmente leva um ciclo econômico para ser corrigido\, mas ainda não vimos um\.
 

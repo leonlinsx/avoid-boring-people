@@ -4,7 +4,7 @@ description: "行为边缘的难度"
 pubDate: 2021-02-06
 category: Risk & Decision Making
 tags: ['finance', 'games', 'risk']
-heroImage: './g_3.png'
+heroImage: '../../../blog/2021_02_06_gambling_size/g_3.png'
 featured: false
 locale: 'zh-Hans'
 sourceSlug: 'gambling_size'
@@ -35,7 +35,7 @@ sourceHash: '6c4aa4a154b35a9efefc547de8010057f4b9d7daf4df3d4723815d449b29cf9d'
 
 这种“感觉”的差异，就是人们能赚到高额数字的原因。复利需要时间来发挥作用\;你是靠耐心获得报酬的。
 
-![post](./g_1.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_1.webp)
 
 **风险与毁灭。** 考虑长期投资时，赚多少钱都没用，如果全部亏空。1万\%的收益后100\%的跌幅依然是糟糕的结果。避免破产风险，“坚持下去”才是唯一重要的事。别听我说，这里有霍华德·马克斯和查理·芒格的观点：
 
@@ -57,7 +57,7 @@ sourceHash: '6c4aa4a154b35a9efefc547de8010057f4b9d7daf4df3d4723815d449b29cf9d'
 
 这就是为什么我们一生中看到亚马逊\>100倍，而主动管理人却没有看到同样的表现。如果其他人 _具有_ 为了保住工作而做交易，什么都不做反而可能给你带来优势。
 
-![post](./g_2.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_2.webp)
 
 **无聊与刺激。** 为什么上述行为会困难？因为它们是 _无聊_\.我们喜欢活动，讨厌静止不动。在鸡尾酒会上很难吹嘘你的增长是小的、缓慢的、简单的。就像 ["sin stocks" need to have higher expected excess returns](https://www.aqr.com/Insights/Perspectives/Virtue-is-its-Own-Reward-Or-One-Mans-Ceiling-is-Another-Mans-Floor 'asness')“无聊”的股票行为也会给你带来优势。
 

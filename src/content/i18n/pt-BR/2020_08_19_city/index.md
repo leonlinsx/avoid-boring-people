@@ -5,7 +5,7 @@ pubDate: 2020-08-19
 category: Culture
 tags: ['predictions']
 evergreen: false
-heroImage: './c_3.png'
+heroImage: '../../../blog/2020_08_19_city/c_3.png'
 locale: 'pt-BR'
 sourceSlug: 'city'
 sourceHash: '9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e'
@@ -23,7 +23,7 @@ Artigos semelhantes já foram escritos sobre outras grandes cidades\, [such as S
 
 Estou mais otimista de que grandes cidades vão sobreviver a isso\. Como forma de quantificar essa afirmação \- tenho 80\% de confiança de que Nova York terá uma população maior em 5 anos do que tem hoje [^1]\. Para contextualizar\, até recentemente Nova York vinha crescendo 0\,30\% ao ano\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_08_19_city/c_1.webp)
 
 <a href='https://www.macrotrends.net/cities/23083/new-york-city/population'>População da Área Metropolitana da Cidade de Nova York 1950\-2020</a>
 
@@ -35,7 +35,7 @@ Normalmente\, o ritmo com que a prioridade da pessoa muda é mais rápido do que
 
 Recentemente\, porém\, as cidades perderam quase tudo que atraía as pessoas para elas\. Você pode ter permanecido o mesmo e querido as mesmas coisas\, mas a cidade mudou\. Se você se lembra do nosso [pace layer](/writing/pace 'pace') discussão\, neste caso as camadas de \"governança\"\, \"infraestrutura\" e \"comércio\" avançaram mais rápido do que o esperado\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_08_19_city/c_2.webp)
 
 Essa volatilidade levou a uma mudança de mentalidade por parte das pessoas\. O que antes era uma consideração relutante sobre locais de trabalho remoto se transformou em uma avaliação entusiasmada de até onde vai o dinheiro do aluguel em Austin\, Texas\. Para muitas pessoas\, o que antes era impensável agora é a escolha lógica\.
 

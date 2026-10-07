@@ -4,7 +4,7 @@ description: "¿Ha influido Picasso en algo relevante para nosotros hoy en día?
 pubDate: 2020-04-08
 category: Culture
 tags: ['art']
-heroImage: './p_8.webp'
+heroImage: '../../../blog/2020_04_08_picasso/p_8.webp'
 locale: 'es'
 sourceSlug: 'picasso'
 sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
@@ -18,7 +18,7 @@ Comprender a Picasso requiere conocer su contexto\, su progresión mental y los 
 
 El museo Getty desafió al público [to recreate famous works of art recently,](https://blogs.getty.edu/iris/getty-artworks-recreated-with-household-items-by-creative-geniuses-the-world-over/ 'Getty') lo que lleva a artículos divertidos como este en Reddit [^1]
 
-![post](./p_1.webp)
+![post](../../../blog/2020_04_08_picasso/p_1.webp)
 
 El estilo de la imagen original a la izquierda es distinto\, y la mayoría de vosotros pensaríais que es algo de Picasso\, aunque no lo hayáis visto antes \(yo no\)\. [You'd be right](https://www.wikiart.org/en/pablo-picasso/woman-with-bird-1970 'Woman with bird')\.
 
@@ -28,7 +28,7 @@ Por supuesto\, con la publicación llegaron los habituales comentarios de \"¿po
 
 La mayoría del arte se entiende mejor con contexto\, así que empecemos por el trasfondo de Picasso\. [Picasso was born in 1881 to two artistic parents,](https://mymodernmet.com/pablo-picasso-periods/ 'Met') en una época en la que el realismo en el arte seguía siendo popular\. Esto incluía obras maestras como \"Retrato de la madre del artista\" o \"Ciencia y caridad\" más abajo\, obviamente pintadas por alguien con talento\. Estas obras se pintaban para capturar una escena en un momento dado\, como si la miraras desde una perspectiva particular\. Fíjate en el detalle realista en las texturas y los colores\, la ilusión de profundidad y apariencia 3D\, y también cómo la proyección de sombras te permite saber de dónde viene la luz\. Es como si hubiéramos tomado una foto desde un ángulo\.
 
-![post](./p_2.webp)
+![post](../../../blog/2020_04_08_picasso/p_2.webp)
 
 En \"Ciencia y caridad\"\, fíjate en cómo los arrugamientos de las sábanas indican qué partes están delante y qué detrás\. El sombreado de la almohada te engaña haciéndote pensar que la cabeza está haciendo una hendidura\. Las pinceladas en las cerdas del hombre dan una textura diferente a los rizos del niño\.
 
@@ -38,7 +38,7 @@ También estaría equivocado [^3]\, ya que ambas pinturas anteriores son en real
 
 Ahora echa un vistazo a otro Picasso\, pintado según los dos anteriores\:
 
-![post](./p_3.webp)
+![post](../../../blog/2020_04_08_picasso/p_3.webp)
 
 ¿Cuál es la diferencia\? Por un lado\, el color ha cambiado\, hasta el punto de que incluso alguien daltónico como yo puede notar la diferencia\. Eso ha provocado un cambio de ánimo importante\, y toda la pintura se siente oscura\, triste y dolorosa\. La imagen también es menos realista que antes y con menos detalle\, aunque aún podemos reconocer que es una persona con una guitarra\.
 
@@ -50,7 +50,7 @@ Ahora echa un vistazo a otro Picasso\, pintado según los dos anteriores\:
 
 En 1907 Picasso pinta una pieza escandalosa\, inspirada en Cézanne y el arte africano\, ["Les Demoiselles d'Avignon."](https://www.pablopicasso.org/avignon.jsp#prettyPhoto 'Avignon') Esta obra\, de prostitutas en un burdel de Barcelona\, sería el inicio del cubismo\, [one of the most influential movements in art and a new way of representing reality.](https://www.tate.org.uk/art/art-terms/c/cubism 'Tate')
 
-![post](./p_4.webp)
+![post](../../../blog/2020_04_08_picasso/p_4.webp)
 
 ¿Qué está pasando aquí\? Está claro que Picasso ya no busca el realismo en sus dibujos\. Gran parte de la imagen también se siente 2D y plana\, ya que ya no le importa dar la ilusión de espacio tridimensional\.
 
@@ -60,7 +60,7 @@ Aún más interesante es la cara en la esquina inferior derecha\. Está inspirad
 
 > \'Una cabeza\'\, dijo Picasso\, \'es cuestión de ojos\, nariz\, boca\, que pueden distribuirse como se desee\'\.
 
-![post](./p_5.webp)
+![post](../../../blog/2020_04_08_picasso/p_5.webp)
 
 Obras como \"Chica con mandolina\" arriba no tienen una sola perspectiva\. En su lugar\, imagina que pintas una nariz vista desde un punto\, luego te mueves unos metros a la izquierda y pintas un ojo visto desde ese punto\. Luego\, te mueves por encima de la persona para pintar los labios tal y como se ve desde arriba\. Obtendrás una mezcla extraña de elementos\, sombras proyectadas por todas partes y nada que tenga sentido\, [as shown in this video by MoMa](https://www.youtube.com/watch?v=rGZYfSzvPvs 'Moma')\.
 
@@ -70,7 +70,7 @@ Si contrastas esto con una pintura realista típica\, puedes entender por qué e
 
 Por la misma época\, Picasso y [Georges Braque](https://cubismsite.com/georges-braque-cubism/ 'Braque') también empieza [popularising collages.](https://cubismsite.com/picasso-collage/ 'collage') Es uno de los primeros tipos de arte que utiliza múltiples medios\, con no solo pintura sino otros objetos pegados en el lienzo\. Se puede ver cómo la progresión de tener múltiples perspectivas lleva a que él quiera [to put a collection of things together in search of meaning for a coherent whole.](https://www.artsy.net/article/matthew-the-birth-of-collage-and-mixed-media 'artsy')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_04_08_picasso/p_6.webp)
 
 En \"Naturaleza muerta con varas de sillas\"\, Picasso tiene una cuerda real en el borde de la pintura\, que también tiene una impresión de bastón de silla \(ese material marrón en la parte inferior izquierda usado en las sillas\)\, y pintó una escena extraña encima\. Está haciendo un collage de al menos tres tipos diferentes de cosas\.
 
@@ -84,7 +84,7 @@ Después de esto\, Picasso se aleja de múltiples perspectivas para pintar las c
 
 > \"Pinto los objetos como los pienso\, no como los veo\"\.
 
-![post](./p_7.webp)
+![post](../../../blog/2020_04_08_picasso/p_7.webp)
 
 Desde entonces y hasta su muerte\, Picasso continuó creando arte\, [mixing his styles and continuing to experiment.](https://en.wikipedia.org/wiki/Pablo_Picasso#Later_works_to_final_years:_1949%E2%80%931973 'Picasso') Se estima [he did >13k paintings in his lifetime, which excludes tens of thousands more prints and illustrations.](https://www.picassomio.com/art-articles/picasso-how-many-artworks-did-picasso-create-in-his-life-time.html 'Total') Aunque algunos serían criticados durante su vida\, más tarde serían vistos como precursores de otros movimientos artísticos\.
 
@@ -102,7 +102,7 @@ Picasso demostró que el arte tiene atractivo más allá de lo estético\. Puede
 
 Os dejo decidir\.
 
-![post](./p_8.webp)
+![post](../../../blog/2020_04_08_picasso/p_8.webp)
 
 [^1]: [Source is here](https://www.reddit.com/r/pics/comments/fvx8ko/recreation_of_pablo_picassos_painting_a_woman/ 'Reddit')\. Reddit es un foro en línea\, para quienes no lo sepan\.
 

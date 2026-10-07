@@ -4,7 +4,7 @@ description: "¿De verdad se puede morir de un corazón roto?"
 pubDate: 2019-06-08
 category: Culture
 tags: ['science']
-heroImage: './broken_1.png'
+heroImage: '../../../blog/2019_06_08_heart/broken_1.png'
 locale: 'es'
 sourceSlug: 'heart'
 sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
@@ -20,7 +20,7 @@ En el mundo de la no ficción\, y en el extremo opuesto del espectro\, Nautilus 
 
 El artículo continúa citando un metaanálisis de este llamado \"efecto viudez\"\. Creo [this](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0023465 'paper') es el artículo de 2011 referenciado\, aunque no puedo confirmarlo ya que\, lamentablemente\, Nautilus no incluyó fuentes\. Los hallazgos clave se resumen en la tabla de abajo\. Si lo estoy interpretando bien\, la columna RR implica el riesgo relativo de muerte en esa línea\, por ejemplo\, un hombre tiene 1\,22 veces más probabilidades de morir tras la muerte de su cónyuge en comparación con el hombre medio\. [^3] [^4]
 
-![post](./broken_1.png)
+![post](../../../blog/2019_06_08_heart/broken_1.png)
 
 Aparentemente ocurre de forma semi\-frecuente\:
 

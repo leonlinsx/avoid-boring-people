@@ -4,7 +4,7 @@ description: "생각보다 더 큰 변화를 만들 수 있습니다"
 pubDate: 2020-04-01
 category: Culture
 tags: ['behaviour']
-heroImage: './f_1.webp'
+heroImage: '../../../blog/2020_04_01_fluctuat/f_1.webp'
 locale: 'ko'
 sourceSlug: 'fluctuat'
 sourceHash: 'f75683cc7c0eca5b009fc03e06fb2463e64a0470c11f77c950429b0f7b859aa9'

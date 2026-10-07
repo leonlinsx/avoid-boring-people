@@ -4,7 +4,7 @@ description: "프로세스 개선의 유형 이해하기"
 pubDate: 2020-08-26
 category: System Design
 tags: ['business']
-heroImage: './p_6.webp'
+heroImage: '../../../blog/2020_08_26_process/p_6.webp'
 locale: 'ko'
 sourceSlug: 'process'
 sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
@@ -18,7 +18,7 @@ sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
 
 왼쪽 물체와 오른쪽 물체를 비교하라는 질문을 받는다면\, 어떤 점을 말하시겠습니까\?
 
-![post](./p_1.webp)
+![post](../../../blog/2020_08_26_process/p_1.webp)
 
 가장 먼저 눈에 띄는 것 중 하나는 재료입니다\. 왼쪽은 돌로 만들어졌고\, 오른쪽은 청동으로 만들어졌습니다\.
 
@@ -30,7 +30,7 @@ sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
 
 저자들은 인류에게 큰 눈에 띄는 진보를 가져온 공정 개선이 있다고 제안합니다\. 하지만 사람들은 무형의 공정 변화를 간과하고 물리적 제품의 변화에만 지나치게 집중합니다\. 위의 화살촉 예시에서 사람들은 절단과 제련 공정의 개선을 않고 돌과 청동 결과에 집중합니다 [^1]\. 이러한 고영향력 프로세스 혁신을 FMPI라고 부릅니다\.
 
-![post](./p_2.webp)
+![post](../../../blog/2020_08_26_process/p_2.webp)
 
 프로세스 개선은 눈에 보이지 않고\, 상황을 다른 관점에서 봐야 하기 때문에 알아차리기 어렵습니다\. 세부 사항에서 벗어나 자신이 하는 일을 나타내는 고차원적 관계를 찾으려 합니다\. 수학에서 군론이 실용적 응용에서 추상화하려는 것과 비슷합니다\.
 
@@ -60,7 +60,7 @@ FMPI 연구는 인류의 진보를 이끈 다양한 방법을 정량화할 수 �
 
 마지막으로\, 감산법\(타입 7\)으로 요소를 제거할 수 있고\, 덧셈법\(타입 8\)으로 추가할 수 있습니다
 
-![post](./p_3.webp)
+![post](../../../blog/2020_08_26_process/p_3.webp)
 
 위의 8가지 유형의 다양한 변형을 사용함으로써 더 나은 방식으로 일을 할 수 있습니다\. 좀 더 구체적인 예시를 살펴보겠습니다\.
 
@@ -70,13 +70,13 @@ FMPI 연구는 인류의 진보를 이끈 다양한 방법을 정량화할 수 �
 
 제조 공정에는 많은 뺄셈\(타입 7\)과 덧셈\(타입 8\) 단계도 포함됩니다\. 아래 도표에서 [Electronics Tutorial](https://www.electronics-tutorial.net/CMOS-Processing-Technology/planar-process-technology/ 'Elec')실리콘\(SiO2\)을 제거하고 도핑 재료를 추가하여 반도체 특성을 만드는 과정을 볼 수 있습니다\.
 
-![post](./p_4.webp)
+![post](../../../blog/2020_08_26_process/p_4.webp)
 
 ### DNA 시퀀싱은 병렬화를 통해 개선되었습니다
 
 1970년대에는 DNA 시퀀싱이 느리고 노동 집약적이었는데\, 이는 전체 DNA 가닥을 순차적으로 작업해야 한다고 여겨졌기 때문입니다\. 요아힘 메싱과 피터 제부르크는 [shotgun approach](https://en.wikipedia.org/wiki/Joachim_Messing 'DNA')이 방법은 DNA를 무작위 조각으로 분해하여 더 빠른 시퀀싱을 가능하게 합니다\. 여러 겹치는 조각을 수행함으로써 시퀀싱 과정에서 병렬화\(타입 1\)가 가능해져 속도를 크게 높이고 비용과 필요한 DNA 양을 줄였습니다 [^4]\.
 
-![post](./p_5.webp)
+![post](../../../blog/2020_08_26_process/p_5.webp)
 
 ### 3D 프린팅은 뺄셈에서 덧셈으로의 사고방식 변화입니다
 
@@ -86,13 +86,13 @@ FMPI 연구는 인류의 진보를 이끈 다양한 방법을 정량화할 수 �
 
 반면\, [3D printing](https://3dprintingindustry.com/3d-printing-basics-free-beginners-guide '3D') 이 방법은 적법\(타입 8\)입니다\. 이 말은 생산 과정에서 낭비가 훨씬 적다는 뜻이고\, 거의 필요한 것을 아래에서부터 출력할 수 있기 때문입니다\. [Besides the cost savings, this also allows creation of more complicated structures in fewer steps.](https://bitfab.io/blog/additive-manufacturing/ 'bit')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_08_26_process/p_6.webp)
 
 ### FMPI에 대한 열린 질문들
 
 저자들은 위의 공정 개선이 아래에서 볼 수 있는 해당 산업의 비용 절감에 필수적이었다고 주장합니다\.
 
-![post](./p_7.webp)
+![post](../../../blog/2020_08_26_process/p_7.webp)
 
 기술이 확장될 수 있는 경로를 제공하는 것 외에도\, FMPI는 다음과 같은 특징을 가지고 있습니다\:
 

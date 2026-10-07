@@ -4,7 +4,7 @@ description: "現実の意思決定を改善するためにアルゴリズムを
 pubDate: 2021-04-10
 category: Risk & Decision Making
 tags: ['behaviour', 'tech']
-heroImage: './a_3.webp'
+heroImage: '../../../blog/2021_04_10_algo/a_3.webp'
 locale: 'ja'
 sourceSlug: 'algo'
 sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
@@ -42,7 +42,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 
 それが数学的に最適なポイントであり、最適な人材を選ぶ可能性が最も高いです。早すぎると、後で面接を受ける人を見逃すかもしれません。遅すぎると時間を無駄に[^4]しまいます。
 
-![post](./a_1.webp)
+![post](../../../blog/2021_04_10_algo/a_1.webp)
 
 ## エクスプロイトを探る
 
@@ -79,7 +79,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 
 この場合、最近使ったアイテムを小さくて速いセクションに置くのが最適です。これは「[temporal locality](https://www.geeksforgeeks.org/difference-between-spatial-locality-and-temporal-locality/ 'temp')」と呼ばれる機能があるためです。最近使ったものは再び必要になる可能性が高いです。例えば、Googleドライブは頻繁に使うファイルをハイライトして素早くアクセスできます。
 
-![post](./a_2.webp)
+![post](../../../blog/2021_04_10_algo/a_2.webp)
 
 ## スケジューリング
 
@@ -112,7 +112,7 @@ sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
 - ノーマル:初期の出来事は驚き、遅い出来事は予想されます。例えば、若くして亡くなる人には驚き、晩年に亡くなる人には驚かされません。
 - エルラン:出来事は決して驚きが増したり少なかったりします。例えば、ルーレットのホイールや[the coin flips we discussed last week](/writing/ergodicity 'sub')の記憶のない分布
 
-![post](./a_3.webp)
+![post](../../../blog/2021_04_10_algo/a_3.webp)
 
 ## ゲーム理論
 

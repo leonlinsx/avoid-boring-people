@@ -5,7 +5,7 @@ pubDate: 2021-03-07
 category: Technology
 tags: ['business', 'data', 'software']
 evergreen: false
-heroImage: './d_1.webp'
+heroImage: '../../../blog/2021_03_07_data_landscape/d_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'data_landscape'
 sourceHash: '3ceeb4d616b74fcc264ff995790c97a06de33969f39d827a51204c59697972d0'
@@ -59,7 +59,7 @@ Os dados de origem provavelmente estão armazenados em algum banco de dados como
 
 Juntando tudo\:
 
-![post](./d_1.webp)
+![post](../../../blog/2021_03_07_data_landscape/d_1.webp)
 
 Agradecimentos a Paul Tune\, aos participantes do Recurse Center Shae Matijs Erisson\, Ori Dean Bernstein\, Mikkel Paulson\, Steven Li\, Ryan Prior\, Luke Barone\-Adesi\, Chirag Davé\, Nathan Goldbaum e aos membros do Locally Optimistic Jacob Matson\, Arpit Choudhury\, Gordon Wong\, Kevin Hu\, Itto Kornecki\, por analisarem isso\.
 

@@ -4,7 +4,7 @@ description: "Paso a paso por el proceso de OPV"
 pubDate: 2019-07-31
 category: Investing
 tags: ['finance']
-heroImage: './ipo_1.webp'
+heroImage: '../../../blog/2019_07_31_ipo_process/ipo_1.webp'
 locale: 'es'
 sourceSlug: 'ipo_process'
 sourceHash: '6f3cd57a4e491a255b96899fc1df5935004e873af2dce6466b146bd23825b416'
@@ -38,6 +38,6 @@ Para explicar mejor el ["money on the table" issue](http://www.underpricing.de/D
 
 Algunas personas argumentarían que si hubiera demanda en 46 dólares\, quizá BYND debería haber fijado un precio de 46 dólares y haber recibido más dinero de los inversores\. Bill Gurley argumentaría usar una cotización directa para cubrir toda la oferta y la demanda\.
 
-![post](./ipo_1.webp)
+![post](../../../blog/2019_07_31_ipo_process/ipo_1.webp)
 
 Estoy de acuerdo en que queda dinero sobre la mesa\, pero piensa en la alternativa\. Supongamos que BYND cotiza 100 dólares desde el principio\. Eso no deja nada sobre la mesa\, pero ahora hay muchas más posibilidades de que el precio baje tras la OPI\. Y si baja\, quizá el impulso del precio siga hundiéndolo más\. No sabemos cuánto del precio actual de cotización de BYND se debe al impulso\, y me parece que podría haber ido en sentido contrario también\. El público general sigue considerando las OPVs de FB\, GOOG y Uber como fracasos por la falta de un \"pop\"\. Podrías argumentar a quién le importa el público general\, pero la moral de los empleados dentro de la empresa también se ve afectada\. **Mi punto es que actualmente hay menos incentivos para que las empresas fijen los precios exactos\, y quién sabe cuál es el precio correcto\, ¿de todos modos\?**

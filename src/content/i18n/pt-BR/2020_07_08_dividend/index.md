@@ -4,7 +4,7 @@ description: "Os custos de investir em empresas que pagam dividendos"
 pubDate: 2020-07-08
 category: Investing
 tags: ['dividends']
-heroImage: './d_6.webp'
+heroImage: '../../../blog/2020_07_08_dividend/d_6.webp'
 locale: 'pt-BR'
 sourceSlug: 'dividend'
 sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
@@ -40,7 +40,7 @@ Quinto\, você pode pagar um dividendo aos investidores\. Para cada ação que o
 
 Simplifiquei\, como sempre\, e as ações acima são as principais coisas que as empresas fazem com seu dinheiro\. Um gráfico do CS mostra como a combinação dessas ações mudou ao longo do tempo\:
 
-![post](./d_1.webp)
+![post](../../../blog/2020_07_08_dividend/d_1.webp)
 
 Hoje vamos focar na ação cinco\, o pagamento de dividendos\. Vou pular a discussão sobre a irrelevância teórica das estruturas de capital [^5]\, mas você pode ler um resumo sobre Modigliani Miller [here.](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.2.4.99 'MM')
 
@@ -58,13 +58,13 @@ Então sabemos que **O preço importa\, como em tudo relacionado a investimentos
 
 Como observação\, por convenção\, aceitaríamos uma quantia de 12 meses de dividendos\. A maioria das empresas paga dividendos trimestralmente\, então se uma empresa paga \$1 por trimestre\, o dividendo anual deles é de \$4\. Também ignoramos os impostos [^6]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_07_08_dividend/d_2.webp)
 
 Além de nos permitir avaliar rendimentos de dividendos entre ações que pagam dividendos\, esse rendimento também nos permite comparar entre outros títulos\. O rendimento é como o retorno esperado\, afinal\. Então poderíamos comparar um rendimento de dividendos de 4\% com um título que paga 1\%\, e dizer que tudo o mais é igual para a ação dividendo que nos dá uma renda maior\.
 
 Que é o que vemos aqui [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')\, com o gráfico abaixo mostrando que **Os rendimentos de dividendos foram maiores que os dos títulos nos últimos 10\+ anos\.**
 
-![post](./d_3.webp)
+![post](../../../blog/2020_07_08_dividend/d_3.webp)
 
 Olhando melhor\, isso parece ainda melhor agora\. Um período prolongado em que você recebe mais dinheiro de volta do que títulos\? Será que todos nós deveríamos simplesmente encontrar as ações com maior rendimento de dividendos e comprar todas\? Qual é a pegadinha\?
 
@@ -74,7 +74,7 @@ A primeira é simples\, e algo que já abordamos parcialmente\, a questão do pr
 
 No exemplo abaixo\, você teria ficado muito mais satisfeito com o rendimento de 1\% do div do que com o de 50\%\, por causa das circunstâncias que levaram até lá\. Devido à queda de preço no segundo caso\, você na verdade perdeu muito mais dinheiro do que ganhou com o \"aumento\" do rendimento de dividendos\.
 
-![post](./d_4.webp)
+![post](../../../blog/2020_07_08_dividend/d_4.webp)
 
 Você nem pode ter certeza de que o alto rendimento vai durar\, já que esse valor do dividendo não é garantido para o futuro\. É verdade que as empresas não gostam de cortar seus dividendos porque temem que os acionistas se descarreguem de suas ações\. [However, that also menas that a company can cut its dividend when things are so bad they have no choice.](https://www.cnbc.com/2018/12/07/ge-makes-it-official-lowers-dividend-to-a-penny.html 'GE')
 
@@ -84,11 +84,11 @@ O que acontece quando consideramos o retorno de capital\? Vamos olhar para os co
 
 Surpreendentemente\, não é isso que encontramos\. Nesse mesmo caso [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')\, os autores organizaram as ações em 4 segmentos\, do rendimento de dividendos alto ao baixo\. Eles então compararam o retorno dos dividendos versus o preço\. Vemos que **O retorno de capital contribuiu mais para o retorno total\,** Mesmo incluindo as ações com altos dividendos\.
 
-![post](./d_5.webp)
+![post](../../../blog/2020_07_08_dividend/d_5.webp)
 
 Ainda mais interessante\, um [Miller Howard report](https://mhinvest.com/download.html?docId=2246 'Miller') mostra que\, quando você divide ações de dividendos em 10 grupos\, a maioria delas na verdade é **Desempenho abaixo do esperado** o índice S\&P nos últimos 10 anos\. O pior é que o grupo de topo com maiores rendimentos de dividendos é o que tem desempenho mais abaixo do esperado\. Isso implica uma estratégia de investimento completamente oposta ao que pensávamos antes\.
 
-![post](./d_6.webp)
+![post](../../../blog/2020_07_08_dividend/d_6.webp)
 
 ### Fatores correlacionados
 
@@ -102,17 +102,17 @@ Vou pular a explicação de como esses fatores foram criados\; você pode ler ma
 
 O [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van') Distinguiu entre dois tipos de ações de dividendos\: 1\) alto rendimento de dividendos e 2\) alto crescimento de dividendos\. Eles então compararam a correlação desses grupos com alguns dos fatores comuns que mencionamos acima [^7]\.
 
-![post](./d_7.webp)
+![post](../../../blog/2020_07_08_dividend/d_7.webp)
 
 Acontece que muitas das características estão correlacionadas\, seja do grupo 1 ou do grupo 2\. Em outras palavras\, se você ignorasse o fator dividendo e considerasse apenas esses outros fatores\, conseguiria muito para captar o retorno das ações dividendas\.
 
 [Meb Faber went ahead to do just that,](https://www.cambriainvestments.com/wp-content/uploads/2017/10/DTAX-10.23.17.pdf 'Meb') criando portfólios compostos que pudessem replicar os perfis das ações de dividendos\, sem realmente serem ações de dividendos\. Isso significa que ele encontrou ações que davam o mesmo retorno que ações de dividendos\, mas que na verdade não pagavam dividendos\. Seus achados mostram que **Os retornos desses portfólios superam o portfólio de dividendos\.** Compare a coluna da caixa preta com o restante à direita\:
 
-![post](./d_8.webp)
+![post](../../../blog/2020_07_08_dividend/d_8.webp)
 
 E esses resultados se mantiveram quando ele comparou após as declarações de imposto também\:
 
-![post](./d_9.webp)
+![post](../../../blog/2020_07_08_dividend/d_9.webp)
 
 ## Conclusão e complicações
 

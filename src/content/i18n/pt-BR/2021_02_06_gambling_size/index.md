@@ -4,7 +4,7 @@ description: "A dificuldade da vantagem comportamental"
 pubDate: 2021-02-06
 category: Risk & Decision Making
 tags: ['finance', 'games', 'risk']
-heroImage: './g_3.png'
+heroImage: '../../../blog/2021_02_06_gambling_size/g_3.png'
 featured: false
 locale: 'pt-BR'
 sourceSlug: 'gambling_size'
@@ -35,7 +35,7 @@ Em média\, porém\, você teria ganhado \~8\% ao ano\. Isso parece um valor peq
 
 Essa diferença de \"sentimento\" é o motivo pelo qual as pessoas podem ganhar o grande número\. A composição leva tempo para fazer seu trabalho\; você é pago pela paciência\.
 
-![post](./g_1.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_1.webp)
 
 **Risco vs ruína\.** Ao pensar em investir a longo prazo\, não importa quanto você ganhe\, se você perde tudo\. Um ganho de 10\.000\% seguido de uma queda de 100\% ainda é um resultado horrível\. Evitar o risco de ruína e \"ficar no jogo\" é a única coisa que importa\. Não acredite em mim\, aqui estão tanto Howard Marks quanto Charlie Munger\:
 
@@ -57,7 +57,7 @@ Essa diferença de \"sentimento\" é o motivo pelo qual as pessoas podem ganhar 
 
 É por isso que vemos ações como a Amazon \>100x em nossa vida\, e não vemos gestores ativos fazendo o mesmo\. Se todo mundo _tem_ Para fazer trocas e manter o emprego\, não fazer nada pode realmente te dar uma vantagem\.
 
-![post](./g_2.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_2.webp)
 
 **Chato vs empolgante\.** Por que os comportamentos acima são difíceis\? Porque são _entediante_\. Gostamos de atividade e odiamos ficar parados\. É difícil se gabar em uma festa de coquetel que seus ganhos são pequenos\, lentos e simples\. Assim como ["sin stocks" need to have higher expected excess returns](https://www.aqr.com/Insights/Perspectives/Virtue-is-its-Own-Reward-Or-One-Mans-Ceiling-is-Another-Mans-Floor 'asness')\, comportamentos de \"tédio\" no stock também te dão uma vantagem\.
 

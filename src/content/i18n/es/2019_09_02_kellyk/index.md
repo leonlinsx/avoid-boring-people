@@ -4,7 +4,7 @@ description: "¿Cuántos ventiladores necesitas?"
 pubDate: 2019-09-02
 category: Technology
 tags: ['scale']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_09_02_kellyk/t_1.webp'
 locale: 'es'
 sourceSlug: 'kellyk'
 sourceHash: 'c060f73432aa1317c763faa2bc66c7c800f601eae3ca8a40d31fef489c3d0235'

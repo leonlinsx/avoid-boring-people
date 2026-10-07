@@ -5,7 +5,7 @@ pubDate: 2020-02-02
 category: Investing
 tags: ['finance']
 evergreen: false
-heroImage: './i_4.webp'
+heroImage: '../../../blog/2020_02_02_ipo/i_4.webp'
 locale: 'zh-Hans'
 sourceSlug: 'ipo'
 sourceHash: 'd8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5'
@@ -37,13 +37,13 @@ sourceHash: 'd8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5'
 
 我同意Damodaran的看法，尽管他暗示这大多是出于法律原因。招股说明书中的风险部分更多是为了法律保护，而非告诉你什么重要 [^3]\.我认识一些前同事花了很多时间为公司起草版块，但 **这里很难带来显著价值** （抱歉各位），尤其是如果公司上市时也有前银行家。
 
-![post](./i_1.webp)
+![post](../../../blog/2020_02_02_ipo/i_1.webp)
 
 > **IPO定价：** 银行认为，他们可以帮助弥合上一轮私募与预期公开价格之间的差距，找到合适的可比公司集合，选择合适的估值倍数，并识别投资者关切。
 
 > 达莫达兰认为，银行在定价方面做得很差，正如WeWork首次公开募股所体现的那样。这是因为他们选择了错误的可比公司或倍数，接触了错误的投资者，或者在定价过程中存在偏见，而后者最有可能出现。
 
-![post](./i_2.webp)
+![post](../../../blog/2020_02_02_ipo/i_2.webp)
 
 选择错误的可比公司组合或多个组合影响较小。comp 组合在投资者之间是事先社会化的，所以通常会有广泛共识 [^4]\.常见的倍数只有少数几种（净值\/转额、净值\/EBITDA、本益比），所以倍数的类型也被广泛理解。
 
@@ -59,7 +59,7 @@ sourceHash: 'd8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5'
 
 记住 [the median IPO offering size is ~$100mm](https://www.statista.com/statistics/251149/median-deal-size-of-ipos-in-the-united-states/ 'Statista')， 以及 [IPOs sell ~20% of the company](https://corpgov.law.harvard.edu/2017/05/25/2017-ipo-report/ 'Harvard')我们可以推断，大多数IPO并不是你已经知道的那些家喻户晓的大牌。你可以浏览一下 [the list of recent IPOs](https://www.nyse.com/ipo-center/recent-ipo 'NYSE') 看看你认得多少。 **大多数公司可能从银行的营销和投资者中受益。**
 
-![post](./i_3.webp)
+![post](../../../blog/2020_02_02_ipo/i_3.webp)
 
 第二点似乎无关紧要。如果你是专业投资者（买方），你做决策时也不会基于股票研究（卖方）推荐（抱歉卖方朋友们）。如果你是散户投资者，你不会获得这些信息。
 
@@ -81,7 +81,7 @@ sourceHash: 'd8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5'
 
 公司似乎愿意用低效率来换取更好的士气。当然，你本可以开盘时卖20美元，然后股价持平，但从10美元涨到20美元，确实（非理性地）让人更开心。另外，如果你开盘价是20美元，三个月后又跌到10美元呢？那时的正确价格是多少？
 
-![post](./i_4.webp)
+![post](../../../blog/2020_02_02_ipo/i_4.webp)
 
 达莫达兰总结道，说明了IPO现状维持的理由，并引用了 **惰性、害怕损害银行关系，以及公司需要有人替罪羊。** 我同意这些观点。最终还是要看你的公司\;直接上市从定义上讲确实更具价格效率。如果你是大型且知名的，你很可能可以直接上市，也不应该只听电子邮件通讯的建议。如果你规模小，可能需要银行家帮忙营销并连接投资者。我有80\%的信心，三年后IPO仍会占上市的主数。
 

@@ -5,7 +5,7 @@ pubDate: 2020-04-15
 category: Technology
 tags: ['business']
 evergreen: false
-heroImage: './k_2.webp'
+heroImage: '../../../blog/2020_04_15_keen/k_2.webp'
 locale: 'fr'
 sourceSlug: 'keen'
 sourceHash: 'e13ad424105a5f585b1ef90045821cf9fb5012d71f4ff3575d2d28699e057d64'
@@ -25,11 +25,11 @@ Examinons de plus près le produit\.
 
 Le processus d’inscription est simple si vous avez un compte Google et que vous êtes déjà connecté sur votre navigateur\. Je n’ai pas vu d’option pour les personnes sans compte Google\, et je suppose que cela changera une fois qu’elles seront sorties de la bêta\.
 
-![post](./k_1.webp)
+![post](../../../blog/2020_04_15_keen/k_1.webp)
 
 Après votre inscription\, la première vue est celle d’un écran en tuiles\, avec un grand signe plus à gauche\. Les autres tuiles semblent porter sur divers sujets que je pourrais m’intéresser\. S’il y avait un argument pour dire que Google ne vous espionne pas\, vous et vos données\, ce pourrait être celui\-ci\, puisque aucune des suggestions initiales ne correspondait à mes intérêts\. Peut\-être qu’ils pré\-remplissent cela en fonction de ce qui pourrait intéresser l’Américain moyen \?
 
-![post](./k_2.webp)
+![post](../../../blog/2020_04_15_keen/k_2.webp)
 
 Il n’était pas clair ce que je devais faire en premier entre le signe plus et les autres cartes\, alors j’ai cliqué sur le signe plus\.
 
@@ -37,31 +37,31 @@ Cela m’a amené à une option « créer »\, où je pouvais taper ce que j’a
 
 Il y avait aussi une option en bas pour « m’envoyer un mail concernant de nouvelles découvertes »\. Normalement\, je ne voudrais pas plus d’emails\, même pour un nouveau service\, mais j’ai coché la case car je voulais voir à quoi ressemblaient les suggestions d’emails\. Au moment où j’écris ceci\, je n’ai pas encore reçu d’email \; Je mettrai à jour le post s’il y a quelque chose d’important à mettre en avant\.
 
-![post](./k_3.webp)
+![post](../../../blog/2020_04_15_keen/k_3.webp)
 
 L’étape suivante a donné une boîte de texte pour « lister les recherches ou questions pour lesquelles vous souhaitez obtenir des résultats »\. Je n’étais pas sûr qu’il valait mieux mettre autant de recherches que possible que de n’avoir qu’une seule phrase\, alors je n’ai mis qu’une seule requête de recherche\. Je pensais que cela me donnerait des résultats plus ciblés comparé à une longue liste de phrases\, mais je ne peux pas le confirmer\.
 
-![post](./k_4.webp)
+![post](../../../blog/2020_04_15_keen/k_4.webp)
 
 Je pourrais aussi ajouter des membres à cette liste \(un Keen \?\)\. Les membres pourraient ajouter des gemmes au Keen\. Comme je n’ai pas d’amis\, j’ai laissé cela intact\, comme la plupart d’entre nous en quarantaine\.
 
-![post](./k_5.webp)
+![post](../../../blog/2020_04_15_keen/k_5.webp)
 
 C’était la dernière étape pour créer cette tuile\/carte\/joueur [^3]\. Je me suis retrouvé sur un écran qui me rappelait un peu Pinterest\. Il y avait 3 éléments dans le menu de navigation \: « fil »\, « gemmes » et « suivre »\. En dessous\, il y avait la page et les éléments pour ce que j’avais choisi dans le menu\. Dans la capture d’écran ci\-dessous\, vous pouvez voir que je suis toujours sur « fil »\.
 
 Le site m’a alors incité à ajouter une gemme à ma collection\, et aussi à faire ce que j’aimais\. Nous avons donc vu plusieurs collections sur la page d’accueil initiale\, et nous pouvons créer une collection nous\-mêmes\. Au sein d’une collection\, il y a une autre page qui montre plusieurs gemmes\, et nous pouvons aussi créer des gemmes\.
 
-![post](./k_6.webp)
+![post](../../../blog/2020_04_15_keen/k_6.webp)
 
 Créons alors une perle\. J’ai cliqué à nouveau sur ce signe plus\, et une fenêtre pop\-up est apparue\, me demandant de « ajouter quelque chose de nouveau »\. J’étais perdu à ce stade\, car l’interface ressemble à une seule ligne\, et je me demandais si je devais ajouter un lien\, une image\, un corps de texte ou autre chose\. Si vous tapez beaucoup de texte\, il commence à défiler vers le bas\, mais sans barre de défilement visuelle à droite\. Je suppose que c’est pour des raisons de design\. La boîte de texte atteint un maximum de 4 lignes avant de faire défiler vers le bas\, que ce soit sur mobile ou sur ordinateur\, ce qui\, je suppose\, sert à laisser assez d’espace blanc en dessous pour l’aperçu du post\.
 
 J’ai fini par regarder les collections des autres avant de revenir à ce livre\, ce qui ne semble pas être un excellent flux d’utilisateurs\. D’après ce que faisaient les autres\, j’ai mis un titre\, un lien d’article\, puis plein de hashtags [^4]\. J’ai essayé de mettre des sauts de ligne mais ils ne semblaient pas apparaître lors de la publication du joyau\.
 
-![post](./k_7.webp)
+![post](../../../blog/2020_04_15_keen/k_7.webp)
 
 La fenêtre contextuelle affiche bien un aperçu du lien après un léger délai\. Vous ne pouvez pas modifier cet aperçu\, et il ne disparaît pas non plus si vous supprimez tout le texte dans la boîte\, sauf si vous commencez à taper plus de texte\.
 
-![post](./k_8.webp)
+![post](../../../blog/2020_04_15_keen/k_8.webp)
 
 Après avoir cliqué sur enregistrer\, ma gemme a été créée\, et je pouvais la trouver en cliquant sur l’option « gemmes » dans le menu de navigation\, qui\, je suppose\, affiche toutes les gemmes que j’ai créées\. Cela serait comparé à « feed »\, qui serait des gemmes que Keen pense que je devrais explorer\. L’option « suivre » me donne la possibilité d’ajouter plus de recherches ou de questions à cette collection\.
 
@@ -73,11 +73,11 @@ Pour parcourir les gemmes et collections qui ne sont pas les vôtres\, vous deve
 
 Il semblait y avoir peu de collections publiques à parcourir\, car j’en avais sans cesse des rediffusions\. Cependant\, je n’ai jamais vu ma propre collection publique dans la liste suggérée\, donc peut\-être que cette hypothèse est fausse\. Après avoir lancé quelques fois et obtenu des résultats comme « comment poser pour des photos \(pour les filles\) » et « planifier une baby shower »\, j’ai abandonné l’idée de trouver quoi que ce soit de pertinent pour la finance ou la technologie\, et je suis allée sur une collection publique intitulée « restez productif »\.
 
-![post](./k_9.webp)
+![post](../../../blog/2020_04_15_keen/k_9.webp)
 
 La collection montrait des gemmes d’un groupe d’autres contributeurs\, qui avaient téléchargé un mélange de liens YouTube et de sites web\. Chaque carte gemme vous donne la possibilité de partager\, commenter ou ouvrir\. Cliquer en haut des cartes ne fait rien\, mais cliquer sur certaines parties de l’image ou du titre du bas ouvre le lien joint\.
 
-![post](./k_10.webp)
+![post](../../../blog/2020_04_15_keen/k_10.webp)
 
 Le partage faisait apparaître un lien à copier ou envoyer par email ou WhatsApp\.
 
@@ -85,11 +85,11 @@ L’ouverture m’a mené à une nouvelle page\, avec une version agrandie de la
 
 Commenter m’a amené sur la même page que l’ouverture\, mais ancrée en bas de la carte pour que je puisse taper un commentaire\. J’ai posté un commentaire sur une carte juste pour tester la fonctionnalité\. Vous pouvez modifier ou supprimer les commentaires après les avoir postés\.
 
-![post](./k_11.webp)
+![post](../../../blog/2020_04_15_keen/k_11.webp)
 
 Après avoir ouvert la carte\, il y a un espace en dessous où Keen surligne « plus à explorer »\. Elles ressemblaient à des gemmes de la même collection\, même si je n’en étais pas certain\. Je ne pouvais pas « ouvrir » ces gemmes\, et cliquer dessus m’amène directement au lien\, plutôt qu’à la page où l’on est dirigé lors de l\'« ouverture » d’une gemme\.
 
-![post](./k_12.webp)
+![post](../../../blog/2020_04_15_keen/k_12.webp)
 
 C’est tout pour la navigation\. Si vous souhaitez revenir explorer d’autres collections depuis la page de gemmes ouverte\, vous ne pouvez pas y retourner directement\, car le logo Keen normalement en haut à gauche n’est pas là\, remplacé par une flèche qui vous ramène à la collection de gemmes\. De là\, vous pouvez revenir à la page d’accueil et continuer à lancer les dés pour d’autres collections\.
 

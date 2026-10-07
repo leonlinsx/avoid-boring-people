@@ -5,7 +5,7 @@ pubDate: 2020-09-16
 category: Investing
 tags: ['risk']
 evergreen: false
-heroImage: './c_8.webp'
+heroImage: '../../../blog/2020_09_16_capital/c_8.webp'
 locale: 'fr'
 sourceSlug: 'capital'
 sourceHash: 'ac60dbcd9e1960ed35e98d47f3dd1f7cea8fd2afa94866e77ae13bf921d01c1a'
@@ -29,7 +29,7 @@ Pour ceux qui ne savent pas quel est le coût du capital\, ne vous inquiétez pa
 
 Imaginez que vous aviez une idée\. Cela pourrait être une nouvelle idée d’entreprise\, un plan d’expansion\, ou même un investissement auquel vous pensiez\. Tout ce qui compte\, c’est que cela nécessite de l’argent \(du capital\)\, et qu’il vous semble vous rapporter plus d’argent que ce que vous avez mis\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_16_capital/c_1.webp)
 
 Comment obtenir cet argent \? Il existe deux principales sources de capital \: la dette et les capitaux propres [^1]\.
 
@@ -39,13 +39,13 @@ Quand vous recevez de l’argent liquide en échange de capitaux propres\, vous 
 
 Les coûts combinés de ces deux principales sources de capital se combinent pour vous donner votre coût du capital\. C’est le coût moyen que vous encourrez en essayant cette idée\. Par exemple\, si votre coût du capital est de 5 \%\, vous « perdez » 5 \% chaque année\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_16_capital/c_2.webp)
 
 Il en découle aussi que vous souhaitez gagner plus que votre coût du capital\. Si vous perdez 5 \% par an\, vous devez gagner plus de 5 \% pour obtenir un rendement positif\. Si votre entreprise rapporte 1 \% par an alors qu’elle coûte 5 \%\, vous perdez de l’argent au fil du temps\.
 
 C’était une explication simplifiée\, mais elle devrait fournir suffisamment d’intuition pour le reste de l’article\. Si vous souhaitez en savoir plus\, le roi de l’évaluation\, le professeur Damodaran de NYU\, [has a paper explaining this in detail](http://people.stern.nyu.edu/adamodar/pdfiles/papers/costofcapital.pdf 'Cost')\, qui inclut des graphiques comme ceux ci\-dessous qui étendent rigoureusement le cadre que nous avons évoqué ci\-dessus\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_16_capital/c_3.webp)
 
 Autrement dit \: nous voulons faire de l’argent\. Nous avons besoin d’argent\. Cet argent a un coût\, qui est le coût du capital\.
 
@@ -55,15 +55,15 @@ Tout d’abord\, établissons l’argument qu’il est moins coûteux d’obteni
 
 Voici les 10 dernières années du rendement TIPS à 10 ans\, [pulled from the Fed](https://fred.stlouisfed.org/series/DFII10 'Fed') [^4]\. Pour ceux qui ne connaissent pas les TIPS\, ce sont un [inflation linked, "safe" type of debt](https://www.investopedia.com/terms/t/tips.asp 'tips')\. Comme nous pouvons le constater\, les rendements sont actuellement négatifs\, ayant une tendance à la baisse au fil du temps\.
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_16_capital/c_4.webp)
 
 Voici les 10 dernières années du coût hypothécaire à taux fixe sur 30 ans\, [also pulled from the Fed](https://fred.stlouisfed.org/graph/?g=NUh 'Fed') [^5]\. On peut voir que le coût de l’emprunt pour une maison a également baissé\.
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_16_capital/c_5.webp)
 
 Et si vous pensez que je trie en ne regardant que les 10 ans\, revenons aux 54 dernières années et regardons le taux des bons du Trésor à 10 ans\. Vous pouvez déjà voir la hausse des taux [Volcker killed inflation](https://en.wikipedia.org/wiki/Paul_Volcker 'Volcker')\, et la tendance baissière continue depuis\.
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_16_capital/c_6.webp)
 
 À ce stade\, je pense que nous avons montré le coût de **Dette** a diminué\. Qu’en est\-il du coût des actions \?
 
@@ -71,7 +71,7 @@ J’ai eu plus de mal à trouver le coût moyen des capitaux propres\, mais nous
 
 [Damodaran has a table in pg 142 of this report](https://poseidon01.ssrn.com/delivery.php?ID=425124115112025116020118020011112064052051040011030092064114074119081098025103109118097012061055040113125093125106096026106103051022049037045010068078022028103006044010102031118000094024104112069074071073106074113116005029084117013074087122064008&EXT=pdf 'Damodaran') montrant une légère augmentation de la prime de risque au fil du temps\. Pour une version plus visuelle\, [KPMG has the numbers below.](https://assets.kpmg/content/dam/kpmg/nl/pdf/2020/services/equitiy-market-risk-premium-research-summary-march-2020.pdf 'KPMG') Elles ne s’attachent pas exactement\, mais elles sont relativement cohérentes\.
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_16_capital/c_7.webp)
 
 Il y a eu une légère augmentation ces derniers mois\, mais les primes globales de risque des actions n’ont pas autant augmenté que le coût de la dette a diminué\. Cela implique qu’au total\, le coût de **Équité** est soit resté stable\, soit a décliné\.
 
@@ -89,7 +89,7 @@ Décomposons ce qu’il veut dire\, puisque ce n’est pas immédiatement évide
 
 Si vous aviez de l’argent et que vous le prêtiez\, vous le prêtiez au coût du marché\. Si vous l’avez investi dans l’économie globale\, vous obtenez une croissance du marché\. Si ce coût est inférieur à la croissance moyenne \(taux de rendement\)\, vous avez obtenu un actif à rendement inférieur comparé à celui à rendement plus élevé auparavant\. Inversement\, si le coût est supérieur au taux de croissance\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_16_capital/c_8.webp)
 
 Cela a des implications différentes sur la croissance future ainsi que sur les inégalités de richesse\. Les riches épargnent davantage\, donc des coûts réduits entraînent un transfert de richesse des riches vers les pauvres\. Cela est compensé par une spéculation accrue sur les actifs\, qui déplace la richesse dans l’autre sens\. L’effet net de cela dépend de la taille relative de chacun\. Pettis ne fait pas ce point\, mais **Je crois que la partie spéculative a largement compensé le premier effet\, et c’est une cause de l’augmentation des inégalités de richesse\.**
 
@@ -99,7 +99,7 @@ C’est là que je deviens plus spéculatif\. Un coût du capital par rapport à
 
 Les données réelles sont plus bruyantes\. Le [Fed data on business applications](https://fred.stlouisfed.org/series/BUSAPPSAUS 'Biz') Cela semble valider mon hypothèse [^7]\, mais j’ai aussi lu [that the quality of businesses has declined](https://www.census.gov/newsroom/blogs/research-matters/2018/02/bfs.html 'decline')\. Basé sur la [inflation of valuations for private companies trying to raise money](https://news.crunchbase.com/news/its-not-just-you-seed-rounds-are-actually-getting-bigger/ 'inflatoin')\, je pense toujours que plus de gens prennent des risques à moindre coût\, mais dites\-moi si vous n’êtes pas d’accord\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_16_capital/c_9.webp)
 
 Une tolérance accrue au risque implique également **Plus de spéculations sur des actifs investissables\.** Je pense que c’est une des raisons pour lesquelles nous avons continué à voir le prix des actions publiques augmenter\, alors que les gens recherchent le rendement et font monter davantage le marché boursier\.
 
@@ -111,7 +111,7 @@ La première est qu’une tolérance accrue au risque s’accompagne du compromi
 
 La deuxième est que j’ai entendu dire que la baisse du coût du capital est **répartie de manière inégale entre les secteurs\.** Apparemment\, les prêts pour petites entreprises restent chers\. Je ne suis pas expert ici\, et les données initiales que j’ai consultées [here](https://cdcloans.com/lender/504-rate-history/ 'rate') Cela semble indiquer le contraire\, mais je peux voir cela comme un phénomène plausible\. Par exemple\, j’ai toujours été agacé que les taux de prêts personnels restent positifs\, comparés aux taux globalement négatifs en moyenne [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_16_capital/c_10.webp)
 
 La conclusion générale à retenir\, c’est que chaque individu devrait désormais **Augmenter leur tolérance au risque et participer à des activités plus risquées**\, car leur coût de base a diminué\. Que cela signifie plus d’investissements dans des actions publiques\, des classes d’actifs alternatifs ou dans la nouvelle entreprise de votre ami\, cela vous appartient à décider\. Comme toujours\, ceci n’est pas un conseil d’investissement\, et je suis intéressé par des contre\-arguments à ce qui précède\.
 

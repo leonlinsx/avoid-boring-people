@@ -4,7 +4,7 @@ description: "Usando a estrutura da camada de ritmo para explicar por que as emp
 pubDate: 2020-03-04
 category: System Design
 tags: ['frameworks', 'pace layers']
-heroImage: './p_2.webp'
+heroImage: '../../../blog/2020_03_04_pace/p_2.webp'
 locale: 'pt-BR'
 sourceSlug: 'pace'
 sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
@@ -30,7 +30,7 @@ E o local do próprio prédio\, essa geografia basicamente permanece a mesma\.
 
 Em 1994\, [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand 'Stewart') do [Long Now Foundation](http://longnow.org/ 'Long Now') Propôs o modelo acima como uma forma de pensar em como os edifícios aprendem e evoluem [^1]\. Um edifício pode ser pensado como tendo múltiplas camadas\, todas mudando em ritmos diferentes\. **Um prédio saudável permitirá interações controladas entre camadas\, todas movendo\-se em seu próprio ritmo\.**
 
-![post](./p_1.webp)
+![post](../../../blog/2020_03_04_pace/p_1.webp)
 
 Em 1999\, Stewart ampliou ainda mais o arcabouço para se aplicar às civilizações\. **Quais partes da civilização mudam ao longo do tempo\? Quão rápido elas mudam\? Como elas interagem\?**
 
@@ -45,7 +45,7 @@ Em ordem do nível que avança mais rápido ao mais lento\, estes níveis são\:
 - Cultura
 - Natureza
 
-![post](./p_2.webp)
+![post](../../../blog/2020_03_04_pace/p_2.webp)
 
 A moda avança rápido\, a natureza se move devagar\. Stewart descreve como essas camadas interagem\:
 

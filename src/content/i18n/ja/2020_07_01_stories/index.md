@@ -5,7 +5,7 @@ pubDate: 2020-07-01
 category: Culture
 tags: ['investing', 'tech', 'startups']
 featured: true
-heroImage: './story_6.webp'
+heroImage: '../../../blog/2020_07_01_stories/story_6.webp'
 locale: 'ja'
 sourceSlug: 'stories'
 sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
@@ -21,7 +21,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 [Bestselling author Kurt Vonnegut](https://en.wikipedia.org/wiki/Kurt_Vonnegut 'Kurt') 『スローターハウス・ファイブ』『キャッツ・クレイドル』など多くの作品で知られています。自伝の中で、 [he claimed that this was his greatest contribution to culture:](https://books.google.com/books?id=Zd_9o3uyoVsC&pg=PA285&dq=vonnegut+shape+story+thesis&hl=en&sa=X&ei=tasCU8yjEML-oQSXloKIBQ#v=onepage&q=vonnegut%20shape%20story%20thesis&f=false 'book')
 
-![post](./story_1.webp)
+![post](../../../blog/2020_07_01_stories/story_1.webp)
 
 それで、 _物語には形がある、_ 彼は言う。
 
@@ -29,7 +29,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 グラフがあり、片面に幸運と悪い幸運が描かれ、もう片面が物語の始まりから終わりまでの進行を示していると想像してください。
 
-![post](./story_2.webp)
+![post](../../../blog/2020_07_01_stories/story_2.webp)
 
 このグラフ上のどんな物語でもプロットしてその形を見ることができます。そして世界中のすべての物語をプロットすると、いくつかの共通パターンが浮かび上がるでしょう。
 
@@ -37,25 +37,25 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 これをグラフにプロットして、「穴の中の男」タイプの物語と呼びます。人はうまくやっていて、穴に落ちてから抜け出し、以前よりも良くなります。
 
-![post](./story_3.webp)
+![post](../../../blog/2020_07_01_stories/story_3.webp)
 
 一方で、 [About Time,](<https://en.wikipedia.org/wiki/About_Time_(2013_film)> 'About Time') [^2] 主人公たちは恋に落ち、互いに失い、一連の出来事の後に再び出会う。
 
 これを「男の子と女の子が出会う」タイプの物語と呼びましょう。想像できるように、これは多くの恋愛映画に共通する典型的なことです。
 
-![post](./story_4.webp)
+![post](../../../blog/2020_07_01_stories/story_4.webp)
 
 そして、次のような物語において [The Metamorphosis,](https://en.wikipedia.org/wiki/The_Metamorphosis 'Kafka') 主人公の状況はどんどん悪化し、虫に変身して死んでいきます。これは「悲劇」になるでしょう。
 
-![post](./story_5.webp)
+![post](../../../blog/2020_07_01_stories/story_5.webp)
 
 上記の形に加えて、カートは他にもいくつか効果的かもしれないと考えた。「貧困から大金持ちへ」という物語は、着実な上昇、 ["icarus" story](https://en.wikipedia.org/wiki/Icarus 'icarus') 上昇と下降を伴い、 ["oedipus" story](https://en.wikipedia.org/wiki/Oedipus 'oedipus') 落ち込み、上昇し、また落ちぶれることもあった。
 
-![post](./story_6.webp)
+![post](../../../blog/2020_07_01_stories/story_6.webp)
 
 この考えを踏まえて、 [a team of researchers from Vermont and Adelaide used machine learning to classify 1,327 famous stories](https://arxiv.org/pdf/1606.07772.pdf 'paper') オン [Project Gutenberg](https://www.gutenberg.org/ 'proj').彼らは、ほとんどの物語が確かにいくつかの主要なタイプに分類できることを発見しました。彼らの方法論の詳細は脚注をご覧ください [^3].
 
-![post](./story_7.webp)
+![post](../../../blog/2020_07_01_stories/story_7.webp)
 
 ここでは「少年と少女の出会い」を「シンデレラ」に置き換えましたが、基本的にはヴォネガットの言う通りだったことを示しています [^4]. _物語には形があり、いくつかの標準的な形があります。_
 
@@ -75,7 +75,7 @@ sourceHash: 'cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04'
 
 X社は主にアプリサブスクリプションで収益を上げるインターネット企業で、拡大する消費者カテゴリーでの独占を活かしています。総加入者数は700万人で、そのうち300万人はメインアプリの加入者です。収益は前年比で~30%増加しています。EBITDA(利益指標の一種)の利益率は40%です。株価は過去最高水準に達し、過去1年で倍以上に上昇しています [^6].
 
-![post](./story_8.webp)
+![post](../../../blog/2020_07_01_stories/story_8.webp)
 
 かなり良さそうなので、所有したいかどうかさらに調べてみる価値はあるかもしれません。
 
@@ -83,7 +83,7 @@ X社は主にアプリサブスクリプションで収益を上げるインタ�
 
 X社は主にアプリサブスクリプションで収益を上げるインターネット企業で、拡大する消費者カテゴリーでの独占を得ています。総加入者数は700万人で、そのうち300万人はメインアプリの加入者です。収益は前年比で~30%増加しています。EBITDA(利益指標の一種)マージンは40%です。株価は過去最高を記録し、過去1年で倍増しています。 _[Facebook just announced they're planning to enter the category](https://techcrunch.com/2018/05/01/facebook-dating/ 'FB')_
 
-![post](./story_9.webp)
+![post](../../../blog/2020_07_01_stories/story_9.webp)
 
 同社のファンダメンタルズは変わっていませんが、1日以内に22%の価格下落が明確に示されています _何か_ 持っている。それがもちろん _ストーリー_ 投資家たちが株について語っていること。
 
@@ -95,11 +95,11 @@ X社は主にアプリサブスクリプションで収益を上げるインタ�
 
 聞き覚えがありますか?
 
-![post](./story_10.webp)
+![post](../../../blog/2020_07_01_stories/story_10.webp)
 
 今回の会社は Match.com で、Tinderの親会社で、その下落から約1年後に株価が再び倍増しました。『ボーイ・ミーツ・ガール』はうまくいきました。
 
-![post](./story_11.webp)
+![post](../../../blog/2020_07_01_stories/story_11.webp)
 
 5月1日、両方の話は同じくらい妥当で、賢い投資家たちがその取引のどちらかの立場を取っていました。重要なのは、Matchのビジネスに実際の変化が起こる前から株価が反応していたことです。物語は岐路に差し掛かり、投資家は異なる側に立つようになりました。「イカロス」のように負けると考えた人は、そうでないと考えた人は利益を得ました。話が変わるにつれて株価も変わります。
 
@@ -169,7 +169,7 @@ X社は主にアプリサブスクリプションで収益を上げるインタ�
 
 聞き覚えがありますか?
 
-![post](./story_12.webp)
+![post](../../../blog/2020_07_01_stories/story_12.webp)
 
 でもこれは一体どんな話なのでしょうか?
 

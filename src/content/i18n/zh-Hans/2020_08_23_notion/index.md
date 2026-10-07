@@ -4,7 +4,7 @@ description: "Notion实际上是在努力让所有人达成共识"
 pubDate: 2020-08-23
 category: Technology
 tags: ['business', 'startups']
-heroImage: './n_5.webp'
+heroImage: '../../../blog/2020_08_23_notion/n_5.webp'
 locale: 'zh-Hans'
 sourceSlug: 'notion'
 sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
@@ -20,7 +20,7 @@ sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
 
 在电影中 [Inception by Christopher Nolan,](https://en.wikipedia.org/wiki/Inception 'Inception') 主角们在层叠的梦境中游走，完成一项任务。他们在那层中的行为会影响层本身，也会影响上下层。有时你关心那层发生的事情，有时则想影响其他层。
 
-![post](./n_1.webp)
+![post](../../../blog/2020_08_23_notion/n_1.webp)
 
 我希望你记住这个框架—— **层、层中的相互作用以及层之间的相互作用。** 我们稍后会再回来讨论 [^1]\.
 
@@ -50,7 +50,7 @@ sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
 
 一个重大变化是 **[graphical user interface](https://www.youtube.com/watch?time_continue=39&v=BFlop4sP8Os&feature=emb_title 'GUI')\.** 在此之前， [people were interacting with computers via a command line interface,](https://www.wired.com/1997/12/web-101-a-history-of-the-gui/#:~:text=In%201979%2C%20the%20Xerox%20Palo,first%20prototype%20for%20a%20GUI.&text=When%20Jobs%20saw%20this%20prototype,expensive%3B%20no%20one%20bought%20it. 'CLI') 就像下面那种。
 
-![post](./n_2.webp)
+![post](../../../blog/2020_08_23_notion/n_2.webp)
 
 如你所见，这并不是与计算机合作最直观的方式。我可以说我把这个错误留在这里是为了学习\;事实上，我忘了正确的语法。命令行交互虽然强大，但对大多数用户来说是个很高的入门门槛。通过围绕视觉体验重新设计使用， [Apple achieved a breakthrough](https://en.wikipedia.org/wiki/History_of_the_graphical_user_interface 'Apple') 在将计算机推向大众市场 [^5]\.如果我们还只是用命令行操作，计算进展会大大放慢。
 
@@ -66,7 +66,7 @@ sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
 
 这正是Notion派上用场的地方。 **[Notion wants to be your all-in-one workspace,](https://www.notion.so/product 'Notion')** 你主要负责写作、规划和组织工作的地方。就是我们刚才提到的那些独立软件？Notion想把它们都捆绑在一起，给你一个统一的用户体验，并有足够的灵活性满足你大部分任务的需求。
 
-![post](./n_3.webp)
+![post](../../../blog/2020_08_23_notion/n_3.webp)
 
 想要公司维基吗？你可以在Notion里创建。
 
@@ -90,11 +90,11 @@ sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
 
 随着数据在这些层中流动， **它变得更加直观和可见，** 这让更多人能够与它互动。数据同步层的工具，由于本质上最“面向终端用户”，通常采用更注重视觉化的设计方式，使普通用户更容易上手。例如，电子邮件很简单， [hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop 'hadoop') 很难。
 
-![post](./n_4.webp)
+![post](../../../blog/2020_08_23_notion/n_4.webp)
 
 上述框架让我们更好地了解了Notion的增值所在位置。 **Notion 目前处于数据同步层，并且正在逐步进入数据可视化层。** 我之前说过这是一个很大的市场，所以在探索扩张机会之前，我们先为这个观点做个解释。
 
-![post](./n_5.webp)
+![post](../../../blog/2020_08_23_notion/n_5.webp)
 
 数据同步层正在尝试解决一个问题 **所有尺度上的信息协调问题**从公司内的小团队到外部利益相关者。目标是确保每个人对某个问题达成共识。拥有消息应用可以让你的团队就下一步行动达成一致，拥有公开网站则能让客户获得关于你业务的信息。Slack是一家市值150亿美元的公司，专注于消息传递\;Wix是一家市值130亿美元的市值企业，专注于建立网站。我们可以列出更多公司，比如维基、任务板、笔记，但我认为这足以说明这里蕴藏着数十亿美元的机会。
 
@@ -106,11 +106,11 @@ sourceHash: '96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6'
 
 Microsoft将Office收入归入“生产力与业务流程”板块，将Office商务、Office消费者及其他一些小型企业归为一类。在他们的 [recent annual report](https://www.microsoft.com/investor/reports/ar19/index.html 'ar')他们整个细分市场共创收410亿美元，运营收入160亿美元，利润率为39\%。当然，这并非全部是办公室收入，但很可能是最大的子细分市场 [^8]\.
 
-![post](./n_6.webp)
+![post](../../../blog/2020_08_23_notion/n_6.webp)
 
 谷歌将G Suite收入归入“谷歌云”细分市场，同时也将谷歌云和其他企业服务列入该项。他们最近的 [10K](https://abc.xyz/investor/static/pdf/20200204_alphabet_10K.pdf?cache=cdd6dbf 'Google') 他们显示该细分市场的收入是90亿美元。谷歌云可能是这里收入的大部分，我认为G Suite可能在10亿美元甚至更多。
 
-![post](./n_7.webp)
+![post](../../../blog/2020_08_23_notion/n_7.webp)
 
 显然，“Word、PowerPoint、Excel”市场以收入计，规模达数十亿美元，且可能远大于此。市场规模正是原因 **我认为Notion应该获得更多的分析能力** 随着时间推移。你希望覆盖尽可能多的客户用例。
 
@@ -122,7 +122,7 @@ Microsoft将Office收入归入“生产力与业务流程”板块，将Office�
 
 可能有 [pace layer](/writing/pace 'pace') 这里也要做个对比，上层、更快的视觉层移动得更快，主导了注意力循环。
 
-![post](./n_8.webp)
+![post](../../../blog/2020_08_23_notion/n_8.webp)
 
 当我在思考这篇文章时，最初想为Notion做一个财务模型， [like the one I did for newsletters](/writing/community 'news')\.不过，鉴于缺乏数据，我会做出太多假设。我读过他们已经盈利，收入为 [$30mm](https://www.forbes.com/sites/davidjeans/2020/04/01/buzzy-work-app-notion-hits-2-billion-valuation/#15da831578ec '30')我能看到他们能实现10倍的收入，利润率40\%，同时仍保持两位数增长。我们还得等待更多数据，但难怪大家都很兴奋 [^9]\.
 
@@ -132,43 +132,43 @@ Microsoft将Office收入归入“生产力与业务流程”板块，将Office�
 
 登录 Notion 很简单，但开始操作却不方便，这个问题我稍后会在建议部分详细说明。你可以用你的 Google 账号登录，然后选择是为自己还是团队设置工作区。
 
-![post](./n_9.webp)
+![post](../../../blog/2020_08_23_notion/n_9.webp)
 
 再往后，你会看到一个“入门”页面，中间有如何在 Notion 中开始工作的技巧。左侧你会看到你从一些预设模板开始，比如待办事项列表或阅读清单。
 
-![post](./n_10.webp)
+![post](../../../blog/2020_08_23_notion/n_10.webp)
 
 **Notion的基本单位是一个方块。** 想想Excel中的单元格是做工作的关键。Notion中的块类似，但功能更多。块可以自定义显示内容和显示方式。关键是Notion是一个视觉化设计型应用，你应该能根据需求排列和调整块。
 
-![post](./n_11.webp)
+![post](../../../blog/2020_08_23_notion/n_11.webp)
 
 你可以把一个积木变成很多东西，比如待办事项清单、日历或表格。这些本身就是积木，所以你可以在原始页面上移动创建的链接。
 
 **你可以把一个块\/页面嵌套在另一个下面，** 这样更容易建立一个连接所有作品的网络。如果你喜欢思维导图，喜欢连接所有互动对象，这种设计风格非常适合你。
 
-![post](./n_12.webp)
+![post](../../../blog/2020_08_23_notion/n_12.webp)
 
 除了可以从块创建独立页面之外，我还喜欢的另一个功能是 **拨动块**\.如果你喜欢在Excel里分组和解组行， [^10]你会喜欢这个显示摘要和详细视图的功能。
 
-![post](./n_13.webp)
+![post](../../../blog/2020_08_23_notion/n_13.webp)
 
 我们已经谈过Notion的表现 **模块化的模块让你能够与正在构建的页面进行视觉互动。** 过去，如果你想改变网页的外观，受限于网页编辑器提供的各种功能。比如，Substack的文本格式选项有限。要获得更多格式，你得自己编写HTML\/JavaScript\/CSS代码。
 
-![post](./n_14.webp)
+![post](../../../blog/2020_08_23_notion/n_14.webp)
 
 有了 Notion，你获得了大量功能和灵活性，让非前端程序员也能做更多开发。 **这也带来了丰富的模板选择，用户以分享他们制作的内容为荣。** 例如，如果你要回学校，可以使用预制模板来规划所有课程。
 
-![post](./n_15.webp)
+![post](../../../blog/2020_08_23_notion/n_15.webp)
 
 **Notion模板目前既是一大优势，也可能是一个大弱点。** 我们先讲述优点，然后在建议部分讲缺点。模板的优势在于，一旦有人确定了想要什么并选择了模板，很快就能上手，因为他们想要的功能大多已经创建好了。例如，如果你想做任务板，不需要从头创建页面和部分，因为已有模板。
 
 在下面，我找到了Notion上的任务清单模板：
 
-![post](./n_16.webp)
+![post](../../../blog/2020_08_23_notion/n_16.webp)
 
 然后我能快速把自己的任务添加到上面。注意，在任务中，我可以创建嵌套子任务，这有助于组织。
 
-![post](./n_17.webp)
+![post](../../../blog/2020_08_23_notion/n_17.webp)
 
 Notion的概述就到这里，你可以去他们的 [youtube page](https://www.youtube.com/c/Notion/featured 'youtube') 了解更多你可以在 Notion 中创造什么。现在我想介绍一下 Notion 的问题，最后给公司一些登月计划的建议。
 
@@ -199,7 +199,7 @@ Notion的概述就到这里，你可以去他们的 [youtube page](https://www.y
 ### 问题3：缺乏核心数据分析功能
 
 我之前也提到过，Notion在功能上远不及Excel。作为 [RadReads](https://radreads.co/notion-formulas/ 'Rad') 指出，Notion就像数据库一样。它不是Excel，所以只能给你整个部分的功能视图。比如，你不能只对两个单元做计算，必须对整个列应用 [^11]
-![post](./n_18.webp)
+![post](../../../blog/2020_08_23_notion/n_18.webp)
 
 如果你看上面那张我试图加两个数字的图片，你也会发现公式看起来很不优雅。Notion里的公式看起来像是编程思维，函数把变量当作输入，排列成一长行。这与Notion的视觉设计理念完全相反，这让我很惊讶。
 
@@ -217,7 +217,7 @@ Notion的概述就到这里，你可以去他们的 [youtube page](https://www.y
 
 **奇怪的空白：** 这是个人设计偏好。Notion中所有页面\/块的左右都有充足的空白。用户应该认为点击那里不会有反应，因为那里是空的。相反，块的选择区域超出了视觉区域，所以你最终会点击块，正如下面的动图所示。
 
-![post](./n_19.webp)
+![post](../../../blog/2020_08_23_notion/n_19.webp)
 
 我们已经讨论了一些问题，接下来来看一些想法。我会把这些想法分成更可行的社区\/营销想法和更离奇的产品想法。
 
@@ -247,7 +247,7 @@ Notion主要是通过口碑传播，根据一些文章，我猜市场营销部�
 
 更广泛地说，如果我在Notion上运行产品，我会关注他们允许嵌入的所有内容。我会把它们看作是Notion的失败，也是扩展的机会。你甚至可以把它当作宏大愿景的产品路线图。比如，Google Drive的所有功能有一天都可以被复制。这将需要多年时间，最终目标是你无需离开Notion。
 
-![post](./n_20.webp)
+![post](../../../blog/2020_08_23_notion/n_20.webp)
 
 ### 产品创意二：电子邮件
 
@@ -265,7 +265,7 @@ Notion 是一种可视化、基于设计的方法，旨在重新思考我们的�
 
 思考 Notion 的权衡也很有趣。公司通常面临增长、盈利和质量三难困境。以 Notion 为例，他们据说已经实现盈利，鉴于早期采用的强劲，未来三年增长不太可能成为问题。 **速率决定步骤即为质量** 这也解释了为什么Notion的发布速度比竞争对手慢。
 
-![post](./n_21.webp)
+![post](../../../blog/2020_08_23_notion/n_21.webp)
 
 Notion允许你创造什么，有哪些定制选项可用？你对最终设计拥有多少控制权？突破这些问题的边界，将使Notion的工作方式渗透到我们生活的更多领域。
 

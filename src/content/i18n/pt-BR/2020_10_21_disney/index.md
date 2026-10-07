@@ -5,7 +5,7 @@ pubDate: 2020-10-21
 category: Investing
 tags: ['business']
 evergreen: false
-heroImage: './d_1.webp'
+heroImage: '../../../blog/2020_10_21_disney/d_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'disney'
 sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
@@ -39,7 +39,7 @@ Nunca cobri a Disney quando estava investindo long\/short\; um colega fez\. Port
 
 A Disney reporta quatro segmentos principais\: Redes de Mídia\, Parques\, Entretenimento de Estúdio e Atendimento Direto ao Consumidor \(DTC\)
 
-![post](./d_1.webp)
+![post](../../../blog/2020_10_21_disney/d_1.webp)
 
 Minhas primeiras impressões sobre o que foi dito acima são\:
 
@@ -52,7 +52,7 @@ Se olharmos para as margens operacionais desses segmentos\, elas são bem semelh
 
 Se os perfis de margem forem realmente semelhantes\, a administração deve ser indiferente a investir em qualquer um deles\; talvez preferindo Mídia devido à margem um pouco maior [^4]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_10_21_disney/d_2.webp)
 
 A Disney dedica 17 páginas em seu relatório anual para descrever seus negócios [^5]\, então vou resumir para evitar que todos vocês pulem antes mesmo de começarmos\.
 
@@ -87,7 +87,7 @@ Uma grande complicação é o impacto da Covid no negócio\. [For the first nine
 - O Studio também morreu\, com queda de 55\% no qoq e surpreendentemente 3\% de subida no ano acumulado
 - Os números do DTC não são comparáveis por causa da aquisição\, mas imagino que a taxa de crescimento ainda seja rápida
 
-![post](./d_3.webp)
+![post](../../../blog/2020_10_21_disney/d_3.webp)
 
 Coloquei as finanças da Disney em um modelo simples [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit?usp=sharing 'goog') Caso algum de vocês queira brincar com os números\. Note que as suposições são apenas números falsos e não diligências\.
 
@@ -121,7 +121,7 @@ Não tenho contexto suficiente aqui\, já que não sei quanto esses colegas est�
 
 E incluem um gráfico mostrando o aumento múltiplo\. Múltiplo é uma forma de avaliar uma empresa\, mostrando quanto as pessoas estão dispostas a pagar pela sua ação\. Quanto mais alto\, geralmente melhor\. [^9]\.
 
-![post](./d_4.webp)
+![post](../../../blog/2020_10_21_disney/d_4.webp)
 
 > Por fim\, acreditamos que a Disney deve manter o foco na transição para uma fonte de receita DTC baseada em assinaturas e evitar a tentação de maximizar lucros de curto prazo por meio de estratégias transacionais de precificação VOD\.
 
@@ -145,7 +145,7 @@ Então eles estão dizendo para não aceitar a sugestão do Third Point imediata
 
 Essas são opções bastante comuns de alocação de capital\. Na verdade\, as três primeiras são coisas que eu normalmente esperaria que um ativista pedisse\, e antes de ler a carta do Third Point\, eu já imaginava que eles diriam algo assim\. Aqui está uma imagem rápida para refrescar sua memória sobre alocação de capital\, de Michael Mauboussin\:
 
-![post](./d_5.webp)
+![post](../../../blog/2020_10_21_disney/d_5.webp)
 
 Voltando ao Semper\:
 
@@ -169,7 +169,7 @@ Com a enorme ressalva de que eu não cubro a Disney e nunca abordei\, estou incl
 - Não sei a estrutura completa da dívida da Disney\, mas os 10 mil mostram que as taxas atuais não são realmente ruins \(veja a imagem abaixo\)\. Não tenho certeza se pagar a dívida de forma agressiva faz muito sentido
 - Especialmente no nosso atual cenário de baixa taxa\, se a Disney precisasse de dinheiro para financiar uma aquisição ou recompra de ações\, eu imaginaria que seja fácil para eles pegar empréstimos baratos
 
-![post](./d_6.webp)
+![post](../../../blog/2020_10_21_disney/d_6.webp)
 
 Novamente\, ressalvo que isso não é um conselho de investimento e que eu conheço menos o setor\, mas essa é minha opinião atual\. Como mencionado\, você pode fazer uma cópia do modelo financeiro que elaborei [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit#gid=0 'goog') brincar com os números\. As suposições que coloquei ali são números falsos\, então por favor\, não se aprofunde neles [^12]\.
 

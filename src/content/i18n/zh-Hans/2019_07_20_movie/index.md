@@ -4,7 +4,7 @@ description: "你会去看一部电影，直到一百年后才上映吗？"
 pubDate: 2019-07-20
 category: Culture
 tags: ['movie']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2019_07_20_movie/m_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'movie'
 sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
@@ -16,9 +16,9 @@ sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
 
 然而，公众的评论却没那么积极：
 
-![post](./m_2.webp)
+![post](../../../blog/2019_07_20_movie/m_2.webp)
 
-![post](./m_3.webp)
+![post](../../../blog/2019_07_20_movie/m_3.webp)
 
 评论范围包括电影可能很糟糕、是自慰广告，或者指望100年后观众欣赏它太自负。
 

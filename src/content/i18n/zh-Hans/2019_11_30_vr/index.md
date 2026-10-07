@@ -4,7 +4,7 @@ description: "电子游戏、投资组合再平衡与概率"
 pubDate: 2019-11-30
 category: Technology
 tags: ['finance', 'vr', 'behaviour']
-heroImage: './g_3.webp'
+heroImage: '../../../blog/2019_11_30_vr/g_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'vr'
 sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
@@ -33,7 +33,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 嗯：
 
-![post](./g_1.webp)
+![post](../../../blog/2019_11_30_vr/g_1.webp)
 
 游戏比胶片大，但增长速度更快。随着 [global sports industry at $500bn in size](https://www.businesswire.com/news/home/20190514005472/en/Sports---614-Billion-Global-Market-Opportunities 'Sports')游戏在达到与体育同等规模之前，还有很大的成长空间。
 
@@ -41,7 +41,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 嗯 [^3]\:
 
-![post](./g_2.webp)
+![post](../../../blog/2019_11_30_vr/g_2.webp)
 
 我并不是唯一一个对游戏持乐观态度的人。知名风险投资公司A16Z也增加了对游戏的兴趣， [wrote about some trends they believe in](https://a16z.com/2019/10/16/trends-revolutionizing-games/ 'a16z') [^4]\:
 
@@ -79,11 +79,11 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 换句话说，如果你的周转率高、再平衡频率较低或约束较少，重新平衡时机对最终回报的影响就越大。下方箭头表示表现最佳和最差表现变体之间的差额， _同一档案_\.
 
-![post](./g_3.webp)
+![post](../../../blog/2019_11_30_vr/g_3.webp)
 
 他们还提供了一张汇总表，展示了不同投资策略之间的差异。为了理解下面的内容，说明“增强价值”组合中的1美元可能让你从4\.45美元回报到5\.45美元，而这1美元的差额完全是你重新平衡时的运气。
 
-![post](./g_4.webp)
+![post](../../../blog/2019_11_30_vr/g_4.webp)
 
 他们总结道：
 
@@ -145,7 +145,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 
 换句话说，我们用平均法达到上述例子中的70\%，但一旦将这些数值预测转换为口头预测，我们“计数”预测数量，变成“高度可能”，而非平均。研究人员还表明，这会影响行为，消费者可能会根据预测的呈现方式被影响购买商品。
 
-![post](./g_5.webp)
+![post](../../../blog/2019_11_30_vr/g_5.webp)
 
 不过你应该“计数”还是“平均”，取决于你的专家是否有相似或不同的信息。如果他们基于相同信息，“平均化”更能抵消特殊误差。如果不是，那么“计数”可能是贝叶斯策略的一种近似，能改善你的个人预测。
 
@@ -162,7 +162,7 @@ sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
 2. [What the WSJ got wrong in their investigation of Google's search algorithms](https://searchengineland.com/misquoted-and-misunderstood-why-we-the-search-community-dont-believe-the-wsj-about-google-search-325241 'SEL')
 3. [How has the dating market changed?](https://gallery.mailchimp.com/2506bda6ca9a8b7ce8b3c54b4/files/1a8cc94c-6198-4f3d-b27d-8a6060ed6c5d/Tyro_Dating_Market_Thesis_Final_For_Twitter_Pub_v2.pdf 'Tyro')
 
-   ![post](./g_6.webp)
+   ![post](../../../blog/2019_11_30_vr/g_6.webp)
 
    > 请注意上方图表中“在酒吧或餐厅遇见”的激增。在数据科学中，这些举报者被技术术语称为“骗子”。
 

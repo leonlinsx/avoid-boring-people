@@ -4,7 +4,7 @@ description: "기업들이 주식을 공매도하기 쉽게 만드는 이유"
 pubDate: 2017-04-06
 category: Investing
 tags: ['investment banking']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2017_04_06_convert/c_1.webp'
 locale: 'ko'
 sourceSlug: 'convert'
 sourceHash: '8765938dfa8f047d3f3c1024532dbf78363302cdc4aa70338006faf561b150a1'

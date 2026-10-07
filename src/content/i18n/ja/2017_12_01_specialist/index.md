@@ -4,7 +4,7 @@ description: "ほとんどの場合は専門分野に絞り、全体像を理解
 pubDate: 2017-12-01
 category: Culture
 tags: ['generalists']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2017_12_01_specialist/s_1.webp'
 locale: 'ja'
 sourceSlug: 'specialist'
 sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
@@ -30,7 +30,7 @@ sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
 
 個人的には、ただそう思う **好奇心を持ってランダムなことを学ぶのは楽しいです。** だからこそ、私は愛しています [this comic](https://xkcd.com/1053/ 'xkcd comic').
 
-![post](./s_1.webp)
+![post](../../../blog/2017_12_01_specialist/s_1.webp)
 
 つまり、無関係な記事や理解できない作品(例えばシェイクスピア)に時間を『無駄に』することになりますが、全体としてはプラスに感じていると思います(願っています)。
 

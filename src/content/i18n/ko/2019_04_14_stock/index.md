@@ -4,7 +4,7 @@ description: "홍콩 주식 공시의 허점"
 pubDate: 2019-04-14
 category: Investing
 tags: ['risk']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2019_04_14_stock/s_1.webp'
 locale: 'ko'
 sourceSlug: 'stock'
 sourceHash: '487562600faaeef6835f0fc2d4f4b58b41b6c6e6e5244c191918b3d35c5db223'

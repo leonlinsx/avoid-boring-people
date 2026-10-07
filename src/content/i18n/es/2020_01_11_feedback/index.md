@@ -4,7 +4,7 @@ description: "Somos pésimos recibiendo feedback, así que aquí tienes cómo me
 pubDate: 2020-01-11
 category: Culture
 tags: ['feedback', 'behaviour']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_01_11_feedback/t_3.webp'
 locale: 'es'
 sourceSlug: 'feedback'
 sourceHash: '91a9d0e512c9f37a9acd1d22cda31f4585a8b9402f6c1ab8e2bc778a615941e2'
@@ -32,7 +32,7 @@ He resumido el libro a continuación y añado algunas de mis propias reflexiones
   - Todo esto es razonable\. Nuestras reacciones desencadenada no son obstáculos porque sean irracionales\, sino porque nos impiden participar en la conversación\.
   - Mejorar en recibir feedback no significa que tengas que aceptar el feedback como una verdad absoluta
 
-![post](./t_1.webp)
+![post](../../../blog/2020_01_11_feedback/t_1.webp)
 
 _LL\: Definitivamente no he aceptado comentarios antes\, en mi perjuicio\, cuando me sentía desencadenada\. Que no me guste la persona no significa que el feedback sea inexacto\. Darme cuenta de por qué está ocurriendo esto y aprender a identificarlo es el primer paso para mejorar yo mismo\._
 
@@ -44,7 +44,7 @@ _LL\: Definitivamente no he aceptado comentarios antes\, en mi perjuicio\, cuand
   - Evaluación de tu situación [^1]
   - Necesitamos los tres\, pero a menudo conseguimos un tipo diferente frente a lo que queremos
 
-![post](./t_2.webp)
+![post](../../../blog/2020_01_11_feedback/t_2.webp)
 
 _LL\: Prefiero mucho más recibir coaching o evaluación en el trabajo\, pero obviamente no es así para todo el mundo\. Esto explica mucho sobre por qué la gente se siente infravalorada o incomprendida\. Me recuerda un poco a [Five Love Languages framework](https://www.5lovelanguages.com/ 'Five')\. Estoy empezando a pedir explícitamente coaching y evaluación en lugar de reconocimiento en el trabajo\._
 
@@ -90,7 +90,7 @@ _LL\: Tú y tu némesis podéis ser competentes\, pero tenéis una mala relació
   - A qué distancia te alejas de tu línea base cuando recibes retroalimentación\, por ejemplo\, más swing significa más sensibilidad a la retroalimentación negativa
   - Cuánto tiempo tardas en volver a la normalidad
 
-![post](./t_3.webp)
+![post](../../../blog/2020_01_11_feedback/t_3.webp)
 
 - Algunas formas de estar mejor preparado para recibir comentarios son\:
   - Piensa de antemano en qué podría ser\, y revísate en ti mismo y ve más despacio cuando lo tengas
@@ -153,7 +153,7 @@ _LL\: Esto es nuevo para mí pero importante\. Puede ser abrumador recibir feedb
 
 _LL\: Hay cosas que simplemente no podemos cambiar de nosotros mismos\. No puedes evitar que te ponga [ridiculous amounts of butter at every dinner](https://www.thecitycook.com/articles/2015-10-12-bordier-butter 'butter')\. Ten en cuenta que\, aunque los autores piensan que está bien\, aún necesitas reducir el efecto negativo que tienes en los demás\. No seas un imbécil\._
 
-![post](./t_4.webp)
+![post](../../../blog/2020_01_11_feedback/t_4.webp)
 
 - En el contexto de una organización\, aquí tienes algunas cosas que pueden ayudar a dar feedback\:
   - Explica los sacrificios\, no solo los beneficios

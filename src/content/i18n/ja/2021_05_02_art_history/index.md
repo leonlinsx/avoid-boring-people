@@ -4,7 +4,7 @@ description: "歴史における芸術の異なる定義"
 pubDate: 2021-05-02
 category: Culture
 tags: ['art']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2021_05_02_art_history/a_1.webp'
 locale: 'ja'
 sourceSlug: 'art_history'
 sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
@@ -28,23 +28,23 @@ sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
 
 おそらく、1500年代のイタリア・ルネサンスの最盛期にラファエロの絵画[The School of Athens,](https://en.wikipedia.org/wiki/The_School_of_Athens 'school')見せてみてはどうでしょうか。有名な哲学者たちをリアルに描き、物を立体的に見せるために使われた[linear perspective](<https://en.wikipedia.org/wiki/Perspective_(graphical)> 'perspective')の用いが、この有名なフレスコ画はルネサンスを象徴する傑作と見なされています。
 
-![post](./a_1.webp)
+![post](../../../blog/2021_05_02_art_history/a_1.webp)
 
 あるいは歴史的な題材を拒否し、芸術に道徳的な教訓を付ける必要はないと考えるかもしれません。代わりに、ドミニク・アングルの1800年代の絵画を見せます。それは純粋に快楽と幻想であり、本物の芸術は必ずしも現実的である必要はないと主張しています。[La Grand Odalisque looks realistic on first glance, but taking a closer look shows that the spine is weirdly long, and the back leg is attached at a weird angle.](https://en.wikipedia.org/wiki/Grande_Odalisque 'wiki')
 
-![post](./a_2.webp)
+![post](../../../blog/2021_05_02_art_history/a_2.webp)
 
 快楽は表面的であり、ゴヤの1800年代の[The Third of May](https://en.wikipedia.org/wiki/The_Third_of_May_1808 'may')のように現代の苦しみを記念する方が純粋だと言えるかもしれません。以前の作品ほど写実的ではなく、人物が平坦で完成度が低くなっています。また、もはや作り話ではなく、ゴヤの時代の悲劇を描いている[^2]です。以前の伝統から大きく逸脱したため、「近代初期の絵画の一つ」とも呼ばれています。
 
-![post](./a_3.webp)
+![post](../../../blog/2021_05_02_art_history/a_3.webp)
 
 でも、なぜ絵画を一つのスナップショットだけに限定するのでしょうか?もし、さまざまな角度から物体を見て、それを平らなキャンバスに描こうとしたらどうでしょう?マトリックスのようなバレットタイムを、絵画として考えてみてください。それなら、より物に忠実ではないでしょうか?ピカソの1900年代の[Girl with a Mandolin](https://www.pablopicasso.org/girl-with-mandolin.jsp 'girl')のようなキュビスム作品を展示するのは良い選択でしょう。2Dの表面に複数の視点から3Dの人物を描こうとする試みですから。
 
-![post](./a_4.webp)
+![post](../../../blog/2021_05_02_art_history/a_4.webp)
 
 そして、上記のすべてが気取っていると言えるでしょうし、芸術はキャンバス上の色と線に過ぎないと言えるでしょう。1900年代のモンドリアンを展示することで、リアリズムで自分を欺いてはいけないという点を示しています。純粋な芸術はプラトニックな形[^3]です。
 
-![post](./a_5.webp)
+![post](../../../blog/2021_05_02_art_history/a_5.webp)
 
 まだまだ言えません;暗号通貨の数だけ多くのアート運動があります。しかし私が言いたい主なポイントは、芸術は主観的であり、心を開いておくことが不可欠だということです。何かが芸術かどうかを議論するのは、答えのない哲学的な問いの一つです。
 
@@ -65,11 +65,11 @@ sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
 
 ちなみに、もし[aphantasia is real](/writing/aphantasia 'abp')なら、下記のテストで3〜4点なのでおそらく持っていると思います。参考から描くときは障害にはなりませんでしたが、想像から描くときは問題になるかもしれません。
 
-![post](./a_6.webp)
+![post](../../../blog/2021_05_02_art_history/a_6.webp)
 
 約1年間の毎日の練習と600枚の紙を[^8]かけて、こちらが進捗写真です。はい、同じ人物のはずです:
 
-![post](./a_7.webp)
+![post](../../../blog/2021_05_02_art_history/a_7.webp)
 
 そして、これまでに学んだことをお伝えします:
 

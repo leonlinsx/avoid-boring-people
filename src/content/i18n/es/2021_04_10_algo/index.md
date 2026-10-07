@@ -4,7 +4,7 @@ description: "¿Cómo podemos aplicar algoritmos para mejorar la toma de decisio
 pubDate: 2021-04-10
 category: Risk & Decision Making
 tags: ['behaviour', 'tech']
-heroImage: './a_3.webp'
+heroImage: '../../../blog/2021_04_10_algo/a_3.webp'
 locale: 'es'
 sourceSlug: 'algo'
 sourceHash: '8d862c8a5a1107133c4c5ea0a2a80a0d41ad23b28d8d764cd9bae130552a882b'
@@ -42,7 +42,7 @@ En este caso\, hay un porcentaje preciso que debes usar\. Deberías esperar desp
 
 Ese es el punto matemáticamente óptimo con la mayor probabilidad de elegir a la mejor persona para el puesto\. Si paras demasiado pronto\, podrías perder a alguien que entreviste más tarde\. Si paras demasiado tarde\, pierdes tiempo [^4]\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_04_10_algo/a_1.webp)
 
 ## Explorar exploit
 
@@ -79,7 +79,7 @@ Por ejemplo\, podrías tener tu ropa favorita en el armario y la que no uses en 
 
 En este caso\, mantener los artículos más usados recientemente en la sección pequeña y rápida es la opción óptima\, debido a algo conocido como [temporal locality](https://www.geeksforgeeks.org/difference-between-spatial-locality-and-temporal-locality/ 'temp')\. Es más probable que necesites algo que hayas usado recientemente\. Por ejemplo\, Google Drive resalta tus archivos que usas con frecuencia para acceder rápidamente\.
 
-![post](./a_2.webp)
+![post](../../../blog/2021_04_10_algo/a_2.webp)
 
 ## Programación
 
@@ -112,7 +112,7 @@ Explicar la regla de Bayes probablemente requeriría un artículo por sí solo\,
 - Normal\: los eventos tempranos son sorprendentes\, los eventos tardíos son esperados\. Por ejemplo\, nos sorprendería la gente que muere joven\, y no la gente que muere tarde\.
 - Erlang\: los eventos nunca son más ni menos sorprendentes\. Por ejemplo\, una distribución sin memoria de una ruleta o [the coin flips we discussed last week](/writing/ergodicity 'sub')
 
-![post](./a_3.webp)
+![post](../../../blog/2021_04_10_algo/a_3.webp)
 
 ## Teoría de juegos
 

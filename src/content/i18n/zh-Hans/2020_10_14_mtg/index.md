@@ -4,7 +4,7 @@ description: "最古老的集换式卡牌游戏中的变现与社区问题"
 pubDate: 2020-10-14
 category: Culture
 tags: ['business', 'games']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_10_14_mtg/m_1.webp'
 featured: false
 locale: 'zh-Hans'
 sourceSlug: 'mtg'
@@ -21,7 +21,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 如果是卡片的问题 [Black Lotus](https://mtg.gamepedia.com/Black_Lotus 'black') 来自集换式卡牌游戏 [Magic: The Gathering,](https://en.wikipedia.org/wiki/Magic:_The_Gathering 'MTG') 你可能能用27\,000美元买到一个。
 
-![post](./m_1.webp)
+![post](../../../blog/2020_10_14_mtg/m_1.webp)
 
 考虑到一本书的售价，这甚至可能是个划算 [$166,000 at auction](https://www.ebay.com/itm/1993-Magic-The-Gathering-MTG-Alpha-Black-Lotus-R-A-BGS-9-5-GEM-MINT-PWCC-/143136537077?_trksid=p2047675.m43663.l10137&nordt=true&rt=nc&orig_cvip=true 'ebay') [^1]\.一块纸板大小相当于一张扑克牌，价值16\.6万美元。
 
@@ -43,7 +43,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 比如，你可能买一包希望能拿到稀有卡 ["Uro, Titan of Nature's Wrath"](https://scryfall.com/card/thb/229/uro-titan-of-natures-wrath 'Uro') 而是 ["Bronzehide Lion."](https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=476461 'Lion')
 
-![post](./m_2.webp)
+![post](../../../blog/2020_10_14_mtg/m_2.webp)
 
 因为许多人更喜欢购买卡片而不依赖运气，还有一种 **二级市场。** 交易者购买卡牌后以加价转售。随着时间推移，这甚至发展成了本质上 [stock market for the cards](https://www.mtgstocks.com/news 'MTG')拥有自己的投机者俱乐部。如前所述，其中一些牌可能非常昂贵。
 
@@ -65,7 +65,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 委员会不强制执行规则，因为休闲游戏无法执行，但它作为玩家遵循的标准指导原则。例如，可能会说“Uro”被禁用。如果你和陌生人玩指挥官游戏并用Uro，她可能不想继续。不过，你也可以同意用任何你想玩的卡，包括Uro。
 
-![post](./m_3.webp)
+![post](../../../blog/2020_10_14_mtg/m_3.webp)
 
 我们现在知道万智牌是什么——一款集换式卡牌游戏，新卡牌会定期印制，卡牌价格由市场决定，不同的格式限制导致不同的元游戏。让我们进一步阐述最后一个概念。
 
@@ -83,7 +83,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 在不平衡的环境下，只有一个套牌“比其他套牌更强”。比如，你的元素套牌可能对其他套牌有有利的胜算。当这种情况发生时，这是合理的 [everyone to start playing that deck if they want to win.](https://magic.gg/news/2020-season-grand-finals-metagame-breakdown 'mtg') 你可以想象， **这很快就会让人觉得无聊。**
 
-![post](./m_4.webp)
+![post](../../../blog/2020_10_14_mtg/m_4.webp)
 
 遇到这种情况时，一种解决方案是禁用“过于强大”的卡牌。如前所述，官方格式中，巫师会说明哪些卡牌不能再使用。非官方格式“指挥官”中，社区规则委员会将选择卡牌。 **封禁是一种平衡方式。**
 
@@ -93,15 +93,15 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 大多数情况下，新印的卡牌属于更大的万智牌多元宇宙，属于万智牌知识产权，最初为万智牌设计。万智牌大多基于奇幻，因此出现了天使和龙等卡牌：
 
-![post](./m_5.webp)
+![post](../../../blog/2020_10_14_mtg/m_5.webp)
 
 最近 [^13]，Wizards最近在进行更多外部合作。这通常涉及基于其他知识产权创建自定义卡牌。例如， [a My Little Pony series](https://magic.wizards.com/en/articles/archive/news/magic-extra-life-2019-10-03 'pony') 为慈善筹款：
 
-![post](./m_6.webp)
+![post](../../../blog/2020_10_14_mtg/m_6.webp)
 
 或者 [Godzilla themed series as alternate art for some cards:](https://articles.starcitygames.com/news/all-19-godzilla-series-monster-cards-revealed/ 'zilla')
 
-![post](./m_7.webp)
+![post](../../../blog/2020_10_14_mtg/m_7.webp)
 
 现在，试着设身处地为指挥官规则委员会着想。当这些卡牌发布时，你应该允许它们以这种形式存在吗？
 
@@ -114,7 +114,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 **争议就在这里。** 巫师刚刚发布了 [limited edition set of new cards in partnership with TV show The Walking Dead.](https://secretlair.wizards.com/us/product/612738/secret-lair-x-the-walking-dead 'dead') 这些独特卡牌仅在巫师停止印刷前提供一段时间。重要的是，这些卡牌为黑色边框（“合法”），但除了购买这套盒装外，其他地方无法购买。正如你所料，这套盒装价格非常高。
 
-![post](./m_8.webp)
+![post](../../../blog/2020_10_14_mtg/m_8.webp)
 
 **这些卡应该合法吗？** 巫师官方网站写道：
 
@@ -124,13 +124,13 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 你可以理解为什么会这样 [made many players upset, ](https://twitter.com/wizards_magic/status/1312987380115148805?s=20 'twitter') [calling for the cards to be banned immediately.](https://www.reddit.com/r/magicTCG/comments/j1glk8/petition_for_the_commander_rules_committee_to_ban/ 'ban')
 
-![post](./m_9.webp)
+![post](../../../blog/2020_10_14_mtg/m_9.webp)
 
 等等，你说，我以为 _规则委员会_ 决定哪些牌是允许的，哪些不允许？事实上，一些玩家还抱有希望委员会会独立行动，并在指挥官中宣布这些牌为犯罪。
 
 [Unfortunately not.](https://mtgcommander.net/index.php/2020/10/02/rc-statement-on-secret-lair-the-walking-dead/ 'dead')
 
-![post](./m_10.webp)
+![post](../../../blog/2020_10_14_mtg/m_10.webp)
 
 你大概已经察觉到这里的相互矛盾的激励机制。让我们仔细看看 [main complaints first](https://twitter.com/ghirapurigears/status/1313145100319494145?s=20 'twitter') [^15]\:
 
@@ -142,15 +142,15 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 现在让我们看看巫师的理由：
 
-![post](./m_11.webp)
+![post](../../../blog/2020_10_14_mtg/m_11.webp)
 
 哦等等，图片错了：
 
-![post](./m_12.webp)
+![post](../../../blog/2020_10_14_mtg/m_12.webp)
 
 是的，我没什么，这明显是个明显的敛财行为。考虑到孩之宝（巫师的母公司）的目标 [doubling Wizards revenue over the next five years,](https://investor.hasbro.com/static-files/88b2a83b-2368-463a-9489-6cf31dc209ac 'wizards') 难怪奇才团队有动力探索以更高价格卖出更多卡牌的方法 [^16]\.销量更高，价格更高，估值倍数也更高。如果人们愿意为一张卡支付100美元的市场价，为什么不直接印卡并直接出售，而不是通过补充包出售呢？
 
-![post](./m_13.webp)
+![post](../../../blog/2020_10_14_mtg/m_13.webp)
 
 巫师本可以1）把卡做成银边且“非法”的，或者2）做其他“合法”卡牌的另类艺术版本。他们没做，1）因为银边卡销量低于黑边卡，2）出于某种我不明白的魔法原因，但大概是钱的原因
 

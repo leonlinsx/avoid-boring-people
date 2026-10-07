@@ -4,7 +4,7 @@ description: "¿Verías una película estrenada solo después de 100 años?"
 pubDate: 2019-07-20
 category: Culture
 tags: ['movie']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2019_07_20_movie/m_1.webp'
 locale: 'es'
 sourceSlug: 'movie'
 sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
@@ -16,9 +16,9 @@ Por eso me interesaba [this reddit post](https://www.reddit.com/r/movies/comment
 
 Sin embargo\, el comentario público general no fue tan positivo\:
 
-![post](./m_2.webp)
+![post](../../../blog/2019_07_20_movie/m_2.webp)
 
-![post](./m_3.webp)
+![post](../../../blog/2019_07_20_movie/m_3.webp)
 
 Con comentarios que iban desde que probablemente la película va a ser mala\, que es un anuncio masturbatorio\, o que fue egocéntrico esperar que el público dentro de 100 años la aprecie\.
 

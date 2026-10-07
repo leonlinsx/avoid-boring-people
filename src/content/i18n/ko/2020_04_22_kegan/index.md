@@ -4,7 +4,7 @@ description: "케건의 성인 발달 이론"
 pubDate: 2020-04-22
 category: Culture
 tags: ['behaviour']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2020_04_22_kegan/a_1.webp'
 locale: 'ko'
 sourceSlug: 'kegan'
 sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
@@ -46,7 +46,7 @@ sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
 
    케이건은 사람들이 40대 이전에 도달하지 못하며\, 대부분의 사람들은 아예 이 단계에 도달하지 못한다고 믿습니다\. 예를 들어\, 사회나 개인이 평등권과 같은 일부 법률의 중요성을 인식하기 시작한 과정이 있습니다
 
-![post](./a_1.webp)
+![post](../../../blog/2020_04_22_kegan/a_1.webp)
 
 ## 응용 분야
 

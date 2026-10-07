@@ -4,7 +4,7 @@ description: "O trash de um homem é tesouro de outro"
 pubDate: 2020-07-29
 category: Technology
 tags: ['startups', 'business']
-heroImage: './c_2.webp'
+heroImage: '../../../blog/2020_07_29_cameo/c_2.webp'
 locale: 'pt-BR'
 sourceSlug: 'cameo'
 sourceHash: 'e93e8afa6d1f315f2accfbf1f8efc95072617d9d2672e902e3bdafe40116ab2c'
@@ -26,7 +26,7 @@ Vou entrar na onda de escritores nomeando frameworks\, e chamar isso **o efeito 
 
 Portanto\, em vez de discutir mercados deprimentes de atuação canina\, hoje quero analisar as plataformas que os impulsionam\. Em particular\, quero analisar mais de perto [Cameo,](https://www.cameo.com/ 'cameo') um marketplace que oferece mensagens de vídeo personalizadas de celebridades\. Por um preço barato de \$30\, você pode conseguir uma mensagem de vídeo personalizada de Kirpa Sudick\, Kevin Fortenberry\, ou três \(\!\!\) vídeos de Paris\, o mini porquinho [^2]\. Normalmente\, as pessoas fazem com que eles desejem feliz aniversário para familiares e amigos\, formatura ou alguma outra celebração\, [to the delight of the recipients.](https://www.youtube.com/watch?v=VeYm5TZknsc 'reaction')
 
-![post](./c_1.webp)
+![post](../../../blog/2020_07_29_cameo/c_1.webp)
 
 Eu mencionei Cameo pela primeira vez [about a year ago](/writing/cameo 'Cameo') enquanto tentava fazer as pessoas se sentirem culpadas para me comprarem uma participação especial da Jenna Coleman [^3]\, e eles são um bom exemplo de beneficiários da longa cauda\. O mercado funciona porque o retorno individual para essas celebridades por si só é baixo\, mas o retorno combinado de todas elas é alto\. Paris\, a mini porquinha sozinha\, provavelmente não vai produzir o suficiente para seu dono\, mas combinando ela com Fiona\, a Hipopótamo\, ou Lola\, a Preguiça\, você pode realmente ter um negócio viável para a plataforma que oferece o serviço\.
 
@@ -50,7 +50,7 @@ Mas isso é suficiente\? A Cameo decolou trabalhando com a longa cauda\, e conti
 
 Será que eles conseguem chegar a um ponto de virada em que mais celebridades se sintam confortáveis em entrar\? Acho que isso é como o desconforto do AirBnB ou Uber quando começaram\, e que a ideia vai se normalizar com o tempo\. Eles já conseguiram pessoas como Elijah Wood \(famoso por O Senhor dos Anéis\)\, Sarah Jessica Parker \(famosa por Sexo e a Cidade\) ou Snoop Dogg \(famoso por fumar maconha\) na plataforma\, então não parece tão difícil continuar expandindo lá\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_07_29_cameo/c_2.webp)
 
 Estabelecemos o argumento para a demanda e o caso para a oferta\, vendo que há um claro [product market fit.](https://a16z.com/2017/02/18/12-things-about-product-market-fit/ 'pmf') E quanto à economia da própria plataforma\?
 
@@ -100,7 +100,7 @@ O Cameo também não parece ter opções de seleção eficazes no momento\, ent�
 
 Não tenho certeza se criar um perfil de usuário para reservar Cameos vale a pena\. Claro\, você pode vincular isso ao Facebook para facilitar a criação de uma conta\, mas parece que fazer contas de convidado também funcionaria\. Acho que há algum benefício em sugerir mais participações especiais que o usuário possa gostar\, baseado nas anteriores que fizeram\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_07_29_cameo/c_3.webp)
 
 A expansão internacional parece um passo óbvio\, com a Europa provavelmente como a geografia mais natural para a próxima\. A dificuldade provavelmente é montar a equipe de vendas naquele local e conseguir as primeiras celebridades locais\. Não vejo grandes problemas de localização aqui\, mas posso estar enganado\. Diferente de alguns marketplaces que só têm efeitos de rede locais\, o Cameo parece ter efeitos de rede mais amplos\, já que conseguir uma celebridade do Reino Unido gera demanda de um cliente americano que assiste a programas britânicos\. Em certa medida\, isso também vai beneficiar a expansão em países não anglófonos\, já que provavelmente ainda haverá demanda por participações especiais internacionais de celebridades da população local\. [Lotta avengers fans in China.](https://www.wikiwand.com/en/List_of_highest-grossing_films_in_China 'China')
 

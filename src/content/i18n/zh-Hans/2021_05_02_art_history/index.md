@@ -4,7 +4,7 @@ description: "历史上对艺术的不同定义"
 pubDate: 2021-05-02
 category: Culture
 tags: ['art']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2021_05_02_art_history/a_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'art_history'
 sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
@@ -28,23 +28,23 @@ sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
 
 也许你会让他们看看 [The School of Athens,](https://en.wikipedia.org/wiki/The_School_of_Athens 'school') 这是拉斐尔在16世纪意大利文艺复兴高峰期创作的一幅画作。作品中对著名哲学家的写实描绘及其运用 [linear perspective](<https://en.wikipedia.org/wiki/Perspective_(graphical)> 'perspective') 为了让画面看起来立体，这幅著名的壁画被视为文艺复兴的杰作。
 
-![post](./a_1.webp)
+![post](../../../blog/2021_05_02_art_history/a_1.webp)
 
 或者你会拒绝历史题材，认为艺术不应该附加道德教训。相反，你展出了多米尼克·安格尔19世纪的一幅纯粹的享乐与幻想画作，声称真正的艺术不必写实。 [La Grand Odalisque looks realistic on first glance, but taking a closer look shows that the spine is weirdly long, and the back leg is attached at a weird angle.](https://en.wikipedia.org/wiki/Grande_Odalisque 'wiki')
 
-![post](./a_2.webp)
+![post](../../../blog/2021_05_02_art_history/a_2.webp)
 
 你可能会说快乐是表面的，纪念现代苦难更为纯粹，比如戈雅19世纪的作品 [The Third of May](https://en.wikipedia.org/wiki/The_Third_of_May_1808 'may')\.它不如早期作品写实，人物更扁平且不够精细。它也不再是虚构的，因为它描绘了戈雅时代的真实悲剧 [^2]\.它与以往传统大相径庭，被称为“现代时代最早的画作之一”。
 
-![post](./a_3.webp)
+![post](../../../blog/2021_05_02_art_history/a_3.webp)
 
 但为什么要把绘画限制在只展示一个时间的快照？如果你从各种角度看一个物体，然后试着把它放在平坦的画布上呢？可以想象成《黑客帝国》的子弹时间，但作为一幅画\;这样不是更贴近物体本身吗？展示像毕加索20世纪初那样的立体主义作品 [Girl with a Mandolin](https://www.pablopicasso.org/girl-with-mandolin.jsp 'girl') 因此，它试图在二维表面上从多个视角展示三维人物，这会是一个不错的选择。
 
-![post](./a_4.webp)
+![post](../../../blog/2021_05_02_art_history/a_4.webp)
 
 你可以说以上一切都很矫揉造作，艺术不过是画布上的色彩和线条。展示20世纪初的蒙德里安作品，说明我们不应用现实主义自欺欺人。纯艺术是柏拉图式的形状 [^3]\.
 
-![post](./a_5.webp)
+![post](../../../blog/2021_05_02_art_history/a_5.webp)
 
 我可以继续说下去\;艺术运动和加密货币一样多。我想强调的主要观点是，艺术是主观的，保持开放心态至关重要。讨论某件事是否是艺术，是那些无法回答的哲学问题。
 
@@ -65,11 +65,11 @@ sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
 
 顺便说一句，如果 [aphantasia is real](/writing/aphantasia 'abp')，我大概有，因为我在下面的测试中是3\-4分。从参考图画时这不是障碍，但从想象中画时可能会。
 
-![post](./a_6.webp)
+![post](../../../blog/2021_05_02_art_history/a_6.webp)
 
 大约一年的每日练习和600张纸之后 [^8]这是一张进展图。是的，他们应该是同一个人：
 
-![post](./a_7.webp)
+![post](../../../blog/2021_05_02_art_history/a_7.webp)
 
 以下是我一路上学到的东西：
 

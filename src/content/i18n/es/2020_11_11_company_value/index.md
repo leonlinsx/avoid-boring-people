@@ -4,7 +4,7 @@ description: "Elige a las personas, no a la empresa"
 pubDate: 2020-11-11
 category: Culture
 tags: ['generalists']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2020_11_11_company_value/c_1.webp'
 locale: 'es'
 sourceSlug: 'company_value'
 sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
@@ -22,7 +22,7 @@ En el periódico ["Are Inventors or Firms the Engines of Innovation?"](https://p
 
 Podemos pensar en las empresas como un papel de intermediario de \"emparejar a las personas\"\, reuniendo a personas con ideas y a quienes quieren ejecutar\. Hay todo un [Theory of the Firm](https://en.wikipedia.org/wiki/Theory_of_the_firm 'Theory') sobre cómo existen las empresas para reducir los costes de transacción \[\^1\]\. Bajo este marco\, podríamos intentar repartir el efecto de la innovación entre las personas y la empresa\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_11_11_company_value/c_1.webp)
 
 Si las empresas o las personas merecen más crédito puede hacerlo **Ayúdanos a saber en qué centrarnos** Si queremos conseguir más innovación\:
 
@@ -38,7 +38,7 @@ Utilizando esos datos\, realizan una regresión para ver si el recuento de paten
 
 La tabla de abajo tiene muchos números\, y vamos a ignorarlos todos excepto los dos del recuadro rojo\. Esa comparación de 0\,341 para inventores frente a 0\,032 para empresas es a lo que se refieren los investigadores en la cita anterior\; números más altos significan más poder explicativo para el recuento de patentes\. Para nuestros propósitos\, simplemente piensa en efectos fijos como \"efecto\"\, pero puedes leer más sobre la definición real [here](http://www.jblumenstock.com/files/courses/econ174/FEModels.pdf 'fixed')\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_11_11_company_value/c_2.webp)
 
 Si lo anterior es cierto\, entonces eso significa que como individuos\, **Deberíamos buscar trabajar con compañeros de equipo sólidos\, en lugar de con empresas sólidas** Si nos interesa ser más innovadores\. Dicho de otro modo\, es un dato que indica por qué deberías preocuparte tanto por las personas con las que vas a trabajar directamente\, más que por la reputación de la empresa\.
 

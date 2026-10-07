@@ -4,7 +4,7 @@ description: "因果関係、測定、調整"
 pubDate: 2021-03-06
 category: Investing
 tags: ['inflation']
-heroImage: './i_3.webp'
+heroImage: '../../../blog/2021_03_06_inflation/i_3.webp'
 locale: 'ja'
 sourceSlug: 'inflation'
 sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
@@ -24,7 +24,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 馬鹿げていると言うかもしれません。[making policy based on inflation targets](https://www.federalreserve.gov/faqs/economy_14400.htm 'fed')、[hedging against inverted yield curves](https://www.chathamfinancial.com/insights/hedging-in-an-inverted-yield-curve-environment 'yield')について話している人たちがたくさんいて、Googleのトレンドを信じるなら、ソニック・ザ・ヘッジホッグのゲームが[(apparently some weird nsfw meme).](https://tvtropes.org/pmwiki/pmwiki.php/VideoGame/SonicInflationAdventure 'sonic')
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_06_inflation/i_1.webp)
 
 はい、でもそれが彼らが物事の仕組みを知っているという意味ではありません。私の職務経験から学んだことがあるとすれば、人は自分が何をしているのか理解せずに膨大な量の仕事をこなすことがある[^1]。ナッシム・タレブは以前、グリーンランバーの取引で成功した金融トレーダーの話でこのことについて書いています[without understanding what it was.](https://fs.blog/2016/11/green-lumber-fallacy/ 'taleb')
 
@@ -46,7 +46,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 インフレのもう一つの大きな問題は、期待に影響されていることです。数学的な法則に従うことを期待するのは、株式市場が将来のキャッシュフローの現在価値を完全に反映することを期待するようなものです。だからこそ、インフレ目標を目指すのは非常に難しいのです。
 
-![post](./i_2.webp)
+![post](../../../blog/2021_03_06_inflation/i_2.webp)
 
 米国連邦準備制度は2%の目標を掲げているため、上記の最初の文は1) FRBが仕事がひどいか、2) 本当に難しいことだと解釈できます。私はシステムの複雑さを考えると後者を信じる傾向[^3]。
 
@@ -56,7 +56,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 そして、自信を失うと、次のような状況が生まれます。
 
-![post](./i_3.webp)
+![post](../../../blog/2021_03_06_inflation/i_3.webp)
 
 インフレについて私が言いやすいのはこれだけだと思います。
 

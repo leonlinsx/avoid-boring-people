@@ -4,7 +4,7 @@ description: "Por qué importa la diferencia entre los promedios conjuntos y tem
 pubDate: 2021-04-03
 category: Risk & Decision Making
 tags: ['finance', 'math', 'ergodicity', 'risk']
-heroImage: './ergo_5.webp'
+heroImage: '../../../blog/2021_04_03_ergodicity/ergo_5.webp'
 featured: true
 locale: 'es'
 sourceSlug: 'ergodicity'
@@ -27,17 +27,17 @@ Sí\, no estoy seguro de qué significa conjunto y tiempo aquí [^3] Cualquiera 
 
 Supongamos que un tipo cualquiera lanza una moneda 5 veces\, sacando cara y cruz\. Podemos calcular el tiempo medio para esta simulación obteniendo el número medio de caras para una persona a lo largo de un periodo de tiempo\. Hay 3 caras de 5 lanzamientos\, así que son 0\,6 caras \(3 dividido entre 5\)\.
 
-![ergo img](./ergo_1.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_1.webp)
 
 Supongamos que conseguimos que unas cuantas personas más lanzan monedas\. Obtenemos algo como abajo\, donde represento cara como 1 y cruz como 0 por comodidad\:
 
-![ergo img](./ergo_2.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_2.webp)
 
 Aquí podemos usar dos tipos de promedios\. El primero es el promedio temporal anterior\, donde obtenemos el **Promedio durante un periodo de tiempo para una persona\.**
 
 La segunda es la media de conjunto\, donde obtenemos el **Promedio durante un periodo de tiempo para varias personas\.**
 
-![ergo img](./ergo_3.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_3.webp)
 
 La gran pregunta que la ergodicidad intenta responder es\: **¿Deberíamos esperar que estas dos medias sean las mismas a largo plazo\?**
 
@@ -47,11 +47,11 @@ Fueron muchas palabras para mostrar algo que probablemente ya creías\, así que
 
 Vamos a construir sobre el ejemplo\, haciendo que la gente apueste en el lanzamiento de la moneda\. Todos empiezan con 1 \$\, obtienen un 50\% de beneficio si ganan y pagan el 40\% de su apuesta si pierden\. Por ejemplo\:
 
-![ergo img](./ergo_4.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_4.webp)
 
 En lugar de los resultados del lanzamiento de la moneda en sí\, pensemos en la riqueza que tendrá cada persona\. Si representamos esto\, **¿Deberíamos esperar que el promedio temporal de la riqueza de una persona sea igual al promedio conjunto de la riqueza de todos a largo plazo\?**
 
-![ergo img](./ergo_5.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_5.webp)
 
 O dicho de otra manera\: **¿Querrías apostar así\?** ¿Si se lo ofrecen repetidamente\?
 
@@ -59,13 +59,13 @@ El valor esperado de una apuesta así es 50\% por \$1\,50\, más 50\% por \$0\,6
 
 He programado una simulación de lanzar monedas en esto [jupyter notebook](https://colab.research.google.com/drive/1KI_PPhtXVQDfVGRFbi4pl0ZIhL2Y4x2X?usp=sharing 'colab') [^5] \. Siguiendo el escenario anterior para una persona que lanza 100 monedas\, observamos que su riqueza aumenta hasta 4 dólares\, antes de caer prácticamente a 0 dólares\.
 
-![ergo img](./ergo_6.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_6.webp)
 
 Hmm\, quizá nos haya tocado un escenario de mala suerte\. Repitamos esto con 100 personas\, aún haciendo 100 lanzamientos de moneda\. También calcularé la riqueza media \(media conjunta\) en cada lanzamiento de moneda y la representaré con una línea roja discontinua [^6] \.
 
 Los dos gráficos que aparecen a continuación son idénticos en cuanto a datos\; Solo estoy reescalando con un eje logarítmico para una mejor visualización\.
 
-![ergo img](./ergo_7.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_7.webp)
 
 Está ocurriendo algo extraño\. Vemos a un afortunado excesivo que llegó a 1\.000 dólares en riqueza\, y también vemos que la riqueza media \(línea roja discontinua\) sigue aumentando\. Sin embargo\, fíjate que **¡La mayoría de estas personas perdieron dinero\!** En esta simulación\, 94 de las 100 personas que jugaron acabaron con menos del \$1 con el que empezaron\.
 

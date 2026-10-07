@@ -4,7 +4,7 @@ description: "회사가 아니라 사람을 선택하세요"
 pubDate: 2020-11-11
 category: Culture
 tags: ['generalists']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2020_11_11_company_value/c_1.webp'
 locale: 'ko'
 sourceSlug: 'company_value'
 sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
@@ -22,7 +22,7 @@ sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
 
 우리는 회사를 \'사람들을 연결해 주는 중개인\' 역할을 한다고 생각할 수 있습니다\. 아이디어를 가진 사람들과 실행하려는 사람들을 한데 모으는 역할입니다\. 전체가 있습니다 [Theory of the Firm](https://en.wikipedia.org/wiki/Theory_of_the_firm 'Theory') 거래 비용을 줄이기 위해 기업이 존재하는 방식에 대해 \[\^1\]\. 이 틀 아래에서 혁신의 효과를 사람과 기업 사이에 나누어 나누려고 시도할 수 있습니다\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_11_11_company_value/c_1.webp)
 
 기업이든 인간이든 더 많은 공로를 받아야 하는지는 **어디에 집중해야 할지 알려주세요** 더 많은 혁신을 원한다면\:
 
@@ -38,7 +38,7 @@ sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
 
 아래 표에는 많은 수치가 있으니\, 빨간 상자에 있는 두 개를 제외하고는 모두 무시하겠습니다\. 발명가의 0\.341과 기업의 0\.032 비율을 비교한 것이 바로 연구자들이 위 인용문에서 언급한 내용입니다\; 숫자가 높을수록 특허 수에 대한 설명력이 더 커집니다\. 저희 목적상\, 고정 효과를 \'효과\'라는 의미로 생각하시지만\, 실제 정의에 대해서는 더 읽어보실 수 있습니다 [here](http://www.jblumenstock.com/files/courses/econ174/FEModels.pdf 'fixed')\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_11_11_company_value/c_2.webp)
 
 만약 위가 사실이라면\, 개인으로서\, **우리는 강한 회사보다는 강한 동료들과 함께 일해야 합니다** 더 혁신적이고자 한다면\, 다시 말해\, 회사 평판보다는 직접 함께 일하게 될 사람들을 더 중요하게 생각해야 한다는 데이터 포인트입니다\.
 

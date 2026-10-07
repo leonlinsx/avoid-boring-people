@@ -4,7 +4,7 @@ description: "Afantasía y diferencias en la visualización"
 pubDate: 2019-07-31
 category: Culture
 tags: ['science']
-heroImage: './a_2.png'
+heroImage: '../../../blog/2019_07_31_aphantasia/a_2.png'
 locale: 'es'
 sourceSlug: 'aphantasia'
 sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
@@ -14,7 +14,7 @@ sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
 
 Simplemente aprendí que la gente visualiza de forma diferente\. Haz este test de 10 segundos\:
 
-![post](./a_1.webp)
+![post](../../../blog/2019_07_31_aphantasia/a_1.webp)
 
 Yo estoy en un 3 a 4\, mientras que mi prima jura que está en un 6 [^1]\. Esto explica en gran medida mi confusión cuando la gente me decía que visualizara cosas\.\.\. Nunca conseguí el nivel de detalle y claridad que parecía experimentar todo el mundo\.
 

@@ -5,7 +5,7 @@ pubDate: 2019-07-05
 category: Technology
 tags: ['startups']
 evergreen: false
-heroImage: './q_7.webp'
+heroImage: '../../../blog/2019_07_05_query/q_7.webp'
 locale: 'zh-Hans'
 sourceSlug: 'query'
 sourceHash: '3fc778dfdea24281ee5cf541bc31ef90551b9702605aeed7740bd9b212d5e9f0'
@@ -25,25 +25,25 @@ Query 想成为什么？ [Based on their own words:](https://query.news/s/we-lau
 
 登陆页很简单，按时间顺序排列问题，最近一天放在前面。我不确定问题在当天内是如何排序的。我猜问题发布后顺序会固定，因为更新时间似乎不会影响顺序。网站在手机端上运行也很好。
 
-![post](./q_1.webp)
+![post](../../../blog/2019_07_05_query/q_1.webp)
 
 点击各个主题会进入更详细的问答页面。每个问答页面都有自己的网址。该页面包含新闻主题的简短总结、来源引用，随后是问题目录和问题本身。
 
-![post](./q_2.webp)
+![post](../../../blog/2019_07_05_query/q_2.webp)
 
 有多个提示可以提问，简单直接输入问题栏即可。据我所知，这个问题没有立即审核，你的问题会立即发布到页面上。该网站让你提问变得简单。
 
-![post](./q_3.webp)
+![post](../../../blog/2019_07_05_query/q_3.webp)
 
 例如，当我发布下面这个问题时，页面刷新后它会弹出问题列表底部，页面在发布后自动刷新。
 
-![post](./q_4.webp)
+![post](../../../blog/2019_07_05_query/q_4.webp)
 
-![post](./q_5.webp)
+![post](../../../blog/2019_07_05_query/q_5.webp)
 
 目前看起来你不能直接自己回答问题，但你可以“建议更新”，这样你的评论会发送给编辑：
 
-![post](./q_6.webp)
+![post](../../../blog/2019_07_05_query/q_6.webp)
 
 你可以自己浏览当前的主题和问题列表 [here](https://query.news/ 'Query')看看有没有你想评论的。这听起来是个有趣的想法！大多数新闻都是单方面的，试图向大众传递信息。在线评论区通常是灾难。通过让讨论成为网站的重点，而不是附加产品，希望能带来更有成效的使用场景。如果你曾经读到某样东西时想“那X怎么办”，Query会对你有帮助。
 
@@ -77,15 +77,15 @@ Query 想成为什么？ [Based on their own words:](https://query.news/s/we-lau
 
 1. 固定 [Query self-referential Q&A page](https://query.news/s/we-launched-kinda/ 'Query Q&A') 在首页。第一次访问首页的人不会清楚网站内容。在顶部设置“关于”标签，可能有助于人们理解网站的意图，也可以是一个简单的问答页面链接。
 
-   ![post](./q_7.webp)
+   ![post](../../../blog/2019_07_05_query/q_7.webp)
 
 2. 澄清一下“关注”选项具体起到什么作用。我不确定输入邮件后，是订阅了该新闻主题的所有问题，还是订阅了Query上的所有问题，或者只订阅了该主题的一个问题
 
-   ![post](./q_8.webp)
+   ![post](../../../blog/2019_07_05_query/q_8.webp)
 
    即使点击了“关注”，我也不知道加入应该做什么：
 
-   ![post](./q_9.webp)
+   ![post](../../../blog/2019_07_05_query/q_9.webp)
 
 3. 给问题打标签和提供搜索功能似乎会很有帮助，甚至在它的发展过程中是必需的
 

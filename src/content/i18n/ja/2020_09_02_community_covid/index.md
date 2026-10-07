@@ -4,7 +4,7 @@ description: "イベント、ニュースレター、投資におけるコミュ
 pubDate: 2020-09-02
 category: Culture
 tags: ['newsletter', 'investing', 'community']
-heroImage: './c_9.webp'
+heroImage: '../../../blog/2020_09_02_community_covid/c_9.webp'
 locale: 'ja'
 sourceSlug: 'community_covid'
 sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
@@ -52,11 +52,11 @@ sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
 
 > 多くの企業が出張予算を削減せざるを得なくなった厳しい経済状況と、「グリーン」への注力が高まる中で、バーチャルショーは会議ビジネスにとって現実的な試みとなっています。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_02_community_covid/c_1.webp)
 
 そして私たちの多くは、 [MSN messenger, ](https://www.hulldailymail.co.uk/news/hull-east-yorkshire-news/msn-messenger-logged-back-in-3393323 'msn') [online forums](https://www.makeuseof.com/tag/how-we-talk-online-a-history-of-online-forums-from-cavemen-days-to-the-present/ 'forum')そして今日のソーシャルメディアも、これらはすべて人々がオンラインで互いを見つける手段となっています。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_02_community_covid/c_2.webp)
 
 主なアイデア自体は新しいものではありませんが、技術の進歩と社会規範の変化により、コンセプトの実行はより強化されました。まずはイベントがどのように適応してきたかを見てから、グループについて見てみましょう。
 
@@ -78,31 +78,31 @@ sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
 
 大人数のグループで、それでも人それぞれが交流してほしいなら、 [2020 Nebula Awards](https://events.sfwa.org/ 'SFWA') した。星雲は [one of the most prestigious Sci Fi awards,](https://en.wikipedia.org/wiki/Nebula_Award 'Nebula') そして今年は、会議全体をオンラインで開催しました。彼らは1つのリンクから、さまざまなサイズのZoomブレイクアウトルームを大量に開催しました。そして、参加者全員に共同ホストの権限を与え、参加者がブレイクアウトルーム内を自由に移動し、興味のあるものに参加できるようにしました。メインスピーカールームのほかに、バーテンダーがレシピを教えるバー、ライティングルーム、子犬のライブ配信など、ランダムな部屋もありました。以下では、有名なSF作家と一緒にブレイクアウトルームにいる私の姿が映っています [Lois Bujold](https://en.wikipedia.org/wiki/Lois_McMaster_Bujold 'Lois') \(プライバシーのために他の人たちはブラックアウトしています\)。
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_02_community_covid/c_3.webp)
 
 もっと実験的なアイデアとして、複雑な気持ちを抱いていました。 [Online Town](https://theonline.town/ 'Online')、 [Long Now Foundation](https://longnow.org/seminars/ 'Long') セミナーの後に試してみました。Online Townでは、画面上のアバターで表現され、現実のように部屋の中を歩き回ることができます。聞ける会話は近接に基づいており、現実をさらにシミュレートしています。このアイデアは興味深く、よりユニークな体験を得るためには、より高度なユーザー教育が必要です。
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_02_community_covid/c_4.webp)
 
 これまで「仕事」関連のイベントを取り上げてきましたが、エンターテイナーもバーチャルに適応しています。
 
 例えば、私は [Ellie Goulding live virtual concert recently.](https://inews.co.uk/culture/music/ellie-goulding-live-review-victoria-and-albert-museum-london-brightest-blue-613122 'Ellie') 彼女はそれを [Victoria and Albert Museum](https://www.vam.ac.uk/ 'VAM') ロンドンで、美術館内で動き回る素晴らしいショーを開催しました。制作のクオリティは素晴らしく、SNSでも素晴らしい反応を得ました。
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_02_community_covid/c_5.webp)
 
 別の例は [Tomorrowland](https://www.tomorrowland.com/global/ 'TMR')、最高のDJフェスティバル。また、プロダクションの質も引き上げました。 [creating visual experiences](https://www.youtube.com/watch?v=BinQqIX3aig 'alan') コンサート参加者がDJがライブで演奏するのを楽しみながら楽しめるように。私は参加しませんでしたが、参加した人が楽しんだと言っていました。
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_02_community_covid/c_6.webp)
 
 しかし、もっと良いものができると思います。エリーのコンサートは素晴らしく、トゥモローランドも楽しそうでしたが、どちらもファンとの関わりが足りませんでした [^5]\.ライブイベントを開催するなら、その機会を最大限に活かすべきです。デジタル体験はコミュニケーションを簡素化します。私はそれを強くお勧めします **エンターテインメントイベントは、上記の「プロフェッショナル」イベントと同様に、交流を目指すべきです。** もしライブイベントの強みが制作価値だけなら、自分の時間にリプレイを見たほうがいいと思います。
 
 KTタンスタルはこれを例として示しました。 [her live session with the Royal Albert Hall](https://www.youtube.com/watch?v=T_FHtCvpTOI 'KT')\.上記の2つの例と比べて制作のクオリティが劣っているのがわかりますが、本当に違いを生んだのはライブチャットでした。これによりファン同士が、そして彼女と交流でき、特別な親密なセッションが生まれました。ライブ配信は\.\.\.主流になりました。
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_02_community_covid/c_7.webp)
 
 もしそれが大規模に持続可能だとは思えないなら、 [what KPop groups such as Super Junior are doing.](https://www.youtube.com/watch?v=3H_MiOghwJw&fbclid=IwAR3nFY0s2ccu6tXA4dig9_e37jvNC3QGxCNOL9WE9E-DyJeRMrWtoMAQUIo 'Kpop') \(ガブリエル・タン 提供\)彼らはコンサート体験を再構築し、特にファンとの交流を計画しています。今ではファンを特別に感じさせるのがずっと簡単で、エンターテイナーはそこから学ぶべきです。アジアの企業が消費者体験の革新をリードしているとますます感じられ、これは西洋企業のケーススタディの一つのように感じられます [^6]\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_02_community_covid/c_8.webp)
 
 これは対面イベント市場にとって何を意味するのでしょうか\? [Rafat Ali of Skift believes that this is a watershed moment for the industry](https://skift.com/2020/08/26/the-event-industry-is-being-confronted-by-its-napster-moment/ 'Skift')音楽のNapsterのように。彼はビジネス出張の10\%が市場から永久に離れる可能性があると考えており、またバーチャルイベントは対面イベントの約4分の1の収益を上げると推定しているため、市場は新しい経済状況に適応しなければならないと述べています。
 
@@ -118,7 +118,7 @@ KTタンスタルはこれを例として示しました。 [her live session wi
 
 例えば、あなたのMSNの連絡先はグループを選り好みしすぎましたが、Facebookのグループはそれほど選り好みが足りません。ビジネススクールは選択性によって示されるブランド価値がすべてです。Redditの軽いモデレーションはある程度の選抜性を生み出します。平均すると、親しい友人の日曜ブランチグループよりも学校のネットワークからより多くのプロフェッショナルな価値を得たり、Redditのスレッドからより多くの情報を得る価値があります [180,000 member Facebook group about genuinely stoked goats](https://www.facebook.com/genuinelystokedgoats/ 'goat') 入隊したことすら覚えてない [^7]\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_02_community_covid/c_9.webp)
 
 この問題を解決しようとする試みとして、キュレーションされたコミュニティの人気が高まっているのを私たちは見ています。こうしたコミュニティの目標は、価値と選抜性のバランスを取る最適な位置を見つけることです。通常、メンバーを審査するための何らかの入会プロセスがあります。活動している間には、優れたメンバーがいることでコミュニティへの関心が高まり、質の高いメンバーが増えるというフィードバックループが生まれます。特にコミュニティが小さい場合は、みんながうまくいくよう動機付けがあり、自分のメンバーであることに誇りを持つことができます。
 
@@ -134,7 +134,7 @@ KTタンスタルはこれを例として示しました。 [her live session wi
 
 この点をよく理解している業界の一つがゲーム市場です。Minecraft、Fortnite、Robloxの背後にある企業がどのようにターゲット顧客を固定しているかを見てみましょう。 [Minecraft has 126mm monthly active users](https://www.theverge.com/2020/5/18/21262045/minecraft-sales-monthly-players-statistics-youtube 'Minecraft')\. [Fortnite is still breaking attendance records for its in game concerts](https://www.gamesradar.com/how-many-people-play-fortnite/ 'Fortnite')\. [Roblox makes >$1bn in rev and is played by half of all children in the US](https://www.thegamer.com/roblox-played-by-most-american-kids/ 'Roblox')\.多くのゲームでは、友人がそこにいるから人々がそこに向かっています。彼らは2020年の新しいMSNです [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_02_community_covid/c_10.webp)
 
 価値や選択性以外に、バーチャルグループで最後に考える要素は **成長の可能性。** 成長は通常、選択性を犠牲にします。グループが成長するにつれて、次のメンバーによる付加価値は平均的に低くなります。
 
@@ -195,7 +195,7 @@ KTタンスタルはこれを例として示しました。 [her live session wi
 
 しかし、小規模ビジネスを運営することに抵抗がなければ、ニュースレターの執筆は信頼できる選択肢となり得ます。 **私は5年間のニュースレターの財務モデルを作成しました [here](https://docs.google.com/spreadsheets/d/1QS2lKHhDDCe5vwHiJPd7QpDjQRxJ3mHl4VgCq6e8Q6M/edit?usp=sharing 'model')** 経済的な形を試してみてみてはどうでしょうか。もしそうしたら、必ずコピーを作って、元の編集はしないでください。感謝の言葉 [Jacob Donnelly](https://www.amediaoperator.com/ 'Jacob') および [Josh Constine](https://constine.substack.com/ 'Josh') モデルに関する意見を求めてください。
 
-![post](./c_11.webp)
+![post](../../../blog/2020_09_02_community_covid/c_11.webp)
 
 モデルはシートに記載されている仮定に非常に敏感で、この脚注で簡単に説明します [^12]\.現在はサブスクリプションと広告のビジネスモデルを前提としていますが、それを変えることは可能です。5年で30万ドルの評価額を得るのは難しいですが妥当であり、ニュースレター作成者にとって目指すべき目標かもしれません。
 

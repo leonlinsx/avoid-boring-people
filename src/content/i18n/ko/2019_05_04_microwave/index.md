@@ -4,7 +4,7 @@ description: "어떤 신념이 세월의 시험을 견뎌내는지"
 pubDate: 2019-05-04
 category: Culture
 tags: ['behaviour']
-heroImage: './m_2.webp'
+heroImage: '../../../blog/2019_05_04_microwave/m_2.webp'
 locale: 'ko'
 sourceSlug: 'microwave'
 sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
@@ -14,7 +14,7 @@ sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
 
 노트르담 화재 이후\, 소방관들이 목조 구조물보다 유물을 구하는 것을 우선시했다는 이야기가 퍼졌습니다\. [since oak trees from Versailles were intended as replacements](https://medium.com/the-long-now-foundation/long-now-lessons-from-notre-dame-925d27441bdc 'long now')\.
 
-![post](./m_1.webp)
+![post](../../../blog/2019_05_04_microwave/m_1.webp)
 
 링크가 보여주듯\, 이 일에 실질적인 근거는 거의 없었다\. 하지만 사람들은 그것이 사실이길 원했고\, 그 행동이 고의적이라고 믿고 싶어 했다\.
 
@@ -54,7 +54,7 @@ sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
 
 > 무언가를 생각하며 정신적 표상을 만드는 것이 아니라\; 무언가를 시도하고\, 실패하고\, 수정하고\, 다시 시도하는 방식으로 만들어가는 것입니다\. 끝나면\, 개발하던 기술에 대한 효과적인 정신적 표상을 개발했을 뿐만 아니라\, 그 기술과 관련된 많은 정보를 흡수한 셈입니다\.
 
-![post](./m_2.webp)
+![post](../../../blog/2019_05_04_microwave/m_2.webp)
 
 중력은 당분간 존재할 것입니다 [^6]\, 그리고 우리의 먹고 싶은 욕구와 사회적 상호작용의 필요성도 마찬가지입니다\. 물리적\, 생물학적 원리는 아마도 더 쉽게 파악할 수 있지만\, 사회적 표본 크기가 더 어려운 부분이라고 생각합니다\. 인간은 합리적으로 행동합니다\.\.\. 그렇지 않을 때까지는요\. 놀라웠던 사회 원리 예시가 있다면 알려주세요\.
 

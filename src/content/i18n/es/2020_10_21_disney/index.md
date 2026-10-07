@@ -5,7 +5,7 @@ pubDate: 2020-10-21
 category: Investing
 tags: ['business']
 evergreen: false
-heroImage: './d_1.webp'
+heroImage: '../../../blog/2020_10_21_disney/d_1.webp'
 locale: 'es'
 sourceSlug: 'disney'
 sourceHash: '37406fdcdf9c2898b2894200d2a7c3d5084280c807347c9bac5893a239be9a38'
@@ -39,7 +39,7 @@ Nunca cubrí Disney cuando estaba en inversiones largas\/cortas\; un colega lo h
 
 Disney informa de cuatro segmentos principales\: Redes de Medios\, Parques\, Entretenimiento de Estudio y Directo al Consumidor \(DTC\)
 
-![post](./d_1.webp)
+![post](../../../blog/2020_10_21_disney/d_1.webp)
 
 Mis primeras impresiones sobre lo anterior son\:
 
@@ -52,7 +52,7 @@ Si miramos los márgenes operativos de esos segmentos\, son bastante similares\,
 
 Si los perfiles de margen son realmente similares\, la dirección debería mostrarse indiferente a invertir en cualquiera de ellos\; quizá prefiriendo Media debido al margen ligeramente mayor [^4]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_10_21_disney/d_2.webp)
 
 Disney dedica 17 páginas de su informe anual a describir su negocio [^5]\, así que los resumiré para evitar que todos os vayáis antes de empezar\.
 
@@ -87,7 +87,7 @@ Una gran complicación es el impacto del Covid en el negocio\. [For the first ni
 - Studio también murió\, bajando un 55\% de qoq y sorprendentemente un 3\% acumulado
 - Las cifras DTC no son comparables por la adquisición\, pero supongo que la tasa de crecimiento sigue siendo rápida
 
-![post](./d_3.webp)
+![post](../../../blog/2020_10_21_disney/d_3.webp)
 
 He puesto las finanzas de Disney en un modelo sencillo [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit?usp=sharing 'goog') Por si alguno de vosotros quiere jugar con los números\. Tened en cuenta que las suposiciones son solo números ficticios y no diligenciados\.
 
@@ -121,7 +121,7 @@ No tengo suficiente contexto aquí\, ya que no sé cuánto gastan esos compañer
 
 E incluyen un gráfico que muestra el aumento múltiple\. Un múltiplo es una forma de valorar una empresa\, mostrando cuánto está dispuesta a pagar la gente por tu acción\. Cuanto más alto\, generalmente mejor\. [^9]\.
 
-![post](./d_4.webp)
+![post](../../../blog/2020_10_21_disney/d_4.webp)
 
 > Por último\, creemos que Disney debería mantener su enfoque en la transición hacia una fuente de ingresos DTC basada en suscripciones y evitar la tentación de maximizar beneficios a corto plazo mediante estrategias transaccionales de precios VOD\.
 
@@ -145,7 +145,7 @@ Así que dicen que no aceptemos la sugerencia de Third Point de inmediato\, **si
 
 Estas son opciones bastante estándar de asignación de capital\. De hecho\, las tres primeras son cosas que normalmente esperaría que un activista pidiera\, y antes de leer la carta de Third Point suponía que dirían algo así\. Aquí tienes una imagen rápida para refrescar tu memoria sobre la asignación de capital\, de Michael Mauboussin\:
 
-![post](./d_5.webp)
+![post](../../../blog/2020_10_21_disney/d_5.webp)
 
 Volviendo a Semper\:
 
@@ -169,7 +169,7 @@ Con la enorme salvedad de que no cubro Disney y nunca lo he hecho\, me inclino p
 - No conozco la estructura completa de la deuda de Disney\, pero los 10\.000 demuestran que sus tipos actuales no están realmente mal \(ver imagen abajo\)\. No estoy seguro de si tiene mucho sentido pagar la deuda de forma agresiva
 - Especialmente en nuestro entorno actual de tipos de interés bajos\, si Disney necesitara efectivo para financiar una adquisición o recompra de acciones\, supongo que les resulta fácil pedir prestado barato
 
-![post](./d_6.webp)
+![post](../../../blog/2020_10_21_disney/d_6.webp)
 
 De nuevo\, aclaro que esto no es asesoramiento de inversión y que conozco menos el sector\, pero esa es mi opinión actual\. Como he mencionado\, puedes hacer una copia del modelo financiero que he elaborado [here](https://docs.google.com/spreadsheets/d/1h6yW8z2AcCCm-vn6bEkk0g5_nN-bzLge1lkok94PFaI/edit#gid=0 'goog') Jugar con los números\. Las suposiciones que pongo ahí son números ficticios\, así que por favor no te bases en ellos [^12]\.
 

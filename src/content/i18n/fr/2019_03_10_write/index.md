@@ -4,7 +4,7 @@ description: "Pourquoi j’ai commencé le blog original"
 pubDate: 2019-03-10
 category: Culture
 tags: ['writing']
-heroImage: './w_3.png'
+heroImage: '../../../blog/2019_03_10_write/w_3.png'
 locale: 'fr'
 sourceSlug: 'write'
 sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
@@ -67,7 +67,7 @@ Je savais ce que je voulais utiliser\, alors il était temps de le configurer\. 
 
 Une fonctionnalité à laquelle j’ai réfléchi un moment était de savoir s’il fallait autoriser les commentaires\. J’ai décidé de ne pas le faire\, car la section des commentaires pour les publications publiques tend à devenir du spam ou de l’insignifiance selon mon expérience\. Par exemple\, voyez les commentaires les plus populaires du post que Zuckerberg a récemment fait à propos des nouvelles priorités de Facebook \:
 
-![post](./w_1.webp)
+![post](../../../blog/2019_03_10_write/w_1.webp)
 
 Mes réflexions sur les commentaires sont les suivantes [shared](https://optinmonster.com/to-allow-blog-comments-or-not-heres-what-the-data-shows/ 'nice but not necessary') par [others](https://avc.com/2019/02/rethinking-avc/ 'avc comments')\. Un forum modéré séparé serait idéal\, même si je doute que ce blog devienne un jour assez populaire pour l’exiger\. En attendant\, les personnes intéressées par la discussion du contenu ici peuvent m’envoyer un e\-mail ou un message sur Twitter\.
 
@@ -89,7 +89,7 @@ J’ai passé plus de temps que je ne voudrais l’admettre à choisir le thème
 
 7. L’une des principales fonctionnalités de Github est la façon dont fonctionnent les mises à jour via les commits\. Je ne comprends toujours pas cela et je ne sais pas comment envoyer les commits du thème principal vers mon dépôt sans copier chaque fichier individuellement\. À l’aide\.
 
-![post](./w_2.png)
+![post](../../../blog/2019_03_10_write/w_2.png)
 
 Cela a été très frustrant d’essayer de tout configurer\, et même quelque chose d’aussi simple que d’ajouter ces images ci\-dessus a pris du temps\. Je ne regrette pas encore cette décision\, car j’ai appris quelques détails mineurs sur le fonctionnement du web et j’ai un produit à montrer pour mon apprentissage [^13]\. Un autre avantage surprise est que j’ai désormais un système formel de notation des idées et des articles sur lesquels je souhaite écrire à l’avenir\, car j’ai réalisé que tenir une liste serait utile\. Comme l’a noté Paul Graham\, Internet pourrait faire de cela le [golden age of the essay](http://www.paulgraham.com/essay.html 'essay')\, ce qui renforce davantage ma thèse de marque personnelle et d’individualisation\. Je suis enthousiaste quant à la direction que cette idée pourrait mener et j’espère continuer à écrire\.
 

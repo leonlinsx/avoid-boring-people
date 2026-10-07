@@ -4,7 +4,7 @@ description: "ピカソは今日の私たちにとって何か重要な影響を
 pubDate: 2020-04-08
 category: Culture
 tags: ['art']
-heroImage: './p_8.webp'
+heroImage: '../../../blog/2020_04_08_picasso/p_8.webp'
 locale: 'ja'
 sourceSlug: 'picasso'
 sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
@@ -18,7 +18,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 ゲティ美術館は一般市民に挑戦しました [to recreate famous works of art recently,](https://blogs.getty.edu/iris/getty-artworks-recreated-with-household-items-by-creative-geniuses-the-world-over/ 'Getty') その結果、Redditのような面白い記事が生まれました [^1]
 
-![post](./p_1.webp)
+![post](../../../blog/2020_04_08_picasso/p_1.webp)
 
 左側の元の画像のスタイルは独特で、多くの人はそれがピカソの作品だと推測するでしょう。たとえ見たことがなくても\(私も見ていませんでした\)。 [You'd be right](https://www.wikiart.org/en/pablo-picasso/woman-with-bird-1970 'Woman with bird')\.
 
@@ -28,7 +28,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 ほとんどの芸術は文脈を踏まえて理解するのが最善なので、まずはピカソの背景から始めましょう。 [Picasso was born in 1881 to two artistic parents,](https://mymodernmet.com/pablo-picasso-periods/ 'Met') 当時、芸術におけるリアリズムがまだ人気だった時代です。これには「画家の母の肖像」や「科学と慈善」といった傑作も含まれており、明らかに才能ある人物によるものです。これらの作品は、ある瞬間の場面を捉えるために描かれており、まるで特定の視点からそれを見つめているかのようでした。質感や色彩のリアルなディテール、奥行きや立体的な外観の錯覚、そして影の投影によって光の出ている方向がわかる様子に注目してください。まるで一つの角度から写真を撮ったかのようです。
 
-![post](./p_2.webp)
+![post](../../../blog/2020_04_08_picasso/p_2.webp)
 
 「科学と慈善」では、シーツのしわが前と後方の部分を示唆しているのに注目してください。枕の陰影は、頭がへこみを作っていると錯覚させます。男性の毛先の筆致が、子供の巻き毛に異なる質感を与えています。
 
@@ -38,7 +38,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 さて、上の2人の後に描かれた別のピカソの作品を見てみましょう。
 
-![post](./p_3.webp)
+![post](../../../blog/2020_04_08_picasso/p_3.webp)
 
 違いは何でしょうか\?まず、色が変わっていて、色覚異常の私でも違いがわかるほどです。それが大きなムードの変化をもたらし、絵全体が暗く、悲しく、痛みを感じさせます。画像も以前よりリアルさが薄れ、細部も減っていますが、それでもギターを持った人間だと認識できます。
 
@@ -50,7 +50,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 1907年、ピカソはスキャンダラスなセザンヌやアフリカ美術に触発された作品を描きました。 ["Les Demoiselles d'Avignon."](https://www.pablopicasso.org/avignon.jsp#prettyPhoto 'Avignon') この作品はバルセロナの売春宿での娼婦たちを描き、キュビスムの始まりとなりました。 [one of the most influential movements in art and a new way of representing reality.](https://www.tate.org.uk/art/art-terms/c/cubism 'Tate')
 
-![post](./p_4.webp)
+![post](../../../blog/2020_04_08_picasso/p_4.webp)
 
 一体何が起きているのでしょうか\?ピカソは明らかに、もはや写実主義を追求していません。また、多くの映像が2D的で平面的に感じられ、もはや三次元空間の錯覚を与えることにこだわっていません。
 
@@ -60,7 +60,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 > ピカソは「頭とは目、鼻、口の問題であり、好きなように配置できる」と語っています。
 
-![post](./p_5.webp)
+![post](../../../blog/2020_04_08_picasso/p_5.webp)
 
 上記の「マンドリンを持つ少女」のような作品は一つの視点ではありません。代わりに、ある場所から見える鼻を描き、数メートル左に移動してその場所から見える目を描くと想像してください。そして、その人の上に移動して上から見た唇を描きます。そうすると、奇妙な要素の混ざり合いや影があちこちに投げ込まれ、何も意味がわからない状態になります。 [as shown in this video by MoMa](https://www.youtube.com/watch?v=rGZYfSzvPvs 'Moma')\.
 
@@ -70,7 +70,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 ほぼ同時期に、ピカソは [Georges Braque](https://cubismsite.com/georges-braque-cubism/ 'Braque') また、始めて [popularising collages.](https://cubismsite.com/picasso-collage/ 'collage') これは複数のメディアを使った初期の芸術の一つで、絵の具だけでなく他のオブジェクトもキャンバスに貼り付けられています。複数の視点を持つ過程で、彼が欲しいと感じるのがわかります [to put a collection of things together in search of meaning for a coherent whole.](https://www.artsy.net/article/matthew-the-birth-of-collage-and-mixed-media 'artsy')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_04_08_picasso/p_6.webp)
 
 「Still Life with Chair Caning」では、ピカソが絵の端に実際のロープを置き、その上には椅子の杖\(左下の茶色い素材\)のプリントがあり、その上に奇妙な場面を描いています。彼は少なくとも三種類のものをコラージュで作っています。
 
@@ -84,7 +84,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 > 「私は物を自分の目で描くのではなく、考えたままに描く」
 
-![post](./p_7.webp)
+![post](../../../blog/2020_04_08_picasso/p_7.webp)
 
 それ以来、ピカソは死去するまで芸術を創作し続けました。 [mixing his styles and continuing to experiment.](https://en.wikipedia.org/wiki/Pablo_Picasso#Later_works_to_final_years:_1949%E2%80%931973 'Picasso') 推定 [he did >13k paintings in his lifetime, which excludes tens of thousands more prints and illustrations.](https://www.picassomio.com/art-articles/picasso-how-many-artworks-did-picasso-create-in-his-life-time.html 'Total') 生前に酷評された作品もありましたが、後に他の美術運動の先駆けと見なされることになりました。
 
@@ -102,7 +102,7 @@ sourceHash: 'c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded'
 
 判断はあなたに任せます。
 
-![post](./p_8.webp)
+![post](../../../blog/2020_04_08_picasso/p_8.webp)
 
 [^1]: [Source is here](https://www.reddit.com/r/pics/comments/fvx8ko/recreation_of_pablo_picassos_painting_a_woman/ 'Reddit')\.Redditは、知らない人のために説明するとオンラインフォーラムです。
 

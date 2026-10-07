@@ -4,7 +4,7 @@ description: "投資、技術、社会がすべて親戚のゲームであり、
 pubDate: 2020-05-07
 category: Risk & Decision Making
 tags: ['investing', 'luck', 'skill']
-heroImage: './rel_4.webp'
+heroImage: '../../../blog/2020_05_07_relative_billionaire/rel_4.webp'
 featured: false
 locale: 'ja'
 sourceSlug: 'relative_billionaire'
@@ -23,7 +23,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 投資アナリストは企業を調査し、どの株を買うか売るかを決めます。あなたは自分の仕事をしてきたのです [Tencent](https://en.wikipedia.org/wiki/Tencent 'tencent')中国のインターネット企業であり、ビジネス、経営、マクロトレンドはすべて良好だと結論づけています。ゲームとオンラインエンターテインメント [will continue increasing in importance](https://www.statista.com/outlook/203/117/video-games/china 'stat')\, [the executive team is experienced](https://chinachannel.co/a-deep-dive-into-tencents-restructuring-the-struggle-to-master-b2b/ 'tencent')人口増加が追い風となります [for at least ten years.](https://ourworldindata.org/future-population-growth 'population')
 
-![rel](./rel_1.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_1.webp)
 
 それらをすべてExcelでモデル化します。簡単な5ページの投資メモを書きましょう。念のため、50ページの複雑なチャートを用意してください [^2]\.
 
@@ -49,7 +49,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 投資において、 [you want to bet on the mispriced horse, not the horse most likely to win.](https://www.oaktreecapital.com/docs/default-source/memos/you-bet.pdf 'bet')
 
-![rel](./rel_2.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_2.webp)
 
 **これは、個々の株式のピッチにミクロレベルで、また投資会社の業績にマクロレベルでも当てはまります。** 絶対的な技術は関係ない。ファンドの技術だ _競争相手と比べて_ それが平均以上のリターンを出せるかどうかを決めます。
 
@@ -61,7 +61,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 投資においてはすべてが相対的です。
 
-![rel](./rel_3.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_3.webp)
 
 ## 2\. あなたのテック親戚は8歳の子どもです
 
@@ -85,7 +85,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 そしてそれが理由です [word of mouth and customer loyalty is important](https://medium.com/@gavin_baker/scale-and-loyalty-are-more-important-online-than-offline-which-drives-much-of-the-winner-take-992345be93a9 'loyalty')、相対比較の影響を一時的に先送りできるためです。CACが0ドルの下限にあると、もはや制限要因ではありません [^6]\.
 
-![rel](./rel_4.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_4.webp)
 
 これは顧客獲得だけでなく、採用する人材から製品品質に至るまで、会社のあらゆる部分に当てはまります。彼らの強みだけを知っていて、他の人と比べてどうか分からないのは意味がありません。
 
@@ -105,7 +105,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 Googleでも「他人と自分を比較しない」で18億件、「他人と自分を比較する方法」では4億件の結果が出ています。そして後者の上位検索結果はすべて「どうやって比較するか」の記事ばかりです _やめて_ 比較している。
 
-![rel](./rel_5.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_5.webp)
 
 それは本当です。自分を高めることに集中し、努力すべきです [be 1% better every day.](https://heleo.com/get-1-better-every-day/19161/ '1%')
 

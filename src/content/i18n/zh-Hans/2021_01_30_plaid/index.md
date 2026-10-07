@@ -5,7 +5,7 @@ pubDate: 2021-01-30
 category: Technology
 tags: ['startups', 'software']
 featured: false
-heroImage: './plaid_3.webp'
+heroImage: '../../../blog/2021_01_30_plaid/plaid_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'plaid'
 sourceHash: 'daae66d786d14dbfb4c0c831358b5f6fed3ca4b971461b077f61a7895375e9cd'
@@ -23,7 +23,7 @@ Plaid是一家金融科技公司，帮助其他公司连接银行数据。通过
 
 假设你有一个开创性的应用创意，想赚很多钱。你把应用写成每次有人按下键盘的F2键时，事情就会发生，他们就能赚钱：
 
-![plaid](./plaid_1.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_1.webp)
 
 你在笔记本电脑上测试，一切顺利，开始赚钱。效果好到你告诉所有朋友，他们也想参与其中。你把代码发给他们，让他们继续努力，繁荣发展。
 
@@ -31,7 +31,7 @@ Plaid是一家金融科技公司，帮助其他公司连接银行数据。通过
 
 结果发现Mac有个奇怪的问题 [Touch Bar thing](https://support.apple.com/en-gb/guide/mac-help/mchlbfd5b039/mac 'touch') 功能键，据你所知，其唯一目的似乎就是让生活变得痛苦。你为Mac用户添加了专用代码：
 
-![plaid](./plaid_2.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_2.webp)
 
 现在这对他来说很管用，他继续 [suing magazines for saying all hipsters look alike.](https://www.independent.co.uk/news/media/hipster-magazine-photo-lawsuit-mit-technology-review-a8813941.html 'hipster')
 
@@ -43,7 +43,7 @@ Plaid是一家金融科技公司，帮助其他公司连接银行数据。通过
 
 90年代末，人们意识到了一个解决方案——在中间增加一层，也就是说 **让别人来承担。** [As Shimon Schocken explains,](https://www.youtube.com/watch?v=E28KczysecE 'Shimon') 有了“中间人”，你的任务变得简单了。你不必为所有可能的设备写代码，而是“写一次，随处跑”，让中间人负责让你的代码兼容 [^1]\:
 
-![plaid](./plaid_3.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_3.webp)
 
 **将一个大任务拆分成更小的任务，对所有人来说都更容易。** 你已经抽象化了部分问题，因为你想写“高级”代码，不想担心具体的实现漏洞。还有人可能喜欢“低级”实现细节，但不想在上面写应用。根据能力和需求各写一个，等等。
 
@@ -63,15 +63,15 @@ Plaid是一家金融科技公司，帮助其他公司连接银行数据。通过
 
 最后，假设你想检查账户余额，确认April没有挪用钱支付她租赁AirBNB的隐藏服务费。你开始在电子表格中输入最近的存款：
 
-![plaid](./plaid_4.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_4.webp)
 
 作为程序员，你不喜欢Excel，也不熟悉它的功能。不过你知道用“\+”符号添加内容，然后开始手动计算余额：
 
-![plaid](./plaid_5.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_5.webp)
 
 一百个单元格和一个小时后，你快完成时，一个朋友问你在做什么。他们解释说sum（）函数能实现你想要的效果：
 
-![plaid](./plaid_6.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_6.webp)
 
 他们还告诉你整个情况 **函数的“库”** Excel必须帮助简化数学，比如AVG（）、count（）等。有趣的是，无论你用的是Windows笔记本、朋友的Mac、你爸的手机，这个函数都能有同样的表现。一旦你知道这个函数是做什么的，怎么调用它，你就能节省时间。你不在乎Excel怎么做，只要它在任何地方、随时都能用就行。
 
@@ -87,11 +87,11 @@ Plaid是一家金融科技公司，帮助其他公司连接银行数据。通过
 
 作为 [Joshua Bloch](https://www.youtube.com/watch?v=LzMp6uQbmns 'Josh') 指出，早在1952年，人们就喜欢 [David Wheeler](<https://en.wikipedia.org/wiki/David_Wheeler_(computer_scientist)> 'David') [^2] 我们已经提出了这个想法 [having libraries of functions (sub-routines)](http://www.laputan.org/pub/papers/Wheeler.pdf 'wheeler')\:
 
-![plaid](./plaid_7.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_7.webp)
 
 **我们将该函数库称为 API [^3]\.** 约书亚认为这个词最早是在 [a 1968 paper by Ira Cotton and Frank Greatorex:](https://www.computer.org/csdl/pds/api/csdl/proceedings/download-article/12OmNyRPgFZ/pdf 'ira')
 
-![plaid](./plaid_8.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_8.webp)
 
 这种用法涉及我们在示例中讨论的概念：
 
@@ -119,7 +119,7 @@ Plaid是一家金融科技公司，帮助其他公司连接银行数据。通过
 
 假设你正在构建一个预算应用，它需要访问用户的消费历史。如果你用自己的代码连接银行，每当新增银行时，你就得写一整块新部分。鉴于新标准不断变化，你可能会花在这上面比应用的主要功能还多。
 
-![plaid](./plaid_9.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_9.webp)
 
 Plaid可以为你提供始终可用的API，以及用户连接银行时能看到的用户界面 [(Plaid Link).](https://plaid.com/docs/link/ 'link') 你的问题已经成了他们的问题。
 
@@ -127,19 +127,19 @@ Plaid可以为你提供始终可用的API，以及用户连接银行时能看到
 
 经过一天的排查、多次重启电脑，以及盲目安装几乎所有可能的程序 [^4]\:
 
-![plaid](./plaid_10.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_10.webp)
 
 我终于让部分功能正常工作，连接了一个测试银行账户：
 
-![plaid](./plaid_11.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_11.webp)
 
 这让我可以查看虚拟数据，比如我的银行账户余额：
 
-![plaid](./plaid_12.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_12.webp)
 
 或者最近的交易数据：
 
-![plaid](./plaid_13.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_13.webp)
 
 如果我 ~~想要~~ 我知道怎么做，我可以继续这样构建一个金融应用。应用会用Plaid API拉取余额数据，记录交易并更新余额。不过这时我遇到了更多bug， ~~放弃了~~ 留待以后再说。
 
@@ -153,7 +153,7 @@ Plaid可以为你提供始终可用的API，以及用户连接银行时能看到
 
 如果这听起来不现实，可以考虑Fortran，一种早期编程语言。它的函数库是 [defined in **1958**](http://ed-thelen.org/LaFarr/IBM-FORTRAN-II-704-C28-6000-2-c-1958.pdf 'fortran')，并且至今仍在使用。一旦实现，API的使用寿命很长：
 
-![plaid](./plaid_14.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_14.webp)
 
 我们今天涵盖了很多内容——抽象背后的直觉、API，以及Plaid的功能。主要结论是 **有很多事情是人们不想做的，但做这些事能赚很多钱。** 通讯告诉你要避免无聊的人，但在这里，制造无聊的东西是一项数十亿美元的生意。
 

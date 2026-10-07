@@ -4,7 +4,7 @@ description: "Les hommes-lézards ont créé le grand collisionneur de hadrons"
 pubDate: 2019-02-18
 category: Culture
 tags: ['behaviour']
-heroImage: './b_1.png'
+heroImage: '../../../blog/2019_02_18_why/b_1.png'
 locale: 'fr'
 sourceSlug: 'why'
 sourceHash: 'b1e6bb8858e2a5ce6a0f09b06faba7ed0581ac49c85db53079bf83c5d651db7b'
@@ -14,7 +14,7 @@ Pourquoi croyons\-nous en ce que nous faisons \? J’ai déjà écrit que les ge
 
 Il existe de nombreuses croyances « folles » dont le grand public se moquerait aujourd’hui\. [Flat earthers.](https://en.wikipedia.org/wiki/Modern_flat_Earth_societies 'wiki page') [Moon landing deniers.](https://en.wikipedia.org/wiki/Moon_landing_conspiracy_theories 'another wiki page') [Shape-shifting lizard people.](https://en.wikipedia.org/wiki/Reptilian_humanoid 'more wiki pages') [^1] Pourtant\, la plupart des gens ne trouvent pas ça fou [70% of Americans](http://www.pewforum.org/religious-landscape-study/ 'religious breakdown') croire en une forme d’être omnipotent régnant sur l’existence\, ni que la plupart des gens ne croient pas [^2] Je pense que la vie implique une sorte de chaîne de montage microscopique [unzipping, squishing together, and re-zipping](https://www.youtube.com/watch?v=yqESR7E4b_8&t=1m50s 'DNA replication video')\. Ce qui m’intéresse aussi\, c’est comment chaque foi aura des croyants fervents prêts à défendre leurs croyances contre les hérétiques\. Notez ici que j’utilise le mot « foi » de manière libérale\, dans tous les domaines religieux\, scientifiques\, philosophiques ou autres\. Voyez comment les discussions peuvent devenir animées sur la politique\, la religion ou le meilleur magasin de bagels de New York\.
 
-![post](./b_1.png)
+![post](../../../blog/2019_02_18_why/b_1.png)
 
 Pourquoi alors croyons\-nous aux problèmes qui forment une grande partie de notre identité \? Je ne suis pas sûr d’avoir une bonne raison\. Pour beaucoup\, l’environnement dans lequel ils ont grandi détermine la plupart de leurs croyances\. Il y a une corrélation entre [having religious parents and becoming religious](http://www.pewforum.org/2016/10/26/links-between-childhood-religious-upbringing-and-current-religious-identity/ 'religious upbringing')\, quelques preuves que [political views also transmit to children](https://www.researchgate.net/publication/231788296_Politics_Across_Generations_Family_Transmission_Reexamined 'politics across gens') [^3]\, et même une possibilité [your career choice might not really be your own.](https://waitbutwhy.com/2018/04/picking-career.html 'was it really me?') C’est problématique si nous préférons vivre selon nos propres choix et non par défaut\. [Unexamined life not worth living and all that.](https://www.theguardian.com/theguardian/2005/may/12/features11.g24 'unexamined life')
 

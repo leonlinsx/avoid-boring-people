@@ -4,7 +4,7 @@ description: "Histórias sobre a fundação da internet"
 pubDate: 2017-12-01
 category: Technology
 tags: ['business', 'startups']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2021_03_13_internet/i_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'internet'
 sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
@@ -68,7 +68,7 @@ O Internet Explorer da Microsoft deslocou o Netscape\, apesar da vantagem inicia
 
 E agora sabemos que o Chrome substituiria o IE\. Da mesma forma\, o Facebook substituiria o MySpace\, a Apple substituiria o Blackberry\, e assim por diante\.
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_13_internet/i_1.webp)
 
 Uma razão simples para isso é que as coisas mudam rapidamente\, exigindo uma mudança na estratégia de negócios\. Imagine se seu modelo de negócios assumisse taxas de cliques nos anúncios \"conservadoras\" na casa dos 40 para o futuro\? Considerando que agora são \<5\%\, você teria ficado errado por uma grande quantidade\.
 

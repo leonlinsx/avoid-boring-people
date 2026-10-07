@@ -4,7 +4,7 @@ description: "많은 정보 의존 비즈니스 모델의 수익성 감소"
 pubDate: 2019-12-21
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_12_21_info/i_1.webp'
 locale: 'ko'
 sourceSlug: 'info'
 sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
@@ -36,7 +36,7 @@ sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
 
 이 부분에 대한 생각은 아직 진행 중이지만\, 아래와 같은 내용입니다\:
 
-![post](./i_1.webp)
+![post](../../../blog/2019_12_21_info/i_1.webp)
 
 > 정보가 풍부한 새로운 세상에서는\, 어떤 기업이나 개인이 독점 정보의 가치를 독점하고 착취하기가 더 어려워 보입니다\. \\\[\.\.\.\\\] 투자자들에게 남은 것은 확장되지 않는 정보 문제\(하이퍼 로컬 문제\)와 확장 가능한 문제\(하이퍼 스케일\)인 것 같습니다\.
 

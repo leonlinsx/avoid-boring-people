@@ -4,7 +4,7 @@ description: "Qual valor a pesquisa de ações do lado vendedor oferece?"
 pubDate: 2020-02-26
 category: Investing
 tags: ['equity research', 'AI']
-heroImage: './s_3.webp'
+heroImage: '../../../blog/2020_02_26_sellside/s_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'sellside'
 sourceHash: '9e9b2f343e79497b5aa89e766fd1869c1ccc8a0e1b36178d4de6e0c099372832'
@@ -18,19 +18,19 @@ Robôs estão vindo para pesquisas de ações do lado da venda e isso pode não 
 
 Se você pensar em **finanças como interação entre fontes de capital e usuários de capital\,** Bancos de investimento como Goldman\, Morgan Stanley\, JP Morgan estão no meio\, facilitando transações entre quem tem dinheiro e quem precisa dele\.
 
-![post](./s_1.webp)
+![post](../../../blog/2020_02_26_sellside/s_1.webp)
 
 Os bancos têm banqueiros que cobrem um produto financeiro específico \(ações\, dívida\, fusões e aquisições etc\.\) ou um setor específico \(consumidor\, saúde\, tecnologia etc\.\) e organizam transações de finanças corporativas dentro de sua área de cobertura\.
 
 Fora dessas transações\, **Os bancos geralmente possuem um grupo de pesquisa de ações\, que emite opiniões sobre ações** Baseado na pesquisa da empresa e na manutenção de um relacionamento com a administração\. Essas são as recomendações ou metas de preço de \"comprar\/manter\/vender\" que você vê relatadas nas notícias\. Note que essas são recomendações\, e o grupo de pesquisa não assume uma posição na empresa\, o que os diferencia de investidores profissionais [^1]\.
 
-![post](./s_2.webp)
+![post](../../../blog/2020_02_26_sellside/s_2.webp)
 
 A pesquisa de ações é vendida para investidores profissionais\, que teoricamente usam essas informações para tomar decisões de investimento\. Esses investidores também fazem suas próprias pesquisas\, então não se sabe ao certo quanto eles incorporam a partir da pesquisa bancária\. Importante\, eles não pagam pesquisa de ações com base na precisão das recomendações\, fazendo isso indiretamente por meio de comissões de negociação pelo banco\.
 
 **Portanto\, fica uma questão em aberto sobre pelo que os investidores estão pagando\: 1\) a pesquisa\, 2\) o relacionamento com a empresa\, ou 3\) a recomendação de investimento [^2]\.** Meus amigos do lado vendedor \(pesquisa\) argumentariam que é só \(1\) e \(investidor\) provavelmente é \(2\)\, e meus amigos investidores de varejo provavelmente diriam que é \(3\)\, já que não recebem \(1\) e \(2\)\.
 
-![post](./s_3.webp)
+![post](../../../blog/2020_02_26_sellside/s_3.webp)
 
 Se você assumir que o maior valor agregado vem de \(3\)\, [this paper by Braiden Coleman, Kenneth Merkley, Joseph Pacelli on computer programmed equity research](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3514879 'Robots') Seria interessante\. **Eles estudam como os \"Robo\-Analistas\"\, programas de computador assistidos por analistas humanos que realizam análises automatizadas de pesquisa\, se comportam em comparação com analistas humanos** analisando as diferenças nas recomendações de ambos\.
 

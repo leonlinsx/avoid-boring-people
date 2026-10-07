@@ -4,7 +4,7 @@ description: "시간을 찾아서 찾을 수 있는 게 아니에요"
 pubDate: 2020-02-26
 category: Culture
 tags: ['behaviour']
-heroImage: './q_3.webp'
+heroImage: '../../../blog/2020_02_26_time/q_3.webp'
 locale: 'ko'
 sourceSlug: 'time'
 sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
@@ -24,11 +24,11 @@ sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
 
 질 좋은 시간은 오래전부터 존재해 온 개념이며\, 시간이 지날수록 관심이 높아지고 있습니다\.
 
-![post](./q_1.webp)
+![post](../../../blog/2020_02_26_time/q_1.webp)
 
 그건 [even one of the love languages.](https://www.5lovelanguages.com/ 'love')
 
-![post](./q_2.webp)
+![post](../../../blog/2020_02_26_time/q_2.webp)
 
 이것이 우리가 존재하지 않는 무언가를 쫓으려 집단적 망상 속에 살고 있다는 뜻일까\? 라이언은 제리 사인펠드를 인용하며 그렇게 생각한다\:
 
@@ -42,7 +42,7 @@ sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
 
 만약 질 좋은 시간을 설계할 수 없고 무작위 사건의 문제라면\, 그런 사건이 얼마나 자주 일어나는지 늘려야 한다는 뜻입니다\. 확률을 높일 수는 없지만\, 그런 사건이 일어나는 기간은 늘릴 수 있습니다\. 다르게 말하면\, **시간을 늘리고 싶지\, 질 좋은 시간을 만드는 게 아니에요\.**
 
-![post](./q_3.webp)
+![post](../../../blog/2020_02_26_time/q_3.webp)
 
 라이언은 다른 조언자의 인용을 통해 그 평범한 시간을 찾는 방법에 대해 간접적으로 지속 시간이 핵심임을 암시합니다\:
 

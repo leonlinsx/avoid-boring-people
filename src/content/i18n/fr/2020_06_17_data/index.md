@@ -4,7 +4,7 @@ description: "Les outils utilisés par les investisseurs professionnels"
 pubDate: 2020-06-17
 category: Investing
 tags: ['data']
-heroImage: './data_9.webp'
+heroImage: '../../../blog/2020_06_17_data/data_9.webp'
 locale: 'fr'
 sourceSlug: 'data'
 sourceHash: 'b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d'
@@ -36,7 +36,7 @@ En plus des données publiques mentionnées ci\-dessus\, un analyste passerait d
 
 C’est une partie du processus de recherche en investissement\, la découverte et l’utilisation d’informations publiques que tout le monde peut faire également\. À partir de ce qui précède\, vous disposez déjà de suffisamment de données pour construire un modèle financier d’entreprise\, analyser des tendances et formuler une thèse d’investissement\. En fait\, beaucoup d’investisseurs particuliers ne dépassent jamais cette partie\, et réussissent tout de même pour eux\-mêmes\. Comme je l’ai déjà mentionné\, il existe de nombreuses façons de réussir en investissement\.
 
-![post](./data_1.webp)
+![post](../../../blog/2020_06_17_data/data_1.webp)
 
 ### Accès aux données publiques
 
@@ -52,7 +52,7 @@ Dans cette section\, je vais aborder le premier point\, celui de l’expérience
 
 Disons que vous vouliez examiner rapidement le chiffre d’affaires d’une entreprise sur le long terme\. Si vous le faisiez de manière traditionnelle sur Edgar\, vous devrez chercher l’entreprise\, ce qui aboutirait à une page comme celle\-ci \:
 
-![post](./data_2.webp)
+![post](../../../blog/2020_06_17_data/data_2.webp)
 
 Il faudrait alors chercher chaque dossier souhaité\, tous les télécharger\, puis copier les données dans un tableau [^4]\. Après avoir nettoyé les données et ajouté des lignes pour faire les calculs année sur année\, vous obtiendriez enfin les tendances souhaitées\.
 
@@ -60,13 +60,13 @@ C’était beaucoup de travail pour très peu de bénéfices\, c’est pourquoi 
 
 Tout ce travail que vous avez fait pour trouver les revenus d’une seule entreprise \? FactSet le propose pour toutes les sociétés cotées \:
 
-![post](./data_3.webp)
+![post](../../../blog/2020_06_17_data/data_3.webp)
 
 Bien sûr\, les données stockées ne sont pas toujours parfaites [^5]\. Cependant\, pour toutes les fois où vous avez besoin de quelque chose de rapide à consulter\, les plateformes qui ont déjà fait tout le travail dans un format facile à assimiler sont inestimables\. Vous n’avez pas besoin de passer des heures à extraire des données lorsqu’elles sont disponibles en quelques frappes clavier\. Ce facteur de commodité est une des raisons pour lesquelles les plateformes peuvent facturer une base d’abonnés fixe [^6]\, bien que des perturbateurs comme [Koyfin](https://www.koyfin.com/ 'koy') essaient de les sous\-estimer\.
 
 Il existe aussi des entreprises comme BamSEC et Last10K\, qui facilitent la recherche des dépôts\. Par exemple\, BamSEC catégorise différents types de dépôts\, affiche les titres des dépôts et vous permet de retrouver rapidement les éditions précédentes des dépôts\. Ces entreprises n’ont pas autant de fonctionnalités que les plateformes ci\-dessus\, mais permettent tout de même de gagner du temps à un analyste\.
 
-![post](./data_4.webp)
+![post](../../../blog/2020_06_17_data/data_4.webp)
 
 ### Accès aux données de recherche côté vendeur
 
@@ -82,7 +82,7 @@ Si vous êtes un investisseur professionnel\, vous pouvez toujours envoyer un ma
 
 Évidemment\, personne ne veut vraiment faire ça [^9]\, donc les chercheurs fournissent ces données aux plateformes\, qui les montrent ensuite à la communauté des investisseurs\. Si vous voulez un résumé rapide de l’état du consensus côté vente\, cela est également disponible en quelques frappes au clavier\.
 
-![post](./data_5.webp)
+![post](../../../blog/2020_06_17_data/data_5.webp)
 
 ### Accès à la direction de l’entreprise
 
@@ -94,7 +94,7 @@ Les investisseurs peuvent mettre à jour leurs modèles financiers ou leur avis 
 
 Non\, ce n’est pas le cas\. Penseriez\-vous que la conférence annuelle des actionnaires de Buffett\, [attracting 40k people yearly](https://www.investopedia.com/articles/investing/121715/how-attend-berkshire-hathaways-annual-meeting.asp 'Buffett')\, est\-ce que le délit d’initié \? Sinon\, qu’est\-ce qui différencie les conférences ci\-dessus \? Ce n’est pas parce que vous n’êtes pas invité à une fête que c’est illégal\. Il existe des règles régissant ce que la direction peut dire\, mais cette pratique dure depuis longtemps\.
 
-![post](./data_6.webp)
+![post](../../../blog/2020_06_17_data/data_6.webp)
 
 ### Experts du secteur
 
@@ -106,7 +106,7 @@ Les investisseurs souhaitent également discuter avec les employés des secteurs
 
 Non\, ce n’est pas le cas\. Si vous vouliez investir dans une entreprise de santé\, penseriez\-vous que demander à vos amis médecins à propos de cette entreprise est un délit d’initié \? Sinon\, pourquoi ce qui précède serait\-il différent \? Ce n’est pas parce que vous ne pouvez pas vous permettre l’intermédiaire que c’est illégal [^10]\.
 
-![post](./data_7.webp)
+![post](../../../blog/2020_06_17_data/data_7.webp)
 
 ### Données sectorielles
 
@@ -118,7 +118,7 @@ Il y a un [large market of sellers for such data](https://alternativedata.org/da
 
 Sortir et compter les clients dans un magasin serait\-il illégal \?
 
-![post](./data_8.webp)
+![post](../../../blog/2020_06_17_data/data_8.webp)
 
 ### Ce que cela signifie pour l’investisseur particulier\.
 
@@ -146,7 +146,7 @@ Si vous faisiez des visites anonymes dans les usines de l’entreprise pour voir
 
 Ce que vous devez faire\, c’est trouver les choses qu’un professionnel normal serait réticent à faire\. Dans un monde où les pros ont accès à plus de ressources que vous\, il faut chercher des avantages dans les domaines moins souhaitables\. Regardez le graphique ci\-dessous et repérez les lacunes\.
 
-![post](./data_9.webp)
+![post](../../../blog/2020_06_17_data/data_9.webp)
 
 [^1]: Je n’ai pas d’expérience dans un cabinet quantitatif\, donc je ne peux pas en parler personnellement\. Je connais les quants [pay for order flow though,](https://www.institutionalinvestor.com/article/b1m2p1cv68bx56/Twitter-Freaked-Out-Over-Robinhood-Selling-Its-Trade-Flow-But-the-App-and-Others-Have-Been-Doing-It-for-Years 'order') Et cela est probablement inclus dans le chiffre de 30 milliards de dollars\. Par ailleurs\, notez qu’une société d’investissement comme un fonds spéculatif est différente d’une banque d’investissement \; la plupart des analystes d’investissement exercent des métiers très différents de ceux des banquiers d’investissement\. [Sellside equity research is the role most similar to a hedge fund analyst, but researchers don't actually invest money.](/writing/time 'Sellside')
 

@@ -4,7 +4,7 @@ description: "투자, 기술, 사회가 절대적인 게임이 아니라 친척�
 pubDate: 2020-05-07
 category: Risk & Decision Making
 tags: ['investing', 'luck', 'skill']
-heroImage: './rel_4.webp'
+heroImage: '../../../blog/2020_05_07_relative_billionaire/rel_4.webp'
 featured: false
 locale: 'ko'
 sourceSlug: 'relative_billionaire'
@@ -23,7 +23,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 투자 애널리스트는 회사를 조사하고 어떤 주식을 사고팔지 결정합니다\. 당신은 이미 충분히 조사를 마쳤습니다 [Tencent](https://en.wikipedia.org/wiki/Tencent 'tencent')이 기업은 비즈니스\, 경영\, 거시적 트렌드 모두 긍정적이라고 결론지었습니다\. 게임 및 온라인 엔터테인먼트 [will continue increasing in importance](https://www.statista.com/outlook/203/117/video-games/china 'stat')\, [the executive team is experienced](https://chinachannel.co/a-deep-dive-into-tencents-restructuring-the-struggle-to-master-b2b/ 'tencent')인구 증가는 부정적인 역할을 합니다 [for at least ten years.](https://ourworldindata.org/future-population-growth 'population')
 
-![rel](./rel_1.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_1.webp)
 
 이 모든 것을 엑셀로 모델링하세요\. 간단한 5페이지 분량의 투자 메모를 작성하세요\. 만일을 대비해 복잡한 차트 50페이지를 준비하세요 [^2]\.
 
@@ -49,7 +49,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 투자에 있어서\, [you want to bet on the mispriced horse, not the horse most likely to win.](https://www.oaktreecapital.com/docs/default-source/memos/you-bet.pdf 'bet')
 
-![rel](./rel_2.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_2.webp)
 
 **이는 개별 주식 피치의 미시적 수준과 투자 기업의 거시적 실적 모두에 적용됩니다\.** 절대적인 실력은 중요하지 않습니다\. 그건 기금의 실력입니다 _경쟁과 비교_ 이는 평균 이상의 수익을 낼 수 있는지를 결정합니다\.
 
@@ -61,7 +61,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 투자에서는 모든 것이 상대적입니다\.
 
-![rel](./rel_3.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_3.webp)
 
 ## 2\. 당신의 기술 관련 가족은 8살 아이입니다
 
@@ -85,7 +85,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 그리고 그게 바로 이유입니다 [word of mouth and customer loyalty is important](https://medium.com/@gavin_baker/scale-and-loyalty-are-more-important-online-than-offline-which-drives-much-of-the-winner-take-992345be93a9 'loyalty')\, 이는 상대 비교의 효과를 일시적으로 연기할 수 있게 해줍니다\. CAC가 \$0 하한선에 있을 때는 더 이상 제한 요소가 아닙니다 [^6]\.
 
-![rel](./rel_4.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_4.webp)
 
 이는 고객 확보뿐만 아니라 고용하는 인재부터 만드는 제품의 품질까지 회사의 모든 부분에 적용됩니다\. 그들의 강점만 알고\, 다른 사람들과 어떻게 비교되는지 모르는 것은 의미가 없습니다\.
 
@@ -105,7 +105,7 @@ sourceHash: 'd69781bbfbb86007232010faeb5d319f25641ed0307ef90324c089c71b93d311'
 
 구글조차도 \"타인과 자신을 비교하지 말라\"는 답변에서 18억 건의 결과를\, \"자신을 다른 사람과 비교하는 방법\"에 대한 결과는 4억 건입니다\. 그리고 후자의 상위 결과들은 모두 어떻게 비교하는지에 관한 기사들입니다 _멈춰_ 비교 중이었다\.
 
-![rel](./rel_5.webp)
+![rel](../../../blog/2020_05_07_relative_billionaire/rel_5.webp)
 
 그건 사실이에요\. 자신을 발전시키는 데 집중하고 노력해야 해요 [be 1% better every day.](https://heleo.com/get-1-better-every-day/19161/ '1%')
 

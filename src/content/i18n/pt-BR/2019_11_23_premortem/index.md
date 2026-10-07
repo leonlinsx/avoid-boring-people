@@ -4,7 +4,7 @@ description: "Não pergunte ao grupo o que pode dar errado"
 pubDate: 2019-11-23
 category: Risk & Decision Making
 tags: ['behaviour']
-heroImage: './p_1.webp'
+heroImage: '../../../blog/2019_11_23_premortem/p_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'premortem'
 sourceHash: '7bc7593741c98b86ef78ac07b7086bf773091fef32f653890ee0c81252a43255'

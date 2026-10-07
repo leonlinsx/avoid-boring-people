@@ -4,7 +4,7 @@ description: "Augmentation des impôts, des tarifs et des ambitions"
 pubDate: 2019-03-30
 category: Investing
 tags: ['finance', 'tariff', 'behaviour']
-heroImage: './r_2.png'
+heroImage: '../../../blog/2019_03_30_trade/r_2.png'
 locale: 'fr'
 sourceSlug: 'trade'
 sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
@@ -46,7 +46,7 @@ Je fais partie de ceux qui offrent gratuitement du contenu Google Maps [^3]\, do
 
 > The Coming One\, c’est un incubateur d’idoles\, et plus les concurrents reçoivent des votes de leurs fans\, plus ils auront de ressources pour devenir une célébrité\. Les membres du public ne bénéficient que d’un vote par jour\, cependant\, s’ils achetaient des produits One Leaf\, ils recevaient des votes supplémentaires\. Et s’ils achetaient des produits spécifiques\, ils pouvaient obtenir 5 votes supplémentaires\.
 
-![post](./r_1.webp)
+![post](../../../blog/2019_03_30_trade/r_1.webp)
 
 Je n’ai pas regardé de télé\-réalité depuis un moment\, mais cela semble être un nouveau concept de vente\. Je suppose que l’achat se fait via la même application où ils diffusent l’émission\, ce qui crée une expérience pratique\.
 

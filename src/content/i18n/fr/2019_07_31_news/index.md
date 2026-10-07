@@ -4,7 +4,7 @@ description: "Quelles sont les raisons de la montée en popularité des newslett
 pubDate: 2019-07-31
 category: Technology
 tags: ['newsletter']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2019_07_31_news/n_1.webp'
 locale: 'fr'
 sourceSlug: 'news'
 sourceHash: 'a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450'
@@ -24,7 +24,7 @@ La stratécherie a [written before](https://stratechery.com/2015/why-web-pages-s
 
 En tant que [the CNBC article](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc') À noter cependant\, quelques facteurs ont conduit à l’émergence de modèles alternatifs basés sur l’abonnement\. **La domination et l’efficacité de Google et Facebook dans la publicité digitale font que la publicité sur les producteurs de contenu traditionnels\, comme les sites d’actualité\, est devenue moins efficace\.** En tant qu’annonceur\, je préfère consacrer une plus grande partie de mon budget publicitaire à l’endroit où 60 \% d’internet va passer et obtenir un meilleur retour sur investissement publicitaire\.
 
-![post](./n_1.webp)
+![post](../../../blog/2019_07_31_news/n_1.webp)
 
 L’emprise sur le trafic par Google et Facebook peut aussi entraîner un coût pour acquérir l’utilisateur marginal\, ce qui implique que le coût marginal de service n’est plus nul\. Pour le site média classique\, vous faites désormais face à un scénario où le trafic organique diminue et la relation avec votre client est réduite\, mais vous faites toujours face aux problèmes d’une surabondance de contenu gratuit de la part de la concurrence\, ce qui rend difficile la différenciation\.
 

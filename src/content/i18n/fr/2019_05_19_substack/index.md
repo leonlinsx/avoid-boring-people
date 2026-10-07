@@ -5,7 +5,7 @@ pubDate: 2019-05-19
 category: Technology
 tags: ['newsletter', 'writing']
 evergreen: false
-heroImage: './s_8.webp'
+heroImage: '../../../blog/2019_05_19_substack/s_8.webp'
 locale: 'fr'
 sourceSlug: 'substack'
 sourceHash: 'fb2f37b08d38af6a6c970e59d679e03ef6420f74f17eed1b21a180f8e13f7453'
@@ -26,19 +26,19 @@ Dans ce post\, je passe en revue \:
 
    > Vous pouvez créer une liste de diffusion via Substack et l’emporter avec vous à tout moment\. Si vous avez déjà une liste de diffusion\, vous pouvez l’importer via les paramètres d’un simple clic\.
 
-   ![post](./s_1.webp)
+   ![post](../../../blog/2019_05_19_substack/s_1.webp)
 
    Après avoir importé la liste\, vous pouvez consulter le statut de chaque abonné individuel ainsi que leur activité récente
 
-   ![post](./s_2.webp)
+   ![post](../../../blog/2019_05_19_substack/s_2.webp)
 
    Vous pouvez aussi cliquer sur chaque abonné pour voir plus de détails ainsi que modifier leur type d’abonnement
 
-   ![post](./s_3.webp)
+   ![post](../../../blog/2019_05_19_substack/s_3.webp)
 
 2. C’est un moyen plus simple pour les lecteurs peu intéressés de se désabonner et moins de gêne comparé à m’envoyer un mail direct [^1]\.
 
-   ![post](./s_4.webp)
+   ![post](../../../blog/2019_05_19_substack/s_4.webp)
 
    Je préférerais que le texte soit plus évident plutôt que légèrement caché\. Oui\, je veux en fait faciliter la désabonnement\. Les gens n’aiment pas le spam\, et je préférerais ne pas envoyer quelque chose à quelqu’un qui n’en veut pas\. Si je pouvais\, je déplacerais l’option de désabonnement directement au début de la newsletter\. Je comprends que je fais probablement partie de la minorité qui pense ainsi\.
 
@@ -46,19 +46,19 @@ Dans ce post\, je passe en revue \:
 
    > Il est facile d’intégrer des vidéos YouTube et Vimeo\, des pistes Spotify et des tweets dans vos publications\. Il suffit de copier\-coller les URL pertinentes et les insertions apparaîtront comme par magie\. Vous pouvez aussi glisser\-déposer des images et des gifs\.
 
-   ![post](./s_5.webp)
+   ![post](../../../blog/2019_05_19_substack/s_5.webp)
 
    Bien plus simple que d’ajouter des médias soit à Gmail\, soit à ce site\. Gif créé via [LICEcap](https://www.cockos.com/licecap/ 'LICEcap') Au fait\.
 
 4. Analyses de ma base de lecteurs\, comme le taux de clics\. Je suppose que cela s’améliorera avec le temps à mesure que plus de fonctionnalités seront ajoutées\.
 
-   ![post](./s_6.webp)
+   ![post](../../../blog/2019_05_19_substack/s_6.webp)
 
 5. Potentiel de monétisation à terme [^2]\. Le modèle économique est aussi simple\, Substack prélève une commission de 10 \% dès que vous commencez à facturer les abonnés\. Substack vous permet aussi de fixer des tarifs mensuels et annuels\. Les paiements sont traités via Stripe\, donc vous devez créer un compte là\-bas si vous n’en avez pas encore\.
 
    > Une fois que vous avez connecté un compte Stripe à Substack\, nous gérons vos paiements de manière fiable et sécurisée\.
 
-   ![post](./s_7.webp)
+   ![post](../../../blog/2019_05_19_substack/s_7.webp)
 
 ## D’autres choses que j’aime incluent
 
@@ -74,19 +74,19 @@ Dans ce post\, je passe en revue \:
 
    > Les classements aident les lecteurs à découvrir de grandes publications\, et ils aident les éditeurs à trouver de nouveaux lecteurs\.
 
-   ![post](./s_8.webp)
+   ![post](../../../blog/2019_05_19_substack/s_8.webp)
 
    Il existe également de courts portraits des principaux éditeurs [^3]\.
 
-   ![post](./s_9.webp)
+   ![post](../../../blog/2019_05_19_substack/s_9.webp)
 
 4. La page d’accueil de votre newsletter incite le lecteur à s’abonner mais ne force pas le problème\, ce qui me semble logique\. Je ne voudrais pas m’abonner à quelque chose sans avoir d’abord lu un extrait\.
 
-   ![post](./s_10.webp)
+   ![post](../../../blog/2019_05_19_substack/s_10.webp)
 
 5. Après que vous vous soyez inscrit en tant qu’éditeur\, le fondateur fournit aussi ses coordonnées au cas où vous ne pourriez pas obtenir de réponses dans la FAQ\. Je n’ai pas encore essayé d’envoyer un mail donc je ne sais pas s’ils répondent vraiment\.
 
-   ![post](./s_11.webp)
+   ![post](../../../blog/2019_05_19_substack/s_11.webp)
 
 6. Il y a aussi une fonction d’abonnement de groupe si vous visez un public plus corporatif\.
 
@@ -96,25 +96,25 @@ Dans ce post\, je passe en revue \:
 
 1. Il ne semblait pas y avoir de moyen simple de télécharger toute votre liste de diffusion en tant qu’abonnés gratuits\, le formulaire ne permettant que les emails de les télécharger un par un\. J’ai dû activer manuellement les paramètres d’abonnement pour toute ma base de lecteurs après avoir téléchargé leurs emails [^4]\. C’était doublement agaçant car je ne pouvais pas basculer les paramètres pour plusieurs lecteurs en même temps\, et je devais changer chacun individuellement\. Une fonctionnalité qui me permettrait de modifier plusieurs abonnés en même temps aurait été appréciable\.
 
-   ![post](./s_12.webp)
+   ![post](../../../blog/2019_05_19_substack/s_12.webp)
 
 2. Télécharger d’anciens articles était aussi pénible\. Comme les paramètres de date et d’heure étaient plus profonds dans la mise en page d’édition\, il fallait du temps pour télécharger les articles puis les rétrodater individuellement à la bonne date que je voulais\. Je n’avais que quelques articles\, mais je ne vois pas comment quelqu’un avec un historique de publication plus long prendrait la peine de mettre son ancien contenu avec les bonnes dates\.
 
    > Enfin\, si vous importez des articles provenant des archives d’un autre site\, vous pouvez les rétrodater afin qu’ils soient publiés dans le bon ordre et associés aux dates de publication correctes\. Pour ce faire\, après avoir publié un article\, allez dans les paramètres de ce post \(juste à gauche du bouton Publier\) et sélectionnez la date souhaitée
 
-   ![post](./s_13.webp)
+   ![post](../../../blog/2019_05_19_substack/s_13.webp)
 
 3. J’ai eu des problèmes initiaux pour créer un compte et me connecter\. Je ne comprends pas pourquoi « lien de connexion par email » est l’option par défaut\, ce qui m’a conduit à une boucle où je demandais un lien par email me dirigeant vers la même page de connexion et la même invite\. C’était confus\.
 
-   ![post](./s_14.webp)
+   ![post](../../../blog/2019_05_19_substack/s_14.webp)
 
 4. La page d’accueil propose un lien vers le blog\, qui donne plus d’informations sur le service\. Une fois que vous cliquez pour accéder au blog\, il n’y a pas de moyen intuitif de revenir à la page d’accueil de Substack sans appuyer sur le bouton retour du navigateur\. Le menu déroulant ne vous permet pas de revenir en arrière et il n’y a pas de bouton retour dans le texte principal\.
 
-   ![post](./s_15.webp)
+   ![post](../../../blog/2019_05_19_substack/s_15.webp)
 
 5. Il ne semble pas y avoir de moyen de modifier les URL des publications\. Dans l’exemple ci\-dessous\, j’éditais le post provisoire « bientôt »\, mais je n’ai pas pu corriger l’URL malgré le changement du titre de mon post\.
 
-   ![post](./s_16.webp)
+   ![post](../../../blog/2019_05_19_substack/s_16.webp)
 
 6. Un simple texte par\-dessus la souris indiquant ce qu’ils définissent par « ouvrir » et « clics » serait aussi utile\. Je suppose que c’est assez proche de ce que nous imaginerions si nous utilisions le bon sens\, mais ce serait bien d’avoir plus de clarté ici\.
 

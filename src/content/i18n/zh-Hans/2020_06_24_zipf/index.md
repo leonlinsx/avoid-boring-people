@@ -4,7 +4,7 @@ description: "利用齐普夫定律和信息熵在寻找外星人中"
 pubDate: 2020-06-24
 category: Technology
 tags: ['information']
-heroImage: './z_3.webp'
+heroImage: '../../../blog/2020_06_24_zipf/z_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'zipf'
 sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
@@ -48,7 +48,7 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 综合起来，我们做的就是 [Drake equation](https://en.wikipedia.org/wiki/Drake_equation#:~:text=The%20Drake%20equation%20is%20a%20statement%20that%20stimulates%20intellectual%20curiosity,a%20part%20of%20that%20universe. 'Drake')，一种著名的智能生命估算方法 [^2]\.注意我们刚才提到的所有点如何相乘，来猜测有多少聪明的外星人：
 
-![post](./z_1.webp)
+![post](../../../blog/2020_06_24_zipf/z_1.webp)
 
 ### 缩小范围
 
@@ -70,11 +70,11 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 有了这样的定律，我们可以在该语言的样本文本上进行测试。例如，有人绘制了《罗密欧与朱丽叶》中词频：
 
-![post](./z_2.webp)
+![post](../../../blog/2020_06_24_zipf/z_2.webp)
 
 我不满足于依赖网络上的陌生人，开始分析自己的通讯帖子。用一些简单的Python代码 [^4]我从所有子堆栈帖子中提取了文本，挑选了我使用的前50个词，并将它们与其频率做成图表。这种关系并不完美，但非常接近Zipf定律的预测。你可以想象，“the”、“to”、“a”、“and”、“of”这些词都经常出现。
 
-![post](./z_3.webp)
+![post](../../../blog/2020_06_24_zipf/z_3.webp)
 
 太好了，现在我们有了一条定律。我们可以用海豚和鲸鱼等动物来测试它，看看它是否仍然成立。 [Researchers did that,](https://www.seti.org/animal-communications-information-theory-and-search-extraterrestrial-intelligence-seti#:~:text=We%20also%20found%20that%20bottlenose,Zipf's%20Law%20distribution%20of%20signals.&text=In%20other%20words%2C%20baby%20bottlenose,start%20to%20whistle%20like%20adults. 'dolphin') 结果发现他们确实有！ [^5] 换句话说，齐普夫定律很可能同样适用于外星语言。通过将其应用于来自外太空的信号，我们可以过滤掉部分噪声。
 
@@ -86,7 +86,7 @@ sourceHash: '973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a'
 
 通过绘制这些分数，我们可以了解大多数语言的分布范围。我们可以做之前的同样过程，给海豚和鲸鱼评分，看看它们的语言表现如何：
 
-![post](./z_4.webp)
+![post](../../../blog/2020_06_24_zipf/z_4.webp)
 
 如你所见，大多数语言都属于一个范围。如果我们对信号应用同样的评分系统，也能过滤掉那些不太可能是语言的信号。
 

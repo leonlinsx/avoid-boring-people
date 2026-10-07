@@ -4,7 +4,7 @@ description: "무판타지아와 시각화의 차이"
 pubDate: 2019-07-31
 category: Culture
 tags: ['science']
-heroImage: './a_2.png'
+heroImage: '../../../blog/2019_07_31_aphantasia/a_2.png'
 locale: 'ko'
 sourceSlug: 'aphantasia'
 sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
@@ -14,7 +14,7 @@ sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
 
 저는 사람들마다 시각화하는 방식이 다르다는 걸 방금 알게 됐어요\. 이 10초 테스트를 해보세요\:
 
-![post](./a_1.webp)
+![post](../../../blog/2019_07_31_aphantasia/a_1.webp)
 
 저는 3에서 4 정도 수준이고\, 사촌은 6 정도라고 주장합니다 [^1]\. 이게 사람들이 시각화하라고 할 때마다 혼란스러웠던 이유를 어느 정도 설명해줍니다\.\.\. 저는 다른 사람들이 경험하는 것처럼 세밀하고 명확한 것을 전혀 이해하지 못했어요\.
 

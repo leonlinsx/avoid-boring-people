@@ -4,7 +4,7 @@ description: "Y a-t-il vraiment autant de monopoles ?"
 pubDate: 2021-02-13
 category: Investing
 tags: ['business']
-heroImage: './m_4.png'
+heroImage: '../../../blog/2021_02_13_monopoly/m_4.png'
 locale: 'fr'
 sourceSlug: 'monopoly'
 sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
@@ -18,7 +18,7 @@ Les monopoles naturels sont rares\, et la régulation nuit généralement plus q
 
 Josh Breinlinger\, un investisseur en capital\-risque chez Turtle Ventures\, a publié un court article sur son site à propos de [how most marketplaces are not "winner takes all":](https://acrowdedspace.com/post/642666403989684224/winner-take-all-or-not 'win')
 
-![post](./m_1.webp)
+![post](../../../blog/2021_02_13_monopoly/m_1.webp)
 
 Je suis enclin à être d’accord\. On entend parler tout le temps du « le gagnant rafle tout »\. Ce qui soulève la question \: pourquoi n’y a\-t\-il pas plus de monopoles \?
 
@@ -36,7 +36,7 @@ Le problème avec des définitions vagues\, c’est que cela conduit à des hypo
 
 Voici Ben Evans sur le sujet \:
 
-![post](./m_2.webp)
+![post](../../../blog/2021_02_13_monopoly/m_2.webp)
 
 Plus il est difficile de démarrer\, plus il est facile pour les entreprises en place de croître et de conserver leur part de marché\.
 
@@ -58,7 +58,7 @@ La pharma\, l’alcool et les lunettes sont tous des secteurs très réglementé
 
 En matière de publicité\, on dit tous que les grandes entreprises ont aujourd’hui une avance insurmontable\, mais si on disait cela parmi les cinq plus grandes entreprises d’il y a dix ans [we'd have been wrong on 3 out of 5 names.](https://www.emarketer.com/Article/US-Digital-Ad-Spending-Top-37-Billion-2012-Market-Consolidates/1009362 'ad') Je pense qu’il est trop difficile de dire que les « monopoles » actuels seront les mêmes à l’avenir\.
 
-![post](./m_3.webp)
+![post](../../../blog/2021_02_13_monopoly/m_3.webp)
 
 Il y a probablement un contre\-argument plus fort en faveur des ventes de livres en ligne\. Mais en même temps\, ce n’est pas la seule façon d’acheter des livres\. À première vue\, cela semble être le monde de la physique qui revient en jeu – un espace limité pour un contenu illimité\.
 

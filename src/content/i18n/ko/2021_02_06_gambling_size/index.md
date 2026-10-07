@@ -4,7 +4,7 @@ description: "행동적 우위의 어려움"
 pubDate: 2021-02-06
 category: Risk & Decision Making
 tags: ['finance', 'games', 'risk']
-heroImage: './g_3.png'
+heroImage: '../../../blog/2021_02_06_gambling_size/g_3.png'
 featured: false
 locale: 'ko'
 sourceSlug: 'gambling_size'
@@ -35,7 +35,7 @@ sourceHash: '6c4aa4a154b35a9efefc547de8010057f4b9d7daf4df3d4723815d449b29cf9d'
 
 그 \'느낌\'의 차이가 사람들이 큰 금액을 벌 수 있는 이유입니다\. 복리는 시간이 걸리고\; 인내심에 대한 보수를 받습니다\.
 
-![post](./g_1.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_1.webp)
 
 **위험과 파멸\.** 장기적으로 투자할 때\, 아무리 많이 벌어도 모두 잃으면 소용없습니다\. 10\,000\% 이익을 얻었다가 100\% 하락하는 것은 여전히 끔찍한 결과입니다\. 파산 위험을 피하고 \'게임에 남는 것\'만이 중요합니다\. 제 말을 믿지 마세요\, 하워드 마크스와 찰리 멍거의 의견을 들어보겠습니다\:
 
@@ -57,7 +57,7 @@ sourceHash: '6c4aa4a154b35a9efefc547de8010057f4b9d7daf4df3d4723815d449b29cf9d'
 
 그래서 우리는 평생 동안 아마존 같은 주식을 100배 \> 보지만\, 액티브 매니저들은 같은 일을 하지 않는 것입니다\. 다른 사람들은 _이_ 직장을 지키기 위해 거래를 하려면 아무것도 하지 않으면 오히려 유리할 수도 있습니다\.
 
-![post](./g_2.webp)
+![post](../../../blog/2021_02_06_gambling_size/g_2.webp)
 
 **지루함과 흥미진진함\.** 위의 행동들이 왜 어려운가요\? 왜냐하면 그것들이 _지루하다_\. 우리는 활동하는 것을 좋아하고 가만히 있는 것을 싫어합니다\. 칵테일 파티에서 자신의 성장이 작고 느리고 단순하다고 자랑하기는 어렵습니다\. 마치 ["sin stocks" need to have higher expected excess returns](https://www.aqr.com/Insights/Perspectives/Virtue-is-its-Own-Reward-Or-One-Mans-Ceiling-is-Another-Mans-Floor 'asness')\"지루함\" 행동도 우위를 제공합니다\.
 

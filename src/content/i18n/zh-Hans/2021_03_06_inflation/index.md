@@ -4,7 +4,7 @@ description: "因果关系、测量与调整"
 pubDate: 2021-03-06
 category: Investing
 tags: ['inflation']
-heroImage: './i_3.webp'
+heroImage: '../../../blog/2021_03_06_inflation/i_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'inflation'
 sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
@@ -24,7 +24,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 你可能会说这很荒谬，外面有一整群人 [making policy based on inflation targets](https://www.federalreserve.gov/faqs/economy_14400.htm 'fed')， 正在谈论 [hedging against inverted yield curves](https://www.chathamfinancial.com/insights/hedging-in-an-inverted-yield-curve-environment 'yield')如果谷歌趋势可信的话，还有一些《刺猬索尼克》游戏 [(apparently some weird nsfw meme).](https://tvtropes.org/pmwiki/pmwiki.php/VideoGame/SonicInflationAdventure 'sonic')
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_06_inflation/i_1.webp)
 
 是的，但这并不意味着他们懂得事情的运作方式。如果我的工作经验教会了我什么，那就是人们可以在不理解自己在做什么的情况下完成大量工作 [^1]\.纳西姆·塔勒布此前写过类似内容，讲述一位金融交易员成功从事绿色木材交易的故事 [without understanding what it was.](https://fs.blog/2016/11/green-lumber-fallacy/ 'taleb')
 
@@ -46,7 +46,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 通胀的另一个大问题是 **受期待影响。** 指望它遵循某种数学定律，就像指望股市能完美反映未来现金流的现值一样。这也是为什么很难设定通胀目标：
 
-![post](./i_2.webp)
+![post](../../../blog/2021_03_06_inflation/i_2.webp)
 
 美国联储的目标是2\%，所以上面第一句话可以被解读为：1）美联储做得很糟糕，或者2）这确实是一件很难做到的事情。鉴于系统的复杂性，我倾向于相信后者 [^3]\.
 
@@ -56,7 +56,7 @@ sourceHash: 'cb2f07e744e62e6425bb8a1c48fdbfde6e3ad2be679689faddf165799846afa3'
 
 当人们失去信心时，就会出现以下情况：
 
-![post](./i_3.webp)
+![post](../../../blog/2021_03_06_inflation/i_3.webp)
 
 我觉得关于通胀，我唯一能说的就是这些：
 

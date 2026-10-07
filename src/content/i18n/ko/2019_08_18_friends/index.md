@@ -4,7 +4,7 @@ description: "공개, 지지, 상호작용, 그리고 우정을 유지하기 위
 pubDate: 2019-08-18
 category: Culture
 tags: ['behaviour']
-heroImage: './f_1.webp'
+heroImage: '../../../blog/2019_08_18_friends/f_1.webp'
 locale: 'ko'
 sourceSlug: 'friends'
 sourceHash: '927a41d27f036c8bdb9243f1c9cfacc1a96ee050e3ba65e65b8ed9c3c664a562'

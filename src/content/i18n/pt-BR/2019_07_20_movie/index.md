@@ -4,7 +4,7 @@ description: "Você assistiria a um filme lançado apenas após 100 anos?"
 pubDate: 2019-07-20
 category: Culture
 tags: ['movie']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2019_07_20_movie/m_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'movie'
 sourceHash: '520da5c5321846de5306d1f04d7547af3b2256f7ae09360ff7ff18649136d106'
@@ -16,9 +16,9 @@ Por isso me interessei por [this reddit post](https://www.reddit.com/r/movies/co
 
 No entanto\, o comentário público em geral não foi tão positivo\:
 
-![post](./m_2.webp)
+![post](../../../blog/2019_07_20_movie/m_2.webp)
 
-![post](./m_3.webp)
+![post](../../../blog/2019_07_20_movie/m_3.webp)
 
 Com comentários que vão desde que o filme provavelmente vai ser ruim\, que é um comercial masturbatório\, ou que foi egocêntrico esperar que o público daqui a 100 anos o aprecie\.
 

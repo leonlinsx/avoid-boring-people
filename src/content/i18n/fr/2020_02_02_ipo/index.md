@@ -5,7 +5,7 @@ pubDate: 2020-02-02
 category: Investing
 tags: ['finance']
 evergreen: false
-heroImage: './i_4.webp'
+heroImage: '../../../blog/2020_02_02_ipo/i_4.webp'
 locale: 'fr'
 sourceSlug: 'ipo'
 sourceHash: 'd8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5'
@@ -37,13 +37,13 @@ Je penche plutôt du côté de Damodaran ici\. Pour défendre la banque\, dans l
 
 Je suis d’accord avec Damodaran\, même si\, comme il l’a laissé entendre\, la plupart de cela est dû à des raisons juridiques\. Les sections sur les risques dans les prospectus servent davantage à protéger juridiquement que à vous indiquer ce qui est important [^3]\. Je connais d’anciens collègues qui ont passé beaucoup de temps à rédiger des sections pour l’entreprise\, mais **Il est difficile d’apporter une valeur significative ici** \(désolé les gars\)\, surtout si la société qui devient publique est aussi composée d’anciens banquiers\.
 
-![post](./i_1.webp)
+![post](../../../blog/2020_02_02_ipo/i_1.webp)
 
 > **Tarification de l’introduction en bourse \:** Les banques soutiennent qu’elles peuvent aider à combler l’écart entre le dernier tour privé et le prix public prévu\, trouver le bon ensemble de sociétés comparables\, choisir les multiples d’évaluation appropriés et identifier les préoccupations des investisseurs\.
 
 > Damodaran soutient que les banques font un mauvais travail sur les prix\, comme on le voit lors de l’introduction en bourse de WeWork\. Cela s’explique par le fait qu’elles choisissent les mauvais comparables ou multiples\, parlent aux mauvais investisseurs\, ou sont biaisées dans le processus de tarification\, ce dernier étant le plus probable\.
 
-![post](./i_2.webp)
+![post](../../../blog/2020_02_02_ipo/i_2.webp)
 
 Choisir le mauvais ensemble ou multiple d’entreprise comparable est moins important\. Le plan rémunérable est socialisé entre les investisseurs à l’avance\, donc il y a généralement un large consensus là\-dessus [^4]\. Il n’existe qu’une poignée de multiples courants \(EV\/Rev\, EV\/EBITDA\, P\/E\)\, donc le type de multiple est aussi largement compris\.
 
@@ -59,7 +59,7 @@ La première est subjective \; Slack et Spotify peuvent se promouvoir eux\-même
 
 Gardez à l’esprit que [the median IPO offering size is ~$100mm](https://www.statista.com/statistics/251149/median-deal-size-of-ipos-in-the-united-states/ 'Statista')\, et que [IPOs sell ~20% of the company](https://corpgov.law.harvard.edu/2017/05/25/2017-ipo-report/ 'Harvard')\, on peut en déduire que la plupart des IPO ne sont pas les grands noms connus que vous connaissez déjà\. Vous pouvez parcourir [the list of recent IPOs](https://www.nyse.com/ipo-center/recent-ipo 'NYSE') Et voyez combien vous en reconnaissez\. **La plupart des entreprises bénéficient probablement d’une banque qui les commercialise et contactent des investisseurs\.**
 
-![post](./i_3.webp)
+![post](../../../blog/2020_02_02_ipo/i_3.webp)
 
 Le deuxième point semble sans importance\. Si vous êtes un investisseur professionnel \(côté acheteur\)\, vous ne prenez pas de décision basée sur des recommandations de recherche actions \(côté vendeur\) \(désolé les amis du côté vendeur\)\. Si vous êtes un investisseur particulier\, vous n’obtenez pas cette information\.
 
@@ -81,7 +81,7 @@ Je suis d’accord qu’il y a une inefficacité dans la tarification\, mais la 
 
 Les entreprises semblent prêtes à échanger l’inefficacité contre un meilleur moral\. Bien sûr\, vous auriez pu obtenir 20 \$ à l’ouverture et ensuite garder la bourse stable\, mais la hausse de 10 \$ à 20 \$ rend \(irrationnellement\) les gens plus heureux\. Aussi\, que faire si vous ouvrez à 20 \$ et que vous baissez à 10 \$ trois mois plus tard \? Quel était alors le bon prix \?
 
-![post](./i_4.webp)
+![post](../../../blog/2020_02_02_ipo/i_4.webp)
 
 Damodaran conclut en donnant les raisons pour lesquelles le statu quo de l’IPO a perduré\, citant **l’inertie\, la peur de nuire à la relation bancaire\, et les entreprises ayant besoin de quelqu’un à blâmer\.** Je suis d’accord avec ces points\. Au final\, cela dépend de votre entreprise \; une cotation directe offre par définition plus d’efficacité des prix\. Si vous êtes grand et connu\, vous pouvez probablement vous inscrire directement et ne devriez pas de toute façon prendre les conseils d’une newsletter par email\. Si vous êtes petit et non\, vous avez probablement besoin de banquiers pour vous aider à faire du marketing et à vous connecter avec des investisseurs\. Je suis à 80 \% sûr que les IPO resteront majoritaires des cotations dans trois ans\.
 

@@ -4,7 +4,7 @@ description: "Les coûts d’investissement dans les sociétés versant des divi
 pubDate: 2020-07-08
 category: Investing
 tags: ['dividends']
-heroImage: './d_6.webp'
+heroImage: '../../../blog/2020_07_08_dividend/d_6.webp'
 locale: 'fr'
 sourceSlug: 'dividend'
 sourceHash: 'ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7'
@@ -40,7 +40,7 @@ Cinquièmement\, vous pourriez verser un dividende aux investisseurs\. Pour chaq
 
 J’ai simplifié\, comme toujours\, et les actions ci\-dessus sont les principales actions que les entreprises font avec leur argent\. Un graphique de CS nous montre comment la combinaison de ces actions a évolué au fil du temps \:
 
-![post](./d_1.webp)
+![post](../../../blog/2020_07_08_dividend/d_1.webp)
 
 Aujourd’hui\, nous allons nous concentrer sur la cinquième action\, le paiement des dividendes\. Je vais passer sur la question de l’irrélevance théorique des structures de capital [^5]\, mais vous pouvez lire un rappel sur Modigliani Miller [here.](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.2.4.99 'MM')
 
@@ -58,13 +58,13 @@ Donc on sait que **Le prix compte\, comme pour tout ce qui concerne l’investis
 
 Petite parenthèse\, par convention\, nous accepterions une somme de dividende de 12 mois\. La plupart des entreprises versent des dividendes trimestriels\, donc si une société verse 1 \$ par trimestre\, son dividende annuel est de 4 \$\. Nous ignorerons aussi les impôts [^6]\.
 
-![post](./d_2.webp)
+![post](../../../blog/2020_07_08_dividend/d_2.webp)
 
 Au\-delà de nous permettre d’évaluer les rendements de dividendes entre les actions versant des dividendes\, ce rendement nous permet aussi de comparer entre autres titres\. Le rendement est comme le rendement attendu\, après tout\. Nous pourrions donc comparer un rendement de dividende de 4 \% à une obligation qui paie 1 \%\, et dire que tout le reste est égal par rapport à un revenu plus élevé\.
 
 C’est ce que nous voyons ici [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')\, le graphique ci\-dessous montrant que **Les rendements du dividende ont été supérieurs à ceux des obligations au cours des 10\+ dernières années\.**
 
-![post](./d_3.webp)
+![post](../../../blog/2020_07_08_dividend/d_3.webp)
 
 À y repenser\, cela semble encore mieux maintenant\. Une période prolongée où vous recevez plus de liquidités que les obligations \? Devrait\-on tous simplement trouver les actions au rendement de dividende le plus élevé et toutes les acheter \? Quel est le piège \?
 
@@ -74,7 +74,7 @@ La première est simple\, et que nous avons déjà en partie abordée \: la ques
 
 Dans l’exemple ci\-dessous\, vous auriez été bien plus satisfait du rendement de 1 \% de division plutôt que de 50 \%\, à cause des circonstances qui y ont mené\. En raison de la baisse de prix dans le second cas\, vous avez en réalité perdu beaucoup plus d’argent que ce que vous avez gagné grâce à l\'« augmentation » du rendement du dividende\.
 
-![post](./d_4.webp)
+![post](../../../blog/2020_07_08_dividend/d_4.webp)
 
 On ne peut même pas être sûr que le rendement élevé durera non plus\, puisque ce montant de dividende n’est pas garanti pour l’avenir\. Il est vrai que les entreprises n’aiment pas réduire leur dividende\, car elles craignent que les actionnaires se débarrassent de leurs actions\. [However, that also menas that a company can cut its dividend when things are so bad they have no choice.](https://www.cnbc.com/2018/12/07/ge-makes-it-official-lowers-dividend-to-a-penny.html 'GE')
 
@@ -84,11 +84,11 @@ Que se passe\-t\-il lorsque nous considérons le rendement du capital \? Examino
 
 Étonnamment\, ce n’est pas ce que nous trouvons\. Dans ce même sens [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van')\, les auteurs ont classé les actions en 4 catégories du rendement du dividende élevé au plus bas\. Ils ont ensuite comparé le rendement des dividendes par rapport au prix\. Nous voyons que **Le rendement du capital a davantage contribué au rendement total\,** Même en incluant les actions à dividendes élevés\.
 
-![post](./d_5.webp)
+![post](../../../blog/2020_07_08_dividend/d_5.webp)
 
 Encore plus intéressant\, un [Miller Howard report](https://mhinvest.com/download.html?docId=2246 'Miller') Cela montre que lorsque vous divisez les actions à dividendes en 10 groupes\, la plupart d’entre elles sont en fait **Sous\-performance** l’indice S\&P au cours des dix dernières années\. Pire encore\, c’est que le segment supérieur avec les rendements de dividendes les plus élevés est celui qui sous\-performe le plus\. Cela implique une stratégie d’investissement complètement opposée à celle à laquelle nous avions pensé auparavant\.
 
-![post](./d_6.webp)
+![post](../../../blog/2020_07_08_dividend/d_6.webp)
 
 ### Facteurs corrélés
 
@@ -102,17 +102,17 @@ Je vais passer outre l’explication de la création de ces facteurs \; vous pou
 
 Le [Vanguard report](https://personal.vanguard.com/pdf/ISGADOS.pdf 'Van') Distingué entre deux types d’actions à dividendes\, 1\) un rendement élevé du dividende\, et 2\) une forte croissance du dividende\. Ils ont ensuite comparé la corrélation de ces groupes avec certains des facteurs communs que nous avons mentionnés plus haut [^7]\.
 
-![post](./d_7.webp)
+![post](../../../blog/2020_07_08_dividend/d_7.webp)
 
 Il s’avère que beaucoup de ces caractéristiques sont corrélées\, que ce soit le groupe 1 ou le groupe 2\. Autrement dit\, si vous ignoriez le facteur dividende et ne considériez que ces autres facteurs\, vous feriez beaucoup pour obtenir le retour des actions à dividendes\.
 
 [Meb Faber went ahead to do just that,](https://www.cambriainvestments.com/wp-content/uploads/2017/10/DTAX-10.23.17.pdf 'Meb') en créant des portefeuilles composites capables de reproduire les profils des actions à dividendes\, sans en être réellement des actions à dividendes\. Cela signifie qu’il a trouvé des actions qui offraient le même rendement que les actions à dividendes\, mais qui ne versaient pas réellement de dividende\. Ses résultats montrent que **Les rendements de ces portefeuilles dépassent ceux du portefeuille de dividendes\.** Comparez la colonne boîte noire avec le reste à droite \:
 
-![post](./d_8.webp)
+![post](../../../blog/2020_07_08_dividend/d_8.webp)
 
 Et ces résultats se sont confirmés lorsqu’il a comparé après déclarations fiscales \:
 
-![post](./d_9.webp)
+![post](../../../blog/2020_07_08_dividend/d_9.webp)
 
 ## Conclusion et complications
 

@@ -4,7 +4,7 @@ description: "정말로 그렇게 많은 독점이 존재할까요?"
 pubDate: 2021-02-13
 category: Investing
 tags: ['business']
-heroImage: './m_4.png'
+heroImage: '../../../blog/2021_02_13_monopoly/m_4.png'
 locale: 'ko'
 sourceSlug: 'monopoly'
 sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
@@ -18,7 +18,7 @@ sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
 
 Turtle Ventures의 VC Josh Breinlinger가 자신의 사이트에 다음과 같은 짧은 글을 올렸습니다 [how most marketplaces are not "winner takes all":](https://acrowdedspace.com/post/642666403989684224/winner-take-all-or-not 'win')
 
-![post](./m_1.webp)
+![post](../../../blog/2021_02_13_monopoly/m_1.webp)
 
 저도 동의하는 편입니다\. 우리는 항상 \'승자가 모든 것을 가져간다\'는 말을 듣습니다\. 그렇다면 왜 독점이 더 많지 않을까요\?
 
@@ -36,7 +36,7 @@ Turtle Ventures의 VC Josh Breinlinger가 자신의 사이트에 다음과 같�
 
 벤 에반스가 이 주제에 대해 말합니다\:
 
-![post](./m_2.webp)
+![post](../../../blog/2021_02_13_monopoly/m_2.webp)
 
 시작이 어려울수록 기존 기업들이 성장하고 시장 점유율을 유지하기가 더 쉬워집니다\.
 
@@ -58,7 +58,7 @@ Turtle Ventures의 VC Josh Breinlinger가 자신의 사이트에 다음과 같�
 
 광고 분야에서는 현재 상위 기업들이 압도적인 격차를 가지고 있다고 모두가 말하지만\, 만약 10년 전 상위 5개 기업 중 그렇게 말했다면 [we'd have been wrong on 3 out of 5 names.](https://www.emarketer.com/Article/US-Digital-Ad-Spending-Top-37-Billion-2012-Market-Consolidates/1009362 'ad') 지금의 \'독점\'이 미래에도 똑같을 것이라고 단정하는 것은 너무 어렵다고 생각합니다\.
 
-![post](./m_3.webp)
+![post](../../../blog/2021_02_13_monopoly/m_3.webp)
 
 온라인 도서 판매에 대한 더 강력한 반론이 있을 가능성이 큽니다\. 하지만 다시 생각해보면\, 책을 사는 유일한 방법은 아닙니다\. 처음 생각해보면 이건 물리학의 세계가 다시 작동하는 것 같아요 \- 무제한 콘텐츠를 위한 제한된 공간 말이죠\.
 

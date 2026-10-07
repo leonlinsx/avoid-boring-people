@@ -4,7 +4,7 @@ description: "Que font réellement les banques d’investissement ?"
 pubDate: 2020-11-04
 category: Culture
 tags: ['investment banking']
-heroImage: './i_2.webp'
+heroImage: '../../../blog/2020_11_04_ib_value/i_2.webp'
 locale: 'fr'
 sourceSlug: 'ib_value'
 sourceHash: 'c27ba4251de29cd4bbcb5900adbd73319b0f46a7511f8a32eb2454d3a8b02ec0'
@@ -18,13 +18,13 @@ La banque d’investissement consiste rarement à investir\, et plutôt à conne
 
 J’ai dû expliquer à quelques personnes récemment ce qu’est réellement la banque d’investissement\, et je me suis dit que je pourrais aussi faire une petite introduction ici\. Surtout vu le décalage entre attentes et réalité\, j’espère que cela aidera à clarifier les choses\.
 
-![post](./i_1.webp)
+![post](../../../blog/2020_11_04_ib_value/i_1.webp)
 
 **La banque d’investissement ne consiste généralement pas à investir\,** Malgré que mes parents n’aient jamais semblé l’avoir compris\. Petite parenthèse \: j’essaie de trouver l’étymologie de la date à laquelle « merchant banking » est devenu « investment banking »\, mais je n’ai pas eu de chance jusqu’à présent\. Si jamais vous le savez\, n’hésitez pas à me contacter\.
 
 Une banque « full service » comme JP Morgan est immense\. Vous pouvez la considérer comme quatre grandes lignes d’affaires \:
 
-![post](./i_2.webp)
+![post](../../../blog/2020_11_04_ib_value/i_2.webp)
 
 Lorsque je parle de banque d’investissement ou de banque dans cet article\, je parle spécifiquement du secteur bleu à droite\. Et pour me faciliter la vie\, je vais me concentrer uniquement sur la case « Banquier »\, en excluant la discussion sur les branches recherche actions ainsi que les ventes et le trading pour des raisons de simplicité\. J’ai mentionné la recherche sur les actions [here](/writing/sellside 'er') Avant\, lors de la discussion sur l’impact des roboconseillers\.
 
@@ -40,7 +40,7 @@ Le monde compte aussi beaucoup de personnes qui ont besoin de capital\. Par exem
 
 Le rôle de la banque est de **créer un marché** entre les deux groupes\.
 
-![post](./i_3.webp)
+![post](../../../blog/2020_11_04_ib_value/i_3.webp)
 
 Par exemple\, si Google essaie d’augmenter la dette\, la banque travaille avec elle pour déterminer combien elle peut réunir\, qui achètera la dette et à quelles conditions la dette sera émise\.
 

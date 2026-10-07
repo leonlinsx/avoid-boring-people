@@ -4,7 +4,7 @@ description: "Quelles croyances résistent à l’épreuve du temps"
 pubDate: 2019-05-04
 category: Culture
 tags: ['behaviour']
-heroImage: './m_2.webp'
+heroImage: '../../../blog/2019_05_04_microwave/m_2.webp'
 locale: 'fr'
 sourceSlug: 'microwave'
 sourceHash: '364081a92d36cc7d69490b5570cbb41978d053c7c901f585236456f98431e60f'
@@ -14,7 +14,7 @@ J’ai lu une fois qu’une personne tellement focalisée sur l’efficacité qu
 
 Après l’incendie de Notre Dame\, une histoire s’est répandue selon laquelle les pompiers privilégiaient la sauvegarde des reliques plutôt que les structures en bois\, [since oak trees from Versailles were intended as replacements](https://medium.com/the-long-now-foundation/long-now-lessons-from-notre-dame-925d27441bdc 'long now')\.
 
-![post](./m_1.webp)
+![post](../../../blog/2019_05_04_microwave/m_1.webp)
 
 Comme le montre le lien\, il y avait peu de fondement substantiel derrière cela\. Mais les gens voulaient que ce soit vrai\, voulaient croire que l’action était délibérée\.
 
@@ -54,7 +54,7 @@ En quoi pouvons\-nous croire alors \? Qu’est\-ce qui a le plus de chances de r
 
 > On ne construit pas des représentations mentales en pensant à quelque chose \; on les construit en essayant de faire quelque chose\, en échouant\, en révisant et en essayant encore\, encore et encore\. Quand on a fini\, non seulement on a développé une représentation mentale efficace de la compétence que l’on développait\, mais on a aussi absorbé beaucoup d’informations liées à cette compétence\.
 
-![post](./m_2.webp)
+![post](../../../blog/2019_05_04_microwave/m_2.webp)
 
 La gravité sera présente un moment [^6]\, tout comme notre besoin de manger et notre besoin d’interaction sociale\. Les principes physiques et biologiques sont probablement plus faciles à identifier\, mais je pense que la taille de l’échantillon social est la partie difficile\. Les humains agissent rationnellement\.\.\. jusqu’à ce qu’ils ne le fassent plus\. Si vous avez des exemples de principes sociaux qui vous ont surpris\, faites\-le moi savoir\.
 

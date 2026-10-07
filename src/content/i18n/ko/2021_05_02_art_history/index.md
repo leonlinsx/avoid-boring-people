@@ -4,7 +4,7 @@ description: "역사 속 예술의 다양한 정의"
 pubDate: 2021-05-02
 category: Culture
 tags: ['art']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2021_05_02_art_history/a_1.webp'
 locale: 'ko'
 sourceSlug: 'art_history'
 sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
@@ -28,23 +28,23 @@ sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
 
 아마 그들에게 보여줄 거야 [The School of Athens,](https://en.wikipedia.org/wiki/The_School_of_Athens 'school') 1500년대 이탈리아 르네상스 절정기에 라파엘로가 그린 그림입니다\. 유명한 철학자들을 사실적으로 묘사하고 [linear perspective](<https://en.wikipedia.org/wiki/Perspective_(graphical)> 'perspective') 3D처럼 보이게 하기 위해 유명한 프레스코화는 르네상스를 상징하는 걸작으로 여겨집니다\.
 
-![post](./a_1.webp)
+![post](../../../blog/2021_05_02_art_history/a_1.webp)
 
 또는 역사적 주제를 거부하며 예술에 도덕적 교훈이 붙을 필요가 없다고 생각했을 수도 있습니다\. 대신 당신은 도미니크 앙그르의 1800년대 그림을 전시하는데\, 순수한 쾌락과 환상을 담고 있으며\, 진짜 예술이 반드시 현실적일 필요는 없다고 주장합니다\. [La Grand Odalisque looks realistic on first glance, but taking a closer look shows that the spine is weirdly long, and the back leg is attached at a weird angle.](https://en.wikipedia.org/wiki/Grande_Odalisque 'wiki')
 
-![post](./a_2.webp)
+![post](../../../blog/2021_05_02_art_history/a_2.webp)
 
 쾌락은 피상적이며\, 고야의 1800년대 같은 현대의 고통을 기념하는 것이 더 순수하다고 말할 수 있습니다 [The Third of May](https://en.wikipedia.org/wiki/The_Third_of_May_1808 'may')\. 이전 작품들보다 덜 현실적이며\, 인물들이 더 평평하고 완성도가 낮다\. 또한 더 이상 허구가 아니며\, 고야 시대의 실제 비극을 묘사하고 있다 [^2]\. 이전 전통과는 너무나도 달라서 \"현대 시대의 초기 그림 중 하나\"라고 불렸습니다\.
 
-![post](./a_3.webp)
+![post](../../../blog/2021_05_02_art_history/a_3.webp)
 
 하지만 왜 회화를 시간 속 한 장면의 스냅샷만으로 제한하려 할까요\? 대신 여러 각도에서 본 대상을 평평한 캔버스 위에 내려놓으려 한다면 어떨까요\? 매트릭스의 불릿 타임을 생각해보면\, 그림으로서\; 그게 오브제에 더 충실하지 않을까요\? 피카소의 1900년대 같은 입체파 작품을 보여주는 것 [Girl with a Mandolin](https://www.pablopicasso.org/girl-with-mandolin.jsp 'girl') 그렇다면 2D 표면에서 여러 시점에서 3D 인물을 보여주려는 시도 덕분에 좋은 선택이 될 것입니다\.
 
-![post](./a_4.webp)
+![post](../../../blog/2021_05_02_art_history/a_4.webp)
 
 그리고 위 모든 것이 거만하며\, 예술은 단지 캔버스 위의 색과 선일 뿐이라고 말할 수도 있습니다\. 1900년대 몬드리안을 보여주는 것은 사실주의로 스스로를 속이지 말아야 한다는 점을 보여줍니다\. 순수 예술은 플라토닉한 형태입니다 [^3]\.
 
-![post](./a_5.webp)
+![post](../../../blog/2021_05_02_art_history/a_5.webp)
 
 더 말할 수 있는데\; 암호화폐만큼이나 예술 운동도 많아요\. 하지만 제가 말하고 싶은 핵심은 예술은 주관적이며\, 열린 마음을 유지하는 것이 필수적이라는 점입니다\. 어떤 것이 예술인지 아닌지를 논하는 것은 답할 수 없는 철학적 질문 중 하나입니다\.
 
@@ -65,11 +65,11 @@ sourceHash: '3078cfac7c00af2b241532eef1a69f437a7ecec8fa2ad16c11679c8fd9f25118'
 
 참고로\, 만약 [aphantasia is real](/writing/aphantasia 'abp')아래 테스트에서 3\-4점을 받았으니 아마 그런 걸 가지고 있을 거예요\. 참고 자료에서 그릴 때는 장애물이 아니었지만\, 상상에서 그릴 때는 장애물이 될 수도 있어요\.
 
-![post](./a_6.webp)
+![post](../../../blog/2021_05_02_art_history/a_6.webp)
 
 대략 1년간 매일 연습하고 600장의 종이를 찍은 후 [^8]\, 진행 상황 사진입니다\. 네\, 그들은 같은 사람이어야 합니다\:
 
-![post](./a_7.webp)
+![post](../../../blog/2021_05_02_art_history/a_7.webp)
 
 그리고 그 과정에서 제가 배운 것은 다음과 같습니다\:
 

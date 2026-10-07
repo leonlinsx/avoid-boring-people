@@ -4,7 +4,7 @@ description: "Trocas de pares, CRMs pessoais e autoconsciência"
 pubDate: 2019-08-31
 category: System Design
 tags: ['software', 'investing']
-heroImage: './c_4.webp'
+heroImage: '../../../blog/2019_08_31_crm/c_4.webp'
 locale: 'pt-BR'
 sourceSlug: 'crm'
 sourceHash: 'e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca'
@@ -26,21 +26,21 @@ Shorting [^2] é sexy\, porque você está sendo contrária e assumindo riscos t
 
 Vamos pegar Overstock\.com como outro exemplo\. Antes de seus [CEO resigned so he could let everyone know he'd dated a Russian spy,](https://www.forbes.com/sites/laurendebter/2019/08/22/the-exclusive-inside-story-of-the-fall-of-overstocks-mad-king-patrick-byrne/#176918ea53a5 'Forbes') [^3] Ele estava tentando salvar a empresa em 2017 ao migrar para o blockchain\. Suponha que você achasse que a Overstock também iria fracassar nisso\, e vendido a descoberto na Overstock em \$20 em agosto de 2017\:
 
-![post](./c_1.webp)
+![post](../../../blog/2019_08_31_crm/c_1.webp)
 
 À medida que o preço da ação sobe lentamente\, você redobra a aposta\, convencido de que não pode durar\. De alguma forma\, dura\, e você está olhando para um preço de \$60 em novembro de 2017\:
 
-![post](./c_2.webp)
+![post](../../../blog/2019_08_31_crm/c_2.webp)
 
 Ops\. Você não só tem uma perda de papel\, como sua exposição é múltipla do que você tinha no início e com o qual se sentia confortável\. Se você liquidasse sua posição agora\, perderia \$40 \- os atuais \$60 menos os \$20 que ganhou inicialmente\. Você tem uma vendeta agora e está determinado a vender essa ação até o fim ou ir à falência tentando\, então você segura até o próximo ano\:
 
-![post](./c_3.webp)
+![post](../../../blog/2019_08_31_crm/c_3.webp)
 
 Seu corretor voltou das férias e percebeu que esqueceu de emitir um [margin call](https://www.investopedia.com/ask/answers/05/shortmarginrequirements.asp 'margin') Todo esse tempo\, e agora em pânico\. Quando você está vendendo uma ação\, geralmente precisa de \~130\% do valor da ação como garantia\, como reserva de fundos [^4]\. Quando a ação estava em \$20\, ter \$26 separados não era um problema\. Agora\, porém\, você precisa de \$104 de lado\, e o corretor quer que você recompreenda a diferença de \$78 \(\$104 menos \$26\)\. Dependendo de quanto dinheiro você tinha no início\, esses \$78 adicionais \(3x a exposição inicial\!\) podem facilmente te esgotar\. Você é forçado a liquidar sua posição e compensar a diferença montando um Go Fund Me\.
 
 E então\, claro\, isso acontece\:
 
-![post](./c_4.webp)
+![post](../../../blog/2019_08_31_crm/c_4.webp)
 
 O ponto chave aqui é que você estava certo – o pivô da blockchain que o Overstock tentou não funcionaria\. Mas você estava errado no timing e perdeu seu dinheiro e sua reputação\. Mesmo quando vender uma ação é \'óbvio\'\, como por exemplo [bad quality companies changing their name to get a price bump](https://www.winton.com/longer-view/the-history-of-company-names 'names')\, o [time period](https://www.sciencedirect.com/science/article/pii/S0165176519301703 'time') Exigido para que sua tese se desenvolva pode te levar à falência antes\.
 
@@ -84,15 +84,15 @@ Byrne conclui dizendo que nem todas as bolhas têm situações como a terceira a
 
 O crescimento de [Superhuman](https://techcrunch.com/2019/06/27/my-six-months-with-30-month-email-service-superhuman/ 'techcrunch')\, um aplicativo de e\-mail que cobra uma taxa em troca de uma experiência supostamente revolucionária\, gerou uma febre em [premium subscription services](https://techcrunch.com/2019/08/27/kleiner-perkins-bets-on-a-premium-email-service-thats-bringing-slack-groups-into-gmail/ 'kleiner')\. Recentemente\, o tech twitter reviveu a ideia de um CRM pessoal \(Customer Relationship Management\)\, ou seja\, um software que pode ajudar você a gerenciar seus relacionamentos pessoais\.
 
-![post](./c_5.webp)\)
+![post](../../../blog/2019_08_31_crm/c_5.webp)\)
 
 A opinião estava dividida\. Algumas pessoas estavam\.\.\. mornas
 
-![post](./c_6.webp)
+![post](../../../blog/2019_08_31_crm/c_6.webp)
 
 Outros afirmavam que o Twitter já era um CRM pessoal
 
-![post](./c_7.webp)
+![post](../../../blog/2019_08_31_crm/c_7.webp)
 
 [And some people pointed out how this recurring idea continues to attract new startups](https://twitter.com/devahaz/status/1164224618602758144 'twitter')
 
@@ -100,7 +100,7 @@ Outros afirmavam que o Twitter já era um CRM pessoal
 
 Ah\, espera\.
 
-![post](./c_8.webp)
+![post](../../../blog/2019_08_31_crm/c_8.webp)
 
 Quer você pense ou não [Facebook has Zucked the world](https://www.theguardian.com/books/2019/feb/07/zucked-waking-up-to-facebook-catastrophe 'FB')\, seu sucesso me mostra que as pessoas realmente querem uma forma de gerenciar seus relacionamentos pessoais\. Um CRM pessoal não é uma ideia boba e eu não descartaria isso de imediato\. A dificuldade está em como inovar nos sistemas existentes e também em fazer as pessoas pagarem por isso\.
 

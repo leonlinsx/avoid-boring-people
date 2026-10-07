@@ -4,7 +4,7 @@ description: "会社ではなく、人を選んでください"
 pubDate: 2020-11-11
 category: Culture
 tags: ['generalists']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2020_11_11_company_value/c_1.webp'
 locale: 'ja'
 sourceSlug: 'company_value'
 sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
@@ -22,7 +22,7 @@ sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
 
 企業は「人々をマッチングする」仲介者の役割を果たすと考えることができます。アイデアを持つ人々や実行したい人々を結びつける役割です。企業がどのように存在し、取引コストを削減するために存在しているかについては[Theory of the Firm](https://en.wikipedia.org/wiki/Theory_of_the_firm 'Theory')[^1]があります。この枠組みの下で、イノベーションの効果を人と企業の間に分けて考えることができます。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_11_11_company_value/c_1.webp)
 
 企業か人間かは、より多くのイノベーションを促す際にどこに注力すべきかを知る手助けとなります:
 
@@ -38,7 +38,7 @@ sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
 
 以下の表には多くの数字があり、赤いボックスの2つ以外はすべて無視します。発明家の0.341と企業の0.032の比較こそが、上記の引用で研究者たちが言及しているものです。数値が高いほど特許数の説明力も高まります。私たちの目的では、固定効果を「効果」と考えてください。ただし、実際の定義については[here](http://www.jblumenstock.com/files/courses/econ174/FEModels.pdf 'fixed')でさらに詳しく読むことができます。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_11_11_company_value/c_2.webp)
 
 もし上記が正しいなら、個人としては、より革新的になりたいなら強い会社ではなく、強いチームメイトと働くべきだということです。言い換えれば、会社の評判よりも直接一緒に働く人たちを重視すべき理由を示すデータポイントです。
 

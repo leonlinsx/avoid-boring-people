@@ -4,7 +4,7 @@ description: "金融危机关乎流动性，而非资本"
 pubDate: 2020-04-01
 category: Investing
 tags: ['liquidity', 'risk']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_04_01_liquidity/m_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'liquidity'
 sourceHash: '67efb2924cca16f71bf7d832e0079c4ee89e15ef1867bbd74d62b0bc2c5af106'

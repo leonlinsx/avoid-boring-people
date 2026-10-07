@@ -3,7 +3,7 @@
 //
 // - Translates title, description, and Markdown body; URLs, code, images,
 //   untranslatable frontmatter, and Markdown structure are preserved.
-// - Writes static translated files (committed to Git) plus colocated assets.
+// - Writes static translated files (committed to Git) referencing canonical English assets.
 // - Records a deterministic source hash; skips current translations unless
 //   `--force` is passed; translates missing/stale files only.
 // - Paces requests conservatively and retries
@@ -17,7 +17,7 @@ import {
   I18N_DIR,
   TranslationThrottle,
   composeTranslatedFile,
-  copyMissingAssets,
+  reuseSourceAssets,
   getFrontmatterValue,
   listSourceEntries,
   normalizeLocaleArg,
@@ -202,10 +202,10 @@ async function main(): Promise<void> {
         translatedBody,
       });
       fs.mkdirSync(path.dirname(item.target), { recursive: true });
-      fs.writeFileSync(item.target, output, 'utf-8');
-      copyMissingAssets(
-        path.dirname(item.entry.sourcePath),
-        path.dirname(item.target),
+      fs.writeFileSync(
+        item.target,
+        reuseSourceAssets(output, item.entry.sourcePath, item.target),
+        'utf-8',
       );
       done += 1;
       console.log(`translated ${item.code} ${item.entry.slug}`);

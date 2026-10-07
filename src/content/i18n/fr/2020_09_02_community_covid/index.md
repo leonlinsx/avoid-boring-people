@@ -4,7 +4,7 @@ description: "Communauté vs individualité dans les événements, les newslette
 pubDate: 2020-09-02
 category: Culture
 tags: ['newsletter', 'investing', 'community']
-heroImage: './c_9.webp'
+heroImage: '../../../blog/2020_09_02_community_covid/c_9.webp'
 locale: 'fr'
 sourceSlug: 'community_covid'
 sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
@@ -52,11 +52,11 @@ Les événements et groupes virtuels ne sont pas nouveaux\. Cet article est de _
 
 > L’économie en difficulté\, qui a contraint de nombreuses entreprises à réduire leurs budgets de voyage\, ainsi qu’une attention accrue portée à l\'« écologie » — se sont réunies pour faire des salons virtuels une entreprise réaliste pour le secteur des conférences\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_02_community_covid/c_1.webp)
 
 Et la plupart d’entre nous connaissent bien [MSN messenger, ](https://www.hulldailymail.co.uk/news/hull-east-yorkshire-news/msn-messenger-logged-back-in-3393323 'msn') [online forums](https://www.makeuseof.com/tag/how-we-talk-online-a-history-of-online-forums-from-cavemen-days-to-the-present/ 'forum')\, et les réseaux sociaux aujourd’hui\, qui sont tous des moyens par lesquels les gens se sont trouvés en ligne\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_02_community_covid/c_2.webp)
 
 Bien que les idées principales ne soient pas nouvelles\, les progrès technologiques et les changements des normes sociales ont conduit à une meilleure exécution des concepts\. Voyons d’abord comment les événements se sont adaptés\, puis examinons les groupes\.
 
@@ -78,31 +78,31 @@ Si vous avez un petit groupe et souhaitez faciliter la connexion en tête\-à\-t
 
 Si vous avez un grand groupe et que vous souhaitez toujours que les gens interagissent seuls\, vous voudrez peut\-être suivre ce que le [2020 Nebula Awards](https://events.sfwa.org/ 'SFWA') L’a fait\. Les Nebulas sont [one of the most prestigious Sci Fi awards,](https://en.wikipedia.org/wiki/Nebula_Award 'Nebula') Et cette année\, toute leur conférence a été organisée en ligne\. Ils ont organisé un nombre énorme de salles de groupes Zoom de différentes tailles\, à partir d’un seul lien\. Ils ont ensuite donné à chaque participant des pouvoirs de co\-animateur afin que les participants puissent se déplacer dans les salles de groupe et rejoindre ce qu’ils jugeaient intéressant\. En plus d’avoir une salle principale pour les conférenciers\, ils avaient des salles aléatoires comme un bar avec un barman enseignant des recettes\, une salle d’écriture\, et un live de chiots\. Ci\-dessous\, vous pouvez me voir dans une salle de discussion avec un célèbre auteur de science\-fiction [Lois Bujold](https://en.wikipedia.org/wiki/Lois_McMaster_Bujold 'Lois') \(J’ai ignoré les autres personnes pour garder ma vie privée\)\.
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_02_community_covid/c_3.webp)
 
 Une idée plus expérimentale sur laquelle j’ai eu des sentiments mitigés était [Online Town](https://theonline.town/ 'Online')\, que le [Long Now Foundation](https://longnow.org/seminars/ 'Long') Essayé après l’un de leurs séminaires\. Dans Online Town\, vous êtes représenté par un avatar à l’écran\, et vous pouvez vous déplacer dans une pièce comme dans la vraie vie\. Les conversations que vous pouvez écouter sont basées sur la proximité\, simulant davantage la réalité\. J’ai trouvé l’idée intéressante\, et elle nécessite une formation utilisateur bien plus élevée\, pour une expérience plus unique\.
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_02_community_covid/c_4.webp)
 
 Jusqu’à présent\, nous avons couvert des événements liés au « travail »\, mais les artistes se sont aussi adaptés virtuellement\.
 
 Par exemple\, j’ai regardé un [Ellie Goulding live virtual concert recently.](https://inews.co.uk/culture/music/ellie-goulding-live-review-victoria-and-albert-museum-london-brightest-blue-613122 'Ellie') Elle le tint à la [Victoria and Albert Museum](https://www.vam.ac.uk/ 'VAM') à Londres\, en présentant un spectacle fantastique qui circulait dans le musée\. La qualité de production était impressionnante\, et le film a reçu d’excellents retours sur les réseaux sociaux\.
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_02_community_covid/c_5.webp)
 
 Un autre exemple est [Tomorrowland](https://www.tomorrowland.com/global/ 'TMR')\, le festival de DJ de premier plan\. Ils ont également élevé la qualité de la production\, [creating visual experiences](https://www.youtube.com/watch?v=BinQqIX3aig 'alan') que les spectateurs pouvaient apprécier en écoutant leurs DJs jouer leur set en live\. Je n’y suis pas allé\, mais une personne qui y est allée a dit qu’elle avait apprécié\.
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_02_community_covid/c_6.webp)
 
 Cependant\, je pense que nous pouvons faire encore mieux\. Le concert d’Ellie était excellent\, et Tomorrowland semble amusant\, mais les deux manquaient d’engagement auprès des fans [^5]\. Si vous organisez un événement en direct\, vous devriez en profiter au maximum\. Les expériences numériques simplifient la communication\, et je le recommanderais **Les événements de divertissement devraient viser l’interaction\, tout comme les événements « professionnels » mentionnés plus haut\.** Si tout ce que ton événement live a pour sa qualité\, c’est une grande qualité de production\, autant regarder la rediffusion à mon rythme\.
 
 KT Tunstall en a été l’exemple dans [her live session with the Royal Albert Hall](https://www.youtube.com/watch?v=T_FHtCvpTOI 'KT')\. On peut voir la qualité de production inférieure comparée aux deux exemples ci\-dessus\, mais ce qui a vraiment fait la différence\, c’est le chat en direct\. Il a permis aux fans d’interagir à la fois entre eux et avec elle\, offrant une session intime et spéciale\. Le streaming en direct est devenu\.\.\. grand public\.
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_02_community_covid/c_7.webp)
 
 Si vous ne pensez pas que c’est durable à grande échelle\, alors jetez un œil à [what KPop groups such as Super Junior are doing.](https://www.youtube.com/watch?v=3H_MiOghwJw&fbclid=IwAR3nFY0s2ccu6tXA4dig9_e37jvNC3QGxCNOL9WE9E-DyJeRMrWtoMAQUIo 'Kpop') \(merci à Gabriel Tan\) Ils ont réimaginé l’expérience du concert\, et prévoient spécifiquement l’interaction des fans pendant le concert\. Il est tellement plus facile de faire sentir les fans spéciaux maintenant\, et les artistes devraient en tirer des leçons\. J’ai de plus en plus l’impression que les entreprises asiatiques sont à l’avant\-garde dans l’innovation sur les expériences consommateur\, et cela ressemble à une autre étude de cas pour les entreprises occidentales [^6]\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_02_community_covid/c_8.webp)
 
 Qu’est\-ce que cela signifie pour le marché des événements en présentiel \? [Rafat Ali of Skift believes that this is a watershed moment for the industry](https://skift.com/2020/08/26/the-event-industry-is-being-confronted-by-its-napster-moment/ 'Skift')\, tout comme Napster pour la musique\. Il pense que 10 \% des voyages d’affaires pourraient quitter définitivement le marché\, et estime également que les événements virtuels rapportent environ un quart des revenus des événements en présentiel\, donc le marché devra s’adapter à la nouvelle économie\.
 
@@ -118,7 +118,7 @@ Au niveau individuel\, le problème des communautés est **une question de séle
 
 Par exemple\, vos contacts MSN étaient un groupe trop sélectif\, alors que les groupes Facebook ne le sont pas assez\. Les écoles de commerce reposent sur la valeur de marque impliquée par la sélectivité\. La modération légère de Reddit entraîne une certaine sélectivité\. En moyenne\, vous obtenez plus de valeur professionnelle de votre réseau scolaire comparé à votre groupe proche du brunch du dimanche\, ou plus d’information des fils Reddit comparé à votre [180,000 member Facebook group about genuinely stoked goats](https://www.facebook.com/genuinelystokedgoats/ 'goat') Tu ne te souviens même pas d’avoir rejoint [^7]\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_02_community_covid/c_9.webp)
 
 Nous voyons les communautés sélectionnées gagner en popularité dans le but de résoudre ce problème\. L’objectif de ces communautés est de trouver le point optimal sur la courbe pour équilibrer valeur et sélectivité\. Elles ont généralement une forme de processus d’admission pour sélectionner leurs membres\. Quand elles travaillent\, il y a une boucle de rétroaction où avoir des membres exceptionnels suscite plus d’intérêt pour la communauté\, ce qui entraîne plus de membres de qualité\. Surtout lorsque les communautés sont petites\, il y a une incitation pour que tout le monde fasse fonctionner les choses\, afin que vous puissiez être fier de votre adhésion\.
 
@@ -134,7 +134,7 @@ Au niveau de l’entreprise\, **Construire une communauté\, c’est un peu comm
 
 Un secteur qui comprend bien cela est le marché du jeu vidéo\. Regardez comment les entreprises derrière Minecraft\, Fortnite ou Roblox ont sécurisé leurs clients cibles\. [Minecraft has 126mm monthly active users](https://www.theverge.com/2020/5/18/21262045/minecraft-sales-monthly-players-statistics-youtube 'Minecraft')\. [Fortnite is still breaking attendance records for its in game concerts](https://www.gamesradar.com/how-many-people-play-fortnite/ 'Fortnite')\. [Roblox makes >$1bn in rev and is played by half of all children in the US](https://www.thegamer.com/roblox-played-by-most-american-kids/ 'Roblox')\. Dans beaucoup de ces jeux\, les gens s’y rendent parce que leurs amis y sont\. Ce sont les nouveaux MSN de 2020 [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_02_community_covid/c_10.webp)
 
 En dehors de la valeur et de la sélectivité\, le dernier facteur auquel je penserais pour les groupes virtuels est **Potentiel de croissance\.** La croissance se fait généralement au détriment de la sélectivité \; à mesure que le groupe grandit\, la valeur ajoutée par le membre suivant est en moyenne plus faible\.
 
@@ -195,7 +195,7 @@ Quel est un plafond raisonnable à ce qu’une newsletter peut rapporter \? [Thi
 
 Cependant\, si vous êtes d’accord pour gérer une petite entreprise\, la rédaction de newsletters peut être une option fiable\. **J’ai créé un modèle financier de newsletter sur 5 ans [here](https://docs.google.com/spreadsheets/d/1QS2lKHhDDCe5vwHiJPd7QpDjQRxJ3mHl4VgCq6e8Q6M/edit?usp=sharing 'model')** Que vous pouvez expérimenter pour voir à quoi pourrait ressembler l’économie\. Si c’est le cas\, merci de faire une copie\, et ne tentez pas de modifier l’original\. H\/t à [Jacob Donnelly](https://www.amediaoperator.com/ 'Jacob') et [Josh Constine](https://constine.substack.com/ 'Josh') pour des contributions sur le modèle\.
 
-![post](./c_11.webp)
+![post](../../../blog/2020_09_02_community_covid/c_11.webp)
 
 Le modèle est très sensible aux hypothèses\, qui sont listées dans la fiche et je vais brièvement aborder dans cette note de bas de page [^12]\. Il suppose actuellement un modèle économique d’abonnement plus publicités\, mais vous pouvez changer cela\. Cela implique qu’obtenir une valorisation de 300 000 \$ en 5 ans est difficile mais raisonnable\, ce qui pourrait être un objectif pour les créateurs de newsletters\.
 

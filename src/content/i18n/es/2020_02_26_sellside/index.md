@@ -4,7 +4,7 @@ description: "¿Qué valor aporta la investigación de renta variable del lado d
 pubDate: 2020-02-26
 category: Investing
 tags: ['equity research', 'AI']
-heroImage: './s_3.webp'
+heroImage: '../../../blog/2020_02_26_sellside/s_3.webp'
 locale: 'es'
 sourceSlug: 'sellside'
 sourceHash: '9e9b2f343e79497b5aa89e766fd1869c1ccc8a0e1b36178d4de6e0c099372832'
@@ -18,19 +18,19 @@ Los robots vienen para la investigación de renta variable en el lado de venta y
 
 Si se te ocurre **las finanzas como interacción entre fuentes de capital y usuarios de capital\,** bancos de inversión como Goldman\, Morgan Stanley y JP Morgan se sitúan en el centro\, facilitando transacciones entre quienes tienen dinero y quienes lo necesitan\.
 
-![post](./s_1.webp)
+![post](../../../blog/2020_02_26_sellside/s_1.webp)
 
 Los bancos cuentan con banqueros que cubren un producto financiero específico \(capital\, deuda\, fusiones y adquisiciones\, etc\.\) o un sector específico \(consumo\, sanidad\, tecnología\, etc\.\) y gestionan transacciones de finanzas corporativas dentro de su área de cobertura\.
 
 Fuera de estas transacciones\, **Los bancos suelen tener un grupo de investigación de renta variable\, que emite opiniones sobre acciones** basándose en investigar la empresa y mantener una relación con la dirección de la empresa\. Estas son las recomendaciones o objetivos de precio de \"comprar\/mantener\/vender\" que ves en las noticias\. Ten en cuenta que son recomendaciones\, y el grupo de investigación no toma posición dentro de la empresa\, lo que los distingue de los inversores profesionales [^1]\.
 
-![post](./s_2.webp)
+![post](../../../blog/2020_02_26_sellside/s_2.webp)
 
 La investigación de renta variable se vende a inversores profesionales\, que teóricamente utilizan esa información para tomar decisiones de inversión\. Sin embargo\, estos inversores también hacen su propia investigación\, por lo que no está claro cuánto incorporan a partir de la investigación bancaria\. Es importante destacar que no pagan la investigación de capital en función de la exactitud de las recomendaciones\, sino que lo hacen indirectamente a través de comisiones de trading a través del banco\.
 
 **Por tanto\, queda abierta la cuestión de qué pagan los inversores\: 1\) la investigación\, 2\) la relación con la empresa\, o 3\) la recomendación de inversión [^2]\.** Mis amigos del lado de venta \(de investigación\) argumentarían que es por todos ellos\, mis amigos del lado comprador \(inversores\) probablemente dirían que es \(2\)\, y mis amigos inversores minoristas probablemente dirían que es \(3\) ya que no se les proporciona \(1\) y \(2\)\.
 
-![post](./s_3.webp)
+![post](../../../blog/2020_02_26_sellside/s_3.webp)
 
 Si asumes que el mayor valor añadido proviene de \(3\)\, [this paper by Braiden Coleman, Kenneth Merkley, Joseph Pacelli on computer programmed equity research](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3514879 'Robots') Sería interesante\. **Estudian cómo se desempeñan los \"Robo\-Analistas\"\, programas informáticos asistidos por analistas humanos que realizan análisis de investigación automatizados\, frente a los analistas humanos** analizando las diferencias en las recomendaciones de ambos\.
 

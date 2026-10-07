@@ -5,7 +5,7 @@ pubDate: 2021-01-30
 category: Technology
 tags: ['startups', 'software']
 featured: false
-heroImage: './plaid_3.webp'
+heroImage: '../../../blog/2021_01_30_plaid/plaid_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'plaid'
 sourceHash: 'daae66d786d14dbfb4c0c831358b5f6fed3ca4b971461b077f61a7895375e9cd'
@@ -23,7 +23,7 @@ Vamos primeiro discutir abstração\:
 
 Suponha que você tenha uma ideia inovadora de app para ganhar muito dinheiro\. Você programa seu app de modo que\, toda vez que alguém aperta a tecla F2 do teclado\, algo aconteça e ela obtenha lucro\:
 
-![plaid](./plaid_1.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_1.webp)
 
 Você testa isso no seu laptop\, tudo funciona bem e começa a ganhar dinheiro\. Funciona tão bem que você conta para todos os seus amigos\, que também querem participar\. Você envia o código para eles e diz para eles seguirem em frente e prosperar\.
 
@@ -31,7 +31,7 @@ Um dos seus amigos \(o hipster irritante\) te diz que o código não funciona no
 
 Acontece que os Macs têm essa coisa estranha [Touch Bar thing](https://support.apple.com/en-gb/guide/mac-help/mchlbfd5b039/mac 'touch') para teclas de função\, cujo único propósito\, pelo que você pode perceber\, parece ser tornar a vida miserável\. Você adiciona um código especial para usuários de Mac\:
 
-![plaid](./plaid_2.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_2.webp)
 
 Funciona para ele agora\, e ele segue em frente para [suing magazines for saying all hipsters look alike.](https://www.independent.co.uk/news/media/hipster-magazine-photo-lawsuit-mit-technology-review-a8813941.html 'hipster')
 
@@ -43,7 +43,7 @@ A ideia acima é\, na verdade\, um problema comum em computação \(suporte a m�
 
 No final dos anos 90\, as pessoas descobriram uma solução para isso – adicionar uma camada extra no meio\, ou seja\, **Faça disso um problema de outra pessoa\.** [As Shimon Schocken explains,](https://www.youtube.com/watch?v=E28KczysecE 'Shimon') Ter um \"intermediário\" agora simplifica sua tarefa\. Em vez de escrever código para todos os dispositivos possíveis\, você \"escreve uma vez\, executa em qualquer lugar\" e deixa esse intermediário cuidar de tornar seu código compatível [^1]\:
 
-![plaid](./plaid_3.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_3.webp)
 
 **Dividir uma tarefa grande em tarefas menores facilita para todos\.** Você abstraiu parte do problema\, já que quer escrever código \"de alto nível\" e não se preocupar com bugs específicos de implementação\. Outros podem até gostar dos detalhes de implementação \"de baixo nível\"\, mas não querem programar os apps por cima disso\. De cada um conforme sua habilidade\, de acordo com suas necessidades e tudo mais\.
 
@@ -63,15 +63,15 @@ Vemos novamente que as pessoas mais se importavam com **Uma parte de uma tarefa 
 
 Por fim\, suponha que você queira checar o saldo da sua conta\, só para confirmar que April não está desviando dinheiro para pagar taxas de serviço ocultas no AirBNB alugado dela\. Você começa a digitar os depósitos recentes em uma planilha\:
 
-![plaid](./plaid_4.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_4.webp)
 
 Sendo programador\, você despreza o Excel e não está familiarizado com seus recursos\. Você conhece o símbolo \"\+\" para adicionar coisas\, e começa a calcular seu saldo manualmente dessa forma\:
 
-![plaid](./plaid_5.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_5.webp)
 
 Cem células e uma hora depois\, você está quase terminando\, quando um amigo pergunta o que está fazendo\. Ele então explica que a função sum\(\) faz o que você quer\:
 
-![plaid](./plaid_6.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_6.webp)
 
 Eles também contam sobre todo o processo **\"Biblioteca\" de Funções** Que o Excel precisa ajudar a tornar a matemática mais fácil\, como o a\.vg\(\)\, contagem\(\)\, etc\. O legal é que você pode esperar o mesmo comportamento para essa função\, independentemente do dispositivo que você está usando – seu laptop com Windows\, o Mac do seu amigo\, o celular do seu pai\. Quando você sabe o que a função faz e como ligar para ela\, pode economizar tempo\. Você não se importa com o modo como o Excel faz\, só que ele funciona em todos os lugares\, o tempo todo\.
 
@@ -87,11 +87,11 @@ E se você conseguir tornar essa biblioteca acessível a todos\, outros poderiam
 
 Como [Joshua Bloch](https://www.youtube.com/watch?v=LzMp6uQbmns 'Josh') Aponta que\, já em 1952\, as pessoas gostam [David Wheeler](<https://en.wikipedia.org/wiki/David_Wheeler_(computer_scientist)> 'David') [^2] já estão propondo essa ideia de [having libraries of functions (sub-routines)](http://www.laputan.org/pub/papers/Wheeler.pdf 'wheeler')\:
 
-![plaid](./plaid_7.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_7.webp)
 
 **Vamos chamar essa biblioteca de funções de API [^3]\.** Joshua acredita que o termo foi usado pela primeira vez em [a 1968 paper by Ira Cotton and Frank Greatorex:](https://www.computer.org/csdl/pds/api/csdl/proceedings/download-article/12OmNyRPgFZ/pdf 'ira')
 
-![plaid](./plaid_8.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_8.webp)
 
 Esse uso aborda os conceitos que discutimos em nossos exemplos\:
 
@@ -119,7 +119,7 @@ Lembra como abril estava correndo entre você e os bancos\? Pense em abril como 
 
 Suponha que você esteja construindo um aplicativo de orçamento\, que precisa de acesso ao histórico de gastos dos usuários\. Se você usasse seu próprio código para se conectar com bancos\, precisaria escrever seções inteiras novas sempre que um novo banco fosse adicionado\. Provavelmente você gastaria mais tempo nisso do que nas funções principais do seu app\, dado que os novos padrões mudam o tempo todo\.
 
-![plaid](./plaid_9.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_9.webp)
 
 O Plaid pode fornecer APIs que sempre funcionarão\, além de uma interface que o usuário verá ao se conectar a um banco [(Plaid Link).](https://plaid.com/docs/link/ 'link') Seu problema virou problema deles\.
 
@@ -127,19 +127,19 @@ Vamos dar uma olhada em como isso é\, seguindo o guia Quickstart da Plaid [here
 
 Depois de um dia de diagnóstico\, várias reinicializações do computador e instalando cegamente o que parecia ser todos os programas possíveis [^4]\:
 
-![plaid](./plaid_10.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_10.webp)
 
 Finalmente consegui fazer parte disso funcionar\, conectando com uma conta bancária de teste\:
 
-![plaid](./plaid_11.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_11.webp)
 
 Isso me permitiu olhar dados fictícios\, como o saldo da minha conta bancária\:
 
-![plaid](./plaid_12.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_12.webp)
 
 Ou dados recentes de transações\:
 
-![plaid](./plaid_13.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_13.webp)
 
 Se eu ~~queria~~ sabia como\, eu podia continuar montando um app financeiro dessa forma\. O app usava a API do Plaid para puxar dados de saldo\, registrar uma transação e atualizar o saldo\. Nesse ponto\, porém\, encontrei mais bugs e ~~desistiu~~ deixou para outra hora\.
 
@@ -153,7 +153,7 @@ Depois que você estiver usando o Plaid\, **É improvável que você mude\,** j�
 
 Se isso parecer irrealista\, considere Fortran\, uma das primeiras linguagens de programação\. Sua biblioteca de funções era [defined in **1958**](http://ed-thelen.org/LaFarr/IBM-FORTRAN-II-704-C28-6000-2-c-1958.pdf 'fortran')\, e ainda é usada hoje\. Uma vez implementadas\, as APIs duram muito tempo\:
 
-![plaid](./plaid_14.webp)
+![plaid](../../../blog/2021_01_30_plaid/plaid_14.webp)
 
 Hoje abordamos muito – intuição por trás da abstração\, APIs e o que o Plaid faz\. A principal lição é que **Tem muita coisa que as pessoas não querem fazer\, e muito dinheiro a ser ganho fazendo tudo isso\.** O boletim diz para evitar entediar as pessoas\, mas nesse caso\, construir coisas chatas é um negócio multibilionário\.
 

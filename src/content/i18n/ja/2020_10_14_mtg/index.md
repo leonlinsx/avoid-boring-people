@@ -4,7 +4,7 @@ description: "最古のトレーディングカードゲームにおける収益
 pubDate: 2020-10-14
 category: Culture
 tags: ['business', 'games']
-heroImage: './m_1.webp'
+heroImage: '../../../blog/2020_10_14_mtg/m_1.webp'
 featured: false
 locale: 'ja'
 sourceSlug: 'mtg'
@@ -21,7 +21,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 もしトレーディングカードゲームのカード[Black Lotus](https://mtg.gamepedia.com/Black_Lotus 'black')なら、27,000ドルで買えるかもしれません[Magic: The Gathering,](https://en.wikipedia.org/wiki/Magic:_The_Gathering 'MTG')。
 
-![post](./m_1.webp)
+![post](../../../blog/2020_10_14_mtg/m_1.webp)
 
 しかも、[$166,000 at auction](https://www.ebay.com/itm/1993-Magic-The-Gathering-MTG-Alpha-Black-Lotus-R-A-BGS-9-5-GEM-MINT-PWCC-/143136537077?_trksid=p2047675.m43663.l10137&nordt=true&rt=nc&orig_cvip=true 'ebay') [^1]で売られているコピーを考えれば、それはお得かもしれません。トランプほどの大きさの段ボールが166,000ドルもするのです。
 
@@ -43,7 +43,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 例えば、レアカード["Uro, Titan of Nature's Wrath"](https://scryfall.com/card/thb/229/uro-titan-of-natures-wrath 'Uro')を狙ってパックを買ったのに、代わりに["Bronzehide Lion."](https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=476461 'Lion')を手に入れてしまうかもしれません
 
-![post](./m_2.webp)
+![post](../../../blog/2020_10_14_mtg/m_2.webp)
 
 多くの人が運に頼らずカードを購入することを好むため、**二次市場*も存在します。トレーダーはカードを購入し、マークアップで再販します。時間が経つにつれて、それは実質的に[stock market for the cards](https://www.mtgstocks.com/news 'MTG')となり、独自の投機家クラブを持つようになりました。前述の通り、これらのカードの中には非常に高価なものもあります。
 
@@ -65,7 +65,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 委員会はルールを厳格に強制しません。カジュアルゲームではそれは不可能だからです。しかし、プレイヤーが従う標準的なガイドラインとして機能しています。例えば、「ウロ」は禁止されていると記載されているかもしれません。もし見知らぬ人とコマンダーをプレイしてウロを使ったら、彼女は続けたくないでしょう。しかし、好きなカードで遊ぶことに同意することも可能です。ウロも含めて。
 
-![post](./m_3.webp)
+![post](../../../blog/2020_10_14_mtg/m_3.webp)
 
 これでマジックとは何かがわかりました。新しいカードが定期的に印刷され、市場によってカード価格は決まり、異なるフォーマットの制限によって異なるメタゲームが生まれるトレーディングカードゲームです。その最後の概念をさらに掘り下げてみましょう。
 
@@ -83,7 +83,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 バランスの悪いメタでは、他のデッキより「優れている」デッキは一つだけ存在します。例えば、あなたのエレメンタルデッキが他のデッキに対して有利な勝率を持っている場合もあります。そうなると、それは合理的です[everyone to start playing that deck if they want to win.](https://magic.gg/news/2020-season-grand-finals-metagame-breakdown 'mtg')想像できるように、**すぐに飽きてしまいます。**
 
-![post](./m_4.webp)
+![post](../../../blog/2020_10_14_mtg/m_4.webp)
 
 その場合、一つの解決策は「強すぎる」カードを禁止することです。前述の通り、公式フォーマットではウィザーズが使用不能なカードを指定します。非公式フォーマット「コマンダー」では、コミュニティルール委員会がカードを選びます。**禁止はバランスを取るための手段です。**
 
@@ -93,15 +93,15 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 ほとんどの場合、新たに印刷されたカードはマジックのマルチバースの一部であり、マジックのIPであり、もともとはマジックのために作られたものです。マジックは主にファンタジーを基盤としており、天使やドラゴンのようなカードがあります。
 
-![post](./m_5.webp)
+![post](../../../blog/2020_10_14_mtg/m_5.webp)
 
 最近では[^13]、ウィザーズは外部との提携を増やしています。これは通常、他のIPを基にしたカスタムカードを作成することを指します。例えば、チャリティのための資金調達[a My Little Pony series](https://magic.wizards.com/en/articles/archive/news/magic-extra-life-2019-10-03 'pony'):
 
-![post](./m_6.webp)
+![post](../../../blog/2020_10_14_mtg/m_6.webp)
 
 あるいは[Godzilla themed series as alternate art for some cards:](https://articles.starcitygames.com/news/all-19-godzilla-series-monster-cards-revealed/ 'zilla')
 
-![post](./m_7.webp)
+![post](../../../blog/2020_10_14_mtg/m_7.webp)
 
 さて、司令官ルール委員会の立場になってみて。これらのカードが公開されたとき、フォーマットで許可すべきか?
 
@@ -114,7 +114,7 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 **ここで論争があります。**ウィザーズは最近[limited edition set of new cards in partnership with TV show The Walking Dead.](https://secretlair.wizards.com/us/product/612738/secret-lair-x-the-walking-dead 'dead')をリリースしました。これらのユニークなカードは、ウィザーズが印刷を終了するまでの期間しか入手できません。重要なのは、これらは黒い縁取り(「合法的」)で、このボックスセット以外では入手できません。ご想像の通り、このボックスセットは高額な価格で販売されています。
 
-![post](./m_8.webp)
+![post](../../../blog/2020_10_14_mtg/m_8.webp)
 
 **これらのカードは合法であるべきでしょうか?** ウィザーズ公式サイトによると:
 
@@ -124,13 +124,13 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 なぜこれがそうなったのか、ご想像いただけるでしょう[made many players upset, ](https://twitter.com/wizards_magic/status/1312987380115148805?s=20 'twitter') [calling for the cards to be banned immediately.](https://www.reddit.com/r/magicTCG/comments/j1glk8/petition_for_the_commander_rules_committee_to_ban/ 'ban')
 
-![post](./m_9.webp)
+![post](../../../blog/2020_10_14_mtg/m_9.webp)
 
 ちょっと待って、_Rules Committee_がどのカードを許可するか決めるんじゃなかったの?実際、一部のプレイヤーは委員会が独自に行動し、『コマンダー』でカードを犯罪者と宣言することを期待していました。
 
 [Unfortunately not.](https://mtgcommander.net/index.php/2020/10/02/rc-statement-on-secret-lair-the-walking-dead/ 'dead')
 
-![post](./m_10.webp)
+![post](../../../blog/2020_10_14_mtg/m_10.webp)
 
 おそらく、ここで矛盾する動機があることのヒントがあるでしょう。[main complaints first](https://twitter.com/ghirapurigears/status/1313145100319494145?s=20 'twitter') [^15]を詳しく見てみましょう。
 
@@ -142,15 +142,15 @@ sourceHash: '1af936c36f7d4df21f0da199c900bc25137a481a40dcb44902484233b50be8bb'
 
 では、ウィザードの理由を見てみましょう。
 
-![post](./m_11.webp)
+![post](../../../blog/2020_10_14_mtg/m_11.webp)
 
 あ、違いました、画像が違いました:
 
-![post](./m_12.webp)
+![post](../../../blog/2020_10_14_mtg/m_12.webp)
 
 はい、何もわかりません。かなり露骨な金儲けです。ハズブロ(ウィザーズの親会社)の目標を考えれば、ウィザーズチームがより多くのカードをより高い価格で売る方法を模索する動機があるのも無理は[doubling Wizards revenue over the next five years,](https://investor.hasbro.com/static-files/88b2a83b-2368-463a-9489-6cf31dc209ac 'wizards')[^16]。より多くのボリューム、高い価格、より高い価値倍率。もし人々がカードに100ドルの市場価格を払う覚悟があるなら、なぜブースターパックではなく直接カードを印刷して販売しないのでしょうか?
 
-![post](./m_13.webp)
+![post](../../../blog/2020_10_14_mtg/m_13.webp)
 
 ウィザーズは1) カードを銀色の枠付きで「違法」にするか、2) 他の「合法」カードの別アートバージョンを作ることもできたはずです。1) 銀色の縁取りカードは黒い縁取りカードよりも売れないし、2) 何か魔法的な理由で(おそらくお金のため)やらなかった
 

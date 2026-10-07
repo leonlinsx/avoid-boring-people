@@ -4,7 +4,7 @@ description: "Spécialisez-vous la plupart du temps, mais prenez le temps de com
 pubDate: 2017-12-01
 category: Culture
 tags: ['generalists']
-heroImage: './s_1.webp'
+heroImage: '../../../blog/2017_12_01_specialist/s_1.webp'
 locale: 'fr'
 sourceSlug: 'specialist'
 sourceHash: '2358c6f4b76b2c682a716280e7375f93a97e3cdd0afc4ece3a7501fe245134ad'
@@ -30,7 +30,7 @@ D’autres pourraient aussi dire que **Être exposé à plus de domaines inspire
 
 Et personnellement\, je pense juste **Être curieux et apprendre des choses au hasard\, c’est amusant\,** c’est pour ça que j’aime [this comic](https://xkcd.com/1053/ 'xkcd comic')\.
 
-![post](./s_1.webp)
+![post](../../../blog/2017_12_01_specialist/s_1.webp)
 
 Cela signifie que je « perds » du temps sur des articles ou des œuvres sans importance que je ne comprendrai jamais\, par exemple Shakespeare\, mais je pense \(j’espère \?\) que le retour global a été net positif\.
 

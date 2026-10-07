@@ -4,7 +4,7 @@ description: "一个人的垃圾，是另一个人的宝藏"
 pubDate: 2020-07-29
 category: Technology
 tags: ['startups', 'business']
-heroImage: './c_2.webp'
+heroImage: '../../../blog/2020_07_29_cameo/c_2.webp'
 locale: 'zh-Hans'
 sourceSlug: 'cameo'
 sourceHash: 'e93e8afa6d1f315f2accfbf1f8efc95072617d9d2672e902e3bdafe40116ab2c'
@@ -26,7 +26,7 @@ Cameo是一家利用长尾效应的公司，意识到一个小名人的一个小
 
 因此，今天我想不讨论令人沮丧的狗类表演市场，而是想看看驱动这些市场的平台。特别是，我想仔细看看 [Cameo,](https://www.cameo.com/ 'cameo') 一个提供个性化名人视频信息的市场。只需30美元，你可以定制Kirpa Sudick、Kevin Fortenberry的视频信息，或者Paris the mini pig的三段（！！）视频 [^2]\.人们通常会收到它们来祝家人和朋友生日快乐、毕业或其他庆祝活动， [to the delight of the recipients.](https://www.youtube.com/watch?v=VeYm5TZknsc 'reaction')
 
-![post](./c_1.webp)
+![post](../../../blog/2020_07_29_cameo/c_1.webp)
 
 我第一次提到的是Cameo [about a year ago](/writing/cameo 'Cameo') 同时试图用内疚感让人们买Jenna Coleman的客串给我 [^3]他们是长尾受益者的典型例子。市场之所以有效，是因为这些名人单独的回报较低，但他们加起来的回报很高。小猪Paris单独赚不到足够的钱，但如果她和河马菲奥娜或树懒萝拉结合，你可能就为提供该服务的平台打造了一个可行的业务。
 
@@ -50,7 +50,7 @@ Cameo似乎没有公司的座右铭，而它应该是 **“一个人的垃圾，
 
 他们能否达到一个临界点，让更多一线明星愿意加入？我猜这就像AirBnB或Uber刚起步时的不适感，随着时间推移，这种想法会逐渐变得正常。他们已经让像Elijah Wood（《指环王》著名）、Sarah Jessica Parker（《欲望都市》著名）或Snoop Dogg（吸大麻名人）这样的人加入了平台，所以继续扩展市场并不算太牵强。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_07_29_cameo/c_2.webp)
 
 我们已经为需求和供给建立了理由，因为情况是明确的 [product market fit.](https://a16z.com/2017/02/18/12-things-about-product-market-fit/ 'pmf') 那平台本身的经济性呢？
 
@@ -100,7 +100,7 @@ Cameo目前似乎也没有有效的排序选项，所以这可能是一个新功
 
 我不确定创建用户资料来预订 Cameos 是否值得。当然，你可以和 Facebook 绑定，方便创建账户，但看起来做访客账号也行。我想根据之前的客串，建议更多用户可能喜欢的客串是有好处的。
 
-![post](./c_3.webp)
+![post](../../../blog/2020_07_29_cameo/c_3.webp)
 
 国际扩张似乎是显而易见的下一步，欧洲很可能是更自然的下一地理选择。难点可能是在那个地点建立销售团队，并吸引首批本地名人加入。我没看到这里有重大本地化问题，但也可能我错了。与一些只有本地网络效应的市场不同，Cameo似乎有更广泛的网络效应，因为请到英国名人会带来观看英国节目的美国客户的需求。在某种程度上，这也会有利于在非英语国家的扩展，因为当地人对国际名人客串的需求仍然存在。 [Lotta avengers fans in China.](https://www.wikiwand.com/en/List_of_highest-grossing_films_in_China 'China')
 

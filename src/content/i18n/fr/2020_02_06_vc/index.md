@@ -4,7 +4,7 @@ description: "Ce que les fondateurs doivent savoir sur le capital-risque"
 pubDate: 2020-02-06
 category: Investing
 tags: ['startups', 'vc']
-heroImage: './v_1.webp'
+heroImage: '../../../blog/2020_02_06_vc/v_1.webp'
 locale: 'fr'
 sourceSlug: 'vc'
 sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
@@ -34,7 +34,7 @@ Scott’s [mentioned this publicly before](https://www.quora.com/What-are-some-c
 
 Pour rappel\, même si vous êtes plus prudent dans la répartition des rendements que ci\-dessus\, ces 100x rendements vous apporteront quand même du succès \:
 
-![post](./v_1.webp)
+![post](../../../blog/2020_02_06_vc/v_1.webp)
 
 > Comment évaluez\-vous une équipe fondatrice \? Différents investisseurs font bien sûr les choses différemment\, mais il existe quelques domaines d’investigation communs \:
 
@@ -78,7 +78,7 @@ Certaines entreprises affichent des bilans peu encrétaires\, d’autres sont lo
 
 [Carta](https://carta.com/blog/getting-funded-how-long-does-it-actually-take/ 'carta') et [Crunchbase](https://news.crunchbase.com/news/the-time-between-vc-rounds-is-shrinking/ 'Crunchbase') Montre aussi des périodes assez similaires\.
 
-![post](./v_2.webp)
+![post](../../../blog/2020_02_06_vc/v_2.webp)
 
 > Une grosse erreur que nous avons vue chez a16z chez les entrepreneurs est de lever une somme trop faible à une évaluation agressive\, ce qui est précisément ce que vous ne voulez pas faire\. Cela établit la valorisation de pointe\, mais sans les ressources financières nécessaires pour atteindre les objectifs commerciaux nécessaires afin de faire monter votre prochain tour bien au\-dessus de la valorisation actuelle\.
 

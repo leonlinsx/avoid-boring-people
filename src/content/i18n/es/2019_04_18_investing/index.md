@@ -4,7 +4,7 @@ description: "¿Tener más información te ayuda a tomar mejores decisiones de i
 pubDate: 2019-04-18
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_04_18_investing/i_1.webp'
 locale: 'es'
 sourceSlug: 'investing'
 sourceHash: '2b5ae4861e38024857b715159729cb06f4235c024c4fe9cfbab981130ab0f1d2'
@@ -16,7 +16,7 @@ Una gran parte del tiempo profesional invertido se dedica a adquirir informació
 
 Dejando de lado si crees que tienes más información que la competencia\, ¿tener más información te ayuda a tomar mejores decisiones de inversión\? [This post](https://behaviouralinvestment.com/2019/01/09/can-more-information-lead-to-worse-investment-decisions/amp/ 'behavioural investment') cita estudios que muestran que [although individuals have increased confidence with increased information, their accuracy of outcomes doesn't change:](https://pdfs.semanticscholar.org/dfe1/e71649951fc8aeda52eac460976bfe02f305.pdf 'Tsai, C. I., Klayman, J., & Hastie, R. 2008')
 
-![post](./i_1.webp)
+![post](../../../blog/2019_04_18_investing/i_1.webp)
 
 El estudio de Tsai\, Klayman y Hastie con el gráfico anterior cita dos razones principales para la divergencia\:
 

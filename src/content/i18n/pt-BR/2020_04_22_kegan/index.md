@@ -4,7 +4,7 @@ description: "Teoria de Kegan sobre o desenvolvimento adulto"
 pubDate: 2020-04-22
 category: Culture
 tags: ['behaviour']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2020_04_22_kegan/a_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'kegan'
 sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
@@ -46,7 +46,7 @@ Os cinco estágios que ele propõe\, após uma fase inicial de \"recém\-nascido
 
    Kegan acredita que as pessoas não chegam a esse nível antes dos 40 anos\, e a maioria nunca chega a esse estágio\. Um exemplo seria como a sociedade ou indivíduos começaram a perceber a importância de algumas leis\, como direitos iguais
 
-![post](./a_1.webp)
+![post](../../../blog/2020_04_22_kegan/a_1.webp)
 
 ## Aplicações
 

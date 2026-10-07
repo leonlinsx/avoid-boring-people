@@ -4,7 +4,7 @@ description: "Utilizando el marco de la capa de ritmo para explicar por qué las
 pubDate: 2020-03-04
 category: System Design
 tags: ['frameworks', 'pace layers']
-heroImage: './p_2.webp'
+heroImage: '../../../blog/2020_03_04_pace/p_2.webp'
 locale: 'es'
 sourceSlug: 'pace'
 sourceHash: 'b0fe5daf29ecebbd2f8ab71baa0f4488fb724690902e0badeca3b5d41613bb28'
@@ -30,7 +30,7 @@ Y el lugar del edificio en sí\, esa geografía básicamente sigue siendo la mis
 
 En 1994\, [Stewart Brand](https://en.wikipedia.org/wiki/Stewart_Brand 'Stewart') de la [Long Now Foundation](http://longnow.org/ 'Long Now') propuso el modelo anterior como una forma de pensar en cómo aprenden y evolucionan los edificios [^1]\. Un edificio puede considerarse como si tuviera múltiples capas\, todas cambiando a diferentes ritmos\. **Un edificio sano permitirá interacciones controladas entre capas\, cada una moviéndose a su propio ritmo\.**
 
-![post](./p_1.webp)
+![post](../../../blog/2020_03_04_pace/p_1.webp)
 
 En 1999\, Stewart amplió aún más el marco para aplicarlo a las civilizaciones\. **¿Qué partes de la civilización cambian con el tiempo\? ¿Qué tan rápido cambian\? ¿Cómo interactúan\?**
 
@@ -45,7 +45,7 @@ En orden del nivel que se mueve más rápido al más lento\, estos niveles son\:
 - Cultura
 - Naturaleza
 
-![post](./p_2.webp)
+![post](../../../blog/2020_03_04_pace/p_2.webp)
 
 La moda avanza rápido\, la naturaleza se mueve despacio\. Stewart describe cómo interactúan estas capas\:
 

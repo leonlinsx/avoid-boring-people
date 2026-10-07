@@ -4,7 +4,7 @@ description: "벤치마킹은 다양한 마켓플레이스에 대한 요금을 �
 pubDate: 2019-04-27
 category: Technology
 tags: ['marketplace']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_04_27_rake/t_1.webp'
 locale: 'ko'
 sourceSlug: 'rake'
 sourceHash: 'd41c4ceb6c388ccc2108108bee3cc93c0fe9a951ea418a505e2e79c4508dcce7'

@@ -4,7 +4,7 @@ description: "你不会通过寻找它来获得高质量的时光"
 pubDate: 2020-02-26
 category: Culture
 tags: ['behaviour']
-heroImage: './q_3.webp'
+heroImage: '../../../blog/2020_02_26_time/q_3.webp'
 locale: 'zh-Hans'
 sourceSlug: 'time'
 sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
@@ -24,11 +24,11 @@ sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
 
 高质量相处是一个已经存在一段时间的概念，随着时间推移，人们对它的兴趣也在不断增长。
 
-![post](./q_1.webp)
+![post](../../../blog/2020_02_26_time/q_1.webp)
 
 是 [even one of the love languages.](https://www.5lovelanguages.com/ 'love')
 
-![post](./q_2.webp)
+![post](../../../blog/2020_02_26_time/q_2.webp)
 
 这是否意味着我们一直活在集体妄想中，试图追逐不存在的东西？瑞安认为是这样，引用了杰瑞·宋飞的话：
 
@@ -42,7 +42,7 @@ sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
 
 如果你无法设计出高质量的时间，而这更多是随机事件的问题，那么你就需要增加此类事件发生的频率。你不能提高概率，但可以延长此类事件发生的时间。换句话说， **你想增加时间，而不是制造高质量的时间。**
 
-![post](./q_3.webp)
+![post](../../../blog/2020_02_26_time/q_3.webp)
 
 瑞安间接暗示持续时间是关键，他引用另一位顾问关于如何求得普通时间的话：
 

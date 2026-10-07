@@ -4,7 +4,7 @@ description: "维米尔是否真的使用了蒂姆的工艺并不是重点"
 pubDate: 2019-06-23
 category: Culture
 tags: ['art']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_06_23_tim/t_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'tim'
 sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
@@ -14,9 +14,9 @@ sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
 
 如果你和我一样对艺术了解不多，这里有一些背景背景： [Johannes Vermeer](https://en.wikipedia.org/wiki/Johannes_Vermeer 'wiki') 是一位荷兰画家，生活于1632年至1675年。他现在被认为是当时最伟大的画家之一，尤其是在 [realistic paintings and usage of light.](https://www.artble.com/artists/johannes_vermeer/more_information/style_and_technique 'vermeer style') [^1] 一些著名的画作包括 [^2]\:
 
-![post](./t_1.webp)
+![post](../../../blog/2019_06_23_tim/t_1.webp)
 
-![post](./t_2.webp)
+![post](../../../blog/2019_06_23_tim/t_2.webp)
 
 不久前，大卫·霍克尼和菲利普·斯蒂德曼提出了 **维米尔和其他艺术家本可以 [used lenses and mirrors to achieve the realism in their paintings.](https://www.vanityfair.com/culture/2013/11/vermeer-secret-tool-mirrors-lenses 'Vanity Fair link')** 引发的争议让人们既怀疑假设者，也怀疑过程假设：
 

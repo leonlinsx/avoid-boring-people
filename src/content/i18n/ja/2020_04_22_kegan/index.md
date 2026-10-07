@@ -4,7 +4,7 @@ description: "ケーガンの成人発達理論"
 pubDate: 2020-04-22
 category: Culture
 tags: ['behaviour']
-heroImage: './a_1.webp'
+heroImage: '../../../blog/2020_04_22_kegan/a_1.webp'
 locale: 'ja'
 sourceSlug: 'kegan'
 sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
@@ -46,7 +46,7 @@ sourceHash: '547b83a60329d65a6bb951474ce2388258dea9cec7d182f4a457ee608481d589'
 
    ケーガンは、人は40歳になる前にこの段階に達することはなく、ほとんどの人はそもそもこの段階に到達しないと考えています。例としては、社会や個人が平等権のような法律の重要性に気づき始めた経緯があります
 
-![post](./a_1.webp)
+![post](../../../blog/2020_04_22_kegan/a_1.webp)
 
 ## 応用例
 

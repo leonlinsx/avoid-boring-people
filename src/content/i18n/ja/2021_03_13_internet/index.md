@@ -4,7 +4,7 @@ description: "インターネットの誕生に関する物語"
 pubDate: 2017-12-01
 category: Technology
 tags: ['business', 'startups']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2021_03_13_internet/i_1.webp'
 locale: 'ja'
 sourceSlug: 'internet'
 sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
@@ -68,7 +68,7 @@ sourceHash: '124e08561c99687e65fbfc8285c43ba2108feed23813c4920ce53ce6b87c0242'
 
 そして今では、ChromeがIEに取って代わることがわかっています。同様に、FacebookがMySpaceに、AppleがBlackberryに取って代わるなど、
 
-![post](./i_1.webp)
+![post](../../../blog/2021_03_13_internet/i_1.webp)
 
 その理由は単純で、状況は急速に変化し、ビジネス戦略の変更が必要だからです。もしあなたのビジネスモデルが将来的に広告クリック率を「保守的に」40\%台に据えていたらどうでしょうか\?今は\<5\%だと考えると、かなりの誤差があったでしょう。
 

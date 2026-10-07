@@ -4,7 +4,7 @@ description: "Quelle valeur apporte la recherche sur les actions côté vendeur 
 pubDate: 2020-02-26
 category: Investing
 tags: ['equity research', 'AI']
-heroImage: './s_3.webp'
+heroImage: '../../../blog/2020_02_26_sellside/s_3.webp'
 locale: 'fr'
 sourceSlug: 'sellside'
 sourceHash: '9e9b2f343e79497b5aa89e766fd1869c1ccc8a0e1b36178d4de6e0c099372832'
@@ -18,19 +18,19 @@ Les robots viennent pour la recherche sur les actions du côté vendeur et cela 
 
 Si vous pensez à **la finance comme interaction entre les sources de capital et les utilisateurs de capital\,** Les banques d’investissement telles que Goldman\, Morgan Stanley\, JP Morgan se situent au milieu\, facilitant les transactions entre ceux qui ont de l’argent et ceux qui en ont besoin\.
 
-![post](./s_1.webp)
+![post](../../../blog/2020_02_26_sellside/s_1.webp)
 
 Les banques ont des banquiers qui couvrent un produit financier spécifique \(actions\, dettes\, fusions et acquisitions\, etc\.\) ou un secteur spécifique \(grand public\, santé\, technologie\, etc\.\) et qui organisent des transactions de finance d’entreprise dans leur zone de couverture\.
 
 En dehors de ces transactions\, **Les banques disposent généralement d’un groupe de recherche sur les actions\, qui publie des avis sur les actions** Basé sur la recherche de l’entreprise et le maintien d’une relation avec la direction\. Ce sont les recommandations « acheter\/conserver\/vendre » ou les objectifs de prix que vous voyez rapportés dans les médias\. Notez qu’il s’agit de recommandations\, et que le groupe de recherche ne prend pas de position dans l’entreprise\, ce qui les distingue des investisseurs professionnels [^1]\.
 
-![post](./s_2.webp)
+![post](../../../blog/2020_02_26_sellside/s_2.webp)
 
 La recherche sur les actions est vendue à des investisseurs professionnels\, qui utilisent ensuite théoriquement ces informations pour prendre des décisions d’investissement\. Ces investisseurs font aussi leurs propres recherches\, donc on ne sait pas exactement combien ils intègrent à partir de la recherche bancaire\. Il est important de noter qu’ils ne paient pas la recherche sur les actions en fonction de la précision des recommandations\, mais le font indirectement via des commissions de trading via la banque\.
 
 **Ainsi\, la question reste ouverte de savoir ce que les investisseurs paient \: 1\) la recherche\, 2\) la relation avec l’entreprise\, ou 3\) la recommandation d’investissement [^2]\.** Mes amis du côté vendeur \(recherche\) diraient que c’est tout le cas\, mes amis du côté acheteur \(investisseurs\) diraient probablement que c’est \(2\)\, et mes amis investisseurs particuliers diraient que c’est \(3\) puisqu’ils ne sont pas fournis \(1\) et \(2\)\.
 
-![post](./s_3.webp)
+![post](../../../blog/2020_02_26_sellside/s_3.webp)
 
 Si vous supposez que la plus grande valeur ajoutée vient de \(3\)\, [this paper by Braiden Coleman, Kenneth Merkley, Joseph Pacelli on computer programmed equity research](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3514879 'Robots') Ce serait intéressant\. **Ils étudient comment les « Robo\-Analystes »\, des programmes informatiques assistés par des analystes humains menant des analyses de recherche automatisées\, se comportent face aux analystes humains** en analysant les différences de recommandations des deux parts\.
 

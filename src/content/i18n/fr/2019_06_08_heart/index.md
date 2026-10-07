@@ -4,7 +4,7 @@ description: "Peut-on vraiment mourir d’un chagrin de cœur ?"
 pubDate: 2019-06-08
 category: Culture
 tags: ['science']
-heroImage: './broken_1.png'
+heroImage: '../../../blog/2019_06_08_heart/broken_1.png'
 locale: 'fr'
 sourceSlug: 'heart'
 sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
@@ -20,7 +20,7 @@ Dans le monde de la non\-fiction\, et à l’autre extrémité du spectre\, Naut
 
 L’article cite ensuite une méta\-analyse de ce soi\-disant « effet veuvage »\. Je crois [this](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0023465 'paper') est l’article de 2011 mentionné\, bien que je ne puisse pas le confirmer car Nautilus n’a malheureusement pas inclus de sources\. Les principales conclusions sont résumées dans le tableau ci\-dessous\. Si je comprends bien\, la colonne RR implique le risque relatif de décès pour cette ligne\, par exemple un homme a 1\,22 fois plus de risques de mourir après le décès d’un conjoint que l’homme moyen\. [^3] [^4]
 
-![post](./broken_1.png)
+![post](../../../blog/2019_06_08_heart/broken_1.png)
 
 Apparemment\, cela arrive de façon semi\-fréquente \:
 

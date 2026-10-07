@@ -53,6 +53,7 @@ import {
   readTargetHash,
   readTranslatorCredentials,
   restoreProtectedText,
+  reuseSourceAssets,
   splitFrontmatter,
   splitIntoChunks,
   translateProtectedBody,
@@ -807,7 +808,12 @@ export function testFailedChunkDoesNotWriteArticle() {
     writeFile(
       root,
       'src/content/blog/2024_01_01_fixture/index.md',
-      '---\ntitle: Fixture\n---\n\nAlpha  [link](https://example.com)  Beta\n',
+      "---\ntitle: Fixture\nheroImage: './photo.webp'\n---\n\nAlpha  [link](https://example.com)  Beta\n\n![写真](./photo.webp)\n",
+    );
+    writeFile(
+      root,
+      'src/content/blog/2024_01_01_fixture/photo.webp',
+      'image fixture',
     );
     writeFile(
       root,
@@ -859,10 +865,23 @@ export function testFailedChunkDoesNotWriteArticle() {
     const targetBody = splitFrontmatter(
       fs.readFileSync(targetFile, 'utf-8'),
     ).body;
-    assert.equal(targetBody, sourceBody);
+    const canonicalBody = reuseSourceAssets(
+      sourceBody,
+      path.join(root, 'src/content/blog/2024_01_01_fixture/index.md'),
+      targetFile,
+    );
+    assert.equal(targetBody, canonicalBody);
     assert.equal(
       markdownStructureFingerprint(targetBody),
-      markdownStructureFingerprint(sourceBody),
+      markdownStructureFingerprint(canonicalBody),
+    );
+    assert.equal(
+      fs.existsSync(path.join(path.dirname(targetFile), 'photo.webp')),
+      false,
+    );
+    assert.match(
+      fs.readFileSync(targetFile, 'utf8'),
+      /heroImage: '\.\.\/\.\.\/\.\.\/blog\/2024_01_01_fixture\/photo.webp'/,
     );
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
@@ -914,6 +933,95 @@ export function testComposeTranslatedFile() {
   assert.ok(output.includes("sourceHash: 'abc123'"));
   assert.ok(output.endsWith('Corpo.'));
   assert.equal(body, '');
+}
+
+export function testTranslationsReuseCanonicalAssets() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'i18n-assets-'));
+  try {
+    const source = path.join(root, 'blog/article/index.md');
+    const target = path.join(root, 'i18n/ja/article/index.md');
+    fs.mkdirSync(path.dirname(source), { recursive: true });
+    fs.writeFileSync(
+      path.join(path.dirname(source), 'photo.webp'),
+      'image fixture',
+    );
+    const input = [
+      '---',
+      "title: '写真'",
+      "heroImage: './photo.webp'",
+      '---',
+      '写真 ./photo.webp',
+      '![写真](./photo.webp "./photo.webp")',
+      '[Download](./photo.webp?raw=1#image)',
+      '[![写真](./photo.webp)](./photo.webp)',
+      '![写真][photo]',
+      '',
+      '[photo]: <./photo.webp> "写真"',
+      '![Remote](https://example.com/photo.webp)',
+      '![Public](/photo.webp)',
+      '![Missing](./missing.webp)',
+      '`![Code](./photo.webp)`',
+      '```md',
+      '![Code](./photo.webp)',
+      '```',
+    ].join('\n');
+    const output = reuseSourceAssets(input, source, target);
+    const canonical = '../../../blog/article/photo.webp';
+    assert.equal(
+      output,
+      input
+        .replace("heroImage: './photo.webp'", `heroImage: '${canonical}'`)
+        .replace('](./photo.webp "', `](${canonical} "`)
+        .replace('](./photo.webp?raw', `](${canonical}?raw`)
+        .replace(
+          '[![写真](./photo.webp)](./photo.webp)',
+          `[![写真](${canonical})](${canonical})`,
+        )
+        .replace('<./photo.webp>', `<${canonical}>`),
+    );
+    assert.equal(reuseSourceAssets(output, source, target), output);
+    assert.equal(
+      fs.existsSync(path.dirname(target)),
+      false,
+      'rebasing must not copy or write assets',
+    );
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+
+  // Check the committed corpus too: every shared hero/body reference resolves,
+  // and an identical media copy cannot silently return in a locale directory.
+  for (const relative of fs.globSync('src/content/i18n/**/*', {
+    cwd: REPO_ROOT,
+  })) {
+    const file = path.join(REPO_ROOT, relative);
+    if (!fs.statSync(file).isFile()) continue;
+    if (/\.mdx?$/.test(file)) {
+      const content = fs.readFileSync(file, 'utf8');
+      const urls = [
+        ...content.matchAll(/(?:heroImage: ['"]|\]\()(\.\.\/[^'"\s)]+)/g),
+      ];
+      for (const [, url] of urls) {
+        assert.ok(
+          fs.existsSync(path.resolve(path.dirname(file), url!)),
+          `${relative}: ${url}`,
+        );
+      }
+    } else {
+      const canonical = path.join(
+        REPO_ROOT,
+        'src/content/blog',
+        ...relative.split('/').slice(4),
+      );
+      if (fs.existsSync(canonical) && fs.statSync(canonical).isFile()) {
+        assert.equal(
+          fs.readFileSync(file).equals(fs.readFileSync(canonical)),
+          false,
+          `${relative} duplicates a canonical asset; reference it instead`,
+        );
+      }
+    }
+  }
 }
 
 export function testMissingCredentialsFailClearly() {
@@ -1677,6 +1785,7 @@ export async function runI18nTests() {
   await testLongArticleChunksAndAtomicFailure();
   testFailedChunkDoesNotWriteArticle();
   testComposeTranslatedFile();
+  testTranslationsReuseCanonicalAssets();
   testMissingCredentialsFailClearly();
   await testGoogleTranslationRequestAndResponse();
   await testTranslatorFailureModifiesNothing();

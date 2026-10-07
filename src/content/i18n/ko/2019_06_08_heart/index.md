@@ -4,7 +4,7 @@ description: "정말 상심해서 죽을 수 있을까?"
 pubDate: 2019-06-08
 category: Culture
 tags: ['science']
-heroImage: './broken_1.png'
+heroImage: '../../../blog/2019_06_08_heart/broken_1.png'
 locale: 'ko'
 sourceSlug: 'heart'
 sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
@@ -20,7 +20,7 @@ sourceHash: 'ed5e9052644f5a3b0955a331d45db78297e7c0779cacbd541b42ee319305521e'
 
 그 기사는 이른바 \'과부 효과\'에 대한 메타분석을 인용합니다\. 저는 [this](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0023465 'paper') 참고된 2011년 논문이지만\, Nautilus는 출처를 포함하지 않아 확인은 못 합니다\. 주요 발견은 아래 표에 요약되어 있습니다\. 제가 제대로 읽었다면\, RR 열은 해당 행의 상대적 사망 위험을 의미하는 것 같습니다\. 예를 들어\, 배우자 사망 후 남성이 평균 남성보다 사망할 확률이 1\.22배 더 높다는 식입니다\. [^3] [^4]
 
-![post](./broken_1.png)
+![post](../../../blog/2019_06_08_heart/broken_1.png)
 
 이런 일이 반쯤 자주 일어난다고 하네요\:
 

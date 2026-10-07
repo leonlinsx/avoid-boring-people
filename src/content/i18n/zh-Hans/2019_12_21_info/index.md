@@ -4,7 +4,7 @@ description: "许多依赖信息的商业模式盈利能力下降"
 pubDate: 2019-12-21
 category: Investing
 tags: ['information']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2019_12_21_info/i_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'info'
 sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
@@ -36,7 +36,7 @@ sourceHash: '4a2439b74619af9ca5c4038480458846bc0476a74ec53aa3fb0fd376402ed018'
 
 关于这个问题的想法还在进行中，但大致如下：
 
-![post](./i_1.webp)
+![post](../../../blog/2019_12_21_info/i_1.webp)
 
 > 在我们信息丰富的新世界里，任何企业或个人似乎更难囤积和利用专有信息的价值。\\\[\.\.\.\\\] 投资者面临的似乎是那些无法扩展的信息问题（超本地化）和能够扩展的信息问题（超大规模化）。
 

@@ -4,7 +4,7 @@ description: "Explicando redes neurais"
 pubDate: 2020-06-10
 category: Technology
 tags: ['AI']
-heroImage: './m_13.webp'
+heroImage: '../../../blog/2020_06_10_ml/m_13.webp'
 locale: 'pt-BR'
 sourceSlug: 'ml'
 sourceHash: '64e8f42b756e4bd61f396d4f2062d356d37f6d015af99ef364cf1236ab1c95cc'
@@ -20,21 +20,21 @@ Hoje em dia ouvimos falar de aprendizado de máquina \(ML\)\, deep learning ou i
 
 Do interesse na busca\:
 
-![post](./m_1.webp)
+![post](../../../blog/2020_06_10_ml/m_1.webp)
 
 Para menções em livros\:
 
-![post](./m_2.webp)
+![post](../../../blog/2020_06_10_ml/m_2.webp)
 
 Para manchetes de jornais sobre robôs tomando conta dos nossos empregos\:
 
-![post](./m_3.webp)
+![post](../../../blog/2020_06_10_ml/m_3.webp)
 
 Há um interesse crescente em ML\, e parece que dia sim\, dia não\, surge uma nova startup arrecadando \$100 milhões com base em sua nova tecnologia de ML\.
 
 No entanto\, a maioria das pessoas se sente intimidada pelo ML\, equiparando\-o a uma mágica que só startups de ponta fazem\. Não ajuda o fato de a matemática poder ser intimidadora\:
 
-![post](./m_4.webp)
+![post](../../../blog/2020_06_10_ml/m_4.webp)
 
 Hoje quero ajudar você a ter uma melhor intuição sobre ML\, primeiro olhando para uma empresa que usa ML e depois explicando o básico de como funciona uma rede neural\. Meu objetivo ao final é que você se sinta menos assustado sempre que alguém usar o termo \"ML\" como se fosse legal demais para a escola\.
 
@@ -64,33 +64,33 @@ Agora que sabemos onde o ML é usado\, vamos ver como o ML pode funcionar\. Vou 
 
 Redes neurais são modeladas a partir dos neurônios do cérebro\, então será útil entender como essa conexão funciona\. Veja como é um neurônio\:
 
-![post](./m_5.webp)
+![post](../../../blog/2020_06_10_ml/m_5.webp)
 
 Enquanto ainda estamos [aren't quite sure how the brain works, a leading theory is that the neurons can take inputs, do some computation, and then send outputs.](https://www.quantamagazine.org/neural-dendrites-reveal-their-computational-power-20200114/ 'neural') [^3] Uma forma simplificada de representar a interação de dois neurônios poderia ser assim\. Imagine que o círculo é o corpo principal\, e essa linha é o axônio conectando outros neurônios\:
 
-![post](./m_6.webp)
+![post](../../../blog/2020_06_10_ml/m_6.webp)
 
 E se você tivesse três pares de neurônios\, poderia ser assim\:
 
-![post](./m_7.webp)
+![post](../../../blog/2020_06_10_ml/m_7.webp)
 
 E se os neurônios pudessem interagir entre si\, poderia ser assim [^4]\:
 
-![post](./m_8.webp)
+![post](../../../blog/2020_06_10_ml/m_8.webp)
 
 Vamos manter essa imagem em mente\, enquanto pensamos em como isso pode se relacionar com computadores e ML\.
 
 Vamos pegar uma equação matemática simples\, como 2 x 3 \= 6\. Vamos definir \"2\" como dados de entrada\, \"x 3\" como a função que queremos executar e \"6\" como dados de saída\. Isso nos dá algo assim\:
 
-![post](./m_9.webp)
+![post](../../../blog/2020_06_10_ml/m_9.webp)
 
 E se você tivesse mais de um dado de entrada\? Você poderia fazer \(2 \+ 5\) x 3 \= 21\. Isso nos dá algo assim\:
 
-![post](./m_10.webp)
+![post](../../../blog/2020_06_10_ml/m_10.webp)
 
 E\, mais uma vez\, podemos combinar múltiplas funções interagindo em múltiplas entradas\, assim\:
 
-![post](./m_11.webp)
+![post](../../../blog/2020_06_10_ml/m_11.webp)
 
 Você pode ver como isso se parece com o diagrama de interação neurônica acima\, daí o nome \"rede neural\"\.
 
@@ -100,7 +100,7 @@ Você pode fazer algum tipo de função matemática nesses pontos de dados e obt
 
 Isso se parece\:
 
-![post](./m_12.webp)
+![post](../../../blog/2020_06_10_ml/m_12.webp)
 
 Neste exemplo\, podemos ver que um \"1\" foi retornado para a saída originalmente denotada como X\. \"0\" foi retornado para as outras saídas\. Isso nos diz que X é o valor previsto\, baseado nas entradas dos 3 pixels \(0\, 100\, 255\) que lhe demos\.
 
@@ -108,7 +108,7 @@ Você pode imaginar estender tal estrutura para todas as letras do alfabeto\, e 
 
 Você não está limitado a apenas duas camadas de entrada e saída\. Você também pode incluir mais \"camadas ocultas\" que recebem a entrada pela esquerda e depois retornam uma saída para a direita\. Desde que você configure suas funções para que retornem \"1\" e \"0\" na última camada\, está tudo certo\. Pode haver qualquer número de camadas ocultas\, e cada camada pode ter qualquer número de elementos\, sem precisar ser igual à entrada ou à saída\.
 
-![post](./m_13.webp)
+![post](../../../blog/2020_06_10_ml/m_13.webp)
 
 E é isso\! Você já viu como um processo pode converter entradas de dados \(como valores de pixels de imagens\) em saídas \(alfabetos e endereços\)\. Agora você entende como a maioria das redes neurais funciona\. Muitas implementações de ML usam redes neurais\, o que significa que você também conhece o conceito subjacente que impulsiona essas empresas de ML\.
 

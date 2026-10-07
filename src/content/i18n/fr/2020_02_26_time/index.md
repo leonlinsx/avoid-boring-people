@@ -4,7 +4,7 @@ description: "On ne trouve pas du temps de qualité en le cherchant"
 pubDate: 2020-02-26
 category: Culture
 tags: ['behaviour']
-heroImage: './q_3.webp'
+heroImage: '../../../blog/2020_02_26_time/q_3.webp'
 locale: 'fr'
 sourceSlug: 'time'
 sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
@@ -24,11 +24,11 @@ Si nous devons chérir chaque instant\, qu’en est\-il du concept de temps de q
 
 Le temps de qualité est un concept qui existe depuis un certain temps\, avec un intérêt croissant pour celui\-ci\.
 
-![post](./q_1.webp)
+![post](../../../blog/2020_02_26_time/q_1.webp)
 
 C’est [even one of the love languages.](https://www.5lovelanguages.com/ 'love')
 
-![post](./q_2.webp)
+![post](../../../blog/2020_02_26_time/q_2.webp)
 
 Cela signifie\-t\-il que nous vivons dans une illusion collective\, essayant de poursuivre quelque chose qui n’existe pas \? Ryan le pense\, citant Jerry Seinfeld \:
 
@@ -42,7 +42,7 @@ En revanche\, vous avez de fortes chances d’avoir une surprise positive lorsqu
 
 Si vous ne pouvez pas concevoir le temps de qualité\, et que c’est plutôt une question d’événements aléatoires\, il s’ensuit que vous voulez augmenter la fréquence de ces événements\. Vous ne pouvez pas augmenter la probabilité\, mais vous pouvez augmenter la durée de ces événements\. Autrement dit\, **Vous voulez augmenter la quantité de temps\, pas concevoir du temps de qualité\.**
 
-![post](./q_3.webp)
+![post](../../../blog/2020_02_26_time/q_3.webp)
 
 Ryan laisse entendre indirectement que la durée est la clé\, en citant un autre conseiller sur la façon de trouver ce temps ordinaire \:
 

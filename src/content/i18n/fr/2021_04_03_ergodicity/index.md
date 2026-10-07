@@ -4,7 +4,7 @@ description: "Pourquoi la différence entre la moyenne d’ensemble et la moyenn
 pubDate: 2021-04-03
 category: Risk & Decision Making
 tags: ['finance', 'math', 'ergodicity', 'risk']
-heroImage: './ergo_5.webp'
+heroImage: '../../../blog/2021_04_03_ergodicity/ergo_5.webp'
 featured: true
 locale: 'fr'
 sourceSlug: 'ergodicity'
@@ -27,17 +27,17 @@ Oui\, je ne suis pas sûr de ce que signifient ensemble et temps ici [^3] De tou
 
 Supposons qu’un type au hasard lance une pièce 5 fois\, obtenant face et pile un peu plus\. Nous pouvons calculer la moyenne de temps pour cette simulation en obtenant le nombre moyen de faces pour une personne sur une période donnée\. Il y a 3 faces sur 5 lancers\, donc ça fait 0\,6 face \(3 divisé par 5\)\.
 
-![ergo img](./ergo_1.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_1.webp)
 
 Supposons que quelques personnes de plus lancent des pièces\. Nous obtenons quelque chose comme ci\-dessous\, où je représente face comme 1 et pile comme 0 pour plus de commodité \:
 
-![ergo img](./ergo_2.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_2.webp)
 
 Il existe deux types de moyennes que nous pouvons utiliser ici\. La première est la moyenne temporelle d’avant\, où l’on obtient le **Moyenne sur une certaine période pour une personne\.**
 
 La seconde est la moyenne d’ensemble\, où l’on obtient le **Moyenne sur une période pour plusieurs personnes\.**
 
-![ergo img](./ergo_3.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_3.webp)
 
 La grande question à laquelle l’ergodicité tente de répondre est la suivante \: **Doit\-on s’attendre à ce que ces deux moyennes restent les mêmes à long terme \?**
 
@@ -47,11 +47,11 @@ C’était beaucoup de mots pour montrer quelque chose que vous croyiez probable
 
 Poursuivons sur l’exemple \: les gens parient sur le pile ou face\. Tout le monde commence avec 1 \$\, reçoit 50 \% de bénéfice s’il gagne\, et paie 40 \% de sa mise s’il perd\. Par exemple \:
 
-![ergo img](./ergo_4.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_4.webp)
 
 Plutôt que de se limiter au tirage à pile ou face eux\-mêmes\, pensons à la richesse que chaque personne possédra\. Si nous tracons ces points\, **Doit\-on s’attendre à ce que la moyenne temporelle de la richesse d’une personne soit la même que la moyenne d’ensemble de la richesse de chacun à long terme \?**
 
-![ergo img](./ergo_5.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_5.webp)
 
 Ou autrement dit \: **Voudriez\-vous prendre un pari pareil** Si on le propose à plusieurs reprises \?
 
@@ -59,13 +59,13 @@ La valeur attendue d’un tel pari est de 50 \% fois 1\,50 \$\, plus 50 \% multi
 
 J’ai codé une simulation de pile ou face dans ce projet [jupyter notebook](https://colab.research.google.com/drive/1KI_PPhtXVQDfVGRFbi4pl0ZIhL2Y4x2X?usp=sharing 'colab') [^5] \. En exécutant le scénario ci\-dessus pour une personne qui fait 100 piles ou faces\, on remarque que sa richesse augmente jusqu’à 4 \$\, avant de tomber essentiellement à 0 \$\.
 
-![ergo img](./ergo_6.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_6.webp)
 
 Hmm\, peut\-être qu’on a un scénario malchanceux\. Répétons cela avec 100 personnes à la place\, en faisant toujours 100 lancers de pièce\. Je calculerai aussi la richesse moyenne \(moyenne d’ensemble\) à chaque lancer de pièce et la représenterai avec une ligne rouge pointillée [^6] \.
 
 Les deux graphiques ci\-dessous sont identiques en termes de données \; Je rescale simplement avec un axe logarithmique pour une meilleure visualisation\.
 
-![ergo img](./ergo_7.webp)
+![ergo img](../../../blog/2021_04_03_ergodicity/ergo_7.webp)
 
 Quelque chose d’étrange se passe\. On voit un outsider chanceux qui a atteint 1 000 \$ de richesse\, et on constate aussi que la richesse moyenne \(ligne rouge pointillée\) continue d’augmenter\. Cependant\, remarquez que **La majorité de ces personnes ont perdu de l’argent \!** Dans cette simulation\, 94 des 100 personnes ayant joué ont fini avec moins que 1 \$ au départ\.
 

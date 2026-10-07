@@ -4,7 +4,7 @@ description: "Videojuegos, reequilibrio de carteras y probabilidades"
 pubDate: 2019-11-30
 category: Technology
 tags: ['finance', 'vr', 'behaviour']
-heroImage: './g_3.webp'
+heroImage: '../../../blog/2019_11_30_vr/g_3.webp'
 locale: 'es'
 sourceSlug: 'vr'
 sourceHash: 'd2fcf2573c6e8db865a87db58d40edaac106a40dd1f4380c36ca58b207ca3c68'
@@ -33,7 +33,7 @@ Suena ridículo\, ¿verdad\? Después de todo\, Vengadores\: Juego final fue una
 
 Bueno\:
 
-![post](./g_1.webp)
+![post](../../../blog/2019_11_30_vr/g_1.webp)
 
 Los juegos son más grandes que el cine\, pero aún así crecen más rápido\. Con el [global sports industry at $500bn in size](https://www.businesswire.com/news/home/20190514005472/en/Sports---614-Billion-Global-Market-Opportunities 'Sports')\, hay mucho margen para que los juegos crezcan antes de alcanzar el mismo tamaño que los deportes\.
 
@@ -41,7 +41,7 @@ Para que los juegos lo hicieran\, tendrían que ir más allá de los niños juga
 
 Bueno [^3]\:
 
-![post](./g_2.webp)
+![post](../../../blog/2019_11_30_vr/g_2.webp)
 
 No soy el único optimista respecto a los videojuegos\. A16Z\, una conocida firma de capital riesgo\, ha aumentado su interés por los videojuegos\, y [wrote about some trends they believe in](https://a16z.com/2019/10/16/trends-revolutionizing-games/ 'a16z') [^4]\:
 
@@ -79,11 +79,11 @@ Descubren que\:
 
 En otras palabras\, si tienes alta rotación\, reequilibras menos con frecuencia o tienes menos restricciones\, mayor será el impacto que el tiempo de reequilibrio tendrá en tus rendimientos finales\. La flecha de abajo representa la diferencia entre la variación de mejor rendimiento y la peor de desempeño\, _del mismo portafolio_\.
 
-![post](./g_3.webp)
+![post](../../../blog/2019_11_30_vr/g_3.webp)
 
 También presentan una tabla resumen que muestra ese diferencial entre diferentes estrategias de inversión\. Para entender lo siguiente\, se dice que 1 \$ en la cartera de \"Valor Mejorado\" podría haberte devuelto de 4\,45 \$ a 5\,45 \$\, y que toda esa diferencia de 1 \$ se debe a la suerte en el reequilibrio\.
 
-![post](./g_4.webp)
+![post](../../../blog/2019_11_30_vr/g_4.webp)
 
 Concluyen diciendo\:
 
@@ -145,7 +145,7 @@ Los investigadores descubrieron que las personas combinaban probabilidades numé
 
 En otras palabras\, en el ejemplo anterior llegamos a un promedio del 70\%\, pero una vez que conviertes esas predicciones numéricas en verbales\, \"contamos\" el número de predicciones y obtenemos \"altamente probable\" en lugar de promediar\. Los investigadores también muestran que esto influye en el comportamiento\, y los consumidores pueden ser influenciados para comprar un artículo dependiendo de cómo se presenten las predicciones\.
 
-![post](./g_5.webp)
+![post](../../../blog/2019_11_30_vr/g_5.webp)
 
 Sin embargo\, si deberías \"contar\" o \"promediar\" depende de si tus expertos tienen información similar o diferente\. Si trabajan con la misma información\, el \"promedio\" funciona mejor para cancelar errores idiosincráticos\. Si no es así\, entonces \"contar\" podría ser una aproximación de una estrategia bayesiana que mejora tu previsión personal\.
 
@@ -162,7 +162,7 @@ Sin embargo\, si deberías \"contar\" o \"promediar\" depende de si tus expertos
 2. [What the WSJ got wrong in their investigation of Google's search algorithms](https://searchengineland.com/misquoted-and-misunderstood-why-we-the-search-community-dont-believe-the-wsj-about-google-search-325241 'SEL')
 3. [How has the dating market changed?](https://gallery.mailchimp.com/2506bda6ca9a8b7ce8b3c54b4/files/1a8cc94c-6198-4f3d-b27d-8a6060ed6c5d/Tyro_Dating_Market_Thesis_Final_For_Twitter_Pub_v2.pdf 'Tyro')
 
-   ![post](./g_6.webp)
+   ![post](../../../blog/2019_11_30_vr/g_6.webp)
 
    > Fíjate en los gráficos anteriores el aumento de \"se encontraron en un bar o restaurante\"\. En ciencia de datos\, el término técnico para estas personas que informan es \"mentirosos\"\.
 

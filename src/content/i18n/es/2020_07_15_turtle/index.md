@@ -4,7 +4,7 @@ description: "Por qué la mayoría de las empresas, incluso en tecnología, son 
 pubDate: 2020-07-15
 category: Technology
 tags: ['business', 'startups']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_07_15_turtle/t_3.webp'
 locale: 'es'
 sourceSlug: 'turtle'
 sourceHash: '350a3fc3117a588d40ffda1e362a4272b665ee57cf4be889be526c4129f66586'
@@ -22,13 +22,13 @@ Da por hecho que todo el mundo conoce el [tortoise vs hare fable.](http://read.g
 
 Pongamos una pista de carrera de 1 km\. Suponemos que la tortuga tarda 100 minutos en correr 1 km\, y la liebre tarda 20 minutos en correr 1 km\. Sin embargo\, el horario de sueño de la liebre se ha desajustado por el covid y hay un 95\% de probabilidad de que duerma en cada bloque de 20 minutos\. Dicho de otro modo\, hay un 5\% de probabilidad de que esté despierta durante los minutos 0\-20\, y otro 5\% de que esté despierta entre los minutos 20\-40\, y otro 5\% de que esté despierta en los minutos 40\-60\, etc\.
 
-![post](./t_1.webp)
+![post](../../../blog/2020_07_15_turtle/t_1.webp)
 
 ¿Qué probabilidad hay de que la liebre gane a la tortuga\?
 
 Para quienes recordáis la probabilidad de secundaria\, podemos calcular esto con un [binomial distribution formula.](https://online.stat.psu.edu/stat414/lesson/10/10.3 'binom') La fórmula es la siguiente\:
 
-![post](./t_2.webp)
+![post](../../../blog/2020_07_15_turtle/t_2.webp)
 
 Pero eso da miedo con signos de suma y signos de exclamación\, y prometí mantener las matemáticas simples\. Una forma de acortar el cálculo es observar que hay 5 \"bloques de 20 minutos\" para que la liebre se duerma o esté despierta\, ya que la liebre es 5 veces más rápida que la tortuga\. Mientras la liebre esté despierta una vez\, ganará\. Así que\, la única vez que la liebre pierde es cuando duerme todas esas veces\. Ese es un cálculo mucho más sencillo\, ya que eso es solo un 95\% multiplicado por sí mismo 5 veces\, o 0\,95 elevado a la potencia de 5 [^3]\.
 
@@ -40,11 +40,11 @@ Solo hay un caso en el que ninguna liebre gana\, que es cuando todas las carrera
 
 En otras palabras\, es casi seguro que al menos una vez ganará una liebre\.
 
-![post](./t_3.webp)
+![post](../../../blog/2020_07_15_turtle/t_3.webp)
 
 He puesto las matemáticas en una hoja de Google [here](https://docs.google.com/spreadsheets/d/1-_LV1ewb0D4DsERENaM_xp0oy8pHH7xWmAvNX8H9bdE/edit?usp=sharing 'sheet') con la que puedes jugar [^4]\. También puedes ver en el gráfico de abajo que ni siquiera hacen falta tantas carreras para que las probabilidades de que al menos una liebre gane se acerquen al 100\%\. Recuerda\, esto es una liebre ganando\, no la mayoría de las liebres\.
 
-![post](./t_4.webp)
+![post](../../../blog/2020_07_15_turtle/t_4.webp)
 
 Sin embargo\, las matemáticas son menos importantes que la conclusión\. **Lo que hemos inferido es que\, incluso cuando las probabilidades de que algo ocurra por sí solo son bajas\, una partida repetida probablemente asegurará que el evento ocurra una vez\.** Igual que es poco probable que ganes la lotería\, es probable que haya al menos un ganador\.
 

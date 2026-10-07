@@ -5,7 +5,7 @@ pubDate: 2021-02-07
 category: Risk & Decision Making
 tags: ['skill']
 featured: false
-heroImage: './min_2.webp'
+heroImage: '../../../blog/2021_02_07_minmax/min_2.webp'
 locale: 'ja'
 sourceSlug: 'minmax'
 sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
@@ -51,7 +51,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 薬物によるドーパミンの急上昇を引き起こすイベントを探しました。人間にドラッグがもたらす快感の可能性をオンラインで見つけるのは難しく、まるで薬物をやってほしくないかのように感じました。結局見つけたのは、[heroin](https://onlinelibrary.wiley.com/doi/abs/10.1002/syn.890210207 'heroin')を摂取したラットの研究で、ドーピング[^6]時にドーパミンが4倍増加したことが示されました。これは高い数値ですが、予想より低く、私たちが望む10倍の量には達[^7]。
 
-![min](./min_1.webp)
+![min](../../../blog/2021_02_07_minmax/min_1.webp)
 
 私たちは物理学、化学、生物学の領域を離れ、より抽象的な[^8]分野に進まざるを得なくなります。
 
@@ -67,7 +67,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 これは大幅に割り下げても確実に10倍以上の数字です。私はこれらの新しい領域を物理的な領域とプロットし、大きな大きさの違いを考慮して対数スケールでプロットしました。各線は10倍の増加を示しています。出典については脚注を参照してください[^9]。
 
-![min](./min_2.webp)
+![min](../../../blog/2021_02_07_minmax/min_2.webp)
 
 私たちは、努力を拡大できる道を見つけ、限界収益の逓減がそれほど早く減らなくなることはありません。このような分野では天井がはるかに高く、平均と比べて差別化の可能性も高まります。
 
@@ -86,7 +86,7 @@ sourceHash: 'eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385'
 
 これをべき法則や、ネットワークには他よりも劇的に重要な部分が存在することがあると考える方もいるでしょう。[There's some debate over whether power laws exist in real life](https://www.quantamagazine.org/scant-evidence-of-power-laws-found-in-real-world-networks-20180215/ 'real')ですが、実際には同じ概念です。人や物、部品がはるかに重要なシステムが存在する[^10]。
 
-![min](./min_3.webp)
+![min](../../../blog/2021_02_07_minmax/min_3.webp)
 
 はっきりさせておくと、人生のすべてが影響力や富を最小限に絞ることだけだと言っているわけではありません。しかし、ある分野の潜在的な上限を知ることは、どれだけ努力を注ぎたいか、どこで止めるかを見極めるのに役立ちます。10倍の優れを目指すには、物理的なものから技術的なものへと移行することが通常伴います。
 

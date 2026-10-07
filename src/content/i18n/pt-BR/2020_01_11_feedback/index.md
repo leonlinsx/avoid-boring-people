@@ -4,7 +4,7 @@ description: "Somos péssimos em receber feedback, veja como melhorar"
 pubDate: 2020-01-11
 category: Culture
 tags: ['feedback', 'behaviour']
-heroImage: './t_3.webp'
+heroImage: '../../../blog/2020_01_11_feedback/t_3.webp'
 locale: 'pt-BR'
 sourceSlug: 'feedback'
 sourceHash: '91a9d0e512c9f37a9acd1d22cda31f4585a8b9402f6c1ab8e2bc778a615941e2'
@@ -32,7 +32,7 @@ Resumi o livro abaixo e adicionei algumas das minhas próprias reflexões\. Nota
   - Tudo isso é razoável\. Nossas reações desencadeadas não são obstáculos porque são irracionais\, mas porque nos impedem de participar da conversa\.
   - Melhorar em receber feedback não significa que você precisa encarar o feedback como verdade absoluta
 
-![post](./t_1.webp)
+![post](../../../blog/2020_01_11_feedback/t_1.webp)
 
 _LL\: Definitivamente nunca aceitei feedback antes\, para meu prejuízo\, quando me senti desencadeado\. Só porque não gosto da pessoa\, não significa que o feedback seja impreciso\. Tomar consciência do motivo disso e aprender a identificar é o primeiro passo para me tornar melhor\._
 
@@ -44,7 +44,7 @@ _LL\: Definitivamente nunca aceitei feedback antes\, para meu prejuízo\, quando
   - Avaliação de onde você está [^1]
   - Precisamos dos três\, mas muitas vezes conseguimos um tipo diferente em relação ao que queremos
 
-![post](./t_2.webp)
+![post](../../../blog/2020_01_11_feedback/t_2.webp)
 
 _LL\: Prefiro muito mais receber coaching ou avaliação no trabalho\, mas obviamente não é o caso de todo mundo\. Isso explica muito sobre por que as pessoas se sentem subvalorizadas ou incompreendidas\. Isso meio que me lembra o [Five Love Languages framework](https://www.5lovelanguages.com/ 'Five')\. Estou começando a pedir explicitamente coaching e avaliação\, em vez de reconhecimento no trabalho\._
 
@@ -90,7 +90,7 @@ _LL\: Você e seu inimigo podem ser competentes\, mas têm uma relação de trab
   - A distância que você faz o swing do seu ponto de partida quando recebe feedback\, por exemplo\, mais swing significa mais sensibilidade ao feedback negativo
   - Quanto tempo leva para você voltar ao padrão
 
-![post](./t_3.webp)
+![post](../../../blog/2020_01_11_feedback/t_3.webp)
 
 - Algumas maneiras de estar melhor preparado para o feedback são\:
   - Pense com antecedência sobre o que pode ser\, verifique como você está e desacelere quando estiver pegando o problema
@@ -153,7 +153,7 @@ _LL\: Isso é novo para mim\, mas importante\. Pode ser avassalador receber feed
 
 _LL\: Existem coisas que simplesmente não podemos mudar em nós mesmos\. Você não pode me impedir de me aplicar [ridiculous amounts of butter at every dinner](https://www.thecitycook.com/articles/2015-10-12-bordier-butter 'butter')\. Note que\, embora os autores achem que isso é aceitável\, \"você ainda precisa reduzir o efeito negativo que está causando nos outros\"\. Não seja babaca\._
 
-![post](./t_4.webp)
+![post](../../../blog/2020_01_11_feedback/t_4.webp)
 
 - No contexto de uma organização\, aqui estão algumas coisas que podem ajudar a dar feedback\:
   - Explique os tradeoffs\, não apenas os benefícios

@@ -4,7 +4,7 @@ description: "De nombreuses études populaires s’avèrent fausses"
 pubDate: 2019-02-23
 category: Risk & Decision Making
 tags: ['science', 'behaviour']
-heroImage: './rep_1.png'
+heroImage: '../../../blog/2019_02_23_replicability/rep_1.png'
 locale: 'fr'
 sourceSlug: 'replicability'
 sourceHash: '04de18cd58301738e132e77bf8de35774f8ac73ba1780a876d0fa6f2b720aae9'

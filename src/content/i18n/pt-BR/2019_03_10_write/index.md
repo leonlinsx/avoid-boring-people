@@ -4,7 +4,7 @@ description: "Por que comecei o blog original"
 pubDate: 2019-03-10
 category: Culture
 tags: ['writing']
-heroImage: './w_3.png'
+heroImage: '../../../blog/2019_03_10_write/w_3.png'
 locale: 'pt-BR'
 sourceSlug: 'write'
 sourceHash: '952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d'
@@ -67,7 +67,7 @@ Eu sabia o que queria usar\, então era hora de configurar\. Criar uma conta foi
 
 Uma característica que pensei por um tempo foi se deveria permitir comentários\. Decidi não fazer isso\, pois a seção de comentários para posts públicos tende a se tornar spam ou irrelevante\, com base na minha experiência\. Por exemplo\, veja os comentários mais comentados do post que Zuckerberg fez recentemente sobre as novas prioridades do Facebook\:
 
-![post](./w_1.webp)
+![post](../../../blog/2019_03_10_write/w_1.webp)
 
 Meus comentários são [shared](https://optinmonster.com/to-allow-blog-comments-or-not-heres-what-the-data-shows/ 'nice but not necessary') por [others](https://avc.com/2019/02/rethinking-avc/ 'avc comments')\. Um fórum moderado separado seria o ideal\, embora eu duvide que este blog algum dia se torne popular o suficiente para exigir isso\. Enquanto isso\, pessoas interessadas em discutir o conteúdo aqui podem me enviar e\-mails ou mensagens no Twitter\.
 
@@ -89,7 +89,7 @@ Passei mais tempo do que gostaria de admitir escolhendo o tema do blog\. Acabei 
 
 7. Uma das principais características do Github é como a atualização por commits funciona\. Ainda não entendo isso e não sei como enviar os commits do tema principal para o meu repositório sem copiar cada arquivo individualmente\. Ajuda\.
 
-![post](./w_2.png)
+![post](../../../blog/2019_03_10_write/w_2.png)
 
 Tem sido extremamente frustrante tentar configurar tudo\, e até algo tão simples quanto adicionar as imagens acima levou tempo\. Ainda não me arrependo da decisão\, pois aprendi pequenos detalhes sobre como a web funciona e tenho um produto para mostrar para meu aprendizado também [^13]\. Outra surpresa é que agora tenho um sistema formal de anotar ideias e artigos sobre os quais quero escrever no futuro\, já que percebi que manter uma lista seria útil\. Como Paul Graham observou\, a internet pode fazer disso o [golden age of the essay](http://www.paulgraham.com/essay.html 'essay')\, o que reforça ainda mais minha tese de marca pessoal e individualização\. Estou animado com o rumo dessa ideia e espero continuar escrevendo\.
 

@@ -4,7 +4,7 @@ description: "¿Qué hacen realmente los bancos de inversión?"
 pubDate: 2020-11-04
 category: Culture
 tags: ['investment banking']
-heroImage: './i_2.webp'
+heroImage: '../../../blog/2020_11_04_ib_value/i_2.webp'
 locale: 'es'
 sourceSlug: 'ib_value'
 sourceHash: 'c27ba4251de29cd4bbcb5900adbd73319b0f46a7511f8a32eb2454d3a8b02ec0'
@@ -18,13 +18,13 @@ La banca de inversión rara vez se trata de invertir y más bien de conectar fue
 
 He tenido que explicar a algunas personas últimamente de qué va realmente la banca de inversión\, y he pensado que también podría hacer una breve introducción aquí\. Especialmente dado el desajuste entre expectativas y realidad\, espero que esto ayude a aclarar las cosas\.
 
-![post](./i_1.webp)
+![post](../../../blog/2020_11_04_ib_value/i_1.webp)
 
 **La banca de inversión generalmente no trata de invertir\,** A pesar de que mis padres nunca parecieron entenderlo\. Nota al margen\: He estado intentando encontrar la etimología de cuándo \"banca de inversión\" se convirtió en \"banca de inversión\"\, pero hasta ahora no he tenido suerte\. Si lo sabes\, por favor ponte en contacto\.
 
 Un banco de \"servicio completo\" como JP Morgan es enorme\. Puedes pensarlo como cuatro líneas principales de negocio\:
 
-![post](./i_2.webp)
+![post](../../../blog/2020_11_04_ib_value/i_2.webp)
 
 Cuando me refiero a banca o banca de inversión en este artículo\, me refiero específicamente al negocio azul de la derecha\. Y para facilitarme la vida\, me centraré solo en la casilla de \"Banquero\"\, excluyendo la discusión sobre las ramas de investigación de renta variable y ventas y trading por simplicidad\. He mencionado la investigación de renta variable [here](/writing/sellside 'er') Antes\, cuando hablábamos del impacto de los roboasesores\.
 
@@ -40,7 +40,7 @@ El mundo también tiene a mucha gente que necesita capital\. Por ejemplo\, una e
 
 El negocio del banco es **Crear un mercado** entre los dos grupos\.
 
-![post](./i_3.webp)
+![post](../../../blog/2020_11_04_ib_value/i_3.webp)
 
 Por ejemplo\, si Google intenta aumentar la deuda\, el banco trabajará con ella para averiguar cuánto puede recaudar\, quién comprará la deuda y a qué condiciones se emitirá\.
 

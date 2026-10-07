@@ -4,7 +4,7 @@ description: "Ce qui est resté le même et ce qui a changé dans l’histoire d
 pubDate: 2020-12-09
 category: Culture
 tags: ['art']
-heroImage: './a_2.webp'
+heroImage: '../../../blog/2020_12_09_art/a_2.webp'
 locale: 'fr'
 sourceSlug: 'art'
 sourceHash: 'a6c47ae85952097514661cd1a1d807471c621d639a7c0b2b4d9f635be7a39e33'
@@ -28,13 +28,13 @@ J’ai trouvé [Smarthistory](https://smarthistory.org/) être un site accessibl
 
 Dans cet esprit\, examinons trois œuvres au thème similaire\, et voyons comment le contexte historique peut nous aider à mieux comprendre ce que l’artiste essayait de faire\.
 
-![post](./a_1.webp)
+![post](../../../blog/2020_12_09_art/a_1.webp)
 
 Au\-dessus\, nous voyons trois nus allongés\, sujet populaire des artistes depuis longtemps [^1]\. Dans le sens des aiguilles d’une montre\, on a un Titien des années 1500\, un Dominique\-Ingres du début des années 1800\, et un Manet de la fin des années 1800\. Tous ces artistes étaient célèbres à l’époque\, et le sont encore aujourd’hui\. « Vénus » était relativement peu controversée à son époque\, mais les deux autres\, « La Grande Odalisque » et « Olympia »\, ont suscité beaucoup plus de critiques\. Pourquoi \?
 
 Pour répondre à cette question\, il sera utile de comprendre le [hierarchy of art genres](http://www.visual-arts-cork.com/history-of-art/hierarchy-of-genres.htm 'hierarchy') auxquelles les gens s’étaient fidés depuis des siècles \:
 
-![post](./a_2.webp)
+![post](../../../blog/2020_12_09_art/a_2.webp)
 
 Pendant longtemps\, le type de votre art avait un certain « rang »\, et les gens jugeaient automatiquement une peinture de nature morte moins importante qu’une peinture d’une scène religieuse\. Pas totalement surprenant\, étant donné que l’église était un grand mécène de l’art à l’époque historique\.
 
@@ -42,13 +42,13 @@ Examinons de plus près Vénus et la réflexion que Titien a mise derrière cett
 
 Pour rendre la peinture plus intéressante visuellement\, Titien a également opposé la courbe du corps aux lignes droites de l’arrière\-plan\. Remarquez aussi comment les lignes noires attirent aussi notre attention vers la figure\. Les lignes rouges à l’arrière\-plan ne sont pas entièrement parallèles par intention\, car cela crée [perspective](https://www.tate.org.uk/art/art-terms/p/perspective 'perspective') pour l’image et la rend plus 3D\.
 
-![post](./a_3.webp)
+![post](../../../blog/2020_12_09_art/a_3.webp)
 
 Regardons maintenant l’Odalisque \(qui signifie concubine\) et voyons ce qui est resté le même et ce qui a changé\. La posture est similaire\, et l’utilisation du teint sur l’Odalisque et la Vénus les rend toutes deux réalistes\.
 
 Dominique\-Ingres a ajouté plus de détails au premier plan\, comme les plumes de paon ou les pierres précieuses\. Remarquez aussi qu’il n’utilise pas autant de lignes droites pour le contraste ou la perspective\. Au lieu de cela\, la peinture est entièrement axée sur les courbes \:
 
-![post](./a_4.webp)
+![post](../../../blog/2020_12_09_art/a_4.webp)
 
 Si vous fixez le corps assez longtemps\, vous commencerez aussi à sentir que quelque chose d’étrange\. Le corps s’est allongé pendant la pose\, c’est certain\, mais il ne semble pas mal _aussi_ longue \? Les proportions de la figure ne sont pas tout à fait justes\. Si vous regardez la jambe gauche de la figure\, vous réaliserez aussi que l’endroit où elle s’attache dans le corps est aussi décalée\. Ingres a intentionnellement fait cela pour donner au spectateur une perception accrue de la forme de la figure\, par rapport à ce qui serait possible avec des corps « réalistes »\.
 
@@ -56,7 +56,7 @@ Enfin\, Ingres intitula l’œuvre « La Grande Odalisque »\, et non d’après
 
 Regardons enfin le travail de Manet\. On peut facilement voir les références à Vénus ici\, des poses similaires\, des coussins\, et même cette ligne verticale en arrière\-plan pour attirer le contraste et l’attention\.
 
-![post](./a_5.webp)
+![post](../../../blog/2020_12_09_art/a_5.webp)
 
 En même temps\, c’est aussi une peinture très différente\. La plupart des gens diraient que Vénus et Odalisque paraissent plus « finies » et « réalistes »\, tandis qu’Olympia paraît incomplète\. Ce n’est pas terrible\, mais ce n’est pas non plus aussi « joli » que les peintures précédentes\.
 

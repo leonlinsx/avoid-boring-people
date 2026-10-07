@@ -4,7 +4,7 @@ description: "活动、通讯和投资中的社区与个性"
 pubDate: 2020-09-02
 category: Culture
 tags: ['newsletter', 'investing', 'community']
-heroImage: './c_9.webp'
+heroImage: '../../../blog/2020_09_02_community_covid/c_9.webp'
 locale: 'zh-Hans'
 sourceSlug: 'community_covid'
 sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
@@ -52,11 +52,11 @@ sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
 
 > 经济困境迫使许多公司削减差旅预算，以及对“绿色”的关注加剧，使虚拟展会成为会议业务的现实选择。
 
-![post](./c_1.webp)
+![post](../../../blog/2020_09_02_community_covid/c_1.webp)
 
 我们大多数人都熟悉 [MSN messenger, ](https://www.hulldailymail.co.uk/news/hull-east-yorkshire-news/msn-messenger-logged-back-in-3393323 'msn') [online forums](https://www.makeuseof.com/tag/how-we-talk-online-a-history-of-online-forums-from-cavemen-days-to-the-present/ 'forum')以及今天的社交媒体，这些都是人们在线上相互认识的方式。
 
-![post](./c_2.webp)
+![post](../../../blog/2020_09_02_community_covid/c_2.webp)
 
 虽然主要理念本身并不新鲜，但技术进步和社会规范的变化促使这些概念的执行得到了提升。我们先看看赛事是如何适应的，然后再看看群体。
 
@@ -78,31 +78,31 @@ sourceHash: '1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7'
 
 如果你有一大群人，但仍然希望大家能自己互动，你可能需要遵循 [2020 Nebula Awards](https://events.sfwa.org/ 'SFWA') 确实如此。星云是 [one of the most prestigious Sci Fi awards,](https://en.wikipedia.org/wiki/Nebula_Award 'Nebula') 今年他们的整个会议都在线上进行。他们从一个链接出发，举办了大量不同大小的Zoom分组讨论室。然后他们赋予每位参与者共同主持权，方便参与者在分组讨论室中自由活动，加入他们觉得有趣的内容。除了主演讲室外，他们还有一些随机房间，比如酒吧里有调酒师讲授食谱、写作室和小狗直播。下面你可以看到我在分组讨论室里，和一位著名科幻作家一起 [Lois Bujold](https://en.wikipedia.org/wiki/Lois_McMaster_Bujold 'Lois') （为了隐私我已经把其他人都遮断了）。
 
-![post](./c_3.webp)
+![post](../../../blog/2020_09_02_community_covid/c_3.webp)
 
 一个让我感觉复杂的实验性想法是 [Online Town](https://theonline.town/ 'Online')，其中 [Long Now Foundation](https://longnow.org/seminars/ 'Long') 在他们的一次研讨会后尝试过。在《在线城镇》中，你会在屏幕上以虚拟形象出现，你可以像在现实中一样在房间里走动。你可以听到的对话基于距离，进一步模拟现实。我觉得这个想法很有趣，而且需要更高的用户教育才能带来更独特的体验。
 
-![post](./c_4.webp)
+![post](../../../blog/2020_09_02_community_covid/c_4.webp)
 
 到目前为止，我们已经报道了“工作”相关的活动，但娱乐人员也在虚拟环境中有所适应。
 
 举个例子，我看了一本 [Ellie Goulding live virtual concert recently.](https://inews.co.uk/culture/music/ellie-goulding-live-review-victoria-and-albert-museum-london-brightest-blue-613122 'Ellie') 她把它拿到了 [Victoria and Albert Museum](https://www.vam.ac.uk/ 'VAM') 在伦敦，举办了一个精彩的展览，在博物馆里巡回演出。制作质量非常棒，社交媒体上反响也很好。
 
-![post](./c_5.webp)
+![post](../../../blog/2020_09_02_community_covid/c_5.webp)
 
 另一个例子是 [Tomorrowland](https://www.tomorrowland.com/global/ 'TMR')，顶级DJ节。他们还提升了制作质量， [creating visual experiences](https://www.youtube.com/watch?v=BinQqIX3aig 'alan') 观众可以在听DJ现场演奏时享受演出。我没去，但有个去过的人说她很喜欢。
 
-![post](./c_6.webp)
+![post](../../../blog/2020_09_02_community_covid/c_6.webp)
 
 不过，我认为我们可以做得更好。艾莉的演唱会很棒，明日世界看起来也很有趣，但两者都缺乏与粉丝的互动 [^5]\.如果你举办的是现场活动，应该充分利用它。数字体验简化了沟通，我推荐这样做 **娱乐活动应以互动为目标，就像上述“专业”活动一样。** 如果你的直播活动唯一的优势就是高制作水准，那我还不如自己找时间看回放。
 
 KT·坦斯托尔就是这一理念的典范 [her live session with the Royal Albert Hall](https://www.youtube.com/watch?v=T_FHtCvpTOI 'KT')\.你可以看到相比上面两个例子制作质量较低，但真正让我有区别的是直播聊天。它让粉丝们既能与彼此互动，也能与她互动，打造出特别的亲密体验。直播已经\.\.\.\.\.\.成为主流。
 
-![post](./c_7.webp)
+![post](../../../blog/2020_09_02_community_covid/c_7.webp)
 
 如果你认为这在大规模上无法持续，那就看看 [what KPop groups such as Super Junior are doing.](https://www.youtube.com/watch?v=3H_MiOghwJw&fbclid=IwAR3nFY0s2ccu6tXA4dig9_e37jvNC3QGxCNOL9WE9E-DyJeRMrWtoMAQUIo 'Kpop') （感谢Gabriel Tan）他们重新构想了演唱会体验，特别规划了演唱会中的粉丝互动。现在让粉丝感到特别容易多了，艺人应该从中吸取教训。我越来越觉得亚洲公司在消费者体验创新方面走在前列，这感觉像是西方公司的又一个案例研究 [^6]\.
 
-![post](./c_8.webp)
+![post](../../../blog/2020_09_02_community_covid/c_8.webp)
 
 这对线下活动市场意味着什么？ [Rafat Ali of Skift believes that this is a watershed moment for the industry](https://skift.com/2020/08/26/the-event-industry-is-being-confronted-by-its-napster-moment/ 'Skift')就像Napster对音乐的介绍一样。他认为10\%的商务旅行可能会永久退出市场，并且估计虚拟活动的收入大约只有线下活动的四分之一，因此市场必须适应新的经济形态。
 
@@ -118,7 +118,7 @@ KT·坦斯托尔就是这一理念的典范 [her live session with the Royal Alb
 
 比如，你的MSN联系人对某个群体的选择过于严格，而Facebook的群组则不够挑剔。商学院的重点是选择性所暗示的品牌价值。Reddit的轻度管理导致一定程度的选择性。平均来说，你从学校网络中获得的专业价值比你亲密的朋友周日早午餐小组更多，或者从Reddit帖子中获得更多信息，而你的Reddit帖子则比你的更重要 [180,000 member Facebook group about genuinely stoked goats](https://www.facebook.com/genuinelystokedgoats/ 'goat') 你甚至不记得自己是怎么加入的 [^7]\.
 
-![post](./c_9.webp)
+![post](../../../blog/2020_09_02_community_covid/c_9.webp)
 
 我们看到策划社区越来越受欢迎，作为解决这一问题的尝试。这类社区的目标是找到平衡价值与选择性的最佳平衡点。它们通常会有某种形式的入会流程来筛选成员。当它们运作时，形成一个反馈循环，优秀成员会激发社区更多的兴趣，进而带来更多优质成员。尤其是社区规模较小时，每个人都有动力去努力工作，这样你才能为自己的成员感到自豪。
 
@@ -134,7 +134,7 @@ KT·坦斯托尔就是这一理念的典范 [her live session with the Royal Alb
 
 一个非常了解这一点的行业是游戏市场。看看Minecraft、Fortnite或Roblox背后的公司如何锁定目标客户。 [Minecraft has 126mm monthly active users](https://www.theverge.com/2020/5/18/21262045/minecraft-sales-monthly-players-statistics-youtube 'Minecraft')\. [Fortnite is still breaking attendance records for its in game concerts](https://www.gamesradar.com/how-many-people-play-fortnite/ 'Fortnite')\. [Roblox makes >$1bn in rev and is played by half of all children in the US](https://www.thegamer.com/roblox-played-by-most-american-kids/ 'Roblox')\.在许多游戏中，人们去那里是因为他们的朋友在那里。他们是2020年新的MSN [^8]\.
 
-![post](./c_10.webp)
+![post](../../../blog/2020_09_02_community_covid/c_10.webp)
 
 除了价值和选择性，我对虚拟小组最后考虑的因素是 **增长潜力。** 增长通常是以选择性为代价\;随着群体的增长，下一个成员带来的价值平均降低。
 
@@ -195,7 +195,7 @@ KT·坦斯托尔就是这一理念的典范 [her live session with the Royal Alb
 
 不过，如果你愿意经营小型企业，写通讯可能是个可靠的选择。 **我做了一个五年期的通讯财务模型 [here](https://docs.google.com/spreadsheets/d/1QS2lKHhDDCe5vwHiJPd7QpDjQRxJ3mHl4VgCq6e8Q6M/edit?usp=sharing 'model')** 你可以尝试看看经济学可能是什么样子。如果有，请复印一份，不要试图修改原文。感谢 [Jacob Donnelly](https://www.amediaoperator.com/ 'Jacob') 以及 [Josh Constine](https://constine.substack.com/ 'Josh') 为模型提供意见。
 
-![post](./c_11.webp)
+![post](../../../blog/2020_09_02_community_covid/c_11.webp)
 
 模型对假设非常敏感，这些假设在表格中列出，我将在脚注中简要介绍 [^12]\.目前假设订阅加广告的商业模式，但你可以改变。这意味着五年内达到30万美元估值虽然困难但合理，这对新闻通讯创作者来说可能是目标。
 

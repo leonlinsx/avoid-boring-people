@@ -4,7 +4,7 @@ description: "アファンタジアと視覚化の違い"
 pubDate: 2019-07-31
 category: Culture
 tags: ['science']
-heroImage: './a_2.png'
+heroImage: '../../../blog/2019_07_31_aphantasia/a_2.png'
 locale: 'ja'
 sourceSlug: 'aphantasia'
 sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
@@ -14,7 +14,7 @@ sourceHash: '46af63da13e0dba01078f968716877228b1cad631c49a3a95eb86d0eff4a3f2f'
 
 人によってイメージが違うことを今知りました。この10秒テストを受けてください\:
 
-![post](./a_1.webp)
+![post](../../../blog/2019_07_31_aphantasia/a_1.webp)
 
 私は3〜4の評価で、いとこは6だと断言しています [^1]\.これが、人々が物事を視覚化するように言うたびに混乱した理由の大いに説明できます\.\.\.私は他の皆が経験しているような細かいことや明瞭さを得られなかったのです。
 

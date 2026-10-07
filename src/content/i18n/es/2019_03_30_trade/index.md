@@ -4,7 +4,7 @@ description: "Aumento de impuestos, aranceles y ambiciones"
 pubDate: 2019-03-30
 category: Investing
 tags: ['finance', 'tariff', 'behaviour']
-heroImage: './r_2.png'
+heroImage: '../../../blog/2019_03_30_trade/r_2.png'
 locale: 'es'
 sourceSlug: 'trade'
 sourceHash: 'a57f485f55adead526b711f66d87559306b1c510a8f5c96c0dfadf94613f6ee2'
@@ -46,7 +46,7 @@ Soy de los que da contenido de Google Maps gratis [^3]\, así que espero que est
 
 > El Próximo es que es una incubadora de ídolos\, y cuantos votos reciban los competidores de sus fans\, más recursos se les darán para ayudarles a convertirse en celebridades\. Los miembros del público solo reciben 1 voto al día\, sin embargo\, si compran productos One Leaf\, obtienen votos extra\. Y si compran productos específicos\, pueden obtener 5 votos extra\.
 
-![post](./r_1.webp)
+![post](../../../blog/2019_03_30_trade/r_1.webp)
 
 Hace tiempo que no veo reality shows\, pero esto parece un concepto de ventas nuevo\. Supongo que la compra se hace a través de la misma app donde están transmitiendo el programa\, creando una experiencia cómoda\.
 

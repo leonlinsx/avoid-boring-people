@@ -4,7 +4,7 @@ description: "문지기의 문지기가 스스로 문을 지키는 걸까요?"
 pubDate: 2020-10-28
 category: Culture
 tags: ['finance', 'behaviour']
-heroImage: './g_5.webp'
+heroImage: '../../../blog/2020_10_28_gatekeep/g_5.webp'
 locale: 'ko'
 sourceSlug: 'gatekeep'
 sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
@@ -21,23 +21,23 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 초보자는 별을 반짝이고 활기차게 어떤 주제를 시작하는 방법에 대한 조언을 구하러 올 것입니다\.
 
-![post](./g_1.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_1.webp)
 
 그리고 수많은 전문가들이 그럴 것입니다 [emerge from the depths](https://youtu.be/Y2fwe0rnHak?t=118 'balrog') 그들에게 불가능하다고\, 수년간 선수과목을 배우며 돌아가야 하며\, 처음부터 그런 질문을 한 것에 대해 부끄러워해야 한다고 말하는 것\. _\"뻔뻔한 짓이야\, 대가를 피할 수 있다고 생각하는 사람들\.\"_
 
 심지어 어떤 \'전문가\'들은 초보자들이 그런 일을 하도록 돕기 위해 강좌를 시작할 때 불평할 거리를 찾아내기도 합니다\.
 
-![post](./g_2.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_2.webp)
 
 우리는 항상 게이트키핑을 접하는데\, 대부분은 지위를 지키기 위해 이루어집니다\. 유효한 형태의 게이트키핑도 있는데\, 그 부분은 나중에 설명하겠습니다\. 하지만 거의 항상 사람들을 배제하고 못되게 하기 위해 이루어집니다\. 재미있게도\, 게이트키퍼들은 자신들도 배제될 수 있다는 사실을 깨닫지 못하는 것 같습니다\.
 
 예를 들어\, 위 댓글러처럼 미적분\, 통계\, 선형대수를 배워야 기계 학습을 시작할 수 있다고 말할 수 있습니다\.
 
-![post](./g_3.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_3.webp)
 
 그리고 선형대수를 시작할 수 있다면 군론을 배우지 않으면 안 된다고 말할 수도 있겠네요\. [matrices are a ring](https://www.youtube.com/watch?v=_RTHvweHlhE 'ring')\, 그리고 [when to work with linear groups or not](https://www.youtube.com/watch?v=AJTRwhSZJWw 'group') [^1]
 
-![post](./g_4.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_4.webp)
 
 그리고 위에 언급한 내용이 다음 조건에 따라 다르다고 말할 수도 있습니다 [set theory](https://plato.stanford.edu/entries/set-theory/ 'set')\, [Peano axioms](https://en.wikipedia.org/wiki/Peano_axioms 'Peano')\, 그리고 [philosophy](https://plato.stanford.edu/entries/philosophy-mathematics/ 'philo')\. 댓글 작성자가 학부 때 얼마나 공부했을지 궁금하네요\.
 
@@ -51,7 +51,7 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 문지기들이 완전히 틀린 것은 아니라는 점을 기억하세요\. **사실\, 그들의 제안은 종종 타당합니다\.** 예를 들어\, 머신러닝을 공부하면서 선형대수를 아는 것이 매우 도움이 될 것입니다\. 그리고 전문가가 되고 싶다면 필요한 모든 수학을 마스터해야 합니다 [^3]\. 하지만 인위적으로 과목을 시작하는 것을 막는 것은 누구에게도 도움이 되지 않습니다\. 더 나은 대응은 \"네\, 여기 더 쉬운 강의가 있습니다\. 시작하면 되고\, 나중에 다시 와서 기본기를 다시 공부하라\"는 식이었을 것입니다\. 비활성화하기보다는 활성화하세요\.
 
-![post](./g_5.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_5.webp)
 
 만약 당신이 게이트키핑에 편향되어 있었다면\, 당신이 공동체를 돕는 건지\, 아니면 자신을 돕는 건지 생각해보길 권해요 [^4]\. 이 뉴스레터를 스스로 읽기로 선택하셨다면\, 더 나은 선택을 하실 수 있습니다\.
 
@@ -77,7 +77,7 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 먼저 마진 요건을 살펴봅니다 [^8]위기에 대응하여 마진이 어떻게 변하는지 주목하세요\. 예상대로\, 마진\(여기서 비용 역할을 맡음\)은 불확실성이 많을수록 덜 유동적이고\, 불확실성이 적을 때 더 유동성이 높아집니다\.
 
-![post](./g_6.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_6.webp)
 
 유동성을 줄이는 또 다른 방법은 참가자들의 자본을 줄이는 것입니다\:
 
@@ -85,7 +85,7 @@ sourceHash: 'a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729'
 
 이로 인해 유동성 부족이 두 가지 방식으로 나선형으로 이어질 수 있습니다\:
 
-![post](./g_7.webp)
+![post](../../../blog/2020_10_28_gatekeep/g_7.webp)
 
 > 첫째\, 시장 유동성 부족에서 마진이 증가하는 경우\, 투기꾼의 부가 감소하면 시장 유동성이 감소하여 마진이 높아지고\, 투기꾼의 자금 제약이 더욱 강화되는 등 \'마진 스파이럴\'이 발생합니다
 

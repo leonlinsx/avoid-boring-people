@@ -4,7 +4,7 @@ description: "人工智能公司的保证金陷阱、价值投资理念与权衡
 pubDate: 2020-04-29
 category: Technology
 tags: ['AI', 'business', 'investing']
-heroImage: './her_1.webp'
+heroImage: '../../../blog/2020_04_29_her/her_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'her'
 sourceHash: '140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199'
@@ -84,7 +84,7 @@ sourceHash: '140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199'
 
 > 服务公司不如软件公司被重视。风险投资热爱软件业务\;他们一开始就努力解决问题，永远印钞。这就是为什么他们能获得10到20倍的收入估值。服务公司？你为什么要投资服务公司？他们的增长本质上受限于劳动力成本和奇怪的可解决市场问题。\- 斯科特
 
-![post](./her_1.webp)
+![post](../../../blog/2020_04_29_her/her_1.webp)
 
 企业的估值通常基于某些财务指标的倍数，如收入、息税折旧摊销前利润（EBITDA）或净利润。软件公司的估值通常高于服务公司，原因如上所述。 [Higher gross margins matter, as described by Two Sigma](https://twosigmaventures.com/blog/article/why-gross-margins-matter/ 'Two')
 

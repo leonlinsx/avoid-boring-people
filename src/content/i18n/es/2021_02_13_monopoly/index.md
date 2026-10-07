@@ -4,7 +4,7 @@ description: "¿De verdad hay tantos monopolios?"
 pubDate: 2021-02-13
 category: Investing
 tags: ['business']
-heroImage: './m_4.png'
+heroImage: '../../../blog/2021_02_13_monopoly/m_4.png'
 locale: 'es'
 sourceSlug: 'monopoly'
 sourceHash: '273e6837b561b555f0e19baa0cfaf70e7ec3708b21488f353328c72283f500b3'
@@ -18,7 +18,7 @@ Los monopolios naturales son raros\, y la regulación suele perjudicar más de l
 
 Josh Breinlinger\, inversor de capital riesgo en Turtle Ventures\, tiene una breve publicación en su web sobre [how most marketplaces are not "winner takes all":](https://acrowdedspace.com/post/642666403989684224/winner-take-all-or-not 'win')
 
-![post](./m_1.webp)
+![post](../../../blog/2021_02_13_monopoly/m_1.webp)
 
 Tiendo a estar de acuerdo\. Siempre oímos hablar de \"el ganador se lo lleva todo\"\. Lo que plantea la pregunta\, ¿por qué no hay más monopolios\?
 
@@ -36,7 +36,7 @@ El problema de tener definiciones vagas es que lleva a suposiciones diferentes y
 
 Aquí está Ben Evans sobre el tema\:
 
-![post](./m_2.webp)
+![post](../../../blog/2021_02_13_monopoly/m_2.webp)
 
 Cuanto más difícil sea empezar\, más fácil será para las empresas consolidadas crecer y mantener la cuota de mercado\.
 
@@ -58,7 +58,7 @@ La industria farmacéutica\, el alcohol y las gafas son industrias muy reguladas
 
 En cuanto a la publicidad\, todos decimos que las principales empresas tienen ahora una ventaja insalvable\, pero si lo hubiéramos dicho de las cinco principales empresas hace una década [we'd have been wrong on 3 out of 5 names.](https://www.emarketer.com/Article/US-Digital-Ad-Spending-Top-37-Billion-2012-Market-Consolidates/1009362 'ad') Creo que es demasiado difícil decir que los \"monopolios\" actuales serán los mismos en el futuro\.
 
-![post](./m_3.webp)
+![post](../../../blog/2021_02_13_monopoly/m_3.webp)
 
 Probablemente haya un contraargumento más fuerte a favor de las ventas de libros online\. Pero\, por otro lado\, esa no es la única forma de comprar libros\. A primera vista\, parece que el mundo de la física vuelve a entrar en juego\: espacio limitado para contenido ilimitado\.
 

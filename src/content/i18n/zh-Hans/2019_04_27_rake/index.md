@@ -4,7 +4,7 @@ description: "基准测试针对不同市场进行价格"
 pubDate: 2019-04-27
 category: Technology
 tags: ['marketplace']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_04_27_rake/t_1.webp'
 locale: 'zh-Hans'
 sourceSlug: 'rake'
 sourceHash: 'd41c4ceb6c388ccc2108108bee3cc93c0fe9a951ea418a505e2e79c4508dcce7'

@@ -4,7 +4,7 @@ description: "Une liste de concepts à aborder pour débuter"
 pubDate: 2017-07-24
 category: Culture
 tags: ['investment banking']
-heroImage: './i_1.webp'
+heroImage: '../../../blog/2017_07_24_ib/i_1.webp'
 locale: 'fr'
 sourceSlug: 'ib'
 sourceHash: 'c3774dbd38f4fefe02027a232076b3e46947878436d28bb97859e4615690d140'

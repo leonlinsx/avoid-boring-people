@@ -4,7 +4,7 @@ description: "Se Vermeer realmente usou o processo de Tim não é o ponto"
 pubDate: 2019-06-23
 category: Culture
 tags: ['art']
-heroImage: './t_1.webp'
+heroImage: '../../../blog/2019_06_23_tim/t_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'tim'
 sourceHash: '75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb'
@@ -14,9 +14,9 @@ Acabei de aprender sobre [Tim's Vermeer](https://sonyclassics.com/timsvermeer/ '
 
 Se você é como eu e não entende muito de arte\, aqui vai um pouco de contexto\: [Johannes Vermeer](https://en.wikipedia.org/wiki/Johannes_Vermeer 'wiki') foi um pintor holandês que viveu de 1632 a 1675\. Hoje é reconhecido como um dos maiores pintores de sua época\, especialmente por sua [realistic paintings and usage of light.](https://www.artble.com/artists/johannes_vermeer/more_information/style_and_technique 'vermeer style') [^1] Algumas pinturas famosas incluem [^2]\:
 
-![post](./t_1.webp)
+![post](../../../blog/2019_06_23_tim/t_1.webp)
 
-![post](./t_2.webp)
+![post](../../../blog/2019_06_23_tim/t_2.webp)
 
 Há algum tempo\, David Hockney e Philip Steadman sugeriram que **Vermeer e outros artistas poderiam ter [used lenses and mirrors to achieve the realism in their paintings.](https://www.vanityfair.com/culture/2013/11/vermeer-secret-tool-mirrors-lenses 'Vanity Fair link')** A controvérsia gerada fez com que as pessoas duvidassem tanto das hipóteses que faziam quanto do processo hipotetizado\:
 

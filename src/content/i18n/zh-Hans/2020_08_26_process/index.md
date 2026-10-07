@@ -4,7 +4,7 @@ description: "了解流程改进的类型"
 pubDate: 2020-08-26
 category: System Design
 tags: ['business']
-heroImage: './p_6.webp'
+heroImage: '../../../blog/2020_08_26_process/p_6.webp'
 locale: 'zh-Hans'
 sourceSlug: 'process'
 sourceHash: '5d1b8612d374ae7cc64c096748e6eee64520039a86587267526efecf917459a7'
@@ -18,7 +18,7 @@ Michael Filler 和 Matthew Realff 提出，所有流程都来自8种不同类型
 
 如果让你比较左边的物体和右边的物体，你会提出哪些观点？
 
-![post](./p_1.webp)
+![post](../../../blog/2020_08_26_process/p_1.webp)
 
 你首先会注意到的就是材料。左边是石头，右边是青铜。
 
@@ -30,7 +30,7 @@ Michael Filler 和 Matthew Realff 提出，所有流程都来自8种不同类型
 
 作者提出，工艺的改进带来了人类显著的可见进步。然而，人们忽视了无形工艺的变化，过于关注物理产品的变化。在我们上面的箭头示例中，人们关注石头与青铜的结果，而忽视切割与冶炼工艺的改进 [^1]\.这些高影响力的流程创新被称为FMPI。
 
-![post](./p_2.webp)
+![post](../../../blog/2020_08_26_process/p_2.webp)
 
 很难察觉过程的改进，因为它们是无形的，需要你从不同的角度看待情况。你是在抽象细节，试图找到高层次的关系来代表你正在做的事情。这有点像数学中的群论试图抽象化，远离实际应用。
 
@@ -60,7 +60,7 @@ Michael Filler 和 Matthew Realff 提出，所有流程都来自8种不同类型
 
 最后，你可以通过减法（类型7）来去除东西，或者通过加法（类型8）来添加东西
 
-![post](./p_3.webp)
+![post](../../../blog/2020_08_26_process/p_3.webp)
 
 通过使用上述8种类型的各种变体，你可以改善做事的方式。让我们来看一些更具体的例子。
 
@@ -70,13 +70,13 @@ Michael Filler 和 Matthew Realff 提出，所有流程都来自8种不同类型
 
 制造过程中还包括许多减法（类型7）和加法（类型8）步骤。下图中来自 [Electronics Tutorial](https://www.electronics-tutorial.net/CMOS-Processing-Technology/planar-process-technology/ 'Elec')你可以看到硅（SiO2）被去除，并添加掺杂材料以创造材料的半导体性能。
 
-![post](./p_4.webp)
+![post](../../../blog/2020_08_26_process/p_4.webp)
 
 ### 通过并行化，DNA测序得到了改进
 
 在1970年代，DNA测序过程缓慢且劳动密集，因为人们认为必须对整个DNA链进行顺序处理。Joachim Messing和Peter Seeburg开发了 [shotgun approach](https://en.wikipedia.org/wiki/Joachim_Messing 'DNA')，将DNA分解为随机片段，从而加快测序速度。通过进行多个重叠片段，这允许测序过程中实现并行化（1型），大大提高了速度，降低了成本，并减少了所需的DNA量 [^4]\.
 
-![post](./p_5.webp)
+![post](../../../blog/2020_08_26_process/p_5.webp)
 
 ### 3D打印是从减法转向加法的思维方式
 
@@ -86,13 +86,13 @@ Michael Filler 和 Matthew Realff 提出，所有流程都来自8种不同类型
 
 相比之下， [3D printing](https://3dprintingindustry.com/3d-printing-basics-free-beginners-guide '3D') 是添加式（类型8）。这意味着生产过程中的浪费大大减少，因为你几乎从底层向上打印所需的内容。 [Besides the cost savings, this also allows creation of more complicated structures in fewer steps.](https://bitfab.io/blog/additive-manufacturing/ 'bit')
 
-![post](./p_6.webp)
+![post](../../../blog/2020_08_26_process/p_6.webp)
 
 ### 关于FMPI的开放性问题
 
 作者声称上述工艺改进对这些行业的成本降低至关重要，如下所示。
 
-![post](./p_7.webp)
+![post](../../../blog/2020_08_26_process/p_7.webp)
 
 除了为技术扩展开辟路径外，FMPI还具备以下特点：
 

@@ -4,7 +4,7 @@ description: "Escolha as pessoas, não a empresa"
 pubDate: 2020-11-11
 category: Culture
 tags: ['generalists']
-heroImage: './c_1.webp'
+heroImage: '../../../blog/2020_11_11_company_value/c_1.webp'
 locale: 'pt-BR'
 sourceSlug: 'company_value'
 sourceHash: 'c04f7344bf9109565c6221180e2a013be900b5a05473f30dbe99eff2a2cd0f28'
@@ -22,7 +22,7 @@ No artigo ["Are Inventors or Firms the Engines of Innovation?"](https://papers.s
 
 Podemos pensar nas empresas como desempenhando um papel intermediário de \"juntar pessoas\"\, reunindo pessoas com ideias e pessoas que querem executar\. Existe um todo [Theory of the Firm](https://en.wikipedia.org/wiki/Theory_of_the_firm 'Theory') sobre como as empresas existem para reduzir custos de transação \[\^1\]\. Nesse contexto\, poderíamos tentar separar o efeito da inovação entre as pessoas e a empresa\.
 
-![post](./c_1.webp)
+![post](../../../blog/2020_11_11_company_value/c_1.webp)
 
 Se empresas ou pessoas merecem mais crédito pode **Ajude\-nos a saber onde focar** Se quisermos obter mais inovação\:
 
@@ -38,7 +38,7 @@ Usando esses dados\, eles executam uma regressão para verificar se a contagem d
 
 A tabela abaixo tem muitos números\, e vamos ignorar todos\, exceto os dois na caixa vermelha\. Essa comparação entre 0\,341 para inventores e 0\,032 para empresas é o que os pesquisadores estão se referindo na citação acima\; números mais altos significam mais poder explicativo para a contagem de patentes\. Para nossos propósitos\, pense apenas em efeitos fixos como significando \"efeito\"\, mas você pode ler mais sobre a definição real [here](http://www.jblumenstock.com/files/courses/econ174/FEModels.pdf 'fixed')\.
 
-![post](./c_2.webp)
+![post](../../../blog/2020_11_11_company_value/c_2.webp)
 
 Se o acima for verdadeiro\, então isso significa que\, como indivíduos\, **Devemos buscar trabalhar com colegas fortes\, em vez de empresas fortes** se estamos interessados em ser mais inovadores\. Em outras palavras\, é um dado que mostra por que você deve se importar tanto com as pessoas com quem vai trabalhar diretamente\, e não com a reputação da empresa\.
 

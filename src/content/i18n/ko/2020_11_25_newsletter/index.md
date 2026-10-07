@@ -4,7 +4,7 @@ description: "무엇을 쓸지, 그리고 어떻게 홍보할까"
 pubDate: 2020-11-25
 category: Culture
 tags: ['writing', 'newsletter']
-heroImage: './n_1.webp'
+heroImage: '../../../blog/2020_11_25_newsletter/n_1.webp'
 locale: 'ko'
 sourceSlug: 'newsletter'
 sourceHash: '41c2775da8969846b29131d4fb0bf7ebe691732fac0d0c4e7cdb9f4d3b9ff2f7'

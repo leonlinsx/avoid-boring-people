@@ -4,7 +4,7 @@ description: "No encuentras tiempo de calidad buscándolo"
 pubDate: 2020-02-26
 category: Culture
 tags: ['behaviour']
-heroImage: './q_3.webp'
+heroImage: '../../../blog/2020_02_26_time/q_3.webp'
 locale: 'es'
 sourceSlug: 'time'
 sourceHash: '1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4'
@@ -24,11 +24,11 @@ Si debemos atesorar cada momento\, ¿qué pasa entonces con el concepto de tiemp
 
 El tiempo de calidad es un concepto que lleva tiempo circulando\, y el interés por ello ha ido creciendo con el tiempo\.
 
-![post](./q_1.webp)
+![post](../../../blog/2020_02_26_time/q_1.webp)
 
 Es [even one of the love languages.](https://www.5lovelanguages.com/ 'love')
 
-![post](./q_2.webp)
+![post](../../../blog/2020_02_26_time/q_2.webp)
 
 ¿Significa esto que hemos estado viviendo en una ilusión colectiva\, intentando perseguir algo que no existe\? Ryan lo piensa\, citando a Jerry Seinfeld\:
 
@@ -42,7 +42,7 @@ En cambio\, es probable que te lleves una sorpresa positiva cuando tienes bajas 
 
 Si no puedes diseñar tiempo de calidad\, y es más bien cuestión de eventos aleatorios\, se deduce que quieres aumentar la frecuencia con la que ocurren esos eventos\. No puedes aumentar la probabilidad\, pero sí la duración de que ocurran esos eventos\. Dicho de otro modo\, **Quieres aumentar la cantidad de tiempo\, no diseñar tiempo de calidad\.**
 
-![post](./q_3.webp)
+![post](../../../blog/2020_02_26_time/q_3.webp)
 
 Ryan insinúa indirectamente que la duración es la clave\, citando a otro asesor sobre cómo encontrar ese tiempo ordinario\:
 

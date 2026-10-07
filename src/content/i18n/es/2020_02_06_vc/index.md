@@ -4,7 +4,7 @@ description: "Lo que los fundadores deben saber sobre el capital riesgo"
 pubDate: 2020-02-06
 category: Investing
 tags: ['startups', 'vc']
-heroImage: './v_1.webp'
+heroImage: '../../../blog/2020_02_06_vc/v_1.webp'
 locale: 'es'
 sourceSlug: 'vc'
 sourceHash: '9d01a748fa6d061c68950b1eac349a4ffd4776d47797fb6cdab0684aec8cb946'
@@ -34,7 +34,7 @@ Scott\'s [mentioned this publicly before](https://www.quora.com/What-are-some-co
 
 Como recordatorio\, aunque seas más conservador con la distribución de los rendimientos que los anteriores\, esos rendimientos de 100x seguirán dándote éxito\:
 
-![post](./v_1.webp)
+![post](../../../blog/2020_02_06_vc/v_1.webp)
 
 > ¿Cómo evalúas a un equipo fundador\? Por supuesto\, diferentes capitalistas de riesgo hacen las cosas de forma distinta\, pero hay algunas áreas comunes de investigación\:
 
@@ -78,7 +78,7 @@ Algunas empresas tienen balances con pocos endeudamientos\, otras tienen una deu
 
 [Carta](https://carta.com/blog/getting-funded-how-long-does-it-actually-take/ 'carta') y [Crunchbase](https://news.crunchbase.com/news/the-time-between-vc-rounds-is-shrinking/ 'Crunchbase') También muestran periodos temporales bastante similares\.
 
-![post](./v_2.webp)
+![post](../../../blog/2020_02_06_vc/v_2.webp)
 
 > Un gran error que en a16z hemos visto que cometen emprendedores es recaudar una cantidad demasiado pequeña de dinero con una valoración agresiva\, que es precisamente lo que no quieres hacer\. Esto establece la valoración de alto nivel\, pero sin los recursos financieros necesarios para alcanzar los objetivos empresariales necesarios para elevar tu próxima ronda con seguridad muy por encima de la valoración actual\.
 

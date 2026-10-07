@@ -4,7 +4,7 @@ description: "ベルナール・アルノーの創造性の見方"
 pubDate: 2020-08-05
 category: Culture
 tags: ['fashion', 'art', 'business']
-heroImage: './l_3.webp'
+heroImage: '../../../blog/2020_08_05_lvmh/l_3.webp'
 featured: false
 locale: 'ja'
 sourceSlug: 'lvmh'
@@ -19,11 +19,11 @@ LVMHのCEOであるベルナール・アルノーは、スターブランドに�
 
 [LVMH](https://en.wikipedia.org/wiki/LVMH 'LVMH')は私たちがよく知る多くのラグジュアリーブランドの親会社です。[Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ '1987')「ルイ・ヴィトン」と「モエ・エ・シャンドン&ヘネシー」の合併により、現在ではワイン、ファッション、ジュエリーなど70以上のブランドを展開しています。最も近い競合であるケリング[^1]と比べると、[LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html 'rev')
 
-![post](./l_1.webp)
+![post](../../../blog/2020_08_05_lvmh/l_1.webp)
 
 そしてその頂点にいるのが[Bernard Arnault](https://en.wikipedia.org/wiki/Bernard_Arnault 'Bernard')で、彼は1990年からずっとグループのトップを務めている。それは彼にとって大きな成果を上げ、世界で最も裕福な人物の一人となった。
 
-![post](./l_2.webp)
+![post](../../../blog/2020_08_05_lvmh/l_2.webp)
 
 [Brett Bivens tweeted this HBR interview of Bernard a while back](https://twitter.com/brettbivens/status/1251505408960794624?s=20 'Brett')、そして今日はその記事をさらにいくつかの情報源で発展させたいと思います。バーナードが創造性をどのように捉えているのか、混沌を許容し、どこでコントロールを制限するかをよりよく理解できるでしょう。**
 
@@ -113,7 +113,7 @@ LVMHのCEOであるベルナール・アルノーは、スターブランドに�
 
 ## 長期的なブランド構築
 
-![post](./l_3.webp)
+![post](../../../blog/2020_08_05_lvmh/l_3.webp)
 
 私たちは、バーナードがブランド構築の経験から生じた3つの二面性について触れました。創造性とコントロール、アイデアの実行、伝統と現代性の融合を許すことで、バーナードはLVMHを長期的に築いていると考えています。
 
@@ -121,7 +121,7 @@ LVMHのCEOであるベルナール・アルノーは、スターブランドに�
 
 そして、少なくともLVMHの株価や市場シェアから見れば、これまでのところ彼にはうまくいっています。
 
-![post](./l_4.webp)
+![post](../../../blog/2020_08_05_lvmh/l_4.webp)
 
 彼のフレームワークのどれだけが他のビジネスにも当てはまるのでしょうか?私は主に創造性の重視に賛成ですが、同時にオペレーションの卓越性も重視しています。ただ、最近の[why companies are bad at innovating](/writing/turtle 'turtle')指摘によると、多くの企業がより多くの創造性を受け入れることに伴う変動性を受け入れるかどうかはわかりません。過去と現在の二重性が簡単に実装できるのかはわかりません。単なる見せかけのマーケティングキャンペーン以外に。
 
