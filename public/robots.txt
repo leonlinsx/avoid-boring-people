@@ -43,3 +43,6 @@ User-agent: ClaudeBot
 Disallow: /
 
 Sitemap: https://leonlins.com/sitemap-index.xml
+
+# Signal Brief uses a separate canonical domain on the same deployment.
+Sitemap: https://leonlinsx.com/signal-sitemap.xml

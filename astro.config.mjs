@@ -34,8 +34,11 @@ export default defineConfig({
     sitemap({
       filter(page) {
         const pathname = new URL(page).pathname;
+        // Signal has its own canonical domain and public/signal-sitemap.xml.
         // Exclude search (noindex), tokens (noindex), and api endpoints
         return (
+          pathname !== '/signal' &&
+          pathname !== '/signal/' &&
           !pathname.startsWith('/api/') &&
           pathname !== '/writing/search/' &&
           pathname !== '/writing/search' &&

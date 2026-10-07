@@ -11,6 +11,10 @@ Leon Lin's personal writing site. It publishes public essays on investing, techn
 - RSS feed: https://leonlins.com/rss.xml
 - Sitemap: https://leonlins.com/sitemap-index.xml
 
+## Signal Brief
+
+- Product: https://leonlinsx.com/signal — An independent AI research product built by Leon Lin, launched in 2026 and currently in private beta. It produces evidence-backed daily intelligence from news, primary sources, analysis, and market information. The leonlinsx.com domain predates the product.
+
 ## Start here
 
 - [Ergodicity: What Does It Mean?](https://leonlins.com/writing/ergodicity/) — Why ensemble and time averages matter for investing and risk.
