@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { serializeJsonLd } from '../utils/jsonld';
+
+const canonical = 'https://leonlinsx.com/signal';
+const description =
+  'Signal Brief is an independent AI research product launched in 2026. It turns news, primary sources, analysis, and market information into evidence-backed daily intelligence.';
+const product = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': `${canonical}#product`,
+  name: 'Signal Brief',
+  url: canonical,
+  description,
+  applicationCategory: 'ResearchApplication',
+  creator: {
+    '@type': 'Person',
+    name: 'Leon Lin',
+    url: 'https://leonlins.com/about',
+  },
+};
+---
+
+<BaseLayout
+  title="Signal Brief — AI Daily Intelligence · Launched 2026"
+  description={description}
+  canonical={canonical}
+>
+  <script type="application/ld+json" set:html={serializeJsonLd(product)} />
+  <div class="signal">
+    <section class="signal-hero" aria-labelledby="signal-title">
+      <p class="status">Independent product · Launched 2026 · Private beta</p>
+      <h1 id="signal-title">Signal Brief</h1>
+      <p class="lede">
+        An AI research system for high-information daily intelligence.
+      </p>
+      <p>
+        Signal Brief turns news, primary sources, long-form analysis, and market
+        information into a compact, evidence-backed daily briefing. It
+        identifies material developments, reconciles evidence, and tracks how
+        new information changes an evolving worldview.
+      </p>
+      <a href="#how-it-works">How it works ↓</a>
+    </section>
+
+    <section id="how-it-works" aria-labelledby="workflow-title">
+      <h2 id="workflow-title">From sources to signal</h2>
+      <ol class="pipeline" aria-label="Research workflow">
+        <li>Sources</li>
+        <li>Relevance &amp; significance</li>
+        <li>Evidence synthesis</li>
+        <li>Persistent worldview</li>
+        <li>Daily brief</li>
+      </ol>
+      <p>
+        The goal is to surface what materially changed, rather than produce
+        another news feed. Related sources support a development; new evidence
+        is compared with prior context. A bounded, evolving worldview retains
+        that context across briefs, while source provenance makes conclusions
+        auditable.
+      </p>
+    </section>
+
+    <section aria-labelledby="output-title">
+      <h2 id="output-title">A daily brief with an audit trail</h2>
+      <p>
+        The working system produces a concise daily intelligence email. Selected
+        developments carry source references, and citations are validated
+        against the evidence used to generate the brief. Historical context
+        advances only after successful delivery.
+      </p>
+      <div class="preview" role="note" aria-label="Product preview status">
+        <p class="preview-label">Product preview</p>
+        <p>
+          A public screenshot of the private daily brief is not yet available.
+        </p>
+        <p class="muted">
+          The brief is currently used as a personal production system.
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="models-title">
+      <h2 id="models-title">Frontier models for deeper research</h2>
+      <p>
+        The current implementation uses local Ollama models for embeddings,
+        editorial judgment, and synthesis. Planned Claude development focuses on
+        long-context source analysis, structured extraction, synthesis across
+        heterogeneous sources, reconciliation of supporting and conflicting
+        evidence, and agentic research workflows.
+      </p>
+    </section>
+
+    <section aria-labelledby="about-title">
+      <h2 id="about-title">Built by Leon Lin</h2>
+      <p>
+        Signal Brief is an actively developed independent software product,
+        launched in 2026 and currently in private beta. It is built by
+        <a href="https://leonlins.com/about">Leon Lin</a>.
+      </p>
+      <p class="muted">
+        This product lives on Leon’s longstanding personal/project domain,
+        leonlinsx.com, registered in January 2019. Signal Brief’s 2026 launch
+        refers to the product, not the domain or an older legal entity.
+      </p>
+      <p>
+        For product questions, <a href="https://leonlins.com/contact"
+          >contact Leon</a
+        >.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .signal {
+    max-width: 740px;
+    margin: 0 auto;
+  }
+  .signal section {
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .signal section:last-child {
+    border-bottom: 0;
+  }
+  .status,
+  .muted {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .status {
+    margin-bottom: var(--space-md);
+  }
+  .signal h1 {
+    font-size: clamp(2.4rem, 7vw, 3.5rem);
+    margin-bottom: var(--space-md);
+  }
+  .lede {
+    font-size: var(--text-xl);
+    line-height: 1.4;
+  }
+  .signal h2 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-md);
+  }
+  .pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    list-style: none;
+    padding: 0;
+    margin: var(--space-md) 0;
+  }
+  .pipeline li {
+    font-size: var(--text-sm);
+  }
+  .pipeline li:not(:last-child)::after {
+    content: '→';
+    margin-left: var(--space-sm);
+    color: var(--color-text-muted);
+  }
+  .preview {
+    padding: var(--space-lg);
+    margin-top: var(--space-md);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .preview-label {
+    font-weight: 700;
+  }
+  .preview p:last-child {
+    margin-bottom: 0;
+  }
+</style>
