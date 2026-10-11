@@ -1,5 +1,8 @@
 import type { APIRoute } from 'astro';
-import { tryNeonDb } from '../../../../lib/neon.ts';
+import {
+  logProductionDatabaseIdentity,
+  tryNeonDb,
+} from '../../../../lib/neon.ts';
 import {
   handleCreateComment,
   handleListComments,
@@ -7,8 +10,15 @@ import {
 
 export const prerender = false;
 
-export const GET: APIRoute = ({ request, params }) =>
-  handleListComments(request, { slug: params.slug ?? '' }, { db: tryNeonDb() });
+export const GET: APIRoute = async ({ request, params }) => {
+  const response = await handleListComments(
+    request,
+    { slug: params.slug ?? '' },
+    { db: tryNeonDb() },
+  );
+  logProductionDatabaseIdentity(response);
+  return response;
+};
 
 export const POST: APIRoute = ({ request, params }) =>
   handleCreateComment(

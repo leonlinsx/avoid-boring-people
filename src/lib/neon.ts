@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless';
+import { createHash } from 'node:crypto';
 
 export type NeonDb = ReturnType<typeof neonDb>;
 
@@ -22,5 +23,27 @@ export function tryNeonDb(): NeonDb | null {
     return neon(connectionUrl('Database'));
   } catch {
     return null;
+  }
+}
+
+// Temporary pre-005 identity check. Only a successful database-backed GET
+// calls this; the public response never carries diagnostic information.
+export function logProductionDatabaseIdentity(response: Response): void {
+  if (process.env.VERCEL_ENV !== 'production' || !response.ok) return;
+  try {
+    const url = new URL(connectionUrl('Database'));
+    const hostname = url.hostname
+      .toLowerCase()
+      .replace(/\.$/, '')
+      .replace(/-pooler(?=\.c-\d+\.[^.]+\.aws\.neon\.tech$)/, '');
+    const database = decodeURIComponent(url.pathname.slice(1));
+    if (!hostname || !database) return;
+    console.info(
+      createHash('sha256')
+        .update(JSON.stringify([hostname, database]))
+        .digest('hex'),
+    );
+  } catch {
+    // A diagnostic failure must not expose a URL or change the route response.
   }
 }

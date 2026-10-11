@@ -1,6 +1,7 @@
 // Discussion coverage: body/token handling, Turnstile, handlers, SQL, and route integration.
 
 import assert from 'node:assert/strict';
+import { logProductionDatabaseIdentity } from '../../src/lib/neon.ts';
 
 import {
   DELETED_COMMENT_PLACEHOLDER,
@@ -1333,7 +1334,10 @@ export function testCommentIntegrationBoundaries() {
   // Both routes share the module-level "unconfigured database" adapter instead
   // of each keeping a private copy that can drift.
   for (const route of [collectionRoute, itemRoute]) {
-    assert.match(route, /import \{ tryNeonDb \} from '.*lib\/neon\.ts'/);
+    assert.match(
+      route,
+      /import \{[^}]*\btryNeonDb\b[^}]*\} from '.*lib\/neon\.ts'/,
+    );
     assert.ok(
       !route.includes('function tryNeonDb'),
       'the null-database adapter must live in src/lib/neon.ts',
@@ -1478,6 +1482,7 @@ export function testCommentIntegrationBoundaries() {
 }
 
 export async function runDiscussionTests() {
+  testTemporaryDatabaseIdentity();
   await testCommentDomain();
   await testCommentTokens();
   await testCommentDisplay();
@@ -1485,4 +1490,52 @@ export async function runDiscussionTests() {
   await testCommentHandlers();
   await testCommentStoreSql();
   await testCommentIntegrationBoundaries();
+}
+
+function testTemporaryDatabaseIdentity() {
+  const names = [
+    'DATABASE_URL',
+    'DATABASE_URL_UNPOOLED',
+    'VERCEL_ENV',
+  ] as const;
+  const previous = names.map((name) => process.env[name]);
+  const originalInfo = console.info;
+  const logs: unknown[][] = [];
+  console.info = (...args: unknown[]) => logs.push(args);
+  try {
+    const host = 'ep-fixture.c-2.us-east-2.aws.neon.tech';
+    const expected = createHash('sha256')
+      .update(JSON.stringify([host, 'fixture_db']))
+      .digest('hex');
+    process.env.VERCEL_ENV = 'production';
+    process.env.DATABASE_URL = `postgres://fixture:synthetic@${host}/fixture%5Fdb`;
+    process.env.DATABASE_URL_UNPOOLED =
+      'postgres://other:synthetic@other.invalid/other';
+    logProductionDatabaseIdentity(new Response(null, { status: 200 }));
+    process.env.DATABASE_URL = `postgres://different:changed@${host.replace('.c-2', '-pooler.c-2').toUpperCase()}/fixture_db?sslmode=require`;
+    logProductionDatabaseIdentity(new Response(null, { status: 200 }));
+    assert.deepEqual(logs, [[expected], [expected]]);
+    process.env.DATABASE_URL = `postgres://fixture:synthetic@${host}/different_db`;
+    logProductionDatabaseIdentity(new Response(null, { status: 200 }));
+    assert.notEqual(logs[2][0], expected);
+    for (const args of logs) {
+      assert.equal(args.length, 1);
+      assert.match(String(args[0]), /^[0-9a-f]{64}$/);
+    }
+    const count = logs.length;
+    logProductionDatabaseIdentity(new Response(null, { status: 503 }));
+    logProductionDatabaseIdentity(new Response(null, { status: 404 }));
+    process.env.VERCEL_ENV = 'preview';
+    logProductionDatabaseIdentity(new Response(null, { status: 200 }));
+    process.env.VERCEL_ENV = 'production';
+    process.env.DATABASE_URL = 'invalid synthetic configuration';
+    logProductionDatabaseIdentity(new Response(null, { status: 200 }));
+    assert.equal(logs.length, count);
+  } finally {
+    console.info = originalInfo;
+    names.forEach((name, index) => {
+      if (previous[index] === undefined) delete process.env[name];
+      else process.env[name] = previous[index];
+    });
+  }
 }
