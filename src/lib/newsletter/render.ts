@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import rehypeStringify from 'rehype-stringify';
@@ -14,6 +14,7 @@ import { newsletterAssetPath } from '../../integrations/newsletter-assets.ts';
 const contentRoot = fileURLToPath(
   new URL('../../content/blog/', import.meta.url),
 );
+const publicRoot = fileURLToPath(new URL('../../../public/', import.meta.url));
 export const GMAIL_CLIP_LIMIT_BYTES = 100 * 1024;
 
 export type NewsletterRenderInput = {
@@ -97,22 +98,56 @@ function resolveLink(value: string): string {
 }
 
 function resolveImage(value: string, articleId: string): string {
-  if (value.startsWith('./') || value.startsWith('../')) {
-    const relativePath = newsletterAssetPath(articleId, value);
-    const source = resolve(
-      contentRoot,
-      relativePath.replace('/newsletter-assets/', ''),
-    );
-    if (!existsSync(source))
+  let url: URL;
+  if (!value.startsWith('/') && !/^[a-z][a-z0-9+.-]*:/i.test(value)) {
+    let assetPath: string;
+    try {
+      assetPath = newsletterAssetPath(articleId, value);
+    } catch {
+      throw new NewsletterRenderError(`Unsupported newsletter image: ${value}`);
+    }
+    url = new URL(assetPath, SITE_URL);
+  } else {
+    url = new URL(absoluteUrl(value, 'Article image'));
+  }
+  if (url.origin === new URL(SITE_URL).origin) {
+    const isNewsletterAsset = url.pathname.startsWith('/newsletter-assets/');
+    const root = isNewsletterAsset ? contentRoot : publicRoot;
+    let path: string;
+    try {
+      path = decodeURIComponent(
+        isNewsletterAsset
+          ? url.pathname.slice('/newsletter-assets/'.length)
+          : url.pathname.slice(1),
+      );
+    } catch {
+      throw new NewsletterRenderError(`Invalid newsletter image: ${value}`);
+    }
+    const source = resolve(root, path);
+    if (
+      !source.startsWith(`${root.replace(/\/$/, '')}/`) ||
+      !(
+        isNewsletterAsset
+          ? /\.(gif|jpe?g|png|webp)$/i
+          : /\.(gif|jpe?g|png|webp|svg|avif)$/i
+      ).test(source) ||
+      !existsSync(source) ||
+      !statSync(source).isFile()
+    ) {
       throw new NewsletterRenderError(
         `Newsletter image does not exist: ${value}`,
       );
-    return new URL(relativePath, SITE_URL).toString();
+    }
   }
-  return absoluteUrl(value, 'Article image');
+  return url.toString();
 }
 
 function assertSupportedMarkdown(markdown: string): void {
+  if (/\{\{|\{%/.test(markdown)) {
+    throw new NewsletterRenderError(
+      'Unresolved template markup is not supported in newsletter email.',
+    );
+  }
   if (
     /^\s*(import|export)\s/m.test(markdown) ||
     /<\/?[A-Z][A-Za-z0-9]*/.test(markdown)
@@ -137,7 +172,8 @@ function plainText(markdown: string): string {
   const blocks: string[] = [];
   const toText = (node: any): string => {
     if (typeof node.value === 'string') return node.value;
-    if (node.type === 'image') return node.alt ?? '';
+    if (node.type === 'image' || node.type === 'imageReference')
+      return node.alt ?? '';
     return (node.children ?? [])
       .map(toText)
       .join(node.type === 'break' ? '\n' : '');
@@ -161,6 +197,34 @@ export function renderNewsletterEmail(
     .use(remarkParse)
     .use(remarkGfm)
     .use(() => (tree: any) => {
+      // Malformed image syntax can parse as ordinary text and bypass the image visitor.
+      visit(tree, 'text', (node: any) => {
+        const source = markdown.slice(
+          node.position.start.offset,
+          node.position.end.offset,
+        );
+        if (/(?<!\\)!\[/.test(source)) {
+          throw new NewsletterRenderError(
+            'Malformed or unresolved Markdown image in newsletter email.',
+          );
+        }
+      });
+      const definitions = new Map<string, any>();
+      visit(tree, 'definition', (node: any) => {
+        if (!definitions.has(node.identifier))
+          definitions.set(node.identifier, node);
+      });
+      visit(tree, 'imageReference', (node: any) => {
+        const definition = definitions.get(node.identifier);
+        if (!definition) {
+          throw new NewsletterRenderError(
+            'Unresolved newsletter image reference.',
+          );
+        }
+        node.type = 'image';
+        node.url = definition.url;
+        node.title = definition.title;
+      });
       visit(tree, 'link', (node: any) => {
         node.url = resolveLink(node.url);
       });
