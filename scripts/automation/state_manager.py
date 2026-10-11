@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Dict, Iterable, Optional
 
 from scripts.automation.json_store import load_json_object, save_json_object
+from scripts.automation.routing import eligible_for_category
 
 STATE_FILE = Path("posted.json")
 STATE_VERSION = 2
@@ -118,20 +119,33 @@ def _parse_timestamp(value: Optional[str]) -> Optional[datetime]:
 
 def platform_is_eligible(post: Dict, platform: str, mode: str, state: Optional[Dict] = None, now: Optional[datetime] = None) -> bool:
     """Whether one post may be sent to one platform in the requested mode."""
+    return _history_skip_reason(post, platform, mode, state, now) is None
+
+
+def platform_skip_reason(post: Dict, platform: str, mode: str, state: Optional[Dict] = None, now: Optional[datetime] = None) -> Optional[str]:
+    """Shared routing/history policy for selection and run diagnostics."""
+    if not eligible_for_category(post, platform):
+        return "category routing"
+    return _history_skip_reason(post, platform, mode, state, now)
+
+
+def _history_skip_reason(post: Dict, platform: str, mode: str, state: Optional[Dict] = None, now: Optional[datetime] = None) -> Optional[str]:
     if platform not in PLATFORMS:
-        return False
+        return "unknown platform"
     if mode == "new":
-        return should_publish_new(post["id"], platform, state)
+        return None if should_publish_new(post["id"], platform, state) else "already posted"
     if mode != "evergreen" or not post.get("evergreen", False):
-        return False
+        return "not evergreen"
     if platform in {"devto", "reddit"}:
-        return False
+        return "new-only platform"
 
     previous = _parse_timestamp(last_posted_at(post["id"], platform, state))
     if previous is None:
-        return True
+        return None
     cooldown = timedelta(days=EVERGREEN_COOLDOWN_DAYS[platform])
-    return previous <= (now or datetime.now(timezone.utc)) - cooldown
+    if previous > (now or datetime.now(timezone.utc)) - cooldown:
+        return f"{EVERGREEN_COOLDOWN_DAYS[platform]}-day cooldown"
+    return None
 
 
 def should_publish_new(post_id: str, platform: str, state: Optional[Dict] = None) -> bool:
@@ -177,15 +191,16 @@ def _last_posted_category(posts: Iterable[Dict], state: Dict) -> Optional[str]:
 
 
 def select_next_post(posts: Iterable[Dict], platforms: Iterable[str], mode: str) -> Optional[Dict]:
-    """Choose the least-used eligible article, retaining the existing ranking tie-breakers."""
+    """Prefer evergreen channel coverage, then the existing fairness tie-breakers."""
     state = load_state()
+    now = datetime.now(timezone.utc)
     posts = list(posts)
     rotate_from = _last_posted_category(posts, state) if mode == "evergreen" else None
     candidates = []
     active_platforms = tuple(platform for platform in platforms if platform in PLATFORMS)
     for post in posts:
         eligible_platforms = [
-            platform for platform in active_platforms if platform_is_eligible(post, platform, mode, state)
+            platform for platform in active_platforms if platform_skip_reason(post, platform, mode, state, now) is None
         ]
         if not eligible_platforms:
             continue
@@ -205,12 +220,12 @@ def select_next_post(posts: Iterable[Dict], platforms: Iterable[str], mode: str)
         candidates.append(candidate)
 
     if mode == "evergreen":
-        # Category rotation outranks recency: a same-theme repeat week to
-        # week is the visible failure; among rotated candidates the
-        # longest-unposted still wins, with score as the final tiebreak.
+        # Maximize publishable coverage before fairness and category rotation;
+        # a one-channel retry must not crowd out a broadly eligible article.
         return min(
             candidates,
             key=lambda post: (
+                -len(post["eligible_platforms"]),
                 post["platform_count"],
                 post["same_category_as_last"],
                 post["oldest_posted_at"],

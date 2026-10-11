@@ -1436,6 +1436,7 @@ def test_a_new_article_and_an_evergreen_cycle_both_reach_instagram(monkeypatch, 
     """The same default list feeds both modes, so Instagram is eligible in each."""
     monkeypatch.setattr(state_manager, "STATE_FILE", tmp_path / "posted.json")
     post = _post(date="2021-01-01")
+    post["category"] = "Technology"  # DEV is routed only to technical articles.
 
     fresh = state_manager.select_next_post([post], list(DEFAULT_PLATFORMS), "new")
     recycled = state_manager.select_next_post([post], list(DEFAULT_PLATFORMS), "evergreen")
