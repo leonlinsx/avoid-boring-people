@@ -5,45 +5,49 @@ import {
   takeRateLimit,
 } from '../../lib/newsletter/rate-limit.ts';
 
+import { normalizeEmail } from '../../lib/newsletter/domain.ts';
+import { readJsonBody, isHoneypotFilled } from '../../lib/request-body.ts';
+import {
+  boundedSignupString,
+  MAX_SIGNUP_REQUEST_BYTES,
+  signupClientIp,
+} from '../../lib/newsletter/signup-input.ts';
+
 export const prerender = false;
 
 const SUBSTACK_BASE = 'https://avoidboringpeople.substack.com';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
-    const { email, first_url, source } = await request.json();
-    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    const parsed = await readJsonBody(request, MAX_SIGNUP_REQUEST_BYTES);
+    const input = parsed.ok ? parsed.value : {};
+    const email = normalizeEmail(boundedSignupString(input.email, 320) ?? '');
+    const first_url = boundedSignupString(input.first_url, 2048);
+    const source = boundedSignupString(input.source, 100);
+    if (!parsed.ok || !email) {
       return new Response(
         JSON.stringify({ ok: false, message: 'Invalid email' }),
         { status: 400 },
       );
     }
 
-    // Unauthenticated relay to Substack: throttle per address and per IP so
-    // this endpoint cannot be used for subscription bombing. A rate-store
-    // outage fails open (logged) so legitimate signups keep working.
+    if (isHoneypotFilled(input.website)) return Response.json({ ok: true });
+    // Preserve the legacy availability policy: store outages fail open, with
+    // a redacted operational log. Owned signup still fails closed.
     try {
-      const forwarded = request.headers
-        .get('x-forwarded-for')
-        ?.split(',')[0]
-        ?.trim();
       const [emailAllowed, ipAllowed] = await Promise.all([
+        takeRateLimit('email', email, EMAIL_ATTEMPTS_PER_HOUR),
         takeRateLimit(
-          'email',
-          String(email).toLowerCase(),
-          EMAIL_ATTEMPTS_PER_HOUR,
+          'ip',
+          signupClientIp(request, clientAddress),
+          IP_ATTEMPTS_PER_HOUR,
         ),
-        takeRateLimit('ip', forwarded ?? 'unknown', IP_ATTEMPTS_PER_HOUR),
       ]);
-      if (!emailAllowed || !ipAllowed) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            message: 'Too many attempts. Please try again later.',
-          }),
+      if (!emailAllowed || !ipAllowed)
+        return Response.json(
+          { ok: false, message: 'Too many attempts. Please try again later.' },
           { status: 429 },
         );
-      }
     } catch (error) {
       console.error('newsletter_subscribe_rate_limit_unavailable', {
         name: error instanceof Error ? error.name : 'unknown',
@@ -88,7 +92,10 @@ export const POST: APIRoute = async ({ request }) => {
       { status: 502 },
     );
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Request failed';
+    console.error('newsletter_subscribe_failure', {
+      name: err instanceof Error ? err.name : 'unknown',
+    });
+    const message = 'Subscription failed. Please try again later.';
     return new Response(JSON.stringify({ ok: false, message }), {
       status: 500,
     });

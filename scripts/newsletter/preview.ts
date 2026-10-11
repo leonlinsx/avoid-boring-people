@@ -4,14 +4,11 @@ import {
   readNewsletterArticle,
   renderNewsletterEmail,
 } from '../../src/lib/newsletter/render.ts';
+import {
+  campaignContentHash,
+  newsletterTitle,
+} from '../../src/lib/newsletter/campaign.ts';
 import { NEWSLETTER_PRIVACY_URL } from '../../src/lib/newsletter/email.ts';
-
-function frontmatterValue(markdown: string, key: string): string | null {
-  const match = markdown.match(
-    new RegExp(`^${key}:\\s*['"]?(.+?)['"]?\\s*$`, 'm'),
-  );
-  return match?.[1]?.trim() ?? null;
-}
 
 const [articleId, output = 'newsletter-preview.html'] = process.argv.slice(2);
 if (!articleId) {
@@ -21,7 +18,7 @@ if (!articleId) {
 }
 
 const markdown = readNewsletterArticle(articleId);
-const title = frontmatterValue(markdown, 'title');
+const title = newsletterTitle(markdown);
 const privacyUrl = process.env.NEWSLETTER_PRIVACY_URL ?? NEWSLETTER_PRIVACY_URL;
 const unsubscribeUrl = process.env.NEWSLETTER_PREVIEW_UNSUBSCRIBE_URL;
 if (!title || !unsubscribeUrl) {
@@ -40,3 +37,7 @@ const rendered = renderNewsletterEmail({
 const destination = resolve(output);
 writeFileSync(destination, rendered.html, 'utf8');
 console.log(`Newsletter preview written to ${destination}`);
+
+console.log(
+  `Approved content SHA-256: ${campaignContentHash(articleId, title, markdown, privacyUrl)}`,
+);

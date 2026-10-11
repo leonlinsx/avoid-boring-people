@@ -59,9 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
       'Newsletter SNS event rejected:',
       authenticated
         ? 'Authenticated processing failed; retry required.'
-        : error instanceof Error
-          ? error.message
-          : 'unknown error',
+        : 'Unauthenticated request rejected.',
     );
     // SNS retries 5xx, not ordinary 4xx. Never acknowledge a failed state update.
     return new Response(null, { status: authenticated ? 503 : 400 });

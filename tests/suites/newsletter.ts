@@ -1,3 +1,4 @@
+import { testPreMigrationReadiness } from './newsletter-readiness.ts';
 // Newsletter coverage: domain rules, importing, rendering, send safeguards, confirmation, lifecycle, and analytics.
 
 import assert from 'node:assert/strict';
@@ -624,6 +625,8 @@ export async function testSubscriptionLifecycleDb() {
       assert.match(query.text, /status IN \('pending', 'unsubscribed'\)/);
       assert.match(query.text, /confirmed_at/);
       assert.match(query.text, /confirmation_token_hash = NULL/);
+      assert.match(query.text, /confirmation_expires_at > now\(\)/);
+      assert.match(query.text, /confirmation_expires_at = NULL/);
       assert.match(query.text, /status = 'active'/);
       assert.doesNotMatch(
         query.text,
@@ -1965,6 +1968,7 @@ export async function testSnsValidation() {
 }
 
 export async function runNewsletterTests() {
+  await testPreMigrationReadiness();
   await testNewsletterDomain();
   await testNewsletterImporter();
   await testNewsletterRenderer();
