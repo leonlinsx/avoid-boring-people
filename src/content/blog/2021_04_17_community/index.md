@@ -37,7 +37,7 @@ We’ve seen above how the early stages of computing were influenced by communit
 
 Software tools such as **Slack (2009), Discord (2015), Circle (2019)** grew popular because of communities adopting them to connect with each other.
 
-![post]({{ site.url }}{{ site.baseurl }}/assets/images/community_history_1.png)
+![Spacewar!, an RFC, the Homebrew Computer Club, and modern community platforms](./c_1.webp)
 
 And here are some interesting communities I see today (full disclosure, I’m part of some of them):
 

@@ -19,6 +19,7 @@ import {
 import {
   GMAIL_CLIP_LIMIT_BYTES,
   NewsletterRenderError,
+  readNewsletterArticle,
   renderNewsletterEmail,
 } from '../../src/lib/newsletter/render.ts';
 import { assertAllowedTestRecipient } from '../../src/lib/newsletter/test-send.ts';
@@ -185,6 +186,92 @@ export function testNewsletterRenderer() {
   assert.equal(
     rendered.headers['List-Unsubscribe'],
     '<https://leonlins.com/api/newsletter/unsubscribe?token=preview>',
+  );
+  const communityId = '2021_04_17_community/index.md';
+  const communityMarkdown = readNewsletterArticle(communityId);
+  const community = renderNewsletterEmail({
+    ...input,
+    articleId: communityId,
+    markdown: communityMarkdown,
+  });
+  assert.match(
+    community.html,
+    /<img[^>]+src="https:\/\/leonlins\.com\/newsletter-assets\/2021_04_17_community\/c_1\.webp"/,
+  );
+  assert.match(community.text, /Spacewar!, an RFC, the Homebrew Computer Club/);
+  assert.doesNotMatch(
+    community.html + community.text,
+    /\{\{|community_history_1|!\[/,
+  );
+  // The exact live-email failure used to parse as text and bypass resolveImage.
+  assert.throws(
+    () =>
+      renderNewsletterEmail({
+        ...input,
+        articleId: communityId,
+        markdown: communityMarkdown.replace(
+          /!\[[^\n]+\]\(\.\/c_1\.webp\)/,
+          '![post]({{ site.url }}{{ site.baseurl }}/assets/images/community_history_1.png)',
+        ),
+      }),
+    /Unresolved template markup/,
+  );
+  for (const markdown of [
+    '{% include image.html %}',
+    '![Broken](./n_1.webp',
+    '![Broken](./image with spaces.webp)',
+    '![Undefined][missing]',
+  ]) {
+    assert.throws(
+      () => renderNewsletterEmail({ ...input, markdown }),
+      NewsletterRenderError,
+    );
+  }
+  for (const url of [
+    './does-not-exist.webp',
+    '/assets/images/community_history_1.png',
+    'https://leonlins.com/newsletter-assets/2021_01_06_nonviolent/missing.webp',
+    '/newsletter-assets/2021_01_06_nonviolent/index.md',
+  ]) {
+    assert.throws(
+      () => renderNewsletterEmail({ ...input, markdown: `![Missing](${url})` }),
+      /does not exist/,
+    );
+  }
+  for (const markdown of [
+    '![Post](n_1.webp)',
+    '![Post](/newsletter-assets/2021_01_06_nonviolent/n_1.webp)',
+    '![Post](https://leonlins.com/newsletter-assets/2021_01_06_nonviolent/n_1.webp)',
+    '![Post][photo]\n\n[photo]: ./n_1.webp "Photo"',
+  ]) {
+    const validImage = renderNewsletterEmail({ ...input, markdown });
+    assert.match(
+      validImage.html,
+      /<img[^>]+src="https:\/\/leonlins\.com\/newsletter-assets\/2021_01_06_nonviolent\/n_1\.webp"/,
+    );
+    assert.match(validImage.text, /Post/);
+    assert.doesNotMatch(validImage.text, /!\[/);
+  }
+  const publicImage = renderNewsletterEmail({
+    ...input,
+    markdown: '![Site icon](/favicon.svg)',
+  });
+  assert.match(publicImage.html, /src="https:\/\/leonlins\.com\/favicon\.svg"/);
+  assert.match(publicImage.text, /Site icon/);
+  // Remote HTTPS images retain their URL; availability is checked outside rendering.
+  assert.match(
+    renderNewsletterEmail({
+      ...input,
+      markdown: '![Remote](https://example.com/photo.png)',
+    }).html,
+    /src="https:\/\/example\.com\/photo\.png"/,
+  );
+  // Literal examples can be escaped or quoted as code without becoming images.
+  assert.doesNotThrow(() =>
+    renderNewsletterEmail({ ...input, markdown: '\\![example](not an image)' }),
+  );
+  assert.doesNotThrow(() =>
+    renderNewsletterEmail({ ...input, markdown: '`![example](not an image)`' }),
   );
   const external = renderNewsletterEmail({
     ...input,

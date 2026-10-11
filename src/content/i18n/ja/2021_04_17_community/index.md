@@ -40,7 +40,7 @@ MITの**テック・モデル・レイルロード・クラブ**は1946年に設
 
 **Slack(2009年)、Discord(2015年)、Circle(2019年)**といったソフトウェアツールは、コミュニティが相互につながるために採用したことで人気を博しました。
 
-![post]({{ site.url }}{{ site.baseurl }}/assets/images/community_history_1.png)
+![Spacewar!、RFC、Homebrew Computer Club、現代のコミュニティプラットフォーム](../../../blog/2021_04_17_community/c_1.webp)
 
 そして、今日私が見かける興味深いコミュニティをいくつか紹介します(正直に言うと、私もその一部に属しています):
 
