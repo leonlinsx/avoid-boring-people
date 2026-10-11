@@ -5,31 +5,26 @@ import {
   requestSubscription,
 } from '../../../lib/newsletter/subscriptions';
 import { attributionFromRequest } from '../../../lib/newsletter/attribution';
+import { readJsonBody, isHoneypotFilled } from '../../../lib/request-body.ts';
+import {
+  boundedSignupString,
+  MAX_SIGNUP_REQUEST_BYTES,
+  signupClientIp,
+} from '../../../lib/newsletter/signup-input.ts';
 export const prerender = false;
-export const POST: APIRoute = async ({ request }) => {
-  // Reading the body is client-controlled input handling, not pipeline work: a
-  // malformed request is answered neutrally and never alerted on.
-  let data: unknown;
-  try {
-    data = await request.json();
-  } catch {
-    console.warn('newsletter_subscription_body_invalid');
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const parsed = await readJsonBody(request, MAX_SIGNUP_REQUEST_BYTES);
+  if (!parsed.ok) return Response.json(genericSubscriptionResponse);
+  const input = parsed.value;
+  const email = boundedSignupString(input.email, 320);
+  if (!email || isHoneypotFilled(input.website))
     return Response.json(genericSubscriptionResponse);
-  }
-  if (!data || typeof data !== 'object' || Array.isArray(data))
-    return Response.json(genericSubscriptionResponse);
-  const input = data as Record<string, unknown>;
   try {
-    const forwarded = request.headers
-      .get('x-forwarded-for')
-      ?.split(',')[0]
-      ?.trim();
     return Response.json(
       await requestSubscription({
-        email: String(input.email ?? ''),
-        source: typeof input.source === 'string' ? input.source : undefined,
-        honeypot: typeof input.website === 'string' ? input.website : undefined,
-        ip: forwarded ?? 'unknown',
+        email,
+        source: boundedSignupString(input.source, 100),
+        ip: signupClientIp(request, clientAddress),
         attribution: attributionFromRequest(input.attribution),
       }),
     );

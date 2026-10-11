@@ -1,7 +1,6 @@
-// Both the comment and contact endpoints read a small JSON object from the
-// browser, so the size cap and the honeypot test live here once. The declared
-// `Content-Length` is checked before the body is read and the body itself after,
-// because a client can lie about the first.
+// Comment, contact and signup endpoints share bounded JSON input handling.
+// Check declared length first, then enforce the actual byte limit while reading
+// because a client can omit or misstate Content-Length.
 
 export type JsonBodyErrorCode = 'too_large' | 'invalid_request';
 
@@ -17,14 +16,30 @@ export async function readJsonBody(
   if (Number.isFinite(declaredLength) && declaredLength > maxBytes)
     return { ok: false, error: 'too_large' };
 
-  let text: string;
+  // Bound actual bytes while streaming, including chunked requests and UTF-8.
+  if (!request.body) return { ok: false, error: 'invalid_request' };
+  const reader = request.body.getReader();
+  const decoder = new TextDecoder();
+  let text = '';
+  let bytes = 0;
   try {
-    text = await request.text();
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > maxBytes) {
+        await reader.cancel();
+        return { ok: false, error: 'too_large' };
+      }
+      text += decoder.decode(value, { stream: true });
+    }
+    text += decoder.decode();
   } catch {
     return { ok: false, error: 'invalid_request' };
+  } finally {
+    reader.releaseLock();
   }
-  if (!text || text.length > maxBytes)
-    return { ok: false, error: text ? 'too_large' : 'invalid_request' };
+  if (!text) return { ok: false, error: 'invalid_request' };
 
   let parsed: unknown;
   try {

@@ -1,4 +1,9 @@
 import {
+  assertCampaignContent,
+  campaignContentHash,
+  newsletterTitle,
+} from '../../src/lib/newsletter/campaign.ts';
+import {
   GetAccountCommand,
   SendEmailCommand,
   SESv2Client,
@@ -25,20 +30,24 @@ import {
 
 function option(name: string): string | undefined {
   const index = process.argv.indexOf(name);
-  return index >= 0 ? process.argv[index + 1] : undefined;
+  if (index < 0) return undefined;
+  const value = process.argv[index + 1];
+  if (!value || value.startsWith('--'))
+    throw new Error(`${name} requires a value.`);
+  return value;
 }
 
 const campaignId = process.argv[2];
 if (!campaignId || !process.argv.includes('--confirm-production')) {
   throw new Error(
-    'Usage: npm run newsletter:send -- <campaign-id> --expect-recipients <count> --confirm-production',
+    'Usage: npm run newsletter:send -- <campaign-id> --expect-recipients <count> --expect-content <preview-sha256> --confirm-production',
   );
 }
 const expected = parseExpectedRecipients(option('--expect-recipients'));
 const config = productionSendConfig(process.env);
 const db = neonDb('Newsletter');
 const campaigns = await db`
-  SELECT id, article_slug, subject, status,
+  SELECT id, article_slug, subject, status, content_hash,
     (SELECT count(*)::int FROM campaign_recipients WHERE campaign_id = campaigns.id) AS recipient_count,
     (SELECT count(*)::int FROM campaign_recipients WHERE campaign_id = campaigns.id AND status = 'sending') AS indeterminate_count
   FROM campaigns WHERE id = ${campaignId}`;
@@ -48,6 +57,7 @@ const campaign = campaigns[0] as {
   id: string;
   article_slug: string;
   subject: string;
+  content_hash: string | null;
   status: string;
   recipient_count: number;
   indeterminate_count: number;
@@ -64,14 +74,18 @@ if (campaign.indeterminate_count > 0) {
 assertRecipientScope(expected, campaign.recipient_count, config.maxRecipients);
 
 const markdown = readNewsletterArticle(campaign.article_slug);
-renderNewsletterEmail({
-  articleId: campaign.article_slug,
-  title: campaign.subject,
+// Reject source/title/renderer/footer drift before any SES call or state change.
+if (newsletterTitle(markdown) !== campaign.subject)
+  throw new Error(
+    'Campaign subject differs from the current article title. No email was sent.',
+  );
+const contentHash = campaignContentHash(
+  campaign.article_slug,
+  campaign.subject,
   markdown,
-  privacyUrl: NEWSLETTER_PRIVACY_URL,
-  unsubscribeUrl:
-    'https://leonlins.com/api/newsletter/unsubscribe?token=preflight-placeholder',
-});
+);
+assertCampaignContent(campaign.content_hash, contentHash);
+assertCampaignContent(option('--expect-content'), contentHash);
 
 const ses = new SESv2Client({ region: config.awsRegion });
 const account = await ses.send(new GetAccountCommand({}));

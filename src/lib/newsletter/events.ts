@@ -98,8 +98,8 @@ export async function recordSesEvent(
       AND EXISTS (SELECT 1 FROM receipt)
     RETURNING subscriber_id
   )
-  UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, updated_at = now()
-    WHERE status = 'active' AND ${status}::text IN ('bounced', 'complained')
+  UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+    WHERE status IN ('pending', 'active', 'unsubscribed') AND ${status}::text IN ('bounced', 'complained')
       AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
       AND EXISTS (SELECT 1 FROM receipt)`;
 }
@@ -135,8 +135,8 @@ export async function reconcileSesMessage(
     WHERE campaign_recipients.provider_message_id = ${messageId} AND event_state.status IS NOT NULL
     RETURNING campaign_recipients.subscriber_id, campaign_recipients.status
   )
-  UPDATE subscribers SET status = recipients.status::newsletter_subscriber_status, updated_at = now()
+  UPDATE subscribers SET status = recipients.status::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
   FROM recipients
-  WHERE subscribers.id = recipients.subscriber_id AND subscribers.status = 'active'
+  WHERE subscribers.id = recipients.subscriber_id AND subscribers.status IN ('pending', 'active', 'unsubscribed')
     AND recipients.status IN ('bounced', 'complained')`;
 }

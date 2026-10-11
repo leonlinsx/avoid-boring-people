@@ -125,6 +125,15 @@ try {
       'utf8',
     ),
   );
+  sql(
+    readFileSync(
+      new URL(
+        '../migrations/newsletter/005_pre_migration_readiness.sql',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+  );
   sql(`INSERT INTO subscribers (email,email_normalized,status,source,unsubscribe_token_hash,consent_provenance)
     VALUES ('person@example.com','person@example.com','active','manual','test','synthetic test');
     INSERT INTO campaigns (article_slug,subject,status) VALUES ('test','test','draft');
@@ -157,7 +166,9 @@ try {
     "UPDATE subscribers SET status='active'; UPDATE campaign_recipients SET status='sent'",
   );
   await recordSesEvent(event('redacted', 'Complaint', { complaint: {} }), db);
-  assert.equal(state(), 'active:complained');
+  // A redacted complaint still has an authenticated provider message ID
+  // matching this campaign recipient; no destination fallback is needed.
+  assert.equal(state(), 'complained:complained');
   await recordSesEvent(
     event('complaint', 'Complaint', {
       complaint: {
@@ -170,9 +181,9 @@ try {
   assert.equal(state(), 'complained:complained');
   sql("UPDATE subscribers SET status='unsubscribed'");
   await recordSesEvent(bounce('already-suppressed'), db);
-  assert.equal(state(), 'unsubscribed:complained');
+  assert.equal(state(), 'bounced:complained');
   await recordSesEvent(event('ignored', 'Open'), db);
-  assert.equal(state(), 'unsubscribed:complained');
+  assert.equal(state(), 'bounced:complained');
   await Promise.all(
     Array.from({ length: 5 }, () =>
       recordSesEvent(bounce('concurrent-retry'), db),

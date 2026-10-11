@@ -134,7 +134,6 @@ async function sendConfirmation(email: string, token: string) {
   } catch (error) {
     console.error('newsletter_confirmation_send_failure', {
       name: error instanceof Error ? error.name : 'unknown',
-      message: error instanceof Error ? error.message : 'unknown',
     });
 
     throw error;
@@ -184,23 +183,25 @@ export async function requestSubscription(
   // for an unsubscribed row — the latter is how an explicit resubscription
   // starts — and never changes status, so a row stays suppressed until the
   // confirmation step below activates it.
-  await db`INSERT INTO subscribers (
+  const issued = await db`INSERT INTO subscribers (
       email, email_normalized, status, source, source_detail,
-      confirmation_token_hash, unsubscribe_token_hash, consent_provenance,
+      confirmation_token_hash, confirmation_expires_at, unsubscribe_token_hash, consent_provenance,
       acquisition_source, acquisition_detail, utm_source, utm_medium,
       utm_campaign, utm_content, signup_path, referrer_domain
     )
     VALUES (
       ${email}, ${email}, 'pending', 'website', ${source},
-      ${hashToken(token)}, ${hashToken(unsubscribeToken)}, 'website_double_opt_in',
+      ${hashToken(token)}, now() + interval '24 hours', ${hashToken(unsubscribeToken)}, 'website_double_opt_in',
       ${attribution?.source ?? null}, ${attribution?.detail ?? null},
       ${attribution?.utmSource ?? null}, ${attribution?.utmMedium ?? null},
       ${attribution?.utmCampaign ?? null}, ${attribution?.utmContent ?? null},
       ${attribution?.signupPath ?? null}, ${attribution?.referrerDomain ?? null}
     )
-    ON CONFLICT (email_normalized) DO UPDATE SET confirmation_token_hash = EXCLUDED.confirmation_token_hash, updated_at = now()
-    WHERE subscribers.status IN ('pending', 'unsubscribed')`;
-  await sendConfirmation(email, token);
+    ON CONFLICT (email_normalized) DO UPDATE SET confirmation_token_hash = EXCLUDED.confirmation_token_hash, confirmation_expires_at = EXCLUDED.confirmation_expires_at, updated_at = now()
+    WHERE subscribers.status IN ('pending', 'unsubscribed') RETURNING id`;
+  // A concurrent confirmation or suppression may win after the initial read.
+  // Only deliver the token if the guarded write actually issued it.
+  if (issued.length > 0) await sendConfirmation(email, token);
   return genericSubscriptionResponse;
 }
 
@@ -208,7 +209,7 @@ export async function confirmSubscription(
   token: string,
   db = neonDb('Newsletter'),
 ) {
-  if (!token) return false;
+  if (!token || token.length > 256) return false;
   // A first confirmation and a resubscription both arrive here: a pending row
   // becomes active, and an unsubscribed row that asked for a fresh token becomes
   // active again. `confirmed_at` keeps its first value, so a resubscription
@@ -216,20 +217,20 @@ export async function confirmSubscription(
   // alone: it records the last cancellation, which the report counts in the
   // window where it actually happened.
   const rows =
-    await db`UPDATE subscribers SET status = 'active', confirmed_at = COALESCE(confirmed_at, now()), confirmation_token_hash = NULL, updated_at = now()
-    WHERE status IN ('pending', 'unsubscribed') AND confirmation_token_hash = ${hashToken(token)} RETURNING id`;
+    await db`UPDATE subscribers SET status = 'active', confirmed_at = COALESCE(confirmed_at, now()), confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+    WHERE status IN ('pending', 'unsubscribed') AND confirmation_token_hash = ${hashToken(token)} AND confirmation_expires_at > now() RETURNING id`;
   return rows.length > 0;
 }
 
 export async function unsubscribe(token: string, db = neonDb('Newsletter')) {
-  if (!token) return false;
+  if (!token || token.length > 256) return false;
   // `now()` applies only to a row that is still live, so a cancellation after an
   // explicit resubscription records its own time while a repeated click on an
   // already unsubscribed row keeps the time it already had. The confirmation
   // token is cleared either way, because a suppressed row must not keep a live
   // credential that a confirmation email from an earlier request could still use
   // to reopen it.
-  await db`UPDATE subscribers SET status = 'unsubscribed', unsubscribed_at = CASE WHEN status = 'unsubscribed' THEN unsubscribed_at ELSE now() END, confirmation_token_hash = NULL, updated_at = now()
+  await db`UPDATE subscribers SET status = 'unsubscribed', unsubscribed_at = CASE WHEN status = 'unsubscribed' THEN unsubscribed_at ELSE now() END, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
     WHERE unsubscribe_token_hash = ${hashToken(token)} AND status IN ('pending', 'active', 'unsubscribed')`;
   return true;
 }
