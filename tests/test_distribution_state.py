@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 from scripts.automation import state_manager
 from scripts.automation import auto_post
 from scripts.automation import retry as retry_module
+from scripts.automation.routing import DEFAULT_PLATFORMS
 
 
 def test_legacy_state_migrates_without_fabricating_platform_history(use_temp_distribution_state):
@@ -53,7 +54,7 @@ def test_dry_run_does_not_call_the_state_writer(monkeypatch, use_temp_distributi
     assert not path.exists()
 
 
-def test_partial_platform_failure_only_persists_success(monkeypatch, use_temp_distribution_state):
+def test_partial_platform_failure_only_persists_success(monkeypatch, use_temp_distribution_state, tmp_path):
     monkeypatch.setattr(retry_module, "BASE_DELAY_SECONDS", 0)
     post = {"id": "post", "title": "Title", "url": "https://example.test", "content": "word " * 200}
     twitter = types.ModuleType("scripts.automation.publishers")
@@ -67,7 +68,11 @@ def test_partial_platform_failure_only_persists_success(monkeypatch, use_temp_di
     monkeypatch.setitem(sys.modules, "scripts.automation.publishers.bluesky", bluesky)
     monkeypatch.setattr(auto_post, "DRY_RUN", False)
     monkeypatch.setattr(auto_post, "POST_MODE", "single")
-    monkeypatch.setattr(auto_post, "PLATFORM", ["twitter", "bluesky"])
+    monkeypatch.setattr(auto_post, "PLATFORM", ["twitter", "bluesky", "devto", "mastodon"])
+    state_manager.mark_posted("post", "mastodon", "new")
+    summary_file = tmp_path / "summary.md"
+    monkeypatch.setattr(auto_post, "SUMMARY_FILE", str(summary_file))
+    monkeypatch.setenv("FAIL_ON_PUBLISH_ERROR", "false")
     monkeypatch.setattr(auto_post, "DISTRIBUTION_MODE", "new")
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: [post])
     monkeypatch.setattr(auto_post, "filter_posts", lambda posts: posts)
@@ -78,6 +83,12 @@ def test_partial_platform_failure_only_persists_success(monkeypatch, use_temp_di
     state = state_manager.load_state()
     assert state_manager.platform_post_count("post", "twitter", state) == 1
     assert state_manager.get_platform_state("post", "bluesky", state) is None
+    summary = summary_file.read_text()
+    assert "Selected: Title (post); mode: new; eligible-channel count: 2" in summary
+    assert "devto: skipped (category routing)" in summary
+    assert "mastodon: skipped (already posted)" in summary
+    assert "twitter posting completed" in summary
+    assert "bluesky posting failed" in summary
 
 
 def test_explicit_evergreen_exclusion_and_per_platform_cooldowns(use_temp_distribution_state):
@@ -147,6 +158,110 @@ def _evergreen_post(post_id, category="Investing", date="2020-01-01", score=0.0)
 
 def _posted_days_ago(days):
     return (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+
+
+def _partial_history(post_id, days=1):
+    return {post_id: {
+        platform: {"count": 1, "last_posted_at": _posted_days_ago(days), "last_mode": "evergreen"}
+        for platform in DEFAULT_PLATFORMS if platform not in {"devto", "tumblr"}
+    }}
+
+
+def test_evergreen_seven_channel_fresh_beats_one_channel_partial(use_temp_distribution_state):
+    state_manager.save_state({"version": 2, "posts": _partial_history("partial")})
+    posts = [_evergreen_post("partial", score=100), _evergreen_post("fresh")]
+
+    selected = state_manager.select_next_post(posts, DEFAULT_PLATFORMS, "evergreen")
+
+    assert selected["id"] == "fresh"
+    assert selected["eligible_platforms"] == [p for p in DEFAULT_PLATFORMS if p != "devto"]
+    assert selected["platform_count"] == 0
+
+
+def test_evergreen_without_broad_candidates_still_selects_partial(use_temp_distribution_state):
+    state_manager.save_state({"version": 2, "posts": _partial_history("partial")})
+    selected = state_manager.select_next_post(
+        [_evergreen_post("partial"), {**_evergreen_post("excluded"), "evergreen": False}],
+        DEFAULT_PLATFORMS, "evergreen",
+    )
+    assert selected["id"] == "partial"
+    assert selected["eligible_platforms"] == ["tumblr"]
+
+
+def test_tied_coverage_keeps_fairness_then_score(use_temp_distribution_state):
+    history = _partial_history("used", days=100)
+    history["used"]["tumblr"] = {"count": 1, "last_posted_at": _posted_days_ago(100)}
+    state_manager.save_state({"version": 2, "posts": history})
+    posts = [_evergreen_post("used", score=100), _evergreen_post("low"), _evergreen_post("high", score=1)]
+    selected = state_manager.select_next_post(posts, DEFAULT_PLATFORMS, "evergreen")
+    assert selected["id"] == "high"
+    assert len(selected["eligible_platforms"]) == 7
+
+
+def test_coverage_excludes_cooldowns_category_and_new_only(use_temp_distribution_state):
+    history = _partial_history("cooling", days=61)
+    history["cooling"]["threads"]["last_posted_at"] = _posted_days_ago(59)
+    state_manager.save_state({"version": 2, "posts": history})
+    selected = state_manager.select_next_post([_evergreen_post("cooling")], DEFAULT_PLATFORMS, "evergreen")
+    assert selected["eligible_platforms"] == ["bluesky", "farcaster", "nostr", "instagram", "tumblr"]
+    assert state_manager.platform_skip_reason(selected, "mastodon", "evergreen") == "90-day cooldown"
+    assert state_manager.platform_skip_reason(selected, "threads", "evergreen") == "60-day cooldown"
+    assert state_manager.platform_skip_reason(selected, "devto", "evergreen") == "category routing"
+    assert state_manager.platform_skip_reason(_evergreen_post("tech", category="Technology"), "devto", "evergreen") == "new-only platform"
+
+
+def test_category_routing_is_applied_before_selection(use_temp_distribution_state):
+    # Investing cannot reach DEV; the old runner selected it and then stripped
+    # DEV, losing the run even though the technical candidate could publish.
+    posts = [_evergreen_post("investing", score=100), _evergreen_post("tech", category="Technology")]
+    selected = state_manager.select_next_post(posts, ["devto"], "new")
+    assert selected["id"] == "tech"
+    assert selected["eligible_platforms"] == ["devto"]
+
+
+def test_new_mode_prioritizes_score_over_coverage(use_temp_distribution_state):
+    state_manager.save_state({"version": 2, "posts": _partial_history("partial")})
+    selected = state_manager.select_next_post(
+        [_evergreen_post("fresh"), _evergreen_post("partial", score=100)], DEFAULT_PLATFORMS, "new",
+    )
+    assert selected["id"] == "partial"
+    assert selected["eligible_platforms"] == ["tumblr"]
+
+
+def test_evergreen_runner_publishes_one_article_and_reports_skips(monkeypatch, use_temp_distribution_state, tmp_path):
+    state_manager.save_state({"version": 2, "posts": _partial_history("partial")})
+    posts = [_evergreen_post("partial", score=100), _evergreen_post("fresh")]
+    summary_file = tmp_path / "summary.md"
+    monkeypatch.setattr(auto_post, "SUMMARY_FILE", str(summary_file))
+    monkeypatch.setattr(auto_post, "DRY_RUN", False)
+    monkeypatch.setattr(auto_post, "USE_LLM", False)
+    monkeypatch.setattr(auto_post, "TARGET_POST_ID", "")
+    monkeypatch.setattr(auto_post, "PLATFORM", list(DEFAULT_PLATFORMS))
+    monkeypatch.setattr(auto_post, "DISTRIBUTION_MODE", "evergreen")
+    monkeypatch.setattr(auto_post, "fetch_posts", lambda: posts)
+    monkeypatch.setattr(auto_post, "score_posts", lambda posts, engagement=None: posts)
+    monkeypatch.setattr(auto_post, "apply_scout_relevance_boost", lambda posts: posts)
+    monkeypatch.setattr(auto_post, "_summary_for", lambda post: {"teaser": "Hook", "points": ["Point"]})
+    monkeypatch.setattr(auto_post, "_build_storyboard", lambda post, summary: None)
+    published = []
+    monkeypatch.setattr(auto_post, "_publish", lambda platform, social, article, community, post_id, storyboard: published.append((post_id, platform)))
+
+    auto_post.main()
+
+    assert published == [("fresh", p) for p in DEFAULT_PLATFORMS if p != "devto"]
+    assert "eligible-channel count: 7" in summary_file.read_text()
+    assert "devto: skipped (category routing)" in summary_file.read_text()
+
+    # With no broad candidate, the same runner completes just the partial's
+    # one remaining channel and explains every cooling channel.
+    monkeypatch.setattr(auto_post, "fetch_posts", lambda: posts[:1])
+    published.clear()
+    auto_post.main()
+    assert published == [("partial", "tumblr")]
+    summary = summary_file.read_text()
+    assert "eligible-channel count: 1" in summary
+    assert "mastodon: skipped (90-day cooldown)" in summary
+    assert "bluesky: skipped (60-day cooldown)" in summary
 
 
 def test_evergreen_prefers_longest_ago_posted_over_fresh_score(use_temp_distribution_state):

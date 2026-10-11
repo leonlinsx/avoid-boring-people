@@ -23,7 +23,7 @@ from scripts.automation.renderers import (
 )
 from scripts.automation.retry import run_with_retries
 from scripts.automation.routing import DEFAULT_PLATFORMS, PLATFORMS, eligible_for_category
-from scripts.automation.state_manager import platform_is_eligible
+from scripts.automation.state_manager import load_state, platform_is_eligible, platform_skip_reason
 
 load_dotenv()
 DRY_RUN = os.getenv("DRY_RUN", "true").lower() == "true"
@@ -292,7 +292,7 @@ def main() -> None:
     posts = fetch_posts()
     if not posts:
         if TARGET_POST_ID: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
-        print("No posts found."); return
+        log_summary("No posts found; eligible-channel count: 0."); return
     preview = DRY_RUN and bool(TARGET_POST_ID)
     ranked = [] if preview else score_posts(filter_posts(posts), engagement=engagement_totals(load_engagement()))
     if DISTRIBUTION_MODE == "evergreen" and not preview:
@@ -302,10 +302,17 @@ def main() -> None:
         if selected is None: raise RuntimeError(f"Target article '{TARGET_POST_ID}' is not present in the deployed search index; retry after deployment completes.")
         selected = dict(selected); selected["eligible_platforms"] = [p for p in PLATFORM if _normal_routing_eligible(selected, p) and (preview or platform_is_eligible(selected, p, DISTRIBUTION_MODE))]
     else:
-        routed = [post for post in ranked if any(eligible_for_category(post, platform) for platform in PLATFORM)]
-        selected = select_next_post(routed, PLATFORM, DISTRIBUTION_MODE)
-        if selected: selected["eligible_platforms"] = [p for p in selected["eligible_platforms"] if eligible_for_category(selected, p)]
-    if not selected or (not preview and not selected["eligible_platforms"]): print("No eligible post to publish."); return
+        selected = select_next_post(ranked, PLATFORM, DISTRIBUTION_MODE)
+    if not selected or (not preview and not selected["eligible_platforms"]):
+        log_summary("No eligible post to publish; eligible-channel count: 0 (routing/history policy).")
+        return
+    log_summary(f"Selected: {selected['title']} ({selected['id']}); mode: {DISTRIBUTION_MODE}; eligible-channel count: {len(selected['eligible_platforms'])}.")
+    if not preview:
+        state = load_state()
+        for platform in PLATFORM:
+            if platform not in selected["eligible_platforms"]:
+                reason = platform_skip_reason(selected, platform, DISTRIBUTION_MODE, state)
+                log_summary(f"⏭ {platform}: skipped ({reason}).")
     if preview and PLATFORM == ["linkedin"]:
         if not USE_LLM:
             raise ValueError("LinkedIn manual preview requires USE_LLM=true")
@@ -318,6 +325,8 @@ def main() -> None:
         # Generation happens before any platform is attempted, so failing here
         # cannot duplicate a social post. Report it and let the run fail.
         log_summary(f"❌ social copy generation failed: {error}")
+        for platform in selected["eligible_platforms"]:
+            log_summary(f"❌ {platform}: failed (copy generation).")
         raise
     social, article, community = _build_content(selected, summary)
     storyboard = _build_storyboard(selected, summary)
