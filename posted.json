@@ -200,6 +200,52 @@
     "2019_02_05_procrastinate/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-12T00:43:45Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mxnbyrsh2z2i",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mxnbyrsh2z2i"
+      },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-12T00:43:46Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "0x665f8530a988796c6f68318c1aadc27eaef8bf12"
+      },
+      "instagram": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-12T00:50:04Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18069275903502042",
+        "remote_url": "https://www.instagram.com/p/DeX-7eDDekq/"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-12T00:43:45Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "117425165148779336",
+        "remote_url": "https://mastodon.social/@leonlins/117425165148779336"
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-12T00:44:02Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "8e70f1117ae797ba75157ac998fd03c02b4a51e098108067cfb7b1400eb7e8db"
+      },
+      "threads": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-12T00:44:23Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18471808789139508",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/DeX-Xs7jYLZ"
       }
     },
     "2019_02_18_why/index.md": {
