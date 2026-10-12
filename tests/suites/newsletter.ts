@@ -712,7 +712,7 @@ export async function testConfirmRoute() {
     );
     assert.equal(prompt.status, 200);
     assert.equal(prompt.headers.get('cache-control'), 'no-store');
-    assert.equal(prompt.headers.get('referrer-policy'), 'no-referrer');
+    assert.equal(prompt.headers.get('referrer-policy'), 'origin');
     const promptBody = await prompt.text();
     assert.match(promptBody, /Confirm your subscription\./);
     assert.ok(

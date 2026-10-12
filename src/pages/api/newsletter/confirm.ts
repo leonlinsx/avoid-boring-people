@@ -21,7 +21,13 @@ const resultHeaders = {
 export const GET: APIRoute = async ({ url }) =>
   new Response(buildConfirmPromptPage(url.searchParams.get('token') ?? ''), {
     status: 200,
-    headers: resultHeaders,
+    headers: {
+      ...resultHeaders,
+      // no-referrer makes browser form POSTs carry an opaque Origin ("null"),
+      // which the same-origin middleware rejects. Send only the origin, never
+      // the confirmation token in the prompt URL, as the Referer.
+      'referrer-policy': 'origin',
+    },
   });
 
 export const POST: APIRoute = async ({ request, url }) => {

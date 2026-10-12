@@ -35,6 +35,10 @@ jobs:
         run: npm ci
       - name: Run TypeScript tests
         run: npm test
+      - name: Install confirmation-test browser
+        run: npx playwright install --with-deps chromium
+      - name: Test browser confirmation through middleware
+        run: npm run test:newsletter:browser
 
   python-tests:
     name: Python distribution tests
