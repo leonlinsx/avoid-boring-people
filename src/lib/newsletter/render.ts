@@ -171,12 +171,22 @@ function plainText(markdown: string): string {
   const tree: any = unified().use(remarkParse).use(remarkGfm).parse(markdown);
   const blocks: string[] = [];
   const toText = (node: any): string => {
+    if (node.type === 'break') return '\n';
     if (typeof node.value === 'string') return node.value;
+    if (node.type === 'list') {
+      return node.children
+        .map((item: any, index: number) => {
+          const marker = node.ordered ? `${(node.start ?? 1) + index}. ` : '- ';
+          const text = toText(item).trim();
+          return marker + text.replace(/\n/g, `\n${' '.repeat(marker.length)}`);
+        })
+        .join('\n');
+    }
     if (node.type === 'image' || node.type === 'imageReference')
       return node.alt ?? '';
     return (node.children ?? [])
       .map(toText)
-      .join(node.type === 'break' ? '\n' : '');
+      .join(node.type === 'listItem' ? '\n\n' : '');
   };
   for (const node of tree.children ?? []) {
     const value = toText(node).trim();

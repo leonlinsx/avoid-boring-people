@@ -203,6 +203,23 @@ export function testNewsletterRenderer() {
     community.html + community.text,
     /\{\{|community_history_1|!\[/,
   );
+  const communityListLabels = [
+    'Professional development courses',
+    'Investing focused',
+    'Tech focused',
+    'Thinking differently',
+    'Community professionals (meta)',
+    'Originally newsletters',
+  ];
+  const communityListLines = community.text.split('\n');
+  communityListLabels.forEach((label, index) => {
+    assert.ok(
+      communityListLines.some((line) =>
+        line.startsWith(`${index + 1}. ${label}`),
+      ),
+      `Community list item ${index + 1} must start on its own numbered line`,
+    );
+  });
   // The exact live-email failure used to parse as text and bypass resolveImage.
   assert.throws(
     () =>
@@ -319,6 +336,40 @@ export function testNewsletterRenderer() {
       }),
     /100 KB/,
   );
+}
+
+export function testNewsletterPlainTextLists() {
+  const render = (markdown: string) =>
+    renderNewsletterEmail({
+      articleId: '2021_04_17_community/index.md',
+      title: 'Text layout',
+      markdown,
+      unsubscribeUrl:
+        'https://leonlins.com/api/newsletter/unsubscribe?token=preview',
+      privacyUrl: 'https://leonlins.com/privacy/',
+    });
+  const paragraphs = render('First **paragraph**.\n\nSecond paragraph.');
+  assert.match(paragraphs.text, /First paragraph\.\n\nSecond paragraph\./);
+  const ordered = render('3. Third item\n4. Fourth item');
+  assert.match(ordered.text, /3\. Third item\n4\. Fourth item/);
+  assert.match(ordered.html, /<ol start="3">/);
+  const unordered = render('- First item\n- Second item');
+  assert.match(unordered.text, /- First item\n- Second item/);
+  assert.match(unordered.html, /<ul>/);
+  const nested = render('1. Parent\n   - Child one\n   - Child two\n2. Next');
+  assert.match(
+    nested.text,
+    /1\. Parent\n *\n {3}- Child one\n {3}- Child two\n2\. Next/,
+  );
+  const itemParagraphs = render(
+    '1. First paragraph.\n\n   Second paragraph.\n\n2. Next item.',
+  );
+  assert.match(
+    itemParagraphs.text,
+    /1\. First paragraph\.\n *\n {3}Second paragraph\.\n2\. Next item\./,
+  );
+  const breaks = render('First line  \nSecond line\n\nNext paragraph.');
+  assert.match(breaks.text, /First line\nSecond line\n\nNext paragraph\./);
 }
 
 export function testNewsletterTestSendSafeguard() {
@@ -2059,6 +2110,7 @@ export async function runNewsletterTests() {
   await testNewsletterDomain();
   await testNewsletterImporter();
   await testNewsletterRenderer();
+  await testNewsletterPlainTextLists();
   await testNewsletterTestSendSafeguard();
   await testNewsletterAuthorReportSafeguards();
   await testNewsletterProductionSendSafeguards();
