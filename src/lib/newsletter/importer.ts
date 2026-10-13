@@ -9,6 +9,8 @@ export type ConsolidatedSubscriber = ImportedSubscriber & {
 
 export type SubstackImportPlan = {
   subscribers: ConsolidatedSubscriber[];
+  cancellations: ConsolidatedSubscriber[];
+  evidenceFileFingerprint: string | null;
   rosterFingerprint: string;
   fileFingerprint: string;
   summary: {
@@ -22,7 +24,9 @@ export type SubstackImportPlan = {
     uniqueEmails: number;
     duplicateEmails: number;
     active: number;
-    suppressed: number;
+    cancelled: number;
+    evidenceCancelled: number;
+    cancellationEvidenceConflicts: number;
   };
 };
 
@@ -59,7 +63,7 @@ function mergeSubscriber(
   };
 }
 
-export function planSubstackImport(csv: string): SubstackImportPlan {
+function parseExport(csv: string): SubstackImportPlan {
   let rows: Record<string, string>[];
   try {
     rows = parse(csv, {
@@ -104,18 +108,20 @@ export function planSubstackImport(csv: string): SubstackImportPlan {
       current ? mergeSubscriber(current, subscriber) : subscriber,
     );
   }
-  const subscribers = [...byEmail.values()].sort((left, right) =>
+  const consolidated = [...byEmail.values()].sort((left, right) =>
     left.email < right.email ? -1 : left.email > right.email ? 1 : 0,
   );
-  const active = subscribers.filter(
-    (subscriber) => subscriber.status === 'active',
-  ).length;
+  const cancellations = consolidated.filter((s) => s.status === 'unsubscribed');
+  const subscribers = consolidated.filter((s) => s.status === 'active');
+  const active = subscribers.length;
   return {
     subscribers,
+    cancellations,
+    evidenceFileFingerprint: null,
     rosterFingerprint: createHash('sha256')
       .update(
         JSON.stringify({
-          version: 1,
+          version: 2,
           roster: subscribers.map((s) => [s.email, s.status]),
         }),
       )
@@ -134,12 +140,17 @@ export function planSubstackImport(csv: string): SubstackImportPlan {
           (s.legacySubstackCancelDate &&
             !importTimestamp(s.legacySubstackCancelDate)),
       ).length,
-      excludedRows: rows.length - mapped.length,
+      excludedRows:
+        rows.length -
+        mapped.length +
+        mapped.filter((s) => s.status === 'unsubscribed').length,
       mappedRows: mapped.length,
-      uniqueEmails: subscribers.length,
-      duplicateEmails: mapped.length - subscribers.length,
+      uniqueEmails: consolidated.length,
+      duplicateEmails: mapped.length - consolidated.length,
       active,
-      suppressed: subscribers.length - active,
+      cancelled: cancellations.length,
+      evidenceCancelled: 0,
+      cancellationEvidenceConflicts: 0,
     },
   };
 }
@@ -149,13 +160,54 @@ export function importTimestamp(value: string | null): string | null {
   return new Date(value).toISOString();
 }
 
+// Both files remain private. Cancellation evidence is checked in memory and is
+// never included in the database payload, including read-only reconciliation.
+export function planSubstackImport(
+  csv: string,
+  evidenceCsv: string,
+): SubstackImportPlan {
+  const plan = parseExport(csv);
+  const evidence = parseExport(evidenceCsv);
+  if (
+    evidence.summary.invalidRows ||
+    evidence.summary.duplicateEmails ||
+    evidence.summary.missingSubscriptionDates ||
+    evidence.summary.invalidDates ||
+    evidence.summary.sourceRows === 0
+  )
+    throw new Error(
+      'Cancellation evidence is invalid or incomplete. Import refused.',
+    );
+  const excluded = new Set(evidence.cancellations.map((s) => s.email));
+  plan.evidenceFileFingerprint = evidence.fileFingerprint;
+  plan.summary.evidenceCancelled = evidence.cancellations.length;
+  plan.summary.cancellationEvidenceConflicts = plan.subscribers.filter((s) =>
+    excluded.has(s.email),
+  ).length;
+  // A conflict is excluded from the proposed roster and also refuses approval.
+  plan.subscribers = plan.subscribers.filter((s) => !excluded.has(s.email));
+  plan.summary.active = plan.subscribers.length;
+  plan.summary.excludedRows += plan.summary.cancellationEvidenceConflicts;
+  plan.rosterFingerprint = createHash('sha256')
+    .update(
+      JSON.stringify({
+        version: 2,
+        roster: plan.subscribers.map((s) => [s.email, s.status]),
+      }),
+    )
+    .digest('hex');
+  return plan;
+}
+
 export type ImportApproval = {
   sourceRows: number;
   authorRows: number;
   active: number;
-  suppressed: number;
+  cancelled: number;
+  evidenceCancelled: number;
   rosterFingerprint: string;
   fileFingerprint: string;
+  evidenceFileFingerprint: string;
 };
 
 export function assertImportApproval(
@@ -167,16 +219,19 @@ export function assertImportApproval(
     plan.summary.duplicateEmails ||
     plan.summary.missingSubscriptionDates ||
     plan.summary.invalidDates ||
-    plan.summary.uniqueEmails === 0
+    plan.summary.active === 0 ||
+    plan.summary.cancellationEvidenceConflicts ||
+    !plan.evidenceFileFingerprint
   )
     throw new Error(
-      'Export has invalid, duplicate, undated or empty subscriber records. Import refused.',
+      'Export has invalid, duplicate, undated, cancelled-conflict or empty subscriber records. Import refused.',
     );
   for (const key of [
     'sourceRows',
     'authorRows',
     'active',
-    'suppressed',
+    'cancelled',
+    'evidenceCancelled',
   ] as const) {
     if (
       !Number.isSafeInteger(approval[key]) ||
@@ -185,7 +240,11 @@ export function assertImportApproval(
     )
       throw new Error('Approved import counts do not match. Import refused.');
   }
-  for (const key of ['rosterFingerprint', 'fileFingerprint'] as const) {
+  for (const key of [
+    'rosterFingerprint',
+    'fileFingerprint',
+    'evidenceFileFingerprint',
+  ] as const) {
     if (!/^[a-f0-9]{64}$/.test(approval[key]) || approval[key] !== plan[key])
       throw new Error(
         'Approved import fingerprint does not match. Import refused.',
@@ -196,28 +255,31 @@ export function assertImportApproval(
 export function parseImportArguments(
   args: string[],
   apply: boolean,
-): { inputPath: string; approval?: ImportApproval } {
+): {
+  inputPath: string;
+  evidencePath: string;
+  expectedEvidenceFingerprint: string;
+  approval?: ImportApproval;
+} {
   const inputPath = args[0];
   if (!inputPath || inputPath.startsWith('--'))
     throw new Error('Private CSV path is required.');
-  if (!apply) {
-    if (args.length !== 1)
-      throw new Error('Dry-run accepts only a private CSV path.');
-    return { inputPath };
-  }
   const names = [
     '--expect-source-rows',
     '--expect-author',
     '--expect-active',
-    '--expect-suppressed',
+    '--expect-cancelled',
+    '--expect-evidence-cancelled',
     '--expect-roster-sha256',
     '--expect-file-sha256',
+    '--cancellation-evidence',
+    '--expect-evidence-file-sha256',
   ];
   const values = new Map<string, string>();
   let confirmed = false;
   for (let i = 1; i < args.length; i++) {
     const name = args[i];
-    if (name === '--confirm-import' && !confirmed) {
+    if (apply && name === '--confirm-import' && !confirmed) {
       confirmed = true;
       continue;
     }
@@ -230,10 +292,24 @@ export function parseImportArguments(
       throw new Error('Unknown, duplicate or missing import argument.');
     values.set(name, args[++i]);
   }
-  if (!confirmed || names.some((name) => !values.has(name)))
+  const required = apply
+    ? names
+    : ['--cancellation-evidence', '--expect-evidence-file-sha256'];
+  if (
+    (apply && !confirmed) ||
+    required.some((name) => !values.has(name)) ||
+    (!apply && values.size !== required.length)
+  )
     throw new Error(
-      'Explicit confirmation, all expected counts and both fingerprints are required.',
+      'Required evidence arguments, expected counts, approved fingerprints and explicit import confirmation are missing.',
     );
+  const evidencePath = values.get('--cancellation-evidence')!;
+  const expectedEvidenceFingerprint = values.get(
+    '--expect-evidence-file-sha256',
+  )!;
+  if (!/^[a-f0-9]{64}$/.test(expectedEvidenceFingerprint))
+    throw new Error('Approved evidence fingerprint is required.');
+  if (!apply) return { inputPath, evidencePath, expectedEvidenceFingerprint };
   const count = (name: string) => {
     const value = values.get(name)!;
     if (
@@ -245,13 +321,27 @@ export function parseImportArguments(
   };
   return {
     inputPath,
+    evidencePath,
+    expectedEvidenceFingerprint,
     approval: {
       sourceRows: count(names[0]),
       authorRows: count(names[1]),
       active: count(names[2]),
-      suppressed: count(names[3]),
-      rosterFingerprint: values.get(names[4])!,
-      fileFingerprint: values.get(names[5])!,
+      cancelled: count(names[3]),
+      evidenceCancelled: count(names[4]),
+      rosterFingerprint: values.get(names[5])!,
+      fileFingerprint: values.get(names[6])!,
+      evidenceFileFingerprint: expectedEvidenceFingerprint,
     },
   };
+}
+
+export function assertCancellationEvidence(
+  plan: SubstackImportPlan,
+  expected: string,
+): void {
+  if (plan.evidenceFileFingerprint !== expected)
+    throw new Error(
+      'Retained cancellation evidence fingerprint changed. Import refused.',
+    );
 }

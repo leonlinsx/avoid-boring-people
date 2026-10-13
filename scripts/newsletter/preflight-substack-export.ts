@@ -3,13 +3,19 @@ import { neonDb } from '../../src/lib/neon.ts';
 import {
   assertImportApproval,
   parseImportArguments,
+  assertCancellationEvidence,
   planSubstackImport,
 } from '../../src/lib/newsletter/importer.ts';
 import { preflightSubstackImport } from '../../src/lib/newsletter/import-store.ts';
 
 try {
-  const { inputPath } = parseImportArguments(process.argv.slice(2), false);
-  const plan = planSubstackImport(await readFile(inputPath, 'utf8'));
+  const { inputPath, evidencePath, expectedEvidenceFingerprint } =
+    parseImportArguments(process.argv.slice(2), false);
+  const plan = planSubstackImport(
+    await readFile(inputPath, 'utf8'),
+    await readFile(evidencePath, 'utf8'),
+  );
+  assertCancellationEvidence(plan, expectedEvidenceFingerprint);
   const reconciliation = await preflightSubstackImport(
     neonDb('Newsletter'),
     plan,
@@ -20,6 +26,7 @@ try {
       ...plan.summary,
       rosterFingerprint: plan.rosterFingerprint,
       fileFingerprint: plan.fileFingerprint,
+      evidenceFileFingerprint: plan.evidenceFileFingerprint!,
     });
   } catch {
     inputValid = false;
@@ -32,6 +39,7 @@ try {
         ...plan.summary,
         rosterFingerprint: plan.rosterFingerprint,
         fileFingerprint: plan.fileFingerprint,
+        evidenceFileFingerprint: plan.evidenceFileFingerprint!,
         ...reconciliation,
         inputValid,
         ready,

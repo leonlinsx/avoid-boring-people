@@ -144,22 +144,27 @@ active@example.test,Active,Free,2021-01-01,,
 duplicate@example.test,Duplicate,Free,2021-03-01,,
 Duplicate@Example.Test,Duplicate,Free,2021-03-01,2022-03-01,
 paused@example.test,Paused,Free,2021-04-01,,Paused`;
-  const plan = planSubstackImport(csv);
+  const plan = planSubstackImport(
+    csv,
+    csv.replace('duplicate@example.test,Duplicate,Free,2021-03-01,,\n', ''),
+  );
   assert.deepEqual(plan.summary, {
     sourceRows: 5,
     authorRows: 1,
     invalidRows: 0,
     missingSubscriptionDates: 0,
     invalidDates: 0,
-    excludedRows: 1,
+    excludedRows: 2,
     mappedRows: 4,
     uniqueEmails: 3,
     duplicateEmails: 1,
     active: 2,
-    suppressed: 1,
+    cancelled: 1,
+    evidenceCancelled: 1,
+    cancellationEvidenceConflicts: 0,
   });
   assert.equal(
-    plan.subscribers.find(
+    plan.cancellations.find(
       (subscriber) => subscriber.email === 'duplicate@example.test',
     )?.status,
     'unsubscribed',

@@ -6,14 +6,20 @@ cutover, or merging this PR. The owned newsletter is free-only. Historical paid,
 comp, gift, transfer, acquisition-source and paused billing values are retained
 as metadata; they do not disqualify an uncancelled subscriber. The operator has
 confirmed eligibility from the complete export: 5,235 rows, one excluded Author,
-5,116 eligible uncancelled subscribers and 118 definitively unsubscribed rows.
+5,116 eligible uncancelled subscribers to import and 118 cancelled records to
+exclude entirely. Cancelled addresses are never sent to Neon, inserted, or updated,
+even as unsubscribed rows. No existing cancellation-address row is modified.
 
 ## Preconditions and private approval
 
 - Review and merge the importer PR separately; use that exact reviewed revision.
 - Keep the original CSV outside Git, in an operator-only private directory.
   Do not commit it, upload it to GitHub/CI, or paste addresses into reports.
-  The commands emit only aggregate counts and whole-roster/file fingerprints.
+  Securely retain the original full export as immutable cancellation evidence,
+  with its approved full-file SHA-256 recorded privately. Never replace it with a
+  filtered roster or a later export: a future input must still be checked against
+  these cancellations. The commands emit only aggregate counts and whole-file/roster
+  fingerprints; no address-level evidence is stored in Neon or Git.
 - Use the existing secret-management mechanism for `DATABASE_URL` (or
   `DATABASE_URL_UNPOOLED`), `NEWSLETTER_ENVIRONMENT=production`, and the existing
   `NEWSLETTER_UNSUBSCRIBE_SECRET` (at least 32 bytes). Never rotate the unsubscribe
@@ -27,17 +33,26 @@ confirmed eligibility from the complete export: 5,235 rows, one excluded Author,
   established mechanism. This PR neither modifies that role nor authorizes its
   creation or grants. Never give that reader importer write privileges. Use a
   separately authorized existing writer connection for the future import.
-- Obtain explicit operator approval of the private roster, both fingerprints,
-  exact source/Author/active/suppressed counts and target database. Approval of
+- Obtain explicit operator approval of the private eligible roster, input/roster/evidence fingerprints,
+  exact source/Author/active/cancelled/evidence-cancelled counts and target database. Approval of
   this PR or this runbook does not constitute production-import approval.
 
 ## Read-only preflight
 
-From the reviewed checkout, set `SUBSTACK_CSV` to the exact private CSV path:
+From the reviewed checkout, set `SUBSTACK_CSV` to the candidate full CSV and
+`SUBSTACK_CANCELLATION_EVIDENCE` to the securely retained original full export.
+For this migration they are the same original file. Set
+`APPROVED_EVIDENCE_SHA256` from the privately approved original-file fingerprint
+recorded during assessment. Do not obtain a new approval hash from a changed
+evidence file or silently replace the retained original:
 
 ```sh
-npm run newsletter:import:dry-run -- "$SUBSTACK_CSV"
-npm run newsletter:import:preflight -- "$SUBSTACK_CSV"
+npm run newsletter:import:dry-run -- "$SUBSTACK_CSV" \
+  --cancellation-evidence "$SUBSTACK_CANCELLATION_EVIDENCE" \
+  --expect-evidence-file-sha256 "$APPROVED_EVIDENCE_SHA256"
+npm run newsletter:import:preflight -- "$SUBSTACK_CSV" \
+  --cancellation-evidence "$SUBSTACK_CANCELLATION_EVIDENCE" \
+  --expect-evidence-file-sha256 "$APPROVED_EVIDENCE_SHA256"
 ```
 
 The second command uses one SELECT in a READ ONLY transaction. It sends nothing,
@@ -46,19 +61,22 @@ SELECT-only connection for this step. Do not run the analytics email commands.
 
 Require these results for the assessed export:
 
-| Field                                                                   |   Expected |
-| ----------------------------------------------------------------------- | ---------: |
-| sourceRows                                                              |       5235 |
-| authorRows / excludedRows                                               |          1 |
-| mappedRows / uniqueEmails                                               |       5234 |
-| active                                                                  |       5116 |
-| suppressed                                                              |        118 |
-| invalidRows / duplicateEmails / missingSubscriptionDates / invalidDates |          0 |
-| existingSubscribers                                                     |          3 |
-| existingPending / existingActive / existingSuppressed                   |     1 each |
-| collisions / unexpectedCollisions / pendingCollisions                   |          0 |
-| newActive / newSuppressed                                               | 5116 / 118 |
-| inputValid / ready                                                      |       true |
+| Field                                                                       |        Expected |
+| --------------------------------------------------------------------------- | --------------: |
+| sourceRows                                                                  |            5235 |
+| authorRows                                                                  |               1 |
+| cancelled / evidenceCancelled                                               |             118 |
+| excludedRows                                                                |             119 |
+| mappedRows / uniqueEmails (locally validated, not imported)                 |            5234 |
+| active (eligible import roster)                                             |            5116 |
+| invalidRows / duplicateEmails / missingSubscriptionDates / invalidDates     |               0 |
+| cancellationEvidenceConflicts                                               |               0 |
+| existingSubscribers                                                         |               3 |
+| existingPending / existingActive / existingSuppressed                       |          1 each |
+| collisions / unexpectedCollisions / pendingCollisions                       |               0 |
+| newActive / newSuppressed                                                   |        5116 / 0 |
+| predictedTotalSubscribers / predictedTotalActive / predictedTotalSuppressed | 5119 / 5117 / 1 |
+| inputValid / ready                                                          |            true |
 
 Stop on unexpected changes; reconcile and obtain new approval. `ready` describes
 input and collision checks, not authorization, writer permissions, or sending
@@ -70,15 +88,22 @@ refuse. Old imports or a different export require separate review rather than
 being silently merged.
 
 The roster fingerprint is SHA-256 of UTF-8 JSON with the exact shape
-`{"version":1,"roster":[["normalized-address","active-or-unsubscribed"],...]}`.
+`{"version":2,"roster":[["normalized-eligible-address","active"],...]}`.
 Addresses are trimmed/lowercased, consolidated, sorted by JavaScript string
-comparison, and the Author is excluded. Cancellation wins during duplicate
+comparison; the Author and all cancellations are excluded. Previous version-1
+approval fingerprints are invalid for this revised import. Cancellation wins during duplicate
 consolidation, but production approval rejects all duplicates and invalid or
 missing subscription/cancellation dates. Reordering rows or changing address
 case preserves the roster fingerprint; changing an address or status changes it.
 The second SHA-256 binds the exact UTF-8 CSV contents, including metadata and row
 order. Save the approved fingerprints privately; do not substitute fresh hashes
-without reviewing and approving the changed export.
+without reviewing and approving the changed export. An evidence file with a
+changed fingerprint refuses every CLI mode. Invalid evidence also refuses.
+If a future input presents any retained cancellation as uncancelled (including
+case/whitespace variants), it is excluded from the proposed roster and the entire
+import fails with `cancellationEvidenceConflicts > 0`. The retained full export
+and its approved fingerprint must remain available for every retry/future file;
+no database suppression table or address hash store is added.
 
 ## Future import — only after separate authorization
 
@@ -91,7 +116,10 @@ npm run newsletter:import -- "$SUBSTACK_CSV" \
   --expect-source-rows 5235 \
   --expect-author 1 \
   --expect-active 5116 \
-  --expect-suppressed 118 \
+  --expect-cancelled 118 \
+  --expect-evidence-cancelled 118 \
+  --cancellation-evidence "$SUBSTACK_CANCELLATION_EVIDENCE" \
+  --expect-evidence-file-sha256 "$APPROVED_EVIDENCE_SHA256" \
   --expect-roster-sha256 "$APPROVED_ROSTER_SHA256" \
   --expect-file-sha256 "$APPROVED_FILE_SHA256" \
   --confirm-import
@@ -111,9 +139,10 @@ have committed. The command never automatically retries.
 ## Verification and recovery
 
 After an authorized run, repeat the SELECT-only preflight. Without intervening
-subscriber activity, expect 5,234 resumable rows, zero new rows and unexpected
-collisions, and a roster of 5,116 active / 118 suppressed. The overall database
-would contain 5,237 subscribers: 5,117 active, 119 suppressed and one pending.
+subscriber activity, expect 5,116 resumable rows, zero new rows and unexpected
+collisions, and an imported roster of 5,116 active / zero suppressed. The 118
+cancellations remain local exclusions. The overall database would contain 5,119
+subscribers: 5,117 active, one unsubscribed and one pending.
 The three pre-existing subscribers remain untouched. No campaigns or campaign
 recipients should have been created by the import.
 
@@ -124,11 +153,11 @@ IDs, unsubscribe hashes, consent, first-touch attribution and original dates
 remain unchanged. Later unsubscribes, bounces and complaints remain suppressed;
 therefore the input's approved active count can exceed the current resulting
 active count. Never restore the input active count by reactivating readers.
-Cancellation evidence clears both confirmation hash and expiry on matching
-imported rows, including already-suppressed rows. An ordinary exact retry is a
-no-op and reports `affectedRows: 0`; credential clearing can legitimately affect
-rows. A later explicit resubscription of an imported cancellation will be
-suppressed again if that old export is rerun: do not replay it as a routine sync.
+Every cancellation is excluded from all SQL payloads, including read-only
+queries. The import has no UPDATE path: `ON CONFLICT DO NOTHING` leaves matching
+imported rows unchanged, including status and confirmation credentials. Ordinary
+exact retries report `affectedRows: 0`. Unexpected collisions still refuse
+atomically; this does not authorize modifying a pre-existing cancelled address.
 
 Do not delete rows, truncate tables or reset suppressions as recovery. Investigate
 unexpected collisions privately and obtain separate approval for any different
@@ -164,7 +193,8 @@ NEWSLETTER_TEST_PG_SOCKET="$TASK_PG_DIR" PGUSER="$(id -un)" \
 ```
 
 Coverage includes historical eligibility, dates, approval changes, cancellations,
-stale credentials, every existing status, an unexpected collision after
+zero cancelled-address inserts/updates (including stale credentials), retained
+evidence conflicts, every existing status, an unexpected collision after
 preflight, atomic rollback beyond the former batch size, uncertain commit
 acknowledgment, exact retries and subsequent opt-outs. This harness is opt-in,
 like the repository's existing disposable lifecycle tests.

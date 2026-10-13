@@ -3,21 +3,24 @@ import { neonDb } from '../../src/lib/neon.ts';
 import {
   assertImportApproval,
   parseImportArguments,
+  assertCancellationEvidence,
   planSubstackImport,
 } from '../../src/lib/newsletter/importer.ts';
 import { applySubstackImport } from '../../src/lib/newsletter/import-store.ts';
 
 try {
-  const { inputPath, approval } = parseImportArguments(
-    process.argv.slice(2),
-    true,
-  );
+  const { inputPath, evidencePath, expectedEvidenceFingerprint, approval } =
+    parseImportArguments(process.argv.slice(2), true);
   if (process.env.NEWSLETTER_ENVIRONMENT !== 'production')
     throw new Error('Production environment required.');
   const secret = process.env.NEWSLETTER_UNSUBSCRIBE_SECRET;
   if (!secret || Buffer.byteLength(secret) < 32)
     throw new Error('Unsubscribe secret required.');
-  const plan = planSubstackImport(await readFile(inputPath, 'utf8'));
+  const plan = planSubstackImport(
+    await readFile(inputPath, 'utf8'),
+    await readFile(evidencePath, 'utf8'),
+  );
+  assertCancellationEvidence(plan, expectedEvidenceFingerprint);
   assertImportApproval(plan, approval!);
   const result = await applySubstackImport(
     neonDb('Newsletter'),
@@ -32,6 +35,7 @@ try {
         ...plan.summary,
         rosterFingerprint: plan.rosterFingerprint,
         fileFingerprint: plan.fileFingerprint,
+        evidenceFileFingerprint: plan.evidenceFileFingerprint,
         ...result,
       },
       null,

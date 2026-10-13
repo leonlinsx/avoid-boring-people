@@ -4,6 +4,7 @@ import {
   parseImportArguments,
   planSubstackImport,
   importTimestamp,
+  assertCancellationEvidence,
   type SubstackImportPlan,
 } from '../../src/lib/newsletter/importer.ts';
 import { mapSubstackRow } from '../../src/lib/newsletter/domain.ts';
@@ -17,22 +18,27 @@ comp@example.test,Comp,Comp,2020-05-01,,Paused,external,comp
 gift@example.test,Gift,Yearly Gift,2020-06-01,,Paused,gift,gift
 cancel@example.test,Cancelled,Free,2020-07-01,2024-01-01,Paused,direct,`;
 
+export function planFor(csv: string, evidence = importFixture) {
+  return planSubstackImport(csv, evidence);
+}
+
 export function approvalFor(plan: SubstackImportPlan) {
   return {
     ...plan.summary,
     rosterFingerprint: plan.rosterFingerprint,
     fileFingerprint: plan.fileFingerprint,
+    evidenceFileFingerprint: plan.evidenceFileFingerprint!,
   };
 }
 
 export function testSubstackImportSafety() {
-  const plan = planSubstackImport(importFixture);
+  const plan = planFor(importFixture);
   assert.equal(
     importTimestamp('2020-02-01T10:00:00+08:00'),
     '2020-02-01T02:00:00.000Z',
   );
   assert.equal(plan.summary.active, 5);
-  assert.equal(plan.summary.suppressed, 1);
+  assert.equal(plan.summary.cancelled, 1);
   assert.equal(plan.summary.authorRows, 1);
   assert.equal(plan.summary.invalidDates, 0);
   assert.equal(plan.summary.missingSubscriptionDates, 0);
@@ -48,12 +54,10 @@ export function testSubstackImportSafety() {
   );
   assertImportApproval(plan, approvalFor(plan));
   const lines = importFixture.split('\n');
-  const reordered = planSubstackImport(
-    [lines[0], ...lines.slice(1).reverse()].join('\n'),
-  );
+  const reordered = planFor([lines[0], ...lines.slice(1).reverse()].join('\n'));
   assert.equal(plan.rosterFingerprint, reordered.rosterFingerprint);
   assert.notEqual(plan.fileFingerprint, reordered.fileFingerprint);
-  const changedRoster = planSubstackImport(
+  const changedRoster = planFor(
     importFixture.replace('free@example.test', 'different@example.test'),
   );
   assert.equal(changedRoster.summary.active, plan.summary.active);
@@ -61,7 +65,7 @@ export function testSubstackImportSafety() {
     () => assertImportApproval(changedRoster, approvalFor(plan)),
     /fingerprint/,
   );
-  const changedStatus = planSubstackImport(
+  const changedStatus = planFor(
     importFixture.replace('2020-02-01,,Paused', '2020-02-01,2024-01-01,Paused'),
   );
   assert.notEqual(plan.rosterFingerprint, changedStatus.rosterFingerprint);
@@ -69,7 +73,7 @@ export function testSubstackImportSafety() {
     () => assertImportApproval(changedStatus, approvalFor(plan)),
     /counts/,
   );
-  const changedMetadata = planSubstackImport(
+  const changedMetadata = planFor(
     importFixture.replace('2020-02-01', '2020-02-02'),
   );
   assert.equal(plan.rosterFingerprint, changedMetadata.rosterFingerprint);
@@ -81,7 +85,8 @@ export function testSubstackImportSafety() {
     'sourceRows',
     'authorRows',
     'active',
-    'suppressed',
+    'cancelled',
+    'evidenceCancelled',
   ] as const)
     assert.throws(() =>
       assertImportApproval(plan, { ...approvalFor(plan), [key]: -1 }),
@@ -95,18 +100,18 @@ export function testSubstackImportSafety() {
     importFixture.replace('2024-01-01', 'bad-cancellation'),
     importFixture.split('\n')[0],
   ]) {
-    const bad = planSubstackImport(csv);
+    const bad = planFor(csv);
     assert.throws(
       () => assertImportApproval(bad, approvalFor(bad)),
       /invalid, duplicate, undated/,
     );
   }
   assert.throws(
-    () => planSubstackImport('Email,Type\nprivate@example.test,Free'),
+    () => planFor('Email,Type\nprivate@example.test,Free'),
     /unsupported/,
   );
   assert.throws(
-    () => planSubstackImport(importFixture + '\n"private@example.test'),
+    () => planFor(importFixture + '\n"private@example.test'),
     (error) => {
       assert.equal(String(error).includes('private@example.test'), false);
       return true;
@@ -121,6 +126,52 @@ export function testSubstackImportSafety() {
     })?.originalSubscribedAt,
     '2020-01-01',
   );
+  assert.equal(
+    plan.subscribers.some((s) => s.email === 'cancel@example.test'),
+    false,
+  );
+  assert.equal(plan.summary.excludedRows, 2);
+  assert.equal(plan.summary.evidenceCancelled, 1);
+  for (const email of ['cancel@example.test', ' CANCEL@EXAMPLE.TEST ']) {
+    const revived = planFor(
+      importFixture
+        .replace('2024-01-01', '')
+        .replace('cancel@example.test', email),
+    );
+    assert.equal(revived.summary.cancellationEvidenceConflicts, 1);
+    assert.equal(
+      revived.subscribers.some((s) => s.email === 'cancel@example.test'),
+      false,
+    );
+    assert.throws(
+      () => assertImportApproval(revived, approvalFor(revived)),
+      /cancelled-conflict/,
+    );
+  }
+  assert.throws(
+    () => assertCancellationEvidence(plan, '0'.repeat(64)),
+    /evidence fingerprint/,
+  );
+  assert.throws(
+    () =>
+      planFor(
+        importFixture,
+        importFixture.replace('2024-01-01', 'bad-cancellation'),
+      ),
+    /evidence is invalid/,
+  );
+  const evidenceFlags = [
+    'fixture.csv',
+    '--cancellation-evidence',
+    'evidence.csv',
+    '--expect-evidence-file-sha256',
+    plan.evidenceFileFingerprint!,
+  ];
+  assert.equal(
+    parseImportArguments(evidenceFlags, false).evidencePath,
+    'evidence.csv',
+  );
+  assert.throws(() => parseImportArguments(['fixture.csv'], false));
   const flags = [
     'fixture.csv',
     '--expect-source-rows',
@@ -129,8 +180,14 @@ export function testSubstackImportSafety() {
     '1',
     '--expect-active',
     '5',
-    '--expect-suppressed',
+    '--expect-cancelled',
     '1',
+    '--expect-evidence-cancelled',
+    '1',
+    '--cancellation-evidence',
+    'evidence.csv',
+    '--expect-evidence-file-sha256',
+    plan.evidenceFileFingerprint!,
     '--expect-roster-sha256',
     plan.rosterFingerprint,
     '--expect-file-sha256',

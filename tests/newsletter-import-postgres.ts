@@ -9,10 +9,12 @@ import {
   applySubstackImport,
   preflightSubstackImport,
 } from '../src/lib/newsletter/import-store.ts';
-import { planSubstackImport } from '../src/lib/newsletter/importer.ts';
-import { importFixture, approvalFor } from './suites/newsletter-import.ts';
-import { confirmSubscription } from '../src/lib/newsletter/subscriptions.ts';
-import { hashToken } from '../src/lib/newsletter/tokens.ts';
+
+import {
+  importFixture,
+  approvalFor,
+  planFor,
+} from './suites/newsletter-import.ts';
 
 const socket = process.env.NEWSLETTER_TEST_PG_SOCKET;
 assert.match(socket ?? '', /^\/tmp\/newsletter-lifecycle-pg-[A-Za-z0-9]+$/);
@@ -83,6 +85,12 @@ const db = Object.assign(
       queries: Query[],
       options: { readOnly?: boolean; isolationLevel?: string },
     ) => {
+      for (const q of queries)
+        assert.equal(
+          q.statement.includes('cancel@example.test'),
+          false,
+          'cancelled addresses must never be sent to Postgres',
+        );
       const statements = queries.map(returning).join('\n');
       const out = sql(
         `BEGIN ISOLATION LEVEL READ COMMITTED ${options.readOnly ? 'READ ONLY' : 'READ WRITE'};\n${statements}\n${failAfterWrites ? 'SELECT 1/0;' : ''}\nCOMMIT;`,
@@ -101,7 +109,7 @@ const db = Object.assign(
     },
   },
 ) as unknown as NeonDb;
-const plan = planSubstackImport(importFixture);
+const plan = planFor(importFixture);
 const secret = 'synthetic-unsubscribe-secret-'.repeat(2);
 function rows() {
   return JSON.parse(
@@ -139,29 +147,29 @@ try {
     );
   let preflight = await preflightSubstackImport(db, plan);
   assert.equal(preflight.newActive, 5);
-  assert.equal(preflight.predictedTotalSubscribers, 6);
+  assert.equal(preflight.predictedTotalSubscribers, 5);
   assert.equal(preflight.predictedTotalActive, 5);
-  assert.equal(preflight.predictedTotalSuppressed, 1);
+  assert.equal(preflight.predictedTotalSuppressed, 0);
   assert.equal(preflight.existingCampaigns, 0);
   assert.equal(preflight.existingCampaignRecipients, 0);
-  assert.equal(preflight.newSuppressed, 1);
+  assert.equal(preflight.newSuppressed, 0);
   assert.equal(preflight.unexpectedCollisions, 0);
   assert.equal(
     (await applySubstackImport(db, plan, approvalFor(plan), secret))
       .affectedRows,
-    6,
+    5,
   );
-  assert.equal(rows().length, 6);
+  assert.equal(rows().length, 5);
   for (const email of ['free', 'paid', 'monthly', 'comp', 'gift'])
     assert.equal(row(`${email}@example.test`).status, 'active');
   assert.equal(
     row('free@example.test').original_subscribed_at,
     '2020-02-01T00:00:00+00:00',
   );
-  assert.equal(row('cancel@example.test').status, 'unsubscribed');
   assert.equal(
-    row('cancel@example.test').unsubscribed_at,
-    '2024-01-01T00:00:00+00:00',
+    row('cancel@example.test'),
+    undefined,
+    'cancelled address must never be inserted',
   );
   const metadata = JSON.parse(row('paid@example.test').source_detail);
   assert.equal(metadata.subscriptionSourceFree, 'subscription-transfer');
@@ -192,7 +200,7 @@ try {
     'exact retry must not rewrite dates, consent, tokens or attribution',
   );
   preflight = await preflightSubstackImport(db, plan);
-  assert.equal(preflight.resumableRows, 6);
+  assert.equal(preflight.resumableRows, 5);
   assert.equal(preflight.newActive, 0);
 
   for (const status of ['unsubscribed', 'bounced', 'complained']) {
@@ -211,20 +219,40 @@ try {
       4,
     );
   }
-  for (const status of ['active', 'unsubscribed', 'bounced', 'complained']) {
-    sql(
-      `UPDATE subscribers SET status=${literal(status)}, confirmation_token_hash=${literal(hashToken('stale-confirm'))}, confirmation_expires_at=now()+interval '1 day' WHERE email_normalized='cancel@example.test'`,
-    );
-    await applySubstackImport(db, plan, approvalFor(plan), secret);
+  // Cancellation addresses never enter the SQL payload. Even a pre-existing
+  // cancelled-address row (with stale confirmation credentials) is untouched.
+  for (const status of [
+    'pending',
+    'active',
+    'unsubscribed',
+    'bounced',
+    'complained',
+  ]) {
+    clear();
+    seed(status, 'cancel@example.test');
     const cancelled = row('cancel@example.test');
-    assert.equal(
-      cancelled.status,
-      status === 'active' ? 'unsubscribed' : status,
+    assert.equal((await preflightSubstackImport(db, plan)).collisions, 0);
+    await applySubstackImport(db, plan, approvalFor(plan), secret);
+    assert.deepEqual(
+      row('cancel@example.test'),
+      cancelled,
+      'zero cancelled-address updates, including credentials',
     );
-    assert.equal(cancelled.confirmation_token_hash, null);
-    assert.equal(cancelled.confirmation_expires_at, null);
-    assert.equal(await confirmSubscription('stale-confirm', db), false);
+    assert.equal(rows().length, 6);
+    await applySubstackImport(db, plan, approvalFor(plan), secret);
+    assert.deepEqual(row('cancel@example.test'), cancelled);
   }
+  clear();
+  const revived = planFor(importFixture.replace('2024-01-01', ''));
+  assert.equal(revived.summary.cancellationEvidenceConflicts, 1);
+  await assert.rejects(() =>
+    applySubstackImport(db, revived, approvalFor(revived), secret),
+  );
+  assert.equal(
+    rows().length,
+    0,
+    'retained cancellation evidence refuses an entire future file',
+  );
   // Fail closed on every non-import collision, including a pending reader.
   for (const status of [
     'pending',
@@ -272,7 +300,7 @@ try {
   // A failure after the INSERT rolls back all rows, including more than one
   // former 100-row batch. Retrying the exact file imports each address once.
   clear();
-  const large = planSubstackImport(
+  const large = planFor(
     'Email,Type,Start date,Cancel date\n' +
       Array.from(
         { length: 205 },
@@ -301,7 +329,7 @@ try {
     applySubstackImport(db, plan, approvalFor(plan), secret),
   );
   loseAcknowledgment = false;
-  assert.equal(rows().length, 6);
+  assert.equal(rows().length, 5);
   sql(
     "UPDATE subscribers SET status='unsubscribed', unsubscribed_at=now() WHERE email_normalized='free@example.test'",
   );
@@ -312,9 +340,7 @@ try {
     0,
   );
   assert.deepEqual(rows(), optedOut);
-  const otherFile = planSubstackImport(
-    importFixture.replace('2020-02-01', '2020-02-02'),
-  );
+  const otherFile = planFor(importFixture.replace('2020-02-01', '2020-02-02'));
   await assert.rejects(() =>
     applySubstackImport(db, otherFile, approvalFor(otherFile), secret),
   );
@@ -326,7 +352,7 @@ try {
   assert.equal(sql('SELECT count(*) FROM campaigns'), '0');
   assert.equal(sql('SELECT count(*) FROM campaign_recipients'), '0');
   console.log(
-    'Substack importer disposable Postgres checks passed: atomic rollback, lost acknowledgment, collision rejection, retry identity, cancellation credentials, historical dates and later opt-outs. No email sent.',
+    'Substack importer disposable Postgres checks passed: atomic rollback, lost acknowledgment, collision rejection, retry identity, cancellation exclusion and retained evidence, historical dates and later opt-outs. No email sent.',
   );
 } finally {
   sql(`DROP SCHEMA ${schema} CASCADE`);
