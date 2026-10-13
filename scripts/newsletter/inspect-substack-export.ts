@@ -1,22 +1,27 @@
 import { readFile } from 'node:fs/promises';
-import { planSubstackImport } from '../../src/lib/newsletter/importer.ts';
+import {
+  parseImportArguments,
+  planSubstackImport,
+} from '../../src/lib/newsletter/importer.ts';
 
-const inputPath = process.argv[2];
-if (!inputPath) {
-  throw new Error(
-    'Usage: npm run newsletter:import:dry-run -- <substack-export.csv>',
+try {
+  const { inputPath } = parseImportArguments(process.argv.slice(2), false);
+  const plan = planSubstackImport(await readFile(inputPath, 'utf8'));
+  console.log(
+    JSON.stringify(
+      {
+        mode: 'dry-run',
+        ...plan.summary,
+        rosterFingerprint: plan.rosterFingerprint,
+        fileFingerprint: plan.fileFingerprint,
+      },
+      null,
+      2,
+    ),
   );
+} catch {
+  console.error(
+    'Export inspection refused: provide one private CSV path with supported columns and well-formed CSV.',
+  );
+  process.exitCode = 1;
 }
-
-const plan = planSubstackImport(await readFile(inputPath, 'utf8'));
-
-console.log(
-  JSON.stringify(
-    {
-      mode: 'dry-run',
-      ...plan.summary,
-    },
-    null,
-    2,
-  ),
-);

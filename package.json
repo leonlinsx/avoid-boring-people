@@ -28,7 +28,8 @@
     "linkcheck:internal": "NO_PROXY=\"${NO_PROXY:+$NO_PROXY,}localhost,127.0.0.1\" no_proxy=\"${no_proxy:+$no_proxy,}localhost,127.0.0.1\" node scripts/link-report.js internal",
     "linkcheck:external": "node scripts/link-report.js external",
     "test": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/run-tests.ts",
-    "test:newsletter:browser": "node tests/newsletter-confirm-browser.mjs"
+    "test:newsletter:browser": "node tests/newsletter-confirm-browser.mjs",
+    "newsletter:import:preflight": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/preflight-substack-export.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
