@@ -47,6 +47,7 @@ export type ImportedSubscriber = {
   legacySubstackType: string | null;
   legacySubstackCancelDate: string | null;
   consentProvenance: 'substack_export';
+  historicalMetadata: Record<string, string | null>;
 };
 
 type SubstackRow = Record<string, string | undefined>;
@@ -70,6 +71,7 @@ export function mapSubstackRow(row: SubstackRow): ImportedSubscriber | null {
     name: value(row, ['Name', 'name']),
     status: cancelDate ? 'unsubscribed' : 'active',
     originalSubscribedAt: value(row, [
+      'Start date',
       'Subscribed at',
       'Subscription date',
       'Created at',
@@ -77,5 +79,14 @@ export function mapSubstackRow(row: SubstackRow): ImportedSubscriber | null {
     legacySubstackType: type,
     legacySubstackCancelDate: cancelDate,
     consentProvenance: 'substack_export',
+    historicalMetadata: {
+      subscriptionSourceFree: value(row, ['Subscription source (free)']),
+      subscriptionSourcePaid: value(row, ['Subscription source (paid)']),
+      expirationDate: value(row, ['Expiration date']),
+      firstPaidDate: value(row, ['First paid date']),
+      paidUpgradeDate: value(row, ['Paid upgrade date']),
+      sections: value(row, ['Sections']),
+      groupMembership: value(row, ['Group membership']),
+    },
   };
 }
