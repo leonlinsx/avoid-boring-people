@@ -65,6 +65,24 @@ jobs:
               exit 1
               ;;
           esac
+      - name: Verify analytics reader identity
+        env:
+          DATABASE_URL: ${{ secrets.NEWSLETTER_ANALYTICS_DATABASE_URL }}
+        run: |
+          node --input-type=module <<'JS'
+          import { neon } from '@neondatabase/serverless';
+          try {
+            const db = neon(process.env.DATABASE_URL);
+            const [r] = await db`SELECT current_user = 'newsletter_analytics_reader' AS role_ok,
+              session_user = 'newsletter_analytics_reader' AS session_ok,
+              current_database() = 'neondb' AS database_ok`;
+            if (r.role_ok !== true || r.session_ok !== true || r.database_ok !== true) throw new Error();
+            console.log('Analytics reader identity verified: newsletter_analytics_reader.');
+          } catch {
+            console.error('::error::Analytics reader identity verification failed.');
+            process.exitCode = 1;
+          }
+          JS
       # `--check` exits 1 when the report lists a failure. The report is printed
       # first, so the failed run carries its own evidence.
       - name: Run the newsletter analytics report
