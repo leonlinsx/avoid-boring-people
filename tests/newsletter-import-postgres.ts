@@ -4,6 +4,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { performance } from 'node:perf_hooks';
 import type { NeonDb } from '../src/lib/neon.ts';
 import {
   applySubstackImport,
@@ -46,10 +47,11 @@ function literal(value: unknown): string {
   if (value === null) return 'NULL';
   return `'${String(value).replaceAll("'", "''")}'`;
 }
-type Query = { statement: string; template: string };
+type Query = { statement: string; template: string; params: unknown[] };
 function query(parts: TemplateStringsArray, ...values: unknown[]): Query {
   return {
     template: parts.join(''),
+    params: values,
     statement: parts.reduce(
       (s, p, i) => s + p + (i < values.length ? literal(values[i]) : ''),
       '',
@@ -64,6 +66,7 @@ function returning(q: Query): string {
 }
 let failAfterWrites = false;
 let loseAcknowledgment = false;
+let verifyFullScale = false;
 const db = Object.assign(
   (parts: TemplateStringsArray, ...values: unknown[]) => {
     const q = query(parts, ...values);
@@ -91,7 +94,50 @@ const db = Object.assign(
           false,
           'cancelled addresses must never be sent to Postgres',
         );
-      const statements = queries.map(returning).join('\n');
+      if (verifyFullScale) {
+        for (const q of queries) {
+          assert.doesNotMatch(
+            q.statement,
+            /scale-cancelled-[0-9]+@example\.test|scale-author@example\.test/,
+          );
+          for (const value of q.params) {
+            if (typeof value !== 'string' || !value.startsWith('[{')) continue;
+            const payload = JSON.parse(value) as {
+              email: string;
+              status: string;
+              cancel_date: string | null;
+            }[];
+            assert.equal(
+              payload.length,
+              5116,
+              'only the eligible roster reaches SQL',
+            );
+            assert.ok(
+              payload.every((r) => r.status === 'active' && !r.cancel_date),
+            );
+          }
+        }
+      }
+      const statements = queries
+        .map((q) => {
+          const statement = returning(q);
+          if (
+            !verifyFullScale ||
+            !q.template.includes('SET LOCAL statement_timeout')
+          )
+            return statement;
+          // Assert the actual production SET took effect in this transaction,
+          // rather than merely matching its text in a fake database.
+          return (
+            statement +
+            `DO $$ BEGIN
+          IF current_setting('statement_timeout')::interval <> interval '60 seconds' THEN
+            RAISE EXCEPTION 'Importer statement timeout must be 60 seconds';
+          END IF;
+        END $$;`
+          );
+        })
+        .join('\n');
       const out = sql(
         `BEGIN ISOLATION LEVEL READ COMMITTED ${options.readOnly ? 'READ ONLY' : 'READ WRITE'};\n${statements}\n${failAfterWrites ? 'SELECT 1/0;' : ''}\nCOMMIT;`,
       );
@@ -297,28 +343,152 @@ try {
   );
   assert.deepEqual(rows(), pending);
 
-  // A failure after the INSERT rolls back all rows, including more than one
-  // former 100-row batch. Retrying the exact file imports each address once.
+  // Mirror the real 5,235-row export and the three untouched baseline rows.
+  // No production data, connection string, or email operation is used here.
   clear();
-  const large = planFor(
-    'Email,Type,Start date,Cancel date\n' +
-      Array.from(
-        { length: 205 },
-        (_, i) => `reader${i}@example.test,Free,2020-01-01,`,
-      ).join('\n'),
+  for (const status of ['pending', 'active', 'unsubscribed'])
+    seed(status, `baseline-${status}@example.test`);
+  const baseline = sql(
+    "SELECT md5(string_agg(to_jsonb(s)::text, '|' ORDER BY email_normalized)) FROM subscribers s",
   );
+  const types = [
+    'Free',
+    'Yearly Subscriber',
+    'Monthly Subscriber',
+    'Comp',
+    'Yearly Gift',
+  ];
+  const scaleCsv = [
+    'Email,Name,Type,Start date,Cancel date,Expiration date,Subscription source (free),Subscription source (paid),First paid date,Paid upgrade date,Sections,Group membership',
+    'scale-author@example.test,Synthetic Author,Author,2020-01-01T12:34:56+00:00,,,contributor,,,,,',
+    ...Array.from(
+      { length: 5116 },
+      (_, i) =>
+        `scale-reader-${i}@example.test,Synthetic Reader ${i},${types[i % types.length]},2020-01-01T12:34:56+00:00,,Paused,subscription-transfer,direct,2021-01-01,2021-01-02,All,None`,
+    ),
+    ...Array.from(
+      { length: 118 },
+      (_, i) =>
+        `scale-cancelled-${i}@example.test,Synthetic Cancellation ${i},Free,2020-01-01T12:34:56+00:00,2024-01-01T00:00:00+00:00,Paused,import,,,,All,None`,
+    ),
+  ].join('\n');
+  const fullScale = planFor(scaleCsv, scaleCsv);
+  assert.equal(fullScale.summary.sourceRows, 5235);
+  assert.equal(fullScale.summary.authorRows, 1);
+  assert.equal(fullScale.summary.active, 5116);
+  assert.equal(fullScale.summary.cancelled, 118);
+  assert.equal(fullScale.summary.evidenceCancelled, 118);
+  assert.equal(fullScale.summary.excludedRows, 119);
+  verifyFullScale = true;
+  const scalePreflight = await preflightSubstackImport(db, fullScale);
+  assert.equal(scalePreflight.newActive, 5116);
+  assert.equal(scalePreflight.predictedTotalSubscribers, 5119);
+  assert.equal(scalePreflight.predictedTotalActive, 5117);
+  assert.equal(scalePreflight.predictedTotalSuppressed, 1);
+  assert.equal(scalePreflight.unexpectedCollisions, 0);
   failAfterWrites = true;
   await assert.rejects(() =>
-    applySubstackImport(db, large, approvalFor(large), secret),
+    applySubstackImport(db, fullScale, approvalFor(fullScale), secret),
   );
-  assert.equal(rows().length, 0);
-  failAfterWrites = false;
-  await applySubstackImport(db, large, approvalFor(large), secret);
-  assert.equal(rows().length, 205);
+  assert.equal(sql('SELECT count(*) FROM subscribers'), '3');
   assert.equal(
-    (await applySubstackImport(db, large, approvalFor(large), secret))
+    sql(
+      "SELECT md5(string_agg(to_jsonb(s)::text, '|' ORDER BY email_normalized)) FROM subscribers s",
+    ),
+    baseline,
+    'failure after all eligible inserts rolls back the entire transaction',
+  );
+  failAfterWrites = false;
+  const started = performance.now();
+  const applied = await applySubstackImport(
+    db,
+    fullScale,
+    approvalFor(fullScale),
+    secret,
+  );
+  const elapsedMs = Math.ceil(performance.now() - started);
+  assert.ok(
+    elapsedMs < 60000,
+    'full-scale import must complete within the statement budget',
+  );
+  assert.equal(applied.affectedRows, 5116);
+  assert.equal(sql('SELECT count(*) FROM subscribers'), '5119');
+  assert.equal(
+    sql("SELECT count(*) FROM subscribers WHERE status = 'active'"),
+    '5117',
+  );
+  assert.equal(
+    sql("SELECT count(*) FROM subscribers WHERE status = 'pending'"),
+    '1',
+  );
+  assert.equal(
+    sql("SELECT count(*) FROM subscribers WHERE status = 'unsubscribed'"),
+    '1',
+  );
+  assert.equal(
+    sql(
+      "SELECT count(*) FROM subscribers WHERE email_normalized LIKE 'scale-cancelled-%' OR email_normalized = 'scale-author@example.test'",
+    ),
+    '0',
+  );
+  const imported = sql(
+    "SELECT md5(string_agg(to_jsonb(s)::text, '|' ORDER BY email_normalized)) FROM subscribers s",
+  );
+  assert.equal(
+    (await applySubstackImport(db, fullScale, approvalFor(fullScale), secret))
       .affectedRows,
     0,
+  );
+  assert.equal(
+    sql(
+      "SELECT md5(string_agg(to_jsonb(s)::text, '|' ORDER BY email_normalized)) FROM subscribers s",
+    ),
+    imported,
+  );
+  for (const [i, status] of ['unsubscribed', 'bounced', 'complained'].entries())
+    sql(
+      `UPDATE subscribers SET status=${literal(status)}, unsubscribed_at=now() WHERE email_normalized=${literal(`scale-reader-${i}@example.test`)}`,
+    );
+  const optedOutScale = sql(
+    "SELECT md5(string_agg(to_jsonb(s)::text, '|' ORDER BY email_normalized)) FROM subscribers s",
+  );
+  assert.equal(
+    (await applySubstackImport(db, fullScale, approvalFor(fullScale), secret))
+      .affectedRows,
+    0,
+  );
+  assert.equal(
+    sql(
+      "SELECT md5(string_agg(to_jsonb(s)::text, '|' ORDER BY email_normalized)) FROM subscribers s",
+    ),
+    optedOutScale,
+  );
+  assert.equal(
+    (await preflightSubstackImport(db, fullScale)).predictedRosterActive,
+    5113,
+  );
+  assert.equal(
+    sql(
+      "SELECT md5(string_agg(to_jsonb(s)::text, '|' ORDER BY email_normalized)) FROM subscribers s WHERE email_normalized LIKE 'baseline-%'",
+    ),
+    baseline,
+  );
+  verifyFullScale = false;
+  console.log(
+    JSON.stringify({
+      test: 'full-scale-synthetic-import',
+      sourceRows: 5235,
+      eligible: 5116,
+      cancelledExcluded: 118,
+      authorExcluded: 1,
+      totalSubscribers: 5119,
+      statementTimeoutSeconds: 60,
+      elapsedMs,
+      atomicRollback: true,
+      exactRetry: true,
+      laterOptOutsPreserved: true,
+      emailSent: false,
+    }),
   );
 
   // Unknown commit outcome: a successful transaction followed by a lost reply

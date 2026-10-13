@@ -165,6 +165,11 @@ migration. Import errors intentionally omit raw parser/driver messages because
 those can contain addresses; use aggregate preflight results and synthetic local
 reproductions instead of logging production exception details.
 
+The retained cancellation evidence covers only the approved export snapshot.
+Before any genuine campaign, perform a fresh reconciliation that also excludes
+anyone who unsubscribed on Substack after that snapshot; the original 118 alone
+are insufficient for a later send. Do not send as part of import verification.
+
 Import completion does not authorize sending. Any real campaign requires
 separate approval of the exact recipient roster, article and count. There are no
 test-email steps in this runbook.
@@ -195,6 +200,8 @@ NEWSLETTER_TEST_PG_SOCKET="$TASK_PG_DIR" PGUSER="$(id -un)" \
 Coverage includes historical eligibility, dates, approval changes, cancellations,
 zero cancelled-address inserts/updates (including stale credentials), retained
 evidence conflicts, every existing status, an unexpected collision after
-preflight, atomic rollback beyond the former batch size, uncertain commit
+preflight, a full-scale 5,235-row synthetic export (5,116 eligible, 118 cancelled
+and one Author) with the actual 60-second statement timeout, atomic rollback,
+exact retry and later opt-out preservation, uncertain commit
 acknowledgment, exact retries and subsequent opt-outs. This harness is opt-in,
 like the repository's existing disposable lifecycle tests.
