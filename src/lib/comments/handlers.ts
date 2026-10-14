@@ -114,6 +114,35 @@ export async function handleListComments(
       slug,
       token ? hashCommentToken(token) : null,
     );
+    // Temporary Stage 3B diagnostic; only the controlled production GET opts in.
+    if (
+      process.env.VERCEL_ENV === 'production' &&
+      request.headers.get('x-abp-writer-identity-check') === 'stage3b'
+    ) {
+      try {
+        const [identity] = await deps.db.query(
+          'SELECT session_user, current_user, current_database() AS current_database',
+          [],
+          { fetchOptions: { signal: AbortSignal.timeout(3000) } },
+        );
+        if (
+          typeof identity?.session_user === 'string' &&
+          typeof identity.current_user === 'string' &&
+          typeof identity.current_database === 'string'
+        ) {
+          console.info(
+            'newsletter_writer_identity_stage3b',
+            JSON.stringify({
+              session_user: identity.session_user,
+              current_user: identity.current_user,
+              current_database: identity.current_database,
+            }),
+          );
+        }
+      } catch {
+        // Never expose diagnostic errors or change the normal comments response.
+      }
+    }
     return okResponse({ comments: rows.map(toPublicComment) });
   } catch (error) {
     logFailure('list', error);
