@@ -20,9 +20,9 @@ The repo holds six systems:
    as the final reply, single self-contained posts with inline links on
    Mastodon/Farcaster/Nostr, a standalone idea plus link self-reply on
    Threads, a full-body DEV syndication with canonical URL, and a rendered
-   carousel on Instagram with a link-in-bio caption, and a native summary
-   with a link card on Tumblr. LinkedIn drafting is manual; experimental and
-   dormant adapters are not default destinations. Details and per-channel
+   carousel on Instagram with a link-in-bio caption. Tumblr is temporarily
+   paused after OAuth failures, and LinkedIn drafting is manual; experimental
+   and dormant adapters are not default destinations. Details and per-channel
    rationale: [docs/social-distribution.md](docs/social-distribution.md).
 3. **Newsletter subscription** — an owned list (Neon Postgres + Amazon SES)
    being migrated off Substack, currently in controlled validation. Public

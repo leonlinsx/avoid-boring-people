@@ -2,8 +2,9 @@ from scripts.automation.routing import DEFAULT_PLATFORMS
 
 
 def test_default_platforms_enable_only_configured_providers():
-    assert DEFAULT_PLATFORMS == ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads", "instagram", "tumblr")
+    assert DEFAULT_PLATFORMS == ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads", "instagram")
     assert "twitter" not in DEFAULT_PLATFORMS  # excluded while API credits are depleted
     assert "linkedin" not in DEFAULT_PLATFORMS
     assert "reddit" not in DEFAULT_PLATFORMS
     assert "weibo" not in DEFAULT_PLATFORMS
+    assert "tumblr" not in DEFAULT_PLATFORMS  # paused after OAuth 401; adapter retained

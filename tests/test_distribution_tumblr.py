@@ -40,10 +40,10 @@ def test_tumblr_uses_npf_oauth1_and_returns_publish_result(monkeypatch):
     assert "full article" not in payload
 
 
-def test_tumblr_is_broad_production_ready_and_evergreen(monkeypatch, tmp_path):
+def test_tumblr_adapter_remains_available_but_is_not_a_production_default(monkeypatch, tmp_path):
     assert "tumblr" in PLATFORMS and "tumblr" in SOCIAL_PLATFORMS
     assert "tumblr" in state_manager.PLATFORMS
-    assert "tumblr" in DEFAULT_PLATFORMS
+    assert "tumblr" not in DEFAULT_PLATFORMS
     for category in ("Investing", "Technology", "System Design", "Risk & Decision Making", "Culture"):
         assert eligible_for_category({"category": category}, "tumblr")
     monkeypatch.chdir(tmp_path)

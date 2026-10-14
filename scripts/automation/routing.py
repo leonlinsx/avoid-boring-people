@@ -20,8 +20,9 @@ SOCIAL_PLATFORMS = ("twitter", "linkedin", "bluesky", "mastodon", "farcaster", "
 # and its 60-day evergreen cooldown stops a recycled article from repeating.
 # INSTAGRAM_ACCESS_TOKEN is a long-lived Instagram User token with the same
 # 60-day lifetime as Threads, so it needs the same rotation.
-# Tumblr is live-verified and uses the existing 60-day evergreen cooldown.
-DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads", "instagram", "tumblr")
+# Tumblr is temporarily paused after repeated 401 OAuth errors (2026-10-13).
+# Keep its adapter/history for later, but do not include it in unattended runs.
+DEFAULT_PLATFORMS = ("bluesky", "mastodon", "devto", "farcaster", "nostr", "threads", "instagram")
 
 # DEV is intentionally restricted to technical writing. Risk is a deliberate,
 # per-article opt-in through the `devto` frontmatter flag.
