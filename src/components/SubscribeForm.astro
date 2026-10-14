@@ -4,7 +4,7 @@ interface Props {
   title?: string;
   subtext?: string;
   trustText?: string;
-  /** Visible CTA copy; English by default. Backend and action stay unchanged. */
+  /** Visible CTA copy; English by default. */
   emailLabel?: string;
   emailPlaceholder?: string;
   subscribeLabel?: string;
@@ -20,9 +20,10 @@ const {
   emailLabel = 'Email address',
   emailPlaceholder = 'Enter your email',
   subscribeLabel = 'Subscribe',
-  successFull = '✅ Thanks! Check your inbox to confirm.',
-  successCompact = '✅ Check inbox!',
+  successFull = 'If this address can receive this newsletter, check your inbox (including spam). If a confirmation email arrives, use its link to complete signup.',
+  successCompact = 'If eligible, check your inbox. Use the link if a confirmation email arrives.',
 } = Astro.props;
+const formId = `newsletter-${crypto.randomUUID()}`;
 ---
 
 <section class="signup">
@@ -30,76 +31,58 @@ const {
   {!compact && subtext && <p class="subtext">{subtext}</p>}
 
   <form
-    id="substack-form"
+    id={formId}
+    data-newsletter-form
     class:list={['signup-box', compact && 'compact']}
-    action="https://avoidboringpeople.substack.com/api/v1/free"
+    action="/api/newsletter/subscribe"
     method="post"
-    target="_blank"
     data-success-full={successFull}
     data-success-compact={successCompact}
   >
-    <input type="hidden" id="first_url" name="first_url" value="" />
     <input
       type="hidden"
       name="source"
       value={compact ? 'blog-inline' : 'blog-footer'}
     />
 
-    <label for="email" class="sr-only">{emailLabel}</label>
+    <label for={`${formId}-email`} class="sr-only">{emailLabel}</label>
     <input
-      id="email"
+      id={`${formId}-email`}
       type="email"
       name="email"
       placeholder={emailPlaceholder}
       required
+      autocomplete="email"
+      maxlength="320"
+      aria-describedby={`${formId}-message`}
     />
-    <button type="submit" id="subscribe-btn">{subscribeLabel}</button>
+    <div class="sr-only" aria-hidden="true">
+      <label for={`${formId}-website`}>Leave this field empty</label>
+      <input
+        id={`${formId}-website`}
+        name="website"
+        type="text"
+        tabindex="-1"
+        autocomplete="off"
+      />
+    </div>
+    <button type="submit">{subscribeLabel}</button>
   </form>
 
-  <p id="subscribe-message" class="subscribe-message" aria-live="polite"></p>
+  <p id={`${formId}-message`} class="subscribe-message" aria-live="polite"></p>
+
+  <noscript
+    >Please enable JavaScript to subscribe, or visit <a
+      href="https://avoidboringpeople.substack.com/subscribe">Substack</a
+    >.</noscript
+  >
 
   {!compact && trustText && <p class="trust-text">{trustText}</p>}
 </section>
 
 <script>
-  import { firstTouchAttribution } from '../lib/newsletter/attribution';
-
-  // First-touch acquisition capture. Every page that offers this form records
-  // how the reader first arrived, so the owned signup path can attribute the
-  // subscription later. Nothing is sent from here: the Substack form below and
-  // its POST are unchanged, and consumption starts at the Phase 5 cutover.
-  try {
-    firstTouchAttribution(
-      {
-        search: location.search,
-        pathname: location.pathname,
-        host: location.host,
-        referrer: document.referrer,
-      },
-      window.localStorage,
-    );
-  } catch {
-    // Attribution capture is best effort and must never block signup.
-  }
-
-  const form = document.getElementById('substack-form');
-  const msg = document.getElementById('subscribe-message');
-  const firstUrl = document.getElementById('first_url');
-  firstUrl.value = location.href;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const isCompact = form.classList.contains('compact');
-    msg.textContent = isCompact
-      ? form.dataset.successCompact || '✅ Check inbox!'
-      : form.dataset.successFull || '✅ Thanks! Check your inbox to confirm.';
-    msg.className = 'subscribe-message success';
-
-    setTimeout(() => {
-      form.submit();
-    }, 1200);
-  });
+  import { initializeNewsletterForms } from '../lib/newsletter/signup-form';
+  initializeNewsletterForms();
 </script>
 
 <style>

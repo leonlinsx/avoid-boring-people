@@ -1,5 +1,6 @@
 // Custom test runner. Suites live in tests/suites and run in a fixed order.
 
+import { runSignupFormTests } from './suites/signup-form.ts';
 import { runSiteUtilityTests } from './suites/site-utils.ts';
 import { runNewsletterTests } from './suites/newsletter.ts';
 import { runSeoMetaTests } from './suites/seo.ts';
@@ -24,6 +25,7 @@ async function run() {
   try {
     await runSiteUtilityTests();
     await runNewsletterTests();
+    await runSignupFormTests();
     await runSeoMetaTests();
     await runContentTests();
     await runDiscussionTests();

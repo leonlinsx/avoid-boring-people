@@ -296,8 +296,10 @@ const ENGLISH_NEWSLETTER: NewsletterChrome = {
   emailLabel: 'Email address',
   emailPlaceholder: 'Enter your email',
   subscribeButton: 'Subscribe',
-  successFull: '✅ Thanks! Check your inbox to confirm.',
-  successCompact: '✅ Check inbox!',
+  successFull:
+    'If this address can receive this newsletter, check your inbox (including spam). If a confirmation email arrives, use its link to complete signup.',
+  successCompact:
+    'If eligible, check your inbox. Use the link if a confirmation email arrives.',
 };
 
 const NEWSLETTER_BY_LOCALE: Record<string, NewsletterChrome> = {
@@ -307,48 +309,59 @@ const NEWSLETTER_BY_LOCALE: Record<string, NewsletterChrome> = {
     emailPlaceholder: 'メールアドレスを入力',
     subscribeButton: '購読する',
     successFull:
-      '✅ ありがとうございます！受信トレイを確認して登録を完了してください。',
-    successCompact: '✅ 受信トレイを確認！',
+      'このアドレスで受信できる場合は、受信トレイ（迷惑メールも）をご確認ください。確認メールが届いたら、リンクから登録を完了してください。',
+    successCompact:
+      '受信可能な場合は受信トレイを確認し、確認メールが届いたらリンクを開いてください。',
   },
   ko: {
     title: '다음 에세이 받기',
     emailLabel: '이메일 주소',
     emailPlaceholder: '이메일을 입력하세요',
     subscribeButton: '구독하기',
-    successFull: '✅ 감사합니다! 받은편지함을 확인해 주세요.',
-    successCompact: '✅ 받은편지함을 확인하세요!',
+    successFull:
+      '이 주소로 수신할 수 있다면 받은편지함과 스팸함을 확인하세요. 확인 이메일이 도착하면 링크로 구독을 완료하세요.',
+    successCompact:
+      '수신 가능한 경우 받은편지함을 확인하세요. 확인 이메일이 오면 링크를 여세요.',
   },
   es: {
     title: 'Recibe el próximo ensayo',
     emailLabel: 'Correo electrónico',
     emailPlaceholder: 'Escribe tu correo',
     subscribeButton: 'Suscribirse',
-    successFull: '✅ ¡Gracias! Revisa tu bandeja para confirmar.',
-    successCompact: '✅ ¡Revisa tu bandeja!',
+    successFull:
+      'Si esta dirección puede recibir el boletín, revisa tu bandeja y el correo no deseado. Si llega un mensaje de confirmación, usa su enlace para completar la suscripción.',
+    successCompact:
+      'Si puedes recibirlo, revisa tu bandeja. Si llega la confirmación, usa su enlace.',
   },
   'pt-BR': {
     title: 'Receba o próximo ensaio',
     emailLabel: 'E-mail',
     emailPlaceholder: 'Digite seu e-mail',
     subscribeButton: 'Assinar',
-    successFull: '✅ Obrigado! Confira sua caixa de entrada para confirmar.',
-    successCompact: '✅ Confira sua caixa de entrada!',
+    successFull:
+      'Se este endereço puder receber a newsletter, confira a caixa de entrada e o spam. Se chegar um e-mail de confirmação, use o link para concluir a inscrição.',
+    successCompact:
+      'Se puder receber, confira sua caixa de entrada. Se chegar a confirmação, use o link.',
   },
   fr: {
     title: 'Recevez le prochain essai',
     emailLabel: 'Adresse e-mail',
     emailPlaceholder: 'Entrez votre e-mail',
     subscribeButton: "S'abonner",
-    successFull: '✅ Merci ! Vérifiez votre boîte mail pour confirmer.',
-    successCompact: '✅ Vérifiez votre boîte mail !',
+    successFull:
+      'Si cette adresse peut recevoir la newsletter, vérifiez votre boîte mail et les indésirables. Si un message de confirmation arrive, utilisez son lien pour terminer l’inscription.',
+    successCompact:
+      'Si vous pouvez la recevoir, vérifiez votre boîte mail. Si la confirmation arrive, utilisez son lien.',
   },
   'zh-Hans': {
     title: '获取下一篇文章',
     emailLabel: '电子邮箱',
     emailPlaceholder: '输入您的邮箱',
     subscribeButton: '订阅',
-    successFull: '✅ 谢谢！请查看收件箱以确认订阅。',
-    successCompact: '✅ 请查看收件箱！',
+    successFull:
+      '如果此邮箱可以接收本通讯，请查看收件箱（包括垃圾邮件）。如果收到确认邮件，请通过其中的链接完成订阅。',
+    successCompact:
+      '如可接收，请查看收件箱。如果收到确认邮件，请点击其中的链接。',
   },
 };
 

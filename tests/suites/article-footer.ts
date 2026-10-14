@@ -45,16 +45,11 @@ function testNewsletterDefaultsAndPreservedSubmission() {
 
   assert.match(subscribe, /title = compact \? '' : 'Get the next essay'/);
   assert.match(subscribe, /subtext = ''/);
-  assert.match(
-    subscribe,
-    /action="https:\/\/avoidboringpeople\.substack\.com\/api\/v1\/free"/,
-  );
-  assert.match(subscribe, /id="substack-form"/);
+  assert.match(subscribe, /action="\/api\/newsletter\/subscribe"/);
+  assert.match(subscribe, /data-newsletter-form/);
   assert.match(subscribe, /name="source"/);
   assert.match(subscribe, /compact \? 'blog-inline' : 'blog-footer'/);
-  assert.match(subscribe, /e\.preventDefault\(\)/);
-  assert.match(subscribe, /setTimeout\(\(\) => \{\s*form\.submit\(\)/);
-  assert.match(subscribe, /firstTouchAttribution\(/);
+  assert.match(subscribe, /initializeNewsletterForms\(\)/);
 }
 
 function testUnifiedFooterOrder() {
