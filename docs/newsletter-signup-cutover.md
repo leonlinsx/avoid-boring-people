@@ -67,23 +67,23 @@ still apply before any campaign or import authorization.
    public flag false, existing test identity allowlisted, SNS destination healthy,
    and existing SES configuration/permissions sufficient. If a check fails, stop;
    this approval does not authorize role, secret or permission repair.
-2. **Deploy the owned form.** Recheck CI and the exact reviewed PR head. Run the
-   required private-repository merge gate for that head; merge only under the
-   separate approval. Let the existing main-branch Vercel production integration
-   build that approved change. Wait for READY and the canonical alias, then GET
-   the home page and an article and verify `/api/newsletter/subscribe` and the
-   conditional instructions. Keep the public flag false during this brief stage;
-   no general-reader delivery is available yet. Do not announce signup, import,
-   run campaign commands or make diagnostic production POSTs.
-3. **Enable genuine new-reader confirmations.** Vercel → project → Settings →
-   Environment Variables: edit only `NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED`
-   for **Production** to the exact string `true`; keep Preview false and leave
-   `NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED=true` and `NEWSLETTER_TEST_RECIPIENTS`
-   unchanged. Redeploy the exact approved production commit from Deployments
-   using the updated Production environment. Wait for READY and confirm the
-   canonical alias points to that deployment. Saving an environment setting
-   alone does not update an already-running deployment. This only enables
-   confirmations for explicit signup requests; it does not send to existing rows.
+2. **Set the Production flag before deployment.** Recheck CI and the exact
+   reviewed PR head and the private-repository merge gate. Verify no unexpected
+   production deployment has started and the recorded Substack deployment still
+   serves the canonical alias. Set only `NEWSLETTER_CONFIRMATION_PRODUCTION_ENABLED`
+   for **Production** to the exact string `true`; preserve Preview false,
+   `NEWSLETTER_CONFIRMATION_DELIVERY_ENABLED=true` and the test allowlist. Do not
+   redeploy the old site. A settings change leaves the live Substack deployment
+   and its disabled-public-confirmation environment snapshot unchanged.
+3. **Deploy the owned form with confirmations enabled together.** Merge the
+   exact checked PR head using the exact-head guard. Let the main-branch Vercel
+   integration create its new Production deployment, capturing the new flag.
+   Verify the deployment's merge SHA, READY state, Production environment flag
+   and `leonlins.com` alias. GET the home page and an article and verify the owned
+   form and conditional instructions. There must be no live owned-form period
+   with confirmations disabled. Stop and restore the recorded Substack deployment
+   if an unexpected production deployment changes this sequence. Do not redeploy
+   the old site, import, run campaign commands or make diagnostic signup POSTs.
 4. **One approved smoke test.** Use exactly one explicitly approved identity on
    the existing test allowlist, preferably the existing lifecycle test identity
    that is currently unsubscribed. Submit once from the canonical rendered form;
