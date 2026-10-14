@@ -1477,98 +1477,12 @@ export function testCommentIntegrationBoundaries() {
   assert.ok(fs.existsSync(path.join(REPO_ROOT, 'docs/discussion.md')));
 }
 
-export async function testTemporaryWriterIdentityDiagnostic() {
-  const originalEnv = process.env.VERCEL_ENV;
-  const originalInfo = console.info;
-  const originalError = console.error;
-  const logged: unknown[][] = [];
-  console.info = (...args: unknown[]) => logged.push(args);
-  console.error = (...args: unknown[]) => logged.push(args);
-  const identity = {
-    session_user: 'neondb_owner',
-    current_user: 'neondb_owner',
-    current_database: 'neondb',
-  };
-  try {
-    for (const scenario of [
-      'success',
-      'no_header',
-      'wrong_header',
-      'preview',
-      'query_failure',
-      'missing_identity',
-    ]) {
-      logged.length = 0;
-      process.env.VERCEL_ENV =
-        scenario === 'preview' ? 'preview' : 'production';
-      const list = makeFakeDb(() => [makeCommentRow()]);
-      let identityQueries = 0;
-      list.db.query = async (
-        text: string,
-        values: unknown[],
-        options: { fetchOptions: { signal: AbortSignal } },
-      ) => {
-        identityQueries += 1;
-        assert.equal(
-          text,
-          'SELECT session_user, current_user, current_database() AS current_database',
-        );
-        assert.deepEqual(values, []);
-        assert.ok(options.fetchOptions.signal instanceof AbortSignal);
-        if (scenario === 'query_failure')
-          throw new Error('NEVER_LOG_CREDENTIAL_OR_SQL_ERROR');
-        if (scenario === 'missing_identity') return [];
-        return [{ ...identity, password: 'NEVER_LOG_EXTRA_FIELDS' }];
-      };
-      const headers: Record<string, string> = {
-        'x-private-test-header': 'NEVER_LOG_REQUEST_HEADERS',
-        cookie: 'NEVER_LOG_COOKIES',
-      };
-      if (scenario !== 'no_header')
-        headers['x-abp-writer-identity-check'] =
-          scenario === 'wrong_header' ? 'wrong' : 'stage3b';
-      const response = await handleListComments(
-        new Request(`https://leonlins.com/api/comments/${COMMENT_SLUG}`, {
-          headers,
-        }),
-        { slug: COMMENT_SLUG },
-        { db: list.db },
-      );
-      assert.equal(response.status, 200);
-      assert.equal(response.headers.get('cache-control'), 'no-store');
-      assert.equal(response.headers.get('vary'), 'Cookie');
-      assert.deepEqual(await response.json(), {
-        ok: true,
-        comments: [toPublicComment(makeCommentRow())],
-      });
-      assert.equal(list.queries.length, 1);
-      const optedIn = !['no_header', 'wrong_header', 'preview'].includes(
-        scenario,
-      );
-      assert.equal(identityQueries, optedIn ? 1 : 0);
-      assert.deepEqual(
-        logged,
-        scenario === 'success'
-          ? [['newsletter_writer_identity_stage3b', JSON.stringify(identity)]]
-          : [],
-      );
-      assert.ok(!JSON.stringify(logged).includes('NEVER_LOG'));
-    }
-  } finally {
-    if (originalEnv === undefined) delete process.env.VERCEL_ENV;
-    else process.env.VERCEL_ENV = originalEnv;
-    console.info = originalInfo;
-    console.error = originalError;
-  }
-}
-
 export async function runDiscussionTests() {
   await testCommentDomain();
   await testCommentTokens();
   await testCommentDisplay();
   await testCommentTurnstile();
   await testCommentHandlers();
-  await testTemporaryWriterIdentityDiagnostic();
   await testCommentStoreSql();
   await testCommentIntegrationBoundaries();
 }
