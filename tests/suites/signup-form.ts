@@ -34,7 +34,6 @@ export async function runSignupFormTests() {
     ) => {
       const query = JSON.parse(String(options?.body));
       queries.push(query);
-      assert.doesNotMatch(query.query, /campaigns|campaign_recipients/i);
       if (fail) throw new Error('fixture database unavailable');
       const rows = query.query.includes('newsletter_rate_limits')
         ? [{ attempt_count: String(attempts) }]
@@ -63,6 +62,10 @@ export async function runSignupFormTests() {
       } as Parameters<APIRoute>[0]);
       assert.equal(response.status, 200);
       assert.deepEqual(await response.json(), genericSubscriptionResponse);
+      // Assert outside the API catch so a forbidden query cannot be hidden by
+      // its deliberately generic error response.
+      for (const query of queries)
+        assert.doesNotMatch(query.query, /campaigns|campaign_recipients/i);
     };
     await submit({
       email: 'new-reader@example.com',
