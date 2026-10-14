@@ -401,9 +401,7 @@ export function firstTouchAttribution(
   return current;
 }
 
-// Wire payload for the owned signup request. Inert until the signup form posts
-// to /api/newsletter/subscribe (Phase 5 cutover); the Substack form is
-// untouched and stores no attribution.
+// Wire payload for the owned signup request to /api/newsletter/subscribe.
 //
 // This is the browser-to-server contract: field names and per-field caps must
 // match the keys `attributionFromRequest` reads and the caps `normalizeAttribution`
