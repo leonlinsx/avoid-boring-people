@@ -163,11 +163,11 @@ def _posted_days_ago(days):
 def _partial_history(post_id, days=1):
     return {post_id: {
         platform: {"count": 1, "last_posted_at": _posted_days_ago(days), "last_mode": "evergreen"}
-        for platform in DEFAULT_PLATFORMS if platform not in {"devto", "tumblr"}
+        for platform in DEFAULT_PLATFORMS if platform not in {"devto", "nostr"}
     }}
 
 
-def test_evergreen_seven_channel_fresh_beats_one_channel_partial(use_temp_distribution_state):
+def test_evergreen_six_channel_fresh_beats_one_channel_partial(use_temp_distribution_state):
     state_manager.save_state({"version": 2, "posts": _partial_history("partial")})
     posts = [_evergreen_post("partial", score=100), _evergreen_post("fresh")]
 
@@ -185,17 +185,17 @@ def test_evergreen_without_broad_candidates_still_selects_partial(use_temp_distr
         DEFAULT_PLATFORMS, "evergreen",
     )
     assert selected["id"] == "partial"
-    assert selected["eligible_platforms"] == ["tumblr"]
+    assert selected["eligible_platforms"] == ["nostr"]
 
 
 def test_tied_coverage_keeps_fairness_then_score(use_temp_distribution_state):
     history = _partial_history("used", days=100)
-    history["used"]["tumblr"] = {"count": 1, "last_posted_at": _posted_days_ago(100)}
+    history["used"]["nostr"] = {"count": 1, "last_posted_at": _posted_days_ago(100)}
     state_manager.save_state({"version": 2, "posts": history})
     posts = [_evergreen_post("used", score=100), _evergreen_post("low"), _evergreen_post("high", score=1)]
     selected = state_manager.select_next_post(posts, DEFAULT_PLATFORMS, "evergreen")
     assert selected["id"] == "high"
-    assert len(selected["eligible_platforms"]) == 7
+    assert len(selected["eligible_platforms"]) == 6
 
 
 def test_coverage_excludes_cooldowns_category_and_new_only(use_temp_distribution_state):
@@ -203,7 +203,7 @@ def test_coverage_excludes_cooldowns_category_and_new_only(use_temp_distribution
     history["cooling"]["threads"]["last_posted_at"] = _posted_days_ago(59)
     state_manager.save_state({"version": 2, "posts": history})
     selected = state_manager.select_next_post([_evergreen_post("cooling")], DEFAULT_PLATFORMS, "evergreen")
-    assert selected["eligible_platforms"] == ["bluesky", "farcaster", "nostr", "instagram", "tumblr"]
+    assert selected["eligible_platforms"] == ["bluesky", "farcaster", "nostr", "instagram"]
     assert state_manager.platform_skip_reason(selected, "mastodon", "evergreen") == "90-day cooldown"
     assert state_manager.platform_skip_reason(selected, "threads", "evergreen") == "60-day cooldown"
     assert state_manager.platform_skip_reason(selected, "devto", "evergreen") == "category routing"
@@ -225,7 +225,7 @@ def test_new_mode_prioritizes_score_over_coverage(use_temp_distribution_state):
         [_evergreen_post("fresh"), _evergreen_post("partial", score=100)], DEFAULT_PLATFORMS, "new",
     )
     assert selected["id"] == "partial"
-    assert selected["eligible_platforms"] == ["tumblr"]
+    assert selected["eligible_platforms"] == ["nostr"]
 
 
 def test_evergreen_runner_publishes_one_article_and_reports_skips(monkeypatch, use_temp_distribution_state, tmp_path):
@@ -249,7 +249,7 @@ def test_evergreen_runner_publishes_one_article_and_reports_skips(monkeypatch, u
     auto_post.main()
 
     assert published == [("fresh", p) for p in DEFAULT_PLATFORMS if p != "devto"]
-    assert "eligible-channel count: 7" in summary_file.read_text()
+    assert "eligible-channel count: 6" in summary_file.read_text()
     assert "devto: skipped (category routing)" in summary_file.read_text()
 
     # With no broad candidate, the same runner completes just the partial's
@@ -257,7 +257,7 @@ def test_evergreen_runner_publishes_one_article_and_reports_skips(monkeypatch, u
     monkeypatch.setattr(auto_post, "fetch_posts", lambda: posts[:1])
     published.clear()
     auto_post.main()
-    assert published == [("partial", "tumblr")]
+    assert published == [("partial", "nostr")]
     summary = summary_file.read_text()
     assert "eligible-channel count: 1" in summary
     assert "mastodon: skipped (90-day cooldown)" in summary
