@@ -1,9 +1,10 @@
-# Luck × preparation: reproducible article experiment
+# Luck × preparation: reproducible article experiments
 
-Keep the model in `analyses/` so future articles can import and extend it;
-nothing runs inside the Astro/Vercel build.
+All analysis lives in `analyses/` and is computed **locally**, never during Astro build or newsletter sending. The original seeded 50/50 baseline is preserved, with four additional experimental scenarios.
 
-## Run from repository root
+## Run
+
+From the repository root:
 
 ```bash
 python -m pip install -r analyses/requirements.txt
@@ -11,66 +12,53 @@ python -m analyses.luck_preparation.run
 python -m pytest tests/test_luck_preparation.py -q
 ```
 
-Default seed: `42`. Override with `--seed N`. To generate tables and
-Plotly HTML without Kaleido/Chrome, use `--skip-png`.
+Override the seed with `--seed N`; use `--skip-png` for HTML and summary only if Kaleido/Chrome is unavailable. To rerun one scenario, pass `--scenario prepared90_luck50` (or any other slug below); omit it to regenerate all five.
 
-The simulation runs for **1**, **1,000** and **1,000,000** trials; the
-short runs are exact prefixes of the longer path using the same seed.
-Outputs include:
-- `analyses/luck_preparation/results/summary.md` — reproducible results table.
-- `results/wealth_1.html`, `wealth_1000.html`,
-  `wealth_1000000.html` — interactive, local-only Plotly HTML previews.
-- `src/content/blog/luck_preparation/charts/wealth_1.png`,
-  `wealth_1000.png`, `wealth_1000000.png` — static Plotly charts for
-  the article and newsletter. PNG export needs Kaleido and Chrome/Chromium.
+Each scenario runs **1, 1,000 and 1,000,000 sequential trials**. The one-trial run is the first trial of the longer paths, not an independent sample. Reusing a seed reproduces all outputs exactly.
 
-Embed a PNG in article Markdown: `![Wealth](./charts/wealth_1000000.png)`.
-Only horizontal gridlines are displayed. For the million-trial chart,
-plotting preserves endpoints and both extrema per x-axis bucket,
-reducing roughly one million points to at most 2,402 plotted points;
-**all calculations still use the full 1,000,000 trials**.
+| Slug | Prepared probability | Good-luck probability | Expected gain per trial |
+|---|---:|---:|---:|
+| `base` | 50% | 50% | $0.00 |
+| `prepared90_luck50` | 90% | 50% | +$3.60 |
+| `prepared10_luck50` | 10% | 50% | −$3.60 |
+| `prepared50_luck90` | 50% | 90% | +$4.40 |
+| `prepared50_luck10` | 50% | 10% | −$4.40 |
 
-Keep the article `index.md` absent until publication is intended; new
-articles can activate the site's automated social distribution.
+Starting wealth is $1. Within each trial, independent luck and preparation draws determine **additive dollar payoffs**: good/prepared +$10, good/unprepared +$1, bad/prepared −$1, bad/unprepared −$10. No borrowing constraint or bankruptcy floor is applied; balances may be negative.
 
-## Model assumptions and interpretation
+### Expected value
 
-- Initial wealth: **$1**.
-- Luck is independently good or bad (50/50), and preparation is
-  independently prepared or unprepared (50/50).
-- Four equally likely **additive dollar** changes:
-  good/prepared **+$10**; good/unprepared **+$1**;
-  bad/prepared **−$1**; bad/unprepared **−$10**.
-- Wealth may be negative: no bankruptcy floor or borrowing constraint.
-- **Realised gain per trial** (dollars) = `(final - initial) / trials`.
-- **Expected gain per trial** (dollars) = `(10 + 1 - 1 - 10) / 4 = $0`.
-  The expected total gain across 1, 1,000, or 1,000,000 trials is also $0;
-  expected ending wealth is $1 in every case.
-- **Total gain (%)** = `(final / initial - 1) * 100`.
-- Endpoint-implied compound growth rate = `(final / initial)^(1/trials) - 1`.
-  This is **not a realizable compounded investment return**, even when
-  the number is positive, because wealth can pass through $0 or below.
-  At seed 42, the 1,000-trial path hits negative wealth but ends at $29,
-  giving +0.337297% implied per trial. The 1,000,000-trial path ends
-  at −$2,511, which has no real-valued growth rate for an even trial count
-  and remains reported as **N/A** (no absolute-value or sign-adjusted
-  substitute is presented).
-- The article summary puts **expected gain per trial** directly below
-  **realised gain per trial**, with the scenarios as columns.
-- Both dollar gain-per-trial rows and the implied compound growth rate are
-  **displayed to two decimal places**; calculations retain full precision.
-  In the million-trial run, −$0.002512 displays as **−$0.00**, preserving
-  the negative sign even though the magnitude rounds to zero.
-- This is one sequence of sequential outcomes per length, **not**
-  1,000,000 independent Monte Carlo paths.
+For `p = P(prepared)` and `q = P(good luck)`, expected dollar gain per trial is:
 
-## Reuse in future work
+`E[Δwealth] = 10pq + q(1-p) - p(1-q) - 10(1-p)(1-q) = 9p + 11q - 10`.
+
+Expected total gain for `n` trials is `n * E[Δwealth]`. Expected final wealth is `$1 + expected total gain`. The observed realised gain is stochastic and approaches the expected per-trial gain at large sample sizes; a single observed outcome need not equal its expectation.
+
+### Reproducibility and comparison
+
+- The **original 50/50 case retains the exact earlier NumPy seeded integer draws**: ending wealth $0, $29 and −$2,511 for seed 42.
+- Additional scenarios use the **same uniform random numbers** per seed, with different probability thresholds, to support a less noisy comparison across preparedness/luck conditions. Their random stream is different from the legacy baseline's stream; do not interpret the realised differences with baseline as a perfectly paired treatment effect.
+- The probability arguments to `simulate` are keyword parameters, so later research can extend the model without duplicating it.
+
+### Outputs
+
+- `analyses/luck_preparation/results/summary.md`: all five article-ready comparison tables (total gain % with zero decimals; realised/expected $ per trial and implied growth % with two decimals).
+- `analyses/luck_preparation/results/wealth_*.html`: 15 interactive Plotly HTML previews. These local previews load Plotly from CDN.
+- `src/content/blog/luck_preparation/charts/wealth_*.png`: 15 publication/newsletter PNGs when Kaleido and Chrome are available.
+- Original baseline filenames remain `wealth_1.png`, `wealth_1000.png`, `wealth_1000000.png`; added scenarios are named `wealth_<slug>_<trial_count>.png`.
+
+The Plotly charts have **horizontal gridlines only**. For 1,000,000 trials, the plot retains the endpoints and minimum/maximum in each x-axis bucket, avoiding a million browser points while preserving full-resolution calculation of statistics.
+
+**Interpretation:** realised gain per trial is `(final-start)/n`; total gain (%) is `(final/start-1)*100`; endpoint-implied compound growth is `(final/start)^(1/n)-1` when the final balance is nonnegative. If final wealth is negative, display **N/A**, not a sign-adjusted growth rate. Even a positive endpoint growth number is not a genuine reinvested return if the path crosses zero. `−$0.00` reflects a slightly negative dollar value after rounding. At 1,000,000 trials, positive endpoint implied compound growth may round to `+0.00%` at the requested precision.
+
+These are sequential-trial paths for one simulated person in each scenario, **not** 1,000,000 independently sampled people. Results should not be interpreted as financial forecasts.
+
+### Reuse in later analyses
 
 ```python
 from analyses.luck_preparation.run import simulate
-path = simulate(1000, seed=42)
-print(path.final_wealth, path.mean_gain_per_trial)
+future = simulate(1000, seed=42, prepared_probability=.9, good_luck_probability=.5)
+print(future.final_wealth, future.expected_gain_per_trial)
 ```
 
-Commit model, assumptions, seed, results, and published PNGs with the
-eventual article; do not make publication contingent on running the model.
+Do **not** add the article `src/content/blog/luck_preparation/index.md` until publication is authorized: it can activate automated website/social distribution. Commit source code and static PNGs alongside the final article when ready.
