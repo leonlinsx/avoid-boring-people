@@ -115,7 +115,7 @@ def markdown_table(simulations: list[Simulation]) -> str:
     rows = [
         ["Starting wealth"] + [_dollars(STARTING_WEALTH) for sim in simulations],
         ["Final wealth"] + [_dollars(sim.final_wealth) for sim in simulations],
-        ["Total gain (%)"] + [f"{sim.gain_percent:+,.1f}%" for sim in simulations],
+        ["Total gain (%)"] + [f"{sim.gain_percent:+,.0f}%" for sim in simulations],
         ["Realised gain per trial"]
         + [_dollars(sim.mean_gain_per_trial, signed=True, decimals=2) for sim in simulations],
         ["Expected gain per trial"]
