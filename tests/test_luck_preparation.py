@@ -25,6 +25,7 @@ def test_reproducibility_and_prefixes():
 def test_payoffs_expectation_and_means():
     for n in (1, 1_000, 1_000_000):
         sim = simulate(n)
+        assert sim.expected_gain_per_trial == 0
         assert sim.expected_total_gain == 0
         assert sim.expected_final_wealth == 1
         assert sim.wealth[0] == 1
@@ -42,11 +43,16 @@ def test_endpoint_implied_rate_even_if_path_crossed_zero():
     assert sim.compound_percent_per_trial == pytest.approx(0.33729715393993054)
     assert simulate(1_000_000).compound_percent_per_trial is None
     table = markdown_table([simulate(1), sim, simulate(1_000_000)])
-    assert "Expected gain (total)" in table
-    assert "Mean gain / trial" in table
+    assert "Expected gain per trial" in table
+    assert "Realised gain per trial" in table
+    assert "Total gain (%)" in table
+    assert "Expected gain (total)" not in table
+    assert table.index("Expected gain per trial") > table.index("Realised gain per trial")
     assert "+0.337297%" in table
     assert "N/A (negative ending wealth)" in table
     assert "-$2,511" in table
+    assert "| Metric | 1 trial | 1,000 trials | 1,000,000 trials |" in table
+    assert "| Expected gain per trial | $0 | $0 | $0 |" in table
 
 
 def test_only_horizontal_gridlines_and_preserved_extrema():
