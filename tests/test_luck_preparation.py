@@ -48,11 +48,14 @@ def test_endpoint_implied_rate_even_if_path_crossed_zero():
     assert "Total gain (%)" in table
     assert "Expected gain (total)" not in table
     assert table.index("Expected gain per trial") > table.index("Realised gain per trial")
-    assert "+0.337297%" in table
+    assert "+0.34%" in table
+    assert "+0.337297%" not in table
+    assert "| Realised gain per trial | -$1.00 | +$0.03 | -$0.00 |" in table
+    assert "| Implied compound growth per trial | -100.00% | +0.34% | N/A (negative ending wealth) |" in table
     assert "N/A (negative ending wealth)" in table
     assert "-$2,511" in table
     assert "| Metric | 1 trial | 1,000 trials | 1,000,000 trials |" in table
-    assert "| Expected gain per trial | $0 | $0 | $0 |" in table
+    assert "| Expected gain per trial | $0.00 | $0.00 | $0.00 |" in table
 
 
 def test_only_horizontal_gridlines_and_preserved_extrema():
