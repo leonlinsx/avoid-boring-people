@@ -57,6 +57,10 @@ articles can activate the site's automated social distribution.
   substitute is presented).
 - The article summary puts **expected gain per trial** directly below
   **realised gain per trial**, with the scenarios as columns.
+- Both dollar gain-per-trial rows and the implied compound growth rate are
+  **displayed to two decimal places**; calculations retain full precision.
+  In the million-trial run, −$0.002512 displays as **−$0.00**, preserving
+  the negative sign even though the magnitude rounds to zero.
 - This is one sequence of sequential outcomes per length, **not**
   1,000,000 independent Monte Carlo paths.
 
