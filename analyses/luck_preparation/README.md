@@ -42,18 +42,21 @@ articles can activate the site's automated social distribution.
   good/prepared **+$10**; good/unprepared **+$1**;
   bad/prepared **−$1**; bad/unprepared **−$10**.
 - Wealth may be negative: no bankruptcy floor or borrowing constraint.
-- Expected gain per trial: `(10 + 1 - 1 - 10) / 4 = $0`.
-  Expected **total gain** across 1, 1,000 or 1,000,000 trials is also $0;
-  expected **ending wealth** is therefore $1 in every case.
-- Observed mean dollar gain per trial = `(final - initial) / trials`.
-- Total percentage gain = `(final / initial - 1) * 100`.
+- **Realised gain per trial** (dollars) = `(final - initial) / trials`.
+- **Expected gain per trial** (dollars) = `(10 + 1 - 1 - 10) / 4 = $0`.
+  The expected total gain across 1, 1,000, or 1,000,000 trials is also $0;
+  expected ending wealth is $1 in every case.
+- **Total gain (%)** = `(final / initial - 1) * 100`.
 - Endpoint-implied compound growth rate = `(final / initial)^(1/trials) - 1`.
   This is **not a realizable compounded investment return**, even when
   the number is positive, because wealth can pass through $0 or below.
   At seed 42, the 1,000-trial path hits negative wealth but ends at $29,
   giving +0.337297% implied per trial. The 1,000,000-trial path ends
   at −$2,511, which has no real-valued growth rate for an even trial count
-  and is reported as N/A.
+  and remains reported as **N/A** (no absolute-value or sign-adjusted
+  substitute is presented).
+- The article summary puts **expected gain per trial** directly below
+  **realised gain per trial**, with the scenarios as columns.
 - This is one sequence of sequential outcomes per length, **not**
   1,000,000 independent Monte Carlo paths.
 
