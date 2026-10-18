@@ -33,9 +33,13 @@ class Simulation:
         return int(self.wealth[-1])
 
     @property
-    def expected_total_gain(self) -> float:
+    def expected_gain_per_trial(self) -> float:
         # Each joint luck/prepared outcome occurs with probability 25%.
-        return self.trials * sum(PAYOFFS) / 4
+        return sum(PAYOFFS) / len(PAYOFFS)
+
+    @property
+    def expected_total_gain(self) -> float:
+        return self.trials * self.expected_gain_per_trial
 
     @property
     def expected_final_wealth(self) -> float:
@@ -96,17 +100,29 @@ def fmt_compound(sim: Simulation) -> str:
 
 
 def markdown_table(simulations: list[Simulation]) -> str:
-    lines = [
-        "| Trials | Expected gain (total) | Starting wealth | Final wealth | Total gain | Mean gain / trial | Implied compound growth / trial |",
-        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    """Article-ready table with metrics as rows and trial lengths as columns."""
+    if not simulations:
+        raise ValueError("at least one simulation is required")
+    headers = ["Metric"] + [
+        f"{sim.trials:,} trial{'s' if sim.trials != 1 else ''}"
+        for sim in simulations
     ]
-    for sim in simulations:
-        lines.append(
-            f"| {sim.trials:,} | {_dollars(sim.expected_total_gain)} "
-            f"| {_dollars(STARTING_WEALTH)} | {_dollars(sim.final_wealth)} "
-            f"| {sim.gain_percent:+,.1f}% | {_dollars(sim.mean_gain_per_trial, signed=True)} "
-            f"| {fmt_compound(sim)} |"
-        )
+    rows = [
+        ["Starting wealth"] + [_dollars(STARTING_WEALTH) for sim in simulations],
+        ["Final wealth"] + [_dollars(sim.final_wealth) for sim in simulations],
+        ["Total gain (%)"] + [f"{sim.gain_percent:+,.1f}%" for sim in simulations],
+        ["Realised gain per trial"]
+        + [_dollars(sim.mean_gain_per_trial, signed=True) for sim in simulations],
+        ["Expected gain per trial"]
+        + [_dollars(sim.expected_gain_per_trial) for sim in simulations],
+        ["Implied compound growth per trial"]
+        + [fmt_compound(sim) for sim in simulations],
+    ]
+    lines = [
+        "| " + " | ".join(headers) + " |",
+        "| :--- | " + " | ".join("---:" for _ in simulations) + " |",
+    ]
+    lines.extend("| " + " | ".join(row) + " |" for row in rows)
     return "\n".join(lines) + "\n"
 
 
@@ -183,8 +199,9 @@ def main() -> None:
         f"Seed: {args.seed}. Independent 50/50 luck and preparation; "
         "four equally likely additive payoffs (+$10, +$1, -$1, -$10).\n\n"
         + table
-        + "\nExpected total gain is $0 for every trial count; expected ending "
-        "wealth is $1. The observed mean gain per trial is (final-start)/n. "
+        + "\nExpected gain per trial is $0 for every trial count; expected "
+        "total gain is also $0, and expected ending wealth is $1. "
+        "Realised gain per trial is (final-start)/n. "
         "Implied compound growth is (final/start)^(1/n)-1, not an actual "
         "reinvestment return, even when the path crosses zero. Negative "
         "ending wealth has no real-valued even root and is N/A.\n",
