@@ -17,6 +17,25 @@ DEFAULT_SEED = 42
 TRIAL_COUNTS = (1, 1_000, 1_000_000)
 PAYOFFS = (10, 1, -1, -10)
 CHART_DIRECTORY = Path("src/content/blog/luck_preparation/charts")
+RESULTS_DIRECTORY = Path("analyses/luck_preparation/results")
+
+
+@dataclass(frozen=True)
+class Scenario:
+    slug: str
+    label: str
+    prepared_probability: float
+    good_luck_probability: float
+
+
+# Preserve the baseline's exact seeded outcomes and existing chart filenames.
+SCENARIOS = (
+    Scenario("base", "Baseline: 50% prepared, 50% good luck", 0.5, 0.5),
+    Scenario("prepared90_luck50", "90% prepared, 50% good luck", 0.9, 0.5),
+    Scenario("prepared10_luck50", "10% prepared, 50% good luck", 0.1, 0.5),
+    Scenario("prepared50_luck90", "50% prepared, 90% good luck", 0.5, 0.9),
+    Scenario("prepared50_luck10", "50% prepared, 10% good luck", 0.5, 0.1),
+)
 
 
 @dataclass(frozen=True)
@@ -27,6 +46,8 @@ class Simulation:
     prepared: np.ndarray
     changes: np.ndarray
     wealth: np.ndarray  # Includes trial 0, before the first outcome
+    prepared_probability: float = 0.5
+    good_luck_probability: float = 0.5
 
     @property
     def final_wealth(self) -> int:
@@ -34,8 +55,9 @@ class Simulation:
 
     @property
     def expected_gain_per_trial(self) -> float:
-        # Each joint luck/prepared outcome occurs with probability 25%.
-        return sum(PAYOFFS) / len(PAYOFFS)
+        # Expected additive gain from four mutually exclusive outcomes.
+        p, q = self.prepared_probability, self.good_luck_probability
+        return p * q * 10 + (1 - p) * q - p * (1 - q) - (1 - p) * (1 - q) * 10
 
     @property
     def expected_total_gain(self) -> float:
@@ -70,22 +92,38 @@ class Simulation:
         return float(np.expm1(np.log(ratio) / self.trials) * 100)
 
 
-def simulate(trials: int, seed: int = DEFAULT_SEED) -> Simulation:
-    """Each trial independently draws luck and preparation, each 50/50.
+def simulate(
+    trials: int,
+    seed: int = DEFAULT_SEED,
+    prepared_probability: float = 0.5,
+    good_luck_probability: float = 0.5,
+) -> Simulation:
+    """Simulate sequential additive payoffs; negative balances are permitted.
 
-    Payoffs are additive dollars: good/prepared +10, good/unprepared +1,
-    bad/prepared -1, bad/unprepared -10. Negative wealth is permitted, so
-    no unstated bankruptcy floor or leverage rule distorts the experiment.
-    Calling with the same seed and a larger trial count preserves the prefix.
+    The 50/50 baseline retains the exact original seeded integer RNG sequence.
+    All additional scenarios use thresholded uniforms, preserving common
+    random draws across the alternative probability configurations. Within
+    each configuration, a short path is a prefix of the longer path.
     """
     if trials < 1:
         raise ValueError("trials must be at least 1")
-    draws = np.random.default_rng(seed).integers(0, 2, size=(trials, 2))
-    luck = draws[:, 0].astype(bool)
-    prepared = draws[:, 1].astype(bool)
+    if not (0 <= prepared_probability <= 1 and 0 <= good_luck_probability <= 1):
+        raise ValueError("probabilities must be between 0 and 1")
+    rng = np.random.default_rng(seed)
+    if prepared_probability == 0.5 and good_luck_probability == 0.5:
+        draws = rng.integers(0, 2, size=(trials, 2))
+        luck = draws[:, 0].astype(bool)
+        prepared = draws[:, 1].astype(bool)
+    else:
+        draws = rng.random((trials, 2))
+        luck = draws[:, 0] < good_luck_probability
+        prepared = draws[:, 1] < prepared_probability
     changes = np.where(luck, np.where(prepared, 10, 1), np.where(prepared, -1, -10))
     wealth = np.concatenate(([STARTING_WEALTH], STARTING_WEALTH + np.cumsum(changes)))
-    return Simulation(trials, seed, luck, prepared, changes, wealth)
+    return Simulation(
+        trials, seed, luck, prepared, changes, wealth,
+        prepared_probability, good_luck_probability,
+    )
 
 
 def _dollars(
@@ -149,7 +187,7 @@ def chart_indices(wealth: np.ndarray, max_buckets: int = 1_200) -> np.ndarray:
     return np.unique(np.asarray(indices, dtype=np.int64))
 
 
-def figure_for(sim: Simulation):
+def figure_for(sim: Simulation, scenario_label: str | None = None):
     """Construct a Plotly figure; import lazily so the model is reusable alone."""
     import plotly.graph_objects as go
 
@@ -168,7 +206,11 @@ def figure_for(sim: Simulation):
     fig.add_hline(y=0, line_dash="dot", line_color="#777", annotation_text="$0")
     fig.update_layout(
         template="plotly_white",
-        title=f"Luck and preparation — {sim.trials:,} trial{'s' if sim.trials != 1 else ''}",
+        title=(
+            f"{scenario_label} — {sim.trials:,} trial{'s' if sim.trials != 1 else ''}"
+            if scenario_label else
+            f"Luck and preparation — {sim.trials:,} trial{'s' if sim.trials != 1 else ''}"
+        ),
         xaxis_title="Trials",
         yaxis_title="Wealth ($)",
         xaxis=dict(
@@ -186,50 +228,82 @@ def figure_for(sim: Simulation):
     return fig
 
 
+def chart_name(scenario: Scenario, trials: int) -> str:
+    """The baseline keeps its existing filenames; extra scenarios are namespaced."""
+    return (
+        f"wealth_{trials}"
+        if scenario.slug == "base"
+        else f"wealth_{scenario.slug}_{trials}"
+    )
+
+
+def run_scenarios(
+    seed: int = DEFAULT_SEED,
+    skip_png: bool = False,
+    scenario_slugs: set[str] | None = None,
+) -> str:
+    """Generate all five scenario tables, plots, and publication-ready PNGs."""
+    selected = [s for s in SCENARIOS if scenario_slugs is None or s.slug in scenario_slugs]
+    if not selected:
+        raise ValueError("at least one scenario must be selected")
+    RESULTS_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    summary = [
+        f"Seed: {seed}. Independent per-trial luck/preparation. ",
+        "Four dollar outcomes: good+prepared +$10, good+unprepared +$1, ",
+        "bad+prepared -$1, bad+unprepared -$10.\n",
+    ]
+    for scenario in selected:
+        sims = [
+            simulate(
+                n, seed, scenario.prepared_probability, scenario.good_luck_probability
+            )
+            for n in TRIAL_COUNTS
+        ]
+        summary.extend([f"## {scenario.label}", "", markdown_table(sims)])
+        for sim in sims:
+            fig = figure_for(
+                sim, scenario_label=None if scenario.slug == "base" else scenario.label
+            )
+            name = chart_name(scenario, sim.trials)
+            fig.write_html(
+                RESULTS_DIRECTORY / f"{name}.html",
+                include_plotlyjs="cdn", full_html=True,
+            )
+            if not skip_png:
+                png = CHART_DIRECTORY / f"{name}.png"
+                png.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    fig.write_image(png, width=1100, height=550, scale=2)
+                except Exception as exc:
+                    raise RuntimeError(
+                        "PNG export requires Kaleido and Chrome/Chromium. "
+                        "Use --skip-png for HTML-only previews."
+                    ) from exc
+    summary.append(
+        "Expected gain per trial is theoretical; realised gain depends on the seed. "
+        "Total gain (%) is displayed as an integer; per-trial dollar amounts "
+        "and implied compound growth (%) use two decimals. A -$0.00 means a "
+        "small negative realised amount rounded to two decimals. The implied "
+        "growth rate uses endpoints only and is not an investable compound "
+        "return when wealth crosses zero; negative final wealth is N/A. "
+        "The million-trial experiment is one path of a million sequential "
+        "trials, not a million independent simulated people.\n"
+    )
+    result = "\n".join(summary)
+    (RESULTS_DIRECTORY / "summary.md").write_text(result, encoding="utf-8")
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
-    parser.add_argument("--skip-png", action="store_true", help="Generate tables/HTML without Kaleido")
-    args = parser.parse_args()
-
-    sims = [simulate(n, seed=args.seed) for n in TRIAL_COUNTS]
-    table = markdown_table(sims)
-    print(table)
-    print("Expected final wealth is $1 for every trial count; realized gain can differ.")
-    print("Endpoint-implied growth is not a realizable return if the path crosses $0.")
-
-    output = Path("analyses/luck_preparation/results")
-    output.mkdir(parents=True, exist_ok=True)
-    (output / "summary.md").write_text(
-        f"Seed: {args.seed}. Independent 50/50 luck and preparation; "
-        "four equally likely additive payoffs (+$10, +$1, -$1, -$10).\n\n"
-        + table
-        + "\nExpected gain per trial is $0 for every trial count; expected "
-        "total gain is also $0, and expected ending wealth is $1. "
-        "Realised gain per trial is (final-start)/n; displayed values are "
-        "rounded to two decimals, so -$0.00 means a small negative result. "
-        "Implied compound growth is (final/start)^(1/n)-1, not an actual "
-        "reinvestment return, even when the path crosses zero. Negative "
-        "ending wealth has no real-valued even root and is N/A.\n",
-        encoding="utf-8",
+    parser.add_argument("--skip-png", action="store_true", help="Generate HTML without Kaleido")
+    parser.add_argument(
+        "--scenario", choices=[s.slug for s in SCENARIOS], action="append",
+        help="Select scenarios; omit to run all five including the baseline",
     )
-    for sim in sims:
-        fig = figure_for(sim)
-        html = output / f"wealth_{sim.trials}.html"
-        fig.write_html(html, include_plotlyjs="cdn", full_html=True)
-        if not args.skip_png:
-            png = CHART_DIRECTORY / f"wealth_{sim.trials}.png"
-            png.parent.mkdir(parents=True, exist_ok=True)
-            try:
-                fig.write_image(png, width=1100, height=550, scale=2)
-            except Exception as exc:
-                raise RuntimeError(
-                    "PNG export requires kaleido and Chrome/Chromium. "
-                    "Install analyses/requirements.txt and ensure Chrome is available, "
-                    "or run --skip-png for HTML previews."
-                ) from exc
-            print(f"Chart: {png}")
-    print(f"Summary and interactive HTML previews: {output}/")
+    args = parser.parse_args()
+    print(run_scenarios(args.seed, args.skip_png, set(args.scenario) if args.scenario else None))
 
 
 if __name__ == "__main__":
