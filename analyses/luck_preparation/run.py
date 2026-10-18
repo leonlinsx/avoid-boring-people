@@ -14,7 +14,8 @@ import numpy as np
 
 STARTING_WEALTH = 1
 DEFAULT_SEED = 42
-TRIAL_COUNTS = (1, 1000)
+TRIAL_COUNTS = (1, 1_000, 1_000_000)
+PAYOFFS = (10, 1, -1, -10)
 CHART_DIRECTORY = Path("src/content/blog/luck_preparation/charts")
 
 
@@ -32,20 +33,37 @@ class Simulation:
         return int(self.wealth[-1])
 
     @property
+    def expected_total_gain(self) -> float:
+        # Each joint luck/prepared outcome occurs with probability 25%.
+        return self.trials * sum(PAYOFFS) / 4
+
+    @property
+    def expected_final_wealth(self) -> float:
+        return STARTING_WEALTH + self.expected_total_gain
+
+    @property
+    def mean_gain_per_trial(self) -> float:
+        return (self.final_wealth - STARTING_WEALTH) / self.trials
+
+    @property
     def gain_percent(self) -> float:
         return (self.final_wealth / STARTING_WEALTH - 1) * 100
 
     @property
     def compound_percent_per_trial(self) -> float | None:
-        """Equivalent geometric rate, only for paths where compounding is possible.
+        """Endpoint-implied geometric growth, not an investable compounded return.
 
-        A terminal zero is a -100% rate if wealth was positive beforehand.
-        If wealth was zero/negative before the final trial, later additive gains
-        cannot be interpreted as compounded investment returns.
+        Intermediate wealth may be zero or negative. This does not invalidate
+        the requested endpoint formula, but it prevents a realized compound
+        return interpretation. A negative endpoint has no real even root.
         """
-        if self.final_wealth < 0 or np.any(self.wealth[:-1] <= 0):
+        ratio = self.final_wealth / STARTING_WEALTH
+        if ratio < 0:
             return None
-        return ((self.final_wealth / STARTING_WEALTH) ** (1 / self.trials) - 1) * 100
+        if ratio == 0:
+            return -100.0
+        # expm1 avoids losing precision for large trial counts.
+        return float(np.expm1(np.log(ratio) / self.trials) * 100)
 
 
 def simulate(trials: int, seed: int = DEFAULT_SEED) -> Simulation:
@@ -66,35 +84,63 @@ def simulate(trials: int, seed: int = DEFAULT_SEED) -> Simulation:
     return Simulation(trials, seed, luck, prepared, changes, wealth)
 
 
+def _dollars(value: int | float, signed: bool = False) -> str:
+    magnitude = f"{abs(value):,.6f}".rstrip("0").rstrip(".")
+    prefix = "+" if value > 0 else "-" if value < 0 else ""
+    return f"{prefix if signed else ('-' if value < 0 else '')}${magnitude}"
+
+
 def fmt_compound(sim: Simulation) -> str:
     rate = sim.compound_percent_per_trial
-    return "N/A (wealth hit $0 or below)" if rate is None else f"{rate:,.3f}%"
+    return "N/A (negative ending wealth)" if rate is None else f"{rate:+,.6f}%"
 
 
 def markdown_table(simulations: list[Simulation]) -> str:
     lines = [
-        "| Trials | Initial wealth | Final wealth | Total gain | Equivalent compounded gain / trial |",
-        "| ---: | ---: | ---: | ---: | ---: |",
+        "| Trials | Expected gain (total) | Starting wealth | Final wealth | Total gain | Mean gain / trial | Implied compound growth / trial |",
+        "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for sim in simulations:
         lines.append(
-            f"| {sim.trials:,} | ${STARTING_WEALTH:,} | ${sim.final_wealth:,} "
-            f"| {sim.gain_percent:+,.1f}% | {fmt_compound(sim)} |"
+            f"| {sim.trials:,} | {_dollars(sim.expected_total_gain)} "
+            f"| {_dollars(STARTING_WEALTH)} | {_dollars(sim.final_wealth)} "
+            f"| {sim.gain_percent:+,.1f}% | {_dollars(sim.mean_gain_per_trial, signed=True)} "
+            f"| {fmt_compound(sim)} |"
         )
     return "\n".join(lines) + "\n"
+
+
+def chart_indices(wealth: np.ndarray, max_buckets: int = 1_200) -> np.ndarray:
+    """Preserve extrema in each x-bucket for a legible million-trial chart.
+
+    Numerical statistics always use the full-resolution series.
+    """
+    length = len(wealth)
+    if length <= max_buckets * 2:
+        return np.arange(length)
+    edges = np.linspace(0, length, max_buckets + 1, dtype=np.int64)
+    indices = [0, length - 1]
+    for begin, end in zip(edges[:-1], edges[1:]):
+        if end <= begin:
+            continue
+        segment = wealth[begin:end]
+        indices.extend((begin + int(np.argmin(segment)), begin + int(np.argmax(segment))))
+    return np.unique(np.asarray(indices, dtype=np.int64))
 
 
 def figure_for(sim: Simulation):
     """Construct a Plotly figure; import lazily so the model is reusable alone."""
     import plotly.graph_objects as go
 
+    indices = chart_indices(sim.wealth)
     fig = go.Figure()
     fig.add_trace(
         go.Scatter(
-            x=np.arange(sim.trials + 1),
-            y=sim.wealth,
+            x=indices,
+            y=sim.wealth[indices],
             mode="lines+markers" if sim.trials == 1 else "lines",
             name="Wealth",
+            line=dict(color="#2563eb", width=2),
             hovertemplate="Trial %{x:,}<br>Wealth $%{y:,.0f}<extra></extra>",
         )
     )
@@ -104,11 +150,17 @@ def figure_for(sim: Simulation):
         title=f"Luck and preparation — {sim.trials:,} trial{'s' if sim.trials != 1 else ''}",
         xaxis_title="Trials",
         yaxis_title="Wealth ($)",
-        xaxis=dict(range=[0, max(sim.trials, 1)], dtick=1 if sim.trials == 1 else None),
+        xaxis=dict(
+            range=[0, max(sim.trials, 1)],
+            dtick=1 if sim.trials == 1 else None,
+            showgrid=False,
+        ),
+        yaxis=dict(showgrid=True, gridcolor="#e5e7eb", zeroline=False),
         margin=dict(l=80, r=45, t=75, b=75),
         width=1100,
         height=550,
         showlegend=False,
+        font=dict(family="Arial, sans-serif", size=14),
     )
     return fig
 
@@ -122,16 +174,20 @@ def main() -> None:
     sims = [simulate(n, seed=args.seed) for n in TRIAL_COUNTS]
     table = markdown_table(sims)
     print(table)
-    print("Additive payouts can take wealth below $0; such paths have no valid compounded return.")
+    print("Expected final wealth is $1 for every trial count; realized gain can differ.")
+    print("Endpoint-implied growth is not a realizable return if the path crosses $0.")
 
     output = Path("analyses/luck_preparation/results")
     output.mkdir(parents=True, exist_ok=True)
     (output / "summary.md").write_text(
-        f"Seed: {args.seed}. Independent luck and preparation draws, 50/50 each.\n\n"
+        f"Seed: {args.seed}. Independent 50/50 luck and preparation; "
+        "four equally likely additive payoffs (+$10, +$1, -$1, -$10).\n\n"
         + table
-        + "\nCompounded rate is an endpoint-equivalent geometric rate, not an actual "
-        "reinvestment return. N/A if wealth went nonpositive before the final trial "
-        "or ended negative.\n",
+        + "\nExpected total gain is $0 for every trial count; expected ending "
+        "wealth is $1. The observed mean gain per trial is (final-start)/n. "
+        "Implied compound growth is (final/start)^(1/n)-1, not an actual "
+        "reinvestment return, even when the path crosses zero. Negative "
+        "ending wealth has no real-valued even root and is N/A.\n",
         encoding="utf-8",
     )
     for sim in sims:
