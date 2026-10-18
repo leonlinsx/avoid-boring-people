@@ -46,6 +46,8 @@ def test_endpoint_implied_rate_even_if_path_crossed_zero():
     assert "Expected gain per trial" in table
     assert "Realised gain per trial" in table
     assert "Total gain (%)" in table
+    assert "| Total gain (%) | -100% | +2,800% | -251,200% |" in table
+    assert "| Total gain (%) | -100.0%" not in table
     assert "Expected gain (total)" not in table
     assert table.index("Expected gain per trial") > table.index("Realised gain per trial")
     assert "+0.34%" in table
