@@ -1,9 +1,9 @@
 # Luck × preparation: reproducible article experiment
 
-This experiment is separate from production Astro code, so future essays can
-reuse or extend it without rerunning a simulation at site build time.
+Keep the model in `analyses/` so future articles can import and extend it;
+nothing runs inside the Astro/Vercel build.
 
-## Run from the repository root
+## Run from repository root
 
 ```bash
 python -m pip install -r analyses/requirements.txt
@@ -11,61 +11,59 @@ python -m analyses.luck_preparation.run
 python -m pytest tests/test_luck_preparation.py -q
 ```
 
-Outputs:
-- Markdown table: `analyses/luck_preparation/results/summary.md`.
-- Interactive Plotly previews: `results/wealth_1.html` and `wealth_1000.html`.
-- PNG charts: `src/content/blog/luck_preparation/charts/wealth_1.png` and
-  `wealth_1000.png`.
+Default seed: `42`. Override with `--seed N`. To generate tables and
+Plotly HTML without Kaleido/Chrome, use `--skip-png`.
 
-Plotly PNG export requires Kaleido and Chrome/Chromium installed locally.
-Use `--skip-png` for the Markdown table and HTML previews when image export
-isn't configured. Local HTML previews load Plotly from its CDN. Use `--seed N`
-to choose a different reproducible path (default: 42).
+The simulation runs for **1**, **1,000** and **1,000,000** trials; the
+short runs are exact prefixes of the longer path using the same seed.
+Outputs include:
+- `analyses/luck_preparation/results/summary.md` — reproducible results table.
+- `results/wealth_1.html`, `wealth_1000.html`,
+  `wealth_1000000.html` — interactive, local-only Plotly HTML previews.
+- `src/content/blog/luck_preparation/charts/wealth_1.png`,
+  `wealth_1000.png`, `wealth_1000000.png` — static Plotly charts for
+  the article and newsletter. PNG export needs Kaleido and Chrome/Chromium.
 
-Once the article is ready, add `src/content/blog/luck_preparation/index.md`
-and embed the PNGs:
+Embed a PNG in article Markdown: `![Wealth](./charts/wealth_1000000.png)`.
+Only horizontal gridlines are displayed. For the million-trial chart,
+plotting preserves endpoints and both extrema per x-axis bucket,
+reducing roughly one million points to at most 2,402 plotted points;
+**all calculations still use the full 1,000,000 trials**.
 
-```markdown
-![Wealth after one trial](./charts/wealth_1.png)
-![Wealth across one thousand trials](./charts/wealth_1000.png)
-```
+Keep the article `index.md` absent until publication is intended; new
+articles can activate the site's automated social distribution.
 
-These static PNGs work on leonlins.com and in the newsletter. Do **not**
-create the article's `index.md` until ready to publish: this site's
-article workflows can distribute new published articles automatically.
+## Model assumptions and interpretation
 
-## Model
+- Initial wealth: **$1**.
+- Luck is independently good or bad (50/50), and preparation is
+  independently prepared or unprepared (50/50).
+- Four equally likely **additive dollar** changes:
+  good/prepared **+$10**; good/unprepared **+$1**;
+  bad/prepared **−$1**; bad/unprepared **−$10**.
+- Wealth may be negative: no bankruptcy floor or borrowing constraint.
+- Expected gain per trial: `(10 + 1 - 1 - 10) / 4 = $0`.
+  Expected **total gain** across 1, 1,000 or 1,000,000 trials is also $0;
+  expected **ending wealth** is therefore $1 in every case.
+- Observed mean dollar gain per trial = `(final - initial) / trials`.
+- Total percentage gain = `(final / initial - 1) * 100`.
+- Endpoint-implied compound growth rate = `(final / initial)^(1/trials) - 1`.
+  This is **not a realizable compounded investment return**, even when
+  the number is positive, because wealth can pass through $0 or below.
+  At seed 42, the 1,000-trial path hits negative wealth but ends at $29,
+  giving +0.337297% implied per trial. The 1,000,000-trial path ends
+  at −$2,511, which has no real-valued growth rate for an even trial count
+  and is reported as N/A.
+- This is one sequence of sequential outcomes per length, **not**
+  1,000,000 independent Monte Carlo paths.
 
-- Starting wealth: $1.
-- Each trial independently draws luck (good/bad) and preparedness
-  (prepared/unprepared); both are 50/50. Each joint outcome is 25%.
-- Good + prepared: +$10; good + unprepared: +$1;
-  bad + prepared: -$1; bad + unprepared: -$10.
-- Additive wealth change, not multiplication or percentage returns. There is
-  no bankruptcy stop or borrowing constraint; wealth may become negative.
-- Expected dollar payoff per trial: $0.
-- The 1-trial simulation is the first trial of the 1,000-trial path, both
-  using the same seed. This is one path, **not** 1,000 Monte Carlo paths.
-- Total gain = `(final / initial - 1) * 100`. The equivalent geometric
-  rate per trial = `((final / initial) ** (1 / trials) - 1) * 100` only
-  when prior wealth remains positive and final wealth is nonnegative.
-  A final $0 gives -100% if wealth was positive until then.
-  If wealth went nonpositive before the last trial, or ended negative,
-  the compounded rate is **N/A**. Even when numerically defined, the
-  geometric rate is endpoint-equivalent, not a realized reinvested return.
-- With seed 42, trial 1 loses $1 (wealth $0) and trial 1,000 ends at $29,
-  having crossed zero along the way. The 1,000-trial compounded rate is
-  therefore N/A despite the positive ending balance.
-
-## Reuse in future analyses
+## Reuse in future work
 
 ```python
 from analyses.luck_preparation.run import simulate
-
 path = simulate(1000, seed=42)
-print(path.final_wealth)
+print(path.final_wealth, path.mean_gain_per_trial)
 ```
 
-Keep analysis modules in `analyses/` and commit the model, assumptions,
-seed, and figures with the eventual article rather than duplicating code
-inside Markdown.
+Commit model, assumptions, seed, results, and published PNGs with the
+eventual article; do not make publication contingent on running the model.
