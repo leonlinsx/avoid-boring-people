@@ -88,15 +88,20 @@ def simulate(trials: int, seed: int = DEFAULT_SEED) -> Simulation:
     return Simulation(trials, seed, luck, prepared, changes, wealth)
 
 
-def _dollars(value: int | float, signed: bool = False) -> str:
-    magnitude = f"{abs(value):,.6f}".rstrip("0").rstrip(".")
+def _dollars(
+    value: int | float, signed: bool = False, decimals: int | None = None
+) -> str:
+    if decimals is None:
+        magnitude = f"{abs(value):,.6f}".rstrip("0").rstrip(".")
+    else:
+        magnitude = f"{abs(value):,.{decimals}f}"
     prefix = "+" if value > 0 else "-" if value < 0 else ""
     return f"{prefix if signed else ('-' if value < 0 else '')}${magnitude}"
 
 
 def fmt_compound(sim: Simulation) -> str:
     rate = sim.compound_percent_per_trial
-    return "N/A (negative ending wealth)" if rate is None else f"{rate:+,.6f}%"
+    return "N/A (negative ending wealth)" if rate is None else f"{rate:+,.2f}%"
 
 
 def markdown_table(simulations: list[Simulation]) -> str:
@@ -112,9 +117,9 @@ def markdown_table(simulations: list[Simulation]) -> str:
         ["Final wealth"] + [_dollars(sim.final_wealth) for sim in simulations],
         ["Total gain (%)"] + [f"{sim.gain_percent:+,.1f}%" for sim in simulations],
         ["Realised gain per trial"]
-        + [_dollars(sim.mean_gain_per_trial, signed=True) for sim in simulations],
+        + [_dollars(sim.mean_gain_per_trial, signed=True, decimals=2) for sim in simulations],
         ["Expected gain per trial"]
-        + [_dollars(sim.expected_gain_per_trial) for sim in simulations],
+        + [_dollars(sim.expected_gain_per_trial, decimals=2) for sim in simulations],
         ["Implied compound growth per trial"]
         + [fmt_compound(sim) for sim in simulations],
     ]
@@ -201,7 +206,8 @@ def main() -> None:
         + table
         + "\nExpected gain per trial is $0 for every trial count; expected "
         "total gain is also $0, and expected ending wealth is $1. "
-        "Realised gain per trial is (final-start)/n. "
+        "Realised gain per trial is (final-start)/n; displayed values are "
+        "rounded to two decimals, so -$0.00 means a small negative result. "
         "Implied compound growth is (final/start)^(1/n)-1, not an actual "
         "reinvestment return, even when the path crosses zero. Negative "
         "ending wealth has no real-valued even root and is N/A.\n",
