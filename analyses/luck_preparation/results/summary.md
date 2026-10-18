@@ -4,7 +4,7 @@ Seed: 42. Independent 50/50 luck and preparation; four equally likely additive p
 | :--- | ---: | ---: | ---: |
 | Starting wealth | $1 | $1 | $1 |
 | Final wealth | $0 | $29 | -$2,511 |
-| Total gain (%) | -100.0% | +2,800.0% | -251,200.0% |
+| Total gain (%) | -100% | +2,800% | -251,200% |
 | Realised gain per trial | -$1.00 | +$0.03 | -$0.00 |
 | Expected gain per trial | $0.00 | $0.00 | $0.00 |
 | Implied compound growth per trial | -100.00% | +0.34% | N/A (negative ending wealth) |
