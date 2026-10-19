@@ -98,3 +98,27 @@ def test_contextual_log_axis():
     assert f.axis_bounds(family, np.array([1,10,100]))[0]
     assert not f.axis_bounds(family, np.array([.98,1.05]))[0]
     assert not f.axis_bounds(f.FAMILIES[0], np.array([-10,100]))[0]
+
+
+def test_table_expected_wealth_and_horizon_titles_are_explicit():
+    for family in f.FAMILIES:
+        scenario = f.SCENARIOS[0]
+        final_horizon = max(family.horizons)
+        codes = f.simulate_codes_single(scenario, final_horizon)
+        cohort_codes = f.simulate_codes_cohort(scenario, final_horizon, people=101)
+        if family.kind == "add":
+            one = f.add_path(codes, family.add_payoffs)
+            people = f.add_path(cohort_codes, family.add_payoffs)
+        else:
+            one = f.mult_path(codes, family.mult_factors)
+            people = f.mult_path(cohort_codes, family.mult_factors)
+        table_one = f.single_table(family, scenario, [one[:n+1] for n in family.horizons])
+        table_many = f.cohort_table(family, scenario, people)
+        assert "Theoretical expected end" in table_one
+        assert "Theoretical expected end" in table_many
+        assert f"{final_horizon:,} trials" in f.make_single_chart(
+            family, scenario, one, final_horizon
+        ).layout.title.text
+        assert f"{final_horizon:,} trials" in f.make_cohort_chart(
+            family, scenario, people
+        ).layout.title.text
