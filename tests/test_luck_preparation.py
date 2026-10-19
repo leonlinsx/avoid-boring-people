@@ -172,7 +172,7 @@ def test_python_module_cli_help_and_table_output(tmp_path):
         command + ["--people", "3", "--output-dir", str(tmp_path)],
         check=True, capture_output=True, text=True
     )
-    assert "luck" in result.stdout.lower()
+    assert str(tmp_path) in result.stdout
     for name in ("single_summary.md", "cohort_summary.md"):
         table = (tmp_path / name).read_text(encoding="utf-8")
         assert table.count("### ") == 28
