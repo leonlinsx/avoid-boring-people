@@ -95,7 +95,7 @@ def render_article_assets(*, all_scenarios=False, out_dir=ARTICLE_ASSET_DIR):
             ax.spines[side].set_visible(False)
         population = "101 people" if cohort else "1 person"
         title = (f"{family.title} | {scenario.label} | {family.display_payoff} "
-                 f"| {population} | {n:,} trials")
+                 f"| {population} | {n:,} trial{'s' if n != 1 else ''}")
         ax.set_title(title, loc="left", fontsize=10.3, weight="semibold", pad=22)
         ax.legend(loc="upper center", bbox_to_anchor=(.5, -.13),
                   ncol=3, fontsize=8.6, frameon=False)
