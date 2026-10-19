@@ -12,10 +12,11 @@ import math
 import numpy as np
 
 from .run import (
-    DEFAULT_SEED, SCENARIOS, STARTING_WEALTH, TRIAL_COUNTS,
+    DEFAULT_SEED, SCENARIOS, STARTING_WEALTH,
     Scenario, chart_indices, simulate as simulate_additive,
 )
 
+MULTIPLICATIVE_TRIAL_COUNTS = (1, 100, 10_000)
 GROWTH_FACTORS = (1.10, 1.01, 0.99, 0.90)
 LOG_FACTORS = np.log(np.asarray(GROWTH_FACTORS, dtype=np.float64))
 RETURN_VALUES = np.asarray(GROWTH_FACTORS) - 1.0
@@ -64,7 +65,7 @@ def simulate_multiplicative(
 ) -> MultiplicativeSimulation:
     """Reuse the exact same luck/preparation draws as the additive experiment.
 
-    Multiplication is in log space to avoid overflow/underflow after 1m trials.
+    Multiplication is in log space to avoid overflow/underflow for long runs.
     """
     events = simulate_additive(trials, seed, prepared_probability, good_luck_probability)
     good, ready = events.luck, events.prepared
@@ -181,7 +182,7 @@ def run_scenarios(
     for original in selected:
         sims = [
             simulate_multiplicative(n, seed, original.prepared_probability, original.good_luck_probability)
-            for n in TRIAL_COUNTS
+            for n in MULTIPLICATIVE_TRIAL_COUNTS
         ]
         sections.extend(["## " + original.label, "", markdown_table(sims)])
         for sim in sims:
