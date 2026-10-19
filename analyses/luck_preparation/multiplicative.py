@@ -16,7 +16,7 @@ from .run import (
     Scenario, chart_indices, simulate as simulate_additive,
 )
 
-MULTIPLICATIVE_TRIAL_COUNTS = (1, 100, 10_000)
+MULTIPLICATIVE_TRIAL_COUNTS = (1, 10, 100)
 GROWTH_FACTORS = (1.10, 1.01, 0.99, 0.90)
 LOG_FACTORS = np.log(np.asarray(GROWTH_FACTORS, dtype=np.float64))
 RETURN_VALUES = np.asarray(GROWTH_FACTORS) - 1.0
