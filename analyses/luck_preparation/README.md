@@ -4,6 +4,9 @@ A **separate multiplicative companion** now applies +10%, +1%, −1%, or −10% 
 
 All analysis lives in `analyses/` and is computed **locally**, never during Astro build or newsletter sending. The original seeded 50/50 baseline is preserved, with six additional experimental scenarios.
 
+
+A further **payoff sensitivity counterfactual** compares the additive +$10/$0/$0/−$10 variant, literal multiplicative +11.111…%/+1.111…% and mathematically exact reversing pairs (+11.111…%/+1.010101…%). See [COUNTERFACTUAL.md](COUNTERFACTUAL.md) or run `python -m analyses.luck_preparation.counterfactual`. No existing experiment assumptions or results are replaced.
+
 ## Run
 
 From the repository root:
