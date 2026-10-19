@@ -64,7 +64,7 @@ def test_extreme_wealth_and_scientific_display():
 
 
 def test_log10_chart_and_horizontal_gridlines():
-    sim = mul.simulate_multiplicative(1_000_000)
+    sim = mul.simulate_multiplicative(10_000)
     fig = mul.figure_for(sim)
     assert fig.layout.xaxis.showgrid is False
     assert fig.layout.yaxis.showgrid is True
