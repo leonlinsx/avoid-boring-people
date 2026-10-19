@@ -184,7 +184,7 @@ def expected_marker(fig, family, scenario, trials, bounds):
     return expected, above or below
 
 def make_single_chart(family, scenario, path, trials):
-    title = f"{family.title} | {scenario.label} | {family.display_payoff} | 1 person | {trials:,} trials"
+    title = f"{family.title} | {scenario.label} | {family.display_payoff} | 1 person | {trials:,} trial{'s' if trials != 1 else ''}"
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=np.arange(len(path)), y=path,
