@@ -85,10 +85,10 @@ At 50% prepared and 50% good luck, expected arithmetic return is
 **exactly 0%**, but the expected logarithmic return is **negative**:
 
 `E[log(1+R)] = [log(1.10) + log(1.01) + log(0.99) + log(0.90)] / 4`
-`≈ -0.0025126`.
+`≈ -0.002537585`.
 
 For large `n`, the typical compound growth converges toward
-`exp(E[log(1+R)]) - 1 ≈ -0.251%` **per trial**. This is volatility drag,
+`exp(E[log(1+R)]) - 1 ≈ -0.2534%` **per trial**. This is volatility drag,
 and distinguishes expected wealth from the typical wealth path.
 
 **Important:** The arithmetic expected final wealth for the neutral case
