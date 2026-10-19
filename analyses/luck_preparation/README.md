@@ -7,6 +7,15 @@ All analysis lives in `analyses/` and is computed **locally**, never during Astr
 
 A further **payoff sensitivity counterfactual** compares the additive +$10/$0/$0/−$10 variant, literal multiplicative +11.111…%/+1.111…% and mathematically exact reversing pairs (+11.111…%/+1.010101…%). See [COUNTERFACTUAL.md](COUNTERFACTUAL.md) or run `python -m analyses.luck_preparation.counterfactual`. No existing experiment assumptions or results are replaced.
 
+A new **101-person ensemble** reuses the seven additive and seven multiplicative
+scenario definitions while independently simulating 101 people per case.
+For every horizon it computes minimum, maximum, mean, and median ending
+wealth. One Plotly chart per scenario/family displays 100 faint paths,
+the actual median-ending person's highlighted trajectory, and the
+mean-ending-wealth marker. See [COHORTS.md](COHORTS.md) and run
+`python -m analyses.luck_preparation.cohorts --skip-png`.
+The original single-person experiments remain unchanged.
+
 ## Run
 
 From the repository root:
