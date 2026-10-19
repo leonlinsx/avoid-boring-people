@@ -35,6 +35,8 @@ SCENARIOS = (
     Scenario("prepared10_luck50", "10% prepared, 50% good luck", 0.1, 0.5),
     Scenario("prepared50_luck90", "50% prepared, 90% good luck", 0.5, 0.9),
     Scenario("prepared50_luck10", "50% prepared, 10% good luck", 0.5, 0.1),
+    Scenario("prepared90_luck10", "90% prepared, 10% good luck", 0.9, 0.1),
+    Scenario("prepared10_luck90", "10% prepared, 90% good luck", 0.1, 0.9),
 )
 
 
@@ -242,7 +244,7 @@ def run_scenarios(
     skip_png: bool = False,
     scenario_slugs: set[str] | None = None,
 ) -> str:
-    """Generate all five scenario tables, plots, and publication-ready PNGs."""
+    """Generate all seven scenario tables, plots, and publication-ready PNGs."""
     selected = [s for s in SCENARIOS if scenario_slugs is None or s.slug in scenario_slugs]
     if not selected:
         raise ValueError("at least one scenario must be selected")
@@ -300,7 +302,7 @@ def main() -> None:
     parser.add_argument("--skip-png", action="store_true", help="Generate HTML without Kaleido")
     parser.add_argument(
         "--scenario", choices=[s.slug for s in SCENARIOS], action="append",
-        help="Select scenarios; omit to run all five including the baseline",
+        help="Select scenarios; omit to run all seven including the baseline",
     )
     args = parser.parse_args()
     print(run_scenarios(args.seed, args.skip_png, set(args.scenario) if args.scenario else None))
