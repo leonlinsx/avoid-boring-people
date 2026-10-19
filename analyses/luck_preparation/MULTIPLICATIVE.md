@@ -2,7 +2,7 @@
 
 **Nothing in the original additive experiment is replaced.** This experiment
 uses the same seven luck/preparation probability combinations, the same
-seeded **trial events**, and the same horizons (1, 1,000, 1,000,000). Only
+seeded **trial events**, and the **multiplicative-specific** horizons (1, 100, 10,000). Only
 the payoff structure changes from additive dollars to multiplicative
 percentages of wealth before each trial.
 
@@ -14,7 +14,7 @@ percentages of wealth before each trial.
 | Unprepared, bad luck | −$10 | ×0.90 (−10%) |
 
 Wealth always starts at **$1** and remains strictly **positive**. Results are
-one sequential path per scenario, not distributions of 1 million people.
+one sequential path per scenario, not distributions of people.
 
 ## How to run
 
@@ -41,8 +41,8 @@ Outputs live in **separate directories**:
   are generated with Plotly/Kaleido and Chrome, not during site builds.
 
 Chart y-axis deliberately shows **log10 wealth in dollars**, not raw wealth.
-With 1 million multiplications, wealth can reach values exceeding
-`10^18075` or below `10^-20282`; a normal floating-point dollar series
+With 10,000 multiplications, wealth can still reach values exceeding
+`10^180` or below `10^-204`; a normal floating-point dollar series
 would overflow to infinity or underflow to zero. **0 on the chart corresponds
 to $1**, +1 corresponds to $10, −1 corresponds to $0.10. The chart keeps
 only horizontal grid lines and the prior min/max-preserving downsampling.
@@ -92,9 +92,12 @@ For large `n`, the typical compound growth converges toward
 and distinguishes expected wealth from the typical wealth path.
 
 **Important:** The arithmetic expected final wealth for the neutral case
-is $1 at all horizons, even though a typical million-trial path has wealth
+is $1 at all horizons, even though a typical long-run path has wealth
 near zero. These are not contradictory: expected wealth and the wealth of
 one typical realization are different objects.
+
+The additive experiment still uses **1, 1,000 and 1,000,000 trials**;
+its data, charts, and tests are not modified by the multiplicative horizon change.
 
 No article `index.md` or newsletter is created as part of this experiment;
 publication remains a separate explicit step.
