@@ -7,37 +7,37 @@ from analyses.luck_preparation import multiplicative as mul
 from analyses.luck_preparation.run import SCENARIOS, TRIAL_COUNTS as ADDITIVE_TRIAL_COUNTS, simulate as additive_simulate
 
 
-@pytest.mark.parametrize("slug,expected_10k_log10", [
-    ("base", -14.508942),
-    ("prepared90_luck50", 144.112047),
-    ("prepared10_luck50", -171.274789),
-    ("prepared50_luck90", 180.165190),
-    ("prepared50_luck10", -204.482281),
-    ("prepared90_luck10", -39.681236),
-    ("prepared10_luck90", 29.652861),
+@pytest.mark.parametrize("slug,expected_100_log10", [
+    ("base", -0.025425776093),
+    ("prepared90_luck50", 1.713833132239),
+    ("prepared10_luck50", -1.350584106362),
+    ("prepared50_luck90", 1.969808750141),
+    ("prepared50_luck10", -2.259954986983),
+    ("prepared90_luck10", -0.562854895495),
+    ("prepared10_luck90", 0.589527481679),
 ])
-def test_seeded_scenarios_preserve_additive_events(slug, expected_10k_log10):
-    s = next(s for s in SCENARIOS if s.slug == slug)
-    one, hundred, ten_thousand = [
-        mul.simulate_multiplicative(n, 42, s.prepared_probability, s.good_luck_probability)
+def test_seeded_scenarios_preserve_additive_events(slug, expected_100_log10):
+    scenario = next(s for s in SCENARIOS if s.slug == slug)
+    one, ten, hundred = [
+        mul.simulate_multiplicative(n, 42, scenario.prepared_probability, scenario.good_luck_probability)
         for n in mul.MULTIPLICATIVE_TRIAL_COUNTS
     ]
-    assert np.array_equal(one.log_wealth, hundred.log_wealth[:2])
-    assert np.allclose(hundred.log_wealth, ten_thousand.log_wealth[:101], rtol=0, atol=1e-11)
-    assert ten_thousand.final_log_wealth / mul.LOG10 == pytest.approx(expected_10k_log10, abs=1e-6)
-    add = additive_simulate(100, 42, s.prepared_probability, s.good_luck_probability)
-    expected_returns = np.where(add.changes == 10, .10,
-                        np.where(add.changes == 1, .01,
-                        np.where(add.changes == -1, -.01, -.10)))
+    assert np.array_equal(one.log_wealth, ten.log_wealth[:2])
+    assert np.allclose(ten.log_wealth, hundred.log_wealth[:11], rtol=0, atol=1e-11)
+    assert hundred.final_log_wealth / mul.LOG10 == pytest.approx(expected_100_log10, abs=1e-9)
+    additive = additive_simulate(100, 42, scenario.prepared_probability, scenario.good_luck_probability)
+    expected_returns = np.where(additive.changes == 10, .10,
+                        np.where(additive.changes == 1, .01,
+                        np.where(additive.changes == -1, -.01, -.10)))
     assert np.allclose(hundred.returns, expected_returns)
-    expected = .09*s.prepared_probability + .11*s.good_luck_probability - .10
-    assert ten_thousand.expected_return_per_trial == pytest.approx(expected, abs=1e-15)
-    assert ten_thousand.realised_mean_return_per_trial == pytest.approx(expected, abs=.002)
-    assert np.isfinite(ten_thousand.log_wealth).all()
+    expected = .09*scenario.prepared_probability + .11*scenario.good_luck_probability - .10
+    assert hundred.expected_return_per_trial == pytest.approx(expected, abs=1e-15)
+    assert hundred.realised_mean_return_per_trial == pytest.approx(np.mean(expected_returns))
+    assert np.isfinite(hundred.log_wealth).all()
 
 
 def test_horizon_schedules_are_independent():
-    assert mul.MULTIPLICATIVE_TRIAL_COUNTS == (1, 100, 10_000)
+    assert mul.MULTIPLICATIVE_TRIAL_COUNTS == (1, 10, 100)
     assert ADDITIVE_TRIAL_COUNTS == (1, 1_000, 1_000_000)
 
 
@@ -61,15 +61,15 @@ def test_extreme_wealth_and_scientific_display():
     assert mul.format_total_gain_percent(-1000) == "−100%"
     assert "10^" in mul.format_total_gain_percent(1000)
     assert mul.format_total_gain_percent(math.log(1.1)) == "+10%"
-    sim = mul.simulate_multiplicative(10_000)
+    sim = mul.simulate_multiplicative(100)
     table = mul.markdown_table([sim])
     assert "Realised compound growth per trial (%)" in table
-    assert "× 10^" in table
+    assert "$0.94" in table
     assert "N/A" not in table
 
 
 def test_log10_chart_and_horizontal_gridlines():
-    sim = mul.simulate_multiplicative(10_000)
+    sim = mul.simulate_multiplicative(100)
     fig = mul.figure_for(sim)
     assert fig.layout.xaxis.showgrid is False
     assert fig.layout.yaxis.showgrid is True
@@ -86,8 +86,8 @@ def test_seven_tables_and_21_html_previews(tmp_path, monkeypatch):
     assert len(list((tmp_path / "analysis").glob("wealth_*.html"))) == 21
     assert not (tmp_path / "charts").exists()
     assert (tmp_path / "analysis" / "summary.md").read_text() == output
-    assert "$3.10 × 10^-15" in output
-    assert "−100%" in output
+    assert "| Final wealth | $0.99 | $1.20 | $0.94 |" in output
+    assert "−99%" in output
     assert "+0.00%" in output
     assert "Implied compound growth per trial" not in output
     assert "## Baseline: 50% prepared, 50% good luck" in output
