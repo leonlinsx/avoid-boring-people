@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from analyses.luck_preparation import multiplicative as mul
-from analyses.luck_preparation.run import SCENARIOS, simulate as additive_simulate
+from analyses.luck_preparation.run import SCENARIOS, TRIAL_COUNTS as ADDITIVE_TRIAL_COUNTS, simulate as additive_simulate
 
 
 @pytest.mark.parametrize("slug,expected_10k_log10", [
@@ -34,6 +34,11 @@ def test_seeded_scenarios_preserve_additive_events(slug, expected_10k_log10):
     assert ten_thousand.expected_return_per_trial == pytest.approx(expected, abs=1e-15)
     assert ten_thousand.realised_mean_return_per_trial == pytest.approx(expected, abs=.002)
     assert np.isfinite(ten_thousand.log_wealth).all()
+
+
+def test_horizon_schedules_are_independent():
+    assert mul.MULTIPLICATIVE_TRIAL_COUNTS == (1, 100, 10_000)
+    assert ADDITIVE_TRIAL_COUNTS == (1, 1_000, 1_000_000)
 
 
 def test_simple_returns_compound_geometrically():
