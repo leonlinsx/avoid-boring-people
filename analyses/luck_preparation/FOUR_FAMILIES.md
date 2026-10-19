@@ -31,6 +31,12 @@ Expected multiplicative **dollar** wealth is not the geometric mean or the typic
 
 **Cohorts:** 4 × 7 = **28** HTML Plotly charts (101 participants each, longest horizon). Each family/scenario has full min, max, arithmetic mean and median at each of three checkpoints; the highlighted path is the actual person ranked 51st by *final* wealth at the longest horizon. Trial outcomes for the 50/50 single path preserve the original seeded integer stream; other single scenarios preserve their original uniform streams. All 101-person paths use independent person/trial uniforms and paired random draws across cases.
 
-The generator writes `analyses/luck_preparation/results/four_families/` when invoked. The accompanying downloadable package in the conversation also contains all 112 already generated interactive HTMLs and 112 static PNGs, plus results and tests; PNG exports were made with an offline Matplotlib fallback because Kaleido wasn't available.
+The generator writes `analyses/luck_preparation/results/four_families/` when invoked. Both complete summary tables now include **theoretical expected ending wealth at every checkpoint**. The committed [cross-family results](results/four_families/summary.md) pin the longest-horizon reference values.
+
+For article PNG assets use `python -m analyses.luck_preparation.article_assets`, which exports **16 baseline charts** directly to `src/content/blog/2026_10_24_luck_preparation/assets/`, without creating or modifying `index.md`; pass `--all` to export all 112 PNGs. The exporter refuses to overwrite existing assets and uses Matplotlib to avoid depending on Chrome. See [ARTICLE_AUTHORING.md](ARTICLE_AUTHORING.md) for exact Astro frontmatter, directory conventions, and article-relative image links.
+
+Single-person chart titles also include the trial horizon, preventing identical titles across 1/100/10,000 or 1/10/100 variants.
+
+ The accompanying downloadable package in the conversation also contains all 112 already generated interactive HTMLs and 112 static PNGs, plus results and tests; PNG exports were made with an offline Matplotlib fallback because Kaleido wasn't available.
 
 **Interpretation constraints:** this stylized model independently redraws preparedness and luck on each trial, gives all people equal probabilities within a scenario, permits negative additive wealth, and does not model preparation costs, persistence, debt limits, or causal effects. A cohort's sample mean/minimum/maximum is not the theoretical population expectation/bounds. Four payoff matrices were *assumed*; the simulations do not establish real-world magnitudes or causal importance of luck and preparation.
