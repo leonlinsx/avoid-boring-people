@@ -2,7 +2,7 @@
 
 **Nothing in the original additive experiment is replaced.** This experiment
 uses the same seven luck/preparation probability combinations, the same
-seeded **trial events**, and the **multiplicative-specific** horizons (1, 100, 10,000). Only
+seeded **trial events**, and the **multiplicative-specific** horizons (1, 10, 100). Only
 the payoff structure changes from additive dollars to multiplicative
 percentages of wealth before each trial.
 
@@ -41,11 +41,10 @@ Outputs live in **separate directories**:
   are generated with Plotly/Kaleido and Chrome, not during site builds.
 
 Chart y-axis deliberately shows **log10 wealth in dollars**, not raw wealth.
-With 10,000 multiplications, wealth can still reach values exceeding
-`10^180` or below `10^-204`; a normal floating-point dollar series
-would overflow to infinity or underflow to zero. **0 on the chart corresponds
-to $1**, +1 corresponds to $10, −1 corresponds to $0.10. The chart keeps
-only horizontal grid lines and the prior min/max-preserving downsampling.
+At 100 trials, wealth remains within a much more readable range; the
+log10 dollar axis is retained for comparability and to keep high and low
+paths legible on the same plot. **0 on the chart corresponds to $1**,
++1 to $10, and −1 to $0.10. Only horizontal grid lines are shown.
 
 ## Metrics and mathematics
 
@@ -75,9 +74,9 @@ For reporting:
 - **Final wealth**: dollars, with scientific notation when needed, never
   a float that silently over/underflows.
 
-Per-trial percentages display two decimals. Internal calculations use
-full log precision. Extremely small final wealth is expressed as
-`$mantissa × 10^negative_exponent`, **not** as $0.
+Per-trial percentages display two decimals. Internal calculations retain
+full log precision. Very small wealth amounts use scientific notation,
+not misleading $0 values.
 
 ### The central insight
 
