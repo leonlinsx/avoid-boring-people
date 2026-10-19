@@ -7,37 +7,37 @@ from analyses.luck_preparation import multiplicative as mul
 from analyses.luck_preparation.run import SCENARIOS, simulate as additive_simulate
 
 
-@pytest.mark.parametrize("slug,expected_1m_log10", [
-    ("base", -1112.411102094),
-    ("prepared90_luck50", 14607.330746261),
-    ("prepared10_luck50", -16779.785912216),
-    ("prepared50_luck90", 18075.614014931),
-    ("prepared50_luck10", -20282.127975768),
-    ("prepared90_luck10", -3906.091159845),
-    ("prepared10_luck90", 3062.529055235),
+@pytest.mark.parametrize("slug,expected_10k_log10", [
+    ("base", -14.508942),
+    ("prepared90_luck50", 144.112047),
+    ("prepared10_luck50", -171.274789),
+    ("prepared50_luck90", 180.165190),
+    ("prepared50_luck10", -204.482281),
+    ("prepared90_luck10", -39.681236),
+    ("prepared10_luck90", 29.652861),
 ])
-def test_seeded_scenarios_preserve_additive_events(slug, expected_1m_log10):
+def test_seeded_scenarios_preserve_additive_events(slug, expected_10k_log10):
     s = next(s for s in SCENARIOS if s.slug == slug)
-    one, thousand, million = [
+    one, hundred, ten_thousand = [
         mul.simulate_multiplicative(n, 42, s.prepared_probability, s.good_luck_probability)
-        for n in (1, 1000, 1_000_000)
+        for n in mul.MULTIPLICATIVE_TRIAL_COUNTS
     ]
-    assert np.array_equal(one.log_wealth, thousand.log_wealth[:2])
-    assert np.allclose(thousand.log_wealth, million.log_wealth[:1001], rtol=0, atol=1e-11)
-    assert million.final_log_wealth / mul.LOG10 == pytest.approx(expected_1m_log10, abs=1e-6)
-    add = additive_simulate(1000, 42, s.prepared_probability, s.good_luck_probability)
+    assert np.array_equal(one.log_wealth, hundred.log_wealth[:2])
+    assert np.allclose(hundred.log_wealth, ten_thousand.log_wealth[:101], rtol=0, atol=1e-11)
+    assert ten_thousand.final_log_wealth / mul.LOG10 == pytest.approx(expected_10k_log10, abs=1e-6)
+    add = additive_simulate(100, 42, s.prepared_probability, s.good_luck_probability)
     expected_returns = np.where(add.changes == 10, .10,
                         np.where(add.changes == 1, .01,
                         np.where(add.changes == -1, -.01, -.10)))
-    assert np.allclose(thousand.returns, expected_returns)
+    assert np.allclose(hundred.returns, expected_returns)
     expected = .09*s.prepared_probability + .11*s.good_luck_probability - .10
-    assert million.expected_return_per_trial == pytest.approx(expected, abs=1e-15)
-    assert million.realised_mean_return_per_trial == pytest.approx(expected, abs=.0003)
-    assert np.isfinite(million.log_wealth).all()
+    assert ten_thousand.expected_return_per_trial == pytest.approx(expected, abs=1e-15)
+    assert ten_thousand.realised_mean_return_per_trial == pytest.approx(expected, abs=.002)
+    assert np.isfinite(ten_thousand.log_wealth).all()
 
 
 def test_simple_returns_compound_geometrically():
-    sim = mul.simulate_multiplicative(1000, seed=42)
+    sim = mul.simulate_multiplicative(100, seed=42)
     product = np.prod(1 + sim.returns)
     assert math.exp(sim.final_log_wealth) == pytest.approx(product)
     assert sim.realised_compound_growth_per_trial == pytest.approx(
@@ -56,7 +56,7 @@ def test_extreme_wealth_and_scientific_display():
     assert mul.format_total_gain_percent(-1000) == "−100%"
     assert "10^" in mul.format_total_gain_percent(1000)
     assert mul.format_total_gain_percent(math.log(1.1)) == "+10%"
-    sim = mul.simulate_multiplicative(1_000_000)
+    sim = mul.simulate_multiplicative(10_000)
     table = mul.markdown_table([sim])
     assert "Realised compound growth per trial (%)" in table
     assert "× 10^" in table
@@ -81,7 +81,7 @@ def test_seven_tables_and_21_html_previews(tmp_path, monkeypatch):
     assert len(list((tmp_path / "analysis").glob("wealth_*.html"))) == 21
     assert not (tmp_path / "charts").exists()
     assert (tmp_path / "analysis" / "summary.md").read_text() == output
-    assert "$3.88 × 10^-1,113" in output
+    assert "$3.10 × 10^-15" in output
     assert "−100%" in output
     assert "+0.00%" in output
     assert "Implied compound growth per trial" not in output
