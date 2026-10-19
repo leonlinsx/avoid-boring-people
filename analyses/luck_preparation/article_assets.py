@@ -49,7 +49,7 @@ def render_article_assets(*, all_scenarios=False, out_dir=ARTICLE_ASSET_DIR):
             observed_mean = float(np.mean(endings))
             ax.scatter([n], [observed_mean], marker="D", s=80,
                        color=colors["orange"], edgecolor="white", zorder=6,
-                       label="Observed mean: " + ff.dollars(observed_mean))
+                       label="Observed mean: " + ff.dollars(observed_mean, 2))
         else:
             ax.plot(x, path, color=colors["blue"], linewidth=2.2,
                     marker="o" if n == 1 else None,
@@ -78,9 +78,9 @@ def render_article_assets(*, all_scenarios=False, out_dir=ARTICLE_ASSET_DIR):
         suffix = " (above scale)" if above else " (below scale)" if below else ""
         ax.scatter([n], [displayed_y], marker="o", s=95,
                    color=colors["purple"], edgecolor="white", zorder=8,
-                   label="Theoretical expected: "+ff.dollars(expected)+suffix)
+                   label="Theoretical expected: "+ff.dollars(expected, 2)+suffix)
         if above or below:
-            ax.annotate("Expected: "+ff.dollars(expected)+suffix,
+            ax.annotate("Expected: "+ff.dollars(expected, 2)+suffix,
                         xy=(n, displayed_y), xytext=(-110, -14 if above else 14),
                         textcoords="offset points", ha="right", fontsize=9,
                         bbox={"facecolor":"white","edgecolor":"#ddd6fe",
