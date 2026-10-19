@@ -18,7 +18,7 @@ def ensemble():
 def test_seven_scenarios_and_preserved_original_horizons(ensemble):
     assert len(SCENARIOS) == 7
     assert ADD_HORIZONS == (1, 1_000, 1_000_000)
-    assert MULT_HORIZONS == (1, 100, 10_000)
+    assert MULT_HORIZONS == (1, 10, 100)
     assert ensemble.additive_paths.shape[:2] == (7, 101)
     assert ensemble.multiplicative_paths.shape[:2] == (7, 101)
     assert sorted(ensemble.additive_endings) == list(ADD_HORIZONS)
@@ -30,7 +30,7 @@ def test_seven_scenarios_and_preserved_original_horizons(ensemble):
     )
     assert np.allclose(
         ensemble.multiplicative_paths[:, :, -1],
-        ensemble.multiplicative_endings[10_000], atol=1e-11,
+        ensemble.multiplicative_endings[100], atol=1e-11,
     )
 
 
@@ -44,9 +44,9 @@ def test_seed_42_additive_cohort_endings(ensemble):
 
 
 def test_seed_42_multiplicative_cohort_endings(ensemble):
-    values = ensemble.multiplicative_endings[10_000]
-    assert np.median(values[0]) == pytest.approx(-25.613595093130858)
-    assert np.median(values[3]) == pytest.approx(416.4952028481613)
+    values = ensemble.multiplicative_endings[100]
+    assert np.median(values[0]) == pytest.approx(-0.20370685207902695)
+    assert np.median(values[3]) == pytest.approx(4.149618386177039)
     assert np.isfinite(values).all()
 
 
@@ -94,7 +94,7 @@ def test_fourteen_charts_101_people_median_and_mean(ensemble):
             assert "Median-ending person" in fig.data[-2].name
             assert "Mean ending wealth" in fig.data[-1].name
             ends = (
-                ensemble.multiplicative_endings[10_000][i]
+                ensemble.multiplicative_endings[100][i]
                 if is_mult else ensemble.additive_endings[1_000_000][i]
             )
             idx = cohorts.median_person_index(ends)
@@ -113,9 +113,9 @@ def test_all_three_horizons_in_each_family(ensemble):
     mult = cohorts.stat_table(ensemble, "multiplicative")
     assert len(add.splitlines()) == 23
     assert len(mult.splitlines()) == 23
-    assert "1,000,000" in add and "10,000" in mult
+    assert "1,000,000" in add and "100" in mult
     assert "-$20,298" in add
-    assert "$7.52 × 10^-12" in mult
+    assert "| Baseline: 50% prepared, 50% good luck | 100 | $0.10 | $5.72 | $1.08 | $0.82 |" in mult
 
 
 def test_reject_ambiguous_median_count_and_bad_chunk():
