@@ -57,4 +57,26 @@ bad+prepared -$1, bad+unprepared -$10.
 | Expected gain per trial | -$4.40 | -$4.40 | -$4.40 |
 | Implied compound growth per trial | -100.00% | N/A (negative ending wealth) | N/A (negative ending wealth) |
 
+## 90% prepared, 10% good luck
+
+| Metric | 1 trial | 1,000 trials | 1,000,000 trials |
+| :--- | ---: | ---: | ---: |
+| Starting wealth | $1 | $1 | $1 |
+| Final wealth | $0 | -$852 | -$804,960 |
+| Total gain (%) | -100% | -85,300% | -80,496,100% |
+| Realised gain per trial | -$1.00 | -$0.85 | -$0.80 |
+| Expected gain per trial | -$0.80 | -$0.80 | -$0.80 |
+| Implied compound growth per trial | -100.00% | N/A (negative ending wealth) | N/A (negative ending wealth) |
+
+## 10% prepared, 90% good luck
+
+| Metric | 1 trial | 1,000 trials | 1,000,000 trials |
+| :--- | ---: | ---: | ---: |
+| Starting wealth | $1 | $1 | $1 |
+| Final wealth | $2 | $623 | $799,677 |
+| Total gain (%) | +100% | +62,200% | +79,967,600% |
+| Realised gain per trial | +$1.00 | +$0.62 | +$0.80 |
+| Expected gain per trial | $0.80 | $0.80 | $0.80 |
+| Implied compound growth per trial | +100.00% | +0.65% | +0.00% |
+
 Expected gain per trial is theoretical; realised gain depends on the seed. Total gain (%) is displayed as an integer; per-trial dollar amounts and implied compound growth (%) use two decimals. A -$0.00 means a small negative realised amount rounded to two decimals. The implied growth rate uses endpoints only and is not an investable compound return when wealth crosses zero; negative final wealth is N/A. The million-trial experiment is one path of a million sequential trials, not a million independent simulated people.
