@@ -16,6 +16,8 @@ mean-ending-wealth marker. See [COHORTS.md](COHORTS.md) and run
 `python -m analyses.luck_preparation.cohorts --skip-png`.
 The original single-person experiments remain unchanged.
 
+**Latest four-family comparison and expected-value markers:** see [FOUR_FAMILIES.md](FOUR_FAMILIES.md). The unified generator `python -m analyses.luck_preparation.four_families` uses 1/100/10,000 additive horizons and 1/10/100 multiplicative horizons across all four payoff structures, 7 scenarios, and 1-person / 101-person runs. Charts include one purple theoretical expected-ending-wealth marker at the last trial (not a second curve); 101-person charts separately mark the observed sample mean. The original single-family scripts and research artifacts are retained for historical reproducibility.
+
 ## Run
 
 From the repository root:
