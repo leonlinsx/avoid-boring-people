@@ -184,7 +184,7 @@ def expected_marker(fig, family, scenario, trials, bounds):
     return expected, above or below
 
 def make_single_chart(family, scenario, path, trials):
-    title = f"{family.title} | {scenario.label} | {family.display_payoff} | 1 person"
+    title = f"{family.title} | {scenario.label} | {family.display_payoff} | 1 person | {trials:,} trials"
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=np.arange(len(path)), y=path,
@@ -207,7 +207,8 @@ def make_single_chart(family, scenario, path, trials):
 
 def make_cohort_chart(family, scenario, paths):
     count = len(paths)
-    title = f"{family.title} | {scenario.label} | {family.display_payoff} | {count} people"
+    title = (f"{family.title} | {scenario.label} | {family.display_payoff} | "
+             f"{count} people | {paths.shape[1]-1:,} trials")
     finals = paths[:, -1]
     median_idx = int(np.argsort(finals, kind="stable")[count//2])
     mean_final = float(np.mean(finals))
@@ -258,22 +259,24 @@ def single_table(family, scenario, paths):
             compound = math.expm1(math.log(final/STARTING_WEALTH)/n)
             cells = (f"{100*obs:+.2f}%", f"{100*er:+.2f}%", f"{100*compound:+.2f}%")
         rows.append("| "+ " | ".join([f"{n:,}", dollars(STARTING_WEALTH),
-                 dollars(final), f"{(final-1)*100:+,.0f}%", *cells])+" |")
+                 dollars(final), dollars(expected_ending_wealth(family, scenario, n)),
+                 f"{(final-1)*100:+,.0f}%", *cells])+" |")
     cells = ("Realised gain/trial | Expected gain/trial | Implied growth/trial"
              if family.kind=="add" else
              "Realised mean return/trial | Expected return/trial | Realised compound/trial")
-    return ("| Trials | Start | Final | Total gain | "+cells+" |\n"
-            "| :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n"
+    return ("| Trials | Start | Final | Theoretical expected end | Total gain | "+cells+" |\n"
+            "| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n"
             +"\n".join(rows)+"\n")
 
-def cohort_table(family, paths):
+def cohort_table(family, scenario, paths):
     rows = []
     for n in family.horizons:
         x=paths[:,n]
         rows.append(f"| {n:,} | {dollars(np.min(x))} | {dollars(np.max(x))} | "
-                    f"{dollars(np.mean(x))} | {dollars(np.median(x))} |")
-    return ("| Trials | Minimum wealth | Maximum wealth | Mean wealth | Median wealth |\n"
-            "| :--- | ---: | ---: | ---: | ---: |\n"
+                    f"{dollars(np.mean(x))} | {dollars(np.median(x))} | "
+                    f"{dollars(expected_ending_wealth(family, scenario, n))} |")
+    return ("| Trials | Minimum wealth | Maximum wealth | Mean wealth | Median wealth | Theoretical expected end |\n"
+            "| :--- | ---: | ---: | ---: | ---: | ---: |\n"
             +"\n".join(rows)+"\n")
 
 def run_all(seed=DEFAULT_SEED, people=PEOPLE):
@@ -302,7 +305,7 @@ def run_all(seed=DEFAULT_SEED, people=PEOPLE):
             theory=expected_ending_wealth(family, scenario, n)
             cohort.extend([f"### {scenario.label}", "",
                            f"Theoretical expected wealth after {n:,} trials: {dollars(theory)}.",
-                           "", cohort_table(family,crowd), ""])
+                           "", cohort_table(family,scenario,crowd), ""])
             for t,path in zip(family.horizons, paths):
                 fig=make_single_chart(family,scenario,path,t)
                 fig.write_html(RESULTS_DIR/f"single_{family.slug}_{scenario.slug}_{t}.html",
