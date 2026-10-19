@@ -28,30 +28,30 @@ Each person independently samples luck and preparation each trial. The same rand
 | 10% prepared, 90% good luck | 1,000 | $326 | $1,118 | $785.99 | $791 |
 | 10% prepared, 90% good luck | 1,000,000 | $790,242 | $811,523 | $799,791.38 | $799,822 |
 
-## Multiplicative (+10%, +1%, −1%, −10%); 1 / 100 / 10,000 trials
+## Multiplicative (+10%, +1%, −1%, −10%); 1 / 10 / 100 trials
 
 | Scenario | Trials | Minimum wealth | Maximum wealth | Mean wealth | Median wealth |
 | :--- | ---: | ---: | ---: | ---: | ---: |
 | Baseline: 50% prepared, 50% good luck | 1 | $0.90 | $1.10 | $1.00 | $0.99 |
+| Baseline: 50% prepared, 50% good luck | 10 | $0.65 | $1.63 | $0.99 | $0.98 |
 | Baseline: 50% prepared, 50% good luck | 100 | $0.10 | $5.72 | $1.08 | $0.82 |
-| Baseline: 50% prepared, 50% good luck | 10,000 | $9.53 × 10^-18 | $1.10 × 10^-3 | $1.13 × 10^-5 | $7.52 × 10^-12 |
 | 90% prepared, 50% good luck | 1 | $0.90 | $1.10 | $1.04 | $0.99 |
+| 90% prepared, 50% good luck | 10 | $0.84 | $2.14 | $1.42 | $1.41 |
 | 90% prepared, 50% good luck | 100 | $4.05 | $134.27 | $37.12 | $31.03 |
-| 90% prepared, 50% good luck | 10,000 | $3.00 × 10^+140 | $8.43 × 10^+151 | $1.23 × 10^+150 | $6.46 × 10^+145 |
 | 10% prepared, 50% good luck | 1 | $0.90 | $1.10 | $0.96 | $0.99 |
+| 10% prepared, 50% good luck | 10 | $0.44 | $1.07 | $0.69 | $0.68 |
 | 10% prepared, 50% good luck | 100 | $2.86 × 10^-3 | $0.14 | $0.03 | $0.02 |
-| 10% prepared, 50% good luck | 10,000 | $2.02 × 10^-175 | $8.41 × 10^-162 | $1.14 × 10^-163 | $3.53 × 10^-169 |
 | 50% prepared, 90% good luck | 1 | $0.90 | $1.10 | $1.05 | $1.01 |
+| 50% prepared, 90% good luck | 10 | $0.99 | $2.19 | $1.53 | $1.52 |
 | 50% prepared, 90% good luck | 100 | $13.66 | $300.44 | $76.66 | $63.41 |
-| 50% prepared, 90% good luck | 10,000 | $1.44 × 10^+175 | $2.11 × 10^+187 | $4.88 × 10^+185 | $7.61 × 10^+180 |
 | 50% prepared, 10% good luck | 1 | $0.90 | $1.10 | $0.96 | $0.99 |
+| 50% prepared, 10% good luck | 10 | $0.43 | $0.94 | $0.64 | $0.62 |
 | 50% prepared, 10% good luck | 100 | $1.36 × 10^-3 | $0.04 | $0.01 | $9.21 × 10^-3 |
-| 50% prepared, 10% good luck | 10,000 | $5.38 × 10^-208 | $2.56 × 10^-198 | $5.62 × 10^-200 | $2.77 × 10^-203 |
 | 90% prepared, 10% good luck | 1 | $0.90 | $1.10 | $1.00 | $0.99 |
+| 90% prepared, 10% good luck | 10 | $0.69 | $1.24 | $0.92 | $0.91 |
 | 90% prepared, 10% good luck | 100 | $0.15 | $1.26 | $0.46 | $0.43 |
-| 90% prepared, 10% good luck | 10,000 | $3.25 × 10^-43 | $2.17 × 10^-35 | $2.89 × 10^-37 | $1.34 × 10^-39 |
 | 10% prepared, 90% good luck | 1 | $0.90 | $1.10 | $1.01 | $1.01 |
+| 10% prepared, 90% good luck | 10 | $0.70 | $1.43 | $1.07 | $1.07 |
 | 10% prepared, 90% good luck | 100 | $0.65 | $8.17 | $2.23 | $2.07 |
-| 10% prepared, 90% good luck | 10,000 | $2.18 × 10^+25 | $9.72 × 10^+35 | $1.24 × 10^+34 | $5.64 × 10^+30 |
 
 Mean = arithmetic mean of ending wealth across 101 people; on a log10 chart, the mean marker is log10(arithmetic mean wealth), NOT mean(log wealth). The blue line is a REAL person whose ending wealth is the sample median at the longest horizon, with stable ties broken by original person order. Orange diamond = mean ending wealth at the longest horizon. All other 100 paths are faint grey. For 1,000,000 additive trials, chart lines show evenly sampled trial coordinates while all ending statistics use full data. For multiplicative charts, log10 wealth avoids under/overflow. No original experiment data/code or publishing workflow is changed.
