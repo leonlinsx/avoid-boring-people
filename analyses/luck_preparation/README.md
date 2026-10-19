@@ -1,6 +1,6 @@
 # Luck × preparation: reproducible article experiments
 
-All analysis lives in `analyses/` and is computed **locally**, never during Astro build or newsletter sending. The original seeded 50/50 baseline is preserved, with four additional experimental scenarios.
+All analysis lives in `analyses/` and is computed **locally**, never during Astro build or newsletter sending. The original seeded 50/50 baseline is preserved, with six additional experimental scenarios.
 
 ## Run
 
@@ -12,7 +12,7 @@ python -m analyses.luck_preparation.run
 python -m pytest tests/test_luck_preparation.py -q
 ```
 
-Override the seed with `--seed N`; use `--skip-png` for HTML and summary only if Kaleido/Chrome is unavailable. To rerun one scenario, pass `--scenario prepared90_luck50` (or any other slug below); omit it to regenerate all five.
+Override the seed with `--seed N`; use `--skip-png` for HTML and summary only if Kaleido/Chrome is unavailable. To rerun one scenario, pass `--scenario prepared90_luck50` (or any other slug below); omit it to regenerate all seven.
 
 Each scenario runs **1, 1,000 and 1,000,000 sequential trials**. The one-trial run is the first trial of the longer paths, not an independent sample. Reusing a seed reproduces all outputs exactly.
 
@@ -23,6 +23,8 @@ Each scenario runs **1, 1,000 and 1,000,000 sequential trials**. The one-trial r
 | `prepared10_luck50` | 10% | 50% | −$3.60 |
 | `prepared50_luck90` | 50% | 90% | +$4.40 |
 | `prepared50_luck10` | 50% | 10% | −$4.40 |
+| `prepared90_luck10` | 90% | 10% | −$0.80 |
+| `prepared10_luck90` | 10% | 90% | +$0.80 |
 
 Starting wealth is $1. Within each trial, independent luck and preparation draws determine **additive dollar payoffs**: good/prepared +$10, good/unprepared +$1, bad/prepared −$1, bad/unprepared −$10. No borrowing constraint or bankruptcy floor is applied; balances may be negative.
 
@@ -34,6 +36,8 @@ For `p = P(prepared)` and `q = P(good luck)`, expected dollar gain per trial is:
 
 Expected total gain for `n` trials is `n * E[Δwealth]`. Expected final wealth is `$1 + expected total gain`. The observed realised gain is stochastic and approaches the expected per-trial gain at large sample sizes; a single observed outcome need not equal its expectation.
 
+The additional cross-cases (90% prepared/10% good luck and 10% prepared/90% good luck) are especially useful for illustrating payoff dependence: exchanging the preparation and luck probabilities changes theoretical expected gain from −$0.80 to +$0.80 per trial under the original asymmetric mixed-case payoffs (+$1 versus −$1). The 1,000,000-trial sampled paths remain single individuals, not populations.
+
 ### Reproducibility and comparison
 
 - The **original 50/50 case retains the exact earlier NumPy seeded integer draws**: ending wealth $0, $29 and −$2,511 for seed 42.
@@ -42,9 +46,9 @@ Expected total gain for `n` trials is `n * E[Δwealth]`. Expected final wealth i
 
 ### Outputs
 
-- `analyses/luck_preparation/results/summary.md`: all five article-ready comparison tables (total gain % with zero decimals; realised/expected $ per trial and implied growth % with two decimals).
-- `analyses/luck_preparation/results/wealth_*.html`: 15 interactive Plotly HTML previews. These local previews load Plotly from CDN.
-- `src/content/blog/luck_preparation/charts/wealth_*.png`: 15 publication/newsletter PNGs when Kaleido and Chrome are available.
+- `analyses/luck_preparation/results/summary.md`: all seven article-ready comparison tables (total gain % with zero decimals; realised/expected $ per trial and implied growth % with two decimals).
+- `analyses/luck_preparation/results/wealth_*.html`: 21 interactive Plotly HTML previews. These local previews load Plotly from CDN.
+- `src/content/blog/luck_preparation/charts/wealth_*.png`: 21 publication/newsletter PNGs when Kaleido and Chrome are available.
 - Original baseline filenames remain `wealth_1.png`, `wealth_1000.png`, `wealth_1000000.png`; added scenarios are named `wealth_<slug>_<trial_count>.png`.
 
 The Plotly charts have **horizontal gridlines only**. For 1,000,000 trials, the plot retains the endpoints and minimum/maximum in each x-axis bucket, avoiding a million browser points while preserving full-resolution calculation of statistics.
