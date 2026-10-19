@@ -28,6 +28,8 @@ def test_baseline_remains_unchanged():
     ("prepared10_luck50", -3.6, (-9, -3601, -3596539)),
     ("prepared50_luck90", 4.4, (11, 4313, 4402395)),
     ("prepared50_luck10", -4.4, (0, -4443, -4402962)),
+    ("prepared90_luck10", -0.8, (0, -852, -804960)),
+    ("prepared10_luck90", 0.8, (2, 623, 799677)),
 ])
 def test_seed_42_scenarios(slug, expected, finals):
     scenario = next(s for s in SCENARIOS if s.slug == slug)
@@ -90,13 +92,13 @@ def test_negative_final_wealth_is_na():
     assert "N/A (negative ending wealth)" in markdown_table([sim])
 
 
-def test_all_five_tables_and_fifteen_html_outputs(tmp_path, monkeypatch):
+def test_all_seven_tables_and_twenty_one_html_outputs(tmp_path, monkeypatch):
     import analyses.luck_preparation.run as module
     monkeypatch.setattr(module, "RESULTS_DIRECTORY", tmp_path / "results")
     monkeypatch.setattr(module, "CHART_DIRECTORY", tmp_path / "charts")
     summary = run_scenarios(skip_png=True)
-    assert summary.count("## ") == 5
-    assert summary.count("Expected gain per trial") == 6
-    assert len(list((tmp_path / "results").glob("wealth_*.html"))) == 15
+    assert summary.count("## ") == 7
+    assert summary.count("Expected gain per trial") == 8
+    assert len(list((tmp_path / "results").glob("wealth_*.html"))) == 21
     assert not (tmp_path / "charts").exists()
     assert (tmp_path / "results" / "summary.md").read_text() == summary
