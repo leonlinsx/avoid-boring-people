@@ -155,3 +155,25 @@ def test_do_not_autocreate_astro_article_folder(tmp_path):
     with pytest.raises(FileNotFoundError):
         f.run_all(output_dir=tmp_path/"results", png="baseline",
                   article_assets=tmp_path/"missing/assets")
+
+
+def test_python_module_cli_help_and_table_output(tmp_path):
+    """Exercise the actual -m entrypoint, not just imported run_all()."""
+    import subprocess
+    import sys
+
+    command = [sys.executable, "-m", "analyses.luck_preparation.run"]
+    help_result = subprocess.run(command + ["--help"], check=True,
+                                 capture_output=True, text=True)
+    assert "--html" in help_result.stdout
+    assert "--png" in help_result.stdout
+
+    result = subprocess.run(
+        command + ["--people", "3", "--output-dir", str(tmp_path)],
+        check=True, capture_output=True, text=True
+    )
+    assert "luck" in result.stdout.lower()
+    for name in ("single_summary.md", "cohort_summary.md"):
+        table = (tmp_path / name).read_text(encoding="utf-8")
+        assert table.count("### ") == 28
+        assert "Theoretical expected end" in table
