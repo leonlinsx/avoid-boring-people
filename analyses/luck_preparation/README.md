@@ -1,5 +1,7 @@
 # Luck × preparation: reproducible article experiments
 
+A **separate multiplicative companion** now applies +10%, +1%, −1%, or −10% to *current wealth* for these same seven seeded cases. See [MULTIPLICATIVE.md](MULTIPLICATIVE.md) and run `python -m analyses.luck_preparation.multiplicative`. Its outputs live in `results/multiplicative/` and `charts/multiplicative/`; none of the existing additive results or charts are replaced.
+
 All analysis lives in `analyses/` and is computed **locally**, never during Astro build or newsletter sending. The original seeded 50/50 baseline is preserved, with six additional experimental scenarios.
 
 ## Run
