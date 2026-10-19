@@ -37,7 +37,7 @@ matrix. All reported ending statistics use the **full exact trial count**.
 | Family | Number of scenarios | Horizons | Payoffs |
 |---|---:|---|---|
 | Additive | 7 | 1 / 1,000 / 1,000,000 | +$10 / +$1 / −$1 / −$10 |
-| Multiplicative | 7 | 1 / 100 / 10,000 | ×1.10 / ×1.01 / ×0.99 / ×0.90 |
+| Multiplicative | 7 | 1 / 10 / 100 | ×1.10 / ×1.01 / ×0.99 / ×0.90 |
 
 The script writes:
 
