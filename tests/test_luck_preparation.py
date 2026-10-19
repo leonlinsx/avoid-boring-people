@@ -1,104 +1,157 @@
-"""Regression, reproducibility, probability, and Plotly checks."""
-
+"""Endpoint theory and 1/101-person chart invariants for four-family model."""
 import numpy as np
 import pytest
 
-from analyses.luck_preparation.run import (
-    SCENARIOS, chart_indices, chart_name, figure_for,
-    markdown_table, run_scenarios, simulate,
-)
+from analyses.luck_preparation import run as f
 
 
-def test_baseline_remains_unchanged():
-    one, thousand, million = (simulate(n, 42) for n in (1, 1000, 1_000_000))
-    assert one.wealth.tolist() == [1, 0]
-    assert thousand.final_wealth == 29
-    assert million.final_wealth == -2511
-    assert np.array_equal(thousand.wealth, million.wealth[:1001])
-    table = markdown_table([one, thousand, million])
-    assert "| Total gain (%) | -100% | +2,800% | -251,200% |" in table
-    assert "| Realised gain per trial | -$1.00 | +$0.03 | -$0.00 |" in table
-    assert "| Expected gain per trial | $0.00 | $0.00 | $0.00 |" in table
-    assert "| Implied compound growth per trial | -100.00% | +0.34% | N/A (negative ending wealth) |" in table
+def test_design_and_loss_reversal():
+    assert len(f.FAMILIES) == 4
+    assert len(f.SCENARIOS) == 7
+    assert f.ADD_HORIZONS == (1, 100, 10_000)
+    assert f.MULT_HORIZONS == (1, 10, 100)
+    assert f.PEOPLE == 101
+    exact = f.FAMILIES[-1].mult_factors
+    assert exact[0]*exact[3] == pytest.approx(1)
+    assert exact[1]*exact[2] == pytest.approx(1)
 
 
-@pytest.mark.parametrize("slug,expected,finals", [
-    ("base", 0, (0, 29, -2511)),
-    ("prepared90_luck50", 3.6, (0, 3680, 3604181)),
-    ("prepared10_luck50", -3.6, (-9, -3601, -3596539)),
-    ("prepared50_luck90", 4.4, (11, 4313, 4402395)),
-    ("prepared50_luck10", -4.4, (0, -4443, -4402962)),
-    ("prepared90_luck10", -0.8, (0, -852, -804960)),
-    ("prepared10_luck90", 0.8, (2, 623, 799677)),
-])
-def test_seed_42_scenarios(slug, expected, finals):
-    scenario = next(s for s in SCENARIOS if s.slug == slug)
-    one, thousand, million = (
-        simulate(n, 42, scenario.prepared_probability, scenario.good_luck_probability)
-        for n in (1, 1000, 1_000_000)
-    )
-    assert (one.final_wealth, thousand.final_wealth, million.final_wealth) == finals
-    assert one.expected_gain_per_trial == pytest.approx(expected)
-    assert million.expected_total_gain == pytest.approx(1_000_000 * expected)
-    assert np.array_equal(one.wealth, thousand.wealth[:2])
-    assert np.array_equal(thousand.wealth, million.wealth[:1001])
-    assert np.array_equal(
-        million.wealth,
-        simulate(1_000_000, 42, scenario.prepared_probability, scenario.good_luck_probability).wealth,
-    )
-    assert set(million.changes).issubset({-10, -1, 1, 10})
-    assert abs(million.mean_gain_per_trial - expected) < 0.02
+def test_expected_wealth_is_arithmetic_not_geometric():
+    s = f.SCENARIOS[0]
+    for family in f.FAMILIES[:3]:
+        assert f.expected_ending_wealth(family, s, max(family.horizons)) == pytest.approx(1)
+    family = f.FAMILIES[-1]
+    r, g = f.expected_mult(family.mult_factors, .5, .5)
+    assert r == pytest.approx(.0028030303030303)
+    assert g == pytest.approx(0, abs=1e-14)
+    assert f.expected_ending_wealth(family, s, 100) == pytest.approx((1+r)**100)
+    assert f.expected_ending_wealth(family, s, 100) > 1.3
 
 
-def test_alternative_scenarios_share_random_draws():
-    high = simulate(1000, prepared_probability=.9)
-    low = simulate(1000, prepared_probability=.1)
-    assert np.array_equal(high.luck, low.luck)
-    assert np.all(low.prepared <= high.prepared)
-    lucky = simulate(1000, good_luck_probability=.9)
-    unlucky = simulate(1000, good_luck_probability=.1)
-    assert np.array_equal(lucky.prepared, unlucky.prepared)
-    assert np.all(unlucky.luck <= lucky.luck)
+def test_symmetric_additive_expected_wealth():
+    family = f.FAMILIES[2]
+    for s in f.SCENARIOS:
+        result = f.expected_ending_wealth(family, s, 10_000)
+        assert result == pytest.approx(1+10_000*f.expected_add(family.add_payoffs, s.p_prepare, s.p_good))
+    assert f.expected_ending_wealth(family, f.SCENARIOS[5], 10_000) == pytest.approx(1)
+    assert f.expected_ending_wealth(family, f.SCENARIOS[6], 10_000) == pytest.approx(1)
 
 
-def test_probability_validation():
-    with pytest.raises(ValueError): simulate(0)
-    for p in (-.1, 1.1, float("nan")):
-        with pytest.raises(ValueError): simulate(1, prepared_probability=p)
-        with pytest.raises(ValueError): simulate(1, good_luck_probability=p)
-    assert simulate(5, prepared_probability=1, good_luck_probability=1).final_wealth == 51
-    assert simulate(5, prepared_probability=0, good_luck_probability=0).final_wealth == -49
+def test_preserve_historical_single_path_seed42():
+    codes = f.simulate_codes_single(f.SCENARIOS[0], 100, 42)
+    assert f.add_path(codes[:1], f.FAMILIES[0].add_payoffs)[-1] == 0
+    assert f.mult_path(codes[:1], f.FAMILIES[1].mult_factors)[-1] == pytest.approx(.99)
+    assert f.mult_path(codes[:100], f.FAMILIES[1].mult_factors)[-1] == pytest.approx(.9431, abs=.001)
 
 
-def test_charts_keep_horizontal_grid_and_extrema():
-    for scenario in SCENARIOS:
-        name = chart_name(scenario, 1000)
-        expected = "wealth_1000" if scenario.slug == "base" else f"wealth_{scenario.slug}_1000"
-        assert name == expected
-    sim = simulate(1_000_000, prepared_probability=.9)
-    idx = chart_indices(sim.wealth)
-    assert idx[0] == 0 and idx[-1] == 1_000_000
-    assert np.argmax(sim.wealth) in idx and np.argmin(sim.wealth) in idx
-    assert len(idx) <= 2402
-    fig = figure_for(sim, "90% prepared, 50% good luck")
-    assert fig.layout.xaxis.showgrid is False
-    assert fig.layout.yaxis.showgrid is True
-    assert len(fig.data[0].x) <= 2402
+def test_single_marker_not_line_all_28_cases():
+    for family in f.FAMILIES:
+        for s in f.SCENARIOS:
+            n = max(family.horizons)
+            codes = f.simulate_codes_single(s, n)
+            path = (f.add_path(codes,family.add_payoffs) if family.kind=="add"
+                    else f.mult_path(codes,family.mult_factors))
+            fig = f.make_single_chart(family,s,path,n)
+            assert len(fig.data) == 2
+            assert list(fig.data[-1].x) == [n]
+            assert fig.data[-1].mode == "markers"
+            assert fig.data[-1].marker.color == "#9333ea"
+            assert "Theoretical expected ending wealth" in fig.data[-1].name
+            assert family.display_payoff in fig.layout.title.text
+            if family.kind == "add":
+                assert fig.layout.yaxis.type == "linear"
 
 
-def test_negative_final_wealth_is_na():
-    sim = simulate(1_000_000, prepared_probability=.1)
-    assert sim.compound_percent_per_trial is None
-    assert "N/A (negative ending wealth)" in markdown_table([sim])
+def test_cohort_mean_median_expected_all_28_cases():
+    for family in f.FAMILIES:
+        n = max(family.horizons)
+        for s in f.SCENARIOS:
+            codes = f.simulate_codes_cohort(s,n,people=101)
+            people = (f.add_path(codes,family.add_payoffs) if family.kind=="add"
+                      else f.mult_path(codes,family.mult_factors))
+            fig = f.make_cohort_chart(family,s,people)
+            assert len(fig.data) == 103
+            assert "Median-ending person" in fig.data[-3].name
+            assert "Observed mean ending wealth" in fig.data[-2].name
+            assert "Theoretical expected ending wealth" in fig.data[-1].name
+            assert fig.data[-1].mode == "markers"
+            assert fig.data[-2].mode == "markers"
+            assert fig.data[-1].marker.symbol == "circle"
+            assert fig.data[-2].marker.symbol == "diamond"
+            assert list(fig.data[-1].x) == [n]
+            median_index = np.argsort(people[:,-1],kind="stable")[50]
+            assert np.array_equal(fig.data[-3].y, people[median_index, np.asarray(fig.data[-3].x,dtype=int)])
+            assert fig.data[-2].y[0] == pytest.approx(np.mean(people[:,-1]))
 
 
-def test_all_seven_tables_and_twenty_one_html_outputs(tmp_path, monkeypatch):
-    import analyses.luck_preparation.run as module
-    monkeypatch.setattr(module, "RESULTS_DIRECTORY", tmp_path / "results")
-    monkeypatch.setattr(module, "CHART_DIRECTORY", tmp_path / "charts")
-    summary = run_scenarios(skip_png=True)
-    assert summary.count("## ") == 7
-    assert summary.count("Expected gain per trial") == 8
-    assert len(list((tmp_path / "results").glob("wealth_*.html"))) == 21
-    assert not (tmp_path / "charts").exists()
-    assert (tmp_path / "results" / "summary.md").read_text() == summary
+def test_offscale_expected_marker_labeled_and_axis_not_expanded():
+    family, s = f.FAMILIES[0], f.SCENARIOS[1]
+    path = f.add_path(f.simulate_codes_single(s,1), family.add_payoffs)
+    fig = f.make_single_chart(family,s,path,1)
+    assert "above scale" in fig.data[-1].name
+    assert "Expected:" in fig.layout.annotations[-1].text
+    assert fig.layout.yaxis.range[1] < f.expected_ending_wealth(family,s,1)
+
+
+def test_contextual_log_axis():
+    family = f.FAMILIES[1]
+    assert f.axis_bounds(family, np.array([1,10,100]))[0]
+    assert not f.axis_bounds(family, np.array([.98,1.05]))[0]
+    assert not f.axis_bounds(f.FAMILIES[0], np.array([-10,100]))[0]
+
+
+def test_table_expected_wealth_and_horizon_titles_are_explicit():
+    for family in f.FAMILIES:
+        scenario = f.SCENARIOS[0]
+        final_horizon = max(family.horizons)
+        codes = f.simulate_codes_single(scenario, final_horizon)
+        cohort_codes = f.simulate_codes_cohort(scenario, final_horizon, people=101)
+        if family.kind == "add":
+            one = f.add_path(codes, family.add_payoffs)
+            people = f.add_path(cohort_codes, family.add_payoffs)
+        else:
+            one = f.mult_path(codes, family.mult_factors)
+            people = f.mult_path(cohort_codes, family.mult_factors)
+        table_one = f.single_table(family, scenario, [one[:n+1] for n in family.horizons])
+        table_many = f.cohort_table(family, scenario, people)
+        assert "Theoretical expected end" in table_one
+        assert "Theoretical expected end" in table_many
+        assert f"{final_horizon:,} trials" in f.make_single_chart(
+            family, scenario, one, final_horizon
+        ).layout.title.text
+        assert f"{final_horizon:,} trials" in f.make_cohort_chart(
+            family, scenario, people
+        ).layout.title.text
+
+
+def test_one_script_creates_all_tables_no_blog_files(tmp_path):
+    target = f.run_all(output_dir=tmp_path)
+    assert target == tmp_path
+    a = (tmp_path/"single_summary.md").read_text()
+    b = (tmp_path/"cohort_summary.md").read_text()
+    assert a.count("### ") == b.count("### ") == 28
+    assert "Theoretical expected end" in a
+    assert "Theoretical expected end" in b
+    assert not list(tmp_path.glob("**/*.png"))
+    assert not list(tmp_path.glob("**/*.html"))
+
+
+def test_png_baseline_16_and_no_index_file(tmp_path):
+    dated = tmp_path/"src/content/blog/2026_10_24_luck_preparation"
+    dated.mkdir(parents=True)
+    imgs = dated/"assets"
+    f.run_all(output_dir=tmp_path/"results", png="baseline",
+              article_assets=imgs)
+    assert len(list(imgs.glob("*.png"))) == 16
+    assert all(x.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
+               for x in imgs.glob("*.png"))
+    assert not (dated/"index.md").exists()
+    with pytest.raises(FileExistsError):
+        f.run_all(output_dir=tmp_path/"results", png="baseline",
+                  article_assets=imgs)
+
+
+def test_do_not_autocreate_astro_article_folder(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        f.run_all(output_dir=tmp_path/"results", png="baseline",
+                  article_assets=tmp_path/"missing/assets")
