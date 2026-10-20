@@ -272,7 +272,10 @@ export function renderNewsletterEmail(
               : '';
           node.properties = {
             ...(node.properties ?? {}),
-            style: `${style}${cellAlignment}`,
+            style:
+              cellAlignment && node.tagName === 'th'
+                ? style.replace('text-align:left', cellAlignment.slice(1))
+                : `${style}${cellAlignment}`,
           };
         }
       });
