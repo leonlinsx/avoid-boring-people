@@ -261,7 +261,20 @@ export function renderNewsletterEmail(
           th: 'padding:8px;border:1px solid #d1d5db;text-align:left;background:#f3f4f6',
         };
         const style = styleByTag[node.tagName];
-        if (style) node.properties = { ...(node.properties ?? {}), style };
+        if (style) {
+          // GFM puts column alignment on each th/td. Inline it for email
+          // clients, where the generic header style otherwise wins.
+          const align = node.properties?.align;
+          const cellAlignment =
+            (node.tagName === 'th' || node.tagName === 'td') &&
+            (align === 'left' || align === 'center' || align === 'right')
+              ? `;text-align:${align}`
+              : '';
+          node.properties = {
+            ...(node.properties ?? {}),
+            style: `${style}${cellAlignment}`,
+          };
+        }
       });
     })
     .use(rehypeStringify);
