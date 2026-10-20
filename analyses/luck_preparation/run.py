@@ -121,7 +121,7 @@ def dollars(x, decimals=2):
     if mag < .01:
         return sign + "$" + f"{mag:.5f}"
     if mag < 1:
-        return sign + "$" + f"{mag:.{max(2,decimals)}f}".rstrip("0").rstrip(".")
+        return sign + "$" + f"{mag:.{max(2,decimals)}f}"
     return sign + "$" + f"{mag:,.{decimals}f}"
 
 def axis_bounds(family, observed_values):
@@ -190,12 +190,14 @@ def make_single_chart(family, scenario, path, trials):
     fig.add_trace(go.Scatter(
         x=np.arange(len(path)), y=path,
         mode="lines+markers" if trials==1 else "lines",
-        name="Actual wealth — 1 person",
+        name=f"Observed ending wealth: {dollars(path[-1])}",
         line=dict(color="#2563eb", width=2.5),
     ))
     fig.update_xaxes(title="Trials", showgrid=False,
                      range=[0, trials*1.065],
-                     dtick=1 if trials==1 else None)
+                     tickmode="array" if trials == 1 else "auto",
+                     tickvals=[0, 1] if trials == 1 else None,
+                     ticktext=["0", "1"] if trials == 1 else None)
     bounds = style_wealth_axis(fig, family, path)
     expected_marker(fig, family, scenario, trials, bounds)
     fig.update_layout(
@@ -226,7 +228,7 @@ def make_cohort_chart(family, scenario, paths):
             ))
     fig.add_trace(go.Scattergl(
         x=x[samples], y=paths[median_idx, samples], mode="lines",
-        name=f"Median-ending person (#{median_idx+1})",
+        name=f"Median ending wealth: {dollars(finals[median_idx])} (#{median_idx+1} path)",
         line=dict(color="#2563eb", width=3),
     ))
     fig.add_trace(go.Scatter(
@@ -238,7 +240,10 @@ def make_cohort_chart(family, scenario, paths):
     bounds = style_wealth_axis(fig, family, paths)
     expected_marker(fig, family, scenario, int(x[-1]), bounds)
     fig.update_xaxes(title="Trials", showgrid=False,
-                     range=[0, int(x[-1])*1.065])
+                     range=[0, int(x[-1])*1.065],
+                     tickmode="array" if x[-1] == 1 else "auto",
+                     tickvals=[0, 1] if x[-1] == 1 else None,
+                     ticktext=["0", "1"] if x[-1] == 1 else None)
     fig.update_layout(
         template="plotly_white", title=title, width=1100, height=650,
         margin=dict(l=90, r=35, t=105, b=125),
@@ -317,6 +322,8 @@ def save_png(fig, destination):
     else:
         ax.set_ylim(*fig.layout.yaxis.range)
     ax.set_xlim(*fig.layout.xaxis.range)
+    if fig.layout.xaxis.tickvals is not None:
+        ax.set_xticks(fig.layout.xaxis.tickvals, labels=fig.layout.xaxis.ticktext)
     ax.set_xlabel("Trials")
     ax.set_ylabel(fig.layout.yaxis.title.text)
     ax.set_title(fig.layout.title.text, loc="left", fontsize=10, pad=16)
