@@ -71,7 +71,9 @@ def test_cohort_mean_median_expected_all_28_cases():
                       else f.mult_path(codes,family.mult_factors))
             fig = f.make_cohort_chart(family,s,people)
             assert len(fig.data) == 103
-            assert "Median-ending person" in fig.data[-3].name
+            assert "Median ending wealth:" in fig.data[-3].name
+            assert f.dollars(people[np.argsort(people[:, -1], kind="stable")[50], -1]) in fig.data[-3].name
+            assert f"(#{np.argsort(people[:, -1], kind="stable")[50]+1} path)" in fig.data[-3].name
             assert "Observed mean ending wealth" in fig.data[-2].name
             assert "Theoretical expected ending wealth" in fig.data[-1].name
             assert fig.data[-1].mode == "markers"
@@ -177,3 +179,38 @@ def test_python_module_cli_help_and_table_output(tmp_path):
         table = (tmp_path / name).read_text(encoding="utf-8")
         assert table.count("### ") == 28
         assert "Theoretical expected end" in table
+
+
+
+def test_actual_ending_wealth_legend_and_discrete_one_trial_ticks():
+    assert f.dollars(0.1) == "$0.10"
+    assert f.dollars(-0.1) == "-$0.10"
+    for family in f.FAMILIES:
+        for scenario in f.SCENARIOS:
+            codes = f.simulate_codes_single(scenario, 1)
+            path = (f.add_path(codes, family.add_payoffs) if family.kind == "add"
+                    else f.mult_path(codes, family.mult_factors))
+            fig = f.make_single_chart(family, scenario, path, 1)
+            assert fig.data[0].name == f"Observed ending wealth: {f.dollars(path[-1])}"
+            assert fig.layout.xaxis.tickmode == "array"
+            assert list(fig.layout.xaxis.tickvals) == [0, 1]
+            assert list(fig.layout.xaxis.ticktext) == ["0", "1"]
+            assert list(fig.data[0].x) == [0, 1]
+
+
+def test_median_legend_contains_actual_ending_wealth_and_path_number():
+    for family in f.FAMILIES:
+        for scenario in f.SCENARIOS:
+            codes = f.simulate_codes_cohort(scenario, max(family.horizons))
+            people = (f.add_path(codes, family.add_payoffs) if family.kind == "add"
+                      else f.mult_path(codes, family.mult_factors))
+            median_idx = int(np.argsort(people[:, -1], kind="stable")[50])
+            fig = f.make_cohort_chart(family, scenario, people)
+            assert fig.data[-3].name == (
+                f"Median ending wealth: {f.dollars(people[median_idx, -1])} "
+                f"(#{median_idx+1} path)"
+            )
+            short = f.make_cohort_chart(family, scenario, people[:, :2])
+            assert list(short.layout.xaxis.tickvals) == [0, 1]
+            assert list(short.layout.xaxis.ticktext) == ["0", "1"]
+            assert short.layout.xaxis.tickmode == "array"
