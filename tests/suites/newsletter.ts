@@ -210,22 +210,22 @@ export function testNewsletterRenderer() {
       '|:---|:---:|:---:|',
       '| **Prepared** | **+$10** · *25%* | **−$1** · *25%* |',
       '| **Unprepared** | **+$1** · *25%* | **−$10** · *25%* |',
-    ].join('\\n').replace(/\\\\n/g, '\\n'),
+    ].join('\n'),
   });
   for (const label of ['Good luck', 'Bad luck']) {
     const header = payoffTable.html.match(
-      new RegExp(`<th[^>]*>${label}<\\/th>`),
+      new RegExp(`<th[^>]*>${label}<\/th>`),
     )?.[0];
     assert.ok(header, `Missing ${label} column header`);
     assert.match(header, /text-align:center/);
   }
-  assert.match(payoffTable.html, /<th[^>]*>Prepared<\\/th>/);
+  assert.match(payoffTable.html, /<th[^>]*>Prepared<\/th>/);
   assert.match(payoffTable.html, /<td[^>]*text-align:center[^>]*>/);
   assert.match(payoffTable.text, /Good luck/);
   assert.match(payoffTable.text, /25%/);
   const aligned = renderNewsletterEmail({
     ...input,
-    markdown: '| Left | Center | Right |\\n|:---|:---:|---:|\\n| one | two | three |',
+    markdown: '| Left | Center | Right |\n|:---|:---:|---:|\n| one | two | three |',
   });
   for (const [heading, direction] of [
     ['Left', 'left'],
@@ -233,7 +233,7 @@ export function testNewsletterRenderer() {
     ['Right', 'right'],
   ]) {
     const header = aligned.html.match(
-      new RegExp(`<th[^>]*>${heading}<\\/th>`),
+      new RegExp(`<th[^>]*>${heading}<\/th>`),
     )?.[0];
     assert.ok(header, `Missing ${heading} header`);
     assert.match(header, new RegExp(`text-align:${direction}`));
