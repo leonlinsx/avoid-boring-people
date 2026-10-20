@@ -201,6 +201,43 @@ export function testNewsletterRenderer() {
     'List-Unsubscribe=One-Click',
   );
   assert.match(rendered.text, /Newsletter test/);
+  // GFM column alignment must survive the email renderer's inline th styles.
+  // This is the same payoff layout used in the unpublished luck article.
+  const payoffTable = renderNewsletterEmail({
+    ...input,
+    markdown: [
+      '| | Good luck | Bad luck |',
+      '|:---|:---:|:---:|',
+      '| **Prepared** | **+$10** · *25%* | **−$1** · *25%* |',
+      '| **Unprepared** | **+$1** · *25%* | **−$10** · *25%* |',
+    ].join('\\n').replace(/\\\\n/g, '\\n'),
+  });
+  for (const label of ['Good luck', 'Bad luck']) {
+    const header = payoffTable.html.match(
+      new RegExp(`<th[^>]*>${label}<\\/th>`),
+    )?.[0];
+    assert.ok(header, `Missing ${label} column header`);
+    assert.match(header, /text-align:center/);
+  }
+  assert.match(payoffTable.html, /<th[^>]*>Prepared<\\/th>/);
+  assert.match(payoffTable.html, /<td[^>]*text-align:center[^>]*>/);
+  assert.match(payoffTable.text, /Good luck/);
+  assert.match(payoffTable.text, /25%/);
+  const aligned = renderNewsletterEmail({
+    ...input,
+    markdown: '| Left | Center | Right |\\n|:---|:---:|---:|\\n| one | two | three |',
+  });
+  for (const [heading, direction] of [
+    ['Left', 'left'],
+    ['Center', 'center'],
+    ['Right', 'right'],
+  ]) {
+    const header = aligned.html.match(
+      new RegExp(`<th[^>]*>${heading}<\\/th>`),
+    )?.[0];
+    assert.ok(header, `Missing ${heading} header`);
+    assert.match(header, new RegExp(`text-align:${direction}`));
+  }
   assert.doesNotMatch(rendered.html, /123 Example Street/);
   assert.equal(
     rendered.headers['List-Unsubscribe'],
