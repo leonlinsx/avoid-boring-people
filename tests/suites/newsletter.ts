@@ -219,7 +219,10 @@ export function testNewsletterRenderer() {
     assert.ok(header, `Missing ${label} column header`);
     assert.match(header, /text-align:center/);
   }
-  assert.match(payoffTable.html, /<th[^>]*>Prepared<\/th>/);
+  assert.match(
+    payoffTable.html,
+    /<td[^>]*text-align:left[^>]*><strong>Prepared<\/strong><\/td>/,
+  );
   assert.match(payoffTable.html, /<td[^>]*text-align:center[^>]*>/);
   assert.match(payoffTable.text, /Good luck/);
   assert.match(payoffTable.text, /25%/);
