@@ -34,7 +34,9 @@ export const POST: APIRoute = async ({ request }) => {
     const parsed = await readJsonBody(request, MAX_SNS_REQUEST_BYTES);
     if (!parsed.ok) {
       // Unauthenticated junk must not trigger the delivery incident alert.
-      return new Response(null, { status: parsed.error === 'too_large' ? 413 : 400 });
+      return new Response(null, {
+        status: parsed.error === 'too_large' ? 413 : 400,
+      });
     }
     const envelope = parseSnsEnvelope(parsed.value);
     await verifySnsEnvelope(envelope, expectedTopicArn, undefined, deadline);
