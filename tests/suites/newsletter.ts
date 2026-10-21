@@ -1774,6 +1774,20 @@ export async function testNewsletterAlerting() {
       assert.equal(response.status, 400);
     });
     assert.deepEqual(newsletterAlertLogs(unauthenticated), []);
+
+    // Reject oversized unauthenticated streams before parsing or signature fetch.
+    const tooLarge = await withCapturedLogs(async () => {
+      const response = await sesPost(
+        minimalApiContext(
+          new Request('https://leonlins.com/api/newsletter/ses-events', {
+            method: 'POST',
+            body: 'x'.repeat(512 * 1024 + 1),
+          }),
+        ),
+      );
+      assert.equal(response.status, 413);
+    });
+    assert.deepEqual(newsletterAlertLogs(tooLarge), []);
   } finally {
     process.env = original;
   }
