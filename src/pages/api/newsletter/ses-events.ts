@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { readJsonBody } from '../../../lib/request-body.ts';
 import { newsletterAlert } from '../../../lib/newsletter/alerting.ts';
 import { recordSesEvent } from '../../../lib/newsletter/events.ts';
 import {
@@ -8,6 +9,8 @@ import {
 } from '../../../lib/newsletter/sns.ts';
 
 export const prerender = false;
+// SNS allows a 256 KiB message; leave room for its signed JSON envelope.
+export const MAX_SNS_REQUEST_BYTES = 512 * 1024;
 
 export const POST: APIRoute = async ({ request }) => {
   const started = performance.now();
@@ -28,7 +31,12 @@ export const POST: APIRoute = async ({ request }) => {
     // Past this point a failure is untrusted input or a rejected signature,
     // which is ordinary exposure, not an ingestion failure.
     stage = 'authentication';
-    const envelope = parseSnsEnvelope(JSON.parse(await request.text()));
+    const parsed = await readJsonBody(request, MAX_SNS_REQUEST_BYTES);
+    if (!parsed.ok) {
+      // Unauthenticated junk must not trigger the delivery incident alert.
+      return new Response(null, { status: parsed.error === 'too_large' ? 413 : 400 });
+    }
+    const envelope = parseSnsEnvelope(parsed.value);
     await verifySnsEnvelope(envelope, expectedTopicArn, undefined, deadline);
     authenticated = true;
     stage = 'processing';
