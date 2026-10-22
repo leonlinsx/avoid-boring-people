@@ -435,27 +435,38 @@ def build_summary_prompt(
 
     return dedent(
         f'''
-        You are the author of the article below, adapting your own long-form writing into social copy for your own accounts. Write as though you personally extracted the strongest ideas from your draft, in your own first-person voice, never as an outside summarizer of someone else's work. Answer with JSON matching
+        You are the author of the article below, adapting your own long-form writing into social copy for your own accounts. Write as though you personally developed one compelling idea from your draft, in your own first-person voice, never as an outside summarizer of someone else's work. Answer with JSON matching
         this schema:
         {{
-          "teaser": string,  # ≤{TEASER_MAX} characters, one sentence: the sharpest claim, tension, or number in the piece
-          "teaser_alternates": [string, ...],  # up to {TEASER_ALTERNATES_MAX} different angles (a number, a name, the sharpest sub-claim); same voice and length rules as the teaser
-          "points": [string, ...]  # up to {max_points} {style} ideas, each ≤{max_chars} characters and each standalone
+          "teaser": string,  # ≤{TEASER_MAX} characters, one complete sentence: the sharpest claim, tension, or number in the chosen idea
+          "teaser_alternates": [string, ...],  # up to {TEASER_ALTERNATES_MAX} different angles on the SAME chosen idea; same voice and length rules as the teaser
+          "points": [string, ...]  # prefer three, up to {max_points} {style} supporting points developing that SAME idea; each ≤{max_chars} characters, naming its subject and independently comprehensible
         }}
+
+        Choose one idea before writing:
+        - An article may cover several unrelated subjects. Select ONE compelling, sufficiently developed, source-supported idea from one developed passage, not a survey of its sections or takeaways. Prefer an idea with enough substance for three supporting points over a catchy but undeveloped aside.
+        - Stay within that passage's concrete subject. Do not invent an umbrella lesson to combine separate discussions, even if they share words such as incentives, learning, or beliefs. Leave the other subjects out entirely.
+        - The teaser and every point must develop that same idea into one coherent argument through explanation, evidence, nuance, or implications. Do not collect standalone highlights from different subjects or force unrelated sections under a broad theme.
+        - Prefer three substantive supporting points when the source and point limit allow. Use fewer when there is less support; never invent, repeat, or pad content to reach a count.
+        - Keep ALL teaser alternates on the chosen subject. Each may emphasize a different detail or implication, but must introduce the SAME supporting points coherently: a selector may replace the primary teaser with any alternate.
 
         Voice and framing rules:
         - State your ideas directly, the way you would explain them to a smart friend. Never describe the article from the outside: no "the author argues", "this essay explains", "this piece covers", "the reader", "I wrote about", "new post", "check out".
         - The teaser must stand alone in a feed with no context, and it must not merely announce the topic.
-        - Each point must be a complete standalone idea that makes sense without the teaser, the article title, or earlier points, and to someone who never opens the article. Never split or continue a sentence across points.
-        - Order the points strongest first: the first one is the point most likely to make someone stop scrolling.
+        - Aim for a concise teaser of 60–90 characters so the hook also fits a carousel cover. Prefer points under 200 characters, ideally a short topic sentence followed by a supporting sentence, while respecting the hard limits above.
+        - Each point must be a complete standalone idea that makes sense without the teaser, the article title, or earlier points, and to someone who never opens the article. Never split or continue a sentence across points. Name the subject rather than relying on an unexplained pronoun or reference to a previous point. Write complete sentences within the character limits so no thought needs clipping.
+        - Lead with the strongest support for the chosen idea, then develop the argument in a logical order; the complete post must read coherently as well as each point standing alone.
         - Prefer your own phrasing and the concrete specifics already in the article: numbers, names, and examples.
         - Keep your actual argument, uncertainty, and nuance; do not flatten caveats into confident claims, and do not invent controversy.
         - Do not invent facts, metrics, quotes, or conclusions the article does not support.
+        - Do not add a plausible causal mechanism the source never gives. Preserve distinctions such as "little evidence" versus "no effect", and "might" versus "will".
         - Avoid academic-summary language, marketing language, clickbait, fake enthusiasm, and generic filler; do not ask rhetorical questions or issue calls to action.
         - Plain text only. Prohibit markdown, URLs, emojis, hashtags, and bullet characters.
         - Never repeat the teaser verbatim in the points, and do not open with the article title.
-        - Each alternate must take a genuinely different angle from the teaser and from each other, not a rephrasing of the same sentence.
+        - Each alternate must take a different angle on the chosen idea from the teaser and from each other, without switching subjects.
         - Respond with JSON only; do not wrap inside code fences.
+
+        Before returning the JSON, read each point alone with the teaser and all other points hidden. Replace references such as "these traits", "this pressure", "this distinction", or "the correlation" with the actual subject. Check the whole argument against the source: every point adds distinct substance rather than restating another point, and every possible teaser introduces all the points without changing subjects. Remove unsupported or repetitive points instead of filling the count.
 
         Publication-date awareness:
         - This article was published on {published}. Treat its facts, metrics, valuations, prices, product capabilities, market conditions, regulations, personnel references, and forecasts as belonging to that publication period, not to today.

@@ -24,6 +24,7 @@ from scripts.automation import retry as retry_module
 from scripts.automation.content import PublishResult
 from scripts.automation.formatters.instagram_storyboard import (
     ALT_TEXT_MAX,
+    BODY_TITLE_MAX,
     CAPTION_HARD_MAX,
     COVER_TEASER_MAX,
     COVER_TITLE_MAX,
@@ -173,8 +174,78 @@ def test_plain_text_keeps_link_text_when_a_truncated_sentence_split_the_link():
 def test_validate_storyboard_rejects_slide_counts_outside_the_carousel_window():
     storyboard = _storyboard()
 
-    with pytest.raises(ValueError, match="5-8 slides"):
+    with pytest.raises(ValueError, match="3-8 slides"):
         validate_storyboard(replace(storyboard, slides=storyboard.slides[:2]))
+
+
+@pytest.mark.parametrize("count", [1, 2, 3])
+def test_short_summary_never_tops_up_from_other_article_subjects(count):
+    points = [
+        "Chess lessons do not necessarily improve general intelligence.",
+        "Smarter children may be more likely to take up chess.",
+        "Chess skill and intelligence can correlate without causation.",
+    ][:count]
+    summary = {"teaser": "Chess lessons may not make children smarter.", "points": points}
+    original = {"teaser": summary["teaser"], "points": list(points)}
+    storyboard = _storyboard(
+        title="Chess, personality tests, and social credit",
+        content="Personality tests make false dichotomies. Social credit reporting confuses separate systems.",
+        summary=summary,
+    )
+
+    assert len(storyboard.slides) == count + 2
+    assert [_words(f"{slide.title} {slide.body}") for slide in storyboard.slides[1:-1]] == [
+        _words(point) for point in points
+    ]
+    assert summary == original, "Instagram must not alter the shared copy for other platforms"
+    validate_storyboard(storyboard)
+
+
+def test_missing_teaser_falls_back_to_chosen_point_instead_of_article_opening():
+    point = "Chess lessons do not necessarily improve general intelligence."
+    storyboard = _storyboard(content="Social credit systems are widely misunderstood.", summary={"points": [point]})
+
+    assert "Social credit" not in storyboard.caption
+    assert point in storyboard.caption
+    assert len(storyboard.slides) == 3
+
+
+def test_body_point_just_over_headline_limit_keeps_its_last_word():
+    point = "Chess lessons do not necessarily improve general intelligence."
+    assert len(point) > BODY_TITLE_MAX
+    slide = _body_slides([point])[0]
+
+    assert _words(f"{slide.title} {slide.body}") == _words(point)
+    assert slide.body.endswith("intelligence.")
+
+
+def test_long_hook_stays_complete_in_cover_body_instead_of_being_clipped():
+    teaser = "Chess and music instruction correlate with intelligence, but there is little evidence that either makes people smarter."
+    assert COVER_TITLE_MAX < len(teaser) <= COVER_TEASER_MAX
+    storyboard = _storyboard(title="Skills and intelligence", summary={"teaser": teaser, "points": ["Smarter children may choose chess."]})
+
+    assert storyboard.slides[0].title == "Skills and intelligence"
+    assert storyboard.slides[0].body == teaser
+
+
+def test_long_point_uses_headline_space_instead_of_clipping_the_detail():
+    point = (
+        "The MBTI is built on the unscientific premise that people belong to a single, innate personality type. "
+        "Because it lacks a foundation in testable, revisable theory, it functions better as a marketing tool than a psychological one."
+    )
+    slide = _body_slides([point])[0]
+
+    assert _words(f"{slide.title} {slide.body}") == _words(point)
+    assert len(slide.title) <= BODY_TITLE_MAX
+    assert len(slide.body) <= 200
+    assert slide.body.endswith("psychological one.")
+
+
+@pytest.mark.parametrize("points", [[], ["", "   "]])
+def test_no_usable_summary_points_fails_instead_of_mining_other_sections(points):
+    with pytest.raises(ValueError, match="at least one summary point"):
+        _storyboard(content="Unrelated but sufficiently long article sentences cannot fill a carousel.",
+                    summary={"teaser": "A chess hook.", "points": points})
 
 
 def test_storyboard_body_slides_never_exceed_the_body_limits():
