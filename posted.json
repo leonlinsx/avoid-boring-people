@@ -470,6 +470,52 @@
     "2019_04_14_stock/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-22T18:10:11Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3myib55kbrx2k",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3myib55kbrx2k"
+      },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-22T18:10:12Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "0x47987428966a003da0c0a016bde2b2fcc13e25ff"
+      },
+      "instagram": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-22T18:18:31Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18099529484090329",
+        "remote_url": "https://www.instagram.com/p/Dezm3QLGjD5/"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-22T18:10:12Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "117485903036847166",
+        "remote_url": "https://mastodon.social/@leonlins/117485903036847166"
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-22T18:10:29Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "45ba4d3a5d7729a1cd63eea8e1aa732d85307ab0f491a953950f2b5b9d84e7ff"
+      },
+      "threads": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-10-22T18:10:52Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "17938551702122654",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/DezmEyOGj1p"
       }
     },
     "2019_04_18_investing/index.md": {
