@@ -31,6 +31,7 @@
     "linkcheck:external": "node scripts/link-report.js external",
     "test": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/run-tests.ts",
     "test:drafts:build": "node tests/draft-build.mjs",
+    "test:newsletter:layout": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/newsletter-layout-browser.ts",
     "test:newsletter:browser": "node tests/newsletter-confirm-browser.mjs",
     "newsletter:import:preflight": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/preflight-substack-export.ts"
   },

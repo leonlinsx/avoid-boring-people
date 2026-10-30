@@ -1,3 +1,4 @@
+import { newsletterArticleUrl, newsletterPreheader } from './presentation.ts';
 import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,7 +7,7 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
-import { visit } from 'unist-util-visit';
+import { visit, SKIP } from 'unist-util-visit';
 /* eslint-disable @typescript-eslint/no-explicit-any -- unist/mdast traversal nodes are structurally untyped; every rewrite is pinned by renderer behavior tests. */
 import { SITE_URL } from '../../consts.ts';
 import { newsletterAssetPath } from '../../integrations/newsletter-assets.ts';
@@ -24,6 +25,8 @@ export type NewsletterRenderInput = {
   unsubscribeUrl: string;
   privacyUrl: string;
   postalAddress?: string;
+  /** Description-based inbox snippet; disable explicitly when desired. */
+  preheader?: boolean;
   /** Private preview/test only. Production keeps its public asset URL mapping. */
   resolveLocalImage?: (value: string) => string;
 };
@@ -172,7 +175,18 @@ function markdownBody(markdown: string): string {
 function plainText(markdown: string): string {
   const tree: any = unified().use(remarkParse).use(remarkGfm).parse(markdown);
   const blocks: string[] = [];
+  const noteNumbers = new Map<string, number>();
+  const definitions = new Map<string, any>();
+  visit(tree, 'footnoteReference', (node: any) => {
+    if (!noteNumbers.has(node.identifier))
+      noteNumbers.set(node.identifier, noteNumbers.size + 1);
+  });
+  visit(tree, 'footnoteDefinition', (node: any) => {
+    definitions.set(node.identifier, node);
+  });
   const toText = (node: any): string => {
+    if (node.type === 'footnoteReference')
+      return `[${noteNumbers.get(node.identifier)}]`;
     if (node.type === 'break') return '\n';
     if (typeof node.value === 'string') return node.value;
     if (node.type === 'list') {
@@ -191,9 +205,20 @@ function plainText(markdown: string): string {
       .join(node.type === 'listItem' ? '\n\n' : '');
   };
   for (const node of tree.children ?? []) {
+    if (node.type === 'footnoteDefinition') continue;
     const value = toText(node).trim();
     if (value) blocks.push(value);
   }
+  if (noteNumbers.size)
+    blocks.push(
+      'Notes:\n' +
+        [...noteNumbers]
+          .map(
+            ([id, number]) =>
+              `[${number}] ${toText(definitions.get(id)).trim()}`,
+          )
+          .join('\n'),
+    );
   return blocks.join('\n\n');
 }
 
@@ -251,51 +276,103 @@ export function renderNewsletterEmail(
     })
     .use(remarkRehype)
     .use(() => (tree: any) => {
-      visit(tree, 'element', (node: any) => {
-        const styleByTag: Record<string, string> = {
-          a: 'color:#2563eb;text-decoration:underline',
-          blockquote:
-            'margin:16px 0;padding-left:16px;border-left:3px solid #d1d5db;color:#4b5563',
-          code: 'font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.9em',
-          h2: 'font-size:22px;line-height:1.25;margin:32px 0 12px',
-          h3: 'font-size:18px;line-height:1.3;margin:24px 0 10px',
-          img: 'display:block;max-width:100%;height:auto;margin:20px auto',
-          li: 'margin:6px 0',
-          p: 'margin:16px 0',
-          pre: 'overflow-x:auto;padding:12px;background:#f3f4f6',
-          table: 'width:100%;border-collapse:collapse',
-          td: 'padding:8px;border:1px solid #d1d5db',
-          th: 'padding:8px;border:1px solid #d1d5db;text-align:left;background:#f3f4f6',
-        };
-        const style = styleByTag[node.tagName];
-        if (style) {
-          // GFM puts column alignment on each th/td. Inline it for email
-          // clients, where the generic header style otherwise wins.
-          const align = node.properties?.align;
-          const cellAlignment =
-            (node.tagName === 'th' || node.tagName === 'td') &&
-            (align === 'left' || align === 'center' || align === 'right')
-              ? `;text-align:${align}`
-              : '';
-          node.properties = {
-            ...(node.properties ?? {}),
-            style:
-              cellAlignment && node.tagName === 'th'
-                ? style.replace('text-align:left', cellAlignment.slice(1))
-                : `${style}${cellAlignment}`,
+      visit(
+        tree,
+        'element',
+        (node: any, index: number | undefined, parent: any) => {
+          const originalTag = node.tagName;
+          if (originalTag === 'blockquote') {
+            // Authored quotations are content, not quoted reply/thread history.
+            node.tagName = 'div';
+            node.properties = {
+              ...(node.properties ?? {}),
+              role: 'note',
+              ariaLabel: 'Quoted passage',
+            };
+          }
+          const styleByTag: Record<string, string> = {
+            a: 'color:#2563eb;text-decoration:underline',
+            blockquote:
+              'margin:16px 0;padding-left:16px;border-left:3px solid #d1d5db;color:#4b5563',
+            code: 'font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.9em',
+            h2: 'font-size:22px;line-height:1.25;margin:32px 0 12px',
+            h3: 'font-size:18px;line-height:1.3;margin:24px 0 10px',
+            img: 'display:block;max-width:100%;height:auto;margin:0 auto',
+            li: 'margin:6px 0',
+            p: 'margin:16px 0',
+            pre: 'overflow-x:auto;padding:12px;background:#f3f4f6',
+            table: 'width:100%;border-collapse:collapse',
+            td: 'padding:8px;border:1px solid #d1d5db',
+            th: 'padding:8px;border:1px solid #d1d5db;text-align:left;background:#f3f4f6',
           };
-        }
-      });
+          const style = styleByTag[originalTag];
+          if (style) {
+            // GFM puts column alignment on each th/td. Inline it for email
+            // clients, where the generic header style otherwise wins.
+            const align = node.properties?.align;
+            const cellAlignment =
+              (node.tagName === 'th' || node.tagName === 'td') &&
+              (align === 'left' || align === 'center' || align === 'right')
+                ? `;text-align:${align}`
+                : '';
+            node.properties = {
+              ...(node.properties ?? {}),
+              style:
+                cellAlignment && node.tagName === 'th'
+                  ? style.replace('text-align:left', cellAlignment.slice(1))
+                  : `${style}${cellAlignment}`,
+            };
+          }
+          if (originalTag === 'img' && parent && index !== undefined) {
+            // A span is valid inside Markdown's image paragraph and caps charts
+            // without upscaling small images or changing the website's originals.
+            const source = node.properties?.src;
+            const image =
+              typeof source === 'string' &&
+              source.startsWith('https://') &&
+              parent.tagName !== 'a'
+                ? {
+                    type: 'element',
+                    tagName: 'a',
+                    properties: {
+                      href: source,
+                      title: 'Open image at original size',
+                      ariaLabel: 'Open image at original size',
+                      style: 'display:block',
+                    },
+                    children: [node],
+                  }
+                : node;
+            parent.children[index] = {
+              type: 'element',
+              tagName: 'span',
+              properties: {
+                style: 'display:block;max-width:560px;margin:20px auto',
+              },
+              children: [image],
+            };
+            return SKIP;
+          }
+        },
+      );
     })
     .use(rehypeStringify);
   const articleHtml = String(processor.processSync(markdown));
-  const html = `<!doctype html><html><body style="margin:0;background:#ffffff;color:#111827;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:680px;margin:0 auto;padding:32px 20px"><h1 style="font-size:28px;line-height:1.2">${escapeHtml(input.title)}</h1><article>${articleHtml}</article><footer style="margin-top:40px;padding-top:20px;border-top:1px solid #d1d5db;font-size:13px;color:#4b5563"><p>You received this because you subscribed to Avoid Boring People by Leon Lin. <a href="${escapeHtml(unsubscribeUrl)}">Unsubscribe</a> · <a href="${escapeHtml(privacyUrl)}">Privacy</a></p></footer></main></body></html>`;
+  const articleUrl = newsletterArticleUrl(input.articleId, input.markdown);
+  const preheader =
+    input.preheader === false ? undefined : newsletterPreheader(input.markdown);
+  const webLink = articleUrl
+    ? `<a href="${escapeHtml(articleUrl)}" style="color:#6b7280;text-decoration:underline">Read on the web</a>`
+    : '';
+  const postal = input.postalAddress?.trim();
+  const identity = 'Avoid Boring People by Leon Lin';
+  const html = `<!doctype html><html><body style="margin:0;background:#ffffff;color:#111827;font-family:Arial,sans-serif;line-height:1.6">${preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all" aria-hidden="true">${escapeHtml(preheader)}</div>` : ''}<main style="width:100%;max-width:640px;box-sizing:border-box;margin:0 auto;padding:28px 20px"><h1 style="font-size:28px;line-height:1.2">${escapeHtml(input.title)}</h1><p style="margin:8px 0 24px;font-size:13px;color:#6b7280">${webLink}${webLink ? ' · ' : ''}<a href="${escapeHtml(unsubscribeUrl)}" style="color:#6b7280;text-decoration:underline">Unsubscribe</a></p><article>${articleHtml}</article><footer style="margin-top:40px;padding-top:20px;border-top:1px solid #d1d5db;font-size:13px;color:#4b5563">${webLink ? `<p>${webLink}</p>` : ''}<p><strong>${identity}</strong><br>You received this because you subscribed to this newsletter.</p>${postal ? `<p style="white-space:pre-line">${escapeHtml(postal)}</p>` : ''}<p><a href="${escapeHtml(unsubscribeUrl)}" style="color:#2563eb;text-decoration:underline">Unsubscribe</a> · <a href="${escapeHtml(privacyUrl)}" style="color:#2563eb;text-decoration:underline">Privacy</a></p></footer></main></body></html>`;
   if (Buffer.byteLength(html, 'utf8') >= GMAIL_CLIP_LIMIT_BYTES) {
     throw new NewsletterRenderError(
       'Rendered email exceeds the 100 KB Gmail clipping threshold.',
     );
   }
-  const text = `${input.title}\n\n${plainText(markdown)}\n\nUnsubscribe: ${unsubscribeUrl}\nPrivacy policy: ${privacyUrl}`;
+  const text = `${input.title}${preheader ? `\n${preheader}` : ''}${articleUrl ? `\nRead on the web: ${articleUrl}` : ''}\nUnsubscribe: ${unsubscribeUrl}\n\n${plainText(markdown)}\n\n${identity}${postal ? `\n${postal}` : ''}${articleUrl ? `\nRead on the web: ${articleUrl}` : ''}\nUnsubscribe: ${unsubscribeUrl}\nPrivacy policy: ${privacyUrl}`;
   return {
     html,
     text,

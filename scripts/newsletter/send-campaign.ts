@@ -1,3 +1,4 @@
+import { assertPublishedNewsletterPage } from '../../src/lib/newsletter/presentation.ts';
 import { assertPublicNewsletterImages } from '../../src/lib/newsletter/public-images.ts';
 import { CAMPAIGN_UNSUBSCRIBE_PLACEHOLDER } from '../../src/lib/newsletter/campaign.ts';
 import {
@@ -85,12 +86,16 @@ const contentHash = campaignContentHash(
   campaign.article_slug,
   campaign.subject,
   markdown,
+  undefined,
+  config.presentation,
 );
 assertCampaignContent(campaign.content_hash, contentHash);
 assertCampaignContent(option('--expect-content'), contentHash);
 
+await assertPublishedNewsletterPage(campaign.article_slug, markdown);
 await assertPublicNewsletterImages(
   renderNewsletterEmail({
+    ...config.presentation,
     articleId: campaign.article_slug,
     markdown,
     title: campaign.subject,
@@ -163,6 +168,7 @@ while (true) {
   );
   unsubscribeUrl.searchParams.set('token', token);
   const rendered = renderNewsletterEmail({
+    ...config.presentation,
     articleId: campaign.article_slug,
     title: campaign.subject,
     markdown,

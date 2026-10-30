@@ -106,6 +106,44 @@ allowlisted test send: confirm inline images are visible, including a repeated i
 and that the subject has `[TEST]`. No received-mail validation is claimed without
 that live check.
 
+## Newsletter email presentation and hosted preview
+
+The email uses a 640px outer container and centered charts capped at 560px;
+website images are unchanged. Published editions link to the canonical article
+beneath the title and near the footer. Draft previews omit those links. The
+optional preheader comes from the existing description; set
+`NEWSLETTER_PREHEADER_ENABLED=false` to disable it.
+
+Set `NEWSLETTER_POSTAL_ADDRESS` privately in the existing local CLI environment
+(or `.env.local`) to your complete, valid postal mailing address. There is no
+fallback address. Production preview, campaign creation, sending and hosted
+previews refuse missing/obviously invalid configuration; the operator must verify
+physical deliverability and legal suitability. The address and preheader setting
+are included in the content digest, so changing either requires a new preview and
+approval. Old renderer digests must also be reviewed again; no stored campaign
+or recipient record is modified by this change.
+
+After publication, this command sends **one** hosted-image preview only when
+explicitly run by the operator:
+
+```sh
+npm run newsletter:test -- <article>/index.md <allowlisted-email> --hosted --confirm-test
+```
+
+It checks the canonical page and public image URLs with GET requests first,
+uses the production-format body and configured postal footer, prefixes the
+subject with `[TEST]` plus a unique preview timestamp, and uses the existing
+nonfunctional test unsubscribe token. It has no subscriber lookup or campaign
+creation. The default test command still uses private CID images. Real campaign
+mail retains its working per-recipient unsubscribe token and one-click headers;
+an extra unsubscribe link near the title backs up the full footer.
+
+The existing `newsletter:preview` command renders the same production presentation
+and approval digest locally (with the existing preview unsubscribe URL setting).
+`npm run test:newsletter:layout` verifies desktop/mobile layout and footnote/footer
+accessibility offline. See [the Gmail investigation](docs/newsletter-email-rendering.md)
+for the received-message evidence and the remaining Gmail UI retest.
+
 ## Project structure
 
 ```text

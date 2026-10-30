@@ -565,6 +565,7 @@ export function testNewsletterAuthorReportSafeguards() {
 
 export function testNewsletterProductionSendSafeguards() {
   const env = {
+    NEWSLETTER_POSTAL_ADDRESS: 'Test fixture, 42 Test Lane, Test City 12345',
     NEWSLETTER_ENVIRONMENT: 'production',
     AWS_REGION: 'us-east-2',
     SES_CONFIGURATION_SET: 'newsletter-events',
@@ -576,6 +577,10 @@ export function testNewsletterProductionSendSafeguards() {
     configurationSet: 'newsletter-events',
     maxRecipients: 250,
     unsubscribeSecret: env.NEWSLETTER_UNSUBSCRIBE_SECRET,
+    presentation: {
+      postalAddress: env.NEWSLETTER_POSTAL_ADDRESS,
+      preheader: true,
+    },
   });
   assert.throws(
     () => productionSendConfig({ ...env, NEWSLETTER_ENVIRONMENT: 'preview' }),

@@ -1,3 +1,7 @@
+import {
+  newsletterPresentation,
+  type NewsletterPresentation,
+} from './presentation.ts';
 import { assertPublishedArticle } from '../../utils/publication.ts';
 import { createHash } from 'node:crypto';
 import { neonDb } from '../neon.ts';
@@ -27,9 +31,11 @@ export function campaignContentHash(
   subject: string,
   markdown: string,
   privacyUrl = NEWSLETTER_PRIVACY_URL,
+  presentation: NewsletterPresentation = newsletterPresentation(process.env),
 ): string {
   assertPublishedArticle(markdown);
   const rendered = renderNewsletterEmail({
+    ...presentation,
     articleId,
     title: subject,
     markdown,

@@ -1,3 +1,9 @@
+import {
+  assertPublishedNewsletterPage,
+  newsletterPresentation,
+} from './presentation.ts';
+import { assertPublicNewsletterImages } from './public-images.ts';
+import { renderNewsletterEmail } from './render.ts';
 import type { SendEmailCommandInput } from '@aws-sdk/client-sesv2';
 import { newsletterTitle } from './campaign.ts';
 import {
@@ -17,6 +23,9 @@ export async function buildTestEmail(input: {
   markdown: string;
   recipient: string;
   env: NodeJS.ProcessEnv;
+  hosted?: boolean;
+  request?: typeof fetch;
+  resolveAddresses?: (host: string) => Promise<string[]>;
 }): Promise<SendEmailCommandInput> {
   const recipient = assertAllowedTestRecipient(
     input.recipient,
@@ -26,13 +35,38 @@ export async function buildTestEmail(input: {
     throw new Error(
       'Test send requires SES_CONFIGURATION_SET and AWS_REGION. No email was sent.',
     );
-  const title = `[TEST] ${newsletterTitle(input.markdown)}`;
-  const rendered = await renderPrivateNewsletter({
-    ...input,
+  const articleTitle = newsletterTitle(input.markdown);
+  const presentation = newsletterPresentation(input.env, input.hosted === true);
+  const title = input.hosted ? articleTitle : `[TEST] ${articleTitle}`;
+  const renderInput = {
+    ...presentation,
+    articleId: input.articleId,
+    markdown: input.markdown,
     title,
     privacyUrl: NEWSLETTER_PRIVACY_URL,
     unsubscribeUrl: TEST_UNSUBSCRIBE_URL,
-  });
+  };
+  const privateRendered = input.hosted
+    ? undefined
+    : await renderPrivateNewsletter(renderInput);
+  const rendered = privateRendered ?? renderNewsletterEmail(renderInput);
+  if (input.hosted) {
+    await assertPublishedNewsletterPage(
+      input.articleId,
+      input.markdown,
+      input.request,
+    );
+    await assertPublicNewsletterImages(
+      rendered.html,
+      input.request,
+      input.resolveAddresses,
+    );
+  }
+  // Avoid reusing the same test Subject for Gmail's repeated-message heuristics.
+  // The production-format body retains the exact article title and footer.
+  const subject = input.hosted
+    ? `[TEST] ${articleTitle} — preview ${new Date().toISOString()}`
+    : title;
   return {
     FromEmailAddress: NEWSLETTER_FROM,
     ReplyToAddresses: [NEWSLETTER_REPLY_TO],
@@ -40,7 +74,7 @@ export async function buildTestEmail(input: {
     ConfigurationSetName: input.env.SES_CONFIGURATION_SET,
     Content: {
       Simple: {
-        Subject: { Data: title, Charset: 'UTF-8' },
+        Subject: { Data: subject, Charset: 'UTF-8' },
         Body: {
           Html: { Data: rendered.html, Charset: 'UTF-8' },
           Text: { Data: rendered.text, Charset: 'UTF-8' },
@@ -49,7 +83,9 @@ export async function buildTestEmail(input: {
           Name,
           Value,
         })),
-        Attachments: rendered.attachments,
+        ...(privateRendered
+          ? { Attachments: privateRendered.attachments }
+          : {}),
       },
     },
   };
