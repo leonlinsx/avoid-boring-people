@@ -117,6 +117,7 @@ export async function testPreMigrationReadiness() {
   await snapshotCampaign(
     {
       articleId: 'fixture/index.md',
+      markdown,
       subject: title,
       contentHash: hash,
       expected: 250,

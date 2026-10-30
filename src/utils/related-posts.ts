@@ -1,3 +1,4 @@
+import { isPublishedPost } from './publication.ts';
 import type { CollectionEntry } from 'astro:content';
 import { comparePostsByDate } from './text.ts';
 
@@ -23,6 +24,7 @@ export function selectRelatedPosts(
   const seenIds = new Set<string>([current.id]);
 
   return candidates
+    .filter(isPublishedPost)
     .filter((candidate) => {
       if (seenIds.has(candidate.id)) return false;
       seenIds.add(candidate.id);

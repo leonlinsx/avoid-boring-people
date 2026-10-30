@@ -1,3 +1,4 @@
+import { articleIsDraft } from './publication.ts';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -59,9 +60,13 @@ export function readArticleRoutes(
   const routes: ArticleRoute[] = [];
   for (const entry of entries) {
     const mdPath = path.join(blogDir, entry, 'index.md');
-    if (!fs.existsSync(mdPath)) continue;
+    const sourcePath = fs.existsSync(mdPath)
+      ? mdPath
+      : path.join(blogDir, entry, 'index.mdx');
+    if (!fs.existsSync(sourcePath)) continue;
 
-    const content = fs.readFileSync(mdPath, 'utf-8');
+    const content = fs.readFileSync(sourcePath, 'utf-8');
+    if (articleIsDraft(content)) continue;
     const slug = computeCleanSlug({
       id: `${entry}/index.md`,
       data: { slug: frontmatterValue(content, 'slug') },
@@ -151,7 +156,8 @@ export function buildLegacyArticleRedirects(
   const redirects: Record<string, { destination: string; status: 308 }> = {};
   const legacyPathnames = new Map<string, string>();
 
-  for (const route of readArticleRoutes(blogDir)) {
+  const routes = readArticleRoutes(blogDir);
+  for (const route of routes) {
     if (route.legacyPathname) {
       legacyPathnames.set(route.legacyPathname, route.pathname);
     }
@@ -159,6 +165,7 @@ export function buildLegacyArticleRedirects(
   for (const [legacySlug, canonicalSlug] of Object.entries(
     LEGACY_ARTICLE_ALIASES,
   )) {
+    if (!routes.some((route) => route.slug === canonicalSlug)) continue;
     legacyPathnames.set(
       normalizePathname(`/writing/${legacySlug}`),
       normalizePathname(`/writing/${canonicalSlug}`),

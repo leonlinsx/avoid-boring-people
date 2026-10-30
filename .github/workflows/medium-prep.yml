@@ -53,6 +53,7 @@ jobs:
             git diff --name-only --diff-filter=AM "$BEFORE" "$GITHUB_SHA" -- 'src/content/blog/**' |
               grep -E '\.(md|mdx)$' >> "$articles" || true
           fi
+          python -c 'from pathlib import Path; import sys; from scripts.automation.new_articles import local_article_is_draft, CONTENT_PREFIX; p = Path(sys.argv[1]); p.write_text("".join(line + "\n" for line in p.read_text().splitlines() if line and not local_article_is_draft(line.removeprefix(CONTENT_PREFIX))))' "$articles"
           echo "Articles to prepare:"
           cat "$articles"
           if [ -s "$articles" ]; then echo 'found=true' >> "$GITHUB_OUTPUT"; else echo 'found=false' >> "$GITHUB_OUTPUT"; fi

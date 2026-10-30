@@ -1,11 +1,11 @@
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { publishedGlob } from './loaders/published-content.ts';
 import { z } from 'astro/zod';
 import { MAX_DISCUSSION_PROMPT_LENGTH } from './lib/comments/domain.ts';
 import { categoryLabels } from './utils/taxonomy';
 
 const blog = defineCollection({
-  loader: glob({
+  loader: publishedGlob({
     pattern: '**/*.{md,mdx}',
     base: './src/content/blog',
     // After the Astro 7 migration, retain relative-path IDs (including extensions)
@@ -15,6 +15,7 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      draft: z.boolean().default(false),
       description: z.string().optional(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
@@ -38,14 +39,18 @@ const blog = defineCollection({
 // file mirrors its English source directory:
 // `src/content/i18n/<locale>/<entry>/index.md`.
 const i18n = defineCollection({
-  loader: glob({
-    pattern: '**/index.{md,mdx}',
-    base: './src/content/i18n',
-    generateId: ({ entry }) => entry,
-  }),
+  loader: publishedGlob(
+    {
+      pattern: '**/index.{md,mdx}',
+      base: './src/content/i18n',
+      generateId: ({ entry }) => entry,
+    },
+    true,
+  ),
   schema: () =>
     z.object({
       title: z.string(),
+      draft: z.boolean().default(false),
       description: z.string().optional(),
       locale: z.enum(['ja', 'ko', 'es', 'pt-BR', 'fr', 'zh-Hans']),
       sourceSlug: z.string(),

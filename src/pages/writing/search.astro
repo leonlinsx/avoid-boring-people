@@ -1,4 +1,5 @@
 ---
+import { isPublishedPost } from '../../utils/publication.ts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
@@ -12,7 +13,7 @@ const url = new URL(Astro.request.url);
 const q = (url.searchParams.get('q') || '').trim();
 
 // Fetch and enrich all posts
-const allPosts = await getCollection('blog');
+const allPosts = (await getCollection('blog')).filter(isPublishedPost);
 
 const posts = allPosts.map(enrichPost).sort(comparePostsByDate);
 

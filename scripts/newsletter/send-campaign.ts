@@ -1,3 +1,5 @@
+import { assertPublicNewsletterImages } from '../../src/lib/newsletter/public-images.ts';
+import { CAMPAIGN_UNSUBSCRIBE_PLACEHOLDER } from '../../src/lib/newsletter/campaign.ts';
 import {
   assertCampaignContent,
   campaignContentHash,
@@ -86,6 +88,16 @@ const contentHash = campaignContentHash(
 );
 assertCampaignContent(campaign.content_hash, contentHash);
 assertCampaignContent(option('--expect-content'), contentHash);
+
+await assertPublicNewsletterImages(
+  renderNewsletterEmail({
+    articleId: campaign.article_slug,
+    markdown,
+    title: campaign.subject,
+    privacyUrl: NEWSLETTER_PRIVACY_URL,
+    unsubscribeUrl: CAMPAIGN_UNSUBSCRIBE_PLACEHOLDER,
+  }).html,
+);
 
 const ses = new SESv2Client({ region: config.awsRegion });
 const account = await ses.send(new GetAccountCommand({}));

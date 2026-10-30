@@ -1,4 +1,5 @@
 ---
+import { isPublishedPost } from '../utils/publication.ts';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
@@ -106,7 +107,7 @@ const socialImage = (await articleHeroUrl(hero)) ?? SITE_OG_IMAGE;
 // ✅ Related posts reuse the English selection. On a localized page only the
 // selected posts that have a translation in the current locale are shown,
 // with localized titles and URLs; with none, the section is omitted entirely.
-const allPosts = await getCollection('blog');
+const allPosts = (await getCollection('blog')).filter(isPublishedPost);
 const related = selectRelatedPosts(post, allPosts).map(enrichPost);
 const relatedTranslations = translationLocale
   ? new Map(

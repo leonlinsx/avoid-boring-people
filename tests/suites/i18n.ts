@@ -742,6 +742,7 @@ export function testFailedChunkDoesNotWriteArticle() {
       'scripts/i18n/lib.ts',
       'scripts/i18n/translate.ts',
       'src/utils/i18n.ts',
+      'src/utils/publication.ts',
       'src/utils/slug-helpers.ts',
       'src/utils/locale-chrome.ts',
       'src/lib/comments/domain.ts',

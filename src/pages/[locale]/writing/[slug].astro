@@ -1,4 +1,5 @@
 ---
+import { isPublishedPost } from '../../../utils/publication.ts';
 // Static localized article routes (`/ja/writing/<slug>`, …). Only versions
 // that were actually generated exist; English URLs are unchanged. Publishing
 // stays English-only: this route renders the English post shell with the
@@ -11,7 +12,7 @@ import { getCleanSlug } from '../../../utils/slug';
 import { contentEntryName, localeByCode } from '../../../utils/i18n';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter(isPublishedPost);
   const translations = await getCollection('i18n');
 
   const englishByEntry = new Map(
