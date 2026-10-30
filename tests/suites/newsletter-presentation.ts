@@ -163,7 +163,7 @@ export async function runNewsletterPresentationTests() {
   );
   assert.match(
     rendered.text,
-    /Leon Lin · October 31, 2026 · Read online: https:/,
+    /Leon Lin · October 31, 2026 Read online: https:/,
   );
   assert.match(rendered.html, /Leon Lin · October 31, 2026/);
   assert.match(rendered.html, /data-subtitle/);

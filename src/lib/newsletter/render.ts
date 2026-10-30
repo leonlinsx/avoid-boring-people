@@ -404,7 +404,7 @@ export function renderNewsletterEmail(
     );
   }
   // The hidden inbox preheader is not repeated in the visible/text edition.
-  const text = `${title}${metadata.description ? `\n${metadata.description}` : ''}\n${byline}${articleUrl ? ` · Read online: ${articleUrl}` : ''}\n\n---\n\n${plainText(markdown)}\n\n---\n\n${closing}${articleUrl ? ` Read online: ${articleUrl}` : ''}\n\n---\n\n${identity}${postal ? `\n${postal}` : ''}\nUnsubscribe: ${unsubscribeUrl}\nPrivacy policy: ${privacyUrl}`;
+  const text = `${title}${metadata.description ? `\n${metadata.description}` : ''}\n${byline}${articleUrl ? ` Read online: ${articleUrl}` : ''}\n\n---\n\n${plainText(markdown)}\n\n---\n\n${closing}${articleUrl ? ` Read online: ${articleUrl}` : ''}\n\n---\n\n${identity}${postal ? `\n${postal}` : ''}\nUnsubscribe: ${unsubscribeUrl}\nPrivacy policy: ${privacyUrl}`;
   return {
     html,
     text,
