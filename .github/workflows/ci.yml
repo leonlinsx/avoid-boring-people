@@ -39,6 +39,8 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Test browser confirmation through middleware
         run: npm run test:newsletter:browser
+      - name: Test newsletter email layout and footer
+        run: npm run test:newsletter:layout
       - name: Test draft publication boundaries and offline preview
         run: npm run test:drafts:build
 

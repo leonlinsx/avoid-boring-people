@@ -1,3 +1,4 @@
+import { newsletterPresentation } from '../../src/lib/newsletter/presentation.ts';
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
@@ -27,7 +28,16 @@ if (!title || !unsubscribeUrl) {
   );
 }
 
+const presentation = newsletterPresentation(process.env, true);
+const contentHash = campaignContentHash(
+  articleId,
+  title,
+  markdown,
+  privacyUrl,
+  presentation,
+);
 const rendered = renderNewsletterEmail({
+  ...presentation,
   articleId,
   title,
   markdown,
@@ -38,6 +48,4 @@ const destination = resolve(output);
 writeFileSync(destination, rendered.html, 'utf8');
 console.log(`Newsletter preview written to ${destination}`);
 
-console.log(
-  `Approved content SHA-256: ${campaignContentHash(articleId, title, markdown, privacyUrl)}`,
-);
+console.log(`Approved content SHA-256: ${contentHash}`);

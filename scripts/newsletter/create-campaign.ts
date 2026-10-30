@@ -30,7 +30,13 @@ const config = productionSendConfig(process.env);
 const cohortSize = warmupCohortSize(option('--cohort-size'), expected);
 const markdown = readNewsletterArticle(articleId);
 const subject = newsletterTitle(markdown);
-const contentHash = campaignContentHash(articleId, subject, markdown);
+const contentHash = campaignContentHash(
+  articleId,
+  subject,
+  markdown,
+  undefined,
+  config.presentation,
+);
 assertCampaignContent(option('--expect-content'), contentHash);
 const campaign = await snapshotCampaign({
   articleId,

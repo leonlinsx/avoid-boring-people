@@ -1,3 +1,4 @@
+import { newsletterPresentation } from '../../src/lib/newsletter/presentation.ts';
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { readNewsletterArticle } from '../../src/lib/newsletter/render.ts';
@@ -17,6 +18,7 @@ if (!articleId || extra.length)
   );
 const markdown = readNewsletterArticle(articleId);
 const rendered = await renderPrivateNewsletter({
+  ...newsletterPresentation(process.env),
   articleId,
   markdown,
   title: newsletterTitle(markdown),

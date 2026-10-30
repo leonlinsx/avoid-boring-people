@@ -1,3 +1,4 @@
+import { runNewsletterPresentationTests } from './suites/newsletter-presentation.ts';
 import { runNewsletterDraftTests } from './suites/newsletter-drafts.ts';
 // Custom test runner. Suites live in tests/suites and run in a fixed order.
 
@@ -24,6 +25,7 @@ process.on('unhandledRejection', (reason) => {
 
 async function run() {
   try {
+    await runNewsletterPresentationTests();
     await runNewsletterDraftTests();
     await runSiteUtilityTests();
     await runNewsletterTests();

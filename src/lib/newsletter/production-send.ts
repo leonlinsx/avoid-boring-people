@@ -1,3 +1,7 @@
+import {
+  newsletterPresentation,
+  type NewsletterPresentation,
+} from './presentation.ts';
 import { createHmac } from 'node:crypto';
 
 export type ProductionSendConfig = {
@@ -5,6 +9,7 @@ export type ProductionSendConfig = {
   configurationSet: string;
   maxRecipients: number;
   unsubscribeSecret: string;
+  presentation: NewsletterPresentation;
 };
 
 export type SesAccountState = {
@@ -44,6 +49,7 @@ export function productionSendConfig(
     );
   }
   return {
+    presentation: newsletterPresentation(env, true),
     awsRegion: env.AWS_REGION,
     configurationSet: env.SES_CONFIGURATION_SET,
     maxRecipients: positiveInteger(
