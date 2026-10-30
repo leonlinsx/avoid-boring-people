@@ -4,8 +4,7 @@ This runbook prepares a separately authorized, local-only data migration. It doe
 not authorize importing, sending email, creating campaigns, changing signup,
 cutover, or merging this PR. The owned newsletter is free-only. Historical paid,
 comp, gift, transfer, acquisition-source and paused billing values are retained
-as metadata; they do not disqualify an uncancelled subscriber. The operator has
-confirmed eligibility from the complete export: 5,235 rows, one excluded Author,
+as metadata; they do not disqualify an uncancelled subscriber. The historical assessed export had: 5,235 rows, one excluded Author,
 5,116 eligible uncancelled subscribers to import and 118 cancelled records to
 exclude entirely. Cancelled addresses are never sent to Neon, inserted, or updated,
 even as unsubscribed rows. No existing cancellation-address row is modified.
@@ -41,7 +40,8 @@ even as unsubscribed rows. No existing cancellation-address row is modified.
 
 From the reviewed checkout, set `SUBSTACK_CSV` to the candidate full CSV and
 `SUBSTACK_CANCELLATION_EVIDENCE` to the securely retained original full export.
-For this migration they are the same original file. Set
+For the next stage, use a fresh full export obtained after October 14, 2026;
+keep the original full export as cancellation evidence. They need not be the same file. Set
 `APPROVED_EVIDENCE_SHA256` from the privately approved original-file fingerprint
 recorded during assessment. Do not obtain a new approval hash from a changed
 evidence file or silently replace the retained original:
@@ -59,7 +59,7 @@ The second command uses one SELECT in a READ ONLY transaction. It sends nothing,
 creates no campaigns/recipients and writes no database rows. Prefer an existing
 SELECT-only connection for this step. Do not run the analytics email commands.
 
-Require these results for the assessed export:
+Historical results for the assessed export (not current expected counts or approval):
 
 | Field                                                                       |        Expected |
 | --------------------------------------------------------------------------- | --------------: |
@@ -106,6 +106,9 @@ and its approved fingerprint must remain available for every retry/future file;
 no database suppression table or address hash store is added.
 
 ## Future import — only after separate authorization
+
+Replace every historical count below with the newly reviewed export counts;
+never reuse the historical numbers as authorization.
 
 Assign `APPROVED_ROSTER_SHA256` and `APPROVED_FILE_SHA256` from the privately
 reviewed preflight, then rerun the read-only preflight immediately before import.

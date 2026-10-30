@@ -127,6 +127,32 @@ export async function runSignupFormTests() {
   assert.match(form, /name="website"[\s\S]*tabindex="-1"/);
   assert.match(form, /If a confirmation email arrives/);
   assert.match(form, /Use the link if a confirmation email arrives/);
+  assert.match(form, /action="\/api\/newsletter\/subscribe"/);
+  assert.doesNotMatch(form, /substack|\/api\/subscribe/);
+  assert.match(
+    form,
+    /<noscript>[\s\S]*display: none !important[\s\S]*enable JavaScript/,
+  );
+  const { ALL: retired } = await import('../../src/pages/api/subscribe.ts');
+  const originalGlobalFetch = globalThis.fetch;
+  let forwarded = 0;
+  globalThis.fetch = async () => {
+    forwarded++;
+    throw new Error('no network permitted');
+  };
+  try {
+    for (const method of ['GET', 'POST', 'PUT', 'DELETE']) {
+      const response = await retired({
+        request: new Request('https://leonlins.com/api/subscribe', { method }),
+      } as Parameters<APIRoute>[0]);
+      assert.equal(response.status, 410);
+      assert.equal(response.headers.get('location'), null);
+      assert.match((await response.json()).message, /retired/);
+    }
+    assert.equal(forwarded, 0);
+  } finally {
+    globalThis.fetch = originalGlobalFetch;
+  }
   // The public signup's server import tree is independent of campaign code.
   for (const path of [
     'src/pages/api/newsletter/subscribe.ts',

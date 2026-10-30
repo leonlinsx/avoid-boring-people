@@ -1,7 +1,7 @@
 // Visible UI strings for the discussion island and the newsletter CTA, per
 // supported locale. Browser-safe: no Node imports, so the Preact island can
 // share it. Only static chrome is translated here — user comments, server
-// error messages, subscription behavior, and the Substack form action stay
+// error messages, subscription behavior, and the owned form action stay
 // exactly as they are.
 import { commentErrorMessages } from '../lib/comments/domain.ts';
 

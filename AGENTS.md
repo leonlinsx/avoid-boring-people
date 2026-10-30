@@ -22,7 +22,7 @@ Priorities: reliable publishing and unchanged site behavior, subscriber consent 
 - The contact form stays an invitation: three fields, no scoring or qualification, no relationship record, no newsletter signup inside the form, no navigation entry, and no second place to read notes.
 - Lin Scout stays a reporting tool: no publisher, no autonomous posting, no daemon or queue, no database or new state store, no second archive index, and no coupling to the site runtime or build.
 - The Scout Jev shadow evaluation stays observational and removable: off unless both `SCOUT_JEV_SHADOW` and `TYPESAFE_API_KEY` are set, never able to add, drop, reorder, or redraft a candidate or fail a run, called only after the report and `scout-state.json` are written and bounded by its own wall-clock budget, enabled in `.github/workflows/scout.yml` only through the repository secret and a dedicated `continue-on-error` SDK install step (never in the pinned requirements), and its API key never printed or persisted.
-- Keep the Substack integration until the explicit cutover.
+- The public signup cutover completed October 14, 2026. Keep owned signup exclusive; preserve historical Substack references and archive links.
 
 ## Important invariants
 

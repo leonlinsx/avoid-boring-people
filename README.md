@@ -25,8 +25,8 @@ The repo holds six systems:
    and dormant adapters are not default destinations. Details and per-channel
    rationale: [docs/social-distribution.md](docs/social-distribution.md).
 3. **Newsletter subscription** — an owned list (Neon Postgres + Amazon SES)
-   being migrated off Substack, currently in controlled validation. Public
-   signup is still Substack until the explicit cutover; no production email
+   with public signup cut over on October 14, 2026. Legacy subscriber import
+   remains separately gated; no production campaign email
    sends without a local human-confirmed CLI action. First-party attribution and
    a read-only analytics report measure acquisition, growth, and deliverability
    from the owned tables. Details:
@@ -86,8 +86,8 @@ All commands run from the repo root.
 | Test (all JS/TS suites) | `npm test` |
 | Test (Python suite) | `python -m pytest tests -q` |
 | Autopost dry run (no side effects) | `DRY_RUN=true POST_MODE=thread PLATFORM=twitter,bluesky,mastodon,devto python -m scripts.automation.auto_post` |
-| Substack import dry run | `npm run newsletter:import:dry-run -- <substack-export.csv>` |
-| Apply verified Substack import | `npm run newsletter:import -- <file> --expect-active <n> --expect-suppressed <m> --confirm-import` |
+| Substack import dry run | See [read-only preflight commands](docs/newsletter-import-runbook.md#read-only-preflight), including retained cancellation evidence |
+| Apply verified Substack import | See [the guarded import runbook](docs/newsletter-import-runbook.md#future-import--only-after-separate-authorization) for all mandatory approval flags |
 | Newsletter preview | `npm run newsletter:preview -- <article-id> [output-file]` |
 | Allowlisted newsletter test | `npm run newsletter:test -- <article-id> <recipient> --confirm-test` |
 | Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <n> --confirm-snapshot` |
@@ -135,7 +135,7 @@ Vercel deploys never send email or social posts.
   `analytics_job_failure`, carrying only a reason and an error name; there is no
   monitoring service, no retry queue, and no paging integration.
 - Signup attribution is first-touch and written only through the owned signup
-  path, so the Substack form stays untouched and stores none of it; the
+  path; the
   analytics report is read-only and never estimates opens, clicks, or engaged
   readers.
 - The analytics report reaches only the author: it goes from
@@ -144,7 +144,7 @@ Vercel deploys never send email or social posts.
   `NEWSLETTER_TEST_RECIPIENTS` allowlist. Subscribers are never addressed, the
   manual command keeps requiring `--to` and `--confirm-send`, and the monthly
   run is a local user timer — no build, deploy, or CI job emails a report.
-- The Substack integration is preserved until the explicit cutover.
+- Public signup uses the owned endpoint exclusively; Substack archive/editorial links remain.
 - Discussion moderation stays local and explicit; hidden comments are never
   returned publicly, and the author badge is set only by the operator CLI.
 - The discussion stores no IP addresses, no email addresses, and no raw browser

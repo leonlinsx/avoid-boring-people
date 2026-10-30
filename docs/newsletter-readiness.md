@@ -1,4 +1,6 @@
-# Pre-migration newsletter readiness
+# Historical pre-cutover newsletter readiness
+
+> Superseded for current status by [the pre-import report](newsletter-pre-import-readiness.md). The October 11 findings below are historical; public signup cut over October 14, 2026.
 
 Reviewed `main` at `9eaf0f2a060c017d8788dc2649b05534a9059e52` (2026-10-11, America/New_York). This PR prepares code for controlled validation; it does not authorize imports, production sending, configuration changes, or cutover. The public form still submits directly to Substack.
 
