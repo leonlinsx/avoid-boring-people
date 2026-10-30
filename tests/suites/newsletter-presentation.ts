@@ -60,8 +60,7 @@ export async function runNewsletterPresentationTests() {
     rendered.html.indexOf('Read online') > rendered.html.indexOf('</h1>'),
   );
   assert.ok(
-    rendered.html.indexOf('Read online') <
-      rendered.html.indexOf('<article>'),
+    rendered.html.indexOf('Read online') < rendered.html.indexOf('<article>'),
   );
   assert.match(rendered.html, /max-width:640px;box-sizing:border-box/);
   assert.match(
