@@ -578,7 +578,7 @@ export function testNewsletterProductionSendSafeguards() {
     maxRecipients: 250,
     unsubscribeSecret: env.NEWSLETTER_UNSUBSCRIBE_SECRET,
     presentation: {
-      postalAddress: env.NEWSLETTER_POSTAL_ADDRESS,
+      postalAddress: undefined,
       preheader: true,
     },
   });

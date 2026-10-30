@@ -28,7 +28,7 @@ if (!title || !unsubscribeUrl) {
   );
 }
 
-const presentation = newsletterPresentation(process.env, true);
+const presentation = newsletterPresentation(process.env);
 const contentHash = campaignContentHash(
   articleId,
   title,

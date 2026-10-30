@@ -14,6 +14,7 @@ import {
 } from '../../src/lib/newsletter/presentation.ts';
 import {
   campaignContentHash,
+  newsletterTitle,
   assertCampaignContent,
 } from '../../src/lib/newsletter/campaign.ts';
 import { buildTestEmail } from '../../src/lib/newsletter/test-message.ts';
@@ -24,17 +25,16 @@ import {
 
 const address = 'Synthetic test office, 42 Test Lane, Test City 12345';
 const articleId = '2026_10_31_fixture/index.md';
-const markdown = `---\ntitle: Fixture edition\ndescription: "A concise & useful inbox snippet"\nslug: ' /custom-fixture/ '\ndraft: false\n---\n\nOpening[^a].\n\n> Substantive quoted argument[^b].\n>\n> A second paragraph with **important details**.\n\nFinal analysis[^a].\n\n[^a]: First footnote with [source](https://example.com/source).\n[^b]: Second footnote.\n`;
+const markdown = `---\ntitle: Fixture edition\ndescription: "A concise & useful inbox snippet"\npubDate: 2026-10-31\nslug: ' /custom-fixture/ '\ndraft: false\n---\n\nOpening[^a].\n\n> Substantive quoted argument[^b].\n>\n> A second paragraph with **important details**.\n\nFinal analysis[^a].\n\n[^a]: First footnote with [source](https://example.com/source).\n[^b]: Second footnote.\n`;
 const url = 'https://leonlins.com/writing/custom-fixture';
 const privacyUrl = 'https://leonlins.com/privacy/';
 const unsubscribeUrl =
   'https://leonlins.com/api/newsletter/unsubscribe?token=synthetic-recipient-one';
 
 export async function runNewsletterPresentationTests() {
-  const presentation = newsletterPresentation(
-    { NEWSLETTER_POSTAL_ADDRESS: address },
-    true,
-  );
+  const presentation = newsletterPresentation({
+    NEWSLETTER_POSTAL_ADDRESS: address,
+  });
   const rendered = renderNewsletterEmail({
     ...presentation,
     articleId,
@@ -84,6 +84,14 @@ export async function runNewsletterPresentationTests() {
     unsubscribeUrl,
   });
   assert.doesNotMatch(noSnippet.html, /mso-hide:all/);
+  assert.match(
+    noSnippet.html,
+    /data-subtitle[^>]*>A concise &amp; useful inbox snippet/,
+  );
+  assert.equal(
+    noSnippet.text.split('A concise & useful inbox snippet').length - 1,
+    1,
+  );
   assert.equal(
     newsletterPresentation({ NEWSLETTER_PREHEADER_ENABLED: 'false' }).preheader,
     false,
@@ -132,12 +140,69 @@ export async function runNewsletterPresentationTests() {
   const footer = rendered.html.split('<footer')[1];
   for (const content of [
     'Avoid Boring People by Leon Lin',
-    address,
     unsubscribeUrl,
     privacyUrl,
   ])
     assert.ok(footer.includes(content));
-  assert.equal((rendered.html.match(/>Unsubscribe<\/a>/g) ?? []).length, 2);
+  assert.equal((rendered.html.match(/>Unsubscribe<\/a>/g) ?? []).length, 1);
+  assert.doesNotMatch(
+    rendered.html + rendered.text,
+    /Synthetic test office|You received this/,
+  );
+  assert.match(rendered.html, /LEON LIN \/ AVOID BORING PEOPLE/);
+  assert.match(rendered.html, /Leon Lin · October 31, 2026/);
+  assert.match(rendered.html, /data-subtitle/);
+  assert.match(rendered.html, /font-family:Georgia/);
+  assert.match(rendered.html, /color:#0066cc/);
+  assert.equal(
+    rendered.text.split('A concise & useful inbox snippet').length - 1,
+    1,
+  );
+  assert.ok(
+    rendered.html.indexOf('What did I miss? Reply to this email.') >
+      rendered.html.indexOf('</article>'),
+  );
+  assert.ok(
+    rendered.html.indexOf('What did I miss? Reply to this email.') <
+      rendered.html.lastIndexOf('Read on the web'),
+  );
+  assert.match(article, /data-footnotes[^>]*border-top:1px solid/);
+  const noSubtitle = renderNewsletterEmail({
+    articleId,
+    title: 'Fallback',
+    markdown: '---\ntitle: YAML headline\n---\nBody',
+    privacyUrl,
+    unsubscribeUrl,
+  });
+  assert.match(noSubtitle.html, />YAML headline<\/h1>/);
+  assert.doesNotMatch(
+    noSubtitle.html,
+    /data-subtitle|aria-hidden|Invalid Date|undefined/,
+  );
+  assert.match(noSubtitle.text, /YAML headline\nLeon Lin/);
+  assert.ok(!noSubtitle.text.includes('Fallback'));
+  assert.throws(
+    () =>
+      renderNewsletterEmail({
+        articleId,
+        title: 'Bad date',
+        markdown: '---\npubDate: not-a-date\n---\nBody',
+        privacyUrl,
+        unsubscribeUrl,
+      }),
+    /invalid pubDate/,
+  );
+  const identified = renderNewsletterEmail({
+    ...newsletterPresentation({ NEWSLETTER_POSTAL_ADDRESS: address }, true),
+    articleId,
+    markdown,
+    title: 'Fixture',
+    privacyUrl,
+    unsubscribeUrl,
+  });
+  assert.ok(
+    identified.html.includes(address) && identified.text.includes(address),
+  );
   assert.equal(rendered.headers['List-Unsubscribe'], `<${unsubscribeUrl}>`);
   assert.equal(
     rendered.headers['List-Unsubscribe-Post'],
@@ -167,9 +232,15 @@ export async function runNewsletterPresentationTests() {
     NEWSLETTER_MAX_PRODUCTION_RECIPIENTS: '1',
     NEWSLETTER_UNSUBSCRIBE_SECRET: secret,
   };
-  assert.throws(
-    () => productionSendConfig(config),
-    /NEWSLETTER_POSTAL_ADDRESS/,
+  assert.equal(
+    productionSendConfig(config).presentation.postalAddress,
+    undefined,
+  );
+  assert.equal(
+    newsletterPresentation({
+      NEWSLETTER_POSTAL_ADDRESS: 'invalid legacy value',
+    }).postalAddress,
+    undefined,
   );
   for (const invalid of [
     '',
@@ -191,12 +262,28 @@ export async function runNewsletterPresentationTests() {
     ).postalAddress,
     address + '\nCountry',
   );
+  assert.equal(
+    newsletterTitle(
+      '---\ntitle: >-\n  A headline with\n  a continuation\n---\nBody',
+    ),
+    'A headline with a continuation',
+  );
   const digest = campaignContentHash(
     articleId,
     'Fixture edition',
     markdown,
     privacyUrl,
     presentation,
+  );
+  // PR #114 renderer with the exact fixture above and placeholder token.
+  // Existing approvals must fail after this editorial presentation change.
+  assert.throws(
+    () =>
+      assertCampaignContent(
+        'c4fe4df8c01c7fabd42056f346730811cb042106f7ebd0dbb2593c846f0ccc61',
+        digest,
+      ),
+    /differs/,
   );
   for (const changed of [
     { ...presentation, postalAddress: address + ', revised' },
@@ -287,6 +374,15 @@ export async function runNewsletterPresentationTests() {
   });
   assert.match(authorLinked.html, /href="https:\/\/example.com\/source"/);
   assert.doesNotMatch(authorLinked.html, /Open image at original size/);
+  for (const body of [
+    message.Content!.Simple!.Body!.Html!.Data!,
+    message.Content!.Simple!.Body!.Text!.Data!,
+  ])
+    assert.doesNotMatch(
+      body,
+      /Synthetic test office/,
+      'Hosted editorial mail ignores legacy postal configuration',
+    );
   assert.equal(reads, 2);
   assert.deepEqual(message.Destination, {
     ToAddresses: ['approved@example.com'],
@@ -321,18 +417,19 @@ export async function runNewsletterPresentationTests() {
       }),
     /NEWSLETTER_TEST_RECIPIENTS/,
   );
-  await assert.rejects(
-    () =>
-      buildTestEmail({
-        articleId,
-        markdown,
-        recipient: 'approved@example.com',
-        env: { ...env, NEWSLETTER_POSTAL_ADDRESS: '' },
-        hosted: true,
-        request,
-      }),
-    /NEWSLETTER_POSTAL_ADDRESS/,
+  const addressless = await buildTestEmail({
+    articleId,
+    markdown,
+    recipient: 'approved@example.com',
+    env: { ...env, NEWSLETTER_POSTAL_ADDRESS: '' },
+    hosted: true,
+    request,
+  });
+  assert.doesNotMatch(
+    addressless.Content!.Simple!.Body!.Html!.Data!,
+    /Synthetic test office/,
   );
+  reads = 0;
   await assert.rejects(
     () =>
       buildTestEmail({
@@ -412,6 +509,6 @@ export async function runNewsletterPresentationTests() {
   }
   assert.equal((sender.match(/\.\.\.config.presentation/g) ?? []).length, 2);
   console.log(
-    '✅ Newsletter layout, canonical page, preheader, footnotes, postal footer and hosted allowlist preview checks passed (mock HTTP, no SES/DB)',
+    '✅ Newsletter layout, canonical page, preheader, footnotes, editorial footer and hosted allowlist preview checks passed (mock HTTP, no SES/DB)',
   );
 }

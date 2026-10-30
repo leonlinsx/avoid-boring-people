@@ -13,10 +13,14 @@ export type NewsletterPresentation = {
 
 export function newsletterPresentation(
   env: NodeJS.ProcessEnv,
-  postalRequired = false,
+  includePostalAddress = false,
 ): NewsletterPresentation {
-  const postalAddress = env.NEWSLETTER_POSTAL_ADDRESS?.trim();
-  if (postalRequired && !postalAddress)
+  // Editorial mail stays addressless even when a legacy address is configured.
+  // Explicit opt-in is retained for future sender-identification requirements.
+  const postalAddress = includePostalAddress
+    ? env.NEWSLETTER_POSTAL_ADDRESS?.trim()
+    : undefined;
+  if (includePostalAddress && !postalAddress)
     throw new Error(
       "NEWSLETTER_POSTAL_ADDRESS must contain the operator's valid mailing address. No email was sent.",
     );
@@ -52,9 +56,28 @@ export function newsletterArticleUrl(
   return new URL(`/writing/${slug}`, SITE_URL).toString();
 }
 
+export function newsletterMetadata(markdown: string) {
+  const data = parseFrontmatter(markdown).frontmatter;
+  const title = typeof data.title === 'string' ? data.title.trim() : undefined;
+  const description =
+    typeof data.description === 'string'
+      ? data.description.replace(/\s+/g, ' ').trim() || undefined
+      : undefined;
+  if (
+    data.pubDate != null &&
+    typeof data.pubDate !== 'string' &&
+    !(data.pubDate instanceof Date)
+  )
+    throw new Error('The selected article has an invalid pubDate.');
+  const pubDate = data.pubDate == null ? undefined : new Date(data.pubDate);
+  if (pubDate && !Number.isFinite(pubDate.getTime()))
+    throw new Error('The selected article has an invalid pubDate.');
+  return { title, description, pubDate };
+}
+
 export function newsletterPreheader(markdown: string): string | undefined {
-  const description = parseFrontmatter(markdown).frontmatter.description;
-  if (typeof description !== 'string') return undefined;
+  const { description } = newsletterMetadata(markdown);
+  if (!description) return undefined;
   const text = description.replace(/\s+/g, ' ').trim();
   return text
     ? text.length > 160

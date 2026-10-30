@@ -49,7 +49,7 @@ export function productionSendConfig(
     );
   }
   return {
-    presentation: newsletterPresentation(env, true),
+    presentation: newsletterPresentation(env),
     awsRegion: env.AWS_REGION,
     configurationSet: env.SES_CONFIGURATION_SET,
     maxRecipients: positiveInteger(
