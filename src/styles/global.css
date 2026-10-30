@@ -370,6 +370,25 @@ img.center {
   margin: var(--space-xl) auto;
   border-radius: var(--radius-lg);
 }
+.prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: var(--space-lg) 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  -webkit-overflow-scrolling: touch;
+}
+.prose th,
+.prose td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  white-space: nowrap;
+}
+.prose th {
+  font-weight: 700;
+}
 
 /* -------------------------------
    12. Writing Header & Search Bar

@@ -8,7 +8,8 @@
       "codex/newsletter-header-tidy": false,
       "codex/newsletter-inline-read-online": false,
       "codex/newsletter-inline-closing": false,
-      "codex/newsletter-closing-no-separator": false
+      "codex/newsletter-closing-no-separator": false,
+      "codex/prose-table-spacing": false
     }
   }
 }
