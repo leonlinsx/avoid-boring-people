@@ -72,8 +72,10 @@ appears. Use the original-message view to distinguish intact content from UI fol
 
 ## Editorial layout follow-up
 
-The final header uses a small text masthead, YAML title in email-safe Georgia,
-visible description once, and Leon Lin with the English publication date (UTC).
+The final header starts with the YAML title in email-safe Georgia, visible
+description once, and Leon Lin with the English publication date (UTC). The
+publication identity stays in the footer. Published articles show a readable
+“Read on the web” link directly beneath the byline; drafts omit unavailable links.
 A missing description/date is omitted without blank placeholders. Disabling the
 hidden preheader keeps the visible subtitle. The standard CLI body is addressless,
 even if a legacy postal environment value exists; see the README's commercial-use

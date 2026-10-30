@@ -108,14 +108,14 @@ that live check.
 
 ## Newsletter email presentation and hosted preview
 
-The email uses a small `LEON LIN / AVOID BORING PEOPLE` masthead, a Georgia
-headline from YAML `title`, visible `description` subtitle (when present), and
+The email starts with a Georgia headline from YAML `title`, a visible
+`description` subtitle (when present), and
 `Leon Lin · <pubDate>` metadata. Dates use English month names and UTC so date-only
 YAML values do not shift with the CLI machine's timezone. The 640px container,
 centered 560px charts and original website images are preserved. Links use the
 website blue (`#0066cc`). Compact footnotes retain every ID and backlink.
 
-Published editions link to the canonical article beneath the header and after
+Published editions link to the canonical article beneath the author/date and after
 “What did I miss? Reply to this email.” Draft previews omit those links. The
 hidden description-based preheader remains optional; set
 `NEWSLETTER_PREHEADER_ENABLED=false` to disable only the inbox snippet, not the

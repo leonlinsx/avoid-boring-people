@@ -4,7 +4,8 @@
     "deploymentEnabled": {
       "codex/newsletter-drafts": false,
       "codex/newsletter-email-polish": false,
-      "codex/newsletter-editorial-layout": false
+      "codex/newsletter-editorial-layout": false,
+      "codex/newsletter-header-tidy": false
     }
   }
 }
