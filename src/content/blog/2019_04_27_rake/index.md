@@ -16,7 +16,7 @@ I liked Josh’s rake factors article because it was the first I’ve seen that 
 I had additional thoughts:
 
 - There are some marketplaces that seem to be exceptions to this framework (which Josh self-admits is not definitive)
-  - E.g. The stock photography market has always been curious to me since someone pointed it out. [The rake there can be >50%,]((https://microstockinsider.com/microstock_commission_rates 'photography commissions') an incredible amount for a service that has so many competitors, transparent fees, and little marginal costs on the platform side.
+  - E.g. The stock photography market has always been curious to me since someone pointed it out. [The rake there can be >50%,](https://microstockinsider.com/microstock_commission_rates 'photography commissions') an incredible amount for a service that has so many competitors, transparent fees, and little marginal costs on the platform side.
   - E.g. China e-commerce marketplace rakes are very low when compared to US marketplaces e.g. taobao ~4% vs ebay ~9%
 - I think adding another factor of +3% for ‘promotional activity’ on the platform might be helpful
   _ E.g. China e-commerce marketplace rev mentioned above is mostly from marketing activities, and the average cost is ~4%
