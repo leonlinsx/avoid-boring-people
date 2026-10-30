@@ -81,6 +81,49 @@ def test_full_article_reaches_the_model_prompt():
     assert llm_summarizer.MAX_ARTICLE_CHARS > len(content)
 
 
+@pytest.mark.parametrize("mode,max_points", [("bullets", 4), ("narrative", 2)])
+def test_prompt_develops_one_supported_idea_and_keeps_all_hooks_on_it(mode, max_points):
+    prompt = llm_summarizer.build_summary_prompt(
+        _post(content="Chess instruction. Personality tests. Social credit."),
+        mode=mode,
+        max_points=max_points,
+    )
+
+    assert "Select ONE compelling, sufficiently developed, source-supported idea" in prompt
+    assert "not a survey of its sections or takeaways" in prompt
+    assert "Do not invent an umbrella lesson to combine separate discussions" in prompt
+    assert "explanation, evidence, nuance, or implications" in prompt
+    assert "Prefer three substantive supporting points when the source and point limit allow" in prompt
+    assert "Use fewer when there is less support; never invent, repeat, or pad" in prompt
+    assert "Keep ALL teaser alternates on the chosen subject" in prompt
+    assert "a selector may replace the primary teaser with any alternate" in prompt
+    assert "complete standalone idea" in prompt
+    assert "complete sentences within the character limits" in prompt
+    assert f"up to {max_points}" in prompt
+
+
+def test_one_supported_point_uses_one_call_and_survives_specificity_selection(monkeypatch):
+    _live(monkeypatch)
+    calls = []
+    reply = {
+        "teaser": "Chess lessons may not make children smarter.",
+        "teaser_alternates": ["A 2017 meta-analysis found little evidence that chess lessons make children smarter."],
+        "points": ["Stronger chess players may be smarter because smarter children are more likely to take up chess."],
+    }
+
+    def complete(*args, **kwargs):
+        calls.append((args, kwargs))
+        return json.dumps(reply)
+
+    monkeypatch.setattr(llm_summarizer, "_complete", complete)
+    summary = llm_summarizer.summarize_post(_post(content="Chess lessons may not transfer to other skills."))
+
+    assert len(calls) == 1
+    assert summary["teaser"] == reply["teaser_alternates"][0]
+    assert summary["points"] == reply["points"]
+    assert summary["teaser_candidates"] == [reply["teaser"], *reply["teaser_alternates"]]
+
+
 def test_pathological_content_is_capped_by_a_documented_safety_bound():
     prompt = llm_summarizer.build_summary_prompt(_post(content="y" * 200_000))
 

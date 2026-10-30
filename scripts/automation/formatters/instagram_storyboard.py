@@ -8,7 +8,8 @@ generated summary, the tags, or the canonical URL.
 Slide limits are editorial, not platform limits. Meta documents at most ten
 carousel children and does not document a minimum, so the renderer's supported
 range is 2-10 while the default shape stays 5-8 slides: a cover, body slides,
-and a closing slide that carries the canonical link.
+and a closing slide that carries the canonical link. Short summaries use fewer
+slides rather than filling the carousel with unrelated article sentences.
 """
 from __future__ import annotations
 
@@ -41,9 +42,8 @@ ALT_TEXT_MAX = 1000
 
 # Carousel shape. MIN/MAX_SLIDES are the editorial default; the publisher
 # accepts the wider documented range.
-MIN_SLIDES = 5
+MIN_SLIDES = 3  # Cover, one supported point, and the closing link.
 MAX_SLIDES = 8
-MIN_BODY_SLIDES = 3
 MAX_BODY_SLIDES = 6
 MIN_CAROUSEL_ITEMS = 2
 MAX_CAROUSEL_ITEMS = 10
@@ -280,6 +280,7 @@ def _reads_as_a_whole_heading(headline: str, detail: str) -> bool:
     words = headline.split()
     return (
         len(headline) <= BODY_TITLE_MAX
+        and len(detail) <= BODY_BODY_MAX
         and len(words) >= _MIN_HEADLINE_WORDS
         and len(detail.split()) >= _MIN_DETAIL_WORDS
         and not _is_connector(words[-1])
@@ -301,7 +302,11 @@ def _headline_and_detail(point: str) -> tuple[str, str]:
     stranded at the end of the headline. Truncation is only a fallback.
     """
     sentences = _sentences(point)
-    if len(sentences) > 1 and len(sentences[0]) <= BODY_TITLE_MAX:
+    if (
+        len(sentences) > 1
+        and len(sentences[0]) <= BODY_TITLE_MAX
+        and len(" ".join(sentences[1:])) <= BODY_BODY_MAX
+    ):
         # A complete sentence makes the better headline, even when what follows
         # it is shorter than a full detail sentence.
         return sentences[0], " ".join(sentences[1:])
@@ -333,13 +338,13 @@ def _headline_and_detail(point: str) -> tuple[str, str]:
         take = position
     while take > _MIN_HEADLINE_WORDS and _is_stopword(words[take - 1]):
         take -= 1
-    if take >= _MIN_HEADLINE_WORDS and len(words) - take >= _MIN_DETAIL_WORDS:
+    if take >= _MIN_HEADLINE_WORDS and len(words) > take:
         return " ".join(words[:take]), " ".join(words[take:])
     return truncate_words(point, BODY_TITLE_MAX), ""
 
 
-def _body_points(post: dict, summary: dict) -> list[str]:
-    """Collect body-slide points, topping up from the article when needed."""
+def _body_points(summary: dict) -> list[str]:
+    """Use only the chosen argument; never top up from unrelated article sections."""
     points: list[str] = []
     seen: set[str] = set()
 
@@ -352,12 +357,6 @@ def _body_points(post: dict, summary: dict) -> list[str]:
 
     for point in summary.get("points") or ():
         add(str(point))
-    if len(points) < MIN_BODY_SLIDES:
-        for sentence in _sentences(plain_text(post.get("content") or "")):
-            if len(points) >= MIN_BODY_SLIDES:
-                break
-            if len(sentence) >= 40:
-                add(sentence)
     return points[:MAX_BODY_SLIDES]
 
 
@@ -430,20 +429,23 @@ def build_storyboard(post: dict, summary: dict) -> InstagramStoryboard:
     if not title:
         raise ValueError("Instagram storyboard requires an article title")
 
-    points = _body_points(post, summary or {})
+    points = _body_points(summary or {})
     if not points:
-        raise ValueError("Instagram storyboard requires article text to fill body slides")
+        raise ValueError("Instagram storyboard requires at least one summary point")
 
     teaser = plain_text(str((summary or {}).get("teaser") or "")).strip()
     if not teaser:
-        first = _sentences(plain_text(post.get("content") or ""))
-        teaser = first[0] if first else ""
+        teaser = points[0]
 
     slides: list[InstagramSlide] = []
-    # The cover sells the idea rather than the article's metadata: the sharpest
-    # social hook leads, and the literal title becomes secondary context.
-    cover_title = truncate_words(teaser or title, COVER_TITLE_MAX)
-    cover_body = truncate_words(title, COVER_TEASER_MAX) if teaser else ""
+    # Lead with the hook when it fits. A longer hook belongs in the larger body
+    # field so its argument stays complete rather than ending in an ellipsis.
+    if len(teaser) <= COVER_TITLE_MAX:
+        cover_title = teaser or truncate_words(title, COVER_TITLE_MAX)
+        cover_body = truncate_words(title, COVER_TEASER_MAX) if teaser else ""
+    else:
+        cover_title = truncate_words(title, COVER_TITLE_MAX)
+        cover_body = truncate_words(teaser, COVER_TEASER_MAX)
     slides.append(
         InstagramSlide(
             index=1,
