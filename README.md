@@ -115,7 +115,7 @@ YAML values do not shift with the CLI machine's timezone. The 640px container,
 centered 560px charts and original website images are preserved. Links use the
 website blue (`#0066cc`). Compact footnotes retain every ID and backlink.
 
-Published editions link to the canonical article inline with the author/date and after
+Published editions link to the canonical article inline with the author/date and inline after
 “What did I miss? Reply to this email.” Draft previews omit those links. The
 hidden description-based preheader remains optional; set
 `NEWSLETTER_PREHEADER_ENABLED=false` to disable only the inbox snippet, not the

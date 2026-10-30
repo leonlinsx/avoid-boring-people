@@ -81,7 +81,8 @@ A missing description/date is omitted without blank placeholders. Disabling the
 hidden preheader keeps the visible subtitle. The standard CLI body is addressless,
 even if a legacy postal environment value exists; see the README's commercial-use
 restriction and explicit sender-identification opt-in. The reply invitation follows
-the full article/notes; published editions then show the canonical link before
+the full article/notes; published editions show the canonical link inline with
+the reply invitation, before
 the minimal identity/unsubscribe/privacy footer.
 
 The actual Anthropic draft was checked locally at 1000px and 390px viewports:

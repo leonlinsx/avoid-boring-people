@@ -142,6 +142,25 @@ try {
         .isVisible(),
       true,
     );
+    const closing = page.getByRole('region', { name: 'Closing' });
+    const closingLink = closing.getByRole('link', { name: 'Read online' });
+    assert.equal(await closing.locator('p').count(), 1);
+    assert.match(
+      await closingLink.evaluate((el) => el.closest('p')!.textContent),
+      /Reply to this email\..*Read online/,
+    );
+    assert.equal(
+      await closingLink.evaluate((el) => getComputedStyle(el).fontSize),
+      '16px',
+    );
+    if (width >= 640) {
+      const linkBox = (await closingLink.boundingBox())!;
+      const paragraphBox = (await closing.locator('p').boundingBox())!;
+      assert.ok(
+        linkBox.y < paragraphBox.y + 27,
+        'closing link shares the reply row on desktop',
+      );
+    }
     await page.locator('[data-footnote-ref]').last().click();
     assert.ok(
       await page.evaluate(() => {
