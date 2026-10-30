@@ -147,7 +147,7 @@ try {
     assert.equal(await closing.locator('p').count(), 1);
     assert.match(
       await closingLink.evaluate((el) => el.closest('p')!.textContent),
-      /Reply to this email\..*Read online/,
+      /Reply to this email\. Read online/,
     );
     assert.equal(
       await closingLink.evaluate((el) => getComputedStyle(el).fontSize),

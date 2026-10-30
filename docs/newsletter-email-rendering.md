@@ -82,7 +82,7 @@ hidden preheader keeps the visible subtitle. The standard CLI body is addressles
 even if a legacy postal environment value exists; see the README's commercial-use
 restriction and explicit sender-identification opt-in. The reply invitation follows
 the full article/notes; published editions show the canonical link inline with
-the reply invitation, before
+the reply invitation without an extra separator, before
 the minimal identity/unsubscribe/privacy footer.
 
 The actual Anthropic draft was checked locally at 1000px and 390px viewports:
