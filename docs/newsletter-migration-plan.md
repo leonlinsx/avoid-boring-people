@@ -12,11 +12,14 @@ Recorded exception (2026-09-17): first-party **attribution and analytics** were 
 
 ## Migration baseline and target runtime
 
-At the start of this migration, the repository ran Astro 5.13.7 with static output. Phase 1 added the compatible Vercel adapter only to support isolated on-demand newsletter lifecycle routes; all normal pages remain static. `src/pages/newsletter.astro` is presently superseded by the `/newsletter -> /#subscribe` redirect, while `SubscribeForm.astro` and `src/pages/api/subscribe.ts` use the production Substack endpoint. Do not change signup behavior in Phases 0–4.5. One exception is recorded: `src/pages/api/subscribe.ts` carries `export const prerender = false` so the Substack fallback route deploys on the static-default site; this changes no signup behavior.
+At the start of this migration the site used Substack signup. Public signup
+cut over to `/api/newsletter/subscribe` on October 14, 2026; `/newsletter`
+redirects to `/#subscribe`. The legacy `/api/subscribe` now returns HTTP 410
+without processing or forwarding requests. Normal pages remain static.
 
 When owned endpoints are introduced, install and configure the current compatible `@astrojs/vercel` adapter, retain static output, and add `export const prerender = false` only to dynamic newsletter endpoints. Do not use Astro's removed `output: 'hybrid'` mode or convert the full site to server output without a documented framework requirement.
 
-The future public runtime surface is intentionally isolated:
+The current public runtime surface is intentionally isolated:
 
 - `POST /api/newsletter/subscribe`: accepts normalized email, honeypot, and bounded source metadata; applies IP and email rate limits; always returns a generic response.
 - `GET /api/newsletter/confirm`: renders a non-mutating page with a confirm button, so mailbox scanners and link prefetchers cannot confirm on the reader's behalf. It renders that page for whatever token it is given and only reports an unknown or superseded token as invalid after the POST, because validating on the GET would mean a database read on a scanner-reachable request. `POST` validates the one-time confirmation token and transitions a `pending` or `unsubscribed` subscriber to active.
@@ -57,7 +60,7 @@ Create `AGENTS.md` and this plan; keep the live phase handoff outside public git
 
 ### Phase 1 — subscriber ownership
 
-Add Neon integration, schema/migrations, status invariants, isolated owned routes, double opt-in, unsubscribe/one-click unsubscribe, minimal rate limits and honeypot, plus dry-run importer and focused tests. Develop SES confirmation only to verified sandbox recipients. Do not expose owned signup or overwrite `src/pages/api/subscribe.ts`.
+Add Neon integration, schema/migrations, status invariants, isolated owned routes, double opt-in, unsubscribe/one-click unsubscribe, minimal rate limits and honeypot, plus dry-run importer and focused tests. Develop SES confirmation only to verified sandbox recipients. This historical phase preceded the completed October 14 signup cutover.
 
 ### Phase 2 — email renderer
 
@@ -73,7 +76,7 @@ Validate SES production access, arbitrary-address confirmations, authentication/
 
 ### Phase 4 companion — attribution and analytics (added 2026-09-17)
 
-Capture how each owned signup is acquired, and report audience, growth, acquisition, and deliverability from stored rows. It added one additive migration (`004_acquisition_attribution.sql`), browser-side first-touch capture behind the existing signup form, canonical `utm_*` tagging of distribution links, the stored attribution write on the owned subscribe path, a read-only report CLI, and an allowlisted email variant. It changes no sending behavior, stores no attribution while public signup remains on Substack, adds no service or dependency, and reports unavailable measurements (opens, clicks, paid conversion) as unavailable rather than estimating them. Apply `004_acquisition_attribution.sql` before deploying either the owned subscribe endpoint or the report CLI: the endpoint writes the new columns (and would fail signups), while the report fails loudly with `column "acquisition_source" does not exist`, which makes a run of `npm run newsletter:analytics` the post-migration smoke test.
+Capture how each owned signup is acquired, and report audience, growth, acquisition, and deliverability from stored rows. It added one additive migration (`004_acquisition_attribution.sql`), browser-side first-touch capture behind the existing signup form, canonical `utm_*` tagging of distribution links, the stored attribution write on the owned subscribe path, a read-only report CLI, and an allowlisted email variant. It changes no sending behavior, stores attribution through the owned signup endpoint, adds no service or dependency, and reports unavailable measurements (opens, clicks, paid conversion) as unavailable rather than estimating them. Apply `004_acquisition_attribution.sql` before deploying either the owned subscribe endpoint or the report CLI: the endpoint writes the new columns (and would fail signups), while the report fails loudly with `column "acquisition_source" does not exist`, which makes a run of `npm run newsletter:analytics` the post-migration smoke test.
 
 ### Phase 4 companion — failure alerting and explicit resubscription (added 2026-09-18)
 
@@ -85,7 +88,10 @@ Use an explicit, transparent cohort selector. Begin with roughly 200–300 recen
 
 ### Phase 5 — cutover
 
-Only after successful validation and warm-up: switch canonical signup to the owned route, replace `/newsletter` with its acquisition page, and use SES/local CLI as canonical sender. Keep Substack for optional manual cross-posting and retain a rollback path until owned production operation is stable. Do not delete the legacy integration prematurely.
+Public signup completed cutover on October 14, 2026, independently of the
+subscriber migration and campaign warm-up. Substack remains an archive/manual
+cross-post channel. Fresh-export reconciliation, import approval and campaign
+sending remain separate gates; see the import runbook and current readiness report.
 
 ## Test and verification requirements
 

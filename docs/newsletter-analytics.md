@@ -33,10 +33,9 @@ Five pieces, none of which adds a service:
 | Read (report)          | [src/lib/newsletter/analytics.ts](../src/lib/newsletter/analytics.ts), [scripts/newsletter/analytics.ts](../scripts/newsletter/analytics.ts)                                                                                     | Aggregate rows into a deterministic report                             |
 | Deliver (author only)  | [src/lib/newsletter/analytics-email.ts](../src/lib/newsletter/analytics-email.ts) used by [scripts/newsletter/analytics-email.ts](../scripts/newsletter/analytics-email.ts) and [scripts/newsletter/analytics-author-report.ts](../scripts/newsletter/analytics-author-report.ts) | Email that report to one allowlisted author address                    |
 
-Capture and tagging are live today; the stored attribution stays **inert until
-the Phase 5 cutover**, because the public signup form still posts to Substack and
-Substack stores nothing this system records. `attributionPayload()` builds the
-wire payload for the owned endpoint, and nothing currently sends it.
+Capture, tagging and stored attribution are live through the owned signup endpoint
+since October 14, 2026. `attributionPayload()` supplies the first-touch payload;
+missing historical attribution remains unknown.
 
 ## Attribution model
 
@@ -470,9 +469,8 @@ fixtures in `npm test`, which run against a stub `db`.
   every unsubscribe in the window by every send in the window, so it can exceed
   100% and does not tie a cancellation to the campaign that caused it. Only SES
   per-message events could attribute them, which is deferred scope.
-- The public site still signs up through Substack, so production attribution
-  data will remain absent until the Phase 5 cutover, and imported subscribers
-  keep `imported_substack` as their only channel evidence.
+- The public site uses owned signup. Imported subscribers keep
+  `imported_substack` as their only historical channel evidence.
 - Post-deploy verification of the Vercel confirmation path and of SES/SNS event
   ingestion is unchanged by this feature and still requires the Phase 4 gates.
 - Newsletter email links are not yet tagged for click attribution; only

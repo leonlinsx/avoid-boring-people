@@ -71,11 +71,17 @@ const formId = `newsletter-${crypto.randomUUID()}`;
 
   <p id={`${formId}-message`} class="subscribe-message" aria-live="polite"></p>
 
-  <noscript
-    >Please enable JavaScript to subscribe, or visit <a
-      href="https://avoidboringpeople.substack.com/subscribe">Substack</a
-    >.</noscript
-  >
+  <noscript>
+    <style is:global>
+      [data-newsletter-form] {
+        display: none !important;
+      }
+    </style>
+    <p>
+      Please enable JavaScript to subscribe to the newsletter. Signup requires
+      an email confirmation before your subscription becomes active.
+    </p>
+  </noscript>
 
   {!compact && trustText && <p class="trust-text">{trustText}</p>}
 </section>

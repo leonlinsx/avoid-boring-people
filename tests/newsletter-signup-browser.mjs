@@ -132,6 +132,51 @@ try {
     .filter({ hasText: 'If a confirmation email arrives' })
     .waitFor();
   assert.equal(requests.at(-1).attribution, undefined);
+  for (const path of ['/', '/writing/keen', '/ja/writing/keen']) {
+    await page.goto(`${origin}${path}`);
+    const forms = page.locator('[data-newsletter-form]');
+    assert.ok(await forms.count(), `${path} has a signup form`);
+    for (const item of await forms.all()) {
+      assert.equal(
+        await item.getAttribute('action'),
+        '/api/newsletter/subscribe',
+      );
+      assert.equal(await item.isVisible(), true);
+    }
+  }
+  const noJs = await browser.newContext({ javaScriptEnabled: false });
+  let noJsPosts = 0;
+  await noJs.route('**/*', (route) => {
+    const request = route.request();
+    if (request.method() !== 'GET') {
+      noJsPosts++;
+      return route.abort();
+    }
+    if (new URL(request.url()).origin !== new URL(origin).origin)
+      return route.abort();
+    return route.continue();
+  });
+  const noJsPage = await noJs.newPage();
+  for (const path of ['/', '/writing/keen', '/ja/writing/keen']) {
+    await noJsPage.goto(`${origin}${path}`);
+    assert.ok(await noJsPage.locator('[data-newsletter-form]').count());
+    assert.equal(
+      await noJsPage.locator('[data-newsletter-form]').first().isVisible(),
+      false,
+    );
+    const explanation = noJsPage.locator('noscript p').first();
+    assert.equal(await explanation.isVisible(), true);
+    assert.match(
+      await explanation.innerText(),
+      /Please enable JavaScript to subscribe/,
+    );
+    assert.equal(
+      await noJsPage.locator('a[href*="substack.com/subscribe"]').count(),
+      0,
+    );
+  }
+  assert.equal(noJsPosts, 0);
+  await noJs.close();
   console.log(
     'PASS: real rendered form, validation, attribution, honeypot, duplicate submit, generic copy, HTTP/network/JSON errors, blocked storage; all signup requests mocked, no email',
   );

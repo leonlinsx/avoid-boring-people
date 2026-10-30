@@ -1,9 +1,12 @@
-# Owned signup cutover — prepared, not activated
+# Owned signup cutover — completed October 14, 2026
 
-Status: **READY FOR SIGNUP CUTOVER**, subject to separate approval of the PR head,
-merge/deployment, production flag change, and the single smoke-test identity.
-No subscriber import, campaign, warm-up or campaign send is authorized by this
-status. Protect the 5,116 real Substack subscribers by leaving them in Substack.
+Status: **PUBLIC SIGNUP CUTOVER COMPLETED** on October 14, 2026. The operator
+reported the original end-to-end signup smoke test passed. Both production
+confirmation flags are enabled. See [the current pre-import report](newsletter-pre-import-readiness.md)
+for read-only verification and limitations. Import and sending are not authorized.
+
+The dated preparation evidence and original execution/rollback procedure below
+are historical records, not instructions to repeat the cutover or smoke test.
 
 ## Prepared behavior
 
@@ -12,7 +15,7 @@ form source, honeypot and the existing first-touch attribution payload. Layout,
 compact/full variants and translated CTA copy are retained. Native required/email
 validation, unique label/status associations and a polite live region remain.
 Only one request is allowed while a form is busy; there is no automatic retry.
-JavaScript-disabled readers have a Substack link.
+JavaScript-disabled readers now see an explanation and the form is hidden; there is no external signup fallback.
 
 The API intentionally returns one generic response for sent, skipped, suppressed,
 rate-limited and failed requests. UI copy is conditional: check the inbox/spam;
@@ -54,7 +57,7 @@ No live delivery was exercised here. The previously passed double-opt-in
 lifecycle evidence is in `newsletter-status.md`; its broader provider/inbox gates
 still apply before any campaign or import authorization.
 
-## Coordinated production procedure — execute only after separate approval
+## Historical coordinated production procedure — completed
 
 1. **Record rollback and baseline.** In Vercel → project `avoid-boring-people` →
    Deployments, record the deployment currently serving `leonlins.com` and verify
@@ -100,7 +103,7 @@ still apply before any campaign or import authorization.
    mailbox/backend checks pass. Otherwise execute rollback immediately. Campaign
    sending remains separately guarded and unauthorized in either outcome.
 
-## Immediate rollback
+## Historical cutover rollback procedure
 
 In Vercel → project → Deployments, choose the recorded pre-cutover Substack
 production deployment and use **Instant Rollback**. Verify `leonlins.com` renders

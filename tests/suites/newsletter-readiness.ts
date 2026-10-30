@@ -189,7 +189,7 @@ export async function testPreMigrationReadiness() {
     delete process.env.DATABASE_URL_UNPOOLED;
     const { POST: ownedPost } =
       await import('../../src/pages/api/newsletter/subscribe.ts');
-    const { POST: legacyPost } =
+    const { ALL: legacyPost } =
       await import('../../src/pages/api/subscribe.ts');
     let calls = 0;
     globalThis.fetch = async () => {
@@ -228,40 +228,9 @@ export async function testPreMigrationReadiness() {
           }),
         ),
       );
-      assert.equal(response.status, 500);
-      assert.doesNotMatch(
-        await response.text(),
-        /private token|fixture@example.com/,
-      );
-      assert.equal(calls, 1);
-      const forwarded: Array<{ url: string; body: string }> = [];
-      globalThis.fetch = async (url, options) => {
-        forwarded.push({ url: String(url), body: String(options?.body) });
-        return new Response('', { status: forwarded.length === 1 ? 400 : 200 });
-      };
-      const fallback = await legacyPost(
-        minimalApiContext(
-          new Request('https://leonlins.com/api/subscribe', {
-            method: 'POST',
-            body: JSON.stringify({
-              email: ' Valid@Example.COM ',
-              first_url: 'https://leonlins.com/writing',
-              source: { invalid: true },
-            }),
-          }),
-        ),
-      );
-      assert.equal(fallback.status, 200);
-      assert.deepEqual(await fallback.json(), { ok: true });
-      assert.equal(forwarded.length, 2);
-      assert.ok(
-        forwarded.every(
-          (item) =>
-            item.url === 'https://avoidboringpeople.substack.com/api/v1/free',
-        ),
-      );
-      assert.equal(JSON.parse(forwarded[0].body).email, 'valid@example.com');
-      assert.equal(new URLSearchParams(forwarded[1].body).get('source'), null);
+      assert.equal(response.status, 410);
+      assert.match(await response.text(), /retired/);
+      assert.equal(calls, 0, 'retired endpoint never forwards a signup');
       process.env.NEWSLETTER_SNS_TOPIC_ARN =
         'arn:aws:sns:us-east-2:123456789012:fixture';
       const { POST: snsPost } =
