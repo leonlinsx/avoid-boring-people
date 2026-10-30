@@ -4,8 +4,8 @@ description: "Scale is all you need"
 pubDate: 2026-10-31
 category: Investing
 tags: ['anthropic', 'ipo', 'ai']
+heroImage: './a_6.webp'
 featured: true
-draft: false
 ---
 
 **The history of computing has been a story of scaling.** From the physical hardware of bits and bytes growing in line with Moore's Law [^1], to the intangible software of social media spreading virally via network effects [^2], there has been an implicit belief that bigger is better.
