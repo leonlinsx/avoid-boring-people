@@ -80,7 +80,7 @@ try {
     assert.ok(!headerText.includes('LEON LIN / AVOID BORING PEOPLE'));
     const webLink = page
       .locator('header')
-      .getByRole('link', { name: 'Read on the web' });
+      .getByRole('link', { name: 'Read online' });
     assert.equal(await webLink.isVisible(), true);
     assert.equal(
       await webLink.getAttribute('href'),
@@ -88,8 +88,23 @@ try {
     );
     assert.equal(
       await webLink.evaluate((el) => getComputedStyle(el).fontSize),
-      '16px',
+      '13px',
     );
+    assert.match(
+      await webLink.evaluate((el) => el.closest('p')!.textContent),
+      /Leon Lin · October 31, 2026.*Read online/,
+    );
+    if (width >= 640) {
+      const linkBox = (await webLink.boundingBox())!;
+      const bylineBox = (await page
+        .locator('header > p')
+        .last()
+        .boundingBox())!;
+      assert.ok(
+        linkBox.y < bylineBox.y + 22,
+        'web link shares the byline row on desktop',
+      );
+    }
     assert.equal(
       await page.locator('header [data-subtitle]').isVisible(),
       true,
@@ -123,7 +138,7 @@ try {
     assert.equal(
       await page
         .getByRole('region', { name: 'Closing' })
-        .getByRole('link', { name: 'Read on the web' })
+        .getByRole('link', { name: 'Read online' })
         .isVisible(),
       true,
     );

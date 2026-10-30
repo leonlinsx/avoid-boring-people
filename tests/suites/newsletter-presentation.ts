@@ -55,12 +55,12 @@ export async function runNewsletterPresentationTests() {
     ),
     undefined,
   );
-  assert.equal((rendered.html.match(/>Read on the web<\/a>/g) ?? []).length, 2);
+  assert.equal((rendered.html.match(/>Read online<\/a>/g) ?? []).length, 2);
   assert.ok(
-    rendered.html.indexOf('Read on the web') > rendered.html.indexOf('</h1>'),
+    rendered.html.indexOf('Read online') > rendered.html.indexOf('</h1>'),
   );
   assert.ok(
-    rendered.html.indexOf('Read on the web') <
+    rendered.html.indexOf('Read online') <
       rendered.html.indexOf('<article>'),
   );
   assert.match(rendered.html, /max-width:640px;box-sizing:border-box/);
@@ -103,7 +103,7 @@ export async function runNewsletterPresentationTests() {
     privacyUrl,
     unsubscribeUrl,
   });
-  assert.doesNotMatch(draft.html, /Read on the web/);
+  assert.doesNotMatch(draft.html, /Read online/);
 
   const article = rendered.html.split('<article>')[1].split('</article>')[0];
   for (const substantive of [
@@ -155,10 +155,17 @@ export async function runNewsletterPresentationTests() {
   );
   const header = rendered.html.split('<header')[1].split('</header>')[0];
   assert.ok(
-    header.indexOf('Read on the web') >
+    header.indexOf('Read online') >
       header.indexOf('Leon Lin · October 31, 2026'),
   );
-  assert.match(header, /font-size:16px[^>]*><a[^>]*>Read on the web/);
+  assert.match(
+    header,
+    /Leon Lin · October 31, 2026 <span[^>]*>· <a[^>]*>Read online<\/a><\/span><\/p>/,
+  );
+  assert.match(
+    rendered.text,
+    /Leon Lin · October 31, 2026 · Read online: https:/,
+  );
   assert.match(rendered.html, /Leon Lin · October 31, 2026/);
   assert.match(rendered.html, /data-subtitle/);
   assert.match(rendered.html, /font-family:Georgia/);
@@ -173,7 +180,7 @@ export async function runNewsletterPresentationTests() {
   );
   assert.ok(
     rendered.html.indexOf('What did I miss? Reply to this email.') <
-      rendered.html.lastIndexOf('Read on the web'),
+      rendered.html.lastIndexOf('Read online'),
   );
   assert.match(article, /data-footnotes[^>]*border-top:1px solid/);
   const noSubtitle = renderNewsletterEmail({

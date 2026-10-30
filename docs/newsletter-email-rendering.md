@@ -41,7 +41,7 @@ Gmail's undocumented folding heuristics.
   includes per-recipient unsubscribe and privacy links, without an address.
   Existing one-click unsubscribe headers are retained. No unsubscribe behavior
   changed. The reply invitation and canonical link precede the minimal footer.
-- Canonical “Read on the web” links use the site's slug helper and frontmatter
+- Canonical “Read online” links use the site's slug helper and frontmatter
   override. Drafts omit them. Production and hosted previews require an actual
   HTTP 200 HTML page with the matching canonical URL before any SES operation or
   send-state mutation; public image preflight still applies.
@@ -75,7 +75,8 @@ appears. Use the original-message view to distinguish intact content from UI fol
 The final header starts with the YAML title in email-safe Georgia, visible
 description once, and Leon Lin with the English publication date (UTC). The
 publication identity stays in the footer. Published articles show a readable
-“Read on the web” link directly beneath the byline; drafts omit unavailable links.
+“Read online” link inline with the author/date at the same size. It wraps naturally on narrow
+screens; drafts omit unavailable links.
 A missing description/date is omitted without blank placeholders. Disabling the
 hidden preheader keeps the visible subtitle. The standard CLI body is addressless,
 even if a legacy postal environment value exists; see the README's commercial-use
