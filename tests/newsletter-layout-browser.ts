@@ -76,6 +76,20 @@ try {
       /Leon Lin · October 31, 2026/,
     );
     assert.equal(await page.locator('[data-subtitle]').count(), 1);
+    const headerText = await page.locator('header').innerText();
+    assert.ok(!headerText.includes('LEON LIN / AVOID BORING PEOPLE'));
+    const webLink = page
+      .locator('header')
+      .getByRole('link', { name: 'Read on the web' });
+    assert.equal(await webLink.isVisible(), true);
+    assert.equal(
+      await webLink.getAttribute('href'),
+      'https://leonlins.com/writing/layout',
+    );
+    assert.equal(
+      await webLink.evaluate((el) => getComputedStyle(el).fontSize),
+      '16px',
+    );
     assert.equal(
       await page.locator('header [data-subtitle]').isVisible(),
       true,

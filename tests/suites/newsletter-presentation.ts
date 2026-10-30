@@ -149,7 +149,16 @@ export async function runNewsletterPresentationTests() {
     rendered.html + rendered.text,
     /Synthetic test office|You received this/,
   );
-  assert.match(rendered.html, /LEON LIN \/ AVOID BORING PEOPLE/);
+  assert.doesNotMatch(
+    rendered.html + rendered.text,
+    /LEON LIN \/ AVOID BORING PEOPLE/,
+  );
+  const header = rendered.html.split('<header')[1].split('</header>')[0];
+  assert.ok(
+    header.indexOf('Read on the web') >
+      header.indexOf('Leon Lin · October 31, 2026'),
+  );
+  assert.match(header, /font-size:16px[^>]*><a[^>]*>Read on the web/);
   assert.match(rendered.html, /Leon Lin · October 31, 2026/);
   assert.match(rendered.html, /data-subtitle/);
   assert.match(rendered.html, /font-family:Georgia/);
