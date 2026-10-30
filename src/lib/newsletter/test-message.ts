@@ -36,7 +36,7 @@ export async function buildTestEmail(input: {
       'Test send requires SES_CONFIGURATION_SET and AWS_REGION. No email was sent.',
     );
   const articleTitle = newsletterTitle(input.markdown);
-  const presentation = newsletterPresentation(input.env, input.hosted === true);
+  const presentation = newsletterPresentation(input.env);
   const title = input.hosted ? articleTitle : `[TEST] ${articleTitle}`;
   const renderInput = {
     ...presentation,

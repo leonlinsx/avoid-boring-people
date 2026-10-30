@@ -1,5 +1,6 @@
 import {
   newsletterPresentation,
+  newsletterMetadata,
   type NewsletterPresentation,
 } from './presentation.ts';
 import { assertPublishedArticle } from '../../utils/publication.ts';
@@ -13,12 +14,7 @@ export const CAMPAIGN_UNSUBSCRIBE_PLACEHOLDER =
   'https://leonlins.com/api/newsletter/unsubscribe?token=preflight-placeholder';
 
 export function newsletterTitle(markdown: string): string {
-  const frontmatter = markdown.match(
-    /^---\s*\n([\s\S]*?)\n---(?:\s*\n|$)/,
-  )?.[1];
-  const title = frontmatter
-    ?.match(/^title:\s*['"]?(.+?)['"]?\s*$/m)?.[1]
-    ?.trim();
+  const { title } = newsletterMetadata(markdown);
   if (!title) throw new Error('The selected article has no title.');
   return title;
 }

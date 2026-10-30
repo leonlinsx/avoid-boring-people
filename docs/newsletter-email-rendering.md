@@ -37,17 +37,19 @@ Gmail's undocumented folding heuristics.
 - All HTML footnote IDs/references/backreferences remain; the text alternative
   now includes numbered references and an ordered notes section. Email clients
   may strip internal anchor navigation, so the notes stay fully visible as text.
-- Full visible footer identifies Avoid Boring People by Leon Lin, includes the
-  per-recipient unsubscribe and privacy links and configured postal address.
-  An early unsubscribe link supplies a second location; existing one-click
-  unsubscribe headers are retained. No unsubscribe behavior changed.
+- The current editorial footer identifies Avoid Boring People by Leon Lin and
+  includes per-recipient unsubscribe and privacy links, without an address.
+  Existing one-click unsubscribe headers are retained. No unsubscribe behavior
+  changed. The reply invitation and canonical link precede the minimal footer.
 - Canonical “Read on the web” links use the site's slug helper and frontmatter
   override. Drafts omit them. Production and hosted previews require an actual
   HTTP 200 HTML page with the matching canonical URL before any SES operation or
   send-state mutation; public image preflight still applies.
 - Optional escaped, short preheader derives from description; it never hides
-  article/footer controls. Postal configuration and preheader settings are in
-  the approval digest, so the renderer change requires a fresh content approval.
+  article/footer controls. The visible description appears once as the subtitle,
+  followed by Leon Lin and the YAML publication date. Georgia headlines, Arial
+  body text and website-blue links supply the editorial hierarchy. All rendered
+  presentation and preheader settings remain in the approval digest.
 - Hosted test previews use the production-format body and public images, a
   unique `[TEST]` subject to reduce repeat-test grouping, and the test-only
   nonfunctional unsubscribe token. The allowlist and explicit confirmation remain.
@@ -64,6 +66,31 @@ widths and visible opt-out controls. They mock all hosted HTTP checks and SES.
 A new received-Gmail test was **not** sent. Client-side folding cannot be promised
 away by HTML changes: after publication, a separately authorized hosted preview
 should be inspected in Gmail with repeated-test threading distinguished from a
-fresh message. Confirm quote passages, final paragraphs, all notes and both
-unsubscribe locations are visible; expand Gmail's quote disclosure if it still
+fresh message. Confirm quote passages, final paragraphs, all notes and the footer
+unsubscribe link are visible; expand Gmail's quote disclosure if it still
 appears. Use the original-message view to distinguish intact content from UI folding.
+
+## Editorial layout follow-up
+
+The final header uses a small text masthead, YAML title in email-safe Georgia,
+visible description once, and Leon Lin with the English publication date (UTC).
+A missing description/date is omitted without blank placeholders. Disabling the
+hidden preheader keeps the visible subtitle. The standard CLI body is addressless,
+even if a legacy postal environment value exists; see the README's commercial-use
+restriction and explicit sender-identification opt-in. The reply invitation follows
+the full article/notes; published editions then show the canonical link before
+the minimal identity/unsubscribe/privacy footer.
+
+The actual Anthropic draft was checked locally at 1000px and 390px viewports:
+headline “A closer look at Anthropic's IPO filing,” subtitle “Scale is all you need,”
+and “Leon Lin · October 31, 2026.” All 10 unchanged images, 23 footnotes,
+14 quotations, article text, links and fragment targets match the previous renderer.
+The plain-text article/notes match exactly. No horizontal page overflow occurred;
+charts remain centered, proportional and at most 560px wide. Before/after HTML,
+plain text and desktop/mobile header/footer screenshots were produced privately
+without remote requests. The draft's unavailable canonical links stay omitted.
+
+The regression suite also rejects a known PR #114 content hash, checks YAML folded
+titles and missing/invalid metadata, and keeps the existing production preflight,
+CID attachment, allowlist, confirmation, suppression and idempotency checks.
+No received-Gmail retest, send, campaign creation or deployment was performed.

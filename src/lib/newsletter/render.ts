@@ -1,4 +1,8 @@
-import { newsletterArticleUrl, newsletterPreheader } from './presentation.ts';
+import {
+  newsletterArticleUrl,
+  newsletterPreheader,
+  newsletterMetadata,
+} from './presentation.ts';
 import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,6 +28,7 @@ export type NewsletterRenderInput = {
   markdown: string;
   unsubscribeUrl: string;
   privacyUrl: string;
+  /** Explicit sender identification; ordinary editorial CLI commands omit it. */
   postalAddress?: string;
   /** Description-based inbox snippet; disable explicitly when desired. */
   preheader?: boolean;
@@ -291,7 +296,7 @@ export function renderNewsletterEmail(
             };
           }
           const styleByTag: Record<string, string> = {
-            a: 'color:#2563eb;text-decoration:underline',
+            a: 'color:#0066cc;text-decoration:underline',
             blockquote:
               'margin:16px 0;padding-left:16px;border-left:3px solid #d1d5db;color:#4b5563',
             code: 'font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.9em',
@@ -355,6 +360,22 @@ export function renderNewsletterEmail(
           }
         },
       );
+      // Keep generated IDs/backlinks untouched; only restyle the notes section.
+      visit(tree, 'element', (section: any) => {
+        if (section.properties?.dataFootnotes === undefined) return;
+        section.properties.style =
+          'margin-top:32px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.5;color:#666666';
+        visit(section, 'element', (node: any) => {
+          const styles: Record<string, string> = {
+            h2: 'font-size:13px;font-weight:600;margin:0 0 12px;color:#666666',
+            ol: 'margin:0;padding-left:20px',
+            li: 'margin:0 0 8px;padding-left:2px',
+            p: 'margin:0 0 4px',
+          };
+          if (styles[node.tagName])
+            node.properties.style = styles[node.tagName];
+        });
+      });
     })
     .use(rehypeStringify);
   const articleHtml = String(processor.processSync(markdown));
@@ -362,17 +383,29 @@ export function renderNewsletterEmail(
   const preheader =
     input.preheader === false ? undefined : newsletterPreheader(input.markdown);
   const webLink = articleUrl
-    ? `<a href="${escapeHtml(articleUrl)}" style="color:#6b7280;text-decoration:underline">Read on the web</a>`
+    ? `<a href="${escapeHtml(articleUrl)}" style="color:#0066cc;text-decoration:underline">Read on the web</a>`
     : '';
   const postal = input.postalAddress?.trim();
   const identity = 'Avoid Boring People by Leon Lin';
-  const html = `<!doctype html><html><body style="margin:0;background:#ffffff;color:#111827;font-family:Arial,sans-serif;line-height:1.6">${preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all" aria-hidden="true">${escapeHtml(preheader)}</div>` : ''}<main style="width:100%;max-width:640px;box-sizing:border-box;margin:0 auto;padding:28px 20px"><h1 style="font-size:28px;line-height:1.2">${escapeHtml(input.title)}</h1><p style="margin:8px 0 24px;font-size:13px;color:#6b7280">${webLink}${webLink ? ' · ' : ''}<a href="${escapeHtml(unsubscribeUrl)}" style="color:#6b7280;text-decoration:underline">Unsubscribe</a></p><article>${articleHtml}</article><footer style="margin-top:40px;padding-top:20px;border-top:1px solid #d1d5db;font-size:13px;color:#4b5563">${webLink ? `<p>${webLink}</p>` : ''}<p><strong>${identity}</strong><br>You received this because you subscribed to this newsletter.</p>${postal ? `<p style="white-space:pre-line">${escapeHtml(postal)}</p>` : ''}<p><a href="${escapeHtml(unsubscribeUrl)}" style="color:#2563eb;text-decoration:underline">Unsubscribe</a> · <a href="${escapeHtml(privacyUrl)}" style="color:#2563eb;text-decoration:underline">Privacy</a></p></footer></main></body></html>`;
+  const masthead = 'LEON LIN / AVOID BORING PEOPLE';
+  const metadata = newsletterMetadata(input.markdown);
+  const title = metadata.title || input.title;
+  const date = metadata.pubDate?.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+  const byline = `Leon Lin${date ? ` · ${date}` : ''}`;
+  const closing = 'What did I miss? Reply to this email.';
+  const html = `<!doctype html><html><body style="margin:0;background:#ffffff;color:#222222;font-family:Arial,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.7;overflow-wrap:anywhere">${preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all" aria-hidden="true">${escapeHtml(preheader)}</div>` : ''}<main style="width:100%;max-width:640px;box-sizing:border-box;margin:0 auto;padding:32px 20px"><header style="padding-bottom:24px;margin-bottom:28px;border-bottom:1px solid #e5e7eb"><p style="margin:0 0 24px;font-size:11px;font-weight:600;letter-spacing:1px;color:#666666">${masthead}</p><h1 style="font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.2;margin:0 0 12px;color:#222222">${escapeHtml(title)}</h1>${metadata.description ? `<p data-subtitle style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-size:19px;font-style:italic;line-height:1.5;color:#555555">${escapeHtml(metadata.description)}</p>` : ''}<p style="margin:0;font-size:13px;color:#6b6b6b">${byline}</p>${webLink ? `<p style="margin:12px 0 0;font-size:13px">${webLink}</p>` : ''}</header><article>${articleHtml}</article><section aria-label="Closing" style="margin-top:32px;padding-top:24px;border-top:1px solid #e5e7eb"><p style="margin:0 0 12px">${closing}</p>${webLink ? `<p style="margin:0;font-size:13px">${webLink}</p>` : ''}</section><footer style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;font-size:13px;color:#666666"><p style="margin:0 0 8px"><strong>${identity}</strong></p>${postal ? `<p style="white-space:pre-line">${escapeHtml(postal)}</p>` : ''}<p style="margin:0"><a href="${escapeHtml(unsubscribeUrl)}" style="color:#0066cc;text-decoration:underline">Unsubscribe</a> · <a href="${escapeHtml(privacyUrl)}" style="color:#0066cc;text-decoration:underline">Privacy</a></p></footer></main></body></html>`;
   if (Buffer.byteLength(html, 'utf8') >= GMAIL_CLIP_LIMIT_BYTES) {
     throw new NewsletterRenderError(
       'Rendered email exceeds the 100 KB Gmail clipping threshold.',
     );
   }
-  const text = `${input.title}${preheader ? `\n${preheader}` : ''}${articleUrl ? `\nRead on the web: ${articleUrl}` : ''}\nUnsubscribe: ${unsubscribeUrl}\n\n${plainText(markdown)}\n\n${identity}${postal ? `\n${postal}` : ''}${articleUrl ? `\nRead on the web: ${articleUrl}` : ''}\nUnsubscribe: ${unsubscribeUrl}\nPrivacy policy: ${privacyUrl}`;
+  // The hidden inbox preheader is not repeated in the visible/text edition.
+  const text = `${masthead}\n\n${title}${metadata.description ? `\n${metadata.description}` : ''}\n${byline}${articleUrl ? `\nRead on the web: ${articleUrl}` : ''}\n\n---\n\n${plainText(markdown)}\n\n---\n\n${closing}${articleUrl ? `\nRead on the web: ${articleUrl}` : ''}\n\n---\n\n${identity}${postal ? `\n${postal}` : ''}\nUnsubscribe: ${unsubscribeUrl}\nPrivacy policy: ${privacyUrl}`;
   return {
     html,
     text,

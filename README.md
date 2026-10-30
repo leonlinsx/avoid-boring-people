@@ -108,20 +108,33 @@ that live check.
 
 ## Newsletter email presentation and hosted preview
 
-The email uses a 640px outer container and centered charts capped at 560px;
-website images are unchanged. Published editions link to the canonical article
-beneath the title and near the footer. Draft previews omit those links. The
-optional preheader comes from the existing description; set
-`NEWSLETTER_PREHEADER_ENABLED=false` to disable it.
+The email uses a small `LEON LIN / AVOID BORING PEOPLE` masthead, a Georgia
+headline from YAML `title`, visible `description` subtitle (when present), and
+`Leon Lin · <pubDate>` metadata. Dates use English month names and UTC so date-only
+YAML values do not shift with the CLI machine's timezone. The 640px container,
+centered 560px charts and original website images are preserved. Links use the
+website blue (`#0066cc`). Compact footnotes retain every ID and backlink.
 
-Set `NEWSLETTER_POSTAL_ADDRESS` privately in the existing local CLI environment
-(or `.env.local`) to your complete, valid postal mailing address. There is no
-fallback address. Production preview, campaign creation, sending and hosted
-previews refuse missing/obviously invalid configuration; the operator must verify
-physical deliverability and legal suitability. The address and preheader setting
-are included in the content digest, so changing either requires a new preview and
-approval. Old renderer digests must also be reviewed again; no stored campaign
-or recipient record is modified by this change.
+Published editions link to the canonical article beneath the header and after
+“What did I miss? Reply to this email.” Draft previews omit those links. The
+hidden description-based preheader remains optional; set
+`NEWSLETTER_PREHEADER_ENABLED=false` to disable only the inbox snippet, not the
+visible subtitle. The plain-text edition includes the subtitle only once.
+
+Standard non-commercial editorial previews and sends are addressless. They do
+not require or display `NEWSLETTER_POSTAL_ADDRESS`, even if a legacy value exists.
+The footer contains the publication identity, unsubscribe and privacy links.
+**Do not repurpose addressless editorial mail for commercial advertising or
+promotion without reviewing [CAN-SPAM requirements](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business),
+including sender identification and a valid postal address.** Content classification
+is an operator responsibility, not something this renderer determines. Explicit
+`postalAddress` rendering and `newsletterPresentation(env, true)` validation are
+retained for a future reviewed use; no promotional command or campaign mode is added.
+
+The renderer changes invalidate existing approval digests. Generate and review a
+fresh production preview before campaign approval; no stored campaign/recipient
+records are updated or grandfathered. Preheader and any explicitly supplied sender
+identification remain covered by the rendered-content digest.
 
 After publication, this command sends **one** hosted-image preview only when
 explicitly run by the operator:
@@ -131,12 +144,12 @@ npm run newsletter:test -- <article>/index.md <allowlisted-email> --hosted --con
 ```
 
 It checks the canonical page and public image URLs with GET requests first,
-uses the production-format body and configured postal footer, prefixes the
+uses the addressless production-format editorial body, prefixes the
 subject with `[TEST]` plus a unique preview timestamp, and uses the existing
 nonfunctional test unsubscribe token. It has no subscriber lookup or campaign
 creation. The default test command still uses private CID images. Real campaign
 mail retains its working per-recipient unsubscribe token and one-click headers;
-an extra unsubscribe link near the title backs up the full footer.
+the visible unsubscribe link remains in the minimal footer.
 
 The existing `newsletter:preview` command renders the same production presentation
 and approval digest locally (with the existing preview unsubscribe URL setting).

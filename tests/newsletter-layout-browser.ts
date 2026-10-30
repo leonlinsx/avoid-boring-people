@@ -18,10 +18,9 @@ const html = renderNewsletterEmail({
   articleId: '2026_10_31_layout/index.md',
   title: 'Email layout regression',
   markdown:
-    '---\ndescription: Inbox preview\ndraft: false\n---\n\nIntro[^one].\n\n![Large chart](./chart.png)\n\n![Small icon](./icon.png)\n\n> Quoted analysis that must remain visible.\n\n' +
+    '---\ntitle: Email layout regression\ndescription: Inbox preview\npubDate: 2026-10-31\ndraft: false\n---\n\nIntro[^one].\n\n![Large chart](./chart.png)\n\n![Small icon](./icon.png)\n\n> Quoted analysis that must remain visible.\n\n' +
     'A paragraph of substantive article text.\n\n'.repeat(30) +
     'Final analysis[^two].\n\n[^one]: First note.\n[^two]: Last note.',
-  postalAddress: 'Synthetic test office, 42 Test Lane, Test City 12345',
   unsubscribeUrl:
     'https://leonlins.com/api/newsletter/unsubscribe?token=fixture-not-real',
   privacyUrl: 'https://leonlins.com/privacy',
@@ -69,12 +68,33 @@ try {
     );
     assert.equal(dimensions[1].width, 64, 'small images must not upscale');
     assert.equal(
-      await page.locator('main > p a', { hasText: 'Unsubscribe' }).isVisible(),
+      await page.locator('header [data-subtitle]').innerText(),
+      'Inbox preview',
+    );
+    assert.match(
+      await page.locator('header').innerText(),
+      /Leon Lin · October 31, 2026/,
+    );
+    assert.equal(await page.locator('[data-subtitle]').count(), 1);
+    assert.equal(
+      await page.locator('header [data-subtitle]').isVisible(),
       true,
+    );
+    assert.equal(
+      await page
+        .locator('header h1')
+        .evaluate((el) => getComputedStyle(el).fontFamily.includes('Georgia')),
+      true,
+    );
+    assert.ok(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+      'no page horizontal overflow',
     );
     assert.equal(await page.getByRole('note').isVisible(), true);
     await page.locator('footer').scrollIntoViewIfNeeded();
-    for (const label of ['Unsubscribe', 'Privacy', 'Read on the web'])
+    for (const label of ['Unsubscribe', 'Privacy'])
       assert.equal(
         await page
           .locator('footer')
@@ -82,9 +102,16 @@ try {
           .isVisible(),
         true,
       );
-    assert.match(
+    assert.doesNotMatch(
       await page.locator('footer').innerText(),
       /Synthetic test office/,
+    );
+    assert.equal(
+      await page
+        .getByRole('region', { name: 'Closing' })
+        .getByRole('link', { name: 'Read on the web' })
+        .isVisible(),
+      true,
     );
     await page.locator('[data-footnote-ref]').last().click();
     assert.ok(
@@ -103,7 +130,7 @@ try {
   }
   assert.equal(networkRequests, 0);
   console.log(
-    'PASS: 640px email/560px centered responsive charts; intrinsic ratios and small images retained; notes, postal footer and opt-out controls visible at desktop/mobile widths. No network or email.',
+    'PASS: 640px email/560px centered responsive charts; intrinsic ratios and small images retained; editorial header, compact notes and addressless opt-out footer visible at desktop/mobile widths. No network or email.',
   );
 } finally {
   await browser.close();
