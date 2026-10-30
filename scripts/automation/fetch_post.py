@@ -48,9 +48,13 @@ def load_search_index() -> List[Dict]:
 
 def normalize_posts(data: List[Dict]) -> List[Dict]:
     """Turn raw search index entries into the post dicts the automation consumes."""
+    from scripts.automation.new_articles import local_article_is_draft
+
     posts = []
 
     for entry in data:
+        if entry.get('draft', False) is not False or local_article_is_draft(str(entry.get('id') or '')):
+            continue
         raw_link = entry.get("url") or entry.get("link")
         if not raw_link:
             continue

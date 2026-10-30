@@ -1,9 +1,10 @@
+import { isPublishedPost } from '../utils/publication.ts';
 // src/pages/search-index.json.ts
 import { getCollection } from 'astro:content';
 import { getCleanSlug } from '../utils/slug.ts';
 
 export async function GET(): Promise<Response> {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter(isPublishedPost);
 
   const index = posts.map((post) => ({
     id: post.id,

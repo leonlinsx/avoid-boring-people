@@ -1,4 +1,5 @@
 ---
+draft: true # Keep unpublished; set false deliberately when ready to publish.
 title: 'Your Post Title'
 description: 'A short summary for SEO, previews, and RSS.'
 pubDate: 2025-01-15

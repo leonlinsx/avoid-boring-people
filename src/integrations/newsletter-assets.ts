@@ -1,4 +1,5 @@
-import { copyFile, mkdir, readdir } from 'node:fs/promises';
+import { articleIsDraft } from '../utils/publication.ts';
+import { copyFile, mkdir, readdir, readFile, rm } from 'node:fs/promises';
 import { relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
@@ -38,10 +39,31 @@ export function newsletterAssets(): AstroIntegration {
     hooks: {
       'astro:build:done': async ({ dir }) => {
         const outputRoot = fileURLToPath(dir);
-        await copyDirectory(
-          contentRoot,
-          resolve(outputRoot, 'newsletter-assets'),
-        );
+        const destination = resolve(outputRoot, 'newsletter-assets');
+        // This generated directory belongs to this integration; remove stale
+        // assets when a previously published article is changed back to a draft.
+        await rm(destination, { recursive: true, force: true });
+        for (const entry of await readdir(contentRoot, {
+          withFileTypes: true,
+        })) {
+          if (!entry.isDirectory()) continue;
+          const source = resolve(contentRoot, entry.name);
+          let markdown: string;
+          try {
+            markdown = await readFile(resolve(source, 'index.md'), 'utf8');
+          } catch (error) {
+            if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+            try {
+              markdown = await readFile(resolve(source, 'index.mdx'), 'utf8');
+            } catch (error) {
+              if ((error as NodeJS.ErrnoException).code !== 'ENOENT')
+                throw error;
+              continue;
+            }
+          }
+          if (!articleIsDraft(markdown))
+            await copyDirectory(source, resolve(destination, entry.name));
+        }
       },
     },
   };

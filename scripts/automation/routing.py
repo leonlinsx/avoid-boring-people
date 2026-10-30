@@ -36,6 +36,8 @@ CATEGORY_PLATFORM_RULES = {
 
 
 def eligible_for_category(post: dict, platform: str) -> bool:
+    if post.get('draft', False) is not False:
+        return False
     category = str(post.get("category") or "").strip().lower()
     allowed = CATEGORY_PLATFORM_RULES.get(category, set(SOCIAL_PLATFORMS + ("reddit",)))
     if platform == "devto" and bool(post.get("devto", False)):

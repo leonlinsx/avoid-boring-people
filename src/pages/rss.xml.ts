@@ -1,3 +1,4 @@
+import { isPublishedPost } from '../utils/publication.ts';
 import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import {
@@ -59,6 +60,7 @@ export function rssDescription(
 
 export async function GET(): Promise<Response> {
   const posts = (await getCollection('blog'))
+    .filter(isPublishedPost)
     .map(enrichPost)
     .sort(comparePostsByDate);
 

@@ -34,6 +34,7 @@ const contentHash = campaignContentHash(articleId, subject, markdown);
 assertCampaignContent(option('--expect-content'), contentHash);
 const campaign = await snapshotCampaign({
   articleId,
+  markdown,
   subject,
   contentHash,
   expected,

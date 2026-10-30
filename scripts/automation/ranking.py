@@ -65,6 +65,8 @@ def filter_posts(posts: Iterable[Dict], config: Optional[RankingConfig] = None) 
     results: List[Dict] = []
 
     for post in posts:
+        if post.get('draft', False) is not False:
+            continue
         if _word_count(post) < config.min_word_count:
             continue
 

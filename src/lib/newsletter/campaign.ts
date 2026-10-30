@@ -1,3 +1,4 @@
+import { assertPublishedArticle } from '../../utils/publication.ts';
 import { createHash } from 'node:crypto';
 import { neonDb } from '../neon.ts';
 import { NEWSLETTER_PRIVACY_URL } from './email.ts';
@@ -27,6 +28,7 @@ export function campaignContentHash(
   markdown: string,
   privacyUrl = NEWSLETTER_PRIVACY_URL,
 ): string {
+  assertPublishedArticle(markdown);
   const rendered = renderNewsletterEmail({
     articleId,
     title: subject,
@@ -71,6 +73,7 @@ export function warmupCohortSize(
 export async function snapshotCampaign(
   input: {
     articleId: string;
+    markdown: string;
     subject: string;
     contentHash: string;
     expected: number;
@@ -79,6 +82,7 @@ export async function snapshotCampaign(
   },
   db = neonDb('Newsletter'),
 ) {
+  assertPublishedArticle(input.markdown);
   const { articleId, subject, contentHash, expected, maximum, cohortSize } =
     input;
   assertRecipientScope(expected, expected, maximum);

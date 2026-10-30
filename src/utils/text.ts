@@ -1,3 +1,4 @@
+import { isPublishedPost } from './publication.ts';
 import type { CollectionEntry } from 'astro:content';
 import readingTime from 'reading-time';
 import { getCleanSlug } from './slug.ts';
@@ -112,7 +113,7 @@ export function setGetCollectionImplementation(
 
 export async function getAllPostsPaginated(paginate: PaginateFn, pageSize = 8) {
   const getter = await resolveGetCollection();
-  const allPosts = await getter('blog');
+  const allPosts = (await getter('blog')).filter(isPublishedPost);
 
   const categories = orderedCategorySlugs(
     allPosts.map((p) => p.data.category ?? ''),
@@ -133,7 +134,7 @@ export async function getCategoryPostsPaginated(
   pageSize = 8,
 ) {
   const getter = await resolveGetCollection();
-  const all = await getter('blog');
+  const all = (await getter('blog')).filter(isPublishedPost);
 
   const categories = orderedCategorySlugs(
     all.map((p) => p.data.category ?? ''),

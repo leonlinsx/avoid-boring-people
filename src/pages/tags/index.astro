@@ -1,9 +1,10 @@
 ---
+import { isPublishedPost } from '../../utils/publication.ts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 
-const posts = await getCollection('blog');
+const posts = (await getCollection('blog')).filter(isPublishedPost);
 
 // Collect all tags with counts
 const tagCounts = new Map<string, number>();

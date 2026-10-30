@@ -1,3 +1,4 @@
+import { articleIsDraft } from './publication.ts';
 // Minimal multilingual article support: locale table, hreflang/SEO helpers,
 // translation-index reader, and the deterministic source hash used by the
 // translation CLI. English (`src/content/blog`) stays the only source of
@@ -299,7 +300,11 @@ export function readTranslatedEntries(
   }
   for (const entry of dirs) {
     try {
-      if (fs.existsSync(path.join(i18nDir, code, entry, 'index.md'))) {
+      const source = path.join(i18nDir, code, entry, 'index.md');
+      if (
+        fs.existsSync(source) &&
+        !articleIsDraft(fs.readFileSync(source, 'utf8'))
+      ) {
         entries.add(entry);
       }
     } catch {

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import rehypeStringify from 'rehype-stringify';
@@ -24,6 +24,8 @@ export type NewsletterRenderInput = {
   unsubscribeUrl: string;
   privacyUrl: string;
   postalAddress?: string;
+  /** Private preview/test only. Production keeps its public asset URL mapping. */
+  resolveLocalImage?: (value: string) => string;
 };
 
 export type NewsletterRenderResult = {
@@ -239,7 +241,12 @@ export function renderNewsletterEmail(
         node.url = resolveLink(node.url);
       });
       visit(tree, 'image', (node: any) => {
-        node.url = resolveImage(node.url, input.articleId);
+        const local =
+          !node.url.startsWith('/') && !/^[a-z][a-z0-9+.-]*:/i.test(node.url);
+        node.url =
+          local && input.resolveLocalImage
+            ? input.resolveLocalImage(node.url)
+            : resolveImage(node.url, input.articleId);
       });
     })
     .use(remarkRehype)
@@ -309,6 +316,10 @@ export function readNewsletterArticle(articleId: string): string {
   if (!existsSync(source))
     throw new NewsletterRenderError(
       `Newsletter article does not exist: ${articleId}`,
+    );
+  if (!realpathSync(source).startsWith(realpathSync(contentRoot) + '/'))
+    throw new NewsletterRenderError(
+      'Newsletter article must remain within the blog directory.',
     );
   return readFileSync(source, 'utf8');
 }

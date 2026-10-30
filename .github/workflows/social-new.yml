@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/content/blog/**/index.md'
+      - 'src/content/blog/**/index.mdx'
   workflow_dispatch:
     inputs:
       post_id:
@@ -35,40 +36,28 @@ jobs:
           ref: main
           fetch-depth: 0
           persist-credentials: false
-      - name: Detect newly added articles
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
+          python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+      - name: Detect newly published articles
         id: added
         env:
           BEFORE: ${{ github.event.before }}
           MANUAL_POST_ID: ${{ inputs.post_id }}
         run: |
-          # A manual run has no `before` commit, and a brand new branch reports
-          # an all-zero one; both mean there is no diff to inspect.
-          if [ -n "$MANUAL_POST_ID" ]; then
-            echo "$MANUAL_POST_ID" > "$RUNNER_TEMP/post_ids"
-          elif [ -z "$BEFORE" ] || [ "$BEFORE" = '0000000000000000000000000000000000000000' ]; then
-            : > "$RUNNER_TEMP/post_ids"
-          else
-            git diff --name-only --diff-filter=A "$BEFORE" "$GITHUB_SHA" -- 'src/content/blog/**/index.md' |
-              sed 's#^src/content/blog/##' > "$RUNNER_TEMP/post_ids"
-          fi
+          python -m scripts.automation.new_articles --before "$BEFORE" --after "$GITHUB_SHA" --manual "$MANUAL_POST_ID" > "$RUNNER_TEMP/post_ids"
           if [ -s "$RUNNER_TEMP/post_ids" ]; then echo 'found=true' >> "$GITHUB_OUTPUT"; else echo 'found=false' >> "$GITHUB_OUTPUT"; fi
       # The push that starts this run is also what triggers the deploy, and the
       # distribution code reads the article from the deployed search index. Poll
       # until the new article is actually servable, so a slow deploy is waited
-      # out instead of failing the run for a manual re-run. Runs before the
-      # installs so the deployment and the dependency downloads overlap.
+      # out instead of failing the run for a manual re-run.
       - name: Wait for the new articles to deploy
         if: steps.added.outputs.found == 'true'
         run: python3 -m scripts.automation.wait_for_deploy --post-id-file "$RUNNER_TEMP/post_ids"
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
-        if: steps.added.outputs.found == 'true'
-        with:
-          python-version: '3.12'
-      - name: Install dependencies
-        if: steps.added.outputs.found == 'true'
-        run: |
-          python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
-          python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
       # Instagram is a production default, so the automatic push-triggered run
       # (no `platforms` input, meaning production defaults) needs the carousel
       # renderer too. A manual run only installs it when it can target Instagram.

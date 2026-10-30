@@ -461,6 +461,7 @@ try {
     "UPDATE subscribers SET status = 'bounced' WHERE email_normalized = 'cohort-310@example.com'",
   );
   const snapshotInput = {
+    markdown: '---\ntitle: Test\n---\nTest',
     articleId: 'fixture/index.md',
     subject: 'Fixture',
     contentHash: 'a'.repeat(64),

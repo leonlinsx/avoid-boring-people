@@ -1,10 +1,11 @@
 ---
+import { isPublishedPost } from '../../utils/publication.ts';
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 import { getCleanSlug } from '../../utils/slug'; // ✅ centralize slug logic
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter(isPublishedPost);
   const seen = new Map(); // slug -> post.id
 
   return posts.map((post) => {

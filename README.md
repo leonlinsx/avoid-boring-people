@@ -49,6 +49,63 @@ The repo holds six systems:
    in its own workflow, never publishes anything, and keeps live reports and state out of
    public git in an encrypted Actions artifact. Details: [docs/scout.md](docs/scout.md).
 
+## Draft newsletter workflow
+
+Write `src/content/blog/<article>/index.md` with the usual frontmatter plus
+`draft: true` (omitted means `false`). Keep images in that article's directory,
+for example `![Chart](./chart.webp)`. Drafts and translations of draft sources
+are excluded from public routes, discovery, RSS, sitemap, search, related posts,
+public newsletter assets and social distribution. The source stays in Git; use
+only private repositories for confidential drafts. Files placed manually in
+`public/` are public regardless of article status.
+
+```sh
+# Offline browser preview, using the existing newsletter layout and embedded images.
+npm run newsletter:preview:local -- <article>/index.md /tmp/newsletter-draft.html
+# Open /tmp/newsletter-draft.html in a browser. No build/deploy, SES or database needed.
+
+# Sends ONE real preview only when you deliberately run it. Uses existing .env.local
+# SES credentials/configuration and NEWSLETTER_TEST_RECIPIENTS allowlist.
+npm run newsletter:test -- <article>/index.md <allowlisted-email> --confirm-test
+```
+
+Private previews support PNG, JPEG, GIF and WebP files within the article
+folder, including subfolders. Escaping paths/symlinks, missing/invalid files and
+unsupported formats fail before sending. Repeated paths share one CID attachment;
+limits are 5 MiB per image, 10 MiB total and 20 images. Test subjects start with
+`[TEST]`; unsubscribe links are deliberately nonfunctional. No subscribers or
+campaigns are created. Browser preview embeds data URLs; test email uses SESv2
+inline CID attachments. External HTTPS images retain their existing URLs.
+
+To publish, review the private preview, set `draft: false`, and submit the article
+through the normal publishing PR. **Merging that change to main publishes the
+article and queues normal social distribution** after deployment; draft-to-published
+transitions now count as new publication. Ordinary edits do not trigger new-article
+social distribution, and existing per-platform history still prevents duplicates.
+Restart `astro dev` after content-config changes if using a running development server.
+
+Production campaigns reject drafts, including an article made draft after snapshot.
+Production email keeps public image URLs; no CID/data-URL mode is added to the sender.
+After the published article's deployment is live, run the read-only check:
+
+```sh
+npm run newsletter:images:check -- <article>/index.md
+```
+
+The production sender repeats this GET-only image check before any send-state
+change: public HTTPS, no redirects, successful image response and valid bytes
+(up to 10 MiB each, with a 10-second request timeout). Existing production preview,
+content-digest, recipient-count, SES and explicit-send approvals still apply.
+A local draft preview is not production-content approval.
+
+Verification: `npm test`, `python -m pytest tests -q`, `npm run lint`,
+`npm run build`, and `npm run test:drafts:build`. The last command builds disposable
+draft fixtures and checks a local browser preview with networking blocked. Received
+Gmail rendering must be checked by an operator after a separately authorized
+allowlisted test send: confirm inline images are visible, including a repeated image,
+and that the subject has `[TEST]`. No received-mail validation is claimed without
+that live check.
+
 ## Project structure
 
 ```text

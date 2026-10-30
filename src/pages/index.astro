@@ -1,4 +1,5 @@
 ---
+import { isPublishedPost } from '../utils/publication.ts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from '../components/PostList.astro';
 import { getCollection } from 'astro:content';
@@ -6,7 +7,7 @@ import { SITE_TITLE } from '../consts';
 import { comparePostsByDate, enrichPost } from '../utils/text'; // ✅ import enrichment + helpers
 import SubscribeForm from '../components/SubscribeForm.astro';
 
-const allPosts = await getCollection('blog');
+const allPosts = (await getCollection('blog')).filter(isPublishedPost);
 
 // Enrich all posts once for reuse below
 const enrichedPosts = allPosts.map(enrichPost);
