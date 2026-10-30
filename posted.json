@@ -1205,6 +1205,54 @@
         "last_posted_at": "2026-09-10T03:21:38Z",
         "remote_id": "2097888195849412797"
       }
+    },
+    "2026_10_31_anthropic_ipo/index.md": {
+      "bluesky": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-10-30T20:57:42Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mz4oa3iiy62i",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mz4oa3iiy62i"
+      },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-10-30T20:57:44Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "0xbd6e812a561c5696ee0289e7a699dcdd147bafb4"
+      },
+      "instagram": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-10-30T21:03:59Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18123626770938142",
+        "remote_url": "https://www.instagram.com/p/DfIgKJZmp_o/"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-10-30T20:57:43Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "117531860243834585",
+        "remote_url": "https://mastodon.social/@leonlins/117531860243834585"
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-10-30T20:58:01Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "8b186ae4207e40efb66309463f12245ad8611c04850e6db72118908191f8ddf5"
+      },
+      "threads": {
+        "count": 1,
+        "last_mode": "new",
+        "last_posted_at": "2026-10-30T20:58:24Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "17977775427151489",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/DfIfm6kml7D"
+      }
     }
   },
   "version": 2
