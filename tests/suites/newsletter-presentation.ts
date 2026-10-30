@@ -181,6 +181,17 @@ export async function runNewsletterPresentationTests() {
     rendered.html.indexOf('What did I miss? Reply to this email.') <
       rendered.html.lastIndexOf('Read online'),
   );
+  const closing = rendered.html
+    .split('<section aria-label="Closing"')[1]
+    .split('</section>')[0];
+  assert.match(
+    closing,
+    /What did I miss\? Reply to this email\. <span[^>]*>· <a[^>]*>Read online<\/a><\/span><\/p>/,
+  );
+  assert.match(
+    rendered.text,
+    /What did I miss\? Reply to this email\. · Read online: https:/,
+  );
   assert.match(article, /data-footnotes[^>]*border-top:1px solid/);
   const noSubtitle = renderNewsletterEmail({
     articleId,
