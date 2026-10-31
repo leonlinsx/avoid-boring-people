@@ -4,7 +4,7 @@ description: "Scale is all you need"
 pubDate: 2026-10-31
 category: Investing
 tags: ['anthropic', 'ipo', 'ai']
-heroImage: './a_6.webp'
+heroImage: './a_6_hero.webp'
 featured: true
 ---
 

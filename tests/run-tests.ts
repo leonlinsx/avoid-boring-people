@@ -12,6 +12,7 @@ import { runContactTests } from './suites/contact.ts';
 import { runArticleFooterTests } from './suites/article-footer.ts';
 import { runRelatedPostsTests } from './suites/related-posts.ts';
 import { runI18nTests } from './suites/i18n.ts';
+import { runHeroTests } from './suites/hero.ts';
 
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught exception', error);
@@ -37,6 +38,7 @@ async function run() {
     await runArticleFooterTests();
     await runRelatedPostsTests();
     await runI18nTests();
+    await runHeroTests();
     console.log('✅ All custom tests passed');
   } catch (error) {
     console.error('❌ Test failure', error);
