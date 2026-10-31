@@ -7,9 +7,14 @@ interface BreadcrumbItem {
   href?: string;
 }
 
-const { items = [] } = Astro.props as { items: BreadcrumbItem[] };
+const { items = [], structuredDataItems } = Astro.props as {
+  items: BreadcrumbItem[];
+  structuredDataItems?: BreadcrumbItem[];
+};
 
-const breadcrumbList = items.map((item, index) => ({
+const schemaItems = structuredDataItems ?? items;
+
+const breadcrumbList = schemaItems.map((item, index) => ({
   '@type': 'ListItem',
   position: index + 1,
   name: item.label,
