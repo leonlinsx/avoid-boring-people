@@ -185,6 +185,7 @@ try {
     '003_production_send_safety.sql',
     '004_acquisition_attribution.sql',
     '005_pre_migration_readiness.sql',
+    '006_phased_delivery.sql',
   ])
     sql(
       readFileSync(

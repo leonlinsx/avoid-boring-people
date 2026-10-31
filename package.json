@@ -34,7 +34,9 @@
     "test:newsletter:layout": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/newsletter-layout-browser.ts",
     "test:newsletter:browser": "node tests/newsletter-confirm-browser.mjs",
     "newsletter:import:preflight": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/preflight-substack-export.ts",
-    "test:built:article-layout": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/verify-built-article-layout.ts"
+    "test:built:article-layout": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/verify-built-article-layout.ts",
+    "newsletter:status": "node --env-file-if-exists=.env.local --import ts-node/esm scripts/newsletter/campaign-status.ts",
+    "test:newsletter:delivery": "TS_NODE_PROJECT=tsconfig.test.json node --import ./tests/register-loaders.mjs --loader ts-node/esm tests/newsletter-delivery-postgres.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

@@ -198,8 +198,9 @@ All commands run from the repo root.
 | Apply verified Substack import | See [the guarded import runbook](docs/newsletter-import-runbook.md#future-import--only-after-separate-authorization) for all mandatory approval flags |
 | Newsletter preview | `npm run newsletter:preview -- <article-id> [output-file]` |
 | Allowlisted newsletter test | `npm run newsletter:test -- <article-id> <recipient> --confirm-test` |
-| Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <n> --confirm-snapshot` |
-| Production newsletter send | `npm run newsletter:send -- <campaign-id> --expect-recipients <n> --confirm-production` |
+| Production campaign snapshot | `npm run newsletter:campaign -- <article-id> --expect-recipients <n> --expect-content <sha256> --confirm-snapshot` |
+| Campaign delivery status (read-only) | `npm run newsletter:status -- <campaign-id>` |
+| Production newsletter send | `npm run newsletter:send -- <campaign-id> --expect-recipients <n> --expect-content <sha256> --send-limit <n> --confirm-production` |
 | Newsletter analytics report | `npm run newsletter:analytics -- [--days <1-365>] [--json] [--check]` |
 | Email the analytics report | `npm run newsletter:analytics:email -- --to <allowlisted-address> --confirm-send [--days <1-365>]` |
 | Scheduled author report | `npm run newsletter:analytics:author -- [--dry-run]` (recipient fixed by `NEWSLETTER_AUTHOR_REPORT_TO`; installed as the first-Tuesday 11:30 ET timer in [deploy/systemd](deploy/systemd)) |

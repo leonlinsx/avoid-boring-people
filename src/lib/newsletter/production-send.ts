@@ -8,6 +8,7 @@ export type ProductionSendConfig = {
   awsRegion: string;
   configurationSet: string;
   maxRecipients: number;
+  maxSends: number;
   unsubscribeSecret: string;
   presentation: NewsletterPresentation;
 };
@@ -56,12 +57,23 @@ export function productionSendConfig(
       env.NEWSLETTER_MAX_PRODUCTION_RECIPIENTS,
       'NEWSLETTER_MAX_PRODUCTION_RECIPIENTS',
     ),
+    maxSends: positiveInteger(
+      env.NEWSLETTER_MAX_PRODUCTION_SENDS,
+      'NEWSLETTER_MAX_PRODUCTION_SENDS',
+    ),
     unsubscribeSecret: env.NEWSLETTER_UNSUBSCRIBE_SECRET,
   };
 }
 
 export function parseExpectedRecipients(value: string | undefined): number {
   return positiveInteger(value, '--expect-recipients');
+}
+
+export function assertSendLimit(limit: number, maximum: number): void {
+  if (!Number.isSafeInteger(limit) || limit <= 0 || limit > maximum)
+    throw new Error(
+      'Send limit exceeds the configured ceiling or is invalid. No email was sent.',
+    );
 }
 
 export function assertRecipientScope(
