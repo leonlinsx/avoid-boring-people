@@ -54,16 +54,141 @@ function testNewsletterDefaultsAndPreservedSubmission() {
 
 function testUnifiedFooterOrder() {
   const layout = read('src/layouts/BlogPost.astro');
+  // Signup must be between body and footnotes for conversion, before tags/share.
+  const bodyHtml = layout.indexOf('set:html={bodyHtml}');
+  const subscribe = layout.indexOf('<SubscribeForm');
+  const footnotes = layout.indexOf('set:html={footnotesHtml}');
   const footer = layout.indexOf('<footer class="article-footer">');
   const tags = layout.indexOf('<TagList', footer);
   const share = layout.indexOf('<ShareButtons', footer);
-  const subscribe = layout.indexOf('<SubscribeForm', footer);
   const discussion = layout.indexOf('<Discussion', footer);
 
-  assert.ok(footer >= 0 && tags > footer && share > tags && subscribe > share);
+  assert.ok(bodyHtml >= 0, 'bodyHtml slot must exist');
+  assert.ok(subscribe > bodyHtml, 'SubscribeForm must be after article body');
   assert.ok(
-    discussion > subscribe,
+    footnotes === -1 || subscribe < footnotes,
+    'SubscribeForm must be before footnotes when footnotes exist',
+  );
+  assert.ok(footer > subscribe, 'footer (tags/share) must be after signup');
+  assert.ok(tags > footer && share > tags, 'tags/share must be inside footer');
+  assert.ok(
+    subscribe < footer,
+    'SubscribeForm must not be inside footer (single instance before footnotes)',
+  );
+  assert.ok(
+    discussion > footer,
     'Discussion must remain after the article footer',
+  );
+  // Ensure only one SubscribeForm per article (no duplicate in Markdown or footer)
+  const subscribeCount = (layout.match(/<SubscribeForm/g) ?? []).length;
+  assert.equal(
+    subscribeCount,
+    1,
+    'exactly one SubscribeForm must be rendered per article',
+  );
+  assert.ok(
+    layout.includes('FOOTNOTE_MARKER') &&
+      layout.includes('<section data-footnotes'),
+    'footnote split must use build-time slot HTML, not client DOM manipulation',
+  );
+  assert.equal(
+    (layout.match(/Astro\.slots\.render/g) ?? []).length,
+    1,
+    'slot must be rendered once and split at build time',
+  );
+}
+
+function testHeaderHierarchy() {
+  const layout = read('src/layouts/BlogPost.astro');
+  const breadcrumbs = layout.indexOf('<Breadcrumbs');
+  const title = layout.indexOf('<h1>{title}</h1>');
+  const meta = layout.indexOf('<div class="meta">');
+  const hero = layout.indexOf('<div class="hero-image">');
+  const toc = layout.indexOf('<TableOfContents');
+  const body = layout.indexOf('set:html={bodyHtml}');
+
+  assert.ok(
+    breadcrumbs >= 0 && title > breadcrumbs,
+    'breadcrumbs must be first',
+  );
+  assert.ok(
+    meta > title,
+    'meta must be after H1 (title first, then date·category·reading time)',
+  );
+  assert.ok(hero > meta, 'hero must be after title block');
+  assert.ok(toc > hero, 'TOC must be after hero');
+  assert.ok(body > toc, 'body must be after TOC');
+  // Single H1 check
+  const h1Count = (layout.match(/<h1>/g) ?? []).length;
+  assert.equal(
+    h1Count,
+    1,
+    'exactly one H1 must exist (no duplicate in breadcrumbs)',
+  );
+}
+
+function testBreadcrumbVisibility() {
+  const layout = read('src/layouts/BlogPost.astro');
+  const breadcrumbs = read('src/components/Breadcrumbs.astro');
+
+  // Visible breadcrumbs must omit title; structured data must include it.
+  assert.ok(
+    layout.includes('visibleBreadcrumbItems'),
+    'visible breadcrumbs must be separate from JSON-LD',
+  );
+  assert.ok(
+    layout.includes('breadcrumbJsonLdItems'),
+    'JSON-LD must preserve full trail including title',
+  );
+  assert.ok(
+    layout.includes('items={visibleBreadcrumbItems}') &&
+      layout.includes('structuredDataItems={breadcrumbJsonLdItems}'),
+    'visible breadcrumbs without title must be passed alongside full JSON-LD',
+  );
+  // Ensure old pattern (pushing title to visible items) is gone
+  assert.equal(
+    layout.includes('breadcrumbItems.push({ label: title })'),
+    false,
+    'title must not be pushed to visible breadcrumbs',
+  );
+  // Breadcrumbs component must support structuredDataItems for SEO
+  assert.ok(
+    breadcrumbs.includes('structuredDataItems'),
+    'Breadcrumbs must accept structuredDataItems for SEO',
+  );
+  assert.ok(
+    breadcrumbs.includes('schemaItems = structuredDataItems ?? items'),
+    'Breadcrumbs must fall back to items when no structured data override',
+  );
+}
+
+function testBreadcrumbLinkBehavior() {
+  const breadcrumbs = read('src/components/Breadcrumbs.astro');
+
+  // Smallest backward-compatible fix: when structuredDataItems is present,
+  // all visible items with href must be links (no aria-current on Category/Writing).
+  // Other pages without the override must keep the last-item-as-current behavior.
+  assert.ok(
+    breadcrumbs.includes('hasStructuredOverride'),
+    'Breadcrumbs must track whether structuredDataItems override is present',
+  );
+  assert.ok(
+    breadcrumbs.includes('isLinkable'),
+    'Breadcrumbs must compute linkability instead of hard-coding isLast',
+  );
+  assert.ok(
+    breadcrumbs.includes('!isLast || hasStructuredOverride'),
+    'When structuredDataItems is present, last visible crumb with href must stay a link (Home/Writing/Category clickable)',
+  );
+  assert.ok(
+    breadcrumbs.includes('!hasStructuredOverride && isLast'),
+    'aria-current must only apply when there is no structuredDataItems override (preserve other pages)',
+  );
+  // No stray aria-current on Category when override is active — the span must be plain.
+  assert.match(
+    breadcrumbs,
+    /\{\.\.\.\(!hasStructuredOverride && isLast[\s\S]*?aria-current/,
+    'aria-current must be conditional on hasStructuredOverride',
   );
 }
 
@@ -72,4 +197,7 @@ export function runArticleFooterTests() {
   testShareMenuAccessibilityAndBehavior();
   testNewsletterDefaultsAndPreservedSubmission();
   testUnifiedFooterOrder();
+  testHeaderHierarchy();
+  testBreadcrumbVisibility();
+  testBreadcrumbLinkBehavior();
 }

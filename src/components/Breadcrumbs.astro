@@ -7,9 +7,16 @@ interface BreadcrumbItem {
   href?: string;
 }
 
-const { items = [] } = Astro.props as { items: BreadcrumbItem[] };
+const { items = [], structuredDataItems } = Astro.props as {
+  items: BreadcrumbItem[];
+  structuredDataItems?: BreadcrumbItem[];
+};
 
-const breadcrumbList = items.map((item, index) => ({
+const schemaItems = structuredDataItems ?? items;
+const hasStructuredOverride =
+  Array.isArray(structuredDataItems) && structuredDataItems.length > 0;
+
+const breadcrumbList = schemaItems.map((item, index) => ({
   '@type': 'ListItem',
   position: index + 1,
   name: item.label,
@@ -29,12 +36,19 @@ const breadcrumbSchema = sanitizeJsonLd({
       <ol>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
+          const isLinkable = !!item.href && (!isLast || hasStructuredOverride);
           return (
             <li>
-              {item.href && !isLast ? (
+              {isLinkable ? (
                 <a href={item.href}>{item.label}</a>
               ) : (
-                <span aria-current="page">{item.label}</span>
+                <span
+                  {...(!hasStructuredOverride && isLast
+                    ? { 'aria-current': 'page' }
+                    : {})}
+                >
+                  {item.label}
+                </span>
               )}
             </li>
           );

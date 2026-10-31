@@ -133,21 +133,35 @@ const newsletter = newsletterChrome(translationLocale?.code);
 // ✅ Canonical URL from clean slug (self-canonical per language version)
 const canonicalURL = new URL(canonicalPath, SITE_URL).toString();
 
-const breadcrumbItems = [
+const visibleBreadcrumbItems = [
   { label: chrome.home, href: '/' },
-  // Link the canonical destination directly: the trailing-slash form 404s
-  // even in production, and the bare form costs a redirect hop.
   { label: chrome.writing, href: '/writing/1' },
 ];
 
 if (categoryNormalized) {
-  breadcrumbItems.push({
+  visibleBreadcrumbItems.push({
     label: categoryLabel(categoryNormalized),
     href: `/writing/category/${encodeURIComponent(categoryNormalized)}/1`,
   });
 }
 
-breadcrumbItems.push({ label: title });
+// Preserve full trail (including article title) for JSON-LD breadcrumb structured data.
+// Visible breadcrumbs omit the redundant article title to avoid repeating the H1.
+const breadcrumbJsonLdItems = [...visibleBreadcrumbItems, { label: title }];
+
+// --- Footnote/slot split: render signup after conclusion, before footnotes ---
+// Astro renders footnotes inside the Markdown slot as `<section data-footnotes`.
+// We split the rendered HTML at build time (no client DOM manipulation) so
+// the signup sits in the correct DOM/keyboard order: body → signup → footnotes
+// → tags/share. This preserves footnote IDs/backlinks and works for articles
+// with or without footnotes. Alternative approaches (remark pipeline fork,
+// manual Markdown duplication, CSS order) would be disproportionate or break
+// accessibility.
+const slotHtml = await Astro.slots.render('default');
+const FOOTNOTE_MARKER = '<section data-footnotes';
+const footnoteIdx = slotHtml.indexOf(FOOTNOTE_MARKER);
+const bodyHtml = footnoteIdx !== -1 ? slotHtml.slice(0, footnoteIdx) : slotHtml;
+const footnotesHtml = footnoteIdx !== -1 ? slotHtml.slice(footnoteIdx) : '';
 ---
 
 <BaseLayout
@@ -166,7 +180,36 @@ breadcrumbItems.push({ label: title });
 >
   <main>
     <article>
-      <Breadcrumbs items={breadcrumbItems} />
+      <Breadcrumbs
+        items={visibleBreadcrumbItems}
+        structuredDataItems={breadcrumbJsonLdItems}
+      />
+
+      <div class="prose">
+        <div class="title">
+          <h1>{title}</h1>
+          <div class="meta">
+            <FormattedDate date={pubDate} locale={dateLocale} />
+            {category && ` · ${category}`}
+            {readingTime && ` · ${readingTime} ${chrome.minReadUnit}`}
+            {
+              updatedDate && (
+                <div class="last-updated-on">
+                  {chrome.lastUpdated}{' '}
+                  <FormattedDate date={updatedDate} locale={dateLocale} />
+                </div>
+              )
+            }
+          </div>
+          <div class="lang-row">
+            <LanguageSelector
+              entries={langEntries}
+              currentLabel={currentLabel}
+            />
+          </div>
+        </div>
+      </div>
+
       {
         hero && (
           <div class="hero-image">
@@ -198,51 +241,38 @@ breadcrumbItems.push({ label: title });
       }
 
       <div class="prose">
-        <div class="title">
-          <div class="meta">
-            <FormattedDate date={pubDate} locale={dateLocale} />
-            {category && ` · ${category}`}
-            {readingTime && ` · ${readingTime} ${chrome.minReadUnit}`}
-            {
-              updatedDate && (
-                <div class="last-updated-on">
-                  {chrome.lastUpdated}{' '}
-                  <FormattedDate date={updatedDate} locale={dateLocale} />
-                </div>
-              )
-            }
-          </div>
-          <div class="lang-row">
-            <LanguageSelector
-              entries={langEntries}
-              currentLabel={currentLabel}
-            />
-          </div>
-          <h1>{title}</h1>
-        </div>
-
-        <!-- TOC -->
         <TableOfContents headings={headings} />
+      </div>
 
-        <!-- Post content -->
-        <slot />
+      <div class="prose">
+        <div set:html={bodyHtml} />
+      </div>
 
+      <!-- Newsletter CTA: after conclusion, before footnotes -->
+      <SubscribeForm
+        compact={false}
+        title={newsletter.title}
+        emailLabel={newsletter.emailLabel}
+        emailPlaceholder={newsletter.emailPlaceholder}
+        subscribeLabel={newsletter.subscribeButton}
+        successFull={newsletter.successFull}
+        successCompact={newsletter.successCompact}
+      />
+
+      {
+        footnotesHtml && (
+          <div class="prose">
+            <div set:html={footnotesHtml} />
+          </div>
+        )
+      }
+
+      <div class="prose">
         <footer class="article-footer">
           <div class="article-utilities">
             <TagList tags={tags} />
             <ShareButtons title={title} url={canonicalURL} />
           </div>
-
-          <!-- Newsletter CTA: same backend; localized copy on translated pages -->
-          <SubscribeForm
-            compact={false}
-            title={newsletter.title}
-            emailLabel={newsletter.emailLabel}
-            emailPlaceholder={newsletter.emailPlaceholder}
-            subscribeLabel={newsletter.subscribeButton}
-            successFull={newsletter.successFull}
-            successCompact={newsletter.successCompact}
-          />
         </footer>
 
         <!-- Discussion: same English thread; localized UI strings only -->
@@ -290,13 +320,14 @@ breadcrumbItems.push({ label: title });
     line-height: 1.4;
   }
   .meta {
-    margin-bottom: 0.75rem;
+    margin-top: 0.75rem;
     font-size: 0.95rem;
     color: rgb(var(--color-text-meta));
   }
   .lang-row {
     display: flex;
     justify-content: center;
+    margin-top: var(--space-sm);
     margin-bottom: var(--space-md);
   }
   .lang-row:empty {
@@ -307,7 +338,7 @@ breadcrumbItems.push({ label: title });
   }
   .title h1 {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
     padding-bottom: 0.75rem;
   }
   .title h1::after {
@@ -333,7 +364,8 @@ breadcrumbItems.push({ label: title });
     justify-content: space-between;
     gap: var(--space-sm) var(--space-lg);
   }
-  .article-footer :global(.signup) {
+  /* Signup sits between body and footnotes, outside prose but centered */
+  :global(.signup) {
     margin-top: var(--space-xl);
     margin-bottom: 0;
   }
@@ -342,10 +374,10 @@ breadcrumbItems.push({ label: title });
       align-items: flex-start;
       flex-direction: column;
     }
-    .article-footer :global(.signup) {
+    :global(.signup) {
       text-align: left;
     }
-    .article-footer :global(.signup .signup-box) {
+    :global(.signup .signup-box) {
       justify-content: flex-start;
       margin-left: 0;
       padding-left: 0;
