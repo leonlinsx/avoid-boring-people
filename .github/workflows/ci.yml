@@ -95,6 +95,8 @@ jobs:
         run: npm ci
       - name: Build site
         run: npm run build
+      - name: Verify built article layout (breadcrumbs, title/hero ordering, signup placement, footnotes)
+        run: npm run test:built:article-layout
       - name: Validate built RSS feed
         run: python tests/test_rss_build.py
       # Internal links and images break silently when slugs, images, or
