@@ -89,6 +89,11 @@ import {
   NEWSLETTER_REPLY_TO,
 } from '../../src/lib/newsletter/email.ts';
 import { requiresOriginRejection } from '../../src/lib/newsletter/request-origin.ts';
+import {
+  classifyBounce,
+  normalizeBounceSubType,
+  normalizeBounceType,
+} from '../../src/lib/newsletter/bounce-classification.ts';
 import { createSign, generateKeyPairSync } from 'node:crypto';
 import { withCapturedLogs } from '../helpers/harness.ts';
 
@@ -1298,6 +1303,7 @@ export function analyticsFixtureDb(fixture: {
   acquisition?: unknown[];
   delivery?: unknown[];
   sends?: unknown[];
+  pending?: unknown[];
 }) {
   const queries: Array<{ text: string; values: unknown[] }> = [];
   const db: any = async (parts: TemplateStringsArray, ...values: unknown[]) => {
@@ -1308,6 +1314,7 @@ export function analyticsFixtureDb(fixture: {
     if (text.includes('current_count')) return fixture.acquisition ?? [];
     if (text.includes('newsletter_event_receipts'))
       return fixture.delivery ?? [];
+    if (text.includes("WHERE status = 'pending'")) return fixture.pending ?? [];
     if (text.includes('campaign_recipients')) return fixture.sends ?? [];
     throw new Error(`unexpected analytics query: ${text}`);
   };
@@ -1370,7 +1377,7 @@ export async function testNewsletterAnalyticsReport() {
   });
   const metrics = await collectNewsletterMetrics(active.db, { days: 7, now });
   assertReadOnly(active.queries);
-  assert.equal(active.queries.length, 5);
+  assert.equal(active.queries.length, 6);
   assert.ok(
     active.queries.some((query) => query.text.includes('AS receipts')),
     'the total receipt count feeds the ingestion switch',
@@ -1381,6 +1388,10 @@ export async function testNewsletterAnalyticsReport() {
     ),
     'sends past the delivery grace period are counted separately',
   );
+  assert.ok(
+    active.queries.some((query) => query.text.includes('AS pending')),
+    'pending recipients are counted for deliverability',
+  );
   assert.equal(metrics.audience.total, 1309, 'unknown statuses still count');
   assert.equal(metrics.audience.active, 1204);
   assert.equal(metrics.audience.pending, 3);
@@ -1390,6 +1401,10 @@ export async function testNewsletterAnalyticsReport() {
   assert.equal(metrics.deliverability.sends, 40);
   assert.equal(metrics.deliverability.bounceRate, 0.025);
   assert.equal(metrics.deliverability.complaintRate, 0);
+  // New split fields are present and default to zero when fixture provides only legacy bounced.
+  assert.equal(metrics.deliverability.validationSuppressions, 0);
+  assert.equal(metrics.deliverability.otherSuppressions, 0);
+  assert.equal(metrics.deliverability.unknownBounces, 0);
   assert.equal(metrics.windowStart, '2026-02-22T12:00:00.000Z');
   assert.equal(metrics.windowEnd, '2026-03-01T12:00:00.000Z');
   assert.equal(metrics.sharesWithheld, false);
@@ -1669,6 +1684,177 @@ export async function testNewsletterAnalyticsReport() {
     [],
     'a send inside the grace period has not had time to produce a receipt',
   );
+
+  // SES Auto Validation split: only General/NoEmail/Suppressed count toward bounceRate.
+  const suppressedSplit = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [
+      {
+        deliveries: 900,
+        hard_bounces: 19,
+        validation_suppressions: 180,
+        other_suppressions: 5,
+        unknown_bounces: 0,
+        bounced: 204,
+        complained: 0,
+      },
+    ],
+    sends: [{ sends: 1000 }],
+    pending: [{ pending: 3822 }],
+  });
+  const suppressedMetrics = await collectNewsletterMetrics(suppressedSplit.db, {
+    days: 7,
+    now,
+  });
+  assert.equal(suppressedMetrics.deliverability.hardBounces, 19);
+  assert.equal(suppressedMetrics.deliverability.validationSuppressions, 180);
+  assert.equal(suppressedMetrics.deliverability.otherSuppressions, 5);
+  assert.equal(suppressedMetrics.deliverability.unknownBounces, 0);
+  assert.equal(suppressedMetrics.deliverability.pending, 3822);
+  // Only reputation bounces affect rate: 1.9% not 20.4%
+  assert.equal(suppressedMetrics.deliverability.bounceRate, 0.019);
+  assert.deepEqual(
+    suppressedMetrics.failures,
+    [],
+    'validation/reputation-excluded suppressions do not trigger bounce threshold',
+  );
+  assert.ok(
+    suppressedMetrics.notes.some((note) =>
+      note.includes('SES suppressions excluded'),
+    ),
+  );
+  const suppressedReport = renderNewsletterReport(suppressedMetrics);
+  assert.ok(suppressedReport.includes('validation suppressed'));
+  assert.ok(suppressedReport.includes('unknown bounces'));
+
+  // Permanent/Suppressed (SES global suppression list) DOES count toward reputation.
+  const suppressedReputation = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [
+      {
+        deliveries: 980,
+        hard_bounces: 20,
+        validation_suppressions: 0,
+        other_suppressions: 0,
+        unknown_bounces: 0,
+        bounced: 20,
+        complained: 0,
+      },
+    ],
+    sends: [{ sends: 1000 }],
+  });
+  const suppressedReputationMetrics = await collectNewsletterMetrics(
+    suppressedReputation.db,
+    { days: 7, now },
+  );
+  assert.equal(suppressedReputationMetrics.deliverability.hardBounces, 20);
+  assert.equal(suppressedReputationMetrics.deliverability.bounceRate, 0.02);
+  assert.ok(
+    suppressedReputationMetrics.failures.some((f) =>
+      f.includes('Bounce rate 2.00%'),
+    ),
+    'Suppressed counts toward reputation bounce rate per AWS',
+  );
+
+  // Historical unknown bounces must not false-green: known rate 0% but 207 unknowns => inconclusive failure.
+  const historicalUnknown = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [
+      {
+        deliveries: 1089,
+        hard_bounces: 0,
+        validation_suppressions: 0,
+        other_suppressions: 0,
+        unknown_bounces: 207,
+        bounced: 207,
+        complained: 0,
+      },
+    ],
+    sends: [{ sends: 1296 }],
+  });
+  const historicalMetrics = await collectNewsletterMetrics(
+    historicalUnknown.db,
+    { days: 7, now },
+  );
+  assert.equal(historicalMetrics.deliverability.hardBounces, 0);
+  assert.equal(historicalMetrics.deliverability.unknownBounces, 207);
+  assert.equal(historicalMetrics.deliverability.bounceRate, 0);
+  assert.ok(
+    historicalMetrics.failures.some((f) => f.includes('inconclusive')),
+    '207 historical unknowns must surface as inconclusive, not healthy 0% rate',
+  );
+  assert.ok(
+    historicalMetrics.alerts.some((a) => a.includes('inconclusive')),
+    'inconclusive must be visible as alert',
+  );
+  assert.ok(
+    historicalMetrics.notes.some((n) => n.includes('not fully ascertainable')),
+  );
+  const historicalReport = renderNewsletterReport(historicalMetrics);
+  assert.ok(historicalReport.includes('actual rate not fully ascertainable'));
+
+  // Small unknown count below threshold still visible but not a failure if worst-case <2%.
+  const smallUnknown = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [
+      {
+        deliveries: 990,
+        hard_bounces: 5,
+        validation_suppressions: 0,
+        other_suppressions: 0,
+        unknown_bounces: 2,
+        bounced: 7,
+        complained: 0,
+      },
+    ],
+    sends: [{ sends: 1000 }],
+  });
+  const smallUnknownMetrics = await collectNewsletterMetrics(smallUnknown.db, {
+    days: 7,
+    now,
+  });
+  assert.equal(smallUnknownMetrics.deliverability.bounceRate, 0.005);
+  assert.ok(
+    smallUnknownMetrics.alerts.some((a) => a.includes('inconclusive')),
+    'even non-failing unknown must be visible as inconclusive alert',
+  );
+  assert.ok(
+    !smallUnknownMetrics.failures.some((f) => f.includes('inconclusive')),
+    'small unknown below 2% worst-case must not fail check',
+  );
+
+  // Unrecognized subtype counted as unknown, not as reputation-excluded suppression.
+  const unrecognized = analyticsFixtureDb({
+    audience: [],
+    growth: [],
+    acquisition: [],
+    delivery: [
+      {
+        deliveries: 900,
+        hard_bounces: 5,
+        validation_suppressions: 0,
+        other_suppressions: 0,
+        unknown_bounces: 10,
+        bounced: 15,
+        complained: 0,
+      },
+    ],
+    sends: [{ sends: 1000 }],
+  });
+  const unrecognizedMetrics = await collectNewsletterMetrics(unrecognized.db, {
+    days: 7,
+    now,
+  });
+  assert.equal(unrecognizedMetrics.deliverability.unknownBounces, 10);
+  assert.equal(unrecognizedMetrics.deliverability.otherSuppressions, 0);
 }
 
 // A route handler reads only `request` and `url` out of the Astro context.
@@ -1995,6 +2181,207 @@ export async function testSesEventIngestionAlerts() {
   ]);
 }
 
+export async function testBounceClassification() {
+  // normalizeBounceType: only known SES types, trimmed, no injection.
+  assert.equal(normalizeBounceType('Permanent'), 'Permanent');
+  assert.equal(normalizeBounceType(' Permanent '), 'Permanent');
+  assert.equal(normalizeBounceType('Transient'), 'Transient');
+  assert.equal(normalizeBounceType('Undetermined'), 'Undetermined');
+  assert.equal(normalizeBounceType('permanent'), null);
+  assert.equal(normalizeBounceType(''), null);
+  assert.equal(normalizeBounceType(null), null);
+  assert.equal(normalizeBounceType("Permanent'; DROP TABLE"), null);
+
+  // normalizeBounceSubType: alphanumeric + underscore/hyphen, max 64.
+  assert.equal(
+    normalizeBounceSubType('EmailValidationSuppressed'),
+    'EmailValidationSuppressed',
+  );
+  assert.equal(normalizeBounceSubType('General'), 'General');
+  assert.equal(
+    normalizeBounceSubType('OnAccountSuppressionList'),
+    'OnAccountSuppressionList',
+  );
+  assert.equal(normalizeBounceSubType(' NoEmail '), 'NoEmail');
+  assert.equal(normalizeBounceSubType(''), null);
+  assert.equal(normalizeBounceSubType(null), null);
+  assert.equal(normalizeBounceSubType('a'.repeat(65)), null);
+  assert.equal(normalizeBounceSubType('bad value!'), null);
+  assert.equal(normalizeBounceSubType('Suppressed'), 'Suppressed');
+
+  // classifyBounce: only Permanent has a category; others are not state changes.
+  // Per AWS: Permanent/General, NoEmail, Suppressed count toward reputation.
+  assert.equal(classifyBounce('Permanent', 'General'), 'hard_bounce');
+  assert.equal(classifyBounce('Permanent', 'NoEmail'), 'hard_bounce');
+  assert.equal(classifyBounce('Permanent', 'Suppressed'), 'hard_bounce');
+  assert.equal(
+    classifyBounce('Permanent', 'EmailValidationSuppressed'),
+    'validation_suppression',
+  );
+  assert.equal(
+    classifyBounce('Permanent', 'OnAccountSuppressionList'),
+    'other_suppression',
+  );
+  assert.equal(
+    classifyBounce('Permanent', 'OnTenantSuppressionList'),
+    'other_suppression',
+  );
+  assert.equal(
+    classifyBounce('Permanent', 'UnsubscribedRecipient'),
+    'other_suppression',
+  );
+  // Unrecognized subtypes and historical NULL remain unknown — never guessed.
+  assert.equal(classifyBounce('Permanent', 'FutureUnknownSubtype'), 'unknown');
+  assert.equal(classifyBounce('Permanent', null), 'unknown');
+  assert.equal(classifyBounce('Permanent', 'Suppressed_EXTRA'), 'unknown');
+  assert.equal(classifyBounce('Transient', 'General'), null);
+  assert.equal(classifyBounce('Undetermined', 'General'), null);
+  assert.equal(classifyBounce(null, 'General'), null);
+}
+
+export async function testSesBounceSubtypeIngestion() {
+  const deliveryEvent = (
+    bounceSubType?: unknown,
+    bounceType: unknown = 'Permanent',
+  ) => ({
+    eventType: 'Bounce',
+    mail: { messageId: 'ses-bounce-1' },
+    bounce: {
+      bounceType,
+      ...(bounceSubType !== undefined ? { bounceSubType } : {}),
+      timestamp: '2026-03-01T12:00:00.000Z',
+      bouncedRecipients: [{ emailAddress: 'reader@example.com' }],
+    },
+  });
+
+  const hasBounceValues = (values: unknown[], type: unknown, sub: unknown) =>
+    values.includes(type) && values.includes(sub);
+
+  // Genuine hard bounce: General is stored.
+  const hard = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(sesEnvelope(deliveryEvent('General')), hard.db);
+  assert.equal(hard.queries.length, 1);
+  assert.ok(hard.queries[0].text.includes('bounce_type'));
+  assert.ok(hard.queries[0].text.includes('bounce_subtype'));
+  assert.ok(hard.queries[0].text.includes('ON CONFLICT DO NOTHING'));
+  assert.ok(hard.queries[0].text.includes('EXISTS (SELECT 1 FROM receipt)'));
+  assert.ok(hasBounceValues(hard.queries[0].values, 'Permanent', 'General'));
+  // Subscriber deactivation still happens for hard bounces.
+  assert.ok(hard.queries[0].text.includes("IN ('bounced', 'complained')"));
+
+  // SES Auto Validation suppression: same ledger status (bounced), but subtype preserved
+  // so analytics can exclude it from reputation bounceRate.
+  const validation = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(
+    sesEnvelope(deliveryEvent('EmailValidationSuppressed')),
+    validation.db,
+  );
+  assert.ok(
+    hasBounceValues(
+      validation.queries[0].values,
+      'Permanent',
+      'EmailValidationSuppressed',
+    ),
+  );
+
+  // Suppressed (SES global suppression list) counts toward reputation — must be hard_bounce.
+  const suppressed = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(sesEnvelope(deliveryEvent('Suppressed')), suppressed.db);
+  assert.ok(
+    hasBounceValues(suppressed.queries[0].values, 'Permanent', 'Suppressed'),
+  );
+  assert.equal(classifyBounce('Permanent', 'Suppressed'), 'hard_bounce');
+
+  // Other SES suppressions are preserved but classified as other_suppression, not hard bounce.
+  const other = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(
+    sesEnvelope(deliveryEvent('OnAccountSuppressionList')),
+    other.db,
+  );
+  assert.ok(
+    hasBounceValues(
+      other.queries[0].values,
+      'Permanent',
+      'OnAccountSuppressionList',
+    ),
+  );
+  assert.equal(
+    classifyBounce('Permanent', 'OnAccountSuppressionList'),
+    'other_suppression',
+  );
+  // Unrecognized subtype remains unknown, not automatically reputation-excluded.
+  assert.equal(classifyBounce('Permanent', 'FutureUnknownSubtype'), 'unknown');
+
+  // Historical NULL subtype: type present, subtype null — no guess, reported as unknown.
+  const unknown = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(sesEnvelope(deliveryEvent(undefined)), unknown.db);
+  assert.ok(unknown.queries[0].values.includes('Permanent'));
+  assert.ok(unknown.queries[0].values.includes(null));
+  assert.equal(classifyBounce('Permanent', null), 'unknown');
+
+  // Transient bounce: no state change, no subtype persisted, but receipt still deduplicates.
+  const transient = makeFakeNewsletterDb(() => []);
+  const transientLogs = await withCapturedLogs(async () => {
+    await recordSesEvent(
+      sesEnvelope(deliveryEvent('General', 'Transient')),
+      transient.db,
+    );
+  });
+  assert.deepEqual(newsletterAlertLogs(transientLogs), []);
+  assert.ok(!transient.queries[0].values.includes('Transient'));
+  assert.ok(!transient.queries[0].values.includes('General'));
+
+  // Malformed subtype is discarded (privacy-safe), not stored.
+  const malformed = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(sesEnvelope(deliveryEvent("bad'; DROP")), malformed.db);
+  assert.ok(malformed.queries[0].values.includes('Permanent'));
+  assert.ok(!malformed.queries[0].values.includes("bad'; DROP"));
+
+  // Duplicate SNS MessageId: ON CONFLICT DO NOTHING + EXISTS(receipt) ensures idempotency.
+  // The SQL itself is the guarantee; second delivery of same SNS event does not re-apply.
+  const dup = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(
+    sesEnvelope(deliveryEvent('General'), 'sns-dup'),
+    dup.db,
+  );
+  await recordSesEvent(
+    sesEnvelope(deliveryEvent('General'), 'sns-dup'),
+    dup.db,
+  );
+  assert.equal(dup.queries.length, 2);
+  for (const q of dup.queries) {
+    assert.ok(q.text.includes('ON CONFLICT DO NOTHING RETURNING event_id'));
+    assert.ok(q.text.includes('EXISTS (SELECT 1 FROM receipt)'));
+  }
+  // Deduplication is SQL-enforced; no token or raw payload is ever in values.
+  for (const q of dup.queries) {
+    assert.ok(
+      !q.values.some((v) => typeof v === 'string' && v.includes('diagnostic')),
+    );
+    assert.ok(
+      q.text.includes('newsletter_event_receipts'),
+      'receipt is always the dedup anchor',
+    );
+  }
+
+  // Already-bounced recipient is not overwritten by later delivery (out-of-order protection).
+  const outOfOrder = makeFakeNewsletterDb(() => []);
+  await recordSesEvent(
+    sesEnvelope({
+      eventType: 'Delivery',
+      mail: { messageId: 'ses-ooo' },
+      delivery: { timestamp: '2026-03-01T13:00:00.000Z' },
+    }),
+    outOfOrder.db,
+  );
+  assert.ok(
+    outOfOrder.queries[0].text.includes(
+      "status = CASE WHEN status IN ('bounced', 'complained') THEN status ELSE",
+    ),
+    'bounced/complained is terminal and not overwritten by delivery',
+  );
+}
+
 export function testNewsletterReportWindow() {
   assert.equal(validateReportWindow(1), 1);
   assert.equal(
@@ -2217,6 +2604,8 @@ export async function runNewsletterTests() {
   await testNewsletterConfirmationBoundary();
   await testNewsletterAlerting();
   await testSesEventIngestionAlerts();
+  await testBounceClassification();
+  await testSesBounceSubtypeIngestion();
   await testAnalyticsCheckContract();
   await testConfirmationEmailContent();
   await testConfirmPages();
