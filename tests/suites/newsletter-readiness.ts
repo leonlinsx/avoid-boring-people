@@ -127,6 +127,9 @@ export async function testPreMigrationReadiness() {
     fake.db,
   );
   assert.match(fake.queries[0].text, /WHERE status = 'active'/);
+  assert.match(fake.queries[0].text, /confirmed_at IS NOT NULL/);
+  assert.match(fake.queries[0].text, /delivered_at IS NOT NULL/);
+  assert.doesNotMatch(fake.queries[0].text, /sent_at/);
   assert.match(
     fake.queries[0].text,
     /ORDER BY COALESCE\(original_subscribed_at, confirmed_at, created_at\) DESC, id/,

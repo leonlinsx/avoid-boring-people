@@ -145,9 +145,10 @@ async function fixture(count: number) {
     'TRUNCATE campaign_recipients, campaigns, subscribers, newsletter_event_receipts',
   );
   // Highest two subscription dates tie; deterministic UUID order must win.
-  sql(`INSERT INTO subscribers (id,email,email_normalized,status,source,unsubscribe_token_hash,consent_provenance,original_subscribed_at)
+  sql(`INSERT INTO subscribers (id,email,email_normalized,status,source,unsubscribe_token_hash,consent_provenance,original_subscribed_at,confirmed_at)
     SELECT ('00000000-0000-0000-0000-' || lpad(i::text,12,'0'))::uuid,
       'reader' || i || '@example.com','reader' || i || '@example.com','active','manual','synthetic','synthetic',
+      '2026-01-01'::timestamptz + (i / 2) * interval '1 hour',
       '2026-01-01'::timestamptz + (i / 2) * interval '1 hour'
     FROM generate_series(1,${count}) i`);
   expected = count;

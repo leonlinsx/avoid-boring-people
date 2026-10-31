@@ -411,44 +411,80 @@ try {
     assert.equal(await confirmSubscription(`legacy-${status}`, db), false);
   }
 
-  // Authenticated permanent confirmation events suppress initial opt-in and
-  // resubscription, invalidate credentials, and block future signup reopening.
-  for (const status of ['pending', 'unsubscribed']) {
-    for (const kind of ['Bounce', 'Complaint']) {
-      const email = `${status}-${kind.toLowerCase()}@example.com`;
-      const token = `token-${email}`;
-      seed({ email, status, confirmationToken: token });
-      const details =
-        kind === 'Bounce'
-          ? {
-              bounce: {
-                bounceType: 'Permanent',
-                bouncedRecipients: [{ emailAddress: email }],
-              },
-            }
-          : { complaint: { complainedRecipients: [{ emailAddress: email }] } };
-      await recordSesEvent(
-        {
-          MessageId: email,
-          Message: JSON.stringify({
-            eventType: kind,
-            mail: { messageId: email },
-            ...details,
-          }),
-        } as SnsEnvelope,
-        db,
-      );
-      const suppressed = subscriberRow(email);
-      assert.equal(
-        suppressed.status,
-        kind === 'Bounce' ? 'bounced' : 'complained',
-      );
-      assert.equal(suppressed.confirmation_token_hash, null);
-      assert.equal(suppressed.confirmation_expires_at, null);
-      assert.equal(await confirmSubscription(token, db), false);
-      await requestSubscription({ email }, db);
-      assert.deepEqual(subscriberRow(email), suppressed);
-    }
+  // Authenticated permanent confirmation events suppress a pending opt-in and
+  // invalidate credentials. An explicit unsubscribed preference is preserved:
+  // a late bounce/complaint must not rewrite it (the recipient ledger still
+  // records the event via campaign_recipients).
+  for (const kind of ['Bounce', 'Complaint']) {
+    const email = `pending-${kind.toLowerCase()}@example.com`;
+    const token = `token-${email}`;
+    seed({ email, status: 'pending', confirmationToken: token });
+    const details =
+      kind === 'Bounce'
+        ? {
+            bounce: {
+              bounceType: 'Permanent',
+              bouncedRecipients: [{ emailAddress: email }],
+            },
+          }
+        : { complaint: { complainedRecipients: [{ emailAddress: email }] } };
+    await recordSesEvent(
+      {
+        MessageId: email,
+        Message: JSON.stringify({
+          eventType: kind,
+          mail: { messageId: email },
+          ...details,
+        }),
+      } as SnsEnvelope,
+      db,
+    );
+    const suppressed = subscriberRow(email);
+    assert.equal(
+      suppressed.status,
+      kind === 'Bounce' ? 'bounced' : 'complained',
+    );
+    assert.equal(suppressed.confirmation_token_hash, null);
+    assert.equal(suppressed.confirmation_expires_at, null);
+    assert.equal(await confirmSubscription(token, db), false);
+    await requestSubscription({ email }, db);
+    assert.deepEqual(subscriberRow(email), suppressed);
+  }
+  // Unsubscribed is an explicit preference — a late bounce must not erase it.
+  for (const kind of ['Bounce', 'Complaint']) {
+    const email = `unsubscribed-${kind.toLowerCase()}@example.com`;
+    const token = `token-${email}`;
+    seed({ email, status: 'unsubscribed', confirmationToken: token });
+    const details =
+      kind === 'Bounce'
+        ? {
+            bounce: {
+              bounceType: 'Permanent',
+              bouncedRecipients: [{ emailAddress: email }],
+            },
+          }
+        : { complaint: { complainedRecipients: [{ emailAddress: email }] } };
+    await recordSesEvent(
+      {
+        MessageId: email,
+        Message: JSON.stringify({
+          eventType: kind,
+          mail: { messageId: email },
+          ...details,
+        }),
+      } as SnsEnvelope,
+      db,
+    );
+    const preserved = subscriberRow(email);
+    assert.equal(
+      preserved.status,
+      'unsubscribed',
+      'explicit opt-out must be preserved',
+    );
+    // Confirmation token is still cleared by the reconcile path that touches pending/active,
+    // but the status itself does not move. Re-requesting keeps the row suppressed.
+    await requestSubscription({ email }, db);
+    assert.equal(subscriberRow(email).status, 'unsubscribed');
   }
 
   // Exercise the actual cohort/snapshot SQL with synthetic recipients only.
@@ -456,8 +492,8 @@ try {
   sql(
     "UPDATE subscribers SET status = 'unsubscribed', confirmation_token_hash = NULL, confirmation_expires_at = NULL",
   );
-  sql(`INSERT INTO subscribers (id, email, email_normalized, status, source, consent_provenance, unsubscribe_token_hash, original_subscribed_at)
-    SELECT ('00000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid, 'cohort-' || n || '@example.com', 'cohort-' || n || '@example.com', 'active', 'manual', 'fixture', 'fixture', '2026-01-01'::timestamptz + n * interval '1 hour' FROM generate_series(1, 310) n`);
+  sql(`INSERT INTO subscribers (id, email, email_normalized, status, source, consent_provenance, unsubscribe_token_hash, original_subscribed_at, confirmed_at)
+    SELECT ('00000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid, 'cohort-' || n || '@example.com', 'cohort-' || n || '@example.com', 'active', 'manual', 'fixture', 'fixture', '2026-01-01'::timestamptz + n * interval '1 hour', '2026-01-01'::timestamptz + n * interval '1 hour' FROM generate_series(1, 310) n`);
   sql(
     "UPDATE subscribers SET status = 'bounced' WHERE email_normalized = 'cohort-310@example.com'",
   );

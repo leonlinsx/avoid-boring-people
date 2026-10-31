@@ -94,7 +94,10 @@ export async function snapshotCampaign(
   const rows = await db`
     WITH eligible AS MATERIALIZED (
       SELECT id, COALESCE(original_subscribed_at, confirmed_at, created_at) AS subscribed_at_snapshot
-      FROM subscribers WHERE status = 'active'
+      FROM subscribers
+      WHERE status = 'active'
+        AND (confirmed_at IS NOT NULL
+          OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL))
       ORDER BY COALESCE(original_subscribed_at, confirmed_at, created_at) DESC, id
       LIMIT ${cohortSize}::int
     ), new_campaign AS (
