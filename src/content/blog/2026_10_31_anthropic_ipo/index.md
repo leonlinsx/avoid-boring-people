@@ -161,7 +161,9 @@ Anthropic does want you to view their business in terms of revenue vs compute co
 
 ![img](./a_7.webp)
 
-**Anthropic's channel fee trend seems concerning.** The company does not explicitly break out the channel fee rates, but the footnotes let us make an assumption. We know the CSP revenue increase in different periods because they tell us CSP % of rev. We also know the increase in fees paid to channel partners, which was 0.3bn in 2025 and 2.7bn in 1H 2026. This implies the older revenue had a fee of ~17%, whereas newer revenue is ~37%. I would have guessed a 15-30% take rate, so 37% seems high, and bearish if the trend continues. There could be some contract timing issues though.
+**Anthropic's channel fee trend seems concerning.** The company does not explicitly break out the channel fee rates, but the footnotes let us make an assumption. We know the CSP revenue increase in different periods because they tell us CSP % of rev. We also know the increase in fees paid to channel partners, which was 0.3bn in 2025 and 2.7bn in 1H 2026. This implies the older revenue had a fee of ~17%, whereas newer revenue is ~37% [^fee]. I would have guessed a 15-30% take rate, so 37% seems high, and bearish if the trend continues. There could be some contract timing issues though.
+
+[^fee]: This assumes a base of 0 for the initial channel fee, which undercounts the starting amount. However total S&M was 43mm in 2024 and 120mm in 1H 2025, so even if you assume all of that was channel fees, the final fee percentage still gets you to ~18% and ~36%
 
 ![img](./a_8.webp)
 
