@@ -93,7 +93,8 @@ export async function snapshotCampaign(
     cohortSize === null ? 'all-active' : `recent-subscribers:${cohortSize}`;
   const rows = await db`
     WITH eligible AS MATERIALIZED (
-      SELECT id FROM subscribers WHERE status = 'active'
+      SELECT id, COALESCE(original_subscribed_at, confirmed_at, created_at) AS subscribed_at_snapshot
+      FROM subscribers WHERE status = 'active'
       ORDER BY COALESCE(original_subscribed_at, confirmed_at, created_at) DESC, id
       LIMIT ${cohortSize}::int
     ), new_campaign AS (
@@ -102,8 +103,8 @@ export async function snapshotCampaign(
       WHERE (SELECT count(*) FROM eligible) = ${expected}
       ON CONFLICT (article_slug) DO NOTHING RETURNING id, status, content_hash, recipient_selection
     ), snapshot AS (
-      INSERT INTO campaign_recipients (campaign_id, subscriber_id, status)
-      SELECT new_campaign.id, eligible.id, 'pending' FROM new_campaign CROSS JOIN eligible
+      INSERT INTO campaign_recipients (campaign_id, subscriber_id, status, subscribed_at_snapshot)
+      SELECT new_campaign.id, eligible.id, 'pending', eligible.subscribed_at_snapshot FROM new_campaign CROSS JOIN eligible
       RETURNING campaign_id
     )
     SELECT new_campaign.*, (SELECT count(*)::int FROM snapshot) AS recipient_count, true AS created

@@ -256,6 +256,7 @@ export async function runNewsletterPresentationTests() {
     AWS_REGION: 'us-east-2',
     SES_CONFIGURATION_SET: 'fixture',
     NEWSLETTER_MAX_PRODUCTION_RECIPIENTS: '1',
+    NEWSLETTER_MAX_PRODUCTION_SENDS: '1',
     NEWSLETTER_UNSUBSCRIBE_SECRET: secret,
   };
   assert.equal(
@@ -531,9 +532,15 @@ export async function runNewsletterPresentationTests() {
     const position = sender.indexOf(`await ${check}`);
     assert.ok(position >= 0);
     assert.ok(position < sender.indexOf('const ses = new SESv2Client'));
-    assert.ok(position < sender.indexOf('await db`UPDATE'));
+    assert.ok(
+      position < sender.indexOf('const result = await deliverCampaignBatch'),
+    );
   }
-  assert.equal((sender.match(/\.\.\.config.presentation/g) ?? []).length, 2);
+  const delivery = readFileSync('src/lib/newsletter/delivery.ts', 'utf8');
+  assert.equal(
+    ((sender + delivery).match(/\.\.\.config.presentation/g) ?? []).length,
+    2,
+  );
   console.log(
     '✅ Newsletter layout, canonical page, preheader, footnotes, editorial footer and hosted allowlist preview checks passed (mock HTTP, no SES/DB)',
   );

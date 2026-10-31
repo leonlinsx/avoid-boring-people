@@ -374,7 +374,7 @@ export async function runNewsletterDraftTests() {
     const cli = readFileSync('scripts/newsletter/send-campaign.ts', 'utf8');
     assert.ok(
       cli.indexOf('await assertPublicNewsletterImages') <
-        cli.indexOf('await db`UPDATE'),
+        cli.indexOf('const result = await deliverCampaignBatch'),
     );
   } finally {
     rmSync(directory, { recursive: true, force: true });

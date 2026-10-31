@@ -30,6 +30,7 @@ import {
 } from '../../src/lib/newsletter/importer.ts';
 import {
   assertRecipientScope,
+  assertSendLimit,
   assertSesAccountReady,
   productionSendConfig,
   subscriberUnsubscribeToken,
@@ -570,12 +571,14 @@ export function testNewsletterProductionSendSafeguards() {
     AWS_REGION: 'us-east-2',
     SES_CONFIGURATION_SET: 'newsletter-events',
     NEWSLETTER_MAX_PRODUCTION_RECIPIENTS: '250',
+    NEWSLETTER_MAX_PRODUCTION_SENDS: '200',
     NEWSLETTER_UNSUBSCRIBE_SECRET: 'a-secure-test-secret-with-32-bytes-minimum',
   } as NodeJS.ProcessEnv;
   assert.deepEqual(productionSendConfig(env), {
     awsRegion: 'us-east-2',
     configurationSet: 'newsletter-events',
     maxRecipients: 250,
+    maxSends: 200,
     unsubscribeSecret: env.NEWSLETTER_UNSUBSCRIBE_SECRET,
     presentation: {
       postalAddress: undefined,
@@ -591,6 +594,18 @@ export function testNewsletterProductionSendSafeguards() {
       productionSendConfig({ ...env, NEWSLETTER_UNSUBSCRIBE_SECRET: 'short' }),
     /No email was sent/,
   );
+  for (const value of [undefined, '0', '-1', 'NaN', '1.5'])
+    assert.throws(
+      () =>
+        productionSendConfig({
+          ...env,
+          NEWSLETTER_MAX_PRODUCTION_SENDS: value,
+        }),
+      /No email was sent/,
+    );
+  assert.doesNotThrow(() => assertSendLimit(200, 200));
+  for (const value of [201, 0, -1, Number.NaN, 1.5])
+    assert.throws(() => assertSendLimit(value, 200), /No email was sent/);
   assert.doesNotThrow(() => assertRecipientScope(25, 25, 250));
   assert.throws(() => assertRecipientScope(25, 26, 250), /No email was sent/);
   assert.throws(() => assertRecipientScope(251, 251, 250), /No email was sent/);
