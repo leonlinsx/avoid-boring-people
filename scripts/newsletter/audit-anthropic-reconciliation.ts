@@ -57,13 +57,16 @@ async function main() {
   console.log('');
 
   // Event receipt breakdown (source of truth for deliverability)
+  // Per AWS: Permanent/General, NoEmail, Suppressed COUNT toward reputation;
+  // EmailValidationSuppressed, OnAccount/OnTenant/Unsubscribed do NOT;
+  // NULL or unrecognized subtype remains unknown.
   const receipts = await db`SELECT
     count(*)::int AS receipts,
     (count(*) FILTER (WHERE event_status = 'sent'))::int AS deliveries,
     (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype = 'EmailValidationSuppressed'))::int AS validation_suppressions,
-    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_type = 'Permanent' AND bounce_subtype IN ('General','NoEmail')))::int AS hard_bounces,
-    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IS NOT NULL AND bounce_subtype != 'EmailValidationSuppressed' AND bounce_subtype NOT IN ('General','NoEmail')))::int AS other_suppressions,
-    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IS NULL))::int AS unknown_bounces,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_type = 'Permanent' AND bounce_subtype IN ('General','NoEmail','Suppressed')))::int AS hard_bounces,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IN ('OnAccountSuppressionList','OnTenantSuppressionList','UnsubscribedRecipient')))::int AS other_suppressions,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND (bounce_subtype IS NULL OR bounce_subtype NOT IN ('General','NoEmail','Suppressed','EmailValidationSuppressed','OnAccountSuppressionList','OnTenantSuppressionList','UnsubscribedRecipient'))))::int AS unknown_bounces,
     (count(*) FILTER (WHERE event_status = 'bounced'))::int AS bounced_total,
     (count(*) FILTER (WHERE event_status = 'complained'))::int AS complained
     FROM newsletter_event_receipts
@@ -96,13 +99,16 @@ async function main() {
     '- Historical 207 bounced rows have NULL bounce_subtype because events.ts did not preserve it.',
   );
   console.log(
-    '- They cannot be retrospectively classified as EmailValidationSuppressed vs General/NoEmail.',
+    '- They cannot be retrospectively classified as EmailValidationSuppressed vs General/NoEmail/Suppressed; unknown remains unknown.',
   );
   console.log(
     '- No raw SNS payloads, email addresses, or tokens are stored, so re-derivation from retained rows is limited to counts above.',
   );
   console.log(
     '- Provider suppression list state is external to this database and not captured.',
+  );
+  console.log(
+    '- Actual reputation bounce rate for the 1,296 attempted sends is not fully ascertainable due to 207 unknown subtypes.',
   );
   console.log('');
   console.log('IMPLICATIONS FOR REMAINING 3,822 PENDING:');
@@ -116,26 +122,26 @@ async function main() {
     '- Those future suppressions will now be recorded with subtype and excluded from reputation bounceRate, but remain terminal (no auto-resend).',
   );
   console.log(
-    '- Real hard-bounce risk remains: unknown historical rate cannot be used to estimate true list quality.',
+    '- Real hard-bounce risk remains: unknown historical rate cannot be used to estimate true list quality; scheduled health check is inconclusive for that window.',
   );
   console.log('');
   console.log(
-    'GUARDED OPERATOR STEPS (do not execute without separate approval):',
+    'GUARDED OPERATOR STEPS (reference only — do not execute without separate explicit approval; this script does not authorize sending):',
   );
   console.log(
-    '1. Apply migration 007_bounce_classification.sql via direct DB connection (read docs/migration instructions).',
+    '1. Apply migration 007_bounce_classification.sql via direct DB connection (read docs/migration instructions), if separately approved.',
   );
   console.log(
     '2. Verify with: npm run newsletter:status -- bc9c04a7-90ee-4036-84a7-c442c79e549e (read-only, no PII).',
   );
   console.log(
-    '3. Re-run this audit to confirm pending=3822, indeterminate=0, status=paused.',
+    '3. Re-run this audit to confirm pending=3822, indeterminate=0, status=paused. Do not change recipient ledger.',
   );
   console.log(
-    '4. Obtain explicit resumption approval for pending-only send with same campaign ID, count 5118, same content hash, and bounded --send-limit.',
+    '4. Any resumption — if separately approved — must use the guarded interface with exact expectations, e.g.: npm run newsletter:send -- <campaign-id> --expect-recipients 5118 --expect-content <preview-sha256> --send-limit <limit> --confirm-production (see docs/newsletter-aws-runbook.md). This audit does not approve sending.',
   );
   console.log(
-    '5. Monitor SES reputation dashboard; hold if genuine hard-bounce rate >=2% or complaint >=0.1%.',
+    '5. Monitor SES reputation dashboard; hold if known hard-bounce rate (General/NoEmail/Suppressed) >=2% or complaint >=0.1%, or if unknown rate makes the window inconclusive.',
   );
 }
 

@@ -204,19 +204,20 @@ export async function collectNewsletterMetrics(
   // ingestion is alive, even when it is a transient bounce that maps to none of
   // the three statuses below.
   //
-  // Bounce subtypes are preserved from SES: Permanent/General and NoEmail are
-  // genuine recipient-server hard bounces; EmailValidationSuppressed is SES Auto
-  // Validation (not reputation-impacting); other non-null subtypes are other
-  // SES suppressions; NULL subtype is historical unknown and is never guessed.
+  // Bounce subtypes are preserved from SES: Permanent/General, NoEmail,
+  // and Suppressed (SES global suppression list) COUNT toward SES reputation;
+  // EmailValidationSuppressed, OnAccountSuppressionList,
+  // OnTenantSuppressionList, UnsubscribedRecipient do NOT; NULL or
+  // unrecognized subtypes remain unknown and are never guessed.
   let deliveryRows: Row[];
   try {
     deliveryRows = (await db`SELECT
     count(*)::int AS receipts,
     (count(*) FILTER (WHERE event_status = 'sent'))::int AS deliveries,
     (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype = 'EmailValidationSuppressed'))::int AS validation_suppressions,
-    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_type = 'Permanent' AND bounce_subtype IN ('General', 'NoEmail')))::int AS hard_bounces,
-    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IS NOT NULL AND bounce_subtype != 'EmailValidationSuppressed' AND bounce_subtype NOT IN ('General', 'NoEmail')))::int AS other_suppressions,
-    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IS NULL))::int AS unknown_bounces,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_type = 'Permanent' AND bounce_subtype IN ('General', 'NoEmail', 'Suppressed')))::int AS hard_bounces,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IN ('OnAccountSuppressionList', 'OnTenantSuppressionList', 'UnsubscribedRecipient')))::int AS other_suppressions,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND (bounce_subtype IS NULL OR bounce_subtype NOT IN ('General', 'NoEmail', 'Suppressed', 'EmailValidationSuppressed', 'OnAccountSuppressionList', 'OnTenantSuppressionList', 'UnsubscribedRecipient'))))::int AS unknown_bounces,
     (count(*) FILTER (WHERE event_status = 'bounced'))::int AS bounced,
     (count(*) FILTER (WHERE event_status = 'complained'))::int AS complained
     FROM newsletter_event_receipts
@@ -228,7 +229,7 @@ export async function collectNewsletterMetrics(
   } catch (error) {
     const isMissingColumn =
       error instanceof Error &&
-      /column "?bounce_(type|subtype)"? does not exist/i.test(error.message);
+      /bounce_(type|subtype).*does not exist/i.test(error.message);
     if (!isMissingColumn) throw error;
     deliveryRows = (await db`SELECT
     count(*)::int AS receipts,
@@ -428,6 +429,27 @@ export function buildMetrics(input: {
       `Bounce rate ${formatRate(deliverability.bounceRate)} of ${formatNumber(sends)} sends is at or above the 2% SES investigation threshold.`,
       true,
     );
+  // Historical unknowns hide the true reputation impact: a healthy known rate
+  // with 207 unknowns would otherwise look green. If the worst case (unknowns
+  // counted as hard bounces) crosses the threshold, the check must fail as
+  // inconclusive rather than reporting a false green.
+  if (ratesComparable && deliverability.unknownBounces > 0) {
+    const worstCaseBounceRate =
+      (deliverability.hardBounces + deliverability.unknownBounces) / sends;
+    if (worstCaseBounceRate >= BOUNCE_RATE_ALERT) {
+      const knownRate = formatRate(deliverability.bounceRate);
+      const worstRate = formatRate(worstCaseBounceRate);
+      pushAlert(
+        `Bounce rate is inconclusive: ${formatNumber(deliverability.unknownBounces)} of ${formatNumber(sends)} sends in this window have unknown bounce subtype (historical or unrecognized) and cannot be classified. Known hard-bounce rate is ${knownRate}, but worst-case rate if unknowns are hard bounces is ${worstRate} — at or above the 2% SES threshold. Investigate SES suppression reasons before resuming.`,
+        true,
+      );
+    } else {
+      // Below threshold but still material — visible as alert, not failure.
+      pushAlert(
+        `Bounce rate is partially inconclusive: ${formatNumber(deliverability.unknownBounces)} bounce(s) in this window have unknown subtype and were excluded from the ${formatRate(deliverability.bounceRate)} known hard-bounce rate. Actual rate cannot be fully ascertained.`,
+      );
+    }
+  }
   // Dead-man's switch for the ingestion path: receipts only exist while the SNS
   // subscription and the event destination work, so a send that is past the
   // grace period with no correlated receipt at all means events stopped
@@ -462,11 +484,14 @@ export function buildMetrics(input: {
     );
   if (
     deliverability.validationSuppressions > 0 ||
-    deliverability.otherSuppressions > 0 ||
-    deliverability.unknownBounces > 0
+    deliverability.otherSuppressions > 0
   )
     notes.push(
-      `SES suppressions excluded from reputation bounce rate: ${formatNumber(deliverability.validationSuppressions)} validation, ${formatNumber(deliverability.otherSuppressions)} other, ${formatNumber(deliverability.unknownBounces)} unknown (historical).`,
+      `SES suppressions excluded from reputation bounce rate (per AWS): ${formatNumber(deliverability.validationSuppressions)} validation (EmailValidationSuppressed), ${formatNumber(deliverability.otherSuppressions)} other (OnAccount/OnTenant/Unsubscribed).`,
+    );
+  if (deliverability.unknownBounces > 0)
+    notes.push(
+      `Unknown bounce subtypes excluded from rate but material: ${formatNumber(deliverability.unknownBounces)} bounce(s) with NULL or unrecognized subtype — actual reputation bounce rate is not fully ascertainable. Do not treat the known rate as conclusive.`,
     );
 
   // Every comparison below puts window counts against the same-length window,
@@ -583,22 +608,21 @@ export function renderNewsletterReport(metrics: NewsletterMetrics): string {
     );
 
   const totalSuppressionDetail =
-    deliverability.validationSuppressions +
-    deliverability.otherSuppressions +
-    deliverability.unknownBounces;
+    deliverability.validationSuppressions + deliverability.otherSuppressions;
   lines.push(
     '',
     `DELIVERABILITY (last ${metrics.windowDays} days)`,
     `${labeled('sends', formatNumber(deliverability.sends))}   deliveries: ${formatNumber(deliverability.deliveries)}`,
-    `${labeled('hard bounces', formatNumber(deliverability.hardBounces))}   rate: ${formatRate(deliverability.bounceRate)}`,
-    `${labeled('validation suppressed', formatNumber(deliverability.validationSuppressions))}   (SES Auto Validation, not reputation)`,
-    `${labeled('other suppressions', formatNumber(deliverability.otherSuppressions))}`,
-    `${labeled('unknown bounces', formatNumber(deliverability.unknownBounces))}   (historical, subtype not stored)`,
+    `${labeled('hard bounces', formatNumber(deliverability.hardBounces))}   rate: ${formatRate(deliverability.bounceRate)}   (Permanent/General, NoEmail, Suppressed — counts toward SES reputation)`,
+    `${labeled('validation suppressed', formatNumber(deliverability.validationSuppressions))}   (EmailValidationSuppressed, not reputation)`,
+    `${labeled('other suppressions', formatNumber(deliverability.otherSuppressions))}   (OnAccount/OnTenant/Unsubscribed, not reputation)`,
+    `${labeled('unknown bounces', formatNumber(deliverability.unknownBounces))}   (NULL or unrecognized subtype — NOT counted, actual rate not fully ascertainable)`,
     `${labeled('complaints', formatNumber(deliverability.complaints))}   rate: ${formatRate(deliverability.complaintRate)}`,
     `${labeled('pending', formatNumber(deliverability.pending))}   (current campaign_recipients pending, all campaigns)`,
     "  (rates cover this window's sends; SES events arrive asynchronously, so a",
     '  campaign sent in the last hours may still be reconciling)',
-    `  (reputation bounce rate counts only genuine hard bounces; ${formatNumber(totalSuppressionDetail)} suppression/unknown excluded)`,
+    `  (reputation bounce rate counts only known hard bounces; ${formatNumber(totalSuppressionDetail)} reputation-excluded suppressions excluded)`,
+    `  (${formatNumber(deliverability.unknownBounces)} unknown bounce(s) excluded from rate — actual rate not fully ascertainable)`,
     '',
     'QUALITY',
     '  paid and gifted subscribers: none — the newsletter is free-only, so paid',

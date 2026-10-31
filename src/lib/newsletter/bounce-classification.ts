@@ -14,25 +14,38 @@ const VALID_TYPE_SET = new Set<string>(VALID_BOUNCE_TYPES);
 
 // SES bounceSubType vocabulary from https://docs.aws.amazon.com/ses/latest/dg/notification-contents.html
 // plus EmailValidationSuppressed from Auto Validation.
+//
+// AWS reputation guidance (https://docs.aws.amazon.com/ses/latest/dg/best-practices-bounces.html):
+// - Permanent/General, Permanent/NoEmail, Permanent/Suppressed (SES global suppression list) COUNT toward bounce rate.
+// - EmailValidationSuppressed, OnAccountSuppressionList, OnTenantSuppressionList, UnsubscribedRecipient do NOT.
 export const VALIDATION_SUPPRESSED = 'EmailValidationSuppressed' as const;
 
-export const GENUINE_HARD_BOUNCE_SUBTYPES = ['General', 'NoEmail'] as const;
-
-export const OTHER_SUPPRESSION_SUBTYPES = [
+export const REPUTATION_HARD_BOUNCE_SUBTYPES = [
+  'General',
+  'NoEmail',
   'Suppressed',
+] as const;
+
+export const REPUTATION_EXCLUDED_SUPPRESSION_SUBTYPES = [
+  'EmailValidationSuppressed',
   'OnAccountSuppressionList',
   'OnTenantSuppressionList',
   'UnsubscribedRecipient',
 ] as const;
 
-const GENUINE_SET = new Set<string>(GENUINE_HARD_BOUNCE_SUBTYPES);
-const OTHER_SET = new Set<string>(OTHER_SUPPRESSION_SUBTYPES);
+// Back-compat aliases for tests/docs that imported the old names.
+export const GENUINE_HARD_BOUNCE_SUBTYPES = REPUTATION_HARD_BOUNCE_SUBTYPES;
+export const OTHER_SUPPRESSION_SUBTYPES =
+  REPUTATION_EXCLUDED_SUPPRESSION_SUBTYPES;
+
+const REPUTATION_SET = new Set<string>(REPUTATION_HARD_BOUNCE_SUBTYPES);
+const EXCLUDED_SET = new Set<string>(REPUTATION_EXCLUDED_SUPPRESSION_SUBTYPES);
 
 export type BounceCategory =
-  | 'hard_bounce' // genuine receiving-server Permanent failure: General, NoEmail
-  | 'validation_suppression' // EmailValidationSuppressed only
-  | 'other_suppression' // Suppressed, OnAccountSuppressionList, etc. or future unknown
-  | 'unknown'; // historical Permanent with no stored subtype
+  | 'hard_bounce' // Permanent/General, NoEmail, Suppressed — counts toward SES reputation
+  | 'validation_suppression' // EmailValidationSuppressed — excluded
+  | 'other_suppression' // OnAccountSuppressionList, OnTenantSuppressionList, UnsubscribedRecipient — excluded
+  | 'unknown'; // historical NULL subtype or unrecognized subtype — not guessed
 
 export function normalizeBounceType(value: unknown): BounceType | null {
   if (typeof value !== 'string') return null;
@@ -59,11 +72,10 @@ export function classifyBounce(
   if (bounceType !== 'Permanent') return null;
   if (bounceSubType === null) return 'unknown';
   if (bounceSubType === VALIDATION_SUPPRESSED) return 'validation_suppression';
-  if (GENUINE_SET.has(bounceSubType)) return 'hard_bounce';
-  if (OTHER_SET.has(bounceSubType)) return 'other_suppression';
-  // Future or unlisted subtypes are treated as other suppression, not hard
-  // bounce, to avoid overstating reputation-impacting failures.
-  return 'other_suppression';
+  if (REPUTATION_SET.has(bounceSubType)) return 'hard_bounce';
+  if (EXCLUDED_SET.has(bounceSubType)) return 'other_suppression';
+  // Unrecognized subtypes remain unknown — do not guess reputation impact.
+  return 'unknown';
 }
 
 export function isValidationSuppression(

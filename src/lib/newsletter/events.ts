@@ -122,7 +122,7 @@ export async function recordSesEvent(
   } catch (error) {
     const isMissingColumn =
       error instanceof Error &&
-      /column "?bounce_(type|subtype)"? does not exist/i.test(error.message);
+      /bounce_(type|subtype).*does not exist/i.test(error.message);
     if (!isMissingColumn) throw error;
     await db`WITH receipt AS (
     INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at)
@@ -189,7 +189,7 @@ export async function reconcileSesMessage(
   } catch (error) {
     const isMissingColumn =
       error instanceof Error &&
-      /column "?bounce_(type|subtype)"? does not exist/i.test(error.message);
+      /bounce_(type|subtype).*does not exist/i.test(error.message);
     if (!isMissingColumn) throw error;
     await db`WITH event_state AS (
     SELECT CASE
