@@ -66,7 +66,11 @@ export type DeliverabilityMetrics = {
   sends: number;
   deliveries: number;
   hardBounces: number;
+  validationSuppressions: number;
+  otherSuppressions: number;
+  unknownBounces: number;
   complaints: number;
+  pending: number;
   bounceRate: number | null;
   complaintRate: number | null;
 };
@@ -199,7 +203,34 @@ export async function collectNewsletterMetrics(
   // receipt count is collected separately because a receipt of any kind proves
   // ingestion is alive, even when it is a transient bounce that maps to none of
   // the three statuses below.
-  const deliveryRows = await db`SELECT
+  //
+  // Bounce subtypes are preserved from SES: Permanent/General and NoEmail are
+  // genuine recipient-server hard bounces; EmailValidationSuppressed is SES Auto
+  // Validation (not reputation-impacting); other non-null subtypes are other
+  // SES suppressions; NULL subtype is historical unknown and is never guessed.
+  let deliveryRows: Row[];
+  try {
+    deliveryRows = (await db`SELECT
+    count(*)::int AS receipts,
+    (count(*) FILTER (WHERE event_status = 'sent'))::int AS deliveries,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype = 'EmailValidationSuppressed'))::int AS validation_suppressions,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_type = 'Permanent' AND bounce_subtype IN ('General', 'NoEmail')))::int AS hard_bounces,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IS NOT NULL AND bounce_subtype != 'EmailValidationSuppressed' AND bounce_subtype NOT IN ('General', 'NoEmail')))::int AS other_suppressions,
+    (count(*) FILTER (WHERE event_status = 'bounced' AND bounce_subtype IS NULL))::int AS unknown_bounces,
+    (count(*) FILTER (WHERE event_status = 'bounced'))::int AS bounced,
+    (count(*) FILTER (WHERE event_status = 'complained'))::int AS complained
+    FROM newsletter_event_receipts
+    WHERE event_at >= ${at(windowStart)}::timestamptz AND event_at < ${at(now)}::timestamptz
+      AND EXISTS (
+        SELECT 1 FROM campaign_recipients
+        WHERE campaign_recipients.provider_message_id = newsletter_event_receipts.provider_message_id
+      )`) as Row[];
+  } catch (error) {
+    const isMissingColumn =
+      error instanceof Error &&
+      /column "?bounce_(type|subtype)"? does not exist/i.test(error.message);
+    if (!isMissingColumn) throw error;
+    deliveryRows = (await db`SELECT
     count(*)::int AS receipts,
     (count(*) FILTER (WHERE event_status = 'sent'))::int AS deliveries,
     (count(*) FILTER (WHERE event_status = 'bounced'))::int AS bounced,
@@ -209,7 +240,8 @@ export async function collectNewsletterMetrics(
       AND EXISTS (
         SELECT 1 FROM campaign_recipients
         WHERE campaign_recipients.provider_message_id = newsletter_event_receipts.provider_message_id
-      )`;
+      )`) as Row[];
+  }
 
   const deliveryGraceStart = new Date(now.getTime() - DELIVERY_GRACE_MS);
   const sendRows = await db`SELECT
@@ -217,6 +249,17 @@ export async function collectNewsletterMetrics(
     (count(*) FILTER (WHERE sent_at < ${at(deliveryGraceStart)}::timestamptz))::int AS sends_before_delivery_grace
     FROM campaign_recipients
     WHERE sent_at >= ${at(windowStart)}::timestamptz AND sent_at < ${at(now)}::timestamptz`;
+
+  let pendingRows: Row[];
+  try {
+    pendingRows =
+      (await db`SELECT count(*)::int AS pending FROM campaign_recipients WHERE status = 'pending'`) as Row[];
+  } catch (error) {
+    const isMissingColumn =
+      error instanceof Error && /does not exist/i.test(error.message);
+    if (!isMissingColumn) throw error;
+    pendingRows = [{ pending: 0 }];
+  }
 
   return buildMetrics({
     days,
@@ -227,6 +270,7 @@ export async function collectNewsletterMetrics(
     acquisitionRows: acquisitionRows as Row[],
     deliveryRows: deliveryRows as Row[],
     sendRows: sendRows as Row[],
+    pendingRows: pendingRows as Row[],
   });
 }
 
@@ -239,6 +283,7 @@ export function buildMetrics(input: {
   acquisitionRows: Row[];
   deliveryRows: Row[];
   sendRows: Row[];
+  pendingRows?: Row[];
 }): NewsletterMetrics {
   const { days, now, windowStart } = input;
 
@@ -312,13 +357,32 @@ export function buildMetrics(input: {
     input.sendRows[0]?.sends_before_delivery_grace,
   );
   const receipts = count(deliveryRow.receipts);
-  const hardBounces = count(deliveryRow.bounced);
+  // New subtype split: historical rows without subtype are unknown and never
+  // counted as hard bounces. Validation suppressions never count toward
+  // bounceRate because SES excludes them from reputation.
+  const pending = count((input.pendingRows?.[0] as Row | undefined)?.pending);
+  const hardBounces = count(
+    deliveryRow.hard_bounces ?? deliveryRow.hardBounces ?? deliveryRow.bounced,
+  );
+  const validationSuppressions = count(
+    deliveryRow.validation_suppressions ?? deliveryRow.validationSuppressions,
+  );
+  const otherSuppressions = count(
+    deliveryRow.other_suppressions ?? deliveryRow.otherSuppressions,
+  );
+  const unknownBounces = count(
+    deliveryRow.unknown_bounces ?? deliveryRow.unknownBounces,
+  );
   const complaints = count(deliveryRow.complained);
   const deliverability: DeliverabilityMetrics = {
     sends,
     deliveries: count(deliveryRow.deliveries),
     hardBounces,
+    validationSuppressions,
+    otherSuppressions,
+    unknownBounces,
     complaints,
+    pending,
     bounceRate: ratio(hardBounces, sends),
     complaintRate: ratio(complaints, sends),
   };
@@ -373,7 +437,12 @@ export function buildMetrics(input: {
       `Delivery-event ingestion may have stopped: ${formatNumber(sendsBeforeDeliveryGrace)} sends in this window are past the one-hour grace period and no SES event receipt has been correlated to them.`,
       true,
     );
-  const deliveryEvents = deliverability.hardBounces + deliverability.complaints;
+  const totalBounced =
+    deliverability.hardBounces +
+    deliverability.validationSuppressions +
+    deliverability.otherSuppressions +
+    deliverability.unknownBounces;
+  const deliveryEvents = totalBounced + deliverability.complaints;
   // The EXISTS join above means a receipt here always matches a
   // `campaign_recipients` row, so an event in the window whose send is not is a
   // late or retried event (or a window boundary artifact), not necessarily an
@@ -390,6 +459,14 @@ export function buildMetrics(input: {
   if (deliveryEvents > 0)
     notes.push(
       `net subscriber change excludes ${deliveryEvents} bounces and complaints in this window.`,
+    );
+  if (
+    deliverability.validationSuppressions > 0 ||
+    deliverability.otherSuppressions > 0 ||
+    deliverability.unknownBounces > 0
+  )
+    notes.push(
+      `SES suppressions excluded from reputation bounce rate: ${formatNumber(deliverability.validationSuppressions)} validation, ${formatNumber(deliverability.otherSuppressions)} other, ${formatNumber(deliverability.unknownBounces)} unknown (historical).`,
     );
 
   // Every comparison below puts window counts against the same-length window,
@@ -505,14 +582,23 @@ export function renderNewsletterReport(metrics: NewsletterMetrics): string {
       `  shares withheld: fewer than ${MIN_SHARE_SAMPLE} new subscribers in this window`,
     );
 
+  const totalSuppressionDetail =
+    deliverability.validationSuppressions +
+    deliverability.otherSuppressions +
+    deliverability.unknownBounces;
   lines.push(
     '',
     `DELIVERABILITY (last ${metrics.windowDays} days)`,
     `${labeled('sends', formatNumber(deliverability.sends))}   deliveries: ${formatNumber(deliverability.deliveries)}`,
     `${labeled('hard bounces', formatNumber(deliverability.hardBounces))}   rate: ${formatRate(deliverability.bounceRate)}`,
+    `${labeled('validation suppressed', formatNumber(deliverability.validationSuppressions))}   (SES Auto Validation, not reputation)`,
+    `${labeled('other suppressions', formatNumber(deliverability.otherSuppressions))}`,
+    `${labeled('unknown bounces', formatNumber(deliverability.unknownBounces))}   (historical, subtype not stored)`,
     `${labeled('complaints', formatNumber(deliverability.complaints))}   rate: ${formatRate(deliverability.complaintRate)}`,
+    `${labeled('pending', formatNumber(deliverability.pending))}   (current campaign_recipients pending, all campaigns)`,
     "  (rates cover this window's sends; SES events arrive asynchronously, so a",
     '  campaign sent in the last hours may still be reconciling)',
+    `  (reputation bounce rate counts only genuine hard bounces; ${formatNumber(totalSuppressionDetail)} suppression/unknown excluded)`,
     '',
     'QUALITY',
     '  paid and gifted subscribers: none — the newsletter is free-only, so paid',

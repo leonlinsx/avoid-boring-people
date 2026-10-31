@@ -1,6 +1,10 @@
 import { newsletterAlert } from './alerting.ts';
 import { neonDb } from '../neon.ts';
 import type { SnsEnvelope } from './sns.ts';
+import {
+  normalizeBounceSubType,
+  normalizeBounceType,
+} from './bounce-classification.ts';
 
 type SesRecipient = { emailAddress?: unknown };
 type SesEvent = {
@@ -9,6 +13,7 @@ type SesEvent = {
   delivery?: { timestamp?: unknown };
   bounce?: {
     bounceType?: unknown;
+    bounceSubType?: unknown;
     timestamp?: unknown;
     bouncedRecipients?: unknown;
   };
@@ -51,10 +56,15 @@ export async function recordSesEvent(
   // The state the event type implies, before we know whether it can be tied to a
   // send. A transient bounce is not a subscriber state change, so it maps to
   // null and is never alerted on.
+  const rawBounceType = event.bounce?.bounceType;
+  const rawBounceSubType = (event.bounce as { bounceSubType?: unknown })
+    ?.bounceSubType;
+  const normalizedBounceType = normalizeBounceType(rawBounceType);
+  const normalizedBounceSubType = normalizeBounceSubType(rawBounceSubType);
   const eventStatus =
     event.eventType === 'Delivery'
       ? 'sent'
-      : event.eventType === 'Bounce' && event.bounce?.bounceType === 'Permanent'
+      : event.eventType === 'Bounce' && normalizedBounceType === 'Permanent'
         ? 'bounced'
         : event.eventType === 'Complaint'
           ? 'complained'
@@ -72,6 +82,10 @@ export async function recordSesEvent(
         ? event.bounce?.timestamp
         : event.complaint?.timestamp,
   );
+  // Privacy-safe: only validated type/subtype are persisted. Raw payloads,
+  // email addresses, and tokens never reach logs.
+  const bounceType = status === 'bounced' ? normalizedBounceType : null;
+  const bounceSubType = status === 'bounced' ? normalizedBounceSubType : null;
   // Redacted complaint recipients must never fall back to mail.destination.
   const emails = recipientEmails(
     status === 'bounced'
@@ -83,7 +97,34 @@ export async function recordSesEvent(
 
   // One atomic statement: failed updates roll back the deduplication receipt too.
   // Every mutation depends on the newly inserted receipt, including concurrent retries.
-  await db`WITH receipt AS (
+  try {
+    await db`WITH receipt AS (
+    INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at, bounce_type, bounce_subtype)
+    VALUES ('sns', ${envelope.MessageId}, ${messageId}, ${status}, ${at}::timestamptz, ${bounceType}, ${bounceSubType})
+    ON CONFLICT DO NOTHING RETURNING event_id
+  ), recipients AS (
+    UPDATE campaign_recipients SET
+      status = CASE WHEN status IN ('bounced', 'complained') THEN status ELSE ${status} END,
+      delivered_at = CASE WHEN ${status} = 'sent' THEN COALESCE(delivered_at, ${at}::timestamptz) ELSE delivered_at END,
+      bounced_at = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounced_at, ${at}::timestamptz) ELSE bounced_at END,
+      complained_at = CASE WHEN ${status} = 'complained' THEN COALESCE(complained_at, ${at}::timestamptz) ELSE complained_at END,
+      bounce_type = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounce_type, ${bounceType}::text) ELSE bounce_type END,
+      bounce_subtype = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounce_subtype, ${bounceSubType}::text) ELSE bounce_subtype END,
+      last_event_at = now()
+    WHERE provider_message_id = ${messageId} AND ${status}::text IS NOT NULL
+      AND EXISTS (SELECT 1 FROM receipt)
+    RETURNING subscriber_id
+  )
+  UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+    WHERE status IN ('pending', 'active', 'unsubscribed') AND ${status}::text IN ('bounced', 'complained')
+      AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
+      AND EXISTS (SELECT 1 FROM receipt)`;
+  } catch (error) {
+    const isMissingColumn =
+      error instanceof Error &&
+      /column "?bounce_(type|subtype)"? does not exist/i.test(error.message);
+    if (!isMissingColumn) throw error;
+    await db`WITH receipt AS (
     INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at)
     VALUES ('sns', ${envelope.MessageId}, ${messageId}, ${status}, ${at}::timestamptz)
     ON CONFLICT DO NOTHING RETURNING event_id
@@ -102,13 +143,55 @@ export async function recordSesEvent(
     WHERE status IN ('pending', 'active', 'unsubscribed') AND ${status}::text IN ('bounced', 'complained')
       AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
       AND EXISTS (SELECT 1 FROM receipt)`;
+  }
 }
 
 export async function reconcileSesMessage(
   messageId: string,
   db = neonDb('Newsletter'),
 ): Promise<void> {
-  await db`WITH event_state AS (
+  try {
+    await db`WITH event_state AS (
+    SELECT CASE
+        WHEN bool_or(event_status = 'complained') THEN 'complained'
+        WHEN bool_or(event_status = 'bounced') THEN 'bounced'
+        WHEN bool_or(event_status = 'sent') THEN 'sent'
+        ELSE NULL
+      END AS status,
+      min(event_at) FILTER (WHERE event_status = 'sent') AS delivered_at,
+      min(event_at) FILTER (WHERE event_status = 'bounced') AS bounced_at,
+      min(event_at) FILTER (WHERE event_status = 'complained') AS complained_at,
+      min(bounce_type) FILTER (WHERE event_status = 'bounced') AS bounce_type,
+      min(bounce_subtype) FILTER (WHERE event_status = 'bounced') AS bounce_subtype
+    FROM newsletter_event_receipts WHERE provider_message_id = ${messageId}
+  ), recipients AS (
+    UPDATE campaign_recipients SET
+      status = CASE
+        WHEN campaign_recipients.status = 'complained' OR event_state.status = 'complained' THEN 'complained'
+        WHEN campaign_recipients.status = 'bounced' OR event_state.status = 'bounced' THEN 'bounced'
+        WHEN event_state.status = 'sent' THEN 'sent'
+        ELSE campaign_recipients.status
+      END,
+      delivered_at = COALESCE(campaign_recipients.delivered_at, event_state.delivered_at),
+      bounced_at = COALESCE(campaign_recipients.bounced_at, event_state.bounced_at),
+      complained_at = COALESCE(campaign_recipients.complained_at, event_state.complained_at),
+      bounce_type = COALESCE(campaign_recipients.bounce_type, event_state.bounce_type),
+      bounce_subtype = COALESCE(campaign_recipients.bounce_subtype, event_state.bounce_subtype),
+      last_event_at = CASE WHEN event_state.status IS NULL THEN campaign_recipients.last_event_at ELSE now() END
+    FROM event_state
+    WHERE campaign_recipients.provider_message_id = ${messageId} AND event_state.status IS NOT NULL
+    RETURNING campaign_recipients.subscriber_id, campaign_recipients.status
+  )
+  UPDATE subscribers SET status = recipients.status::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+  FROM recipients
+  WHERE subscribers.id = recipients.subscriber_id AND subscribers.status IN ('pending', 'active', 'unsubscribed')
+    AND recipients.status IN ('bounced', 'complained')`;
+  } catch (error) {
+    const isMissingColumn =
+      error instanceof Error &&
+      /column "?bounce_(type|subtype)"? does not exist/i.test(error.message);
+    if (!isMissingColumn) throw error;
+    await db`WITH event_state AS (
     SELECT CASE
         WHEN bool_or(event_status = 'complained') THEN 'complained'
         WHEN bool_or(event_status = 'bounced') THEN 'bounced'
@@ -139,4 +222,5 @@ export async function reconcileSesMessage(
   FROM recipients
   WHERE subscribers.id = recipients.subscriber_id AND subscribers.status IN ('pending', 'active', 'unsubscribed')
     AND recipients.status IN ('bounced', 'complained')`;
+  }
 }
