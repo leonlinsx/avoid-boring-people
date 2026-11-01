@@ -23,8 +23,22 @@ if (!Number.isSafeInteger(limit) || limit < 0 || limit > 100)
 const db = neonDb('Newsletter');
 const preview = await previewAudience(db);
 
+// Fetch sample rows before emitting any output so JSON mode can emit a single document.
+let sampleRows:
+  Awaited<ReturnType<typeof previewDeliveryUnverified>> | undefined;
+let sample: Array<{ id: string; created_at: string }> | undefined;
+if (limit > 0 && preview.activeUnverified > 0) {
+  sampleRows = await previewDeliveryUnverified(db, limit);
+  // JSON sample must never contain raw email addresses or tokens — only id/created_at.
+  sample = sampleRows.map((r) => ({ id: r.id, created_at: r.created_at }));
+}
+
 if (json) {
-  console.log(JSON.stringify(preview, null, 2));
+  const output: Record<string, unknown> = { ...preview };
+  if (sample !== undefined) output.sample = sample;
+  // One valid JSON document even when --limit>0 and sample rows exist.
+  // No raw email addresses or tokens are included; sample contains only id/created_at.
+  console.log(JSON.stringify(output, null, 2));
 } else {
   const pad = (label: string, value: number | string) =>
     `  ${label.padEnd(26)}${String(value).padStart(8)}`;
@@ -85,30 +99,19 @@ if (json) {
   for (const note of preview.overlapNotes) console.log(`  • ${note}`);
   if (!preview.subtypeDetailAvailable)
     console.log('  (subtype detail unavailable — apply migration 007)');
-}
 
-if (limit > 0 && preview.activeUnverified > 0) {
-  const rows = await previewDeliveryUnverified(db, limit);
-  if (!json) {
+  if (sampleRows !== undefined) {
     console.log('');
     console.log(`DELIVERY-UNVERIFIED SAMPLE (up to ${limit}, newest first)`);
-    console.log(
-      '  id                                   | normalized email hash prefix | created_at',
-    );
-    for (const row of rows) {
-      // Do not print raw email addresses to stdout; show only a prefix hint.
-      const hint = row.email_normalized.slice(0, 3) + '***';
-      console.log(`  ${row.id} | ${hint.padEnd(28)} | ${row.created_at}`);
+    console.log('  id                                   | created_at');
+    if (sampleRows.length === 0) {
+      console.log('  (none)');
+    } else {
+      for (const row of sampleRows) {
+        // Never print raw email addresses or tokens; id + timestamp are sufficient for operator review.
+        // The full email_normalized is available in the DB but deliberately not echoed.
+        console.log(`  ${row.id} | ${row.created_at}`);
+      }
     }
-    if (rows.length === 0) console.log('  (none)');
-  } else {
-    // JSON mode: include the sample under a separate key.
-    console.log(
-      JSON.stringify(
-        { sample: rows.map((r) => ({ id: r.id, created_at: r.created_at })) },
-        null,
-        2,
-      ),
-    );
   }
 }

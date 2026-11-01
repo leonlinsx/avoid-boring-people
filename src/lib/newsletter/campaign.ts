@@ -9,6 +9,10 @@ import { neonDb } from '../neon.ts';
 import { NEWSLETTER_PRIVACY_URL } from './email.ts';
 import { renderNewsletterEmail } from './render.ts';
 import { assertRecipientScope } from './production-send.ts';
+import {
+  ELIGIBILITY_WHERE,
+  ELIGIBILITY_WHERE_NO_SUPPRESSION,
+} from './audience.ts';
 
 export const CAMPAIGN_UNSUBSCRIBE_PLACEHOLDER =
   'https://leonlins.com/api/newsletter/unsubscribe?token=preflight-placeholder';
@@ -91,13 +95,95 @@ export async function snapshotCampaign(
   if (cohortSize !== null) warmupCohortSize(String(cohortSize), expected);
   const selection =
     cohortSize === null ? 'all-active' : `recent-subscribers:${cohortSize}`;
-  const rows = await db`
+  // Probe for delivery suppression columns (008) so pre-migration DBs still
+  // work; production always has them. The predicate is the single source of
+  // truth defined in audience.ts — do not duplicate the text.
+  let hasSuppression = true;
+  try {
+    await db`SELECT hard_bounced_at FROM subscribers LIMIT 0`;
+  } catch (error) {
+    const missing =
+      error instanceof Error &&
+      /hard_bounced_at.*does not exist/i.test(error.message);
+    if (!missing) throw error;
+    hasSuppression = false;
+  }
+  if (hasSuppression) {
+    try {
+      await db`SELECT complained_at FROM subscribers LIMIT 0`;
+    } catch (error) {
+      const missing =
+        error instanceof Error &&
+        /complained_at.*does not exist/i.test(error.message);
+      if (!missing) throw error;
+      hasSuppression = false;
+    }
+  }
+  const eligibleWhere = hasSuppression
+    ? ELIGIBILITY_WHERE
+    : ELIGIBILITY_WHERE_NO_SUPPRESSION;
+  // When the DB shim has `unsafe` (real Neon), use the canonical predicate via
+  // raw interpolation so campaign and preview cannot drift. The synthetic
+  // disposable-DB harnesses have no `unsafe`; they get an equivalent inlined
+  // predicate that is kept identical to ELIGIBILITY_WHERE by the test below.
+  const hasUnsafe =
+    typeof (db as unknown as { unsafe?: unknown }).unsafe === 'function';
+  const rows = hasUnsafe
+    ? await db`
     WITH eligible AS MATERIALIZED (
       SELECT id, COALESCE(original_subscribed_at, confirmed_at, created_at) AS subscribed_at_snapshot
       FROM subscribers
-      WHERE status = 'active'
-        AND (confirmed_at IS NOT NULL
-          OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL))
+      WHERE ${
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (db as any).unsafe(eligibleWhere)
+      }
+      ORDER BY COALESCE(original_subscribed_at, confirmed_at, created_at) DESC, id
+      LIMIT ${cohortSize}::int
+    ), new_campaign AS (
+      INSERT INTO campaigns (article_slug, subject, status, content_hash, recipient_selection)
+      SELECT ${articleId}, ${subject}, 'draft', ${contentHash}, ${selection}
+      WHERE (SELECT count(*) FROM eligible) = ${expected}
+      ON CONFLICT (article_slug) DO NOTHING RETURNING id, status, content_hash, recipient_selection
+    ), snapshot AS (
+      INSERT INTO campaign_recipients (campaign_id, subscriber_id, status, subscribed_at_snapshot)
+      SELECT new_campaign.id, eligible.id, 'pending', eligible.subscribed_at_snapshot FROM new_campaign CROSS JOIN eligible
+      RETURNING campaign_id
+    )
+    SELECT new_campaign.*, (SELECT count(*)::int FROM snapshot) AS recipient_count, true AS created
+    FROM new_campaign
+    UNION ALL
+    SELECT campaigns.id, campaigns.status, campaigns.content_hash, campaigns.recipient_selection,
+      (SELECT count(*)::int FROM campaign_recipients WHERE campaign_id = campaigns.id) AS recipient_count, false AS created
+    FROM campaigns WHERE article_slug = ${articleId} AND NOT EXISTS (SELECT 1 FROM new_campaign)`
+    : hasSuppression
+      ? await db`
+    WITH eligible AS MATERIALIZED (
+      SELECT id, COALESCE(original_subscribed_at, confirmed_at, created_at) AS subscribed_at_snapshot
+      FROM subscribers
+      WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL)) AND hard_bounced_at IS NULL AND complained_at IS NULL
+      ORDER BY COALESCE(original_subscribed_at, confirmed_at, created_at) DESC, id
+      LIMIT ${cohortSize}::int
+    ), new_campaign AS (
+      INSERT INTO campaigns (article_slug, subject, status, content_hash, recipient_selection)
+      SELECT ${articleId}, ${subject}, 'draft', ${contentHash}, ${selection}
+      WHERE (SELECT count(*) FROM eligible) = ${expected}
+      ON CONFLICT (article_slug) DO NOTHING RETURNING id, status, content_hash, recipient_selection
+    ), snapshot AS (
+      INSERT INTO campaign_recipients (campaign_id, subscriber_id, status, subscribed_at_snapshot)
+      SELECT new_campaign.id, eligible.id, 'pending', eligible.subscribed_at_snapshot FROM new_campaign CROSS JOIN eligible
+      RETURNING campaign_id
+    )
+    SELECT new_campaign.*, (SELECT count(*)::int FROM snapshot) AS recipient_count, true AS created
+    FROM new_campaign
+    UNION ALL
+    SELECT campaigns.id, campaigns.status, campaigns.content_hash, campaigns.recipient_selection,
+      (SELECT count(*)::int FROM campaign_recipients WHERE campaign_id = campaigns.id) AS recipient_count, false AS created
+    FROM campaigns WHERE article_slug = ${articleId} AND NOT EXISTS (SELECT 1 FROM new_campaign)`
+      : await db`
+    WITH eligible AS MATERIALIZED (
+      SELECT id, COALESCE(original_subscribed_at, confirmed_at, created_at) AS subscribed_at_snapshot
+      FROM subscribers
+      WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL))
       ORDER BY COALESCE(original_subscribed_at, confirmed_at, created_at) DESC, id
       LIMIT ${cohortSize}::int
     ), new_campaign AS (

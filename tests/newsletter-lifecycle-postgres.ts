@@ -186,6 +186,8 @@ try {
     '004_acquisition_attribution.sql',
     '005_pre_migration_readiness.sql',
     '006_phased_delivery.sql',
+    '007_bounce_classification.sql',
+    '008_delivery_suppression.sql',
   ])
     sql(
       readFileSync(
@@ -485,6 +487,178 @@ try {
     // but the status itself does not move. Re-requesting keeps the row suppressed.
     await requestSubscription({ email }, db);
     assert.equal(subscriberRow(email).status, 'unsubscribed');
+  }
+
+  // Permanent delivery suppression survives opt-out: unsubscribe → late hard bounce/complaint
+  // must block later resubscription/confirmation and future campaign eligibility, even though
+  // the subscriber status stays unsubscribed. Validation suppression must NOT block.
+  {
+    // 1. Active subscriber unsubscribes.
+    const email = 'late-suppression-victim@example.com';
+    seed({
+      email,
+      status: 'unsubscribed',
+      confirmedAt: '2026-01-02T00:00:00.000Z',
+      unsubscribedAt: '2026-02-01T00:00:00.000Z',
+    });
+    // 2. Late permanent hard bounce arrives after unsubscribe (preserves unsubscribed status).
+    await recordSesEvent(
+      {
+        MessageId: `late-bounce-${email}`,
+        Message: JSON.stringify({
+          eventType: 'Bounce',
+          mail: { messageId: `msg-${email}` },
+          bounce: {
+            bounceType: 'Permanent',
+            bounceSubType: 'General',
+            timestamp: '2026-02-02T00:00:00.000Z',
+            bouncedRecipients: [{ emailAddress: email }],
+          },
+        }),
+      } as SnsEnvelope,
+      db,
+    );
+    const afterBounce = run(
+      'SELECT status, hard_bounced_at, complained_at FROM subscribers',
+      `SELECT status, hard_bounced_at::text AS hard_bounced_at, complained_at::text AS complained_at FROM subscribers WHERE email_normalized = ${literal(email)}`,
+    ) as Array<{
+      status: string;
+      hard_bounced_at: string | null;
+      complained_at: string | null;
+    }>;
+    assert.equal(
+      afterBounce[0].status,
+      'unsubscribed',
+      'late hard bounce must preserve unsubscribed',
+    );
+    assert.ok(
+      afterBounce[0].hard_bounced_at,
+      'hard_bounced_at must be set even when status preserved',
+    );
+    // 3. Attempted resubscription must not issue a token and must stay suppressed.
+    const beforeReq = subscriberRow(email);
+    await requestSubscription({ email }, db);
+    const afterReq = subscriberRow(email);
+    assert.deepEqual(
+      afterReq,
+      beforeReq,
+      'requestSubscription must not touch hard-bounced address',
+    );
+    // 4. Attempted confirmation must fail even with a valid token (operator must clear flag).
+    const token = 'late-bounce-token';
+    sql(
+      `UPDATE subscribers SET confirmation_token_hash = ${literal(hashToken(token))}, confirmation_expires_at = now() + interval '24 hours' WHERE email_normalized = ${literal(email)}`,
+    );
+    assert.equal(
+      await confirmSubscription(token, db),
+      false,
+      'confirmSubscription must be blocked by hard_bounced_at',
+    );
+    assert.equal(subscriberRow(email).status, 'unsubscribed');
+    // 5. Future campaign must not include the suppressed address even if it were reactivated without clearing flag.
+    // Simulate operator mistakenly clearing status but not flag: set active + confirmed, then snapshot should exclude.
+    sql(
+      `UPDATE subscribers SET status = 'active', confirmed_at = '2026-01-02T00:00:00.000Z' WHERE email_normalized = ${literal(email)}`,
+    );
+    const countActive = Number(
+      sql(
+        `SELECT count(*) FROM subscribers WHERE status = 'active' AND email_normalized = ${literal(email)} AND hard_bounced_at IS NULL AND complained_at IS NULL`,
+      ),
+    );
+    assert.equal(
+      countActive,
+      0,
+      'suppressed address must not be counted as eligible even if status is active',
+    );
+    // Cleanup: restore to unsubscribed for next test
+    sql(
+      `UPDATE subscribers SET status = 'unsubscribed' WHERE email_normalized = ${literal(email)}`,
+    );
+    // Validation suppression must NOT set hard_bounced_at and must remain resubscribable.
+    const validationEmail = 'validation-suppressed@example.com';
+    seed({
+      email: validationEmail,
+      status: 'unsubscribed',
+      confirmedAt: '2026-01-02T00:00:00.000Z',
+      unsubscribedAt: '2026-02-01T00:00:00.000Z',
+    });
+    await recordSesEvent(
+      {
+        MessageId: `validation-${validationEmail}`,
+        Message: JSON.stringify({
+          eventType: 'Bounce',
+          mail: { messageId: `msg-${validationEmail}` },
+          bounce: {
+            bounceType: 'Permanent',
+            bounceSubType: 'EmailValidationSuppressed',
+            timestamp: '2026-02-02T00:00:00.000Z',
+            bouncedRecipients: [{ emailAddress: validationEmail }],
+          },
+        }),
+      } as SnsEnvelope,
+      db,
+    );
+    const afterValidation = run(
+      'SELECT hard_bounced_at FROM subscribers',
+      `SELECT hard_bounced_at::text AS hard_bounced_at FROM subscribers WHERE email_normalized = ${literal(validationEmail)}`,
+    ) as Array<{ hard_bounced_at: string | null }>;
+    assert.equal(
+      afterValidation[0].hard_bounced_at,
+      null,
+      'EmailValidationSuppressed must not set hard_bounced_at',
+    );
+    const beforeValidationReq = subscriberRow(validationEmail);
+    await requestSubscription({ email: validationEmail }, db);
+    const afterValidationReq = subscriberRow(validationEmail);
+    assert.notEqual(
+      afterValidationReq.confirmation_token_hash,
+      null,
+      'validation-suppressed unsubscribed should be able to request resubscription',
+    );
+    assert.notEqual(
+      afterValidationReq.confirmation_token_hash,
+      beforeValidationReq.confirmation_token_hash,
+    );
+
+    // Complaint path: same invariant.
+    const complaintEmail = 'late-complaint-victim@example.com';
+    seed({
+      email: complaintEmail,
+      status: 'unsubscribed',
+      confirmedAt: '2026-01-02T00:00:00.000Z',
+      unsubscribedAt: '2026-02-01T00:00:00.000Z',
+    });
+    await recordSesEvent(
+      {
+        MessageId: `late-complaint-${complaintEmail}`,
+        Message: JSON.stringify({
+          eventType: 'Complaint',
+          mail: { messageId: `msg-${complaintEmail}` },
+          complaint: {
+            timestamp: '2026-02-02T00:00:00.000Z',
+            complainedRecipients: [{ emailAddress: complaintEmail }],
+          },
+        }),
+      } as SnsEnvelope,
+      db,
+    );
+    const afterComplaint = run(
+      'SELECT complained_at FROM subscribers',
+      `SELECT complained_at::text AS complained_at, status::text AS status FROM subscribers WHERE email_normalized = ${literal(complaintEmail)}`,
+    ) as Array<{ complained_at: string | null; status: string }>;
+    assert.equal(afterComplaint[0].status, 'unsubscribed');
+    assert.ok(afterComplaint[0].complained_at, 'complained_at must be set');
+    await requestSubscription({ email: complaintEmail }, db);
+    assert.equal(
+      subscriberRow(complaintEmail).confirmation_token_hash,
+      null,
+      'complained address must not get new token',
+    );
+    const complaintToken = 'complaint-token';
+    sql(
+      `UPDATE subscribers SET confirmation_token_hash = ${literal(hashToken(complaintToken))}, confirmation_expires_at = now() + interval '24 hours' WHERE email_normalized = ${literal(complaintEmail)}`,
+    );
+    assert.equal(await confirmSubscription(complaintToken, db), false);
   }
 
   // Exercise the actual cohort/snapshot SQL with synthetic recipients only.
