@@ -168,6 +168,9 @@ async function fixture(count: number) {
   campaign = { ...snap, article_slug: articleId, subject: 'Synthetic edition' };
   return snap;
 }
+const originalEnvDelivery = { ...process.env };
+// Pre-007/008 harness: allow snapshot without migration 008 until it is applied.
+process.env.NEWSLETTER_ALLOW_MISSING_SUPPRESSION = '1';
 let started = false;
 try {
   pg('initdb', ['-D', `${root}/data`, '-A', 'trust', '--no-locale']);
@@ -563,6 +566,7 @@ try {
     'PASS all phased delivery Postgres tests (synthetic only; no SES calls)',
   );
 } finally {
+  process.env = originalEnvDelivery;
   if (started)
     pg('pg_ctl', ['-D', `${root}/data`, '-m', 'immediate', '-w', 'stop']);
   rmSync(root, { recursive: true, force: true });

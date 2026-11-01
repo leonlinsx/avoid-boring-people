@@ -95,9 +95,13 @@ export async function snapshotCampaign(
   if (cohortSize !== null) warmupCohortSize(String(cohortSize), expected);
   const selection =
     cohortSize === null ? 'all-active' : `recent-subscribers:${cohortSize}`;
-  // Probe for delivery suppression columns (008) so pre-migration DBs still
-  // work; production always has them. The predicate is the single source of
-  // truth defined in audience.ts — do not duplicate the text.
+  // Delivery suppression (008) is required for new campaign snapshots.
+  // If the columns are absent, fail closed rather than silently including
+  // hard-bounced/complained addresses. Existing campaigns are unaffected
+  // (ON CONFLICT path) but the error still fires so the operator knows to
+  // apply the migration. For synthetic/disposable test DBs that intentionally
+  // lack 008, set NEWSLETTER_ALLOW_MISSING_SUPPRESSION=1 to permit the
+  // legacy path; production must never set this.
   let hasSuppression = true;
   try {
     await db`SELECT hard_bounced_at FROM subscribers LIMIT 0`;
@@ -117,6 +121,13 @@ export async function snapshotCampaign(
         /complained_at.*does not exist/i.test(error.message);
       if (!missing) throw error;
       hasSuppression = false;
+    }
+  }
+  if (!hasSuppression) {
+    if (process.env.NEWSLETTER_ALLOW_MISSING_SUPPRESSION !== '1') {
+      throw new Error(
+        'Campaign snapshot requires migration 008_delivery_suppression (subscribers.hard_bounced_at / complained_at). Apply the migration before creating new campaigns.',
+      );
     }
   }
   const eligibleWhere = hasSuppression

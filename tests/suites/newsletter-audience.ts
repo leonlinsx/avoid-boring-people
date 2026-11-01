@@ -700,6 +700,23 @@ export function testAudienceSegmentsSumToTotal() {
     { status: 'active', confirmed_at: '2026-01-01', hasDelivered: false }, // eligible
     { status: 'active', confirmed_at: null, hasDelivered: true }, // eligible via delivery
     { status: 'active', confirmed_at: null, hasDelivered: false }, // unverified
+    {
+      status: 'active',
+      confirmed_at: '2026-01-01',
+      hard_bounced_at: '2026-02-01T00:00:00Z',
+    }, // activeSuppressed via hard bounce
+    {
+      status: 'active',
+      confirmed_at: null,
+      hasDelivered: true,
+      complained_at: '2026-02-01T00:00:00Z',
+    }, // activeSuppressed via complaint
+    {
+      status: 'active',
+      confirmed_at: null,
+      hasDelivered: false,
+      hard_bounced_at: '2026-02-01T00:00:00Z',
+    }, // activeSuppressed (unverified + suppressed)
     { status: 'pending', confirmed_at: null },
     { status: 'unsubscribed', confirmed_at: null },
     { status: 'complained', confirmed_at: null },
@@ -720,6 +737,7 @@ export function testAudienceSegmentsSumToTotal() {
   // Classify each synthetic row into exactly one preview bucket
   let defaultEligible = 0,
     activeUnverified = 0,
+    activeSuppressed = 0,
     hardBounces = 0,
     validationSuppressed = 0,
     otherSuppressions = 0,
@@ -743,6 +761,11 @@ export function testAudienceSegmentsSumToTotal() {
       !s.hasDelivered
     )
       activeUnverified++;
+    else if (
+      s.status === 'active' &&
+      (s.hard_bounced_at != null || s.complained_at != null)
+    )
+      activeSuppressed++;
     else if (s.status === 'bounced') {
       const cat = classifyBounce(
         s.bounce_type ?? null,
@@ -755,20 +778,13 @@ export function testAudienceSegmentsSumToTotal() {
     } else if (s.status === 'complained') complained++;
     else if (s.status === 'unsubscribed') unsubscribed++;
     else if (s.status === 'pending') pending++;
-    else {
-      // active but suppressed (hard_bounced_at set) — not counted in eligible/unverified, but still active status
-      // In real preview, suppressed active rows are neither eligible nor unverified and not in suppressed count derived from bounced/complained/unsubscribed.
-      // To keep sum invariant, we treat them as activeUnverified=0 and they must still be accounted: they fall into total but not into any bucket if we exclude them.
-      // Real preview's activeUnverified excludes suppressed, so such rows would need to be counted separately. For this invariant test, we assert they are not silently dropped:
-      // In production, suppressed active rows are rare and indicate operator should clear flag; preview currently excludes them from both active buckets.
-      // We intentionally do not create such rows in this synthetic test.
-      throw new Error(`unclassified synthetic row: ${JSON.stringify(s)}`);
-    }
+    else throw new Error(`unclassified synthetic row: ${JSON.stringify(s)}`);
   }
   const total = synthetic.length;
   const sum =
     defaultEligible +
     activeUnverified +
+    activeSuppressed +
     hardBounces +
     validationSuppressed +
     otherSuppressions +
@@ -779,7 +795,15 @@ export function testAudienceSegmentsSumToTotal() {
   assert.equal(
     sum,
     total,
-    `segments must sum to total: ${sum} != ${total} (defaultEligible=${defaultEligible} activeUnverified=${activeUnverified} hard=${hardBounces} validation=${validationSuppressed} other=${otherSuppressions} unknown=${unknownBounces} complained=${complained} unsubscribed=${unsubscribed} pending=${pending})`,
+    `segments must sum to total: ${sum} != ${total} (defaultEligible=${defaultEligible} activeUnverified=${activeUnverified} activeSuppressed=${activeSuppressed} hard=${hardBounces} validation=${validationSuppressed} other=${otherSuppressions} unknown=${unknownBounces} complained=${complained} unsubscribed=${unsubscribed} pending=${pending})`,
+  );
+  // Active invariant: sum of active segments equals COUNT(*) WHERE status='active'.
+  const activeCount = synthetic.filter((s) => s.status === 'active').length;
+  const activeSegments = defaultEligible + activeUnverified + activeSuppressed;
+  assert.equal(
+    activeSegments,
+    activeCount,
+    `active segments must equal COUNT(*) WHERE status='active': ${activeSegments} != ${activeCount}`,
   );
 }
 

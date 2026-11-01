@@ -56,6 +56,10 @@ if (json) {
     pad('active unverified', preview.activeUnverified) +
       '   ← active, no double-opt-in, no confirmed delivery',
   );
+  console.log(
+    pad('active suppressed', preview.activeSuppressed) +
+      '   ← active but hard-bounced/complained (excluded from eligible)',
+  );
   console.log(pad('hard bounces', preview.hardBounces));
   console.log(pad('unknown bounces', preview.unknownBounces));
   console.log(
@@ -69,13 +73,17 @@ if (json) {
   console.log(pad('total', preview.total));
   console.log('');
   console.log('DERIVED');
-  console.log(pad('active (total)', preview.active));
+  console.log(
+    pad('active (total)', preview.active) +
+      '   ← defaultEligible + activeUnverified + activeSuppressed',
+  );
   console.log(pad('suppressed', preview.suppressed));
   console.log('');
   console.log('COMPARISON');
   console.log(pad('current active', preview.active));
   console.log(pad('proposed eligible', preview.defaultEligible));
   console.log(pad('excluded (unverified)', preview.activeUnverified));
+  console.log(pad('excluded (suppressed)', preview.activeSuppressed));
   if (preview.active > 0) {
     const pct = ((preview.defaultEligible / preview.active) * 100).toFixed(1);
     console.log(

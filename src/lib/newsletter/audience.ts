@@ -18,6 +18,7 @@ export type AudiencePreview = {
   // Mutually exclusive subscriber segments (sum = total tracked subscribers).
   defaultEligible: number; // active + verified (double-opt-in or prior delivery) + not suppressed
   activeUnverified: number; // active but neither verification present (also not suppressed)
+  activeSuppressed: number; // active but hard_bounced_at or complained_at set (excluded from eligibility)
   hardBounces: number; // bounced, Permanent + General/NoEmail/Suppressed
   unknownBounces: number; // bounced, NULL/malformed or unrecognized subtype/type
   validationSuppressed: number; // bounced, Permanent + EmailValidationSuppressed
@@ -27,7 +28,7 @@ export type AudiencePreview = {
   pending: number;
   total: number;
   // Derived helpers.
-  active: number; // defaultEligible + activeUnverified
+  active: number; // defaultEligible + activeUnverified + activeSuppressed (= COUNT(*) WHERE status='active')
   suppressed: number; // every bounced/complained/unsubscribed
   subtypeDetailAvailable: boolean;
   deliverySuppressionAvailable: boolean;
@@ -140,22 +141,31 @@ export async function previewAudience(db: NeonDb): Promise<AudiencePreview> {
     }
   }
 
-  // Build eligibility fragments based on available columns.
-  const eligibleFilter = deliverySuppressionAvailable
-    ? `status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL)) AND hard_bounced_at IS NULL AND complained_at IS NULL`
-    : deliveredAtAvailable
-      ? `status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL))`
-      : `status = 'active' AND confirmed_at IS NOT NULL`;
-
-  const activeUnverifiedFilter = deliverySuppressionAvailable
-    ? `status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL) AND hard_bounced_at IS NULL AND complained_at IS NULL`
-    : deliveredAtAvailable
-      ? `status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL)`
-      : `status = 'active' AND confirmed_at IS NULL`;
+  // Branch early: each path only references columns known to exist.
 
   // When delivery tracking is unavailable, fall back to confirmed_at-only eligibility.
+  // No 008 or delivered_at columns are referenced here.
   if (!deliveredAtAvailable) {
-    const rows = (await db`SELECT
+    let activeSuppressed = 0;
+    if (deliverySuppressionAvailable) {
+      const r =
+        (await db`SELECT (count(*) FILTER (WHERE status = 'active' AND (hard_bounced_at IS NOT NULL OR complained_at IS NOT NULL)))::int AS c FROM subscribers`) as Row[];
+      activeSuppressed = count(r[0]?.c);
+    }
+    const rows = deliverySuppressionAvailable
+      ? ((await db`SELECT
+      (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NOT NULL AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS default_eligible,
+      (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS active_unverified,
+      (count(*) FILTER (WHERE status = 'bounced'))::int AS unknown_bounces,
+      0::int AS hard_bounces,
+      0::int AS validation_suppressed,
+      0::int AS other_suppressions,
+      (count(*) FILTER (WHERE status = 'complained'))::int AS complained,
+      (count(*) FILTER (WHERE status = 'unsubscribed'))::int AS unsubscribed,
+      (count(*) FILTER (WHERE status = 'pending'))::int AS pending,
+      count(*)::int AS total
+      FROM subscribers`) as Row[])
+      : ((await db`SELECT
       (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NOT NULL))::int AS default_eligible,
       (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL))::int AS active_unverified,
       (count(*) FILTER (WHERE status = 'bounced'))::int AS unknown_bounces,
@@ -166,22 +176,23 @@ export async function previewAudience(db: NeonDb): Promise<AudiencePreview> {
       (count(*) FILTER (WHERE status = 'unsubscribed'))::int AS unsubscribed,
       (count(*) FILTER (WHERE status = 'pending'))::int AS pending,
       count(*)::int AS total
-      FROM subscribers`) as Row[];
-    return buildPreview(rows[0] ?? {}, false, deliverySuppressionAvailable);
+      FROM subscribers`) as Row[]);
+    return buildPreview(
+      rows[0] ?? {},
+      false,
+      deliverySuppressionAvailable,
+      activeSuppressed,
+    );
   }
 
   if (!subtypeDetailAvailable) {
-    const rows = (await (db as unknown as { unsafe: (s: string) => unknown })
-      .unsafe)
-      ? ((await db`SELECT
-      (count(*) FILTER (WHERE ${
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (db as any).unsafe(eligibleFilter)
-      }))::int AS default_eligible,
-      (count(*) FILTER (WHERE ${
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (db as any).unsafe(activeUnverifiedFilter)
-      }))::int AS active_unverified,
+    // No bounce classification columns; bounced bucket is undifferentiated.
+    // Still need to handle 008 presence correctly.
+    if (deliverySuppressionAvailable) {
+      const rows = (await db`SELECT
+      (count(*) FILTER (WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL)) AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS default_eligible,
+      (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL) AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS active_unverified,
+      (count(*) FILTER (WHERE status = 'active' AND (hard_bounced_at IS NOT NULL OR complained_at IS NOT NULL)))::int AS active_suppressed,
       0::int AS hard_bounces,
       (count(*) FILTER (WHERE status = 'bounced'))::int AS unknown_bounces,
       0::int AS validation_suppressed,
@@ -190,10 +201,13 @@ export async function previewAudience(db: NeonDb): Promise<AudiencePreview> {
       (count(*) FILTER (WHERE status = 'unsubscribed'))::int AS unsubscribed,
       (count(*) FILTER (WHERE status = 'pending'))::int AS pending,
       count(*)::int AS total
-      FROM subscribers`) as Row[])
-      : ((await db`SELECT
+      FROM subscribers`) as Row[];
+      return buildPreview(rows[0] ?? {}, false, true);
+    }
+    const rows = (await db`SELECT
       (count(*) FILTER (WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL))))::int AS default_eligible,
       (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL)))::int AS active_unverified,
+      0::int AS active_suppressed,
       0::int AS hard_bounces,
       (count(*) FILTER (WHERE status = 'bounced'))::int AS unknown_bounces,
       0::int AS validation_suppressed,
@@ -202,8 +216,8 @@ export async function previewAudience(db: NeonDb): Promise<AudiencePreview> {
       (count(*) FILTER (WHERE status = 'unsubscribed'))::int AS unsubscribed,
       (count(*) FILTER (WHERE status = 'pending'))::int AS pending,
       count(*)::int AS total
-      FROM subscribers`) as Row[]);
-    return buildPreview(rows[0] ?? {}, false, deliverySuppressionAvailable);
+      FROM subscribers`) as Row[];
+    return buildPreview(rows[0] ?? {}, false, false);
   }
 
   // Full query: eligibility + per-subtype bounced breakdown in one SELECT.
@@ -214,9 +228,11 @@ export async function previewAudience(db: NeonDb): Promise<AudiencePreview> {
   // of hard_bounces / validation_suppressed / other_suppressions / unknown_bounces,
   // including malformed type/subtype combinations. The unknown bucket is the
   // complement of the three explicit Permanent+subtype cases.
-  const rows = (await db`SELECT
-      (count(*) FILTER (WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL)) AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS default_eligible,
-      (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL) AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS active_unverified,
+  if (deliverySuppressionAvailable) {
+    const rows = (await db`SELECT
+      (count(*) FILTER (WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = s.id AND cr.delivered_at IS NOT NULL)) AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS default_eligible,
+      (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = s.id AND cr.delivered_at IS NOT NULL) AND hard_bounced_at IS NULL AND complained_at IS NULL))::int AS active_unverified,
+      (count(*) FILTER (WHERE status = 'active' AND (hard_bounced_at IS NOT NULL OR complained_at IS NOT NULL)))::int AS active_suppressed,
       (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('General','NoEmail','Suppressed')))::int AS hard_bounces,
       (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') = 'EmailValidationSuppressed'))::int AS validation_suppressed,
       (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('OnAccountSuppressionList','OnTenantSuppressionList','UnsubscribedRecipient')))::int AS other_suppressions,
@@ -237,36 +253,34 @@ export async function previewAudience(db: NeonDb): Promise<AudiencePreview> {
           ) AS bounce_type
         FROM subscribers
       ) s`) as Row[];
-  // If suppression columns missing, fallback to not filtering by them for counts.
-  // Detect by checking if query failed earlier; but we already probed, so adjust.
-  if (!deliverySuppressionAvailable) {
-    // Re-run with fallback filters that don't reference suppression columns.
-    const fallbackRows = (await db`SELECT
-      (count(*) FILTER (WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL))))::int AS default_eligible,
-      (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = subscribers.id AND cr.delivered_at IS NOT NULL)))::int AS active_unverified,
-      (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('General','NoEmail','Suppressed')))::int AS hard_bounces,
-      (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') = 'EmailValidationSuppressed'))::int AS validation_suppressed,
-      (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('OnAccountSuppressionList','OnTenantSuppressionList','UnsubscribedRecipient')))::int AS other_suppressions,
-      (count(*) FILTER (WHERE status = 'bounced' AND NOT (COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('General','NoEmail','Suppressed','EmailValidationSuppressed','OnAccountSuppressionList','OnTenantSuppressionList','UnsubscribedRecipient'))))::int AS unknown_bounces,
-      (count(*) FILTER (WHERE status = 'complained'))::int AS complained,
-      (count(*) FILTER (WHERE status = 'unsubscribed'))::int AS unsubscribed,
-      (count(*) FILTER (WHERE status = 'pending'))::int AS pending,
-      count(*)::int AS total
-      FROM (
-        SELECT subscribers.*,
-          COALESCE(
-            (SELECT cr_inner.bounce_subtype FROM campaign_recipients cr_inner WHERE cr_inner.subscriber_id = subscribers.id AND cr_inner.status = 'bounced' ORDER BY cr_inner.bounced_at DESC NULLS LAST, cr_inner.subscribed_at_snapshot DESC NULLS LAST LIMIT 1),
-            (SELECT er_inner.bounce_subtype FROM newsletter_event_receipts er_inner WHERE er_inner.provider_message_id IN (SELECT cr2.provider_message_id FROM campaign_recipients cr2 WHERE cr2.subscriber_id = subscribers.id AND cr2.provider_message_id IS NOT NULL) AND er_inner.event_status = 'bounced' ORDER BY er_inner.event_at DESC NULLS LAST LIMIT 1)
-          ) AS bounce_subtype,
-          COALESCE(
-            (SELECT cr_inner.bounce_type FROM campaign_recipients cr_inner WHERE cr_inner.subscriber_id = subscribers.id AND cr_inner.status = 'bounced' ORDER BY cr_inner.bounced_at DESC NULLS LAST, cr_inner.subscribed_at_snapshot DESC NULLS LAST LIMIT 1),
-            (SELECT er_inner.bounce_type FROM newsletter_event_receipts er_inner WHERE er_inner.provider_message_id IN (SELECT cr2.provider_message_id FROM campaign_recipients cr2 WHERE cr2.subscriber_id = subscribers.id AND cr2.provider_message_id IS NOT NULL) AND er_inner.event_status = 'bounced' ORDER BY er_inner.event_at DESC NULLS LAST LIMIT 1)
-          ) AS bounce_type
-        FROM subscribers
-      ) s`) as Row[];
-    return buildPreview(fallbackRows[0] ?? {}, true, false);
+    return buildPreview(rows[0] ?? {}, true, true);
   }
-  return buildPreview(rows[0] ?? {}, true, true);
+  // 008 columns absent: never reference hard_bounced_at/complained_at.
+  const rows = (await db`SELECT
+      (count(*) FILTER (WHERE status = 'active' AND (confirmed_at IS NOT NULL OR EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = s.id AND cr.delivered_at IS NOT NULL))))::int AS default_eligible,
+      (count(*) FILTER (WHERE status = 'active' AND confirmed_at IS NULL AND NOT EXISTS (SELECT 1 FROM campaign_recipients cr WHERE cr.subscriber_id = s.id AND cr.delivered_at IS NOT NULL)))::int AS active_unverified,
+      0::int AS active_suppressed,
+      (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('General','NoEmail','Suppressed')))::int AS hard_bounces,
+      (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') = 'EmailValidationSuppressed'))::int AS validation_suppressed,
+      (count(*) FILTER (WHERE status = 'bounced' AND COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('OnAccountSuppressionList','OnTenantSuppressionList','UnsubscribedRecipient')))::int AS other_suppressions,
+      (count(*) FILTER (WHERE status = 'bounced' AND NOT (COALESCE(bounce_type, '') = 'Permanent' AND COALESCE(bounce_subtype, '') IN ('General','NoEmail','Suppressed','EmailValidationSuppressed','OnAccountSuppressionList','OnTenantSuppressionList','UnsubscribedRecipient'))))::int AS unknown_bounces,
+      (count(*) FILTER (WHERE status = 'complained'))::int AS complained,
+      (count(*) FILTER (WHERE status = 'unsubscribed'))::int AS unsubscribed,
+      (count(*) FILTER (WHERE status = 'pending'))::int AS pending,
+      count(*)::int AS total
+      FROM (
+        SELECT subscribers.*,
+          COALESCE(
+            (SELECT cr_inner.bounce_subtype FROM campaign_recipients cr_inner WHERE cr_inner.subscriber_id = subscribers.id AND cr_inner.status = 'bounced' ORDER BY cr_inner.bounced_at DESC NULLS LAST, cr_inner.subscribed_at_snapshot DESC NULLS LAST LIMIT 1),
+            (SELECT er_inner.bounce_subtype FROM newsletter_event_receipts er_inner WHERE er_inner.provider_message_id IN (SELECT cr2.provider_message_id FROM campaign_recipients cr2 WHERE cr2.subscriber_id = subscribers.id AND cr2.provider_message_id IS NOT NULL) AND er_inner.event_status = 'bounced' ORDER BY er_inner.event_at DESC NULLS LAST LIMIT 1)
+          ) AS bounce_subtype,
+          COALESCE(
+            (SELECT cr_inner.bounce_type FROM campaign_recipients cr_inner WHERE cr_inner.subscriber_id = subscribers.id AND cr_inner.status = 'bounced' ORDER BY cr_inner.bounced_at DESC NULLS LAST, cr_inner.subscribed_at_snapshot DESC NULLS LAST LIMIT 1),
+            (SELECT er_inner.bounce_type FROM newsletter_event_receipts er_inner WHERE er_inner.provider_message_id IN (SELECT cr2.provider_message_id FROM campaign_recipients cr2 WHERE cr2.subscriber_id = subscribers.id AND cr2.provider_message_id IS NOT NULL) AND er_inner.event_status = 'bounced' ORDER BY er_inner.event_at DESC NULLS LAST LIMIT 1)
+          ) AS bounce_type
+        FROM subscribers
+      ) s`) as Row[];
+  return buildPreview(rows[0] ?? {}, true, false);
 }
 
 // Lightweight list of active-but-unverified subscribers for operator review.
@@ -306,9 +320,12 @@ function buildPreview(
   row: Row,
   subtypeDetailAvailable: boolean,
   deliverySuppressionAvailable: boolean,
+  activeSuppressedOverride?: number,
 ): AudiencePreview {
   const defaultEligible = count(row.default_eligible);
   const activeUnverified = count(row.active_unverified);
+  const activeSuppressed =
+    activeSuppressedOverride ?? count(row.active_suppressed);
   const hardBounces = count(row.hard_bounces);
   const unknownBounces = count(row.unknown_bounces);
   const validationSuppressed = count(row.validation_suppressed);
@@ -317,7 +334,7 @@ function buildPreview(
   const unsubscribed = count(row.unsubscribed);
   const pending = count(row.pending);
   const total = count(row.total);
-  const active = defaultEligible + activeUnverified;
+  const active = defaultEligible + activeUnverified + activeSuppressed;
   const suppressed =
     hardBounces +
     unknownBounces +
@@ -345,6 +362,7 @@ function buildPreview(
   return {
     defaultEligible,
     activeUnverified,
+    activeSuppressed,
     hardBounces,
     unknownBounces,
     validationSuppressed,
