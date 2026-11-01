@@ -5,6 +5,7 @@ import { runNewsletterDraftTests } from './suites/newsletter-drafts.ts';
 import { runSignupFormTests } from './suites/signup-form.ts';
 import { runSiteUtilityTests } from './suites/site-utils.ts';
 import { runNewsletterTests } from './suites/newsletter.ts';
+import { runNewsletterAudienceTests } from './suites/newsletter-audience.ts';
 import { runSeoMetaTests } from './suites/seo.ts';
 import { runContentTests } from './suites/content.ts';
 import { runDiscussionTests } from './suites/comments.ts';
@@ -30,6 +31,7 @@ async function run() {
     await runNewsletterDraftTests();
     await runSiteUtilityTests();
     await runNewsletterTests();
+    await runNewsletterAudienceTests();
     await runSignupFormTests();
     await runSeoMetaTests();
     await runContentTests();

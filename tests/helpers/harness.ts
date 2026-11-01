@@ -32,10 +32,48 @@ export function makeFakeDb(
 ) {
   const queries: Array<{ text: string; values: unknown[] }> = [];
   const db: any = async (parts: TemplateStringsArray, ...values: unknown[]) => {
-    const query = { text: parts.join(' {?} '), values };
+    // Support db.unsafe() raw SQL fragments when present.
+    let text = '';
+    let hasUnsafe = false;
+    for (let i = 0; i < values.length; i++) {
+      const v = values[i] as any;
+      if (
+        v &&
+        typeof v === 'object' &&
+        (v.rawSQL !== undefined || v.__raw !== undefined)
+      ) {
+        hasUnsafe = true;
+        break;
+      }
+    }
+    if (hasUnsafe) {
+      for (let i = 0; i < parts.length; i++) {
+        text += parts[i];
+        if (i < values.length) {
+          const v = values[i] as any;
+          if (
+            v &&
+            typeof v === 'object' &&
+            (v.rawSQL !== undefined || v.__raw !== undefined)
+          ) {
+            text += String(v.rawSQL ?? v.__raw);
+          } else {
+            text += ' {?} ';
+          }
+        }
+      }
+    } else {
+      text = parts.join(' {?} ');
+    }
+    const query = { text, values };
     queries.push(query);
     return handler(query);
   };
+  db.unsafe = (rawSQL: string) => ({
+    rawSQL,
+    __raw: rawSQL,
+    toString: () => rawSQL,
+  });
   db.transaction = async (build: (tx: typeof db) => Promise<unknown[]>[]) =>
     Promise.all(build(db));
   return { db, queries };

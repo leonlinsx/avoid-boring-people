@@ -126,12 +126,19 @@ export async function testPreMigrationReadiness() {
     },
     fake.db,
   );
-  assert.match(fake.queries[0].text, /WHERE status = 'active'/);
+  const snapshotQuery = fake.queries.find((q) =>
+    q.text.includes('WITH eligible AS MATERIALIZED'),
+  );
+  assert.ok(snapshotQuery, 'snapshot must issue eligible CTE');
+  assert.match(snapshotQuery.text, /WHERE status = 'active'/);
+  assert.match(snapshotQuery.text, /confirmed_at IS NOT NULL/);
+  assert.match(snapshotQuery.text, /delivered_at IS NOT NULL/);
+  assert.doesNotMatch(snapshotQuery.text, /sent_at/);
   assert.match(
-    fake.queries[0].text,
+    snapshotQuery.text,
     /ORDER BY COALESCE\(original_subscribed_at, confirmed_at, created_at\) DESC, id/,
   );
-  assert.match(fake.queries[0].text, /ON CONFLICT \(article_slug\) DO NOTHING/);
+  assert.match(snapshotQuery.text, /ON CONFLICT \(article_slug\) DO NOTHING/);
 
   // The status can change between SELECT and INSERT. A guarded no-op must
   // not send an unused confirmation credential to a newly suppressed address.

@@ -95,8 +95,22 @@ export async function recordSesEvent(
         : [],
   );
 
+  const isHardBounce =
+    bounceType === 'Permanent' &&
+    bounceSubType !== null &&
+    ['General', 'NoEmail', 'Suppressed'].includes(bounceSubType);
+
   // One atomic statement: failed updates roll back the deduplication receipt too.
   // Every mutation depends on the newly inserted receipt, including concurrent retries.
+  // Suppression (hard_bounced_at / complained_at) is set independently of
+  // subscriber status so a late bounce after an unsubscribe still blocks future
+  // automatic re-eligibility. Only hard bounces (Permanent + General/NoEmail/Suppressed)
+  // and complaints set the flag; EmailValidationSuppressed and other provider
+  // suppressions do not (they are not proof the mailbox is invalid).
+  //
+  // Status and suppression are merged into a single UPDATE subscribers so the
+  // two do not race each other inside the same statement (Postgres CTEs that
+  // update the same row concurrently would otherwise overwrite one another).
   try {
     await db`WITH receipt AS (
     INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at, bounce_type, bounce_subtype)
@@ -115,18 +129,57 @@ export async function recordSesEvent(
       AND EXISTS (SELECT 1 FROM receipt)
     RETURNING subscriber_id
   )
-  UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
-    WHERE status IN ('pending', 'active', 'unsubscribed') AND ${status}::text IN ('bounced', 'complained')
-      AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
-      AND EXISTS (SELECT 1 FROM receipt)`;
+  UPDATE subscribers SET
+    status = CASE WHEN status IN ('pending', 'active') AND ${status}::text IN ('bounced', 'complained') THEN ${status}::newsletter_subscriber_status ELSE status END,
+    confirmation_token_hash = CASE WHEN status IN ('pending', 'active') AND ${status}::text IN ('bounced', 'complained') THEN NULL ELSE confirmation_token_hash END,
+    confirmation_expires_at = CASE WHEN status IN ('pending', 'active') AND ${status}::text IN ('bounced', 'complained') THEN NULL ELSE confirmation_expires_at END,
+    hard_bounced_at = CASE WHEN ${isHardBounce}::boolean THEN COALESCE(hard_bounced_at, COALESCE(${at}::timestamptz, now())) ELSE hard_bounced_at END,
+    complained_at = CASE WHEN ${status} = 'complained' THEN COALESCE(complained_at, COALESCE(${at}::timestamptz, now())) ELSE complained_at END,
+    updated_at = CASE WHEN (status IN ('pending', 'active') AND ${status}::text IN ('bounced', 'complained')) OR ${isHardBounce}::boolean OR ${status} = 'complained' THEN now() ELSE updated_at END
+  WHERE (
+      (status IN ('pending', 'active') AND ${status}::text IN ('bounced', 'complained'))
+      OR ${isHardBounce}::boolean
+      OR ${status} = 'complained'
+    )
+    AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
+    AND EXISTS (SELECT 1 FROM receipt)`;
   } catch (error) {
     const isMissingColumn =
       error instanceof Error &&
-      /bounce_(type|subtype).*does not exist/i.test(error.message);
+      (/bounce_(type|subtype).*does not exist/i.test(error.message) ||
+        /hard_bounced_at|complained_at/i.test(error.message));
     if (!isMissingColumn) throw error;
+    // Fallback for pre-007 or pre-008: either bounce columns or suppression columns missing.
+    // Try without suppression first, then without bounce columns.
+    const isBounceMissing =
+      error instanceof Error &&
+      /bounce_(type|subtype).*does not exist/i.test(error.message);
+    if (isBounceMissing) {
+      await db`WITH receipt AS (
+      INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at)
+      VALUES ('sns', ${envelope.MessageId}, ${messageId}, ${status}, ${at}::timestamptz)
+      ON CONFLICT DO NOTHING RETURNING event_id
+    ), recipients AS (
+      UPDATE campaign_recipients SET
+        status = CASE WHEN status IN ('bounced', 'complained') THEN status ELSE ${status} END,
+        delivered_at = CASE WHEN ${status} = 'sent' THEN COALESCE(delivered_at, ${at}::timestamptz) ELSE delivered_at END,
+        bounced_at = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounced_at, ${at}::timestamptz) ELSE bounced_at END,
+        complained_at = CASE WHEN ${status} = 'complained' THEN COALESCE(complained_at, ${at}::timestamptz) ELSE complained_at END,
+        last_event_at = now()
+      WHERE provider_message_id = ${messageId} AND ${status}::text IS NOT NULL
+        AND EXISTS (SELECT 1 FROM receipt)
+      RETURNING subscriber_id
+    )
+    UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+      WHERE status IN ('pending', 'active') AND ${status}::text IN ('bounced', 'complained')
+        AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
+        AND EXISTS (SELECT 1 FROM receipt)`;
+      return;
+    }
+    // Suppression columns missing but bounce columns exist — retry without suppression.
     await db`WITH receipt AS (
-    INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at)
-    VALUES ('sns', ${envelope.MessageId}, ${messageId}, ${status}, ${at}::timestamptz)
+    INSERT INTO newsletter_event_receipts (provider, event_id, provider_message_id, event_status, event_at, bounce_type, bounce_subtype)
+    VALUES ('sns', ${envelope.MessageId}, ${messageId}, ${status}, ${at}::timestamptz, ${bounceType}, ${bounceSubType})
     ON CONFLICT DO NOTHING RETURNING event_id
   ), recipients AS (
     UPDATE campaign_recipients SET
@@ -134,13 +187,15 @@ export async function recordSesEvent(
       delivered_at = CASE WHEN ${status} = 'sent' THEN COALESCE(delivered_at, ${at}::timestamptz) ELSE delivered_at END,
       bounced_at = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounced_at, ${at}::timestamptz) ELSE bounced_at END,
       complained_at = CASE WHEN ${status} = 'complained' THEN COALESCE(complained_at, ${at}::timestamptz) ELSE complained_at END,
+      bounce_type = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounce_type, ${bounceType}::text) ELSE bounce_type END,
+      bounce_subtype = CASE WHEN ${status} = 'bounced' THEN COALESCE(bounce_subtype, ${bounceSubType}::text) ELSE bounce_subtype END,
       last_event_at = now()
     WHERE provider_message_id = ${messageId} AND ${status}::text IS NOT NULL
       AND EXISTS (SELECT 1 FROM receipt)
     RETURNING subscriber_id
   )
   UPDATE subscribers SET status = (CASE WHEN ${status}::text IN ('bounced', 'complained') THEN ${status} ELSE NULL END)::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
-    WHERE status IN ('pending', 'active', 'unsubscribed') AND ${status}::text IN ('bounced', 'complained')
+    WHERE status IN ('pending', 'active') AND ${status}::text IN ('bounced', 'complained')
       AND (id IN (SELECT subscriber_id FROM recipients) OR email_normalized = ANY(${emails}::text[]))
       AND EXISTS (SELECT 1 FROM receipt)`;
   }
@@ -180,17 +235,69 @@ export async function reconcileSesMessage(
       last_event_at = CASE WHEN event_state.status IS NULL THEN campaign_recipients.last_event_at ELSE now() END
     FROM event_state
     WHERE campaign_recipients.provider_message_id = ${messageId} AND event_state.status IS NOT NULL
-    RETURNING campaign_recipients.subscriber_id, campaign_recipients.status
+    RETURNING campaign_recipients.subscriber_id, campaign_recipients.status, campaign_recipients.bounce_type, campaign_recipients.bounce_subtype, campaign_recipients.bounced_at, campaign_recipients.complained_at
   )
-  UPDATE subscribers SET status = recipients.status::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+  UPDATE subscribers SET
+    status = CASE WHEN subscribers.status IN ('pending', 'active') AND recipients.status IN ('bounced', 'complained') THEN recipients.status::newsletter_subscriber_status ELSE subscribers.status END,
+    confirmation_token_hash = CASE WHEN subscribers.status IN ('pending', 'active') AND recipients.status IN ('bounced', 'complained') THEN NULL ELSE subscribers.confirmation_token_hash END,
+    confirmation_expires_at = CASE WHEN subscribers.status IN ('pending', 'active') AND recipients.status IN ('bounced', 'complained') THEN NULL ELSE subscribers.confirmation_expires_at END,
+    hard_bounced_at = CASE WHEN recipients.bounce_type = 'Permanent' AND recipients.bounce_subtype IN ('General','NoEmail','Suppressed') THEN COALESCE(subscribers.hard_bounced_at, recipients.bounced_at) ELSE subscribers.hard_bounced_at END,
+    complained_at = CASE WHEN recipients.status = 'complained' THEN COALESCE(subscribers.complained_at, recipients.complained_at) ELSE subscribers.complained_at END,
+    updated_at = CASE WHEN (subscribers.status IN ('pending','active') AND recipients.status IN ('bounced','complained')) OR (recipients.bounce_type = 'Permanent' AND recipients.bounce_subtype IN ('General','NoEmail','Suppressed')) OR recipients.status = 'complained' THEN now() ELSE subscribers.updated_at END
   FROM recipients
-  WHERE subscribers.id = recipients.subscriber_id AND subscribers.status IN ('pending', 'active', 'unsubscribed')
-    AND recipients.status IN ('bounced', 'complained')`;
+  WHERE subscribers.id = recipients.subscriber_id
+    AND (
+      (subscribers.status IN ('pending', 'active') AND recipients.status IN ('bounced', 'complained'))
+      OR (recipients.bounce_type = 'Permanent' AND recipients.bounce_subtype IN ('General','NoEmail','Suppressed'))
+      OR recipients.status = 'complained'
+    )`;
   } catch (error) {
     const isMissingColumn =
       error instanceof Error &&
       /bounce_(type|subtype).*does not exist/i.test(error.message);
-    if (!isMissingColumn) throw error;
+    if (!isMissingColumn) {
+      const isSuppressionMissing =
+        error instanceof Error &&
+        /hard_bounced_at|complained_at/i.test(error.message);
+      if (!isSuppressionMissing) throw error;
+      // Suppression columns missing but bounce columns exist — fallback to status-only.
+      await db`WITH event_state AS (
+      SELECT CASE
+          WHEN bool_or(event_status = 'complained') THEN 'complained'
+          WHEN bool_or(event_status = 'bounced') THEN 'bounced'
+          WHEN bool_or(event_status = 'sent') THEN 'sent'
+          ELSE NULL
+        END AS status,
+        min(event_at) FILTER (WHERE event_status = 'sent') AS delivered_at,
+        min(event_at) FILTER (WHERE event_status = 'bounced') AS bounced_at,
+        min(event_at) FILTER (WHERE event_status = 'complained') AS complained_at,
+        min(bounce_type) FILTER (WHERE event_status = 'bounced') AS bounce_type,
+        min(bounce_subtype) FILTER (WHERE event_status = 'bounced') AS bounce_subtype
+      FROM newsletter_event_receipts WHERE provider_message_id = ${messageId}
+    ), recipients AS (
+      UPDATE campaign_recipients SET
+        status = CASE
+          WHEN campaign_recipients.status = 'complained' OR event_state.status = 'complained' THEN 'complained'
+          WHEN campaign_recipients.status = 'bounced' OR event_state.status = 'bounced' THEN 'bounced'
+          WHEN event_state.status = 'sent' THEN 'sent'
+          ELSE campaign_recipients.status
+        END,
+        delivered_at = COALESCE(campaign_recipients.delivered_at, event_state.delivered_at),
+        bounced_at = COALESCE(campaign_recipients.bounced_at, event_state.bounced_at),
+        complained_at = COALESCE(campaign_recipients.complained_at, event_state.complained_at),
+        bounce_type = COALESCE(campaign_recipients.bounce_type, event_state.bounce_type),
+        bounce_subtype = COALESCE(campaign_recipients.bounce_subtype, event_state.bounce_subtype),
+        last_event_at = CASE WHEN event_state.status IS NULL THEN campaign_recipients.last_event_at ELSE now() END
+      FROM event_state
+      WHERE campaign_recipients.provider_message_id = ${messageId} AND event_state.status IS NOT NULL
+      RETURNING campaign_recipients.subscriber_id, campaign_recipients.status
+    )
+    UPDATE subscribers SET status = recipients.status::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+    FROM recipients
+    WHERE subscribers.id = recipients.subscriber_id AND subscribers.status IN ('pending', 'active')
+      AND recipients.status IN ('bounced', 'complained')`;
+      return;
+    }
     await db`WITH event_state AS (
     SELECT CASE
         WHEN bool_or(event_status = 'complained') THEN 'complained'
@@ -220,7 +327,7 @@ export async function reconcileSesMessage(
   )
   UPDATE subscribers SET status = recipients.status::newsletter_subscriber_status, confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
   FROM recipients
-  WHERE subscribers.id = recipients.subscriber_id AND subscribers.status IN ('pending', 'active', 'unsubscribed')
+  WHERE subscribers.id = recipients.subscriber_id AND subscribers.status IN ('pending', 'active')
     AND recipients.status IN ('bounced', 'complained')`;
   }
 }

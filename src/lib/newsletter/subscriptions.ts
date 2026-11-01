@@ -157,15 +157,46 @@ export async function requestSubscription(
     takeRateLimit('ip', input.ip ?? 'unknown', IP_ATTEMPTS_PER_HOUR, db),
   ]);
   if (!emailAllowed || !ipAllowed) return genericSubscriptionResponse;
-  const rows =
-    await db`SELECT status FROM subscribers WHERE email_normalized = ${email}`;
+  // Check existing status and independent delivery suppression.
+  // hard_bounced_at / complained_at are set by SES events even when the
+  // subscriber status is preserved as unsubscribed, so they must be checked
+  // here to prevent a late hard bounce from being bypassed via resubscription.
+  let rows: Array<Record<string, unknown>>;
+  let hasSuppression = true;
+  try {
+    rows =
+      (await db`SELECT status, hard_bounced_at, complained_at FROM subscribers WHERE email_normalized = ${email}`) as Array<
+        Record<string, unknown>
+      >;
+  } catch (error) {
+    const missing =
+      error instanceof Error &&
+      /hard_bounced_at|complained_at/i.test(error.message);
+    if (!missing) throw error;
+    hasSuppression = false;
+    rows =
+      (await db`SELECT status FROM subscribers WHERE email_normalized = ${email}`) as Array<
+        Record<string, unknown>
+      >;
+  }
   const status = rows[0]?.status as string | undefined;
+  const hardBouncedAt = hasSuppression
+    ? (rows[0]?.hard_bounced_at as string | null)
+    : null;
+  const complainedAt = hasSuppression
+    ? (rows[0]?.complained_at as string | null)
+    : null;
   // A bounce or a complaint is a deliverability fact, not a preference, so those
   // rows are never reopened by a form post. An unsubscribe is a preference and
   // can be reversed, but only by the same double opt-in that created the
   // subscription: the row is reissued a confirmation token and keeps its
   // suppressed status until the reader confirms it.
+  // Additionally, an address with an outstanding hard bounce or complaint must
+  // not be reopened even via unsubscribed → pending, until an operator
+  // explicitly clears the suppression flag.
   if (status === 'active' || status === 'bounced' || status === 'complained')
+    return genericSubscriptionResponse;
+  if (hardBouncedAt != null || complainedAt != null)
     return genericSubscriptionResponse;
   const token = createToken();
   const unsubscribeToken = createToken();
@@ -182,8 +213,32 @@ export async function requestSubscription(
   // The conflict branch refreshes the confirmation token for a pending row and
   // for an unsubscribed row — the latter is how an explicit resubscription
   // starts — and never changes status, so a row stays suppressed until the
-  // confirmation step below activates it.
-  const issued = await db`INSERT INTO subscribers (
+  // confirmation step below activates it. The WHERE clause also guards against
+  // hard-bounced/complained addresses that were preserved as unsubscribed.
+  let issued: unknown[] = [];
+  try {
+    issued = await db`INSERT INTO subscribers (
+      email, email_normalized, status, source, source_detail,
+      confirmation_token_hash, confirmation_expires_at, unsubscribe_token_hash, consent_provenance,
+      acquisition_source, acquisition_detail, utm_source, utm_medium,
+      utm_campaign, utm_content, signup_path, referrer_domain
+    )
+    VALUES (
+      ${email}, ${email}, 'pending', 'website', ${source},
+      ${hashToken(token)}, now() + interval '24 hours', ${hashToken(unsubscribeToken)}, 'website_double_opt_in',
+      ${attribution?.source ?? null}, ${attribution?.detail ?? null},
+      ${attribution?.utmSource ?? null}, ${attribution?.utmMedium ?? null},
+      ${attribution?.utmCampaign ?? null}, ${attribution?.utmContent ?? null},
+      ${attribution?.signupPath ?? null}, ${attribution?.referrerDomain ?? null}
+    )
+    ON CONFLICT (email_normalized) DO UPDATE SET confirmation_token_hash = EXCLUDED.confirmation_token_hash, confirmation_expires_at = EXCLUDED.confirmation_expires_at, updated_at = now()
+    WHERE subscribers.status IN ('pending', 'unsubscribed') AND subscribers.hard_bounced_at IS NULL AND subscribers.complained_at IS NULL RETURNING id`;
+  } catch (error) {
+    const missing =
+      error instanceof Error &&
+      /hard_bounced_at|complained_at/i.test(error.message);
+    if (!missing) throw error;
+    issued = await db`INSERT INTO subscribers (
       email, email_normalized, status, source, source_detail,
       confirmation_token_hash, confirmation_expires_at, unsubscribe_token_hash, consent_provenance,
       acquisition_source, acquisition_detail, utm_source, utm_medium,
@@ -199,6 +254,7 @@ export async function requestSubscription(
     )
     ON CONFLICT (email_normalized) DO UPDATE SET confirmation_token_hash = EXCLUDED.confirmation_token_hash, confirmation_expires_at = EXCLUDED.confirmation_expires_at, updated_at = now()
     WHERE subscribers.status IN ('pending', 'unsubscribed') RETURNING id`;
+  }
   // A concurrent confirmation or suppression may win after the initial read.
   // Only deliver the token if the guarded write actually issued it.
   if (issued.length > 0) await sendConfirmation(email, token);
@@ -216,10 +272,23 @@ export async function confirmSubscription(
   // reads as a return rather than as a new subscriber. `unsubscribed_at` is left
   // alone: it records the last cancellation, which the report counts in the
   // window where it actually happened.
-  const rows =
-    await db`UPDATE subscribers SET status = 'active', confirmed_at = COALESCE(confirmed_at, now()), confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+  // The WHERE clause also ensures a hard-bounced or complained address cannot
+  // become active via confirmation until an operator clears the flag.
+  try {
+    const rows =
+      await db`UPDATE subscribers SET status = 'active', confirmed_at = COALESCE(confirmed_at, now()), confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
+    WHERE status IN ('pending', 'unsubscribed') AND hard_bounced_at IS NULL AND complained_at IS NULL AND confirmation_token_hash = ${hashToken(token)} AND confirmation_expires_at > now() RETURNING id`;
+    return rows.length > 0;
+  } catch (error) {
+    const missing =
+      error instanceof Error &&
+      /hard_bounced_at|complained_at/i.test(error.message);
+    if (!missing) throw error;
+    const rows =
+      await db`UPDATE subscribers SET status = 'active', confirmed_at = COALESCE(confirmed_at, now()), confirmation_token_hash = NULL, confirmation_expires_at = NULL, updated_at = now()
     WHERE status IN ('pending', 'unsubscribed') AND confirmation_token_hash = ${hashToken(token)} AND confirmation_expires_at > now() RETURNING id`;
-  return rows.length > 0;
+    return rows.length > 0;
+  }
 }
 
 export async function unsubscribe(token: string, db = neonDb('Newsletter')) {
