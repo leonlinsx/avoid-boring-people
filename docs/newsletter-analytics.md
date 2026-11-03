@@ -503,3 +503,29 @@ Deliberately not built: email open/click tracking, per-subscriber event history,
 a reporting dashboard or charts, cohort/segmentation analysis, paid-membership
 metrics, revenue reporting, arbitrary report scheduling, third-party analytics
 integrations, and any subscriber-facing reporting.
+
+### Health-check reader privileges (2026-11-02 audit)
+
+The scheduled health check authenticated as `newsletter_analytics_reader`, then
+failed collection with `NeonDbError`. Read-only catalog inspection and a SELECT
+as that role confirmed missing column privileges, rather than a connection or
+reader-identity failure. The report reads `newsletter_event_receipts.bounce_type`
+and `bounce_subtype` and `campaign_recipients.status`; the existing reader lacks
+SELECT on those three columns. Do not bypass the reader identity check, use a
+writer connection, or turn collection failures into success.
+
+The following is a **proposal for separately approved operator execution**, not
+an automatic migration or an instruction to apply it during CI work:
+
+```sql
+GRANT SELECT (bounce_type, bounce_subtype)
+  ON public.newsletter_event_receipts TO newsletter_analytics_reader;
+GRANT SELECT (status)
+  ON public.campaign_recipients TO newsletter_analytics_reader;
+```
+
+It grants no subscriber identity, email, token, message body, write, or DDL
+access. After approval and execution, verify those column privileges as the
+reader and run the read-only analytics report with the existing analytics
+connection. No grants were changed during the audit; the scheduled failure
+remains visible until the privilege repair is approved.
