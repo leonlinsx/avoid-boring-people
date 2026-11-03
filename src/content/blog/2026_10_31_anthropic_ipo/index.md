@@ -131,6 +131,8 @@ With percentages that large it's hard to model sensible future growth rates. As 
 
 As a bear, you could claim that 4x growth sounds large, but is also a big drop from 13x. There's also a rumour that Q3 2026 rev has decelerated. As a bull, you could point to how Claude is only a small percentage of customers' costs now and therefore still has large upside. If I had to model this I'd do a usual year over year growth and then taper aggressively downwards.
 
+*Edit: In their updated S1/A Ant's Q3 2026 rev of $17bn was ~12x the previous year, so it did decelerate vs Q2 2026.*
+
 > our revenue from these Fortune 500 customers representing, on average, less than 0.1% of their total expenses for the three months ended September 30, 2026
 
 [^16]: 185bn divided by 4 times 11bn. As another point of comparison, [Snowflake has 65 customers with >$10mm of rev](https://www.sec.gov/Archives/edgar/data/1640147/000164014726000037/snow-20260731.htm) so you might claim 250 is already a lot
@@ -153,6 +155,8 @@ Anthropic's main financial statements do not split out model serving vs model tr
 
 [^17]: The compute expense is paid and recognised as compute becomes available, not when committed, so there could be some revenue vs expense timing surprises ahead
 
+*Edit: In their updated S1/Q Ant's 9M 2026 model serving cost was 14% of rev and model training cost was 57% of rev, so the 3Q cost improvement story continues*
+
 > As our compute needs have grown substantially, we are shifting from sourcing compute solely through fixed-term cloud agreements to a hybrid model that also includes leasing chips directly and hosting them in dedicated facilities operated on our behalf. We refer to this additional source of compute as Anthropic Direct, which helps to address our scaling compute requirements and provides potential long-term economic advantages of direct hosting.
 
 ![img](./a_6.webp)
@@ -164,6 +168,8 @@ Anthropic does want you to view their business in terms of revenue vs compute co
 **Anthropic's channel fee trend seems concerning.** The company does not explicitly break out the channel fee rates, but the footnotes let us make an assumption. We know the CSP revenue increase in different periods because they tell us CSP % of rev. We also know the increase in fees paid to channel partners, which was 0.3bn in 2025 and 2.7bn in 1H 2026. This implies the older revenue had a fee of ~17%, whereas newer revenue is ~37% [^fee]. I would have guessed a 15-30% take rate, so 37% seems high, and bearish if the trend continues. There could be some contract timing issues though.
 
 [^fee]: This assumes a base of 0 for the initial channel fee, which undercounts the starting amount. However total S&M was 43mm in 2024 and 120mm in 1H 2025, so even if you assume all of that was channel fees, the final fee percentage still gets you to ~18% and ~36%
+
+*Edit: In their updated S1/A Ant discloses 4.8bn channel fee increase for a 13.4bn CSP revenue increase (from 48% to 44% of rev in Q3 2026). This implies ~36% take rate*
 
 ![img](./a_8.webp)
 
@@ -186,6 +192,8 @@ Going back to our business model discussion, the planned compute spend is either
 | AMD | Over $20B est. | From 2027 |
 
 *Most agreements are generally non-cancelable, subject to specific exceptions. SpaceXAI permits cancellation on 90 days' notice after early 2027.*
+
+*Edit: In their updated S1/A Ant discloses ~45bn in obligations yearly on document pg 173*
 
 Besides that, the remainder of the cash flow statement seems straightforward. There's the usual stock based compensation, which is an actual expense but these days everyone just seems to assume is free money [^18]. **Importantly, Anthropic actually has positive cash flow from operations in 1H 2026.**
 
