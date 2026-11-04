@@ -233,7 +233,7 @@ NOTABLE CHANGE
   • reddit acquisition is above baseline: 11 in the last 7 days vs 3 in the prior 7 days.
 ```
 
-The same report can be emailed to the author from the same local machine:
+The report can be emailed to the author from the same local machine:
 
 ```bash
 npm run newsletter:analytics:email -- --to <address> --confirm-send --days 30
@@ -248,7 +248,7 @@ receive it, and no build, deploy, or CI job can send it.
 
 ### The monthly author report
 
-The same message is also sent unattended once a month, so the author sees list
+The message is also sent unattended once a month, so the author sees list
 health and deliverability without having to remember to ask for it:
 
 ```bash
@@ -260,8 +260,14 @@ The recipient is not an argument. It is fixed configuration,
 `NEWSLETTER_AUTHOR_REPORT_TO`, and it must already be on the
 `NEWSLETTER_TEST_RECIPIENTS` allowlist — so an unattended run can only ever mail
 that one address, and a `--to` argument is refused rather than honoured. The
-window is one month, and the message only ever names that one recipient: there
-is no subscriber list in this path to send to.
+window is the trailing 30 days, and the message only ever names that one
+recipient: there is no subscriber list in this path to send to.
+
+Both email commands use a compact HTML summary with the exact UTC window,
+subscriber counts, delivery counts, existing alerts (when present), and data
+limitations. The full plain-text report remains the fallback; CLI text and JSON
+output are unchanged. New-subscriber counts may include imports, and recorded
+deliveries are received SES events rather than a total of successful deliveries.
 
 The scheduled entry point runs from a local user timer installed from
 [deploy/systemd](../deploy/systemd):

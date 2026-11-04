@@ -11,6 +11,7 @@ import {
   authorReportRecipient,
   newsletterReportEmail,
   parseAuthorReportArgs,
+  renderNewsletterReportHtml,
 } from '../../src/lib/newsletter/analytics-email.ts';
 
 // The unattended monthly author report: the first Tuesday of each month, from a
@@ -29,12 +30,15 @@ const { dryRun } = parseAuthorReportArgs(process.argv.slice(2));
 const recipient = authorReportRecipient();
 const sesConfig = dryRun ? undefined : analyticsReportSesConfig();
 
-let report: string | undefined;
+let report: { text: string; html: string } | undefined;
 try {
   const metrics = await collectNewsletterMetrics(neonDb('Newsletter'), {
     days: AUTHOR_REPORT_WINDOW_DAYS,
   });
-  report = renderNewsletterReport(metrics);
+  report = {
+    text: renderNewsletterReport(metrics),
+    html: renderNewsletterReportHtml(metrics),
+  };
 } catch (error) {
   if (!reportAnalyticsCollectionFailure(error)) throw error;
 }
@@ -42,7 +46,7 @@ try {
 if (report === undefined) {
   process.exitCode = 1;
 } else {
-  console.log(report);
+  console.log(report.text);
   if (sesConfig === undefined) {
     console.log(`Dry run: no report email sent to ${recipient}.`);
   } else {
@@ -50,7 +54,8 @@ if (report === undefined) {
       newsletterReportEmail({
         to: recipient,
         days: AUTHOR_REPORT_WINDOW_DAYS,
-        report,
+        report: report.text,
+        html: report.html,
         configurationSet: sesConfig.configurationSet,
       }),
     );
