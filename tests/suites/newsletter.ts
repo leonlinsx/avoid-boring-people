@@ -83,6 +83,7 @@ import {
   newsletterReportEmail,
   parseAnalyticsEmailArgs,
   parseAuthorReportArgs,
+  renderNewsletterReportHtml,
 } from '../../src/lib/newsletter/analytics-email.ts';
 import {
   NEWSLETTER_FROM,
@@ -453,7 +454,7 @@ export function testNewsletterTestSendSafeguard() {
   );
 }
 
-export function testNewsletterAuthorReportSafeguards() {
+export async function testNewsletterAuthorReportSafeguards() {
   const allowlist = 'contact@leonlins.com, leon.lin.sx@example.com';
   const env = {
     NEWSLETTER_TEST_RECIPIENTS: allowlist,
@@ -541,18 +542,85 @@ export function testNewsletterAuthorReportSafeguards() {
     /No email was sent/,
   );
 
-  // Exactly one recipient, from the newsletter address, carrying the report.
+  const fixture = analyticsFixtureDb({
+    audience: [{ status: 'active', count: 1204 }],
+    growth: [{ new_subscribers: 42, unsubscribed: 6 }],
+    delivery: [
+      { deliveries: 990, hard_bounces: 3, unknown_bounces: 2, complained: 1 },
+    ],
+    sends: [{ sends: 1000 }],
+  });
+  const metrics = await collectNewsletterMetrics(fixture.db, {
+    days: AUTHOR_REPORT_WINDOW_DAYS,
+    now: new Date('2026-11-03T16:30:00.123Z'),
+  });
+  const html = renderNewsletterReportHtml(metrics);
+  assert.ok(html.includes('max-width:600px'));
+  assert.ok(html.includes('Georgia'));
+  assert.ok(html.includes('2026-10-04T16:30:00.123Z'));
+  assert.ok(html.includes('2026-11-03T16:30:00.123Z (end exclusive)'));
+  for (const [label, value] of [
+    ['Active subscribers (current)', '1,204'],
+    ['New subscribers', '42'],
+    ['Unsubscribes', '6'],
+    ['Net change', '+36'],
+    ['Emails sent', '1,000'],
+    ['Recorded deliveries', '990'],
+    ['Hard bounces', '3'],
+    ['Known hard-bounce rate', '0.30%'],
+    ['Unknown bounces', '2'],
+    ['Complaints', '1'],
+  ]) {
+    assert.ok(html.includes(`>${label}</th>`));
+    assert.ok(html.includes(`>${value}</td>`));
+  }
+  for (const alert of metrics.alerts) assert.ok(html.includes(alert));
+  assert.ok(html.includes('New subscribers may include imports'));
+  assert.ok(html.includes('not total successful deliveries'));
+  assert.ok(html.includes('No open or click tracking'));
+  assert.ok(!/<(?:img|script|link)\b/i.test(html));
+  assert.ok(
+    !renderNewsletterReportHtml({ ...metrics, alerts: [] }).includes(
+      'Warnings',
+    ),
+  );
+  const escaped = renderNewsletterReportHtml({
+    ...metrics,
+    alerts: ['<script>alert("unsafe")</script> & warning'],
+  });
+  assert.ok(
+    escaped.includes(
+      '&lt;script&gt;alert(&quot;unsafe&quot;)&lt;/script&gt; &amp; warning',
+    ),
+  );
+  assert.ok(!escaped.includes('<script>'));
+  const emptyMetrics = await collectNewsletterMetrics(
+    analyticsFixtureDb({}).db,
+    {
+      days: AUTHOR_REPORT_WINDOW_DAYS,
+    },
+  );
+  assert.ok(
+    renderNewsletterReportHtml(emptyMetrics).includes('n/a (no sends)'),
+  );
+
+  // Exactly one recipient, from the newsletter address, carrying both bodies.
   const command = newsletterReportEmail({
     to: 'contact@leonlins.com',
     days: AUTHOR_REPORT_WINDOW_DAYS,
     report: 'AUDIENCE\n  1 active',
+    html,
     configurationSet: 'my-first-configuration-set',
   });
   const input = command.input;
   assert.deepEqual(input.Destination?.ToAddresses, ['contact@leonlins.com']);
+  assert.equal(input.Destination?.CcAddresses, undefined);
+  assert.equal(input.Destination?.BccAddresses, undefined);
   assert.equal(input.FromEmailAddress, NEWSLETTER_FROM);
   assert.deepEqual(input.ReplyToAddresses, [NEWSLETTER_REPLY_TO]);
   assert.equal(input.ConfigurationSetName, 'my-first-configuration-set');
+  assert.equal(input.Content?.Simple?.Body?.Html?.Data, html);
+  assert.equal(input.Content?.Simple?.Body?.Html?.Charset, 'UTF-8');
   assert.equal(
     input.Content?.Simple?.Subject?.Data,
     'Newsletter analytics — last 30 days',

@@ -8,6 +8,7 @@ import {
   analyticsReportSesConfig,
   newsletterReportEmail,
   parseAnalyticsEmailArgs,
+  renderNewsletterReportHtml,
 } from '../../src/lib/newsletter/analytics-email.ts';
 import { assertAllowedTestRecipient } from '../../src/lib/newsletter/test-send.ts';
 
@@ -29,7 +30,13 @@ const report = renderNewsletterReport(metrics);
 console.log(report);
 
 const result = await new SESv2Client({ region }).send(
-  newsletterReportEmail({ to: recipient, days, report, configurationSet }),
+  newsletterReportEmail({
+    to: recipient,
+    days,
+    report,
+    html: renderNewsletterReportHtml(metrics),
+    configurationSet,
+  }),
 );
 
 console.log(
