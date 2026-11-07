@@ -296,6 +296,79 @@ try {
     'a single correlated receipt clears the switch',
   );
 
+  // New sources flow through the existing report. Old labels stay untouched;
+  // the optional raw-evidence analysis is a separately named, read-only view.
+  sql(`INSERT INTO subscribers (
+    email, email_normalized, status, source, unsubscribe_token_hash,
+    consent_provenance, confirmation_token_hash, confirmed_at,
+    acquisition_source, utm_source, referrer_domain, signup_path
+  ) SELECT name || '@example.com', name || '@example.com',
+      CASE WHEN name = 'ai-pending' THEN 'pending' ELSE 'active' END::newsletter_subscriber_status,
+      'website', 'fixture', 'website_double_opt_in', 'fixture',
+      CASE WHEN name = 'ai-pending' THEN NULL ELSE '2026-02-25T12:00:00Z'::timestamptz END,
+      stored, tag, host, '/writing/anthropic_ipo'
+    FROM (VALUES
+      ('ai-new', 'chatgpt', 'chatgpt.com', NULL),
+      ('ai-perplexity', 'perplexity', NULL, 'perplexity.ai'),
+      ('ai-old', 'organic_search', NULL, 'chatgpt.com'),
+      ('ai-tag-old', 'referral', 'chatgpt.com', NULL),
+      ('ai-ordinary', 'organic_search', NULL, 'google.com'),
+      ('ai-override', 'x', 'x', 'chatgpt.com'),
+      ('ai-missing', NULL, NULL, NULL),
+      ('ai-pending', 'chatgpt', NULL, 'chatgpt.com')
+    ) AS fixture(name, stored, tag, host)`);
+  const aiMetrics = await collectNewsletterMetrics(db, { days: 7, now });
+  assert.equal(
+    aiMetrics.acquisition.find((row) => row.source === 'chatgpt')?.count,
+    1,
+  );
+  assert.equal(
+    aiMetrics.acquisition.find((row) => row.source === 'perplexity')?.count,
+    1,
+  );
+  const analysis = readFileSync(
+    new URL('../scripts/newsletter/ai-acquisition.sql', import.meta.url),
+    'utf8',
+  )
+    .replaceAll(":'window_start'", "'2026-02-22T12:00:00Z'")
+    .replaceAll(":'window_end'", "'2026-03-01T12:00:00Z'");
+  // Execute under a database-enforced read-only transaction.
+  const derived = JSON.parse(
+    sql(`BEGIN READ ONLY;
+    SELECT json_agg(row_to_json(result)) FROM (${analysis}) result;
+    COMMIT;`)
+      .split('\n')
+      .find((line) => line.startsWith('['))!,
+  );
+  const articleRows = derived.filter(
+    (row: { signup_path: string }) =>
+      row.signup_path === '/writing/anthropic_ipo',
+  );
+  const total = (source: string) =>
+    articleRows
+      .filter(
+        (row: { derived_source: string }) => row.derived_source === source,
+      )
+      .reduce(
+        (sum: number, row: { confirmed_subscriptions: number }) =>
+          sum + row.confirmed_subscriptions,
+        0,
+      );
+  assert.equal(
+    total('chatgpt'),
+    3,
+    'historical raw evidence is derived, pending excluded',
+  );
+  assert.equal(total('perplexity'), 1);
+  assert.equal(total('organic_search'), 1);
+  assert.equal(total('x'), 1, 'explicit tags take precedence over referrer');
+  assert.equal(total('unknown'), 1, 'missing evidence is never claimed as AI');
+  assert.equal(
+    sql(
+      "SELECT acquisition_source FROM subscribers WHERE email = 'ai-old@example.com'",
+    ),
+    'organic_search',
+  );
   console.log(
     'Newsletter analytics Postgres integration checks passed (growth from confirmed rows, window boundaries, import exclusions, acquisition reconciliation, small-sample handling, deliverability thresholds, ingestion dead-man switch).',
   );

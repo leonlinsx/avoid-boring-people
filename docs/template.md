@@ -1,7 +1,8 @@
 ---
 draft: true # Keep unpublished; set false deliberately when ready to publish.
 title: 'Your Post Title'
-description: 'A short summary for SEO, previews, and RSS.'
+description: 'An editorial description for previews and RSS; also the default SEO description.'
+# seoDescription: 'Optional invisible metadata override; does not alter editorial descriptions.'
 pubDate: 2025-01-15
 updatedDate: 2025-01-20 # optional, only if updated after pubDate
 category: Investing

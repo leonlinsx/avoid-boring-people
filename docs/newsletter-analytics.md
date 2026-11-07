@@ -76,7 +76,7 @@ and never blocks the external visit that follows it.
 | Source                                                                                         | Meaning                                                                                                                                                                                     |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `direct`                                                                                       | No tags and no referrer at all                                                                                                                                                              |
-| `organic_search`                                                                               | Search engine or answer-engine referrer (`google`, `bing`, `duckduckgo`, `ecosia`, `brave`, `yandex`, `perplexity.ai`, `chatgpt.com`), a mapped search `utm_source`, or `utm_medium=search` |
+| `organic_search`                                                                               | Conventional search referrer (`google`, `bing`, `duckduckgo`, `ecosia`, `brave`, `yandex`), a mapped search `utm_source`, or `utm_medium=search` |
 | `x`, `threads`, `instagram`, `bluesky`, `reddit`, `mastodon`, `linkedin`, `farcaster`, `nostr` | Named community platforms, matched from `utm_source` or referrer host                                                                                                                       |
 | `external_newsletter`                                                                          | Another newsletter or email platform (`substack`, `beehiiv`, `ghost`, `mailchimp`, `utm_medium=email`)                                                                                      |
 | `referral`                                                                                     | Any other external host; `detail` keeps the host or unmapped `utm_source`                                                                                                                   |
@@ -535,3 +535,10 @@ access. After approval and execution, verify those column privileges as the
 reader and run the read-only analytics report with the existing analytics
 connection. No grants were changed during the audit; the scheduled failure
 remains visible until the privilege repair is approved.
+
+AI search acquisition now records new exact ChatGPT and Perplexity host/tag
+matches as `chatgpt` and `perplexity`. Historical source labels are unchanged.
+See [AI search acquisition](ai-search-acquisition.md) for the audit, metadata
+change, raw-evidence source/landing-page query, GA4 retrieval steps and manual
+30/90-day measurement template. First-touch confirmations and session-source
+visits must not be divided into a conversion rate without compatible scopes.

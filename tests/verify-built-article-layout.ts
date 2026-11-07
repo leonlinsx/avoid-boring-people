@@ -346,3 +346,63 @@ function verifyBuiltLayout() {
 }
 
 verifyBuiltLayout();
+
+// Exercise actual built metadata: override, ordinary fallback, and localized
+// fallback. The editorial field stays untouched outside the page head.
+for (const [entry, route] of [
+  ['2026_10_31_anthropic_ipo', 'writing/anthropic_ipo'],
+  ['2020_12_02_kelly', 'writing/kelly'],
+  ['2021_04_03_ergodicity', 'writing/ergodicity'],
+]) {
+  const source = read(`src/content/blog/${entry}/index.md`);
+  const editorial = source.match(/^description: ["'](.*)["']$/m)![1];
+  const override = source.match(/^seoDescription: "(.*)"$/m)?.[1];
+  const html = read(`dist/client/${route}/index.html`);
+  const expected = override ?? editorial;
+  for (const tag of [
+    `<meta name="description" content="${expected}">`,
+    `<meta property="og:description" content="${expected}">`,
+    `<meta name="twitter:description" content="${expected}">`,
+  ])
+    assert.ok(html.includes(tag), `${route}: ${tag}`);
+  const graphs = [
+    ...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g),
+  ].flatMap((match) => JSON.parse(match[1])['@graph'] ?? []);
+  const article = graphs.find((node) => node['@type'] === 'BlogPosting');
+  assert.equal(article.description, expected);
+  assert.equal(
+    article.dateModified,
+    article.datePublished,
+    'metadata edits do not restamp dates',
+  );
+  assert.ok(
+    html.includes(
+      `<link rel="canonical" href="https://leonlins.com/${route}">`,
+    ),
+  );
+  if (override) {
+    const body = html.slice(html.indexOf('<body'));
+    assert.ok(!body.includes(override), 'SEO description must be invisible');
+    const rss = read('dist/client/rss.xml');
+    assert.ok(!rss.includes(override), 'RSS keeps editorial descriptions');
+    assert.ok(rss.includes(editorial));
+  }
+}
+
+const translatedSource = read(
+  'src/content/i18n/fr/2021_01_06_nonviolent/index.md',
+);
+const translatedDescription = translatedSource.match(
+  /^description: ["'](.*)["']$/m,
+)![1];
+const translatedHtml = read('dist/client/fr/writing/nonviolent/index.html');
+assert.ok(
+  translatedHtml.includes(
+    `<meta name="description" content="${translatedDescription}">`,
+  ),
+  'translated metadata retains the translated editorial description',
+);
+
+console.log(
+  'Built SEO descriptions: override, editorial fallback, translated fallback, canonical and dates passed.',
+);

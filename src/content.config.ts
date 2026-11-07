@@ -17,6 +17,8 @@ const blog = defineCollection({
       title: z.string(),
       draft: z.boolean().default(false),
       description: z.string().optional(),
+      // Metadata only; editorial cards, subtitles and email keep description.
+      seoDescription: z.string().trim().min(1).optional(),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       category: z.enum(categoryLabels),
