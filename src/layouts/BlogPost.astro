@@ -71,7 +71,10 @@ const hero = heroImage;
 // Translated pages reuse the English shell (dates, category, tags, hero,
 // related posts, discussion) and only swap the reading strings.
 const title = translatedTitle ?? englishTitle;
-const description = translatedDescription ?? englishDescription;
+// English metadata overrides must not leak into translated descriptions.
+const metaDescription = translationLocale
+  ? (translatedDescription ?? englishDescription)
+  : (enrichedPost.data.seoDescription ?? englishDescription);
 const chrome = articleChrome(translationLocale?.code);
 const dateLocale = translationLocale?.dateLocale ?? ENGLISH.dateLocale;
 const canonicalPath = translationLocale
@@ -166,7 +169,7 @@ const footnotesHtml = footnoteIdx !== -1 ? slotHtml.slice(footnoteIdx) : '';
 
 <BaseLayout
   title={title}
-  description={description}
+  description={metaDescription}
   image={socialImage}
   pubDate={pubDate}
   updatedDate={updatedDate}

@@ -1,6 +1,7 @@
 ---
 title: "Anthropic's IPO: Can unprecedented revenue growth outrun 'irresponsibly large' investment?"
 description: "Scale is all you need"
+seoDescription: "Anthropic IPO analysis estimates incremental cloud-channel fees of 17–37%, then ~36% from amended disclosures, subject to assumptions and timing—not disclosed contract rates."
 pubDate: 2026-10-31
 category: Investing
 tags: ['anthropic', 'ipo', 'ai']

@@ -1071,6 +1071,70 @@ export function fakeAttributionStorage(initial: Record<string, string> = {}) {
 }
 
 export function testNewsletterAttributionNormalization() {
+  for (const [domain, source] of [
+    ['chatgpt.com', 'chatgpt'],
+    ['chat.openai.com', 'chatgpt'],
+    ['perplexity.ai', 'perplexity'],
+    ['www.perplexity.ai', 'perplexity'],
+    ['bing.com', 'organic_search'],
+    ['google.com', 'organic_search'],
+    ['reddit.com', 'reddit'],
+    ['example.com', 'referral'],
+    ['chatgpt.com.example.com', 'referral'],
+  ]) {
+    const result = normalizeAttribution({ referrerDomain: domain });
+    assert.equal(result.source, source);
+    assert.equal(result.referrerDomain, domain.replace(/^www\./, ''));
+  }
+  for (const [tag, source] of [
+    ['chatgpt.com', 'chatgpt'],
+    ['ChatGPT', 'chatgpt'],
+    ['perplexity.ai', 'perplexity'],
+    ['perplexity', 'perplexity'],
+  ]) {
+    const result = normalizeAttribution({
+      utmSource: tag,
+      utmMedium: 'search',
+      utmCampaign: 'Original Campaign',
+      referrerDomain: 'google.com',
+      landingPath: '/writing/anthropic_ipo',
+    });
+    assert.equal(result.source, source);
+    assert.equal(result.utmSource, tag);
+    assert.equal(result.utmMedium, 'search');
+    assert.equal(result.utmCampaign, 'Original Campaign');
+    assert.equal(result.referrerDomain, 'google.com');
+    assert.equal(result.signupPath, '/writing/anthropic_ipo');
+  }
+  assert.equal(
+    normalizeAttribution({ utmSource: 'google', referrerDomain: 'chatgpt.com' })
+      .source,
+    'organic_search',
+    'explicit UTM precedence remains unchanged',
+  );
+  const aiStorage = fakeAttributionStorage();
+  const first = firstTouchAttribution(
+    {
+      host: 'leonlins.com',
+      pathname: '/writing/kelly',
+      referrer: 'https://chatgpt.com/',
+    },
+    aiStorage,
+  );
+  const later = firstTouchAttribution(
+    {
+      host: 'leonlins.com',
+      pathname: '/writing/ergodicity',
+      referrer: 'https://perplexity.ai/',
+    },
+    aiStorage,
+  );
+  assert.deepEqual(
+    attributionPayload(later),
+    attributionPayload(first),
+    'AI acquisition remains first attributable touch',
+  );
+
   const x = normalizeAttribution({
     utmSource: 'X',
     utmMedium: 'Social',

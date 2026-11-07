@@ -16,6 +16,8 @@ const SITE_HOST = new URL(SITE_URL).host;
 export const acquisitionSources = [
   'direct',
   'organic_search',
+  'chatgpt',
+  'perplexity',
   'x',
   'threads',
   'instagram',
@@ -114,6 +116,11 @@ const utmSourceMap: Record<string, AcquisitionSource> = {
   site: 'leonlins.com',
   direct: 'direct',
   none: 'direct',
+  chatgpt: 'chatgpt',
+  'chatgpt.com': 'chatgpt',
+  'chat.openai.com': 'chatgpt',
+  perplexity: 'perplexity',
+  'perplexity.ai': 'perplexity',
   google: 'organic_search',
   bing: 'organic_search',
   duckduckgo: 'organic_search',
@@ -146,9 +153,9 @@ const referrerSourceMap: Record<string, AcquisitionSource> = {
   'yahoo.com': 'organic_search',
   'yandex.com': 'organic_search',
   'baidu.com': 'organic_search',
-  'perplexity.ai': 'organic_search',
-  'chatgpt.com': 'organic_search',
-  'chat.openai.com': 'organic_search',
+  'perplexity.ai': 'perplexity',
+  'chatgpt.com': 'chatgpt',
+  'chat.openai.com': 'chatgpt',
 };
 
 // Search engines, matched on the apex or www host only: mail.google.com and
