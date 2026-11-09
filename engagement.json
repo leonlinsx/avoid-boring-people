@@ -2,7 +2,7 @@
   "observations": {
     "2017_02_23_random/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:45Z",
+        "collected_at": "2026-11-09T19:22:24Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -11,7 +11,7 @@
         }
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:45Z",
+        "collected_at": "2026-11-09T19:22:25Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -19,7 +19,7 @@
         }
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:46Z",
+        "collected_at": "2026-11-09T19:22:25Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -29,7 +29,7 @@
     },
     "2017_07_20_claude/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:46Z",
+        "collected_at": "2026-11-09T19:22:25Z",
         "counts": {
           "likes": 1,
           "quotes": 0,
@@ -39,7 +39,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:46Z",
+        "collected_at": "2026-11-09T19:22:25Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -48,7 +48,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:46Z",
+        "collected_at": "2026-11-09T19:22:26Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -59,7 +59,7 @@
     },
     "2019_02_02_dunning/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:46Z",
+        "collected_at": "2026-11-09T19:22:26Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -69,7 +69,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:46Z",
+        "collected_at": "2026-11-09T19:22:26Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -78,7 +78,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:47Z",
+        "collected_at": "2026-11-09T19:22:27Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -89,7 +89,7 @@
     },
     "2019_02_05_procrastinate/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:47Z",
+        "collected_at": "2026-11-09T19:22:27Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -99,7 +99,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:47Z",
+        "collected_at": "2026-11-09T19:22:27Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -108,7 +108,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:47Z",
+        "collected_at": "2026-11-09T19:22:28Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -119,7 +119,7 @@
     },
     "2019_02_18_why/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:48Z",
+        "collected_at": "2026-11-09T19:22:28Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -129,7 +129,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:48Z",
+        "collected_at": "2026-11-09T19:22:28Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -138,7 +138,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:48Z",
+        "collected_at": "2026-11-09T19:22:28Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -149,7 +149,7 @@
     },
     "2019_02_23_replicability/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:48Z",
+        "collected_at": "2026-11-09T19:22:29Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -159,7 +159,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:48Z",
+        "collected_at": "2026-11-09T19:22:29Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -168,7 +168,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:49Z",
+        "collected_at": "2026-11-09T19:22:29Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -179,7 +179,7 @@
     },
     "2019_03_03_moloch/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:49Z",
+        "collected_at": "2026-11-09T19:22:29Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -189,7 +189,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:49Z",
+        "collected_at": "2026-11-09T19:22:30Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -198,7 +198,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:49Z",
+        "collected_at": "2026-11-09T19:22:30Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -209,7 +209,7 @@
     },
     "2019_03_10_write/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:49Z",
+        "collected_at": "2026-11-09T19:22:30Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -219,7 +219,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:50Z",
+        "collected_at": "2026-11-09T19:22:30Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -228,7 +228,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:50Z",
+        "collected_at": "2026-11-09T19:22:31Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -239,7 +239,7 @@
     },
     "2019_03_24_time_illusion/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:50Z",
+        "collected_at": "2026-11-09T19:22:31Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -249,7 +249,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:50Z",
+        "collected_at": "2026-11-09T19:22:31Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -258,7 +258,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:51Z",
+        "collected_at": "2026-11-09T19:22:31Z",
         "counts": {
           "likes": 1,
           "replies": 0,
@@ -269,7 +269,7 @@
     },
     "2019_03_30_trade/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:51Z",
+        "collected_at": "2026-11-09T19:22:32Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -279,7 +279,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:51Z",
+        "collected_at": "2026-11-09T19:22:32Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -288,7 +288,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:51Z",
+        "collected_at": "2026-11-09T19:22:33Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -299,7 +299,7 @@
     },
     "2019_04_14_stock/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:51Z",
+        "collected_at": "2026-11-09T19:22:33Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -309,7 +309,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:52Z",
+        "collected_at": "2026-11-09T19:22:33Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -318,7 +318,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:52Z",
+        "collected_at": "2026-11-09T19:22:34Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -329,7 +329,7 @@
     },
     "2019_04_18_investing/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:52Z",
+        "collected_at": "2026-11-09T19:22:34Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -339,7 +339,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:52Z",
+        "collected_at": "2026-11-09T19:22:34Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -348,7 +348,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:53Z",
+        "collected_at": "2026-11-09T19:22:35Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -359,7 +359,7 @@
     },
     "2019_04_27_rake/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:53Z",
+        "collected_at": "2026-11-09T19:22:35Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -369,7 +369,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:53Z",
+        "collected_at": "2026-11-09T19:22:35Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -378,7 +378,97 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:54Z",
+        "collected_at": "2026-11-09T19:22:36Z",
+        "counts": {
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      }
+    },
+    "2019_05_04_microwave/index.md": {
+      "bluesky": {
+        "collected_at": "2026-11-09T19:22:36Z",
+        "counts": {
+          "likes": 0,
+          "quotes": 0,
+          "replies": 1,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      },
+      "farcaster": {
+        "collected_at": "2026-11-09T19:22:36Z",
+        "counts": {
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      },
+      "mastodon": {
+        "collected_at": "2026-11-09T19:22:36Z",
+        "counts": {
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      }
+    },
+    "2019_06_08_heart/index.md": {
+      "bluesky": {
+        "collected_at": "2026-11-09T19:22:36Z",
+        "counts": {
+          "likes": 0,
+          "quotes": 0,
+          "replies": 1,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      },
+      "farcaster": {
+        "collected_at": "2026-11-09T19:22:37Z",
+        "counts": {
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      },
+      "mastodon": {
+        "collected_at": "2026-11-09T19:22:37Z",
+        "counts": {
+          "likes": 2,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      }
+    },
+    "2019_06_16_ad/index.md": {
+      "bluesky": {
+        "collected_at": "2026-11-09T19:22:37Z",
+        "counts": {
+          "likes": 0,
+          "quotes": 0,
+          "replies": 1,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      },
+      "farcaster": {
+        "collected_at": "2026-11-09T19:22:37Z",
+        "counts": {
+          "likes": 0,
+          "replies": 0,
+          "reposts": 0
+        },
+        "model": "deepseek/deepseek-flash"
+      },
+      "mastodon": {
+        "collected_at": "2026-11-09T19:22:38Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -389,7 +479,7 @@
     },
     "2021_03_13_internet/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:54Z",
+        "collected_at": "2026-11-09T19:22:38Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -399,7 +489,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:54Z",
+        "collected_at": "2026-11-09T19:22:38Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -408,7 +498,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:55Z",
+        "collected_at": "2026-11-09T19:22:38Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -419,7 +509,7 @@
     },
     "2021_04_03_ergodicity/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:55Z",
+        "collected_at": "2026-11-09T19:22:38Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -429,7 +519,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:55Z",
+        "collected_at": "2026-11-09T19:22:39Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -438,7 +528,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:56Z",
+        "collected_at": "2026-11-09T19:22:39Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -449,7 +539,7 @@
     },
     "2021_05_02_art_history/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:56Z",
+        "collected_at": "2026-11-09T19:22:39Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -458,7 +548,7 @@
         }
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:56Z",
+        "collected_at": "2026-11-09T19:22:39Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -467,7 +557,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:57Z",
+        "collected_at": "2026-11-09T19:22:40Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -478,7 +568,7 @@
     },
     "2026_10_31_anthropic_ipo/index.md": {
       "bluesky": {
-        "collected_at": "2026-11-02T18:59:57Z",
+        "collected_at": "2026-11-09T19:22:40Z",
         "counts": {
           "likes": 0,
           "quotes": 0,
@@ -488,7 +578,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "farcaster": {
-        "collected_at": "2026-11-02T18:59:57Z",
+        "collected_at": "2026-11-09T19:22:40Z",
         "counts": {
           "likes": 0,
           "replies": 0,
@@ -497,7 +587,7 @@
         "model": "deepseek/deepseek-flash"
       },
       "mastodon": {
-        "collected_at": "2026-11-02T18:59:57Z",
+        "collected_at": "2026-11-09T19:22:40Z",
         "counts": {
           "likes": 0,
           "replies": 0,
