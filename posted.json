@@ -891,6 +891,45 @@
     "2019_07_31_ipo_process/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-10T20:58:41Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mzydfxm4or2w",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3mzydfxm4or2w"
+      },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-10T20:58:42Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "0x9e4da8596a2c747f7c7446374c9b7400218b5cdf"
+      },
+      "instagram": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-10T21:08:31Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18154073965535453",
+        "remote_url": "https://www.instagram.com/p/Dfk1a5in5vs/"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-10T20:58:42Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "117594149505848313",
+        "remote_url": "https://mastodon.social/@leonlins/117594149505848313"
+      },
+      "threads": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-10T21:00:46Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18120677210005519",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/Dfk0nzhn5zi"
       }
     },
     "2019_07_31_news/index.md": {
