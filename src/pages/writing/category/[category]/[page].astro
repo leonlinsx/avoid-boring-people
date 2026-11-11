@@ -8,6 +8,7 @@ import Pagination from '../../../../components/Pagination.astro';
 import Filters from '../../../../components/Filters.astro';
 import PostList from '../../../../components/PostList.astro';
 import WritingHeader from '../../../../components/WritingHeader.astro';
+import SubscribeForm from '../../../../components/SubscribeForm.astro';
 import { buildPaginationHref } from '../../../../utils/pagination.ts';
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -57,5 +58,11 @@ const relNext =
     currentPage={currentPage}
     totalPages={totalPages}
     activeCategory={activeCategory}
+  />
+
+  <SubscribeForm
+    title="Get the next essay"
+    subtext="Investing, technology, and decision-making. Usually one email a month."
+    sourceDetail="writing-category"
   />
 </BaseLayout>
