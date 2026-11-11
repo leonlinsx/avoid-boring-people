@@ -228,6 +228,28 @@ def test_transient_failures_are_retried_then_recorded(monkeypatch, use_temp_dist
     assert state_manager.get_platform_state("post", "bluesky")["remote_id"] == "at://eventual"
 
 
+def test_nostr_ambiguous_relay_failure_is_not_resigned_or_retried(monkeypatch, use_temp_distribution_state):
+    """An ACK timeout may follow a successful relay write; never re-sign."""
+    monkeypatch.setenv("FAIL_ON_PUBLISH_ERROR", "true")
+    calls = []
+
+    def publish(platform, social, article, community, post_id, storyboard):
+        calls.append(platform)
+        if platform == "nostr":
+            raise RuntimeError("Nostr publish failed on every relay: connection timed out")
+        return PublishResult(platform, remote_id="successful-platform-id")
+
+    _drive_main(monkeypatch, _post(), ["nostr", "bluesky"], {})
+    monkeypatch.setattr(auto_post, "_publish", publish)
+
+    with pytest.raises(RuntimeError, match="Publication failed for: nostr"):
+        auto_post.main()
+
+    assert calls == ["nostr", "bluesky"]
+    assert state_manager.get_platform_state("post", "nostr") is None
+    assert state_manager.get_platform_state("post", "bluesky")["remote_id"] == "successful-platform-id"
+
+
 @pytest.mark.parametrize("status", [400, 401, 403, 422])
 def test_permanent_errors_are_not_retried(status):
     assert not retry_module.is_transient(RuntimeError(f"Provider API error: {status} rejected"))
