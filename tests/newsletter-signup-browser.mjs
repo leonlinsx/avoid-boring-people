@@ -116,6 +116,23 @@ try {
     .locator('[data-newsletter-form]')
     .evaluateAll((forms) => forms.map((form) => form.id));
   assert.equal(new Set(ids).size, ids.length, 'form IDs are unique');
+  // The writing archive previously had no newsletter form. Verify the
+  // actual rendered template and its distinct, truthful signup location.
+  await page.goto(`${origin}/writing/1`);
+  const archiveForm = page.locator('[data-newsletter-form]');
+  assert.equal(await archiveForm.count(), 1);
+  assert.equal(
+    await archiveForm.locator('[name=source]').inputValue(),
+    'writing-archive',
+  );
+  await archiveForm.locator('[name=email]').fill('disposable@example.com');
+  await archiveForm.locator('button[type=submit]').click();
+  await page.locator('.subscribe-message').first()
+    .filter({ hasText: 'If a confirmation email arrives' }).waitFor();
+  assert.equal(requests.at(-1).source, 'writing-archive');
+  // Archive signup is not a new acquisition channel: first-touch stays fixed.
+  assert.equal(requests.at(-1).attribution.utmSource, 'bluesky');
+
   await page.goto(origin);
   // Blocked storage still allows a signup with no fabricated attribution.
   await context.addInitScript(() => {
