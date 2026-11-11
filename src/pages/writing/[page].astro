@@ -7,6 +7,7 @@ import Pagination from '../../components/Pagination.astro';
 import Filters from '../../components/Filters.astro';
 import PostList from '../../components/PostList.astro';
 import WritingHeader from '../../components/WritingHeader.astro';
+import SubscribeForm from '../../components/SubscribeForm.astro';
 import { buildPaginationHref } from '../../utils/pagination.ts';
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -56,4 +57,11 @@ const relNext =
 
   <!-- Pagination -->
   <Pagination currentPage={currentPage} totalPages={totalPages} />
+
+  <!-- Invite readers who are browsing the archive; reuse owned double opt-in. -->
+  <SubscribeForm
+    title="Get the next essay"
+    subtext="Investing, technology, and decision-making. Usually one email a month."
+    sourceDetail="writing-archive"
+  />
 </BaseLayout>
