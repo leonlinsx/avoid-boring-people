@@ -43,11 +43,7 @@ const formSource = sourceDetail ?? (compact ? 'blog-inline' : 'blog-footer');
     data-success-full={successFull}
     data-success-compact={successCompact}
   >
-    <input
-      type="hidden"
-      name="source"
-      value={formSource}
-    />
+    <input type="hidden" name="source" value={formSource} />
 
     <label for={`${formId}-email`} class="sr-only">{emailLabel}</label>
     <input
