@@ -68,7 +68,7 @@ try {
     .filter({ hasText: 'If a confirmation email arrives' })
     .waitFor();
   assert.equal(await button.isEnabled(), true);
-  assert.equal(requests[0].source, 'blog-footer');
+  assert.equal(requests[0].source, 'homepage');
   assert.equal(requests[0].website, '');
   assert.equal(requests[0].attribution.utmSource, 'bluesky');
   assert.equal(requests[0].attribution.utmCampaign, 'fixture');
