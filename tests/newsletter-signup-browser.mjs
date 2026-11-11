@@ -36,6 +36,10 @@ try {
     return route.continue();
   });
   await page.goto(`${origin}/?utm_source=bluesky&utm_campaign=fixture`);
+  assert.equal(
+    await page.locator('#subscribe h2').innerText(),
+    'Get the next essay',
+  );
   const form = page.locator('[data-newsletter-form]').first();
   const email = form.locator('[name=email]');
   const button = form.locator('button[type=submit]');
