@@ -342,7 +342,14 @@ def main() -> None:
             # Each platform is independent: transient failures are retried with
             # backoff, state is written only after confirmed API success, and a
             # failed platform never stops the remaining platforms from running.
-            response = run_with_retries(lambda p=platform: _publish(p, social, article, community, selected["id"], storyboard))
+            # Nostr already fans one signed event out to multiple relays. An ACK
+            # timeout is ambiguous: a relay may have accepted the event.
+            # Retrying this whole call would sign a *different* event and can
+            # create duplicate notes. Other platforms retain bounded retries.
+            response = run_with_retries(
+                lambda p=platform: _publish(p, social, article, community, selected["id"], storyboard),
+                attempts=1 if platform == "nostr" else None,
+            )
             _record_success(selected, platform, response, model_label)
             log_summary(f"✅ {platform} posting completed ({tagged_url(social.url, platform, selected['id'])})")
         except Exception as error:
