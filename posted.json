@@ -866,6 +866,44 @@
     "2019_06_23_tim/index.md": {
       "_legacy": {
         "global_count": 2
+      },
+      "bluesky": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-12T21:34:01Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3n25gcyh42q26",
+        "remote_url": "at://did:plc:ltwk4fb4zybqmyf2k5yd4lvx/app.bsky.feed.post/3n25gcyh42q26"
+      },
+      "farcaster": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-12T21:34:03Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "0x7447589e4050ed35d205637bd0d31026b4bf754b"
+      },
+      "mastodon": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-12T21:34:02Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "117605613091279203",
+        "remote_url": "https://mastodon.social/@leonlins/117605613091279203"
+      },
+      "nostr": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-12T21:34:34Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "4c61857dec7b5f6495c970dbd3b59bd44a97c89bcf1854a77c1f18057f15d6b2"
+      },
+      "threads": {
+        "count": 1,
+        "last_mode": "evergreen",
+        "last_posted_at": "2026-11-12T21:34:55Z",
+        "model": "deepseek/deepseek-flash",
+        "remote_id": "18077262701755544",
+        "remote_url": "https://www.threads.com/@leon.lin.s/post/DfqCIAMIPF2"
       }
     },
     "2019_06_30_libra/index.md": {
