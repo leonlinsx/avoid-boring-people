@@ -35,11 +35,12 @@ token on `graph.threads.net`. The two credentials must never be swapped.
 
 ## One-time operator setup (do not paste credentials into chat)
 
-1. **First fix any expired token manually.** The November 15 health check
-   confirmed Threads had expired. Generate a fresh **long-lived** Threads user
-   access token in Meta Developers, save it as `THREADS_ACCESS_TOKEN`, and run
-   **Actions → Token health → Run workflow**. Confirm both Threads and
-   Instagram authenticate. Already expired tokens cannot be refreshed.
+1. **Confirm both tokens are valid.** The November 16 manual
+   [Token Health run](https://github.com/leonlinsx/avoid-boring-people/actions/runs/43926859260)
+   already authenticated Threads (`leon.lin.s`) and Instagram
+   (`avoidboringpeople`). No further manual token renewal is needed for
+   setup. If a token expires in future, reauthorize it in Meta Developers and
+   replace its existing repository secret before automating refresh again.
 2. In GitHub **Settings → Developer settings → GitHub Apps**, register a
    dedicated private app for token maintenance. Under **Repository
    permissions**, grant **Secrets: Read and write** (Metadata: Read is implicit).
