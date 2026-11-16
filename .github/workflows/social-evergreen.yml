@@ -9,7 +9,19 @@ on:
     - cron: '37 14 * * 2,4'  # Tue/Thu 09:37 America/New_York (EST)
     - cron: '37 21 * * 0'    # Sun 17:37 America/New_York (EDT)
     - cron: '37 22 * * 0'    # Sun 17:37 America/New_York (EST)
+  # Manual recovery is Instagram-only, requires an exact article ID, and previews by default.
+  # It does not replay the already-confirmed posts on other channels.
   workflow_dispatch:
+    inputs:
+      target_post_id:
+        description: 'Exact article ID in search index, e.g. 2019_06_23_tim/index.md'
+        required: true
+        type: string
+      publish:
+        description: 'Publish Instagram carousel now (unchecked means preview only)'
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -115,7 +127,12 @@ jobs:
         id: publish
         continue-on-error: true
         env:
-          DRY_RUN: 'false'
+          # Scheduled runs retain their usual full destination set. A manual dispatch
+          # is deliberately Instagram-only; the targeted article must be eligible
+          # according to normal posting history, so already-posted items are skipped.
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && !inputs.publish && 'true' || 'false' }}
+          PLATFORM: ${{ github.event_name == 'workflow_dispatch' && 'instagram' || 'bluesky,mastodon,devto,farcaster,nostr,threads,instagram' }}
+          TARGET_POST_ID: ${{ github.event_name == 'workflow_dispatch' && inputs.target_post_id || '' }}
           FAIL_ON_PUBLISH_ERROR: 'true'
           DISTRIBUTION_MODE: evergreen
           USE_LLM: 'true'

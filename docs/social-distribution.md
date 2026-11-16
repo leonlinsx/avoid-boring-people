@@ -16,6 +16,33 @@ The Mastodon status adds up to three hashtags from sanitized article metadata wh
 
 New articles are distributed as soon as the push-triggered run sees them live in the deployed search index. The back catalog is served by `social-evergreen.yml`, one article per run, on Tuesday and Thursday at 09:37 and Sunday at 17:37 `America/New_York`. GitHub cron is UTC-only and has no DST support, so both offsets of each window are scheduled (13:37/14:37 and 21:37/22:37 UTC) and a `gate` job keeps the run whose `github.event.schedule` equals the DST-correct UTC time of today's window. Reading which cron fired, rather than the wall clock, means a run delayed under load still serves the right window and the wrong offset never publishes; the gate announces a skip through a run notice, and a manual dispatch bypasses it. A scheduled run that arrives without a cron identifier, or a runner whose tz data cannot resolve `America/New_York`, fails the gate rather than guessing, so the only way a window is lost without a signal is when GitHub never fires the cron at all. The per-platform 60/90-day evergreen cooldowns in `scripts/automation/state_manager.py` are unchanged.
 
+## Targeted Instagram recovery
+
+Use the existing **Actions → Social Evergreen → Run workflow** manual option
+only when an individual Instagram publication has failed **without** a success
+receipt in `posted.json`. Manual runs require `target_post_id`, the exact
+deployed search-index article ID (for example `2019_06_23_tim/index.md`).
+They override the normal platform set to **Instagram only** and retain the
+ordinary evergreen eligibility checks; already-confirmed Instagram posts are
+not deliberately repeated.
+
+1. Leave **publish** unchecked for the default preview. It can generate copy
+   and a local carousel but does not upload or publish it. Review the selected
+   article, caption, slides and intended account.
+2. Verify externally that the Instagram carousel is not already live,
+   particularly if an older API call timed out after a possible publication.
+3. Dispatch again with the same ID and explicitly check **publish** only after
+   confirming that no Instagram post exists. The workflow should record
+   `posted.json` for Instagram on successful publication, then verify the
+   resulting remote post. A failed/ambiguous outcome must be reconciled with
+   Instagram **before** another live attempt.
+
+**Never rerun the full failed Social Evergreen workflow** to fix a single
+channel. Other channels may already have posted successfully. Scheduled runs
+still use the unchanged full destination set, and Lin Dash considers only the
+`distribute` job of **scheduled** runs for its Evergreen health contract. A
+manual retry therefore does not prove the missed scheduled window healthy.
+
 ## Engagement ledger
 
 `scripts/automation/engagement.py` closes the measurement loop without tracking anyone: it re-reads the remote posts `posted.json` already recorded and stores their public counts (likes, reposts, replies, views where exposed) in `engagement.json`. Covered: Bluesky via the keyless public API, Mastodon and DEV via their existing read credentials, Farcaster via the existing Neynar key. Threads/Instagram have no read API without an app token the repository deliberately does not store; Nostr and the dormant adapters are out of scope. Collection is fail-soft per post and runs weekly from `.github/workflows/engagement.yml`, which commits only the ledger. Evergreen ranking adds at most +0.75 for past interactions (absent data contributes exactly 0), and each `posted.json` entry records the copy engine (`deepseek/<model>` or `textrank-stub`) so observations stay attributable when copy changes.
