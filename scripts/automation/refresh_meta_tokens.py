@@ -64,7 +64,11 @@ def _get_json(url: str, *, token: str, params: dict[str, str]) -> dict:
         try:
             error = response.json().get("error", {})
             if isinstance(error, dict):
-                code = str(error.get("code", "unknown"))
+                # Only surface Meta's numeric code; response fields are untrusted
+                # and might otherwise echo a credential into Actions logs.
+                raw_code = error.get("code")
+                if type(raw_code) is int and 0 <= raw_code <= 999999:
+                    code = str(raw_code)
         except (ValueError, AttributeError, TypeError):
             pass
         raise RefreshError(f"Meta rejected request (HTTP {response.status_code}, code {code}); no token changed")
