@@ -16,6 +16,15 @@ The Mastodon status adds up to three hashtags from sanitized article metadata wh
 
 New articles are distributed as soon as the push-triggered run sees them live in the deployed search index. The back catalog is served by `social-evergreen.yml`, one article per run, on Tuesday and Thursday at 09:37 and Sunday at 17:37 `America/New_York`. GitHub cron is UTC-only and has no DST support, so both offsets of each window are scheduled (13:37/14:37 and 21:37/22:37 UTC) and a `gate` job keeps the run whose `github.event.schedule` equals the DST-correct UTC time of today's window. Reading which cron fired, rather than the wall clock, means a run delayed under load still serves the right window and the wrong offset never publishes; the gate announces a skip through a run notice, and a manual dispatch bypasses it. A scheduled run that arrives without a cron identifier, or a runner whose tz data cannot resolve `America/New_York`, fails the gate rather than guessing, so the only way a window is lost without a signal is when GitHub never fires the cron at all. The per-platform 60/90-day evergreen cooldowns in `scripts/automation/state_manager.py` are unchanged.
 
+## Automatic Meta credential refresh
+
+Long-lived Instagram and Threads tokens are refreshed by the opt-in
+`Meta token refresh` GitHub Action, using a dedicated repository-scoped GitHub
+App with **Secrets:write**. It is **disabled by default** until one-time
+operator setup and a verified secret-write test; the daily `Token health`
+check remains unchanged. See [meta-token-refresh.md](meta-token-refresh.md)
+for permissions, preview, activation, safeguards, and expired-token recovery.
+
 ## Targeted Instagram recovery
 
 Use the existing **Actions → Social Evergreen → Run workflow** manual option
