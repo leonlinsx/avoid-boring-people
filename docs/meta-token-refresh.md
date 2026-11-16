@@ -16,8 +16,14 @@ token on `graph.threads.net`. The two credentials must never be swapped.
 
 - Weekly on Monday 06:17 UTC, the `Meta token refresh` Action refreshes both
   valid user tokens, extending their expected lifetime toward 60 days.
-- A refreshed token is checked against the **same account ID** before it is
-  saved. The Instagram ID must also equal `INSTAGRAM_USER_ID`.
+- A refreshed token is checked against the **same platform-specific account**
+  before it is saved. Threads is locked to `@leon.lin.s`, while Instagram is
+  locked to `@avoidboringpeople`; these are deliberately different accounts.
+  For Instagram Login, `/me.id` is an **app-scoped** identifier and must not
+  be compared to `INSTAGRAM_USER_ID`. The check instead requests
+  `/me?fields=id,user_id,username`, compares the professional `user_id`
+  to `INSTAGRAM_USER_ID`, verifies the expected Instagram username, and
+  checks the identity again after refresh before writing the new secret.
 - A repository secret last updated fewer than **36 hours** earlier is only
   checked, not refreshed, because Meta requires a token at least 24 hours old.
 - It writes the result to existing `THREADS_ACCESS_TOKEN` or
