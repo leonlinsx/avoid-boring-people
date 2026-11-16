@@ -1,0 +1,83 @@
+name: Meta token refresh
+
+# An opt-in, private-credential maintenance task. Scheduled runs are disabled
+# until META_TOKEN_AUTO_REFRESH_ENABLED=true is configured in repo variables.
+# A manual dispatch previews authentication by default, without touching Meta
+# refresh endpoints or writing any GitHub secrets.
+on:
+  schedule:
+    - cron: '17 6 * * 1' # Weekly Monday 06:17 UTC; a 60-day token leaves ample margin
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Which token(s) to check or refresh'
+        type: choice
+        required: true
+        default: both
+        options:
+          - both
+          - threads
+          - instagram
+      refresh:
+        description: 'Refresh valid tokens and replace their GitHub secrets (unchecked = read-only check)'
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: meta-token-refresh
+  cancel-in-progress: false
+
+jobs:
+  rotate:
+    # Disabled by default for schedules; manual check-only works before setup.
+    if: github.event_name == 'workflow_dispatch' || vars.META_TOKEN_AUTO_REFRESH_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/automation/requirements*.lock
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install --require-hashes -r scripts/automation/requirements-build.lock
+          python -m pip install --no-build-isolation --require-hashes -r scripts/automation/requirements.lock
+
+      - name: Preview Meta authentication only
+        if: github.event_name == 'workflow_dispatch' && inputs.refresh != true
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          SELECTED_PLATFORM: ${{ inputs.platform }}
+        run: python -m scripts.automation.refresh_meta_tokens --check-only --platform "$SELECTED_PLATFORM"
+
+      # The ordinary GITHUB_TOKEN and SOCIAL_STATE_APP do not grant Secrets:write.
+      # A dedicated, installed GitHub App is scoped to this repository and to
+      # Secrets:write only. Neither the app key nor Meta tokens reach output files.
+      - name: Mint scoped GitHub secret-writer token
+        id: app-token
+        if: github.event_name == 'schedule' || inputs.refresh == true
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.META_REFRESH_APP_CLIENT_ID }}
+          private-key: ${{ secrets.META_REFRESH_APP_PRIVATE_KEY }}
+          permission-secrets: write
+
+      - name: Refresh and securely persist Meta tokens
+        if: github.event_name == 'schedule' || inputs.refresh == true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          SELECTED_PLATFORM: ${{ github.event_name == 'schedule' && 'both' || inputs.platform }}
+        run: python -m scripts.automation.refresh_meta_tokens --refresh --platform "$SELECTED_PLATFORM"
