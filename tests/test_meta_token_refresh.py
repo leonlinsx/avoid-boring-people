@@ -107,6 +107,20 @@ def test_meta_failure_never_echoes_response_body_or_url(monkeypatch):
     assert "190" in str(caught.value)
 
 
+
+def test_untrusted_meta_error_code_cannot_echo_token(monkeypatch):
+    class FakeResponse:
+        status_code = 400
+        def json(self):
+            return {"error": {"code": "access_token=secret-leak", "message": "secret-leak"}}
+    monkeypatch.setattr(mod.requests, "get", lambda *a, **kw: FakeResponse())
+    with pytest.raises(mod.RefreshError) as caught:
+        mod._get_json("https://graph.threads.net/refresh_access_token",
+                      token="secret-leak", params={"access_token": "secret-leak"})
+    assert "secret-leak" not in str(caught.value)
+    assert "unknown" in str(caught.value)
+
+
 def test_refresh_requires_scoped_app_before_request(monkeypatch):
     _tokens(monkeypatch)
     monkeypatch.setenv("GITHUB_REPOSITORY", mod.REPOSITORY)
