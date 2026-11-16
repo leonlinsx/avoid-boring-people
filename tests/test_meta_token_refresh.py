@@ -20,13 +20,17 @@ def _tokens(monkeypatch):
 
 def test_check_only_does_not_call_refresh_or_write(monkeypatch):
     _tokens(monkeypatch)
-    urls = []
-    monkeypatch.setattr(mod, "_get_json", lambda url, **kw: (urls.append(url) or {"id": "instagram-account"}))
+    requests_seen = []
+    monkeypatch.setattr(mod, "_get_json", lambda url, **kw:
+        (requests_seen.append((url, kw["params"])) or
+         {"id": "app-scoped-id", "user_id": "instagram-account", "username": "avoidboringpeople"}))
     monkeypatch.setattr(mod, "_recently_updated", lambda *a: (_ for _ in ()).throw(AssertionError("read secret age")))
     monkeypatch.setattr(mod, "_persist", lambda *a: (_ for _ in ()).throw(AssertionError("secret write")))
     result = mod._refresh_one(mod.PLATFORMS["instagram"], now=NOW, check_only=True)
     assert "preview" in result
-    assert urls == ["https://graph.instagram.com/v26.0/me"]
+    assert requests_seen == [
+        ("https://graph.instagram.com/v26.0/me", {"fields": "id,user_id,username"})
+    ]
 
 
 def test_refreshed_token_is_verified_before_persisting(monkeypatch):
@@ -36,7 +40,7 @@ def test_refreshed_token_is_verified_before_persisting(monkeypatch):
         calls.append((url, token, params))
         if url.endswith("refresh_access_token"):
             return {"access_token": "instagram-new-long-lived-token", "expires_in": 5184000}
-        return {"id": "instagram-account"}
+        return {"id": "app-scoped-id", "user_id": "instagram-account", "username": "avoidboringpeople"}
     monkeypatch.setattr(mod, "_get_json", fake_get)
     monkeypatch.setattr(mod, "_recently_updated", lambda *a: False)
     monkeypatch.setattr(mod, "_persist", lambda secret, token: writes.append((secret, token)))
@@ -47,12 +51,65 @@ def test_refreshed_token_is_verified_before_persisting(monkeypatch):
     assert calls[-1][1] == "instagram-new-long-lived-token"
 
 
+def test_instagram_user_id_is_distinct_from_app_scoped_id(monkeypatch):
+    _tokens(monkeypatch)
+    monkeypatch.setattr(mod, "_get_json", lambda url, **kw: {
+        "id": "an-entirely-different-app-scoped-id",
+        "user_id": "instagram-account",
+        "username": "avoidboringpeople",
+    })
+    assert mod._profile(mod.PLATFORMS["instagram"], "instagram-old-long-lived-token") == "instagram-account"
+
+
+@pytest.mark.parametrize("returned", [
+    {"id": "app-scoped-id", "user_id": "other-professional-account", "username": "avoidboringpeople"},
+    {"id": "app-scoped-id", "username": "avoidboringpeople"},
+    {"id": "app-scoped-id", "user_id": "instagram-account", "username": "leon.lin.s"},
+])
+def test_instagram_mismatch_or_missing_user_id_never_writes(monkeypatch, returned):
+    _tokens(monkeypatch)
+    monkeypatch.setattr(mod, "_get_json", lambda url, **kw: returned)
+    monkeypatch.setattr(mod, "_recently_updated", lambda *a: (_ for _ in ()).throw(AssertionError("secret age called")))
+    monkeypatch.setattr(mod, "_persist", lambda *a: (_ for _ in ()).throw(AssertionError("secret write")))
+    with pytest.raises(mod.RefreshError):
+        mod._refresh_one(mod.PLATFORMS["instagram"], now=NOW, check_only=False)
+
+
+def test_instagram_changed_after_refresh_is_rejected(monkeypatch):
+    _tokens(monkeypatch)
+    def fake_get(url, *, token, params):
+        if url.endswith("refresh_access_token"):
+            return {"access_token": "instagram-new-long-lived-token", "expires_in": 5184000}
+        return {
+            "id": "app-scoped-id",
+            "user_id": "instagram-account" if token.endswith("old-long-lived-token") else "other-professional-account",
+            "username": "avoidboringpeople",
+        }
+    monkeypatch.setattr(mod, "_get_json", fake_get)
+    monkeypatch.setattr(mod, "_recently_updated", lambda *a: False)
+    monkeypatch.setattr(mod, "_persist", lambda *a: (_ for _ in ()).throw(AssertionError("secret write")))
+    with pytest.raises(mod.RefreshError):
+        mod._refresh_one(mod.PLATFORMS["instagram"], now=NOW, check_only=False)
+
+
+def test_threads_does_not_accept_instagram_username(monkeypatch):
+    _tokens(monkeypatch)
+    monkeypatch.setattr(mod, "_get_json", lambda url, **kw: {
+        "id": "threads-account", "username": "avoidboringpeople",
+    })
+    with pytest.raises(mod.RefreshError, match="expected @leon.lin.s"):
+        mod._refresh_one(mod.PLATFORMS["threads"], now=NOW, check_only=True)
+
+
 def test_wrong_account_never_overwrites_secret(monkeypatch):
     _tokens(monkeypatch)
     def fake_get(url, *, token, params):
         if url.endswith("refresh_access_token"):
             return {"access_token": "refreshed-long-lived-threads", "expires_in": 5184000}
-        return {"id": "account-OTHER" if token.startswith("refreshed") else "account-ORIGINAL"}
+        return {
+            "id": "account-OTHER" if token.startswith("refreshed") else "account-ORIGINAL",
+            "username": "leon.lin.s",
+        }
     monkeypatch.setattr(mod, "_get_json", fake_get)
     monkeypatch.setattr(mod, "_recently_updated", lambda *a: False)
     monkeypatch.setattr(mod, "_persist", lambda *a: (_ for _ in ()).throw(AssertionError("wrote secret")))
@@ -68,7 +125,7 @@ def test_wrong_account_never_overwrites_secret(monkeypatch):
 def test_invalid_refresh_response_keeps_old_secret(monkeypatch, response):
     _tokens(monkeypatch)
     monkeypatch.setattr(mod, "_get_json", lambda url, **kw:
-        response if url.endswith("refresh_access_token") else {"id": "threads-id"})
+        response if url.endswith("refresh_access_token") else {"id": "threads-id", "username": "leon.lin.s"})
     monkeypatch.setattr(mod, "_recently_updated", lambda *a: False)
     monkeypatch.setattr(mod, "_persist", lambda *a: (_ for _ in ()).throw(AssertionError("wrote secret")))
     with pytest.raises(mod.RefreshError):
@@ -77,7 +134,7 @@ def test_invalid_refresh_response_keeps_old_secret(monkeypatch, response):
 
 def test_recent_manual_update_is_not_refreshed_inside_minimum_age(monkeypatch):
     _tokens(monkeypatch)
-    monkeypatch.setattr(mod, "_get_json", lambda url, **kw: {"id": "threads-id"})
+    monkeypatch.setattr(mod, "_get_json", lambda url, **kw: {"id": "threads-id", "username": "leon.lin.s"})
     monkeypatch.setattr(mod, "_recently_updated", lambda *a: True)
     monkeypatch.setattr(mod, "_persist", lambda *a: (_ for _ in ()).throw(AssertionError("secret write")))
     status = mod._refresh_one(mod.PLATFORMS["threads"], now=NOW, check_only=False)
