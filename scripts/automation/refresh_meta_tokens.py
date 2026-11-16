@@ -82,17 +82,26 @@ def _get_json(url: str, *, token: str, params: dict[str, str]) -> dict:
 
 
 def _profile(config: Platform, token: str) -> str:
-    # Instagram's app uses Instagram Login and graph.instagram.com, NOT the
-    # Facebook Page token / graph.facebook.com alternative.
-    url = config.profile_url
-    body = _get_json(url, token=token, params={"fields": "id,username"})
-    identity = body.get("id")
+    # The accounts are deliberately distinct:
+    # Threads @leon.lin.s and Instagram @avoidboringpeople.
+    # Instagram Login's /me.id is APP-SCOPED, whereas /me.user_id is the
+    # professional account ID stored in INSTAGRAM_USER_ID and used for posting.
+    instagram = config.name == "Instagram"
+    fields = "id,user_id,username" if instagram else "id,username"
+    body = _get_json(config.profile_url, token=token, params={"fields": fields})
+
+    expected_handle = "avoidboringpeople" if instagram else "leon.lin.s"
+    username = body.get("username")
+    if not isinstance(username, str) or username.casefold() != expected_handle:
+        raise RefreshError(f"{config.name} token is not for the expected @{expected_handle} account")
+
+    identity = body.get("user_id" if instagram else "id")
     if not isinstance(identity, str) or not identity.strip():
-        raise RefreshError("Meta profile did not contain an account ID")
-    if config.name == "Instagram":
-        expected = (os.getenv("INSTAGRAM_USER_ID") or "").strip()
-        if not expected or identity != expected:
-            raise RefreshError("Instagram account ID differs from INSTAGRAM_USER_ID")
+        raise RefreshError(f"{config.name} profile did not contain the required account ID")
+    if instagram:
+        expected_id = (os.getenv("INSTAGRAM_USER_ID") or "").strip()
+        if not expected_id or identity != expected_id:
+            raise RefreshError("Instagram professional user_id differs from INSTAGRAM_USER_ID")
     return identity
 
 
