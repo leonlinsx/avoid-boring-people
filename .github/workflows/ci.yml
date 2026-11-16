@@ -22,7 +22,9 @@ jobs:
   typescript-tests:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     name: TypeScript tests
-    runs-on: ubuntu-latest
+    # Playwright 1.55.1 cannot install chromium on ubuntu-26.04; ubuntu-latest
+    # currently resolves there. Keep the supported browser test runner explicit.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
