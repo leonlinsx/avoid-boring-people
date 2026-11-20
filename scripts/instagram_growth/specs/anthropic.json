@@ -1,0 +1,45 @@
+{
+  "id": "anthropic-channel-fees",
+  "pillar": "What The Headline Missed",
+  "source_label": "LEONLINS.COM / ANTHROPIC 2026",
+  "source_url": "https://leonlins.com/writing/anthropic_ipo/",
+  "narration": "What if the most interesting number in an AI IPO isn't the valuation? My analysis of Anthropic's 2026 filings looked at the fees it may be paying cloud distribution partners. The amended disclosures implied a fee around thirty-six percent under my assumptions. That is an estimate, not a disclosed contract rate. Distribution grows revenue, but its economics matter. Follow Avoid Boring People for more original analysis.",
+  "scenes": [
+    {
+      "seconds": 4,
+      "label": "An AI IPO question",
+      "headline": "The headline missed the channel fees.",
+      "detail": "What distribution actually costs matters."
+    },
+    {
+      "seconds": 5,
+      "label": "How it sells",
+      "headline": "Cloud partners distribute Claude.",
+      "detail": "Those distribution relationships can carry fees."
+    },
+    {
+      "seconds": 5,
+      "label": "An analyst estimate",
+      "headline": "~36% implied fee?",
+      "detail": "Based on amended 2026 filings and explicit assumptions."
+    },
+    {
+      "seconds": 5,
+      "label": "Crucial distinction",
+      "headline": "Not a disclosed contract rate.",
+      "detail": "An inferred calculation is not the actual contract terms."
+    },
+    {
+      "seconds": 5,
+      "label": "Why it matters",
+      "headline": "Distribution can mean expensive growth.",
+      "detail": "Understand the economics, not only the narrative."
+    },
+    {
+      "seconds": 4,
+      "label": "Avoid Boring People",
+      "headline": "Original research. Not recycled takes.",
+      "detail": "Follow for investing and technology analysis."
+    }
+  ]
+}
