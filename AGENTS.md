@@ -7,7 +7,7 @@
 Where the truth lives:
 
 - `README.md` — system map, project structure, and the full command index.
-- `docs/` — `newsletter-aws-runbook.md`, `newsletter-analytics.md`, `newsletter-migration-plan.md`, `discussion.md`, `contact.md`, `scout.md`, `social-distribution.md`, and `template.md` (article frontmatter).
+- `docs/` — `newsletter-aws-runbook.md`, `newsletter-analytics.md`, `newsletter-migration-plan.md`, `discussion.md`, `contact.md`, `scout.md`, `social-distribution.md`, `instagram-growth-experiment.md`, `instagram-growth-creative-lab.md`, and `template.md` (article frontmatter).
 
 Priorities: reliable publishing and unchanged site behavior, subscriber consent and sending reputation, no duplicate or accidental production sends, a simple author workflow, portable and low-cost infrastructure, and preserved site performance and SEO.
 
@@ -41,6 +41,8 @@ Priorities: reliable publishing and unchanged site behavior, subscriber consent 
 - Discussion articles stay statically generated; only the comment island loads client-side, and a missing database or Turnstile configuration degrades to "temporarily unavailable" rather than breaking the article.
 - The discussion stores no IP addresses, no email addresses, and no raw browser tokens. Ownership is a SHA-256 hash of an opaque cookie value; `is_author` is set only by the local CLI, never by public input; hidden comments are never returned publicly.
 - Lin Scout keeps `scout-state.json` as its only state. The Jev shadow writes only to an ignored local `scout-shadow.jsonl` that nothing reads (`python -m scripts.scout jev` inspects it) and whose deletion cannot change a run.
+
+- Instagram growth work targets **@avoidboringpeople**, a separate account from **@leon.lin.s**. Never mix metrics, credentials, rights, or publication history. The November 2026 creative-lab code under `scripts/instagram_growth/` is **offline review-only**, not permission to schedule or publish. A synthetic presenter must be fictional/appropriately disclosed; do not clone any real identity without consent. Keep all existing social platform scheduling unchanged unless a separate, scoped, verified change is approved.
 
 ## Verification
 
