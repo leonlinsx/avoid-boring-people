@@ -1,0 +1,45 @@
+{
+  "id": "ergodicity-one-dollar",
+  "pillar": "Ideas That Change Decisions",
+  "source_label": "LEONLINS.COM / ERGODICITY",
+  "source_url": "https://leonlins.com/writing/ergodicity/",
+  "narration": "A bet can have a positive expected return and still lose you money over time. Imagine a coin toss. Heads gains fifty percent. Tails loses forty percent. The expected multiplier is one point zero five. But one win followed by one loss turns a dollar into just ninety cents. Average outcomes across people aren't the same as the path you actually live. Follow Avoid Boring People for more ideas about risk and decisions.",
+  "scenes": [
+    {
+      "seconds": 4,
+      "label": "Counterintuitive idea",
+      "headline": "A winning bet can still make you poorer.",
+      "detail": "Positive expected value is not the whole story."
+    },
+    {
+      "seconds": 5,
+      "label": "The setup",
+      "headline": "Heads: +50%. Tails: -40%.",
+      "detail": "Equal probability. Start with $1."
+    },
+    {
+      "seconds": 5,
+      "label": "The average",
+      "headline": "Expected payoff: $1.05",
+      "detail": "A positive 5% arithmetic expectation after one round."
+    },
+    {
+      "seconds": 5,
+      "label": "The path",
+      "headline": "Win. Then lose. $1 to $0.90",
+      "detail": "1.50 x 0.60 = 0.90 after one win and one loss."
+    },
+    {
+      "seconds": 5,
+      "label": "The implication",
+      "headline": "An average isn't your lived outcome.",
+      "detail": "The path and compounding of outcomes matter."
+    },
+    {
+      "seconds": 4,
+      "label": "Avoid Boring People",
+      "headline": "Change how you think about risk.",
+      "detail": "Follow for non-obvious ideas. Essays at leonlins.com."
+    }
+  ]
+}
