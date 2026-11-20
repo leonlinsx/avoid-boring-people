@@ -380,11 +380,11 @@ def _hashtags(tags: Sequence[str]) -> tuple[str, ...]:
 
 
 def _build_caption(title: str, teaser: str, hashtags: Sequence[str]) -> str:
-    # Caption URLs are not clickable on Instagram, so the caption never carries
-    # the raw link: it points at the bio link, which the operator keeps aimed at
-    # the latest article. The canonical URL still lives on the storyboard (and
-    # on the final slide as a visual cue) for hosting and validation.
-    tail = "Full essay — link in bio"
+    # Caption URLs are not clickable on Instagram. The account's stable bio
+    # link points to the ABP website, not necessarily this particular essay:
+    # unattended evergreen posts must not imply that the bio changes each time.
+    # The article's canonical URL remains on the final slide as a visual cue.
+    tail = "More essays and the newsletter — link in bio"
     if hashtags:
         tail = f"{tail}\n\n{' '.join(hashtags)}"
 

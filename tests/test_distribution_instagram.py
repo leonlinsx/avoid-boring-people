@@ -147,7 +147,8 @@ def test_caption_points_at_the_bio_link_and_stays_within_limits():
     # storyboard and the final slide for hosting and as a visual cue.
     storyboard = _storyboard()
 
-    assert "link in bio" in storyboard.caption.lower()
+    assert "More essays and the newsletter — link in bio" in storyboard.caption
+    assert "Full essay — link in bio" not in storyboard.caption
     assert storyboard.canonical_url not in storyboard.caption
     assert len(storyboard.caption) <= CAPTION_HARD_MAX
     assert storyboard.hashtags == ("#behaviour",)
