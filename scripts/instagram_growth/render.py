@@ -146,7 +146,7 @@ def render(spec_path: Path, output: Path, variant: str, audio: Path | None = Non
             capture_output=True, text=True, check=True,
         )
         speech_seconds = float(probe.stdout.strip())
-        if not duration - 4 <= speech_seconds <= duration + 0.25:
+        if not duration - 4 <= speech_seconds <= duration - 0.15:
             raise ValueError(
                 f"narration is {speech_seconds:.1f}s but video is {duration:.1f}s; "
                 "revise narration or scene durations before rendering"
@@ -169,7 +169,7 @@ def render(spec_path: Path, output: Path, variant: str, audio: Path | None = Non
     mp4 = output / f"{spec['id']}-{variant}.mp4"
     command = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(manifest)]
     if audio:
-        command += ["-i", str(audio), "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-shortest", "-movflags", "+faststart"]
+        command += ["-i", str(audio), "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11,apad", "-t", str(duration), "-movflags", "+faststart"]
     else:
         command += ["-map", "0:v:0", "-c:v", "copy", "-movflags", "+faststart"]
     run(command + [str(mp4)])
