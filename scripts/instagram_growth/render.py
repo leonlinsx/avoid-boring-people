@@ -137,6 +137,20 @@ def render(spec_path: Path, output: Path, variant: str, audio: Path | None = Non
         raise ValueError("unknown variant")
     if audio and not audio.is_file():
         raise ValueError("audio file missing")
+    duration = sum(s["seconds"] for s in spec["scenes"])
+    if audio:
+        # Never silently cut off a synthetic or recorded narrator.
+        probe = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "default=noprint_wrappers=1:nokey=1", str(audio)],
+            capture_output=True, text=True, check=True,
+        )
+        speech_seconds = float(probe.stdout.strip())
+        if not duration - 4 <= speech_seconds <= duration + 0.25:
+            raise ValueError(
+                f"narration is {speech_seconds:.1f}s but video is {duration:.1f}s; "
+                "revise narration or scene durations before rendering"
+            )
     output.mkdir(parents=True, exist_ok=True)
     workspace = output / "frames"
     workspace.mkdir(exist_ok=True)
