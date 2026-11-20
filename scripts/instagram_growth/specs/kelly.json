@@ -1,0 +1,45 @@
+{
+  "id": "kelly-size-the-bet",
+  "pillar": "Ideas That Change Decisions",
+  "source_label": "LEONLINS.COM / KELLY",
+  "source_url": "https://leonlins.com/writing/kelly/",
+  "narration": "Even when the odds look attractive, going all in can be a mistake. The Kelly criterion asks how much of your capital to risk, not just whether the bet has an edge. In my example, a fifty-fifty bet paying eleven times your stake gives a Kelly fraction of forty-five percent, not a hundred percent. The conclusion depends heavily on your assumptions. Follow Avoid Boring People for more ways to think about investing and decisions.",
+  "scenes": [
+    {
+      "seconds": 4,
+      "label": "Your money",
+      "headline": "A great bet isn't an all-in bet.",
+      "detail": "Sizing matters as much as picking a good bet."
+    },
+    {
+      "seconds": 5,
+      "label": "The question",
+      "headline": "How much should you risk?",
+      "detail": "That's what the Kelly criterion tries to answer."
+    },
+    {
+      "seconds": 5,
+      "label": "Hypothetical example",
+      "headline": "50/50 odds. 11x payout.",
+      "detail": "Simplified mathematics, not a prediction."
+    },
+    {
+      "seconds": 5,
+      "label": "Kelly fraction",
+      "headline": "45% of capital. Not 100%.",
+      "detail": "A calculated bet size given the stated assumptions."
+    },
+    {
+      "seconds": 5,
+      "label": "Important caveat",
+      "headline": "Your assumptions can be wrong.",
+      "detail": "Overestimating an edge can be disastrous."
+    },
+    {
+      "seconds": 4,
+      "label": "Avoid Boring People",
+      "headline": "Think in bets. Size your risk.",
+      "detail": "Follow for decision-making ideas and essays."
+    }
+  ]
+}
