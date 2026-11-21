@@ -43,6 +43,8 @@ def choose(queue_dir: Path, state_dir: Path, now: datetime,
         return None, "HALT: existing unfinished/ambiguous receipt requires human reconciliation"
     starts = []
     for r in history:
+        if r.get("status") == "confirmed_unpublished":
+            continue
         ts = instant(r["created_at"])
         if now - timedelta(hours=24) <= ts <= now:
             starts.append(ts)

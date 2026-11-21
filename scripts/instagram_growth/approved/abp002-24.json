@@ -8,8 +8,8 @@
   "video_sha256": "baa5319a85ad836eca28f8af35c528a31c0d0c96ec359f40a26a9b7db1e205ea",
   "caption": "If you never log the change, hindsight writes your results.\n\nA result is not yet a recipe.\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/practice\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
   "ai_generated": true,
-  "trial": true,
-  "graduation_strategy": "MANUAL",
+  "trial": false,
+  "graduation_strategy": null,
   "review_status": "approved",
   "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
   "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
@@ -29,5 +29,8 @@
   "voice": "af_heart",
   "duration_seconds": 22.51,
   "cta_type": "follow",
-  "experiment_hypothesis": "practical decision tool"
+  "experiment_hypothesis": "practical decision tool",
+  "delivery_mode": "ordinary_cold_start",
+  "cohort_id": "ABP-REELS-002-STANDARD-COLDSTART",
+  "delivery_evidence": "https://github.com/leonlinsx/avoid-boring-people/actions/runs/44921907307"
 }

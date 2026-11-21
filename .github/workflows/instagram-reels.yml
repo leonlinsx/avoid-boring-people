@@ -6,7 +6,7 @@ on:
       action:
         type: choice
         default: preflight
-        options: [preflight, pilot, publish, measure, weekly, verify]
+        options: [preflight, pilot, publish, measure, weekly, verify, reconcile-no-publish]
       concept:
         description: 'Exact approved concept for one explicit pilot (e.g. abp002-19)'
         type: string

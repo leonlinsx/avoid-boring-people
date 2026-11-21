@@ -201,6 +201,8 @@ def publish(item: dict, *, state_dir: Path, receipt_sink=None) -> dict:
                 raise ValueError("receipt identity mismatch; reconciliation required")
             if prior["concept_id"] == item["concept_id"]:
                 raise ValueError("concept has an existing receipt; reconcile it, never blindly retry")
+            if prior.get("status") == "confirmed_unpublished":
+                continue  # An explicit reconciled no-publish outcome, not an uncertain retry.
             if prior.get("sha256") == item["video_sha256"]:
                 raise ValueError("identical video has an existing receipt under another concept")
             if prior.get("status") != "published":

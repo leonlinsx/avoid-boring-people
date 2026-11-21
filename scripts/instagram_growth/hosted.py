@@ -113,8 +113,8 @@ def download(item, root):
 
 
 def source_check(item):
-    path=Path(item['source_file'])
-    if not path.is_relative_to('src/content/blog') or not path.is_file():
+    path=Path(item['source_file']).resolve()
+    if not path.is_relative_to(Path('src/content/blog').resolve()) or not path.is_file():
         raise StateError('invalid source path')
     data=path.read_bytes()
     if hashlib.sha256(data).hexdigest()!=item['source_sha256'] or item['source_anchor'] not in data.decode():
@@ -134,7 +134,7 @@ def publish_one(store, concept=None, *, is_pilot=False):
             if not isinstance(name,str) or not __import__('re').fullmatch(r'[a-z0-9][a-z0-9_-]{2,63}',name):raise StateError('unsafe receipt identity')
             pilot.write_receipt(receipts/f'{name}.json',record)
         if is_pilot:
-            if state['receipts']:raise StateError('pilot already attempted; reconcile its durable receipt')
+            if any(r.get('status')!='confirmed_unpublished' for r in state['receipts'].values()):raise StateError('pilot already attempted; reconcile its durable receipt')
             if not concept:raise StateError('pilot requires exact concept')
             item=pilot.load_manifest(QUEUE_DIR/f'{concept}.json')
         else:
@@ -200,6 +200,21 @@ def verify_pilot(store):
         raise StateError('pilot exists but Insights remain unavailable; keep scheduling disabled')
 
 
+def reconcile_no_publish(store,concept):
+    """Explicit operator action for a rejected container, never an ambiguous publish."""
+    record=store.state['receipts'].get(concept)
+    if (not record or record.get('status')!='reconciliation_required'
+        or record.get('error_type')!='GraphApiError' or record.get('container_id')
+        or record.get('media_id')):
+        raise StateError('cannot prove a rejected pre-container phase; investigate media before any retry')
+    record.update(status='confirmed_unpublished',reconciliation={
+        'reason':'API container creation rejected; no container ID and media_publish never reached',
+        'operator_action':'explicit reconcile-no-publish dispatch',
+        'captured_at':datetime.now(timezone.utc).isoformat()})
+    store.save()
+    print(json.dumps({'concept':concept,'status':'confirmed_unpublished','no_Meta_write':True}))
+
+
 def weekly(store):
     state=store.state
     observations=list(state.get('observations',{}).values())
@@ -215,13 +230,14 @@ def weekly(store):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly','verify']);p.add_argument('--concept');args=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly','verify','reconcile-no-publish']);p.add_argument('--concept');args=p.parse_args()
     store=Store();store.load()
     if args.action=='preflight':
         print(json.dumps({'account':pilot.account_snapshot(),'quota':live_quota(),'state_account':store.state['account'],'no_publication':True},indent=2))
     elif args.action in ('pilot','publish'):publish_one(store,args.concept,is_pilot=args.action=='pilot')
     elif args.action=='measure':measure(store)
     elif args.action=='verify':verify_pilot(store)
+    elif args.action=='reconcile-no-publish':reconcile_no_publish(store,args.concept)
     else:weekly(store)
 
 if __name__=='__main__':main()

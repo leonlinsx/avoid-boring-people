@@ -1,6 +1,6 @@
 {
   "account": "avoidboringpeople",
-  "concept_id": "abp002-19",
+  "concept_id": "abp002-19-standard",
   "source_url": "https://leonlins.com/writing/dividend",
   "format": "REELS",
   "video_path": "downloads/1cb12c3cb7a48d2a16796d2df53b78542f95da5023a01cac5f6d8bdecb8f155b.mp4",
@@ -8,8 +8,8 @@
   "video_sha256": "1cb12c3cb7a48d2a16796d2df53b78542f95da5023a01cac5f6d8bdecb8f155b",
   "caption": "A rising dividend yield can be a falling share price.\n\nHigher yield ≠ higher income\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/dividend\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
   "ai_generated": true,
-  "trial": true,
-  "graduation_strategy": "MANUAL",
+  "trial": false,
+  "graduation_strategy": null,
   "review_status": "approved",
   "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
   "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
@@ -29,5 +29,8 @@
   "voice": "af_heart",
   "duration_seconds": 23.341,
   "cta_type": "follow",
-  "experiment_hypothesis": "specific numerical consequence"
+  "experiment_hypothesis": "specific numerical consequence",
+  "delivery_mode": "ordinary_cold_start",
+  "cohort_id": "ABP-REELS-002-STANDARD-COLDSTART",
+  "delivery_evidence": "https://github.com/leonlinsx/avoid-boring-people/actions/runs/44921907307"
 }

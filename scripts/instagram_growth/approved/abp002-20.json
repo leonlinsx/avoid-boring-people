@@ -8,8 +8,8 @@
   "video_sha256": "7920114e0628712db7e288181bdaff66aac4bbb4784ce14a21a4c46ed856d474",
   "caption": "Cash income is only part of your investment result.\n\nPrice change + cash received\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/dividend\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
   "ai_generated": true,
-  "trial": true,
-  "graduation_strategy": "MANUAL",
+  "trial": false,
+  "graduation_strategy": null,
   "review_status": "approved",
   "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
   "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
@@ -29,5 +29,8 @@
   "voice": "af_heart",
   "duration_seconds": 22.369,
   "cta_type": "follow",
-  "experiment_hypothesis": "specific numerical consequence"
+  "experiment_hypothesis": "specific numerical consequence",
+  "delivery_mode": "ordinary_cold_start",
+  "cohort_id": "ABP-REELS-002-STANDARD-COLDSTART",
+  "delivery_evidence": "https://github.com/leonlinsx/avoid-boring-people/actions/runs/44921907307"
 }
