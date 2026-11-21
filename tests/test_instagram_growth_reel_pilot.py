@@ -171,7 +171,7 @@ def test_account_snapshot_is_exactly_abp_and_includes_follower_count(monkeypatch
     class Response:
         status_code = 200
         def json(self):
-            return {"id": "123", "username": "avoidboringpeople",
+            return {"id": "app-scoped-999", "user_id": "123", "username": "avoidboringpeople",
                     "followers_count": 7, "media_count": 29}
     monkeypatch.setattr(pilot.requests, "get", lambda *a, **k: Response())
     snap = pilot.account_snapshot()
@@ -238,3 +238,24 @@ def test_distinct_video_can_publish_after_completed_history(monkeypatch, tmp_pat
     result = pilot.publish(item(), state_dir=tmp_path)
     assert result['status'] == 'published'
     assert result['media_id'] == '123456789012346'
+
+
+def test_real_instagram_login_identity_uses_professional_user_id(monkeypatch):
+    monkeypatch.setenv('INSTAGRAM_USER_ID','123')
+    monkeypatch.setenv('INSTAGRAM_ACCESS_TOKEN','private-token')
+    class Response:
+        status_code=200
+        def json(self):return {'id':'app-scope-999','user_id':'123','username':'avoidboringpeople'}
+    monkeypatch.setattr(pilot.requests,'get',lambda *a,**k:Response())
+    assert pilot.confirmed_account()==('123','private-token')
+
+
+@pytest.mark.parametrize('patch',[{'user_id':'456'},{'username':'leon.lin.s'},{'user_id':None}])
+def test_professional_identity_must_still_match_configuration(monkeypatch,patch):
+    from scripts.automation.refresh_meta_tokens import RefreshError
+    monkeypatch.setenv('INSTAGRAM_USER_ID','123');monkeypatch.setenv('INSTAGRAM_ACCESS_TOKEN','private-token')
+    class Response:
+        status_code=200
+        def json(self):return {'id':'app-scope-999','user_id':'123','username':'avoidboringpeople',**patch}
+    monkeypatch.setattr(pilot.requests,'get',lambda *a,**k:Response())
+    with pytest.raises(RefreshError):pilot.confirmed_account()
