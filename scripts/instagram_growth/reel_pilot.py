@@ -33,6 +33,11 @@ ALLOWED_API_FORMAT = "REELS"
 
 def load_manifest(path: Path) -> dict:
     item = json.loads(path.read_text(encoding="utf-8"))
+    return validate_manifest(item)
+
+
+def validate_manifest(item: dict) -> dict:
+    """Share the publication contract with inventory/replenishment tools."""
     if not isinstance(item, dict):
         raise ValueError("manifest must be an object")
     concept = item.get("concept_id")
