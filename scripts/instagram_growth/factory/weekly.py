@@ -16,6 +16,7 @@ def main():
     if not 1<=a.count<=40 or not 1<=a.render_limit<=24:p.error('bounded candidate/render budget exceeded')
     week=datetime.now(timezone.utc).strftime('%G-W%V');out=a.output_root/week;out.mkdir(parents=True,exist_ok=True);os.chmod(out,0o700)
     status=out/'factory-status.json';status.write_text(json.dumps({'status':'running','started_at':datetime.now(timezone.utc).isoformat()}))
+    with (out/'factory-events.jsonl').open('a') as history:history.write(json.dumps({'status':'started','at':datetime.now(timezone.utc).isoformat()})+'\n')
     root=Path(os.getenv('ABP_GPU_ROOT','.tmp/instagram-growth')).resolve();python=Path('.venv-ig-reels/bin/python').absolute()
     # Public aggregate state only; no Instagram or GitHub credentials needed here.
     r=requests.get('https://raw.githubusercontent.com/leonlinsx/avoid-boring-people/abp-instagram-state/instagram-state.json',timeout=30)
@@ -52,6 +53,7 @@ def main():
     from collections import Counter
     (out/'WEEKLY_REVIEW.json').write_text(json.dumps({'account':'avoidboringpeople','status':'human_review_required','candidate_budget':a.count,'accepted_drafts':len(drafts['items']),'quarantined':len(drafts['quarantined']),'rendered_for_review':len(selected),'voices':{k:len(v) for k,v in batches.items()},'allocation':drafts.get('allocation'),'actual_rendered_allocation':dict(Counter(x.get('experiment_bucket','legacy_unassigned') for x in selected)),'review_package':str(review/'index.html'),'inventory':inv,'published':0,'source':drafts.get('source','cached local Qwen3.5 9B with context/source critique, Kokoro, optional FlashHead Pro, original motion graphics'),'growth_claim':'No follower acquisition result inferred from automatic creative scores'},indent=2))
     status.write_text(json.dumps({'status':'success_review_required','completed_at':datetime.now(timezone.utc).isoformat(),'rendered':len(selected)},indent=2))
+    with (out/'factory-events.jsonl').open('a') as history:history.write(json.dumps({'status':'success_review_required','at':datetime.now(timezone.utc).isoformat(),'rendered':len(selected)})+'\n')
     print(json.dumps({'status':'WEEKLY_REVIEW_READY','output':str(out),'published':0}))
 
 if __name__=='__main__':
@@ -63,4 +65,5 @@ if __name__=='__main__':
         parser=argparse.ArgumentParser(add_help=False);parser.add_argument('--output-root',type=Path,default=Path.home()/'.local/share/abp-instagram/factory');args,_=parser.parse_known_args()
         folder=args.output_root/datetime.now(timezone.utc).strftime('%G-W%V');folder.mkdir(parents=True,exist_ok=True)
         (folder/'factory-status.json').write_text(json.dumps({'status':'failed','error_type':type(error).__name__,'captured_at':datetime.now(timezone.utc).isoformat()},indent=2))
+        with (folder/'factory-events.jsonl').open('a') as history:history.write(json.dumps({'status':'failed','at':datetime.now(timezone.utc).isoformat(),'error_type':type(error).__name__})+'\n')
         raise

@@ -146,3 +146,13 @@ members need sufficient reach, equal target ages and actual ages within one
 hour before a pair is marked comparable. Results remain observational:
 posting time and audience exposure differ, and no per-variant follower gain
 can be inferred from account totals.
+
+November 21 validation limitation: the contextual local-Qwen generator rejected
+all four fresh-claim candidates in each of three verification rounds. Some were
+genuinely unsupported; the critic also confused source context with script claims.
+No gate was lowered to manufacture a successful run. The 21 editorial rewrites
+and six matched counterparts are real rendered review assets, not evidence that
+the fresh-script model can yet sustain 21 useful new scripts every week. Human
+review and occasional script correction remain necessary; an empty screened
+batch fails visibly and needs investigation. Preserve the recorded failed model
+tests when evaluating a different model or critic in a later scoped experiment.

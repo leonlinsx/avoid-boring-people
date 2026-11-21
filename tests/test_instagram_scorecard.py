@@ -1,4 +1,6 @@
 import copy
+import json
+from types import SimpleNamespace
 from datetime import datetime, timedelta, timezone
 from scripts.instagram_growth import scorecard as s
 from tests.test_instagram_growth_rolling_queue import manifest
@@ -82,3 +84,16 @@ def test_presentation_pairs_need_both_sides_and_matching_ages():
     assert s.paired_presentations([a,b])[0]['status']=='comparable_observational_pair'
     b['actual_age_hours']=171
     assert s.paired_presentations([a,b])[0]['status']=='insufficient_or_mismatched_evidence'
+
+
+def test_hosted_inventory_emits_low_and_exhausted_warnings(tmp_path,monkeypatch,capsys):
+    from scripts.instagram_growth import hosted as h
+    monkeypatch.setattr(h,'QUEUE_DIR',tmp_path)
+    store=SimpleNamespace(state=state())
+    assert h.inventory_health(store)['level']=='EXHAUSTED'
+    for i in range(6):
+        m={**asset('example-'+str(i)), 'video_sha256':f'{i:064x}'}
+        (tmp_path/f"{m['concept_id']}.json").write_text(json.dumps(m))
+    assert h.inventory_health(store)['level']=='LOW'
+    out=capsys.readouterr().out
+    assert '::warning::ABP inventory EXHAUSTED' in out and '::warning::ABP inventory LOW' in out
