@@ -14,6 +14,7 @@ import tempfile
 from datetime import datetime, timezone
 import requests
 from scripts.instagram_growth import reel_pilot as pilot, rolling_queue as queue
+from scripts.instagram_growth import scorecard
 
 REPO = 'leonlinsx/avoid-boring-people'
 BRANCH = 'abp-instagram-state'
@@ -226,22 +227,32 @@ def reconcile_no_publish(store,concept):
 
 
 def weekly(store):
-    state=store.state
-    observations=list(state.get('observations',{}).values())
-    cohorts={label:[] for label in queue.WINDOWS};late=[]
-    manifest_meta={p.stem:json.loads(p.read_text()) for p in QUEUE_DIR.glob('*.json')}
-    for x in observations:
-        m=x['metrics'];reach=m.get('reach');shares=m.get('shares')
-        intended=queue.WINDOWS[x['window']].total_seconds()/3600
-        if x['actual_age_hours']>intended+(24 if x['window']=='7d' else 6):late.append(x['concept_id']+'-'+x['window']);continue
-        cohorts[x['window']].append({'concept_id':x['concept_id'],'hypothesis':manifest_meta.get(x['concept_id'],{}).get('experiment_hypothesis'),'creative_format':manifest_meta.get(x['concept_id'],{}).get('creative_format'),'voice':manifest_meta.get(x['concept_id'],{}).get('voice'),'source_url':manifest_meta.get(x['concept_id'],{}).get('source_url'),'actual_age_hours':x['actual_age_hours'],'reach':reach,'views':m.get('views'),'shares_per_1000_reached':1000*shares/reach if isinstance(reach,(int,float)) and reach>0 and isinstance(shares,(int,float)) else None,'average_watch_time_api_value':m.get('ig_reels_avg_watch_time'),'watch_time_unit':'provider value; not normalized to seconds','attributed_follows':None})
-    report={'created_at':datetime.now(timezone.utc).isoformat(),'account':pilot.ACCOUNT,'equal_target_age_cohorts':cohorts,'late_snapshots_excluded':late,'follower_snapshots':state.get('account_snapshots',{}),'conclusion':'Exploratory attention evidence only; per-Reel follow attribution unavailable; no causal or statistical winner declared','next_generation':'Use fresh source claims and one or two promising patterns; preserve exploration and human approval.'}
-    state['weekly_review']=report;store.save();print(json.dumps(report,indent=2))
+    report=scorecard.build(store.state,scorecard.load_manifests(QUEUE_DIR))
+    # Keep detailed rows in downloadable artifacts, not repeated in the CAS ledger.
+    store.state['weekly_review']={k:v for k,v in report.items() if k not in ('rows','equal_target_age_cohorts')}
+    store.save();scorecard.write(report,'reports/instagram-growth')
+    summary=os.environ.get('GITHUB_STEP_SUMMARY')
+    if summary:
+        with open(summary,'a') as output:output.write(scorecard.markdown(report))
+    print(json.dumps({'weekly_report':'reports/instagram-growth','low_information':report['low_information']},indent=2))
+
+
+def inventory_health(store):
+    report=scorecard.inventory(scorecard.load_manifests(QUEUE_DIR),store.state,datetime.now(timezone.utc))
+    print(json.dumps({'instagram_inventory':report},indent=2))
+    if report['level']!='OK':
+        message=f"ABP inventory {report['level']}: {report['approved_unpublished']} approved unpublished; target21; never auto-approve to fill quota"
+        print(f'::warning::{message}')
+    if os.environ.get('GITHUB_STEP_SUMMARY'):
+        with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as output:
+            output.write(f"\nABP inventory: **{report['level']}**, {report['approved_unpublished']} approved unpublished; target21.\n")
+    return report
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly','verify','reconcile-no-publish']);p.add_argument('--concept');args=p.parse_args()
     store=Store();store.load()
+    inventory_health(store)
     if args.action=='preflight':
         print(json.dumps({'account':pilot.account_snapshot(),'quota':live_quota(),'insights_probe':insights_probe(),'state_account':store.state['account'],'no_publication':True},indent=2))
     elif args.action in ('pilot','publish'):publish_one(store,args.concept,is_pilot=args.action=='pilot')
