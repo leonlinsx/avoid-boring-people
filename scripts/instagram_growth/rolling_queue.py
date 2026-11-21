@@ -106,7 +106,18 @@ def main():
     if args.min_spacing_hours < 3:
         parser.error("minimum spacing must be at least 3 hours")
     if args.action == "measure":
-        print(json.dumps(measure_due(args.state_dir, datetime.now(timezone.utc)), indent=2))
+        now = datetime.now(timezone.utc)
+        # Account-level follower counts are crucial, but are never attributed
+        # causally to any one Reel when several are published concurrently.
+        account = None
+        try:
+            account = pilot.account_snapshot()
+            target = args.state_dir / "account" / f"{now.strftime('%Y%m%dT%H%M%SZ')}.json"
+            pilot.write_receipt(target, account)
+        except Exception as error:
+            account = {"status": "unavailable", "reason": type(error).__name__}
+        print(json.dumps({"account": account,
+                          "reels": measure_due(args.state_dir, now)}, indent=2))
         return
     if not args.queue_dir or not args.queue_dir.is_dir():
         parser.error("queue/run require an existing --queue-dir")
