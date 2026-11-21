@@ -1,0 +1,1342 @@
+{
+  "status": "review_only_editorial_revisions",
+  "revision_reason": "User: core idea good but viewer lacks context. Every script explicitly introduces subject/setup and delivers a standalone payoff.",
+  "items": [
+    {
+      "source_file": "src/content/blog/2026_10_31_anthropic_ipo/index.md",
+      "source_sha256": "8f6885d9b140db1cd3ef0fb43682c49e111243bb7c8c63af9031e0314373db7f",
+      "source_anchor": "**Model serving costs have gone down from 88% of rev in 1H 2025 to 15% in 1H 2026.** Even if we claimed that the sales and marketing costs were hiding the channel fees and inflating gross margins, that line item percentage went from 10% to 19%, so it was more than offset by the reduction in model serving costs. It does not appear that the unit economics of serving customers are unprofitable, unless I'm missing some hidden addback.",
+      "source_url": "https://leonlins.com/writing/anthropic_ipo",
+      "source_date": "2026-10-31",
+      "title": "Anthropic's IPO: Can unprecedented revenue growth outrun 'irresponsibly large' investment?",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-18edde622605ccc0",
+      "label": "CHEAPER ANSWERS, BIGGER BILLS",
+      "context_anchors": [
+        "report?utm_source=chatgpt.com), so you might say that's a realistic scaling goal to achieve, implying 4x more growth from now. [^16] \n\nAs a bear, you could claim that 4x growth sounds large, but is also a big drop from 13x. There's also a rumour that Q3 2026 rev has decelerated. As a bull, you could point to how Claude is only a small percentage of customers' costs now and therefore still has large upside. If I had to model this I'd do a usual year over year growth and then taper aggressively downwards.\n\n*Edit: In their updated S1/A Ant's Q3 2026 rev of $17bn was ~12x the previous year, so it did decelerate vs Q2 2026.*\n\n> our revenue from these Fortune 500 customers representing, on average, less than 0.1% of their total expenses for the three months ended September 30, 2026\n\n[^16]: 185bn divided by 4 times 11bn. As another point of comparison, [Snowflake has 65 customers with >$10mm of rev](https://www.sec.gov/Archives/edgar/data/1640147/000164014726000037/snow-20260731.htm) so you might claim 250 is already a lot\n\n**Anthropic's share of revenue coming from CSP channels is also increasing,** which could be problematic for concentration risk and margins.\n\n![img](./a_5.webp)\n\nOne other point on revenue I found interesting was their commitment to be ad free. Ads are a high margin source, which makes me more bullish on their belief in executing the core business model. If they ever change their mind it's a bad sign for the core business growth but good for financials.\n\n> We have also committed to keeping Claude free of advertising\n\n### Costs\n\nAnthropic's main financial statements do not split out model serving vs model training costs, but the details are in the footnotes. Cost of revenue is primarily model serving, and research and development primarily model training. \n\n**Model serving costs have gone down from 88% of rev in 1H 2025 to 15% in 1H 2026.** Even if we claimed that the sales and marketing costs were hiding the channel fees and inflating gross margins, that line item percentage went from 10% to 19%, so it was more than offset by the reduction in model serving costs. It does not appear that the unit economics of serving customers are unprofitable, unless I'm missing some hidden addback.\n\n**Model training costs have also gone down from 159% of rev to 60%.** You could make a bear case that this was intentionally padding the books before IPO, and impending contracted data center and equipment leases will depress this [^17], but they're not selling Claude for less than what it cost to make. You could also make the opposite bull case, that they're aware of this large expense and are already working on reducing their reliance on others by controlling more of the value chain. \n\n[^17]: The compute expense is paid and recognised as compute becomes available, not when committed, so there could be some revenue vs expense timing surprises ahead\n\n*Edit: In their updated S1/Q Ant's 9M 2026 model serving cost was 14% of rev and model training cost was 57% of rev, so the 3Q cost improve",
+        "---\ntitle: \"Anthropic's IPO: Can unprecedented revenue growth outrun 'irresponsibly large' investment?\"\ndescription: \"Scale is all you need\"\nseoDescription: \"Anthropic IPO analysis estimates incremental cloud-channel fees of 17\u201337%, then ~36% from amended disclosures, subject to assumptions and timing\u2014not disclosed contract rates.\"\npubDate: 2026-10-31\ncategory: Investing\ntags: ['anthropic', 'ipo', 'ai']\nheroImage: './a_6_hero.webp'\nfeatured: true\n---\n\n**The history of computing has been a story of scaling.** From the physical hardware of bits and bytes growing in line with Moore's Law [^1], to the intangible software of social media spreading virally via network effects [^2], there has been an implicit belief that bigger is better.\n\n[^1]: Not a law per se, but an observation by Gordon Moore that the number of transistors on a microchip doubles every two years, implying ever increasing returns to scale\n[^2]: A network effect is when a thing e.g. facebook becomes more valuable to its users the more people that use it\n\n![img](./a_0.webp)\n\nAnthropic's [S-1 filing](https://www.sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm) [^3] on 26 Oct 2026 would have you believe the same: Scaling is such an important concept to them that they mention it on the first page of their prospectus, where they also make the claim that **in scaling larger, they find even more"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "SERVING COSTS",
+        "TRAINING COSTS",
+        "COMPANY PROFIT"
+      ],
+      "standalone_context": {
+        "subject": "Anthropic",
+        "situation": "Anthropic, the company behind Claude, shows why cheaper AI answers do not settle the profitability question.",
+        "payoff": "But serving customers and training future models are different expenses. Lower serving costs alone do not establish company profitability."
+      },
+      "scenes": [
+        {
+          "narration": "Anthropic, the company behind Claude, shows why cheaper AI answers do not settle the profitability question.",
+          "headline": "CHEAPER ANSWERS, BIGGER BILLS",
+          "detail": "ANTHROPIC"
+        },
+        {
+          "narration": "Leon Lin's October twenty twenty-six analysis reports model serving costs falling from eighty-eight to fifteen percent of revenue.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "But serving customers and training future models are different expenses. Lower serving costs alone do not establish company profitability.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Separate the costs before judging the business. Follow for clearer business analysis.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-8f62c7b6c628c31c",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2019_07_31_news/index.md",
+      "source_sha256": "a23c961c84375e4ddf21beba23820ff475292f7a9fee4ece52e9d3f3f3f41450",
+      "source_anchor": "The stranglehold on traffic by Google and Facebook also potentially result in a cost to acquire the marginal user, implying that the marginal cost to serve is no longer zero. For the normal media site, you're now facing a scenario in which you have declining organic traffic and a reduced relationship with your customer, but still face the problems of a glut of free content by your competition that makes it hard for you to differentiate.",
+      "source_url": "https://leonlins.com/writing/news",
+      "source_date": "2019-07-31",
+      "title": "Newsletters for everyone and everything",
+      "planned_bucket": "exploitation",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": "No replicated evidence; exploitation reassigned to exploration.",
+      "voice": "af_heart",
+      "presenter": true,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-9facf43b3bd5d1a4",
+      "label": "FREE ARTICLES STILL COST MONEY",
+      "context_anchors": [
+        "ack/ 'a16z'):\n\n> Since then, the internet has opened up new opportunities for media producers. A writer, streamer, or podcaster can now reach an audience of millions. Powerful tools have been created to make it easier to self-publish any format of content. \\[...\\] But most of this is driven by advertising-based business models from the 1800s \u2014 the technology may have changed, yet the economic model is largely the same.\n\nStratechery has [written before](https://stratechery.com/2015/why-web-pages-suck/ 'ads') on how ad networks facilitated the growth of advertising on the internet. The move from print media to digital media implied that the marginal cost to serve a consumer was zero. This reduction of the barrier to entry led to an influx of free content online, a trend which has still persisted but evolved into different forms [^1].\n\n**Because of the low cost to produce, high degree of substitutability, and high degree of fragmentation in the suppliers of content, content producers assumed that [people wouldn't pay for content](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc'), and that selling ads was the better business model.**\n\nAs [the CNBC article](https://www.cnbc.com/2018/11/17/subscription-news-services-flourish-as-google-facebook-dominate-ads.html 'cnbc') notes though, a few factors have led to the rise of alternative, subscription based models instead. **The dominance and effectiveness of google and facebook in digital advertising means that advertising on traditional content producers such as news sites has become less effective.** As an advertiser, I'd rather spend more of my ad budget on where 60% of the internet is going to pass through and get a higher ROI on my ad spend.\n\n![post](./n_1.webp)\n\nThe stranglehold on traffic by Google and Facebook also potentially result in a cost to acquire the marginal user, implying that the marginal cost to serve is no longer zero. For the normal media site, you're now facing a scenario in which you have declining organic traffic and a reduced relationship with your customer, but still face the problems of a glut of free content by your competition that makes it hard for you to differentiate.\n\nAs a result, we've seen most content producers reliant on ads suffer, even as the overall digital market continued growing. In response, some pivoted towards subscriptions, such as the niche tech news site [The Information](https://digiday.com/podcast/the-informations-jessica-lessin-on-five-years-of-subscription-journalism/ 'Info'). The WSJ, Washington Post, NYT etc have all bought into this trend [^2], hoping that their quality content will be enough to convince people to pay. Some might say [their supposed success](https://digiday.com/podcast/inside-wall-street-journals-subscription-strategy/ 'WSJ') show that subscriptions are the way to monetize moving forward. **I agree that subscriptions will continue growing, but am more uncertain about how scalable they can be.**\n\n> today, a direc",
+        "---\ntitle: 'Newsletters for everyone and everything'\ndescription: \"What's behind the rise in popularity of newsletters\"\npubDate: 2019-07-31\ncategory: Technology\ntags: ['newsletter']\nheroImage: './n_1.webp'\n---\n\n## Why are newsletters becoming popular and where is this trend going?\n\nAfter I published last month's newsletter, [a16z led a $15mm funding round in Substack](https://on.substack.com/p/the-future-of-substack 'substack site'), the platform I'm currently using to send this [^6]. I'm going to talk about why a16z was interested in Substack and where I think this trend is headed.\n\nFrom [a16z's press release](https://a16z.com/2019/07/16/substack/ 'a16z'):\n\n> Since then, the internet has opened up new opportunities for media producers. A writer, streamer, or podcaster can now reach an audience of millions. Powerful tools have been created to make it easier to self-publish any format of content. \\[...\\] But most of this is driven by advertising-based business models from the 1800s \u2014 the technology may have changed, yet the economic model is largely the same.\n\nStratechery has [written before](https://stratechery.com/2015/why-web-pages-suck/ 'ads') on how ad networks facilitated the growth of advertising on the internet. The move from print media to digital media implied that the marginal cost to serve a consumer was zero. This reduction of the barrier to entry led to an influx o"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "PUBLISH CONTENT",
+        "REACH READERS",
+        "OWN THE RELATIONSHIP"
+      ],
+      "standalone_context": {
+        "subject": "news sites",
+        "situation": "For news sites, a free article can still come with a cost to reach the next reader.",
+        "payoff": "Publishers then compete with abundant free content while having less control over the reader relationship."
+      },
+      "scenes": [
+        {
+          "narration": "For news sites, a free article can still come with a cost to reach the next reader.",
+          "headline": "FREE ARTICLES STILL COST MONEY",
+          "detail": "NEWS SITES"
+        },
+        {
+          "narration": "Leon Lin's twenty nineteen essay argues that dependence on Google and Facebook can mean paying to acquire that reader.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Publishers then compete with abundant free content while having less control over the reader relationship.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "The question is who controls distribution, not just what publishing costs. Follow for more business ideas.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-38f8d5ed25c353d2",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_06_17_data/index.md",
+      "source_sha256": "b716115438b8c73071627a4fbd38849089af6c74f2ff19a81e3e14aa975d6a5d",
+      "source_anchor": "This is one part of the investment research process, the discovery and usage of publicly available information that everyone can do as well. From the above, you already have enough data to build a company financial model, analyse trends, and form an investment thesis. In fact, many retail investors never go beyond this part, and still do well for themselves. As I've mentioned before, there's many ways to be successful in investing.",
+      "source_url": "https://leonlins.com/writing/data",
+      "source_date": "2020-06-17",
+      "title": "Not everything is insider trading",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "statement",
+      "cta_type": "website",
+      "concept_id": "abpctx-925cc228ffdade3f",
+      "label": "START WITH THE PUBLIC RECORD",
+      "context_anchors": [
+        "a0ce37d49 'spend'), where is all that money going to?\n\nI'll be doing this from a typical [long/short fundamental hedge fund](https://en.wikipedia.org/wiki/Long/short_equity 'LS') point of view, rather than a quantitative firm [^1]. For convenience I'll also be discussing this from a US company perspective, though the general process below applies internationally.\n\nMy goal is for you as a retail investor to have a better understanding of the edge that professionals have, and what that implies on the edge that you can have [^2].\n\n### Public data\n\nPublicly listed companies [have to file financial statements regularly with the SEC.](https://www.sec.gov/edgar.shtml 'SEC') These are publicly available on both the company investor relations pages and [SEC Edgar](https://www.sec.gov/edgar/searchedgar/companysearch.html 'Edgar') for you to search through.\n\nCompanies also hold regular earnings calls for each major earnings announcement, which anyone can dial into [^3]. The call transcripts can sometimes be found on the investor relations pages as well, or at sites like [Seeking Alpha.](https://seekingalpha.com/earnings/earnings-call-transcripts 'SA') However, they can be harder to track down than the financial statements.\n\nCompanies usually release news via [PR newswire](https://prnewswire.mediaroom.com/about-pr-newswire 'PR') while also posting it on their own website. Such news could be the financial filings mentioned above, or special events such as acquisitions and management changes. The news gets distributed via PR newswire to other news sites.\n\nBesides the public data mentioned above, an analyst would spend time taking in twitter, googling google, or reading reddit. They compile all of these primary sources together to form an opinion on whether to invest in the company.\n\nThis is one part of the investment research process, the discovery and usage of publicly available information that everyone can do as well. From the above, you already have enough data to build a company financial model, analyse trends, and form an investment thesis. In fact, many retail investors never go beyond this part, and still do well for themselves. As I've mentioned before, there's many ways to be successful in investing.\n\n![post](./data_1.webp)\n\n### Access to public data\n\nSo if that's all that's needed, why do so many other companies exist to provide information to investors? How does Bloomberg make [$20k a year from a single subscription?](https://www.vox.com/2020-presidential-election/2019/12/11/21005008/michael-bloomberg-terminal-net-worth-2020 'Bloomberg')\n\nWell, it turns out that:\n\n1. Obtaining data directly from SEC Edgar is a huge pain\n2. People always want more data, since they believe more data is better\n3. There's a lot of other non-public data that you can buy\n\nIn this section I'll discuss the first point, that of the user experience.\n\nLet's say you wanted to quickly look at a company's revenue over time. If you did it the traditional way on Edgar, you'd have to search for the company, resultin",
+        "---\ntitle: 'Not everything is insider trading'\ndescription: 'The tools that professional investors use'\npubDate: 2020-06-17\ncategory: Investing\ntags: ['data']\nheroImage: './data_9.webp'\n---\n\n## Takeaway\n\nIt is unlikely you have an information edge as a retail investor vs professional; you should find edge elsewhere\n\n## Using data in investing\n\nLast week, we looked at [how companies use machine learning to take data, process it, and come to a conclusion.](/writing/ml 'ML')\n\nThis week, we'll look at a more human oriented process. We'll walk through how analysts at an investment firm obtain data, analyse it, and form an investment thesis. With investors [spending >$30bn on data](https://www.ft.com/content/222855de-4fbf-11e9-9c76-bf4a0ce37d49 'spend'), where is all that money going to?\n\nI'll be doing this from a typical [long/short fundamental hedge fund](https://en.wikipedia.org/wiki/Long/short_equity 'LS') point of view, rather than a quantitative firm [^1]. For convenience I'll also be discussing this from a US company perspective, though the general process below applies internationally.\n\nMy goal is for you as a retail investor to have a better understanding of the edge that professionals have, and what that implies on the edge that you can have [^2].\n\n### Public data\n\nPublicly listed companies [have to file financial statements regularly with the SEC.](https://www.sec.gov/edga"
+      ],
+      "visual": "statement",
+      "graphic_labels": [
+        "COMPANY FILINGS",
+        "EARNINGS CALLS",
+        "FORM A VIEW"
+      ],
+      "standalone_context": {
+        "subject": "investment research",
+        "situation": "Investment research does not have to start with an expensive data subscription.",
+        "payoff": "Leon Lin's research essay explains that these sources can support a financial model and an investment thesis. Access alone does not guarantee good decisions."
+      },
+      "scenes": [
+        {
+          "narration": "Investment research does not have to start with an expensive data subscription.",
+          "headline": "START WITH THE PUBLIC RECORD",
+          "detail": "INVESTMENT RESEARCH"
+        },
+        {
+          "narration": "Public company filings, earnings calls and company announcements give investors material to study.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Leon Lin's research essay explains that these sources can support a financial model and an investment thesis. Access alone does not guarantee good decisions.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Start by knowing what is public. Read the full essay on leonlins.com.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-c47d9f5f28b8f7ca",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2019_06_30_libra/index.md",
+      "source_sha256": "30eb7adb66372db28b024e7c64cf3213fa2932df319a9a9b58c32b21e3f4e4f2",
+      "source_anchor": "However, this can also swing to the extreme. There's plenty of examples in which a confident leader leads a country or company into ruin. I think the balance here is having a small number of trusted advisors that you can reach out to for unbiased help, and knowing when their advice is applicable or lacking full context. This takes time to build, and the people might change over the years as well.",
+      "source_url": "https://leonlins.com/writing/libra",
+      "source_date": "2019-06-30",
+      "title": "Would you buy the Libra Neopet Kin token?",
+      "planned_bucket": "control",
+      "experiment_bucket": "control",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_nicole",
+      "presenter": false,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-0524dac98eb58275",
+      "label": "CONFIDENT, NOT UNREACHABLE",
+      "context_anchors": [
+        "oth valid, the last is not. If you've succeeded at something you've failed at before, that's awesome. If you've realised the prestigious career you went into 'because everyone else was doing so' isn't working out, that's good to know sooner rather than later [^8]. However, if you give up on trying anything and resign yourself to 'whatever happens will happen', you're making a conscious choice to fail. Being temporarily lazy is fine. Being permanently lazy is not.\n\nIt's still going to suck. Believing in yourself even while everything seems to be crumbling will be hard, and sometimes impossible. And I say this as someone who's experienced one of my life's greatest failures in the past year. It's tough to get over, and maybe we never do. But we have to move on, if only a bit at a time. If we quit entirely, we lose by default. Quitting entirely is the comfortable and easy way out, but also the least rewarding. [\"Man is not made for defeat. A man can be destroyed but not defeated\"](https://www.goodreads.com/quotes/111352-but-man-is-not-made-for-defeat-he-said-a 'Hemingway') Know the game you're playing for, and _stay in the game._\n\n> Two. Don\u2019t worry about what other people think. Worrying about what other people think prevents you from taking risks and, by definition, limits your reward.\n\nI broadly agree with this. Most people care too much about how their friends, their friends' friends, or that random cute stranger at the rock climbing wall on Saturdays is perceiving them. [Group consensus](https://www.psychologytoday.com/us/blog/after-service/201705/the-science-behind-why-people-follow-the-crowd 'social psych') is a thing after all, and usually comes with a negative connotation. We could use more self-assurance and less worrying about the subjective opinions of others.\n\nHowever, this can also swing to the extreme. There's plenty of examples in which a confident leader leads a country or company into ruin. I think the balance here is having a small number of trusted advisors that you can reach out to for unbiased help, and knowing when their advice is applicable or lacking full context. This takes time to build, and the people might change over the years as well.\n\n> Three. Persistence trumps all. Anything worth doing is hard. Just keep going.\n\nSimilar to the first point above. Most things aren't easy, even if you have a passion for it [^9]. But if you don't put in the work to get better you can only blame yourself.\n\n> Four. Optimize for one thing. What you optimize for may change over time, but you can only optimize for one thing at a time.\n\nI don't know how I feel about this. There's more than one thing I care deeply about, and I think that's likely the case for most people. Maybe they don't have to all be in conflict, though I see her point. Another caveat is that going too far in one pursuit when younger could also lead to significant setbacks when you're older, e.g. putting off saving in tax-deferred accounts to enjoy life when you're younger ",
+        "---\ntitle: 'Would you buy the Libra Neopet Kin token?'\ndescription: 'Centralised decentralised finance'\npubDate: 2019-06-30\ncategory: Technology\ntags: ['finance', 'crypto', 'career']\nevergreen: false\nheroImage: './f_4.png'\n---\n\nI try to avoid writing about crypto because I don't really know what's going on, am likely to be misunderstanding something, and will probably be wrong [^1]. This month I'm making an exception because [Facebook's Libra](https://libra.org/en-US/ 'Libra') project is so confusing I need to rant at length about it in the first section. The second section is about the SEC suing a crypto company, and the third is career advice. New this month is a shoutouts section for projects friends are working on!\n\nAnyway, on to Facebook. This is a long section; skip to the next if uninterested.\n\n## What is the point of Facebook and Libra?\n\nIf you haven't heard, Facebook is working with partners to issue a cryptocurrency, Libra. The white paper can be found [here,](https://libra.org/en-US/white-paper/#introduction 'white paper') and many experts have already commented on what it means for the future of finance. I'm going boldy predict with 60% certainty that Libra will fail its objectives [^2].\n\nWhat _are_ those objectives?\n\n> Libra\u2019s mission is to enable a simple global currency and financial infrastructure that empowers billions of people.\n\nGuess [special drawing rights]"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "SELF-CONFIDENCE",
+        "TRUSTED ADVISERS",
+        "CHECK THE CONTEXT"
+      ],
+      "standalone_context": {
+        "subject": "career advice",
+        "situation": "The career advice to stop worrying about other people's opinions needs a qualification.",
+        "payoff": "Leon Lin proposes keeping a small group of trusted advisers, while checking whether their advice fits your situation."
+      },
+      "scenes": [
+        {
+          "narration": "The career advice to stop worrying about other people's opinions needs a qualification.",
+          "headline": "CONFIDENT, NOT UNREACHABLE",
+          "detail": "CAREER ADVICE"
+        },
+        {
+          "narration": "Self-confidence can help you take risks. But confidence alone can also carry a leader into bad decisions.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Leon Lin proposes keeping a small group of trusted advisers, while checking whether their advice fits your situation.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "The balance is independence with useful feedback. Follow for more decision frameworks.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-6c6564afc6396df9",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2019_08_18_friends/index.md",
+      "source_sha256": "927a41d27f036c8bdb9243f1c9cfacc1a96ee050e3ba65e65b8ed9c3c664a562",
+      "source_anchor": "We've learnt over time to keep certain details of our lives more private. As we get to know someone better, we start to offer up more information about ourselves and see if the other party responds favourably. Everyone is dealing with problems, but few people are comfortable sharing that right off the bat with an acquaintance. We fear judgement and oversharing of too much information. Why do so many people have one 'face' they reveal in the workplace and another they show to friends outside of work? We recognise there are boundaries that we'd rather maintain.",
+      "source_url": "https://leonlins.com/writing/friends",
+      "source_date": "2019-08-18",
+      "title": "The benefits of friendships",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": true,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-814dab777b330821",
+      "label": "TRUST TAKES SMALL STEPS",
+      "context_anchors": [
+        "---\ntitle: 'The benefits of friendships'\ndescription: 'Disclosure, supportiveness, interaction, and positivity to maintain friendships'\npubDate: 2019-08-18\ncategory: Culture\ntags: ['behaviour']\nheroImage: './f_1.webp'\n---\n\n[Psychology today had an article that discussed what we want out of friends](https://www.psychologytoday.com/ca/articles/200611/friendship-the-laws-attraction?quicktabs_5=1 'psych')\n\n> \"The transition from acquaintanceship to friendship is typically characterized by an increase in both the breadth and depth of self-disclosure,\" asserts University of Winnipeg sociologist Beverley Fehr, author of Friendship Processes. \"In the early stages of friendship, this tends to be a gradual, reciprocal process. One person takes the risk of disclosing personal information and then 'tests' whether the other reciprocates.\"\n\nWe've learnt over time to keep certain details of our lives more private. As we get to know someone better, we start to offer up more information about ourselves and see if the other party responds favourably. Everyone is dealing with problems, but few people are comfortable sharing that right off the bat with an acquaintance. We fear judgement and oversharing of too much information. Why do so many people have one 'face' they reveal in the workplace and another they show to friends outside of work? We recognise there are boundaries that we'd rather maintain.\n\nRecognising this issue, one thing I like to ask people I'm getting to know is \"what do you wish more people knew about you, or asked you about?\" It's a slight breach of comfort, but gives people the opportunity to talk about something they are proud of but worry might be a slight overshare at whatever stage our relationship currently is. It's a free pass to chat about something they like without seeming conceited. [And everyone likes to talk about themselves.](https://en.wikipedia.org/wiki/How_to_Win_Friends_and_Influence_People 'wiki friends')\n\n> According to Fehr's research, people in successful same-sex friendships seem to possess a well-developed, intuitive understanding of the give and take of intimacy. \"Those who know what to say in response to another person's self-disclosure are ",
+        "---\ntitle: 'The benefits of friendships'\ndescription: 'Disclosure, supportiveness, interaction, and positivity to maintain friendships'\npubDate: 2019-08-18\ncategory: Culture\ntags: ['behaviour']\nheroImage: './f_1.webp'\n---\n\n[Psychology today had an article that discussed what we want out of friends](https://www.psychologytoday.com/ca/articles/200611/friendship-the-laws-attraction?quicktabs_5=1 'psych')\n\n> \"The transition from acquaintanceship to friendship is typically characterized by an increase in both the breadth and depth of self-disclosure,\" asserts University of Winnipeg sociologist Beverley Fehr, author of Friendship Processes. \"In the early stages of friendship, this tends to be a gradual, reciprocal process. One person takes the risk of disclosing personal information and then 'tests' whether the other reciprocates.\"\n\nWe've learnt over time to keep certain details of our lives more private. As we get to know someone better, we start to offer up more information about ourselves and see if the other party responds favourably. Everyone is dealing with problems, but few people are comfortable sharing that right off the bat with an acquaintance. We fear judgement and oversharing of too much information. Why do so many people have one 'face' they reveal in the workplace and another they show to friends outside of work? We recognise there are boundaries that we'd rather maint"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "SHARE A LITTLE",
+        "NOTICE THE RESPONSE",
+        "RESPECT BOUNDARIES"
+      ],
+      "standalone_context": {
+        "subject": "friendships",
+        "situation": "New friendships often begin with a small test of trust, not a complete life story.",
+        "payoff": "Leon Lin's essay describes how fear of judgment and oversharing can keep acquaintances from discussing real problems."
+      },
+      "scenes": [
+        {
+          "narration": "New friendships often begin with a small test of trust, not a complete life story.",
+          "headline": "TRUST TAKES SMALL STEPS",
+          "detail": "FRIENDSHIPS"
+        },
+        {
+          "narration": "People share a little personal information, then notice whether the other person responds well.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Leon Lin's essay describes how fear of judgment and oversharing can keep acquaintances from discussing real problems.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Privacy and connection both matter. Follow for more ideas about relationships and decisions.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-7679bdb365b57bc2",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2019_11_10_hoppin/index.md",
+      "source_sha256": "e931eb2053ffb03653f33e0107361bd29eccdfaeadd9f5a2fad6856c64297096",
+      "source_anchor": "Whenever people are looking for a new job, a common piece of advice is to first do their research. Some ways that people currently do that are by doing internships or by asking others currently in that role. Internships are a heavier time commitment and not always feasible, whereas talking to current employees doesn't get you information as rich as actually experiencing it during an internship. This is the gap Hoppin is trying to fill.",
+      "source_url": "https://leonlins.com/writing/hoppin",
+      "source_date": "2019-11-10",
+      "title": "Review of Hoppin platform",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "statement",
+      "cta_type": "follow",
+      "concept_id": "abpctx-27543eaceb002ba8",
+      "label": "TRY THE JOB BEFORE THE MOVE",
+      "context_anchors": [
+        "---\ntitle: 'Review of Hoppin platform'\ndescription: 'Job shadowing the job shadowing people at Hoppin'\npubDate: 2019-11-10\ncategory: Technology\ntags: ['business', 'marketplace']\nevergreen: false\nheroImage: './h_11.webp'\n---\n\nI recently job shadowed [Bilyana Freye](https://twitter.com/bilyanafreye?lang=en 'Billy') of the job shadowing marketplace [Hoppin](https://gohoppin.com/ 'Hoppin'), below is an inital take on my experience.\n\nFull disclosure: My company paid for this activity as part of a professional growth learning budget [^1]\n\nWhenever people are looking for a new job, a common piece of advice is to first do their research. Some ways that people currently do that are by doing internships or by asking others currently in that role. Internships are a heavier time commitment and not always feasible, whereas talking to current employees doesn't get you information as rich as actually experiencing it during an internship. This is the gap Hoppin is trying to fill.\n\nHoppin is a job shadowing marketplace, trying to connect people interested in shadowing someone for a day with someone willing to host another person for a day. Ideally, both sides can benefit from this. The shadower gets an authentic 'day in the life of' experience that gives them a much better idea of the role, and the host gets new perspectives on their role and potentially a new hire. I can see why people would be interested, and now finding how to make a business out of this is the key problem to solve for Hoppin.\n\nI'll start off describing the booking flow, then my personal experience, and end with thoughts and feedback on the company. The takeaway is that I thought it was an awesome experience and worth checking out, subject to the caveats I'll mention below.\n\n## Booking flow\n\nThe",
+        "---\ntitle: 'Review of Hoppin platform'\ndescription: 'Job shadowing the job shadowing people at Hoppin'\npubDate: 2019-11-10\ncategory: Technology\ntags: ['business', 'marketplace']\nevergreen: false\nheroImage: './h_11.webp'\n---\n\nI recently job shadowed [Bilyana Freye](https://twitter.com/bilyanafreye?lang=en 'Billy') of the job shadowing marketplace [Hoppin](https://gohoppin.com/ 'Hoppin'), below is an inital take on my experience.\n\nFull disclosure: My company paid for this activity as part of a professional growth learning budget [^1]\n\nWhenever people are looking for a new job, a common piece of advice is to first do their research. Some ways that people currently do that are by doing internships or by asking others currently in that role. Internships are a heavier time commitment and not always feasible, whereas talking to current employees doesn't get you information as rich as actually experiencing it during an internship. This is the gap Hoppin is trying to fill.\n\nHoppin is a job shadowing marketplace, trying to connect people interested in shadowing someone for a day with someone willing to host another person for a day. Ideally, both sides can benefit from this. The shadower gets an authentic 'day in the life of' experience that gives them a much better idea of the role, and the host gets new perspectives on their role and potentially a new hire. I can see why people would b"
+      ],
+      "visual": "statement",
+      "graphic_labels": [
+        "ASK ABOUT THE ROLE",
+        "EXPERIENCE THE ROLE",
+        "COMPARE THE COMMITMENT"
+      ],
+      "standalone_context": {
+        "subject": "career change",
+        "situation": "Before a career change, how do you find out what the job actually feels like?",
+        "payoff": "In a twenty nineteen review, Leon Lin examined Hoppin, a marketplace for spending a day shadowing someone at work."
+      },
+      "scenes": [
+        {
+          "narration": "Before a career change, how do you find out what the job actually feels like?",
+          "headline": "TRY THE JOB BEFORE THE MOVE",
+          "detail": "CAREER CHANGE"
+        },
+        {
+          "narration": "An internship offers experience but takes time. Talking to an employee is easier, but gives you less direct experience.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "In a twenty nineteen review, Leon Lin examined Hoppin, a marketplace for spending a day shadowing someone at work.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "The useful question is how closely your research resembles the job. Follow for practical decision tools.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone practical question",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-018841a823a9155d",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2019_06_23_tim/index.md",
+      "source_sha256": "75611910f7f66826e5b5953b22b129303527214bacf327dafcfd0e5efe7a33eb",
+      "source_anchor": "**This completely rebuts the Guardian and 2014 NYT review's arguments about the movie** intending to 'claim the painting is as good' or them 'not seeing the difference'. The fact that the main points for both reviews are 'this was a pale imitation without soul and not true art' rather than 'hey this seems like a plausible, interesting way to have done it' shows the reviewers to be more close-minded than what they're accusing the movie of.",
+      "source_url": "https://leonlins.com/writing/tim",
+      "source_date": "2019-06-23",
+      "title": "The controversy around Tim's Vermeer is missing the point",
+      "planned_bucket": "exploitation",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": "No replicated evidence; exploitation reassigned to exploration.",
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-2996482df8ac66a5",
+      "label": "A METHOD IS NOT A MASTERPIECE",
+      "context_anchors": [
+        ".**\n\nCritics of the idea think the notion that artistic genius could be 'reduced' to technological innovation and hard work is reductive and blasphemous.\n\nCritics of the process think that the facts imply other ways the paintings were created [^4].\n\nCritics of the idea seem to be outraged at a claim that nobody is actually making, that Vermeer _must_ have used this technique, and that by implication Vermeer was _less_ of a genius.\n\nThat's not the point of the movie. The point is that Vermeer _could_ have used this technique, and even if he did, it doesn't change how you should view his art.\n\nIt's strange that the potential use of 'technology' so horrified critics. If we withheld the use of technology from art, then shouldn't any artwork using modern paintbrushes, paints, techniques etc be considered diminished as a result? Despite what Picasso is rumoured to have said about cave paintings [^5], I am sure that people appreciate art having evolved and techniques getting better since then.\n\n[Neither Penn and Teller nor Tim himself are claiming anything else:](https://www.nytimes.com/2013/12/01/movies/tim-jenison-an-inventor-paints-the-music-lesson.html 'NYT article')\n\n> \u201cWe at no point ever say, \u2018Tim Jenison discovered how Vermeer painted his paintings,\u2019\u201d \\[Penn\\] said. \u201cAnd,\u201d he added, \u201cI\u2019m not saying that we let the audience decide for themselves. That\u2019s always a lie. We present it exactly the way Tim presented it to me. Which is, \u2018Huh, this kind of looks like it might work.\u2019 \u201d\n\n> Mr. Jenison did not insist that the painting he created in the film had to be regarded as a work of art. \u201cVermeer created the art,\u201d he said. \u201cThe best I could do was come up with something that looked the same. Why do you need another \u2018Music Lesson\u2019? It was just to see how close I could get.\u201d\n\n**This completely rebuts the Guardian and 2014 NYT review's arguments about the movie** intending to 'claim the painting is as good' or them 'not seeing the difference'. The fact that the main points for both reviews are 'this was a pale imitation without soul and not true art' rather than 'hey this seems like a plausible, interesting way to have done it' shows the reviewers to be more close-minded than what they're accusing the movie of.\n\nI also agree with [Teller's thoughts](https://www.npr.org/2013/12/02/248190117/teller-breaks-his-silence-to-talk-tims-vermeer 'teller') that _supposing_ Vermeer used this method, it makes him a better artist:\n\n> Art is an activity in which one human heart communicates to the other human heart. If Vermeer used this method, which Tim believes pretty strongly he may have used, that makes Vermeer better, not worse. What this means is that Vermeer was not only someone with wonderful and beautiful ideas, and someone capable of miraculous compositions, but that he was willing to put in the incredibly intense work to translate those ideas to paint on canvas\n\n[Or as another review put it:](http://www.howtotalkaboutarthistory.com/reader-questions/tims-vermeer-artistic-genius/ 'how to talk')\n\n> Tak",
+        "---\ntitle: \"The controversy around Tim's Vermeer is missing the point\"\ndescription: 'Whether Vermeer really used Tim\u2019s process is not the point'\npubDate: 2019-06-23\ncategory: Culture\ntags: ['art']\nheroImage: './t_1.webp'\n---\n\nI just learnt about [Tim's Vermeer](https://sonyclassics.com/timsvermeer/ 'website'), a documentary by Penn and Teller about [inventor Tim Jenison's attempt to reproduce a Vermeer using technology advanced for Vermeer's time](https://en.wikipedia.org/wiki/Tim%27s_Vermeer 'wiki link'). The premise sounded interesting, so I looked up the film online, and became even more interested when I learnt about the controversy the film had generated. I still haven't watched the film, as I've found digging into the controversy and what it implies to be fascinating.\n\nIf you're like me and don't know much about art, here's some background context: [Johannes Vermeer](https://en.wikipedia.org/wiki/Johannes_Vermeer 'wiki') was a Dutch painter who lived from 1632-1675. He's now acknowledged to be one of the greatest painters of his time, particularly for his [realistic paintings and usage of light.](https://www.artble.com/artists/johannes_vermeer/more_information/style_and_technique 'vermeer style') [^1] Some famous paintings include [^2]:\n\n![post](./t_1.webp)\n\n![post](./t_2.webp)\n\nA while back, David Hockney and Philip Steadman suggested that **Vermeer and other artists cou"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "POSSIBLE METHOD",
+        "RECREATION TEST",
+        "HISTORICAL PROOF"
+      ],
+      "standalone_context": {
+        "subject": "Tim's Vermeer",
+        "situation": "Tim's Vermeer follows an inventor trying a possible optical method for recreating a Vermeer painting.",
+        "payoff": "Leon Lin's essay argues that judging whether the recreation is great art misses that narrower question."
+      },
+      "scenes": [
+        {
+          "narration": "Tim's Vermeer follows an inventor trying a possible optical method for recreating a Vermeer painting.",
+          "headline": "A METHOD IS NOT A MASTERPIECE",
+          "detail": "TIM'S VERMEER"
+        },
+        {
+          "narration": "The experiment asks whether the method could work. That is different from proving how Vermeer actually painted.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Leon Lin's essay argues that judging whether the recreation is great art misses that narrower question.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Separate a test of a method from a claim of historical proof. Follow for clearer thinking.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-9b5b65a0f76beff9",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_04_15_keen/index.md",
+      "source_sha256": "e13ad424105a5f585b1ef90045821cf9fb5012d71f4ff3575d2d28699e057d64",
+      "source_anchor": "That's it in terms of browsing. If you want to go back and explore other collections from the opened gem page, you can't go back directly, as the Keen logo normally on the top left isn't there, having been replaced by an arrow that brings you back to the collection of gems. From there you can click back to the home page and continue rolling the dice for more collections.",
+      "source_url": "https://leonlins.com/writing/keen",
+      "source_date": "2020-04-15",
+      "title": "Review of Google Keen product",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_nicole",
+      "presenter": true,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-bf936f155d148260",
+      "label": "THE BACK BUTTON CHANGED ITS JOB",
+      "context_anchors": [
+        " perhaps that assumption is wrong. After rolling a few times and getting results such as \"how to pose for pictures (for girls)\" and \"plan a baby shower\" I gave up on finding anything relevant to finance or tech, and clicked into a public collection titled \"stay productive.\"\n\n![post](./k_9.webp)\n\nThe collection showed gems from a group of other contributors, who had uploaded a mix of youtube links and websites. Each gem card gives you the option to share, comment, or open. Clicking on the top of the cards doesn't do anything, but clicking on some parts of the bottom picture or title will open the link attached.\n\n![post](./k_10.webp)\n\nSharing brought up a link to copy or send via email or whatsapp.\n\nOpening brought me to a new page, with an enlarged version of the card, but it wasn't that different from seeing the card in the collection. Importantly, this still doesn't open the entire article linked, and it's an additional step to click through to the link, which opens up another tab. In other words, the gem just gives a small preview, the open function doesn't seem to do much additional work at the moment, and you'll have to bounce off Keen's site to read the actual article.\n\nCommenting brought me to the same page that opening does, except anchored to the bottom of the card for me to type in a comment. I posted a comment on a card just to test the functionality. You can edit or delete comments after you've posted them.\n\n![post](./k_11.webp)\n\nAfter opening the card, there's a space below where Keen highlights \"more to explore.\" These looked like gems from the same collection, though I couldn't be sure. I couldn't \"open\" these gems, and clicking on them brings me directly to the link, rather than the page that you get brough to when \"opening\" a gem.\n\n![post](./k_12.webp)\n\nThat's it in terms of browsing. If you want to go back and explore other collections from the opened gem page, you can't go back directly, as the Keen logo normally on the top left isn't there, having been replaced by an arrow that brings you back to the collection of gems. From there you can click back to the home page and continue rolling the dice for more collections.\n\n### Thoughts on Keen\n\nHaving played around with Keen, below are some initial thoughts, keeping in mind this is still in beta and more of an experiment:\n\n1. Who is the intended content creator on Keen? When I add collections and gems, am I supposed to just be spamming links, since there's no space to create my own content on Keen itself? If we assume this becomes a scaled product, what's the incentive for a content creator to continue posting links?\n\n   I'm assuming it's for follower counts, since there aren't like or view counts. So it seems like this would be another Pinterest, except for ideas. As a content creator myself I'm open to adding my content to more sites for reach, as long as I believe the return in views is worth the time investment. Keen's size probably isn't there yet, bu",
+        "---\ntitle: 'Review of Google Keen product'\ndescription: 'Walkthrough and questions about the beta'\npubDate: 2020-04-15\ncategory: Technology\ntags: ['business']\nevergreen: false\nheroImage: './k_2.webp'\n---\n\n## Takeaway\n\nKeen is a new product from Google intended to keep track of your interests, though I'm unsure if it's meant to be more social or more idea focused\n\n## Keen walkthrough\n\nI was invited to try a beta of [Keen](https://staykeen.com/ 'Keen'), a new product from [Area 120, Google's workshop for experimental products](https://area120.google.com/ '120') [^1]. Keen is meant to \"help you expand your interests\", by \"staying keen on your interests, getting recommendations, and curating good ideas\".\n\nLet's take a closer look at the product.\n\n### Signup and user flow\n\nThe signup process is straightforward if you have a Google account and are already logged in on your browser. I didn't see an option for people without Google accounts, and assume that'll change once they're out of Beta.\n\n![post](./k_1.webp)\n\nAfter you're signed up, the first view is that of a tiled screen, with a large plus sign to the left. The other tiles seem to be of various topics that I might be interested in checking out. If there was ever an argument that Google isn't spying on you and your data, this could be it, since none of the initial suggestions were close to my interests. Perhaps they pre-populate "
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "OPEN AN ITEM",
+        "BACK TO COLLECTION",
+        "BACK TO HOME"
+      ],
+      "standalone_context": {
+        "subject": "Google Keen",
+        "situation": "Google Keen's twenty twenty beta was a tool for collecting interests and links. Its navigation had a revealing problem.",
+        "payoff": "Reaching other collections took another step. Leon Lin's review shows a concrete navigation tradeoff in an experimental product."
+      },
+      "scenes": [
+        {
+          "narration": "Google Keen's twenty twenty beta was a tool for collecting interests and links. Its navigation had a revealing problem.",
+          "headline": "THE BACK BUTTON CHANGED ITS JOB",
+          "detail": "GOOGLE KEEN"
+        },
+        {
+          "narration": "After opening a saved item, the top-left arrow returned to that collection, rather than the home page.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Reaching other collections took another step. Leon Lin's review shows a concrete navigation tradeoff in an experimental product.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "When reviewing a product, ask where the back button actually takes you. Follow for more product thinking.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-72c45f26cce3906d",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_08_19_city/index.md",
+      "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+      "source_anchor": "Remote work also doesn't have to be an all or nothing proposition. If companies ended up letting people do some days in the office and some days out of it, then large cities still matter. Remote work might even directly result in more people moving to cities, should offices do a rotational schedule. e.g. one month group A in the office, one month group B in the office. That implies the city can take twice as many workers as it used to.",
+      "source_url": "https://leonlins.com/writing/city",
+      "source_date": "2020-08-19",
+      "title": "City hunter",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "statement",
+      "cta_type": "follow",
+      "concept_id": "abpctx-976d392a18456a0e",
+      "label": "HYBRID DOES NOT MEAN EMPTY CITIES",
+      "context_anchors": [
+        "guish these two types of situations though. In the former, your priorities changed, and you'd likely not move back to a city again after moving out. In the latter, your priorities stayed the same, but all the cool spots are closed for now. When they reopen, you'll be back.\n\nIt's like going to a restaurant. If you no longer like that style of food, you're not returning. If your favourite dish is sold out all the time, you'd visit less often but still be interested if it came back on the menu.\n\n### City factors\n\nLet's look at some factors that make cities attractive, and see what has happened. I'll be drawing from this [1970 paper on urban mobility](https://www.jstor.org/stable/490436?seq=5#metadata_info_tab_contents 'urban') but mostly adding my own commentary [^2]. The main theme is that people's base desires don't change that much.\n\nA few of the top factors:\n\n- Work\n- Education\n- Social\n- Services\n- Vibe/culture\n\n### Work\n\nMany people move for the sake of a job; I did too. If that job can now be done anywhere, there's less reason to move. Why would companies want to move back to offices?\n\nCynically, having an office allows a company to extract more time from their employees. And while some people are more productive at work now that they're working from home, I feel that the productivity of an average worker has gone down since leaving an office. Getting people back eventually is one way to grow faster.\n\nThere's also a sense that those random conversations in between meetings are actually important as well. This has led to more companies finding ways to have their teams interact outside of work, such as a socially-distanced team outing. If people were satisfied with just zoom happy hours, we wouldn't see such activities suggested. People want to see others in person.\n\nRemote work also doesn't have to be an all or nothing proposition. If companies ended up letting people do some days in the office and some days out of it, then large cities still matter. Remote work might even directly result in more people moving to cities, should offices do a rotational schedule. e.g. one month group A in the office, one month group B in the office. That implies the city can take twice as many workers as it used to.\n\nThe type of work also matters. More physical work can't be done remotely, so those jobs stay in the city where you get economies of scale. We'll get back to this under services, but shouldn't this imply more stickiness to cities?\n\nAnd one important factor, sometimes missed, is how most of these companies allowing fully remote options have clearly stated they intend to adjust salaries according to the cost of living of the city you relocate to. This is without considering the decreased perks you have working remotely - snacks, meals, other services. Some people will be ok with this, and others will balk.\n\nI do think we'll see many more remote-first or remote-only companies. [Zapier, for example,](https://zapier.com/about/ 'Zapier') has been remote-only for a while now. They still hold in ",
+        "---\ntitle: 'City hunter'\ndescription: 'How picking a city to live in is like picking a restaurant'\npubDate: 2020-08-19\ncategory: Culture\ntags: ['predictions']\nevergreen: false\nheroImage: './c_3.png'\n---\n\n## Takeaway\n\nThe predictions of the death of large cities are overblown and I expect most to recover within five years.\n\n## NYC is dead, long live NYC\n\nAn article recently proclaimed that [NYC is dead forever.](https://www.linkedin.com/pulse/nyc-dead-forever-heres-why-james-altucher/ 'NYC') Because of the internet, the loss of business, culture, dining, commercial real estate, and colleges in the city has turned from a temporary situation to a permanent outcome. As a result, the article concludes that people are leaving NYC and never coming back.\n\nSimilar articles have been written about other large cities, [such as SF.](https://www.sfgate.com/sf-locals/slideshow/I-m-finally-leaving-Stories-of-Bay-Area-203670.php 'SF') A couple of people I've talked to have also reflected the same sentiment of wanting to leave the city they're in. I'm not an expert in urban mobility, and this will be more speculative. Let's take a look at some points that matter regarding the death of large cities.\n\nI'm more optimistic that large cities will survive this. As a way of quantifying that statement - I have 80% confidence that NYC will have a higher population in 5 years than it does today [^1]. For"
+      ],
+      "visual": "statement",
+      "graphic_labels": [
+        "FULLY REMOTE",
+        "ROTATING ATTENDANCE",
+        "STILL NEED ACCESS"
+      ],
+      "standalone_context": {
+        "subject": "remote work",
+        "situation": "Remote work does not automatically mean workers stop needing cities.",
+        "payoff": "Under that hypothetical schedule, workers still need office access. The effect on cities depends on how employers organize attendance."
+      },
+      "scenes": [
+        {
+          "narration": "Remote work does not automatically mean workers stop needing cities.",
+          "headline": "HYBRID DOES NOT MEAN EMPTY CITIES",
+          "detail": "REMOTE WORK"
+        },
+        {
+          "narration": "Leon Lin's twenty twenty essay considers a hybrid setup: one team uses the office for a month, then another team rotates in.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Under that hypothetical schedule, workers still need office access. The effect on cities depends on how employers organize attendance.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Look at the schedule behind the prediction. Follow for more ways to question a forecast.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-bbfe9072061ad95c",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_09_02_community_covid/index.md",
+      "source_sha256": "1ce66c1c5b272e2a3fb243296be0cf9f2eab149ba81b8b75b4f96dc68c441ee7",
+      "source_anchor": "I'm less pessimistic about in person events, and feel that those will re-grow once covid passes. Most business conferences have usually been less about efficiency and more about the networking and taking a paid vacation away from your boss. However, I see events adopting a hybrid model, which could even be incremental to their margins. Sell the in person experience as a luxury, and the virtual experience as a budget substitute. This implies that knowing how to host good virtual events will still be important for the future.",
+      "source_url": "https://leonlins.com/writing/community_covid",
+      "source_date": "2020-09-02",
+      "title": "There's more to communities than Facebook goat groups",
+      "planned_bucket": "control",
+      "experiment_bucket": "control",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-69d7434c09730177",
+      "label": "ONE EVENT, TWO EXPERIENCES",
+      "context_anchors": [
+        "ate that **entertainment events should aim for interaction, just like the \"professional\" events above.** If all your live event has going for it is high production value, I might as well just watch the replay on my own time.\n\nKT Tunstall exemplified this in [her live session with the Royal Albert Hall](https://www.youtube.com/watch?v=T_FHtCvpTOI 'KT'). You can see the lower production quality compared to the two examples above, but what really made the difference was the live chat. It allowed fans to interact both with each other and with her, making for a special intimate session. Live streaming has become... mainstream.\n\n![post](./c_7.webp)\n\nIf you don't believe that's sustainable at scale, then take a look at [what KPop groups such as Super Junior are doing.](https://www.youtube.com/watch?v=3H_MiOghwJw&fbclid=IwAR3nFY0s2ccu6tXA4dig9_e37jvNC3QGxCNOL9WE9E-DyJeRMrWtoMAQUIo 'Kpop') (h/t Gabriel Tan) They've re-imagined the concert experience, and specifically plan for fan interaction in the concert. It's so much easier to make fans feel special now, and entertainers should learn from this. It's increasingly felt to me that Asian companies are leading the way in innovating on consumer experiences, and this feels like another case study for Western companies [^6].\n\n![post](./c_8.webp)\n\nWhat does this mean for the in person event market? [Rafat Ali of Skift believes that this is a watershed moment for the industry](https://skift.com/2020/08/26/the-event-industry-is-being-confronted-by-its-napster-moment/ 'Skift'), just like what Napster for music. He thinks that 10% of business travel may leave the market permanently, and also estimates that virtual events make about a quarter the amount of revenue that in person ones do, so the market will have to adapt to new economics.\n\nI'm less pessimistic about in person events, and feel that those will re-grow once covid passes. Most business conferences have usually been less about efficiency and more about the networking and taking a paid vacation away from your boss. However, I see events adopting a hybrid model, which could even be incremental to their margins. Sell the in person experience as a luxury, and the virtual experience as a budget substitute. This implies that knowing how to host good virtual events will still be important for the future.\n\nIn summary, virtual events should aim for more interaction to build community. It's even easier to do so now, and will result in an even more fanatical following.\n\n#### Virtual communities as curated clubs\n\nCommunity building has also risen in importance, both for individuals and companies. For the individual, networking has always been relevant, and virtual groups are an extension of that. For companies, an engaged community implies loyal customers, lowering churn and customer acquisition costs (CAC); the company version of the [1,000 true fans for creators.](https://kk.org/thetechnium/1000-true-fans/ '1000')\n\nOn the individual level, the problem with communities is **a matter of selectivity.** Too selective, and you're not having enough random encounters. Not selective, and you find ev",
+        "---\ntitle: \"There's more to communities than Facebook goat groups\"\ndescription: 'Community vs individuality in events, newsletters, and investing'\npubDate: 2020-09-02\ncategory: Culture\ntags: ['newsletter', 'investing', 'community']\nheroImage: './c_9.webp'\n---\n\n## Takeaways\n\n1. Virtual events and groups should aim to build community by increasing interaction opportunities. If you aren't in a community or building one, you're probably missing out.\n2. Newsletters have trended due to cost, convenience, and control. I share a financial model which you can play with to frame the economics of the business\n3. Individuals are becoming more important for private market investing, both as solo capitalists and as small checks in syndicates\n\n---\n\nI used to travel to Toronto for work.\n\nThere was a restaurant I liked to visit, with excellent food, drinks, and staff [^1]. I'd half hoped to become a regular there, tasting every item on the menu and swapping cocktail chit chat with the bartenders.\n\nNo more.\n\nI used to host cocktail nights.\n\nI'd invite guests to my apartment while I served drinks. Sometimes we even did cocktail lessons. It'd turned into a sustainable, recurring affair where I could catch up with old friends or make new ones.\n\nNo more.\n\nI used to do monthly group dinners.\n\nWe'd pick a restaurant in Manhattan, reserve a date weeks in advance, and then share food and stories. Group "
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "IN THE ROOM",
+        "WATCH REMOTELY",
+        "DIFFERENT VALUE"
+      ],
+      "standalone_context": {
+        "subject": "business conferences",
+        "situation": "Business conferences can sell two different experiences: being in the room and watching remotely.",
+        "payoff": "That is a proposed business model, not proof that every event becomes more profitable."
+      },
+      "scenes": [
+        {
+          "narration": "Business conferences can sell two different experiences: being in the room and watching remotely.",
+          "headline": "ONE EVENT, TWO EXPERIENCES",
+          "detail": "BUSINESS CONFERENCES"
+        },
+        {
+          "narration": "Leon Lin's twenty twenty essay suggests treating the in-person experience as a premium product and virtual attendance as a budget option.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "That is a proposed business model, not proof that every event becomes more profitable.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Ask what each audience is paying for. Follow for more business-model ideas.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-6ca0627ce3971767",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_08_05_lvmh/index.md",
+      "source_sha256": "5963492c6b0a6e44992d58cad67110759eb3bc6f30128d64bb81152648b224dc",
+      "source_anchor": "How much of his framework is applicable to other businesses? I mostly agree on the emphasis of creativity but also operational excellence. As per the recent note on [why companies are bad at innovating](/writing/turtle 'turtle') though, I\u2019m unsure if most companies are willing to accept the volatility implied with accepting more creativity. I\u2019m unsure if the past vs present duality is easily implemented, beyond some marketing campaign just for show.",
+      "source_url": "https://leonlins.com/writing/lvmh",
+      "source_date": "2020-08-05",
+      "title": "LVMH's contrasts of chaos and control",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": true,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-2beab35a8aee40cd",
+      "label": "CREATIVITY NEEDS A COUNTERWEIGHT",
+      "context_anchors": [
+        "ve a genius here with Christian Lacroix,\u201d but we learned that genius is not enough to succeed. It was something of a shock, to be honest, to discover that even great talent could not launch a brand from zero. A brand must have a heritage; there are no shortcuts.\n\nWhich explains why he tries to keep people during acquisitions. This is surprising, given that a major reason for cost savings post-acquisition is the firing of people from the company you just acquired.\n\n> Quality also comes from hiring very dedicated people and then keeping them for a long time. We try to keep the people at the brands, especially the artisans \\[...\\] Most companies clean house when they acquire a new brand. We don\u2019t do that because we have found it hurts quality terribly. When you clean house, you usher out the people who respect the brand the most and who contribute to its longevity\u2014its timelessness, its authenticity.\n\nThis is the third duality: past vs present. Bernard believes that consumers look to the past, but want to live in the present.\n\n## Building a brand for the long term\n\n![post](./l_3.webp)\n\nWe've covered 3 dualities that Bernard deals with, arising from the experience he's had building the brand. By allowing creativity with control, execution of ideas, and blending tradition and modernity, Bernard believes he's building LVMH for the long term:\n\n> [When we discuss a brand, I always tell them my real concern is what the brand will be in five or ten years, not the profitability in the next six months.](https://www.forbes.com/sites/luisakroll/2017/09/26/business-icon-bernard-arnault-reveals-his-most-important-mentor-biggest-mistake-in-qa/#4e8836af2ccc 'Forbes')\n\nAnd that so far has worked for him, at least based on the stock price and the market share of LVMH:\n\n![post](./l_4.webp)\n\nHow much of his framework is applicable to other businesses? I mostly agree on the emphasis of creativity but also operational excellence. As per the recent note on [why companies are bad at innovating](/writing/turtle 'turtle') though, I\u2019m unsure if most companies are willing to accept the volatility implied with accepting more creativity. I\u2019m unsure if the past vs present duality is easily implemented, beyond some marketing campaign just for show.\n\nWith all Bernard's achieved, you'd think he'd be ready to retire. He's not done empire building though. Even now, Bernard still believes [it's day 1:](https://www.forbes.com/sites/quora/2017/04/21/what-is-jeff-bezos-day-1-philosophy/#1867a2be1052 'Day')\n\n> We are still small. We\u2019re just getting started. This is very fun. We are number one, but we can go further.\n\n## Sources\n\n1. [HBR interview](https://hbr.org/2001/10/the-perfect-paradox-of-star-brands-an-interview-with-bernard-arnault-of-lvmh 'HBR')\n2. [FT interview](https://www.ft.com/content/21f64410-9117-11e9-aea1-2b1d33ac3271 'FT')\n3. [Forbes interview](https://www.forbes.com/sites/luisakroll/2017/09/26/business-icon-bernard-arnault-reveals-his-most-important-mentor-biggest-mistake-in-qa/#4e8836af2ccc 'Forbes')\n4. [NYT interview](htt",
+        "---\ntitle: \"LVMH's contrasts of chaos and control\"\ndescription: 'How Bernard Arnault views creativity'\npubDate: 2020-08-05\ncategory: Culture\ntags: ['fashion', 'art', 'business']\nheroImage: './l_3.webp'\nfeatured: false\n---\n\n## Takeaway\n\nAs the CEO of LVMH, Bernard Arnault believes that star brands require creativity for ideas but control on execution, combined with a blend of past and present\n\n## Top of the luxury chain\n\n[LVMH](https://en.wikipedia.org/wiki/LVMH 'LVMH') is the parent company of many luxury brands we're familiar with. [Formed in 1987](https://www.thefashionlaw.com/lvmh-a-timeline-behind-the-building-of-a-conglomerate/ '1987') through the merger of \"Louis Vuitton\" and \"Mo\u00ebt et Chandon and Hennessy\", it now houses more than 70 brands across wine, fashion, jewellery, and more. Compared to its nearest competitor, Kering [^1], [LVMH makes more than 2x the amount of revenue.](https://www.themds.com/companies/kering-versus-lvmh-it-bags-and-influencers-vs-heritage-and-size.html 'rev')\n\n![post](./l_1.webp)\n\nAnd at the top of it all is [Bernard Arnault](https://en.wikipedia.org/wiki/Bernard_Arnault 'Bernard'), who has been head of the group ever since 1990. It's paid off well for him, making him one of the richest men in the world.\n\n![post](./l_2.webp)\n\n[Brett Bivens tweeted this HBR interview of Bernard a while back](https://twitter.com/brettbivens/status/1251505408960794"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "CREATIVE IDEAS",
+        "DISCIPLINED EXECUTION",
+        "ACCEPT THE VOLATILITY"
+      ],
+      "standalone_context": {
+        "subject": "LVMH",
+        "situation": "LVMH, the luxury group, offers a useful tension for anyone managing creative work.",
+        "payoff": "But copying that balance is not automatic. Other companies may resist the volatility that comes with accepting more creativity."
+      },
+      "scenes": [
+        {
+          "narration": "LVMH, the luxury group, offers a useful tension for anyone managing creative work.",
+          "headline": "CREATIVITY NEEDS A COUNTERWEIGHT",
+          "detail": "LVMH"
+        },
+        {
+          "narration": "Leon Lin's essay describes Bernard Arnault's approach as room for creative ideas combined with discipline in execution.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "But copying that balance is not automatic. Other companies may resist the volatility that comes with accepting more creativity.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "A compelling framework still needs a workable organization. Follow for clearer business thinking.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-05914ef1f6e76904",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2021_03_07_data_landscape/index.md",
+      "source_sha256": "3ceeb4d616b74fcc264ff995790c97a06de33969f39d827a51204c59697972d0",
+      "source_anchor": "To get that data to the warehouses, there can be\u00a0**data moving**\u00a0and\u00a0**data modelling\u00a0**layers. Companies such as Stitch, Fivetran, Segment, Airbyte help you pull your data from raw sources (we'll get to this shortly) and put it into your database so you can query it. Data movers are commonly known as some combination of Extract, Load, Transform (ELT), Extract, Transform, Load (ETL), or some subset of those combinations.",
+      "source_url": "https://leonlins.com/writing/data_landscape",
+      "source_date": "2021-03-07",
+      "title": "Data analysis industry landscape",
+      "planned_bucket": "exploitation",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": "No replicated evidence; exploitation reassigned to exploration.",
+      "voice": "af_nicole",
+      "presenter": false,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "statement",
+      "cta_type": "follow",
+      "concept_id": "abpctx-140af1410da56265",
+      "label": "BEFORE THE DASHBOARD, MOVE THE DATA",
+      "context_anchors": [
+        "of the data stack, those companies could squeeze margins for firms that have no alternatives [^5]\n\n## 3. Landscape\n\nWe'll start with what the user can see, on the\u00a0**visualisation**\u00a0end. When an analyst already has cleaned data formatted in the structure they want, they need to organise that information. This usually takes the form of a dashboard with graphs and tables. Some tools in this space include Tableau, Looker, Google Data Studio, R Shiny (browser based, user friendly dashboards), Streamlit (interactive data apps), or even Google Sheets.\n\nThe tradeoffs in choosing a tool here are the technical ability of the users vs the complexity of the data. If an organisation has many users that want to collaborate on the same project, a simple tool like Sheets works. If there are fewer users and feature requests, building something that can deal with larger loads in a dashboarding software could make sense.\n\nBefore visualisation, the analyst needs to...**analyse the data**. They do so by querying the data from a structured database with a query language. This could be something like Presto (low latency, low throughput) or Hive (high latency, high throughput).\n\nThese computations are done on a data warehouse layer, which can be something like Snowflake, Redshift, BigQuery, Azure. The ones gaining in popularity are cloud based, and some also allow for separate scaling and billing of compute vs storage usage. Data warehouses can be better for doing analysis than databases, which can be better for storing data.\n\nThe tradeoffs here include price, scaling, and support. For example, you might start out with open-source Postgres, but then eventually switch over to Snowflake when your company has scaled beyond the size Postgres is suited for and is encountering more technical bugs.\n\nTo get that data to the warehouses, there can be\u00a0**data moving**\u00a0and\u00a0**data modelling\u00a0**layers. Companies such as Stitch, Fivetran, Segment, Airbyte help you pull your data from raw sources (we'll get to this shortly) and put it into your database so you can query it. Data movers are commonly known as some combination of Extract, Load, Transform (ELT), Extract, Transform, Load (ETL), or some subset of those combinations.\n\nData modellers such as dbt, Matillion, and Looker let you map that raw data into the structure that your warehouse requires. For example, dbt lets you transform your data in an integrated development environment (IDE), schedule transformation jobs, and create documentation of what the data is like.\n\nThe tradeoffs here are the usual price, complexity, and other technical features. For example, I believe Fivetran has more integrations whereas Stitch has fewer. The choice of a data moving tool can also affect the data modelling tool used - you can think of this as not needing to transform data twice.\n\nAll of that data comes from customer and supplier interactions as raw\u00a0**source data**. This includes software tools like Salesforce, Zendesk, Hubspot (CRM). Since these are all different compa",
+        "---\ntitle: 'Data analysis industry landscape'\ndescription: 'Market overview, risks, and competitive landscape'\npubDate: 2021-03-07\ncategory: Technology\ntags: ['business', 'data', 'software']\nevergreen: false\nheroImage: './d_1.webp'\n---\n\n## Takeaway\n\nI had to put together some analysis on the data pipeline industry recently, and thought I should share it out. We'll go through:\n\n1.  a market overview,\n2.  risks,\n3.  companies involved at each stage\n\n## 1. Market overview\n\nThe data pipeline industry has a TAM of >$100bn, with some companies alone valued close to that [^1]. Since data pipelines are a broad area, I'll restrict discussion to sectors more relevant to data analysis. A mix of public and private companies compete to fit within the technology stack of organisations using data, which is essentially every sizable firm today [^2].\n\nData flows from customer or supplier generated interactions, into raw transactional\u00a0**databases**. The data is then\u00a0**moved\u00a0**and\u00a0**transformed**\u00a0to the appropriate model for analytical data warehouses. From there, analysts can query for the data they're interested in\u00a0**analysing**. They use the results for end user\u00a0**data visualisation**\u00a0of business metrics.\n\nAll of these processes in bold have companies specialised in either developing software or consulting on implementation. Most newer companies are cloud based (with some on-premise), sit on t"
+      ],
+      "visual": "statement",
+      "graphic_labels": [
+        "SOURCE SYSTEMS",
+        "MOVE THE RECORDS",
+        "QUERY THE WAREHOUSE"
+      ],
+      "standalone_context": {
+        "subject": "business data",
+        "situation": "Business data often starts in several systems. Before analysts can query it together, someone has to move it.",
+        "payoff": "Leon Lin's industry map separates that job from later modeling and analysis. Moving the data is a distinct part of the stack."
+      },
+      "scenes": [
+        {
+          "narration": "Business data often starts in several systems. Before analysts can query it together, someone has to move it.",
+          "headline": "BEFORE THE DASHBOARD, MOVE THE DATA",
+          "detail": "BUSINESS DATA"
+        },
+        {
+          "narration": "Data-moving tools pull records from those sources into a database or data warehouse.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Leon Lin's industry map separates that job from later modeling and analysis. Moving the data is a distinct part of the stack.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Name the job before choosing the tool. Follow for more ways to understand technology businesses.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-29dccbc1bc2700d1",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2021_02_07_minmax/index.md",
+      "source_sha256": "eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385",
+      "source_anchor": "We'll start in the realm of physical sport. Usain Bolt is the fastest man in the world, and he's figuratively 10x better than any of us. However, if we actually translate his speed vs that of the average human, he ends up being only ~2x faster. It requires much more hard work and luck to become as good as he is, and he's rewarded richly for it, but the objective difference isn't that large, implying the marginal return to effort is low.",
+      "source_url": "https://leonlins.com/writing/minmax",
+      "source_date": "2021-02-07",
+      "title": "Min, Max, and 10x people",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-7166b90e3d6782ae",
+      "label": "TWICE AS FAST IS STILL EXTRAORDINARY",
+      "context_anchors": [
+        "m cost. You would read all kinds of guides on the \"optimal\" way to play the game, such as the best [pokemon team](https://gamefaqs.gamespot.com/gameboy/198314-pokemon-yellow-version-special-pikachu-edition/faqs 'pokemon') or [the right time to level up your Diablo skills](https://gamefaqs.gamespot.com/pc/238750-diablo-ii-includes-expansion-set/faqs/18357 'diablo') [^3]. I might have spent more time reading guides than actually playing games.\n\nHow would we apply this to the real world? If you wanted to maximise life, what areas are worth spending time on, and what areas are not?\n\nThere's many ways to define the problem:\n\n- Maximise your happiness, in some form of [utilitarianism](https://en.wikipedia.org/wiki/Utilitarianism 'utility')\n- Maximise impact on others, in some form of [effective altruism](https://www.effectivealtruism.org/ 'ea') to maximise help at minimal cost\n- Maximise some skills that have high reward vs effort ratio\n\nI want to explore that last option today.\n\nThere's a popular concept in tech of [the 10x engineer](https://www.7pace.com/blog/10x-engineers '10'), either satire or serious business depending on who you talk to. A 10x engineer, so the legends go, is someone who is 10x better than their peers.\n\nWhether myth or reality, I want to use that framework for our maximisation problem. Let's find places where we can be 10x better than the average, or even 1,000x better. If the top performer is vastly better, there\u2019s more room to grow, and likely a higher reward to effort ratio.\n\nFor simplicity, we'll first rule out areas that are measured more subjectively. My cousin might think my newsletter is 10x better than others, but somehow I get the feeling she's biased. We'll leave broad fields such as art, performances, food for someone else to analyse [^4].\n\nWe'll start in the realm of physical sport. Usain Bolt is the fastest man in the world, and he's figuratively 10x better than any of us. However, if we actually translate his speed vs that of the average human, he ends up being only ~2x faster. It requires much more hard work and luck to become as good as he is, and he's rewarded richly for it, but the objective difference isn't that large, implying the marginal return to effort is low.\n\nThe high jump record of 2.45m was set by [Javier Sotomayor](https://www.topendsports.com/sport/athletics/record-high-jump.htm 'jump'). I don't have a figure for the average person, but just tried jumping onto my bed, and am going to use 1m as a conservative estimate. Still not 10x.\n\nThe deadlift world record is held by [Hafthor Bjornsson](https://www.espn.com/video/clip/_/id/29126803 'hafthor'), popularly known as the Mountain from Game of Thrones, who lifted 1,104 pounds. That sounds like (and is) a lot, but is only ~3x heavier than the average trained male.\n\nSo much for [faster, higher, stronger](https://en.wikipedia.org/wiki/Olympic_symbols#:~:text=The%20Olympic%20motto%20is%20the,who%20was%20an%20athletics%20enthusiast. 'wiki').\n\nJust for fun, I wanted to see if we could find experie",
+        "---\ntitle: 'Min, Max, and 10x people'\ndescription: 'Some skills in life have dramatically larger variance than others, which is helpful to know when deciding how much more effort to put in on the margin.'\npubDate: 2021-02-07\ncategory: Risk & Decision Making\ntags: ['skill']\nfeatured: false\nheroImage: './min_2.webp'\n---\n\n## Takeaways\n\nSome skills in life have dramatically larger variance than others, which is helpful to know when deciding how much more effort to put in on the margin.\n\n## Skill ceilings in life\n\nI played a lot of role-playing games (RPGs) on the PC when I was younger [^1]. In RPGs, you control a character that grows in strength over time as you complete quests. Some popular ones include [Final Fantasy, World of Warcraft, or Guild Wars](https://vgsales.fandom.com/wiki/Best_selling_RPG_games 'rpg') [^2].\n\nThere's a common style of gameplay known as [min-maxing](https://tvtropes.org/pmwiki/pmwiki.php/Main/MinMaxing 'min'), where players customise their characters to get the maximum performance at minimum cost. You would read all kinds of guides on the \"optimal\" way to play the game, such as the best [pokemon team](https://gamefaqs.gamespot.com/gameboy/198314-pokemon-yellow-version-special-pikachu-edition/faqs 'pokemon') or [the right time to level up your Diablo skills](https://gamefaqs.gamespot.com/pc/238750-diablo-ii-includes-expansion-set/faqs/18357 'diablo') [^3]"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "THE MEASURED GAP",
+        "THE EFFORT GAP",
+        "THE REWARD GAP"
+      ],
+      "standalone_context": {
+        "subject": "elite performance",
+        "situation": "Calling elite performance ten times better can hide what the measurement actually says.",
+        "payoff": "The comparison is an illustration, not a universal performance ratio. The effort and rewards can differ much more than the measured speed."
+      },
+      "scenes": [
+        {
+          "narration": "Calling elite performance ten times better can hide what the measurement actually says.",
+          "headline": "TWICE AS FAST IS STILL EXTRAORDINARY",
+          "detail": "ELITE PERFORMANCE"
+        },
+        {
+          "narration": "Leon Lin's essay uses sprinting as an example: Usain Bolt's speed is described as roughly twice an ordinary person's, not literally ten times.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "The comparison is an illustration, not a universal performance ratio. The effort and rewards can differ much more than the measured speed.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Keep the metric separate from the metaphor. Follow for clearer comparisons.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-bb513345a89654fe",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_01_11_feedback/index.md",
+      "source_sha256": "91a9d0e512c9f37a9acd1d22cda31f4585a8b9402f6c1ab8e2bc778a615941e2",
+      "source_anchor": "- There are three different feedback triggers that provoke a response in us when hearing feedback\n  - **Truth triggers** are set off by the substance of the feedback; it feels unhelpful or just wrong\n  - **Relationship triggers** are set off by the person giving us feedback, based on how we perceive the person and how we're feeling treated\n  - **Identity triggers** are set off by something causing us to feel threatened about our identity\n  - This is all reasonable. Our triggered reactions are not obstacles because they are unreasonable, but because they prevent us from engaging in the conversation.\n  - Getting better at receiving feedback doesn't mean you have to take the feedback as absolute truth",
+      "source_url": "https://leonlins.com/writing/feedback",
+      "source_date": "2020-01-11",
+      "title": "Book Review: Thanks for the Feedback",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": true,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-8f3e3f60af8ee5a3",
+      "label": "WHAT PART OF FEEDBACK HURTS?",
+      "context_anchors": [
+        "---\ntitle: 'Book Review: Thanks for the Feedback'\ndescription: \"We suck at taking feedback, here's how to get better\"\npubDate: 2020-01-11\ncategory: Culture\ntags: ['feedback', 'behaviour']\nheroImage: './t_3.webp'\n---\n\n## Takeaways\n\n- We can often get triggered by feedback, to our disadvantage\n- Knowing the main kinds of feedback will make conversations more productive\n- Misunderstandings always occur during conversations and we need to be aware of them occuring in the moment\n- Being prepared for feedback requires you putting in effort to prepare\n- We need to be kinder on ourselves\n- Taking action after feedback is key\n\nOver the holidays I read [Thanks for the Feedback](https://www.npr.org/books/titles/441536239/thanks-for-the-feedback-the-science-and-art-of-receiving-feedback-well-even-when 'Thanks') by Douglas Stone and Sheila Heen, and thought it was one of the better books I've read in the past year. It talks about **how to make feedback conversations more productive, by explaining the types of feedback and common problems during feedback sessions.**\n\nI've summarised the book below and added some of my own thoughts. Note: Many of the points will be outright quotes from the book.\n\n### We can often get triggered by feedback, to our disadvantage\n\n- There are three different feedback triggers that provoke a response in us when hearing feedback\n  - **Truth triggers** are set off by the substance of the feedback; it feels unhelpful or just wrong\n  - **Relationship triggers** are set off by the person giving us feedback, based on how we perceive the person and how we're feeling treated\n  - **Identity triggers** are set off by something causing us to feel threatened about our identity\n  - This is all reasonable. Our triggered reactions are not obstacles because they are unreasonable, but because they prevent us from engaging in the conversation.\n  - Getting better at receiving feedback doesn't mean you have to take the feedback as absolute truth\n\n![post](./t_1.webp)\n\n_LL: I have definitely not accepted feedback before, to my detriment, when I felt triggered. Just because I don't like the person, doesn't mean that the feedback is inaccurate. Becoming aware of why this is happening and learning to identify it is the first step in becoming better myself._\n\n### Knowing the main kinds of feedback will make conversations more productive\n\n- Feedback comes in three different kinds\n  - Appreciation and thanks\n  - Coaching you on a better way to do the task\n  - Evaluation of where you stand [^1]\n  - We need all three, but often get a different type vs what we want\n\n![post](./t_2.webp)\n\n_LL: I vastly prefer getting coaching or evaluation at work, but that's obviously not the case for everyone. This explains a lot about why people feel under",
+        "---\ntitle: 'Book Review: Thanks for the Feedback'\ndescription: \"We suck at taking feedback, here's how to get better\"\npubDate: 2020-01-11\ncategory: Culture\ntags: ['feedback', 'behaviour']\nheroImage: './t_3.webp'\n---\n\n## Takeaways\n\n- We can often get triggered by feedback, to our disadvantage\n- Knowing the main kinds of feedback will make conversations more productive\n- Misunderstandings always occur during conversations and we need to be aware of them occuring in the moment\n- Being prepared for feedback requires you putting in effort to prepare\n- We need to be kinder on ourselves\n- Taking action after feedback is key\n\nOver the holidays I read [Thanks for the Feedback](https://www.npr.org/books/titles/441536239/thanks-for-the-feedback-the-science-and-art-of-receiving-feedback-well-even-when 'Thanks') by Douglas Stone and Sheila Heen, and thought it was one of the better books I've read in the past year. It talks about **how to make feedback conversations more productive, by explaining the types of feedback and common problems during feedback sessions.**\n\nI've summarised the book below and added some of my own thoughts. Note: Many of the points will be outright quotes from the book.\n\n### We can often get triggered by feedback, to our disadvantage\n\n- There are three different feedback triggers that provoke a response in us when hearing feedback\n  - **Truth triggers** are set off b"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "THE MESSAGE",
+        "THE MESSENGER",
+        "YOUR IDENTITY"
+      ],
+      "standalone_context": {
+        "subject": "critical feedback",
+        "situation": "When critical feedback makes you defensive, what exactly are you reacting to?",
+        "payoff": "Those are different problems. Disliking the messenger does not establish that the message is wrong."
+      },
+      "scenes": [
+        {
+          "narration": "When critical feedback makes you defensive, what exactly are you reacting to?",
+          "headline": "WHAT PART OF FEEDBACK HURTS?",
+          "detail": "CRITICAL FEEDBACK"
+        },
+        {
+          "narration": "Douglas Stone and Sheila Heen's book, Thanks for the Feedback, distinguishes reactions to the message, the person delivering it, and a threat to your identity.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Those are different problems. Disliking the messenger does not establish that the message is wrong.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Leon Lin explores this framework in his review. Follow for more useful conversation tools.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone practical question",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-73b52ffed284923a",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2019_04_09_pvalue/index.md",
+      "source_sha256": "4a1fb3af69e0e255c81d9e518a885d55d00cff57669f82853377e51b1475ee32",
+      "source_anchor": "Importantly, your p value is the probability of getting the result you have, _under the null hypothesis assumed_. If your null hypothesis was correct, you'd only have gotten the result you did in X% of experiments. Since X is a low number, you assume it's unlikely the null hypothesis is correct, and reject it. This doesn't tell you the probability of getting the result you have _when not assuming the null hypothesis_.",
+      "source_url": "https://leonlins.com/writing/pvalue",
+      "source_date": "2019-09-04",
+      "title": "P values - you (and I) are getting it wrong",
+      "planned_bucket": "exploitation",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": "No replicated evidence; exploitation reassigned to exploration.",
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "statement",
+      "cta_type": "follow",
+      "concept_id": "abpctx-9279dd64f332c5fc",
+      "label": "A SMALL P-VALUE IS NOT THAT CLAIM",
+      "context_anchors": [
+        "ct exists. Whether a P value falls above or below an arbitrary threshold demarcating \u2018statistical significance\u2019 (such as 0.05) decides whether hypotheses are accepted, papers are published and products are brought to market.\n\nSo we do some math around our results, get a number X, and then reject our null hypothesis if our number X is <0.05, implying credibility for our alternate hypothesis [^2]. The process itself seems mechanical but somewhat understandable. The problem comes with interpreting what we've just done. Is X the probability that you're making a mistake by rejecting the null hypothesis? Is X the probability of you being wrong when accepting the alternate hypothesis? Is 1 - X the probability you're right?\n\nNone of the above interpretations are correct, showing how stats can be non-intuitive, and why [not even scientists for meta-science can explain what p values mean intuitively](https://fivethirtyeight.com/features/not-even-scientists-can-easily-explain-p-values/? 'easily explain'):\n\n> We want to know if results are right, but a p-value doesn\u2019t measure that. It can\u2019t tell you the magnitude of an effect, the strength of the evidence or the probability that the finding was the result of chance.\n\n> So what information can you glean from a p-value? The most straightforward explanation I found came from Stuart Buck, vice president of research integrity at the Laura and John Arnold Foundation. Imagine, he said, that you have a coin that you suspect is weighted toward heads. (Your null hypothesis is then that the coin is fair.) You flip it 100 times and get more heads than tails. The p-value won\u2019t tell you whether the coin is fair, but it will tell you the probability that you\u2019d get at least as many heads as you did if the coin was fair. That\u2019s it \u2014 nothing more.\n\nImportantly, your p value is the probability of getting the result you have, _under the null hypothesis assumed_. If your null hypothesis was correct, you'd only have gotten the result you did in X% of experiments. Since X is a low number, you assume it's unlikely the null hypothesis is correct, and reject it. This doesn't tell you the probability of getting the result you have _when not assuming the null hypothesis_.\n\nLet's assume we have an experiment to see if the average height of a group of people is 0. We'd reject our null hypothesis with a very low p value, since obviously everyone's height is >0. However, that tells us nothing about the chance of getting the average height we calculated in this 'true state of the world'. It just tells us that there was a low probability that we'd have gotten the average height we did, _if average height was 0_ [^3].\n\nClearly p values are more nuanced than the simple yes/no that most people (myself included) believed [^4]. The authors in the first piece go on to state:\n\n> Let\u2019s be clear about what must stop: we should never conclude there is \u2018no difference\u2019 or \u2018no association\u2019 just because a P value is larger than a threshold such as 0.05 or, equivalently, becau",
+        "---\ntitle: 'P values - you (and I) are getting it wrong'\ndescription: 'What does a p value mean actually'\npubDate: 2019-09-04\ncategory: Risk & Decision Making\ntags: ['math']\nheroImage: './p_1.webp'\n---\n\nMost of us have studied about p values in a Statistics class at some point. Most of us think we understood enough then; we passed our class after all. Most of us are very wrong.\n\nBecause of widespread p value misuse, [some scientists are speaking out against the application of p values in research](https://www.nature.com/articles/d41586-019-00857-9 'against p values'):\n\n> We are not calling for a ban on P values. Nor are we saying they cannot be used as a decision criterion in certain specialized applications (such as determining whether a manufacturing process meets some quality-control standard). And we are also not advocating for an anything-goes situation, in which weak evidence suddenly becomes credible. Rather, and in line with many others over the decades, we are calling for a stop to the use of P values in the conventional, dichotomous way \u2014 to decide whether a result refutes or supports a scientific hypothesis\n\nThe authors are asking to change the perception of p values as the 'one thing' that determines if research result is accepted or not. They go on to describe their rationale, and also outline some alternatives, which I'll come to in a bit.\n\nFirstly though, to bett"
+      ],
+      "visual": "statement",
+      "graphic_labels": [
+        "ASSUME THE NULL MODEL",
+        "ASSESS THE RESULT",
+        "DO NOT REVERSE IT"
+      ],
+      "standalone_context": {
+        "subject": "p-value",
+        "situation": "A small p-value does not tell you the probability that your statistical explanation is wrong.",
+        "payoff": "That conditional question is different from asking whether the model itself is true."
+      },
+      "scenes": [
+        {
+          "narration": "A small p-value does not tell you the probability that your statistical explanation is wrong.",
+          "headline": "A SMALL P-VALUE IS NOT THAT CLAIM",
+          "detail": "P-VALUE"
+        },
+        {
+          "narration": "A p-value assumes a null model is true, then asks how likely a result this extreme or more extreme would be.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "That conditional question is different from asking whether the model itself is true.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Keep the assumption attached to the number. Follow for more ways to read evidence.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-caccd39002d8435a",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review",
+      "external_verification": [
+        "https://www.itl.nist.gov/div898/handbook/prc/section1/prc131.htm"
+      ]
+    },
+    {
+      "source_file": "src/content/blog/2020_04_08_picasso/index.md",
+      "source_sha256": "c701ec5ca4a5309a99bb965fbc74753c5d2a7ccbd07eb941149d66b3143ddded",
+      "source_anchor": "Even more interesting is the face on the bottom right. It's inspired by African art, but also there's obviously something strange with it. The elements of the face don't align where you expect them to be, the shadows are off, almost as if you were looking at the person from multiple points of view and trying to put all of that down on a flat surface. Which is precisely what Picasso is trying to do.",
+      "source_url": "https://leonlins.com/writing/picasso",
+      "source_date": "2020-04-08",
+      "title": "Picasso as the earliest instagram influencer",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_nicole",
+      "presenter": false,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-7c2f6310d4a379c5",
+      "label": "ONE FACE, SEVERAL VIEWPOINTS",
+      "context_anchors": [
+        "ad no talent, you can point them to [his earlier work](https://mymodernmet.com/picasso-early-work/ 'early').\n\nNow take a look at another Picasso, painted after the two above:\n\n![post](./p_3.webp)\n\nWhat's the difference? For one, the colour has changed, to the point where even someone colour blind like me can tell the difference. That's led to a major mood shift, and the entire painting feels dark, sad, painful. The image is also less realistic than before and with less detail, though we can still recognise it's a person with a guitar.\n\nWhat's stayed the same? We're still seeing the scene from one point of view, and just seeing one possible perspective of the subject in the painting. There's less depth, but we can still see that some things are in front of others. It\u2019s as though we took a picture from one angle and put some bad filters on.\n\n[Kelly Richman-Abdou believes the shift in styles was due to depression caused by a friend's suicide;](https://mymodernmet.com/pablo-picasso-periods/ 'Met') I'll defer to her knowledge. Picasso is now experimenting, moving away from realism, exploring what more there is to art than just duplicating an image.\n\n## Cubism\n\nIn 1907 Picasso paints a scandalous, Cezanne and African art inspired piece, [\"Les Demoiselles d'Avignon.\"](https://www.pablopicasso.org/avignon.jsp#prettyPhoto 'Avignon') This work, of prostitutes in a Barcelona brothel, would be the start of cubism, [one of the most influential movements in art and a new way of representing reality.](https://www.tate.org.uk/art/art-terms/c/cubism 'Tate')\n\n![post](./p_4.webp)\n\nWhat is going on here? Picasso is clearly no longer going for realism in his drawings. A lot of the image also feels 2D and flat, as he doesn't care about giving an illusion of three dimensional space anymore.\n\nEven more interesting is the face on the bottom right. It's inspired by African art, but also there's obviously something strange with it. The elements of the face don't align where you expect them to be, the shadows are off, almost as if you were looking at the person from multiple points of view and trying to put all of that down on a flat surface. Which is precisely what Picasso is trying to do.\n\nRecall the start where we talked about realistic drawings, where the textures and colours were lifelike, the images felt they had depth, and how everything was seen from one perspective? Picasso took all of that and flipped it, creating something that was abstract, flat, and seen from multiple points of view.\n\n> \u2018A head\u2019, said Picasso, \u2018is a matter of eyes, nose, mouth, which can be distributed in any way you like\u2019.\n\n![post](./p_5.webp)\n\nWorks such as \"Girl with a Mandolin\" above do not have one perspective. Instead, imagine if you painted a nose seen from one spot, then move a few metres to the left and painted an eye seen from that spot. Then, moving above the person to paint the lips as seen from above. You'll get a bizarre blend of elements, shadows being cast all over the place, and",
+        "---\ntitle: 'Picasso as the earliest instagram influencer'\ndescription: 'Has Picasso influenced anything relevant to us today?'\npubDate: 2020-04-08\ncategory: Culture\ntags: ['art']\nheroImage: './p_8.webp'\n---\n\n## Takeaway\n\nUnderstanding Picasso requires knowing his context, thought progression, and challenges of the status quo\n\n## Picasso over time\n\nThe Getty museum challenged the public [to recreate famous works of art recently,](https://blogs.getty.edu/iris/getty-artworks-recreated-with-household-items-by-creative-geniuses-the-world-over/ 'Getty') leading to amusing pieces such as this on Reddit [^1]\n\n![post](./p_1.webp)\n\nThe style of the original image on the left is distinct, and most of you would guess it's something by Picasso, even if you haven't seen it before (I hadn't). [You'd be right](https://www.wikiart.org/en/pablo-picasso/woman-with-bird-1970 'Woman with bird').\n\nOf course, with the post came the usual comments of \"why is this art\", \"a child could draw this, it's terrible\", \"tax evasion for the elites\" that accompany most modern artworks. Some of those are valid questions, and perhaps some of art is indeed a [money laundering](https://www.natlawreview.com/article/art-and-money-laundering 'money') or [tax evasion scam](https://newrepublic.com/article/147192/modern-art-serves-rich 'tax') [^2], but let's take a closer look at why Picasso is revered. Bear in mind that "
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "A VIEW FROM THE SIDE",
+        "A VIEW FROM ABOVE",
+        "ONE FLAT SURFACE"
+      ],
+      "standalone_context": {
+        "subject": "Picasso",
+        "situation": "Why can a Picasso face look strange even when you recognize every feature?",
+        "payoff": "Imagine an eye seen from the side and a mouth seen from above. The mismatch can be deliberate, rather than failed realism."
+      },
+      "scenes": [
+        {
+          "narration": "Why can a Picasso face look strange even when you recognize every feature?",
+          "headline": "ONE FACE, SEVERAL VIEWPOINTS",
+          "detail": "PICASSO"
+        },
+        {
+          "narration": "Leon Lin's essay explains the idea of combining views from different positions on one flat canvas.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Imagine an eye seen from the side and a mouth seen from above. The mismatch can be deliberate, rather than failed realism.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "This video illustrates the idea without reproducing a painting. Follow for more ways to look at familiar things.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone practical question",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-37e6877043683bcd",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_02_02_ipo/index.md",
+      "source_sha256": "d8102bdabb540b559fc0d4a41995ee7538c9e16ae08b1e04cb9851f48377e0b5",
+      "source_anchor": "Damodaran concludes by giving reasons why the IPO status quo has held, citing **inertia, fear of harming the banking relationship, and companies needing someone to blame.** I agree with these. In the end it depends on your company; a direct listing does have more price efficiency by definition. If you're large and well known, you likely can direct list and shouldn't be taking advice from an email newsletter anyway. If you're small and not, you probably need bankers to help market and connect you with investors. I'm 80% confident IPOs will still be majority of listings in three years time.",
+      "source_url": "https://leonlins.com/writing/ipo",
+      "source_date": "2020-02-02",
+      "title": "Will IPOs still be around in 10 years?",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": true,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-f636fbca45f326f4",
+      "label": "WHY A LISTING NEEDS MARKETING",
+      "context_anchors": [
+        "tabilisation is hard in large IPOs.** Given the context above of the median IPO offering size though, I think this still has value for many companies. The way that banks price stabilise is by selling more stock than allocated and entering into a short position against the company. The bank either gets shares from the company or the open market to cover the short position, hence supporting the price before the open [^5].\n\nWhat is the right price? This is a complicated question. A common feature of IPOs is that stock will be pre-sold to professional investors at one price, say $10, and then start trading on the open market post IPO at a premium, say $20. This [IPO pop](https://pitchbook.com/news/articles/understanding-the-ipo-markets-pop-culture 'IPO') has been criticised by [VCs such as Bill Gurley,](https://markets.businessinsider.com/news/stocks/slacks-direct-listing-bill-gurley-says-startups-call-morgan-stanley-2019-6-1028298641 'Bill') who say this inefficiency is a money transfer from private investors (VCs like Bill) to public investors who got shares during the IPO process [^6].\n\nI agree there is inefficiency in pricing, but most companies prefer underpricing resulting in the stock trading up, rather than overpricing and the stock trading down. **If we blame bankers for underpricing, we should applaud them for overpricing** and getting the most amount of money for the company. I don't see anyone doing that, understandably.\n\nCompanies seem willing to trade off the inefficiency for better morale. Sure, you could have gotten $20 at the open and then have the stock trade flat, but the pop from $10 to $20 does (irrationally) make people happier. Also, what if you open at $20 and trade down to $10 three months later? What was the right price then?\n\n![post](./i_4.webp)\n\nDamodaran concludes by giving reasons why the IPO status quo has held, citing **inertia, fear of harming the banking relationship, and companies needing someone to blame.** I agree with these. In the end it depends on your company; a direct listing does have more price efficiency by definition. If you're large and well known, you likely can direct list and shouldn't be taking advice from an email newsletter anyway. If you're small and not, you probably need bankers to help market and connect you with investors. I'm 80% confident IPOs will still be majority of listings in three years time.\n\n## Other\n\n1. [Could a text prediction algorithm (like gmail or your phone keyboard) be used to play chess?](https://slatestarcodex.com/2020/01/06/a-very-unlikely-chess-game/ 'Slate')\n2. [Self-disclosing weakness at work could help or hinder, depending on your status](https://faculty.wharton.upenn.edu/wp-content/uploads/2019/10/when_sharing_hurts.pdf 'Wharton'). See [here](https://twitter.com/leon_lin_s/status/1221891694964113409?s=20 'twitter') for a tweet summary\n3. [Examples of games made by China tech companies for Chinese new year](https://a16z.com/2020/01/24/tech-and-chinese-new-year/ 'a16z')\n4. [How some restaurants PR their way to success and best-of lists](https://ny.eater.com/2020/1/13/21009796/restaurant-publicists-pr-agencies-nyc 'Eater')\n5. [How to design complex and aestheti",
+        "---\ntitle: 'Will IPOs still be around in 10 years?'\ndescription: 'What companies benefit from IPOs vs direct listings'\npubDate: 2020-02-02\ncategory: Investing\ntags: ['finance']\nevergreen: false\nheroImage: './i_4.webp'\n---\n\n## Takeaways\n\nWhether you should do a direct listing depends on the type of company you are\n\n## IPOs vs direct listings\n\n[Aswath Damodaran](https://twitter.com/AswathDamodaran?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor 'Aswath'), one of the best finance profs out there [^1], [wrote about IPOs vs direct listings a while ago](http://aswathdamodaran.blogspot.com/2019/10/disrupting-ipo-process-challenging.html? 'Aswath'). I'll review highlights below; banking ex-colleagues feel free to disagree. If you aren't familiar with direct listings, [a16z has a primer.](https://a16z.com/2019/07/02/direct-listings/ 'a16z')\n\n> but the biggest difference \\[in direct listings\\] is that it cannot raise fresh capital on the offering date \\[...\\] That is not as much of a problem as it sounds, since the company can choose to raise cash in a pre-listing round from interested investors, or to make a secondary offering, in the months after\n\nThe inability to raise new capital remains true for now, [after the SEC rejected a proposal to allow it](https://www.cnbc.com/2019/12/06/nyse-proposal-to-allow-fundraising-in-direct-listings-rejected-by-sec.html 'CNBC'). As Aswath poin"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "KNOWN TO INVESTORS",
+        "NEEDS INTRODUCTIONS",
+        "CHOOSE FOR THE JOB"
+      ],
+      "standalone_context": {
+        "subject": "stock market listing",
+        "situation": "For a company seeking a stock market listing, being well known can change what help it needs.",
+        "payoff": "The smaller company may need bankers to introduce and market it to investors. A pricing argument alone does not settle the choice of listing method."
+      },
+      "scenes": [
+        {
+          "narration": "For a company seeking a stock market listing, being well known can change what help it needs.",
+          "headline": "WHY A LISTING NEEDS MARKETING",
+          "detail": "STOCK MARKET LISTING"
+        },
+        {
+          "narration": "Leon Lin's twenty twenty essay contrasts a large, familiar company with a smaller company investors do not know.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "The smaller company may need bankers to introduce and market it to investors. A pricing argument alone does not settle the choice of listing method.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Ask what problem the intermediary solves. Follow for more business analysis.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-56aedd087247dbca",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2019_08_31_crm/index.md",
+      "source_sha256": "e5a2ed68b6f324d3e2f388faad00d7837d2e58315703ea2d2981edde507a01ca",
+      "source_anchor": "Woops. Not only do you have a paper loss, but your exposure is a multiple of what you started with and were comfortable with. If you liquidated your position now you'd lose $40 - the current $60 less the $20 you initially made. You have a vendetta now and are determined to short this stock to the ground or go bankrupt trying, so you hold on till the next year:",
+      "source_url": "https://leonlins.com/writing/crm",
+      "source_date": "2019-08-31",
+      "title": "Set a reminder in your personal CRM to read this",
+      "planned_bucket": "control",
+      "experiment_bucket": "control",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "statement",
+      "cta_type": "follow",
+      "concept_id": "abpctx-5393751233128b08",
+      "label": "A FALLING-STOCK BET CAN GROW",
+      "context_anchors": [
+        " [^2] is sexy, because you're being contrarian and taking theoretically unlimited risk to prove your intellectual superiority to the common dumb investor. [There's even an oscar nominated movie about shorting the 2008 housing crisis](<https://en.wikipedia.org/wiki/The_Big_Short_(film)> 'movie'). The problem with shorting is that timing is key. You can be right but early and still blow up. There are plenty of infamous shorts that lost billions for their investors, such as [Ackman and Herbalife](https://www.cnbc.com/2018/04/05/how-bill-ackmans-hedge-fund-empire-crumbled-in-less-than-three-years.html 'Ackman'), [Einhorn and Netflix](https://www.forbes.com/sites/antoinegara/2019/03/05/after-horrendous-investing-run-david-einhorn-exits-billionaire-club/#3a140043498c 'Einhorn'), or [whoever was short squeezed by Porsche and Volkswagen in 2008.](https://www.reuters.com/article/us-volkswagen/short-sellers-make-vw-the-worlds-priciest-firm-idUSTRE49R3I920081028 'Porsche') Note that I'm not saying that Ackman and Einhorn were wrong about these companies. They could still be right, but they've lost so much money in the meantime it's a moot point.\n\nLet's take Overstock.com as another example. Before their [CEO resigned so he could let everyone know he'd dated a Russian spy,](https://www.forbes.com/sites/laurendebter/2019/08/22/the-exclusive-inside-story-of-the-fall-of-overstocks-mad-king-patrick-byrne/#176918ea53a5 'Forbes') [^3] he was trying to save the company in 2017 by pivoting to blockchain. Suppose you thought Overstock was going to fail at this too, and shorted Overstock at $20 in Aug 2017:\n\n![post](./c_1.webp)\n\nAs the stock price creeps up, you double down, convinced that it cannot last. Somehow, it does, and you're looking at a $60 price in Nov 2017:\n\n![post](./c_2.webp)\n\nWoops. Not only do you have a paper loss, but your exposure is a multiple of what you started with and were comfortable with. If you liquidated your position now you'd lose $40 - the current $60 less the $20 you initially made. You have a vendetta now and are determined to short this stock to the ground or go bankrupt trying, so you hold on till the next year:\n\n![post](./c_3.webp)\n\nYour broker comes back from vacation and realises he forgot to issue you a [margin call](https://www.investopedia.com/ask/answers/05/shortmarginrequirements.asp 'margin') all this time, and does so now in a panic. When you're short a stock, you usually need ~130% of the value of the stock as collateral, back up funds [^4]. When the stock was at $20, having $26 set aside wasn't an issue. Now though, you need $104 set aside, and the broker wants you to top up the difference of $78 ($104 less $26). Depending on how much money you had at the beginning, this additional $78 (3x the initial exposure!) could easily wipe you out. You're forced to liquidiate your position and make up the difference by setting up a Go Fund Me.\n\nAnd then of course this happens:\n\n![post](./c_4.we",
+        "---\ntitle: 'Set a reminder in your personal CRM to read this'\ndescription: 'Pair trades, personal CRMs, and self awareness'\npubDate: 2019-08-31\ncategory: System Design\ntags: ['software', 'investing']\nheroImage: './c_4.webp'\n---\n\n## Takeaways\n\n1. Finding a pair trade in a bubble might be better than shorting it or riding the momentum\n2. What is a personal CRM and why are people talking about it?\n3. We don't know ourselves very well; how to increase self-awareness\n\n### Bubbles and russian spies\n\nWith all the news about bubbles this year, I wanted to highlight [Byrne Hobart's post about them.](https://medium.com/@byrnehobart/so-youve-spotted-a-bubble-3f2fa5cf49a9 'Bubble') [^1] What should you do if you think an asset's current price represents a bubble? Byrne frames three schools of thought below. As always, none of this is financial advice.\n\n> \\[Firstly:\\] The Brave, Stupid, and Intellectually Consistent Approach. You could just short it. \\[...\\] It\u2019s hard, though, because typically bubbly assets are priced such that they get higher returns than comparable assets, just returns not quite high enough to compensate for the risk. \\[...\\] Bubbles also tend to persist for a long time, despite their intrinsic instability, because they\u2019re partly self-perpetuating.\n\nShorting [^2] is sexy, because you're being contrarian and taking theoretically unlimited risk to prove your intellectual s"
+      ],
+      "visual": "statement",
+      "graphic_labels": [
+        "SELL AT $20",
+        "BUY BACK AT $60",
+        "$40 LOSS BEFORE FEES"
+      ],
+      "standalone_context": {
+        "subject": "short selling",
+        "situation": "In short selling, you sell borrowed shares and later buy them back. A rising price works against you.",
+        "payoff": "Buying back one share then costs forty dollars more, before fees. Being convinced the company is overvalued does not remove that loss."
+      },
+      "scenes": [
+        {
+          "narration": "In short selling, you sell borrowed shares and later buy them back. A rising price works against you.",
+          "headline": "A FALLING-STOCK BET CAN GROW",
+          "detail": "SHORT SELLING"
+        },
+        {
+          "narration": "Take the essay's hypothetical short sale at twenty dollars, followed by a rise to sixty.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Buying back one share then costs forty dollars more, before fees. Being convinced the company is overvalued does not remove that loss.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "This is an illustration, not a trade recommendation. Follow for clearer risk thinking.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-e60ce1d379fb06e0",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review",
+      "external_verification": [
+        "https://www.sec.gov/investor/pubs/regsho.htm"
+      ]
+    },
+    {
+      "source_file": "src/content/blog/2020_07_15_turtle/index.md",
+      "source_sha256": "350a3fc3117a588d40ffda1e362a4272b665ee57cf4be889be526c4129f66586",
+      "source_anchor": "Let's have a race track of 1 km. We'll assume the tortoise takes 100 min to run 1 km, and the hare takes 20 min to run 1km. However, the hare's sleep schedule has been messed up due to covid and there's a 95% chance it will sleep during every separate 20 min block. Put another way, there's a 5% chance it's awake during minutes 0-20, and then another 5% chance it's awake during minutes 20-40, and another 5% chance it's awake during minutes 40-60 etc.",
+      "source_url": "https://leonlins.com/writing/turtle",
+      "source_date": "2020-07-15",
+      "title": "It's turtles all the way down",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-9192020fb2e12bcb",
+      "label": "A SLOW RACER CAN BE MORE RELIABLE",
+      "context_anchors": [
+        "---\ntitle: \"It's turtles all the way down\"\ndescription: 'Why most companies, even in tech, are bad at innovating'\npubDate: 2020-07-15\ncategory: Technology\ntags: ['business', 'startups']\nheroImage: './t_3.webp'\n---\n\n## Takeaway\n\nCompanies are not incentivised to take risk, hurting innovation within the company and increasing the likelihood a startup wins against them.\n\n## Tortoise vs hare\n\nI'll take it for granted that everyone's familiar with the [tortoise vs hare fable.](http://read.gov/aesop/025.html 'aesop') Hare races tortoise, falls asleep, loses, and spends the rest of his life living in shame before writing an explosive tell all on how it was [all a shell game](https://en.wikipedia.org/wiki/Shell_game 'shell') [^1].\n\n[Drawing on this post by Farnam Street](https://fs.blog/2016/07/james-march-the-trouble-with-genius/ 'FS'), let's extend the analogy further with a bit of math. I know how that scares off half the readership immediately, but let's not freak out yet. Coming from someone who recently wasted 15 min on a math problem because I added 1 + 1 wrongly, I'll be keeping the math simple if only for my sake [^2].\n\nLet's have a race track of 1 km. We'll assume the tortoise takes 100 min to run 1 km, and the hare takes 20 min to run 1km. However, the hare's sleep schedule has been messed up due to covid and there's a 95% chance it will sleep during every separate 20 min block. Put another way, there's a 5% chance it's awake during minutes 0-20, and then another 5% chance it's awake during minutes 20-40, and another 5% chance it's awake during minutes 40-60 etc.\n\n![post](./t_1.webp)\n\nWhat's the chance that the hare beats the tortoise?\n\nFor those of you that recall secondary school probability, we can calculate this with a [binomial distribution formula.](https://online.stat.psu.edu/stat414/lesson/10/10.3 'binom') The formula looks like this:\n\n![post](./t_2.webp)\n\nBut that looks scary with summation signs and exclamation points, and I did promise to keep the math simple. One way to shortcut the calculation is to observe that there are 5 \"20 min blocks\" for the hare to fall asleep or be awake, since the hare is 5x faster than the tortoise. As long as the hare is awake once, it'll win. So, the only time the hare loses is when it sleeps all of those times. That's a much easier calculation, since that's just 95% times itself 5 times, or 0.95 to the po",
+        "---\ntitle: \"It's turtles all the way down\"\ndescription: 'Why most companies, even in tech, are bad at innovating'\npubDate: 2020-07-15\ncategory: Technology\ntags: ['business', 'startups']\nheroImage: './t_3.webp'\n---\n\n## Takeaway\n\nCompanies are not incentivised to take risk, hurting innovation within the company and increasing the likelihood a startup wins against them.\n\n## Tortoise vs hare\n\nI'll take it for granted that everyone's familiar with the [tortoise vs hare fable.](http://read.gov/aesop/025.html 'aesop') Hare races tortoise, falls asleep, loses, and spends the rest of his life living in shame before writing an explosive tell all on how it was [all a shell game](https://en.wikipedia.org/wiki/Shell_game 'shell') [^1].\n\n[Drawing on this post by Farnam Street](https://fs.blog/2016/07/james-march-the-trouble-with-genius/ 'FS'), let's extend the analogy further with a bit of math. I know how that scares off half the readership immediately, but let's not freak out yet. Coming from someone who recently wasted 15 min on a math problem because I added 1 + 1 wrongly, I'll be keeping the math simple if only for my sake [^2].\n\nLet's have a race track of 1 km. We'll assume the tortoise takes 100 min to run 1 km, and the hare takes 20 min to run 1km. However, the hare's sleep schedule has been messed up due to covid and there's a 95% chance it will sleep during every separate 20 min bl"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "FIVE CHANCES TO WAKE",
+        "95% SLEEP EACH TIME",
+        "0.95 TO THE FIFTH"
+      ],
+      "standalone_context": {
+        "subject": "tortoise",
+        "situation": "Imagine a tortoise that finishes a race in one hundred minutes, and a hare that needs only twenty.",
+        "payoff": "There are five chances to wake. The hare loses only if it sleeps through all five: about seventy-seven percent."
+      },
+      "scenes": [
+        {
+          "narration": "Imagine a tortoise that finishes a race in one hundred minutes, and a hare that needs only twenty.",
+          "headline": "A SLOW RACER CAN BE MORE RELIABLE",
+          "detail": "TORTOISE"
+        },
+        {
+          "narration": "In Leon Lin's hypothetical, the hare has a ninety-five percent chance of sleeping through each independent twenty-minute block.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "There are five chances to wake. The hare loses only if it sleeps through all five: about seventy-seven percent.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Speed and reliability are different advantages. Follow for more decision models.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-998c0810b8059c78",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review",
+      "arithmetic_checks": [
+        {
+          "expression": "0.95**5",
+          "result": 0.7737809374999998,
+          "rounded_percent": 77
+        }
+      ]
+    },
+    {
+      "source_file": "src/content/blog/2020_02_26_sellside/index.md",
+      "source_sha256": "9e9b2f343e79497b5aa89e766fd1869c1ccc8a0e1b36178d4de6e0c099372832",
+      "source_anchor": "Whether this second finding is interesting depends on what kind of investor you are. Many investors trade around earnings announcements (8K). Since half of investing is an expectations game, and most of the info these investors want to know is in 8Ks already, getting fewer recommendations after 8Ks and more after 10Qs is less helpful. You'd want to know as soon as possible rather than wait for the more detailed 10Qs to be out, since the price moves in response to 8Ks.",
+      "source_url": "https://leonlins.com/writing/sellside",
+      "source_date": "2020-02-26",
+      "title": "Are robo-analysts the future of equity research?",
+      "planned_bucket": "exploitation",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": "No replicated evidence; exploitation reassigned to exploration.",
+      "voice": "af_nicole",
+      "presenter": true,
+      "caption_words": 3,
+      "duration_target": "15-20s",
+      "visual_style": "cards",
+      "cta_type": "follow",
+      "concept_id": "abpctx-591231ebe68a9803",
+      "label": "A FAST REPORT CAN STILL ARRIVE LATE",
+      "context_anchors": [
+        "that robos have less bias than human analysts, who also have conflicts of interests. As a result, robots recommend stocks with a more \"natural\" distribution in recommendations and are not all \"buys\" with no \u201csells\u201d. These conflicts of interest are \"related to economic incentives such as obtaining investment banking business or currying favor with management.\"\n\n[Sarbanes-Oxley was intended to reduce such conflicts of interest,](https://www.sec.gov/news/speech/spch012803cag.htm 'Sarbox') by limiting contact between the investment bankers (financial transactions) and the equity research group [^4]. Even if you assume that it\u2019s successfully limited contact, there's still an incentive to publish positive reports of companies for the analyst. If you're a CEO and have a \"buy\" rating and a \"sell\" rating on your stock from different analysts, who are you more likely to be friendly with?\n\n> Second, \\[...\\] Robo-Analysts revise their recommendations more frequently than human analysts and also adopt different production processes\n\nThe second is saying that robos update their inputs more often and with different data than humans, and hence update their recommendations more often. To understand this, we need to understand how companies release financial information. In the US, companies release one large annual report (10K) and three smaller quarterly reports (10Q). In addition to that, they do earnings announcements ahead of these reports (8K) which contain their quarterly results and could include additional information.\n\n**Investors usually trade on 8Ks, since that information comes ahead of the 10Q.** Likewise, human analysts also update their reports in response to 8Ks. The robos though pay more attention to the 10Q and 10Ks, and are more likely to update after those filings.\n\nWhether this second finding is interesting depends on what kind of investor you are. Many investors trade around earnings announcements (8K). Since half of investing is an expectations game, and most of the info these investors want to know is in 8Ks already, getting fewer recommendations after 8Ks and more after 10Qs is less helpful. You'd want to know as soon as possible rather than wait for the more detailed 10Qs to be out, since the price moves in response to 8Ks.\n\n> Third, \\[...\\] portfolios formed based on the buy recommendations of Robo-Analysts appear to outperform those of human analysts, suggesting that their buy calls are more profitable\n\nThe third finding is the \"so what\" of the paper, stating that **the above two findings matter because you get better returns when following robos than human analysts.** This happens for \"buy\" recommendations but not for \"sell\", and they believe it's because humans are less likely to downgrade \"buys\" and the robos are overcorrecting and issuing too many \"sells\".\n\nI have one quibble with their methodology, which I'll put in the footnote [^5]. Overall though, if you believe that stock recommendations are important, as many retail investors seem to, **this paper makes the case that you should be following robo ",
+        "---\ntitle: 'Are robo-analysts the future of equity research?'\ndescription: 'What value does sellside equity research provide?'\npubDate: 2020-02-26\ncategory: Investing\ntags: ['equity research', 'AI']\nheroImage: './s_3.webp'\n---\n\n## Takeaway\n\nRobots are coming for sellside equity research and it might not matter\n\n---\n\nIf you think of **finance as an interaction between sources of capital and users of capital,** investment banks such as Goldman, Morgan Stanley, JP Morgan sit in the middle, facilitating transactions between those who have money and those who need it.\n\n![post](./s_1.webp)\n\nBanks have bankers that cover a specific financial product (equity, debt, M&A etc) or a specific industry (consumer, healthcare, tech etc) and arrange for corporate finance transactions within their coverage area.\n\nOutside of these transactions, **banks usually have an equity research group, which issues views on stocks** based on researching the company and maintaining a relationship with company management. These are the \"buy/hold/sell\" recommendations or price targets you see reported in the news. Note that these are recommendations, and the research group doesn't take a position in the company, which distinguishes them from professional investors [^1].\n\n![post](./s_2.webp)\n\nEquity research is sold to professional investors, who then theoretically use that information to make investment decisio"
+      ],
+      "visual": "cards",
+      "graphic_labels": [
+        "EARNINGS NEWS",
+        "DETAILED FILING",
+        "THE INVESTOR DEADLINE"
+      ],
+      "standalone_context": {
+        "subject": "stock research",
+        "situation": "In stock research, more frequent recommendations are not automatically more useful.",
+        "payoff": "For investors trading the earnings news, an update after the detailed filing may arrive too late to answer their question."
+      },
+      "scenes": [
+        {
+          "narration": "In stock research, more frequent recommendations are not automatically more useful.",
+          "headline": "A FAST REPORT CAN STILL ARRIVE LATE",
+          "detail": "STOCK RESEARCH"
+        },
+        {
+          "narration": "Leon Lin's twenty twenty essay discusses automated analysts that updated more after detailed quarterly filings than earlier earnings announcements.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "For investors trading the earnings news, an update after the detailed filing may arrive too late to answer their question.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Judge the timing against the decision, not just the report count. Follow for clearer analysis.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-7e5e93dd06d14d26",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    },
+    {
+      "source_file": "src/content/blog/2020_04_29_her/index.md",
+      "source_sha256": "140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199",
+      "source_anchor": "This is a contrast to how many other investment funds work in practice, where they usually want investment analysts to increase their coverage of names and industry sectors over time. It's hard to tell the limited partners of your fund (the ones that give you their capital for you to invest) that you're not making any changes to the portfolio, and you like the names you're already in. Keep that up long enough and they'll wonder why they're paying you to do nothing. Hence, for many funds there's an incentive to actively trade in and out of names, and the larger the set of names you know the better. This works for some places, and is not Li Lu's style.",
+      "source_url": "https://leonlins.com/writing/her",
+      "source_date": "2020-04-29",
+      "title": "We wanted Her, instead we got Tinder",
+      "planned_bucket": "exploration",
+      "experiment_bucket": "exploration",
+      "allocation_evidence": null,
+      "allocation_note": null,
+      "voice": "af_heart",
+      "presenter": false,
+      "caption_words": 5,
+      "duration_target": "25-40s",
+      "visual_style": "statement",
+      "cta_type": "follow",
+      "concept_id": "abpctx-ae3830be85672208",
+      "label": "WHY DOING NOTHING CAN BE HARD",
+      "context_anchors": [
+        "join our company, the first thing we do is to send them to study some companies. We ask them to assume an uncle they\u2019ve never met before has passed away and left them the business. What should they do? They suddenly inherit this asset but have no idea what it is. You must call a board meeting and participate in the discussion. This is the mental model we ask them to use when they conduct their research.\n\nPopularised by Buffett, the idea of a circle of competence is that you should develop a deep understanding of an industry or issue. You should also understand where the limits of your knowledge lie, and not overextend yourself.\n\nThese first two lessons are similar to the earlier point about viewing shareholdings as part ownership. Regardless of how large your stake is in the company, Li Lu is saying that you should view yourself as a full owner. That mindset will motivate you to continue wanting to know as much about the company as possible, and understand what decisions are good vs bad for the company's future. Spending so much time on a single name naturally limits the amount of companies you can look at, which will narrow your circle of competence.\n\n> The third point is that knowledge is indeed cumulative but you must always maintain intellectual honesty\n\nWould again agree that this is important but hard to do. When's the last time you've changed your mind on a non-trivial issue?\n\n> The last thing is that you should let your passion be your guide. Don\u2019t listen to what others think of you. They have nothing to do with you. Accept that your circle of competence will be small and don\u2019t worry about everything else. Making money doesn\u2019t depend on how much you know; it depends on whether what you know is right or wrong. If what you know is right, you will not lose money.\n\nThis is a contrast to how many other investment funds work in practice, where they usually want investment analysts to increase their coverage of names and industry sectors over time. It's hard to tell the limited partners of your fund (the ones that give you their capital for you to invest) that you're not making any changes to the portfolio, and you like the names you're already in. Keep that up long enough and they'll wonder why they're paying you to do nothing. Hence, for many funds there's an incentive to actively trade in and out of names, and the larger the set of names you know the better. This works for some places, and is not Li Lu's style.\n\n### Li Lu: Concluding thoughts on value investing\n\n> this profession doesn\u2019t demand you to be especially smart, nor to have a high IQ or the best academic credentials\n\nLi Lu describes attributes that make a successful investor, which are:\n\n1. The person must be independent, and not care about other's evaluations\n\n2. The person must be objective, and willing to learn always\n\n3. The person must have both extreme patience and extreme decisiveness when great opportunities come along\n\n4. The person must be interested in how businesses work\n\nKeeping in mind the core concepts of value investing above, these investor traits make sense. For a typical long/short fund, they'd be less concerned about (3). A typical quant fund would likely be less concerned about (4).\n\n> The biggest taboo for investo",
+        "---\ntitle: 'We wanted Her, instead we got Tinder'\ndescription: 'The margin trap of AI companies, value investing concepts, and tradeoffs'\npubDate: 2020-04-29\ncategory: Technology\ntags: ['AI', 'business', 'investing']\nheroImage: './her_1.webp'\n---\n\n## Takeaways\n\n1. AI companies seem more like services businesses than software businesses, implying they should trade at lower valuations\n2. The only person that Charlie Munger invests in says investing isn't about being smart, but about thinking like an owner\n3. Try to better understand the tradeoffs in decision making\n\n## AI as a service(s business)\n\nI've written about machine learning (ML) and artificial intelligence (AI) before [^1]. Scott Locklin elaborates on the problems faced by ML startups [here](https://scottlocklin.wordpress.com/2020/02/21/andreessen-horowitz-craps-on-ai-startups-from-a-great-height/ 'Scott') [^2], mostly responding to a related a16z post [here.](https://a16z.com/2020/02/16/the-new-business-of-ai-and-how-its-different-from-traditional-software/ 'a16z')\n\nHis main points are:\n\n1. ML costs a lot for marginal payoffs\n\n2. ML startups generally have no moat or meaningful special sauce\n\n3. ML startups are mostly services businesses, not software businesses\n\nThese are more negative views than consensus, so let's see why he thinks this is the case. I'll be quoting from both Scott and the a16z post by Martin Casado a"
+      ],
+      "visual": "statement",
+      "graphic_labels": [
+        "OWN THE BUSINESS",
+        "PRESSURE TO ACT",
+        "JUDGE THE INCENTIVE"
+      ],
+      "standalone_context": {
+        "subject": "investment fund",
+        "situation": "An investment fund can feel pressure to trade even when its managers still like the companies it already owns.",
+        "payoff": "Clients may question what they are paying for when the portfolio does not change. Activity and investment judgment are different things."
+      },
+      "scenes": [
+        {
+          "narration": "An investment fund can feel pressure to trade even when its managers still like the companies it already owns.",
+          "headline": "WHY DOING NOTHING CAN BE HARD",
+          "detail": "INVESTMENT FUND"
+        },
+        {
+          "narration": "Leon Lin's essay contrasts that pressure with investor Li Lu's patient, concentrated approach to understanding businesses.",
+          "headline": "THE SETUP",
+          "detail": "SOURCE CONTEXT INCLUDED"
+        },
+        {
+          "narration": "Clients may question what they are paying for when the portfolio does not change. Activity and investment judgment are different things.",
+          "headline": "THE DISTINCTION",
+          "detail": "KEEP THE QUALIFICATIONS"
+        },
+        {
+          "narration": "Look at the incentives behind the visible activity. Follow for more business and decision ideas.",
+          "headline": "THE TAKEAWAY",
+          "detail": "FOLLOW AVOID BORING PEOPLE"
+        }
+      ],
+      "experiment_hypothesis": "Explicit subject and situation before the insight",
+      "hook_type": "standalone concrete setup",
+      "creative_method": "Editorial rewrite after explicit user review; no human playback approval claimed",
+      "revises_concept": "abpx-0780de04a1e6e746",
+      "editorial_review_status": "source-and-context-reviewed; full playback/rights approval pending",
+      "review_status": "needs_human_review"
+    }
+  ]
+}

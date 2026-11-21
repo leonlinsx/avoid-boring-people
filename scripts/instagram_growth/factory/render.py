@@ -107,17 +107,22 @@ def diagram(d,item,stage,p,t):
  elif typ=='cards':
   for j,label in enumerate(item.get('graphic_labels',['EVIDENCE','ASSUMPTION','DECISION'])):
    y=660+j*160;card(d,(110,y,890,y+120),outline=GREEN if j==stage%3 else None);wrap(d,label,150,y+35,42,c=GREEN if j==stage%3 else WHITE)
+ elif typ=='statement':
+  card(d,(110,690,890,1080),outline=GREEN)
+  text(d,'ONE IDEA TO EXAMINE',150,735,34,GREEN)
+  wrap(d,item['scenes'][stage]['headline'],150,830,58,w=700)
+  small(d,'CONTEXT AND QUALIFICATIONS MATTER',1140)
  else:raise ValueError(typ)
-def caption_groups(words):
+def caption_groups(words,maximum=5):
  groups=[];buf=[]
  for w in words:
-  if buf and (len(buf)>=5 or len(' '.join(x['word'] for x in buf))+len(w['word'])>30):groups.append(buf);buf=[]
+  if buf and (len(buf)>=maximum or len(' '.join(x['word'] for x in buf))+len(w['word'])>30):groups.append(buf);buf=[]
   buf.append(w)
   if w['word'].endswith(('.', '?', '!')):groups.append(buf);buf=[]
  if buf:groups.append(buf)
  return groups
 def render(item,preview=False):
- bounds[:]=[1080,1920,0,0]; name=item['concept_id'];audio=json.loads((O/'audio'/f'{name}.json').read_text());align=json.loads((O/'audio'/f'{name}-REVIEW_ONLY.alignment.json').read_text());dur=audio['duration'];starts=[0]+align['scene_starts'][1:];groups=caption_groups(align['words']);frames=[]
+ bounds[:]=[1080,1920,0,0]; name=item['concept_id'];audio=json.loads((O/'audio'/f'{name}.json').read_text());align=json.loads((O/'audio'/f'{name}-REVIEW_ONLY.alignment.json').read_text());dur=audio['duration'];starts=[0]+align['scene_starts'][1:];groups=caption_groups(align['words'],item.get('caption_words',5));frames=[]
  if item['presenter']:
   source=O/'presenters'/name/'flashhead-pro-native-REVIEW_ONLY.mp4'
   if not source.exists() and not preview:raise FileNotFoundError(source)

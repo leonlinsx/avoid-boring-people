@@ -72,11 +72,31 @@ def replicated_patterns(rows):
             continue
         reach = sum(x['metrics']['reach'] for x in group)
         shares = [x['metrics'].get('shares') for x in group]
+        encouraging_articles = sorted({x['source_url'] for x in group if (x['metrics'].get('shares') or 0)>0 and x.get('source_url')})
         result.append({'hypothesis': hypothesis, 'source_articles': articles, 'n_reels': len(group),
                        'reach': reach, 'shares_per_1000_reached': 1000 * sum(shares) / reach if all(x is not None for x in shares) else None,
                        'evidence_concepts': [x['concept_id'] for x in group],
+                       'encouraging_source_articles': encouraging_articles, 'replication_eligible': len(encouraging_articles)>=2,
                        'status': 'replicated_attention_candidate_not_causal_follow_winner'})
     return sorted(result, key=lambda x: (x['shares_per_1000_reached'] is not None, x['shares_per_1000_reached'] or 0), reverse=True)
+
+
+def paired_presentations(rows):
+    groups=defaultdict(dict)
+    for row in rows:
+        if row.get('pair_id') and row.get('pair_role') in ('presenter','graphics'):
+            groups[(row['pair_id'],row['window'])][row['pair_role']]=row
+    result=[]
+    for (pair_id,window),members in groups.items():
+        head=members.get('presenter');graphics=members.get('graphics')
+        complete=bool(head and graphics)
+        age_gap=abs(head['actual_age_hours']-graphics['actual_age_hours']) if complete else None
+        eligible=bool(complete and head['eligible_for_comparison'] and graphics['eligible_for_comparison'] and age_gap<=1)
+        result.append({'pair_id':pair_id,'window':window,'status':'comparable_observational_pair' if eligible else 'insufficient_or_mismatched_evidence',
+                       'age_gap_hours':age_gap,'members':{k:v['concept_id'] for k,v in members.items()},
+                       'presenter_metrics':head['metrics'] if head else None,'graphics_metrics':graphics['metrics'] if graphics else None,
+                       'caveat':'Same script/voice/captions; publication time and audiences still differ. No causal or per-Reel follower conclusion.'})
+    return result
 
 
 def build(state, manifests, now=None):
@@ -106,6 +126,7 @@ def build(state, manifests, now=None):
                    'hook_type': m.get('hook_type', m.get('experiment_hypothesis')), 'hypothesis': m.get('experiment_hypothesis'),
                    'voice': m.get('voice'), 'creative_format': m.get('creative_format'), 'visual_style': m.get('visual_style', m.get('creative_format')),
                    'duration_seconds': m.get('duration_seconds'), 'cta_type': m.get('cta_type'),
+                   'pair_id':m.get('pair_id'),'pair_role':m.get('pair_role'),
                    'published_at': receipt['published_at'], 'format': 'ordinary_reel', 'window': label,
                    'actual_age_hours': age, 'metrics': metrics, 'missing': [k for k, v in metrics.items() if v is None],
                    'availability': obs.get('availability', {}), 'eligible_for_comparison': eligible,
@@ -119,13 +140,14 @@ def build(state, manifests, now=None):
     # Need two independent replicated patterns before comparative ranking.
     ranked = [p for p in patterns if p['shares_per_1000_reached'] is not None]
     sufficient = len(ranked) >= 2
-    encouraging = [p for p in ranked if p['shares_per_1000_reached'] > 0]
+    encouraging = [p for p in ranked if p['replication_eligible']]
     failures = [{'concept_id': k, 'status': r.get('status'), 'error_type': r.get('error_type')}
                 for k, r in state.get('receipts', {}).items() if r.get('status') not in ('published', 'confirmed_unpublished')]
     return {'account': pilot.ACCOUNT, 'created_at': now.isoformat(), 'period_start': start.isoformat(),
             'followers': followers(state, start, now), 'published_total': len(published),
             'published_this_week': sum(start <= queue.instant(r['published_at']) <= now for r in published.values()),
             'inventory': inventory(manifests, state, now), 'rows': rows, 'equal_target_age_cohorts': cohorts,
+            'matched_presentation_pairs':paired_presentations(rows),
             'pending_windows': pending, 'failures': failures, 'minimum_reach_per_reel': MIN_REACH,
             'top_hypotheses': ranked[:3] if sufficient else [],
             'underperforming_hypotheses': ranked[-2:] if sufficient else [],
@@ -148,7 +170,7 @@ def markdown(report):
              '|---|---|---:|---:|---:|---:|---:|---:|---|']
     for r in report['rows']:
         m = r['metrics']; lines.append(f"| {r['concept_id']} | {r['window']} | {r['actual_age_hours']} | {m['reach']} | {m['views']} | {m['shares']} | {m['saved']} | {m['reels_skip_rate']} | {', '.join(r['missing'])} |")
-    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures')]:
+    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures')]:
         lines += ['', '## ' + title, '', json.dumps(report[key], indent=2)]
     return '\n'.join(lines + ['', report['generation_health'], report['aggregation'], report['conclusion'],
                              'Website sessions, newsletter subscriptions and per-Reel follows are unavailable unless independently measured.']) + '\n'

@@ -1,4 +1,4 @@
-import os,json,time,pathlib,hashlib,re,gc
+import os,json,time,pathlib,hashlib,re,gc,shutil
 R=pathlib.Path(os.environ.get('ABP_GPU_ROOT','.tmp/instagram-growth')).resolve(); O=pathlib.Path(os.environ['ABP_FACTORY_OUTPUT']).resolve(); A=O/'audio'; A.mkdir(exist_ok=True)
 os.environ.update(HF_HUB_OFFLINE='1',HF_HUB_DISABLE_IMPLICIT_TOKEN='1',HF_HUB_DISABLE_TELEMETRY='1',NLTK_DATA=str(R/'nltk'))
 import torch,numpy as np,soundfile as sf
@@ -8,8 +8,20 @@ assert torch.cuda.is_available(); print('GPU',torch.cuda.get_device_name(),torch
 t0=time.monotonic(); torch.cuda.reset_peak_memory_stats()
 model=KModel(repo_id='hexgrad/Kokoro-82M',config=str(R/'models/kokoro/config.json'),model=str(R/'models/kokoro/kokoro-v1_0.pth')).to('cuda').eval()
 pipe=KPipeline(lang_code='a',repo_id='hexgrad/Kokoro-82M',model=model,device='cuda');voice_name=os.environ.get('ABP_TTS_VOICE','af_heart');voice=torch.load(R/f'models/kokoro/voices/{voice_name}.pt',weights_only=True,map_location='cpu')
+pairs={}
 for item in items:
  name=item['concept_id']; wav=A/f'{name}-REVIEW_ONLY.wav'; meta=A/f'{name}.json'
+ pair=item.get('pair_id')
+ if pair and pair in pairs:
+  previous=pairs[pair];original=json.loads((A/f'{previous}.json').read_text());source=A/f'{previous}-REVIEW_ONLY.wav'
+  assert original['text']==item['text'] and original['voice']==voice_name,'presentation pairs must keep narration/voice fixed'
+  assert hashlib.sha256(source.read_bytes()).hexdigest()==original['sha256']
+  if wav.exists():assert hashlib.sha256(wav.read_bytes()).hexdigest()==original['sha256'],'cached pair audio differs; preserve it and use a corrected batch'
+  else:shutil.copy2(source,wav)
+  if not meta.exists():
+   original.update(path=str(wav),reused_from_audio_sha256=original['sha256'],original_generation_seconds=original.get('seconds'),seconds=0)
+   meta.write_text(json.dumps(original,indent=2))
+ if pair:pairs.setdefault(pair,name)
  if wav.exists() and meta.exists():continue
  start=time.monotonic()
  with torch.inference_mode():x=np.concatenate([v.audio.cpu().numpy() for v in pipe(item['text'],voice=voice,speed=.95)])
@@ -24,8 +36,16 @@ from scipy.signal import resample_poly
 import nltk
 nltk.data.path.insert(0,str(R/'nltk'))
 model,metadata=load_align_model('en','cuda',model_name='facebook/wav2vec2-base-960h',model_dir=str(R/'models/wav2vec'))
+aligned_pairs={}
 for item in items:
  name=item['concept_id']; dest=A/f'{name}-REVIEW_ONLY.alignment.json'
+ pair=item.get('pair_id')
+ if pair and pair in aligned_pairs:
+  source=aligned_pairs[pair];original=json.loads(source.read_text())
+  if dest.exists():assert json.loads(dest.read_text())['words']==original['words'],'cached pair captions differ'
+  else:
+   original.update(reused_from_alignment=str(source),seconds=0);dest.write_text(json.dumps(original,indent=2))
+ if pair:aligned_pairs.setdefault(pair,dest)
  if dest.exists():continue
  x,sr=sf.read(A/f'{name}-REVIEW_ONLY.wav',dtype='float32'); x=resample_poly(x,2,3); t=time.monotonic()
  with torch.inference_mode():res=align([{'start':0.,'end':len(x)/16000,'text':item['text']}],model,metadata,x,'cuda',return_char_alignments=False)
