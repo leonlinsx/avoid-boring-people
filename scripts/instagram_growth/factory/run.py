@@ -9,6 +9,13 @@ import sys
 import hashlib
 
 
+def presenter_window(frame_count, scene_end, fps=25):
+    """Cut to graphics before native video runs out; never freeze a face."""
+    if frame_count <= 0 or fps <= 0 or scene_end <= 0:
+        raise ValueError('presenter requires decoded frames and a positive scene')
+    return min(scene_end, frame_count / fps)
+
+
 def validate(item):
     source=Path(item['source_file']).resolve()
     if not source.is_relative_to(Path('src/content/blog').resolve()) or not source.is_file():raise ValueError('invalid source')

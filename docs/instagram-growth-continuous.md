@@ -72,11 +72,13 @@ gh variable set ABP_REELS_ENABLED --body true
 gh variable set ABP_REELS_ENABLED --body false
 ```
 
-Publication checks run at 00:15, 08:15 and 16:15 UTC. These are initial test slots,
-not a claim of optimal viral timing. Actual delivery can be delayed by Actions
-or Meta; the cap and spacing apply to actual reservation times. The existing
-carousel schedule remains unchanged; its usual windows are distinct from these
-Reel slots. Revisit Instagram-only cadence if exposure evidence suggests overlap
+Publication eligibility checks run hourly at :15 UTC. A check publishes at most
+one approved item; the rolling cap remains three per 24 hours, with at least
+three hours between reservations. Hourly checks recover from delayed slots:
+three fixed daily ticks can lose an entire slot when yesterday's reservation
+is still inside the rolling window. These are operational checks, not a claim
+of optimal viral timing. Actual delivery can be delayed by Actions or Meta.
+The existing carousel schedule remains unchanged. Revisit Instagram-only cadence if exposure evidence suggests overlap
 is harmful; never alter all-platform routing to adjust Instagram output.
 
 Measurement runs hourly at :45, taking due cumulative snapshots at 24h, 48h and
@@ -92,9 +94,9 @@ reports timing/attribution limits and supplies new exploration candidates for
 the local factory. Attention winners are not follower-acquisition winners.
 No small-sample ranking automatically approves an asset or establishes causality.
 
-Trial manifests use MANUAL graduation; ordinary Reels are a separate declared
-format. Do not silently retry a rejected Trial as an ordinary post. Inspect and
-reconcile the recorded outcome, then explicitly register the next delivery.
+Trial Reels are parked until eligibility is separately verified and the owner
+reopens that experiment. The active queue uses ordinary Reels only. Do not
+silently retry a rejected Trial as an ordinary post.
 
 ## Recovery
 
