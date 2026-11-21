@@ -87,5 +87,25 @@
         "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
       }
     }
+  },
+  "weekly_review": {
+    "account": "avoidboringpeople",
+    "conclusion": "Exploratory attention evidence only; per-Reel follow attribution unavailable; no causal or statistical winner declared",
+    "created_at": "2026-11-21T20:40:51.139728+00:00",
+    "equal_target_age_cohorts": {
+      "24h": [],
+      "48h": [],
+      "7d": []
+    },
+    "follower_snapshots": {
+      "20261121T203929Z": {
+        "account": "avoidboringpeople",
+        "captured_at": "2026-11-21T20:39:29.975105+00:00",
+        "followers_count": 0,
+        "media_count": 27
+      }
+    },
+    "late_snapshots_excluded": [],
+    "next_generation": "Use fresh source claims and one or two promising patterns; preserve exploration and human approval."
   }
 }
