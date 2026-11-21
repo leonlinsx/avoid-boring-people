@@ -248,14 +248,40 @@ def fetch_insights(media_id: str) -> dict:
     return output
 
 
+
+def account_snapshot() -> dict:
+    """Read only ABP's aggregate follower count; not per-Reel follow attribution."""
+    uid, token = confirmed_account()
+    response = requests.get(
+        f"{ig.INSTAGRAM_API_BASE}/{uid}",
+        params={"fields": "id,username,followers_count,media_count"},
+        headers=ig._auth_headers(token), timeout=ig.REQUEST_TIMEOUT_SECONDS,
+    )
+    if response.status_code != 200:
+        raise ig._api_error(response)
+    raw = response.json()
+    if str(raw.get("id")) != uid or str(raw.get("username", "")).lower() != ACCOUNT:
+        raise ValueError("account snapshot returned a different Instagram identity")
+    follower_count = raw.get("followers_count")
+    return {
+        "account": ACCOUNT,
+        "captured_at": datetime.now(timezone.utc).isoformat(),
+        "followers_count": follower_count if type(follower_count) is int else None,
+        "media_count": raw.get("media_count") if type(raw.get("media_count")) is int else None,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("check", "preflight", "publish", "measure"))
+    parser.add_argument("action", choices=("check", "preflight", "publish", "measure", "account"))
     parser.add_argument("--manifest", type=Path, help="Approved JSON media manifest")
     parser.add_argument("--state-dir", type=Path, help="Persistent, private receipt directory; required to publish")
     parser.add_argument("--media-id", type=str, help="Published Reel media ID for insights")
     parser.add_argument("--yes-publish", action="store_true", help="Explicit live intent")
     args = parser.parse_args()
+    if args.action == "account":
+        print(json.dumps(account_snapshot(), indent=2))
+        return
     if args.action == "measure":
         if not args.media_id:
             parser.error("measure requires --media-id")
