@@ -1,12 +1,20 @@
 {
   "account": "avoidboringpeople",
-  "account_snapshots": {},
+  "account_snapshots": {
+    "20261121T203929Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-21T20:39:29.975105+00:00",
+      "followers_count": 0,
+      "media_count": 27
+    }
+  },
   "last_account": {
     "account": "avoidboringpeople",
     "captured_at": "2026-11-21T16:20:53.291243+00:00",
     "followers_count": 0,
     "media_count": 26
   },
+  "last_measurement_at": "2026-11-21T20:39:29.444621+00:00",
   "last_published_at": "2026-11-21T16:23:07.244273+00:00",
   "last_quota": {
     "limit": 50,
