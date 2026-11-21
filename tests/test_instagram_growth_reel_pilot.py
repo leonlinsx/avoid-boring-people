@@ -164,3 +164,29 @@ def test_reel_insights_never_invents_per_reel_follows(monkeypatch):
     data = pilot.fetch_insights("123456789012345")
     assert data["metrics"]["reach"] == 42
     assert data["metrics"]["follows"] is None
+
+
+def test_account_snapshot_is_exactly_abp_and_includes_follower_count(monkeypatch):
+    monkeypatch.setattr(pilot, "confirmed_account", lambda: ("123", "token"))
+    class Response:
+        status_code = 200
+        def json(self):
+            return {"id": "123", "username": "avoidboringpeople",
+                    "followers_count": 7, "media_count": 29}
+    monkeypatch.setattr(pilot.requests, "get", lambda *a, **k: Response())
+    snap = pilot.account_snapshot()
+    assert snap["account"] == "avoidboringpeople"
+    assert snap["followers_count"] == 7
+    assert snap["media_count"] == 29
+
+
+def test_account_snapshot_refuses_personal_account(monkeypatch):
+    monkeypatch.setattr(pilot, "confirmed_account", lambda: ("123", "token"))
+    class Response:
+        status_code = 200
+        def json(self):
+            return {"id": "123", "username": "leon.lin.s",
+                    "followers_count": 418}
+    monkeypatch.setattr(pilot.requests, "get", lambda *a, **k: Response())
+    with pytest.raises(ValueError, match="different Instagram identity"):
+        pilot.account_snapshot()
