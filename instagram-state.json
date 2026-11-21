@@ -6,6 +6,12 @@
       "captured_at": "2026-11-21T20:39:29.975105+00:00",
       "followers_count": 0,
       "media_count": 27
+    },
+    "20261121T204952Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-21T20:49:53.263669+00:00",
+      "followers_count": 0,
+      "media_count": 28
     }
   },
   "last_account": {
@@ -14,7 +20,7 @@
     "followers_count": 0,
     "media_count": 27
   },
-  "last_measurement_at": "2026-11-21T20:39:29.444621+00:00",
+  "last_measurement_at": "2026-11-21T20:49:52.190425+00:00",
   "last_published_at": "2026-11-21T20:43:00.363445+00:00",
   "last_quota": {
     "limit": 50,
