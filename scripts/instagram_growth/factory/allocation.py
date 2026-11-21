@@ -46,6 +46,6 @@ def presentation_pairs(items, limit):
         item.update(pair_id='abppair-'+fingerprint,pair_primary_factor='fictional_presenter_opening_vs_graphics',pair_role='presenter' if item.get('presenter') else 'graphics')
         alternate=copy.deepcopy(item);alternate['concept_id']+='-alt';alternate['presenter']=not item.get('presenter',False);alternate['pair_role']='presenter' if alternate['presenter'] else 'graphics'
         paired.append(alternate)
-    # Counterbalance which presentation is encountered first across pairs.
+    # Pair identities are explicit; publication timing remains observational.
     result=base+paired
     return result[:limit]
