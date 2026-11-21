@@ -1,0 +1,33 @@
+{
+  "account": "avoidboringpeople",
+  "concept_id": "abp002-01",
+  "source_url": "https://leonlins.com/writing/ergodicity",
+  "format": "REELS",
+  "video_path": "downloads/e86d84d60083e4c9218b212326a38874300ba15731a5bcf77220550d884c847d.mp4",
+  "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/abp002-01/e86d84d60083e4c9218b212326a38874300ba15731a5bcf77220550d884c847d.mp4",
+  "video_sha256": "e86d84d60083e4c9218b212326a38874300ba15731a5bcf77220550d884c847d",
+  "caption": "Up 50%. Down 40%. You still lose money.\n\n1.50 × 0.60 = 0.90\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/ergodicity\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
+  "ai_generated": true,
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "review_status": "approved",
+  "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
+  "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
+  "release_after": "2026-11-21T00:00:00Z",
+  "release_status": "APPROVED_HOSTED",
+  "source_file": "src/content/blog/2021_04_03_ergodicity/index.md",
+  "source_sha256": "21143a194f39fe05b038cc5b0476f7a05b3d37c12908a3f3543493131322abd1",
+  "source_anchor": "Everyone starts with $1",
+  "unresolved_gates": [
+    "actual_public_Blob_URL_and_byte_integrity",
+    "verified_remaining_free_Blob_transfer_usage",
+    "ABP_credentials_identity_and_Trial_eligibility",
+    "one_confirmed_pilot_before_unattended_dispatch"
+  ],
+  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c",
+  "creative_format": "narrated_motion_graphics",
+  "voice": "af_heart",
+  "duration_seconds": 17.874,
+  "cta_type": "follow",
+  "experiment_hypothesis": "specific numerical consequence"
+}

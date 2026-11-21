@@ -71,13 +71,18 @@ All synthetic people must be clearly fictional and disclosed where required. Nev
 
 ## Broader creative experiments: explore widely, publish selectively
 
-Generate up to **12 offline treatments** across three source articles:
+The [November 21 rolling-batch protocol](instagram-growth-rolling-batches.md)
+replaces the earlier twelve-treatment/six-post ceiling with 24 source-anchored
+concepts across eight articles, rolling observation windows, and independent
+confirmation on fresh material. This is the current planning direction; API
+publishing/measurement integration and live authorization remain outstanding.
+The three-article examples below describe the earlier creative screen:
 
 - Ergodicity: ink typography, high-contrast signal typography, true animated math/diagram via Remotion, fictional avatar hook followed by charts.
 - Anthropic: numerical motion-graphic story, fictional avatar, AI-generated editorial visual B-roll with verified figures overlaid, one striking image-led post.
 - Kelly: paper typography, animated bet sizing diagram, human-narrated analysis if recorded voluntarily, fictional avatar.
 
-The three palettes are not three genuinely different growth hypotheses by themselves. They are styling choices; stronger tests compare a face, original research shown visually, clear charts, narration and information density. Produce up to 12 offline concepts, review and release the best **six distinct pieces first**, then expand as evidence supports. No more than a few well-edited posts per week, no duplicate spam.
+The three palettes are not three genuinely different growth hypotheses by themselves. They are styling choices; stronger tests compare a face, original research shown visually, clear charts, narration and information density. Generate substantive alternatives in batches; release distinct reviewed stories under a bounded account-specific plan. Neither a few posts per week nor dozens per day is established here as an optimal cadence.
 
 Each published asset must have an approved source/claim ledger, media-license provenance, audio and captions quality gate, and approval to post. Keep original and synthetic voices, appearance, and rights recorded separately. The personal account's footage is not automatically reusable.
 
@@ -91,4 +96,34 @@ Use manual publishing for the first reviewed pieces. Automatic Reel upload, meta
 
 ## What is not done
 
-No direct connection to the user's RTX 5070 Ti, local ComfyUI, video source library, or Instagram dashboard is available from this environment. No GPU models have been installed or benchmarked on the 5070 Ti, no speaking avatar has been created, no real narration/word-aligned captions are claimed for the visual previews, and nothing has been published.
+The November 20 local GPU pass now supersedes the earlier untested status:
+
+- RTX 5070 Ti inference was exercised in ignored, isolated environments with
+  Torch 2.10.0+cu128. The existing ComfyUI Torch 2.6.0+cu124 could not execute
+  `sm_120` kernels and was preserved unchanged.
+- Qwen Ryan/Aiden voices were tested and rejected by the reader. Kokoro Heart
+  was selected after comparison with Nicole, Qwen VoiceDesign and VoxCPM2 female
+  voices. No real voice was cloned.
+- MuseTalk on a still image was rejected because the upper face/head were static.
+  FlashHead Pro generated full-frame blinks, brow/head/shoulder movement. A 6.48s
+  512×512 test took about 45s with 6.15 GiB peak Torch allocation; a 512×768 test
+  took about 75s with 7.50 GiB allocation / 9.85 GiB reservation. These are short
+  local tests, not a promise of realism or long-shot stability.
+- Cached Z-Image model files were matched against official hashes. The fictional
+  presenter, exact scripts, models/licenses, timing, allocator measurements,
+  ffprobe data, file hashes and rights notes are recorded in ignored local
+  manifests. Native presenter output is lower-resolution than its 1080×1920
+  editor export; upscaling is not native 1080p generation.
+- WhisperX forced alignment and independent Faster-Whisper transcription were
+  run on the actual voice waveforms. Earlier full review exports passed complete
+  decode, metadata, loudness and arithmetic checks. Technical passage is not an
+  Instagram growth result or full human playback approval.
+
+The next controlled creative screen is
+[ABP-REELS-001](instagram-growth-reels-v1.json), with process and launch gates in
+[the experiment document](instagram-growth-experiment.md). All model weights,
+renders and runtime observations remain in ignored `.tmp/instagram-growth/`.
+There is no Instagram dashboard connection, no live growth dataset, no uploader
+activation and no publication or schedule change. The first-party account's
+eligibility, phone overlay/playback and actual performance still need to be
+checked through a separately approved launch.

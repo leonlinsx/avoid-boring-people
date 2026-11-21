@@ -8,6 +8,7 @@ No retry of media_publish or a concept with any prior receipt.
 from __future__ import annotations
 
 import argparse
+import fcntl
 import hashlib
 import json
 import os
@@ -182,7 +183,30 @@ def write_receipt(path: Path, record: dict) -> None:
     os.replace(name, path)
 
 
-def publish(item: dict, *, state_dir: Path) -> dict:
+def publish(item: dict, *, state_dir: Path, receipt_sink=None) -> dict:
+    """Serialize local dispatch and reject renamed or unresolved duplicates."""
+    state_dir = state_dir.expanduser().resolve()
+    state_dir.mkdir(parents=True, exist_ok=True)
+    fd = os.open(state_dir / ".publish.lock", os.O_CREAT | os.O_RDWR, 0o600)
+    with os.fdopen(fd, "w") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise ValueError("another publisher is active; do not retry concurrently") from exc
+        for path in sorted(state_dir.glob("*.json")):
+            prior = json.loads(path.read_text(encoding="utf-8"))
+            if prior.get("concept_id") != path.stem:
+                raise ValueError("receipt identity mismatch; reconciliation required")
+            if prior["concept_id"] == item["concept_id"]:
+                raise ValueError("concept has an existing receipt; reconcile it, never blindly retry")
+            if prior.get("sha256") == item["video_sha256"]:
+                raise ValueError("identical video has an existing receipt under another concept")
+            if prior.get("status") != "published":
+                raise ValueError("unfinished receipt requires reconciliation before any new publish")
+        return _publish_reserved(item, state_dir=state_dir, receipt_sink=receipt_sink)
+
+
+def _publish_reserved(item: dict, *, state_dir: Path, receipt_sink=None) -> dict:
     """One-shot transaction. Any existing receipt blocks automatic retries."""
     video = local_video_preflight(item)
     hosted_video_preflight(item)
@@ -201,21 +225,26 @@ def publish(item: dict, *, state_dir: Path) -> dict:
         json.dump(record, handle, sort_keys=True)
         handle.flush()
         os.fsync(handle.fileno())
+    def persist():
+        write_receipt(receipt, record)
+        if receipt_sink is not None:
+            receipt_sink(dict(record))
     try:
+        persist()  # Remote durability is mandatory before any Meta write.
         cid = create_reel_container(item, uid, token)
         record.update(status="container_created", container_id=cid)
-        write_receipt(receipt, record)
+        persist()
         ig.wait_for_container(uid, token, cid)
         record["status"] = "publish_attempted"
-        write_receipt(receipt, record)  # persisted BEFORE the irreversible request
+        persist()  # acknowledged remotely BEFORE the irreversible request
         mid = ig.publish_container(uid, token, cid)
         record.update(status="published", media_id=mid, permalink=ig._permalink(token, mid),
                       published_at=datetime.now(timezone.utc).isoformat())
-        write_receipt(receipt, record)
+        persist()
     except Exception as exc:
         record["status"] = "reconciliation_required"
         record["error_type"] = type(exc).__name__
-        write_receipt(receipt, record)
+        persist()
         raise
     return record
 

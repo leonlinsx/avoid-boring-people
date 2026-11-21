@@ -1,0 +1,82 @@
+{
+  "experiment_id": "ABP-REELS-001",
+  "version": 1,
+  "preregistered_date": "2026-11-20",
+  "account": "@avoidboringpeople",
+  "status": "offline_production",
+  "publication_authorized": false,
+  "source_url": "https://leonlins.com/writing/ergodicity/",
+  "offline_design": "2x2 hook framing by opening format; creative screening only",
+  "hooks": {
+    "question": "Up fifty percent. Down forty percent. Why lose money?",
+    "result": "Up fifty percent. Down forty percent. Still down ten."
+  },
+  "body": "Start with one dollar. A win adds fifty cents. Then a forty percent loss takes sixty cents. You have ninety cents left. A fair coin makes the average return positive, but compounding changes your path. Follow for clear thinking about risk.",
+  "arms": [
+    {"id": "QG", "hook": "question", "opening": "graphics"},
+    {"id": "RG", "hook": "result", "opening": "graphics"},
+    {"id": "QP", "hook": "question", "opening": "presenter"},
+    {"id": "RP", "hook": "result", "opening": "presenter"}
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "contrast": "result versus question, with opening format held constant",
+      "prediction": "Giving the numerical consequence immediately improves early retention.",
+      "mechanism": "Specific payoff reduces time to understanding.",
+      "status": "untested_on_instagram"
+    },
+    {
+      "id": "H2",
+      "contrast": "presenter versus graphics, with hook held constant",
+      "prediction": "A brief full-motion fictional presenter improves attention without reducing trust or follow conversion.",
+      "mechanism": "Human presence may draw attention; synthetic appearance may instead harm trust.",
+      "status": "untested_on_instagram"
+    }
+  ],
+  "controls": [
+    "Same Kokoro Heart voice, speed and loudness target",
+    "Same source, claim ledger, body waveform, CTA, runtime and editor after the hook",
+    "Hook audio slot matched before assets are frozen; any padding recorded",
+    "Only opening format changes within each hook pair",
+    "Same synthetic-person disclosure on all arms",
+    "No music, paid boost, collab or personal-account traffic during a live comparison"
+  ],
+  "live_plan": {
+    "status": "not_started",
+    "design": "Directional matched-post pilot; NOT a randomized viewer-level A/B test",
+    "primary_contrast": "presenter versus graphics with result framing fixed, subject to human creative review before preregistration is frozen",
+    "unit_of_analysis": "post, blocked by article; viewers and views are not independent randomized replicates",
+    "blocks": [
+      {"article": "ergodicity", "planned_order": ["graphics", "presenter"]},
+      {"article": "kelly", "planned_order": ["presenter", "graphics"]},
+      {"article": "anthropic_ipo", "planned_order": ["graphics", "presenter"]}
+    ],
+    "order_method": "Prespecified counterbalanced order; platform exposure is not randomized",
+    "measurement_windows_hours": [48, 168],
+    "primary_metric": "1000 * post_attributed_follows / accounts_reached, only when both fields are available",
+    "secondary_metrics": ["non_follower_reach", "shares_per_1000_reached", "saves_per_1000_reached", "profile_visits_per_1000_reached", "average_watch_seconds", "average_watch_seconds / duration_seconds", "three_second_view_rate_if_available"],
+    "downstream": "Tagged site sessions and confirmed signups reported separately; never attribute a stable bio-link session to an individual post without evidence",
+    "missing_values": "null/blank, never zero; missing primary metrics prevents a conversion winner",
+    "minimum_information": {"posts_per_format": 3, "reached_per_format": 1000, "reached_per_post": 200, "attributed_follows_total": 10},
+    "practical_effect": "At least +2 follows per 1000 reached, with same-direction differences in at least 2 of 3 article blocks",
+    "minimum_effect_per_1000": 2,
+    "required_block_agreement": 2,
+    "guardrails": ["No factual/rights/account-health failure", "No clear deterioration greater than 20% in available watch-time ratio or share rate", "Do not let one high-reach post alone establish a repeatable winner"],
+    "decision_time": "After all six prespecified posts have complete seven-day observations; 48-hour results are diagnostic, not winner selection",
+    "decision_rules": {
+      "insufficient": "Any minimum-information or measurement gate fails: report inconclusive; do not call a winner or scale.",
+      "iterate": "Reach/retention improves without follow conversion, or results conflict across blocks: revise one factor and register v2.",
+      "replicate": "Practical effect and guardrails pass: treat as a candidate, then replicate in a separate approved wave of distinct content before scaling.",
+      "scale": "Only after independent replication and human review; expand one small batch at a time without changing schedules or automating publication implicitly.",
+      "stop": "Quality, rights or recommendation-eligibility failure: stop immediately and diagnose regardless of performance."
+    },
+    "threshold_note": "Operator planning thresholds, NOT universal Instagram benchmarks, statistical significance, a power calculation or a promise of virality. Estimate post-level variance from the pilot before planning a confirmatory sample."
+  },
+  "references": [
+    "https://www.youtube.com/watch?v=OHX1ctQn6NY",
+    "https://www.youtube.com/watch?v=YWAsLLHIhZw",
+    "https://about.fb.com/news/2024/12/trial-reels-try-content-non-followers-first-see-what-perfoms-best/",
+    "https://about.fb.com/news/2025/06/inspiring-creativity-that-brings-people-together/"
+  ]
+}

@@ -50,6 +50,7 @@ coverage
 
 # Python environments
 .venv/
+.venv-ig-reels/
 
 # Auth cookies for automation
 /cookies/*.json
