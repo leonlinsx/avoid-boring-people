@@ -81,7 +81,7 @@ wrong accounts, changed files, used concepts/hashes, missing technical QA and
 missing human decisions. An editorial hold blocks the entire batch.
 
 Replenishment reuses the existing Development OIDC uploader in <=25MiB
-invocations, with <=75MiB per release. Uploads are immutable, content-addressed
+invocations (at most24 manifests each), with <=30 assets and <=75MiB per release. Uploads are immutable, content-addressed
 and publicly hash-verified. Freeze release times and queue manifests, then
 create a scoped queue PR through the existing authenticated GitHub CLI, without
 stashing or changing the local worktree. CI and reviewed merge still apply;

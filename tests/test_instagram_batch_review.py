@@ -178,3 +178,29 @@ def test_future_render_budget_contains_six_matched_presentation_pairs():
         a,b=[x for x in selected if x.get('pair_id')==pair_id]
         assert a['presenter']!=b['presenter']
         assert all(a[k]==b[k] for k in ('scenes','voice','caption_words','source_file','duration_target'))
+
+
+def test_twenty_seven_review_decisions_release_in_bounded_invocations(tmp_path,monkeypatch):
+    root,_,_=fixture(tmp_path,monkeypatch)
+    original=json.loads((root/'briefs.json').read_text())['items'][0]
+    prototype=json.loads(next((root/'final').glob('*.manifest.json')).read_text())
+    items=[]
+    for i in range(27):
+        item=copy.deepcopy(original);name=f'example-{i}';item['concept_id']=name;items.append(item)
+        video=root/'final'/f'{name}-REVIEW_ONLY.mp4';video.write_bytes(f'Disposable video fixture {i}'.encode())
+        sha=hashlib.sha256(video.read_bytes()).hexdigest();meta={**prototype,'sha256':sha}
+        video.with_suffix('.manifest.json').write_text(json.dumps(meta))
+        (root/'review-queue'/f'{name}.json').write_text(json.dumps({'concept_id':name,'review_status':'needs_human_review','video_sha256':sha}))
+    (root/'briefs.json').write_text(json.dumps({'items':items}))
+    package=review.package(root,approved_dir=tmp_path/'empty');snapshot=json.loads((package/'review-manifest.json').read_text())
+    decision={'account':'avoidboringpeople','batch_id':snapshot['batch_id'],'reviewer':'TEST FIXTURE ONLY','confirmed_review':True,
+              'decisions':[{'concept_id':x['concept_id'],'video_sha256':x['video_sha256'],'decision':'approve','notes':''} for x in snapshot['items']]}
+    review.apply(package,decision,True);sizes=[]
+    def upload(command,check):
+        source,target=Path(command[-2]),Path(command[-1]);target.mkdir();files=list(source.glob('*.json'));sizes.append(len(files))
+        for path in files:
+            m=json.loads(path.read_text());m['video_url']='https://'+replenish.hosted.HOST+'/instagram/reels/'+m['concept_id']+'/'+m['video_sha256']+'.mp4'
+            (target/path.name).write_text(json.dumps(m))
+    monkeypatch.setattr(replenish.subprocess,'run',upload)
+    result=replenish.release(root,{'account':'avoidboringpeople','receipts':{}},'2026-12-01T12:00:00Z',True)
+    assert sizes==[24,3] and len(result['queue_files'])==27 and result['published']==0

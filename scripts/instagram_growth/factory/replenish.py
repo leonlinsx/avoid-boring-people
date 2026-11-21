@@ -47,7 +47,7 @@ def approved(root, state):
             if meta.get('verification', {}).get('decode') != 'PASS':
                 raise ValueError('technical QA missing')
             hashes.add(m['video_sha256']); result.append(m)
-    if not result or len(result) > 24 or sum(Path(m['video_path']).stat().st_size for m in result) > MAX_BATCH_BYTES:
+    if not result or len(result) > 30 or sum(Path(m['video_path']).stat().st_size for m in result) > MAX_BATCH_BYTES:
         raise ValueError('no human-approved assets or bounded release budget exceeded')
     return result
 
@@ -120,7 +120,7 @@ def release(root, state, release_after, confirmed_free_quota=False, submit_pr=Fa
         size = Path(m['video_path']).stat().st_size
         if size > 25 * 1024 * 1024:
             raise ValueError('one asset exceeds bounded upload invocation')
-        if sum(Path(x['video_path']).stat().st_size for x in groups[-1]) + size > 25 * 1024 * 1024:
+        if len(groups[-1])>=24 or sum(Path(x['video_path']).stat().st_size for x in groups[-1]) + size > 25 * 1024 * 1024:
             groups.append([])
         groups[-1].append(m)
     staged = []
