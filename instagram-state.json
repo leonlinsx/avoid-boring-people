@@ -151,22 +151,142 @@
   },
   "weekly_review": {
     "account": "avoidboringpeople",
-    "conclusion": "Exploratory attention evidence only; per-Reel follow attribution unavailable; no causal or statistical winner declared",
-    "created_at": "2026-11-21T20:40:51.139728+00:00",
-    "equal_target_age_cohorts": {
-      "24h": [],
-      "48h": [],
-      "7d": []
-    },
-    "follower_snapshots": {
-      "20261121T203929Z": {
+    "aggregation": "Cumulative outcomes are separated by target age. Do not sum repeated windows or call summed reach unique people.",
+    "conclusion": "Observational attention evidence; no causal, statistically validated or per-Reel follower winner.",
+    "created_at": "2026-11-21T21:48:35.130874+00:00",
+    "failures": [],
+    "followers": {
+      "attribution": "Account-level only; overlapping posts do not identify per-Reel acquisition.",
+      "complete_week_boundary_coverage": false,
+      "end": {
+        "account": "avoidboringpeople",
+        "captured_at": "2026-11-21T21:10:11.502299+00:00",
+        "followers_count": 0,
+        "media_count": 28
+      },
+      "end_snapshot_fresh": true,
+      "net_new_followers_week": null,
+      "observed_change": 0,
+      "start": {
         "account": "avoidboringpeople",
         "captured_at": "2026-11-21T20:39:29.975105+00:00",
         "followers_count": 0,
         "media_count": 27
       }
     },
-    "late_snapshots_excluded": [],
-    "next_generation": "Use fresh source claims and one or two promising patterns; preserve exploration and human approval."
+    "generation_health": "Not visible from hosted state; inspect local factory status/report.",
+    "inventory": {
+      "approved_unpublished": 10,
+      "days_at_max_cadence": 3.3333333333333335,
+      "invalid_or_duplicate": [],
+      "items": [
+        {
+          "concept_id": "abp002-02",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-04",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-05",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-07",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-08",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-12",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-18",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-20",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-22",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        },
+        {
+          "concept_id": "abp002-24",
+          "ready_now": true,
+          "release_after": "2026-11-21T00:00:00+00:00"
+        }
+      ],
+      "level": "BUFFER_SHORT",
+      "ready_now": 10,
+      "target_seven_days": 21
+    },
+    "low_information": true,
+    "minimum_reach_per_reel": 100,
+    "next_experiments": [
+      {
+        "hypothesis": "Cold-start exploration",
+        "test": "Keep 60/25/15 planned allocation; with no replicated evidence, reassign exploitation to exploration."
+      }
+    ],
+    "pending_windows": [
+      {
+        "concept_id": "abp002-01",
+        "status": "not_due",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abp002-01",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abp002-01",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-19-standard",
+        "status": "not_due",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abp002-19-standard",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abp002-19-standard",
+        "status": "not_due",
+        "window": "7d"
+      }
+    ],
+    "period_start": "2026-11-14T21:48:35.130874+00:00",
+    "published_this_week": 2,
+    "published_total": 2,
+    "replication_candidates": [],
+    "top_hypotheses": [],
+    "unavailable": [
+      "follows",
+      "non_follower_reach",
+      "profile_visits",
+      "website_sessions",
+      "newsletter_signups"
+    ],
+    "underperforming_hypotheses": []
   }
 }
