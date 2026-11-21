@@ -7,12 +7,13 @@
     "followers_count": 0,
     "media_count": 26
   },
+  "last_published_at": "2026-11-21T16:23:07.244273+00:00",
   "last_quota": {
     "limit": 50,
     "usage": 0
   },
   "observations": {},
-  "pilot_verified": false,
+  "pilot_verified": true,
   "receipts": {
     "abp002-19": {
       "ai_generated": true,
@@ -34,13 +35,49 @@
       "concept_id": "abp002-19-standard",
       "container_id": "18136299157753300",
       "created_at": "2026-11-21T16:20:54.791696+00:00",
+      "initial_insights": {
+        "availability": {
+          "comments": "available",
+          "ig_reels_avg_watch_time": "available",
+          "likes": "available",
+          "reach": "available",
+          "reels_skip_rate": "available",
+          "saved": "available",
+          "shares": "available",
+          "views": "available"
+        },
+        "captured_at": "2026-11-21T16:23:09.278996+00:00",
+        "media_id": "18164761231500665",
+        "metrics": {
+          "comments": 0,
+          "follows": null,
+          "ig_reels_avg_watch_time": 0,
+          "likes": 0,
+          "reach": 0,
+          "reels_skip_rate": 0,
+          "saved": 0,
+          "shares": 0,
+          "views": 0
+        }
+      },
       "media_id": "18164761231500665",
       "permalink": "https://www.instagram.com/reel/DgApdY6gsab/",
       "published_at": "2026-11-21T16:23:07.244273+00:00",
       "sha256": "1cb12c3cb7a48d2a16796d2df53b78542f95da5023a01cac5f6d8bdecb8f155b",
       "source_url": "https://leonlins.com/writing/dividend",
       "status": "published",
-      "trial": false
+      "trial": false,
+      "verified_media": {
+        "id": "18164761231500665",
+        "is_ai_generated": true,
+        "is_shared_to_feed": true,
+        "media_product_type": "REELS",
+        "media_type": "VIDEO",
+        "permalink": "https://www.instagram.com/reel/DgApdY6gsab/",
+        "timestamp": "2026-11-21T16:22:59+0000",
+        "username": "avoidboringpeople",
+        "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
+      }
     }
   }
 }
