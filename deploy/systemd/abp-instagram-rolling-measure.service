@@ -1,0 +1,11 @@
+[Unit]
+Description=Read and store ABP Reel Insights (never publishes)
+Documentation=https://github.com/leonlinsx/avoid-boring-people/blob/main/docs/instagram-growth-rolling-publisher.md
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/repos/avoid-boring-people
+EnvironmentFile=%h/.config/abp-instagram/reels.env
+ExecStart=%h/repos/avoid-boring-people/.venv-ig-reels/bin/python -m scripts.instagram_growth.rolling_queue measure --state-dir %h/.local/state/abp-instagram/reels
+TimeoutStartSec=1800
+NoNewPrivileges=true
