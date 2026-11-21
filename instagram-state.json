@@ -103,18 +103,18 @@
           "shares": "available",
           "views": "available"
         },
-        "captured_at": "2026-11-21T16:23:09.278996+00:00",
+        "captured_at": "2026-11-21T20:44:33.145375+00:00",
         "media_id": "18164761231500665",
         "metrics": {
           "comments": 0,
           "follows": null,
-          "ig_reels_avg_watch_time": 0,
+          "ig_reels_avg_watch_time": 4595,
           "likes": 0,
-          "reach": 0,
-          "reels_skip_rate": 0,
+          "reach": 26,
+          "reels_skip_rate": 75,
           "saved": 0,
           "shares": 0,
-          "views": 0
+          "views": 31
         }
       },
       "media_id": "18164761231500665",
