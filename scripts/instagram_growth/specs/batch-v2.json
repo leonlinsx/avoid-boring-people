@@ -1,0 +1,570 @@
+{
+  "account": "avoidboringpeople",
+  "publication_authorized_by_user": true,
+  "items": [
+    {
+      "id": "ABP002-01",
+      "source_file": "src/content/blog/2021_04_03_ergodicity/index.md",
+      "source_sha256": "21143a194f39fe05b038cc5b0476f7a05b3d37c12908a3f3543493131322abd1",
+      "source_anchor": "Everyone starts with $1",
+      "angle": "The percentage trap",
+      "draft_hook": "Up 50%. Down 40%. You still lose money.",
+      "explanatory_task": "Animate 1 × 1.5 × 0.6 = 0.9; distinguish sequential outcomes from one-bet expectation.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-01",
+      "source_url": "https://leonlins.com/writing/ergodicity",
+      "label": "THE PERCENTAGE TRAP",
+      "visual": "ledger",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "Up fifty percent. Down forty percent. You still lose money.",
+          "headline": "UP 50%. DOWN 40%.",
+          "detail": "STILL DOWN 10%."
+        },
+        {
+          "narration": "Start with one dollar. A win takes you to a dollar fifty.",
+          "headline": "START WITH $1.00",
+          "detail": "$1.00 → $1.50"
+        },
+        {
+          "narration": "Then losing forty percent takes sixty cents, leaving ninety cents.",
+          "headline": "THE LOSS IS 60¢.",
+          "detail": "$1.50 → $0.90"
+        },
+        {
+          "narration": "The percentages use different starting amounts. Follow for clearer thinking about risk.",
+          "headline": "THE BASE CHANGED.",
+          "detail": "1.50 × 0.60 = 0.90"
+        }
+      ],
+      "text": "Up fifty percent. Down forty percent. You still lose money. Start with one dollar. A win takes you to a dollar fifty. Then losing forty percent takes sixty cents, leaving ninety cents. The percentages use different starting amounts. Follow for clearer thinking about risk.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "Everyone starts with $1"
+      }
+    },
+    {
+      "id": "ABP002-02",
+      "source_file": "src/content/blog/2021_04_03_ergodicity/index.md",
+      "source_sha256": "21143a194f39fe05b038cc5b0476f7a05b3d37c12908a3f3543493131322abd1",
+      "source_anchor": "Large outliers skew the average",
+      "angle": "The average-person trap",
+      "draft_hook": "The average can rise while most players lose.",
+      "explanatory_task": "Contrast people across one period with one person over time; never present the historical 94/100 simulation as a universal rate.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-02",
+      "source_url": "https://leonlins.com/writing/ergodicity",
+      "label": "THE AVERAGE TRAP",
+      "visual": "paths",
+      "presenter": true,
+      "scenes": [
+        {
+          "narration": "The average can rise while most players lose.",
+          "headline": "AVERAGE UP.",
+          "detail": "MOST PLAYERS DOWN?"
+        },
+        {
+          "narration": "In a fair coin game, winning adds fifty percent and losing takes forty percent.",
+          "headline": "A HYPOTHETICAL GAME",
+          "detail": "WIN +50% / LOSE −40%"
+        },
+        {
+          "narration": "The expected multiplier for one toss is one point zero five. But a win and a loss multiply to zero point nine.",
+          "headline": "TWO DIFFERENT QUESTIONS",
+          "detail": "EXPECTATION ≠ YOUR PATH"
+        },
+        {
+          "narration": "Averages across possible outcomes do not describe every personal path. Follow for ideas that change how you see risk.",
+          "headline": "ASK WHICH AVERAGE.",
+          "detail": "PEOPLE / POSSIBILITIES / TIME"
+        }
+      ],
+      "text": "The average can rise while most players lose. In a fair coin game, winning adds fifty percent and losing takes forty percent. The expected multiplier for one toss is one point zero five. But a win and a loss multiply to zero point nine. Averages across possible outcomes do not describe every personal path. Follow for ideas that change how you see risk.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "Large outliers skew the average"
+      }
+    },
+    {
+      "id": "ABP002-04",
+      "source_file": "src/content/blog/2020_12_02_kelly/index.md",
+      "source_sha256": "360b60f1699a1f7679aa8e710a2d62b9ff39faaf7b217118a06c5a13e2b226cb",
+      "source_anchor": "Since you have no edge",
+      "angle": "No edge",
+      "draft_hook": "A fair bet can have an optimal stake of zero.",
+      "explanatory_task": "Explain a fair 50/50 double-or-lose game and the zero Kelly fraction, without personal investment advice.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-04",
+      "source_url": "https://leonlins.com/writing/kelly",
+      "label": "NO EDGE, NO STAKE",
+      "visual": "coin",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "A fair bet can have an optimal stake of zero.",
+          "headline": "A FAIR BET.",
+          "detail": "A ZERO STAKE?"
+        },
+        {
+          "narration": "Imagine a fair coin. You double your stake if you win, and lose the stake if you lose.",
+          "headline": "50 / 50 COIN",
+          "detail": "WIN: 2× / LOSE: 0×"
+        },
+        {
+          "narration": "There is no edge. Under these assumptions, the Kelly growth formula says to bet nothing.",
+          "headline": "NO EDGE.",
+          "detail": "KELLY FRACTION = 0%"
+        },
+        {
+          "narration": "A chance to play is not a reason to play. Follow for clearer thinking about risk.",
+          "headline": "YOU CAN PASS.",
+          "detail": "OPPORTUNITY ≠ ADVANTAGE"
+        }
+      ],
+      "text": "A fair bet can have an optimal stake of zero. Imagine a fair coin. You double your stake if you win, and lose the stake if you lose. There is no edge. Under these assumptions, the Kelly growth formula says to bet nothing. A chance to play is not a reason to play. Follow for clearer thinking about risk.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "Since you have no edge"
+      }
+    },
+    {
+      "id": "ABP002-05",
+      "source_file": "src/content/blog/2020_12_02_kelly/index.md",
+      "source_sha256": "360b60f1699a1f7679aa8e710a2d62b9ff39faaf7b217118a06c5a13e2b226cb",
+      "source_anchor": "bet 45% of your total capital",
+      "angle": "Great odds, limited stake",
+      "draft_hook": "Even generous odds do not mean bet everything.",
+      "explanatory_task": "Derive 45% only for the article hypothetical: 50% win chance, 10-to-1 net profit, full stake lost otherwise.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-05",
+      "source_url": "https://leonlins.com/writing/kelly",
+      "label": "GREAT ODDS, LIMITED STAKE",
+      "visual": "kelly",
+      "presenter": true,
+      "scenes": [
+        {
+          "narration": "Even generous odds do not mean bet everything.",
+          "headline": "GREAT ODDS.",
+          "detail": "STILL NOT ALL IN."
+        },
+        {
+          "narration": "Imagine a fair coin paying ten dollars profit per dollar staked on a win. A loss wipes out the stake.",
+          "headline": "HYPOTHETICAL BET",
+          "detail": "50% WIN / 10 TO 1 PROFIT"
+        },
+        {
+          "narration": "Under those exact assumptions, the Kelly fraction is forty five percent. Not one hundred.",
+          "headline": "CHECK THE ASSUMPTIONS.",
+          "detail": "0.50 − 0.50 / 10 = 0.45"
+        },
+        {
+          "narration": "Change the probability or payout and the answer changes. This is a model, not an investment recommendation. Follow for risk explained clearly.",
+          "headline": "THE INPUTS MATTER.",
+          "detail": "A MODEL, NOT A PROMISE"
+        }
+      ],
+      "text": "Even generous odds do not mean bet everything. Imagine a fair coin paying ten dollars profit per dollar staked on a win. A loss wipes out the stake. Under those exact assumptions, the Kelly fraction is forty five percent. Not one hundred. Change the probability or payout and the answer changes. This is a model, not an investment recommendation. Follow for risk explained clearly.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "bet 45% of your total capital"
+      }
+    },
+    {
+      "id": "ABP002-07",
+      "source_file": "src/content/blog/2019_11_23_premortem/index.md",
+      "source_sha256": "7bc7593741c98b86ef78ac07b7086bf773091fef32f653890ee0c81252a43255",
+      "source_anchor": "The reframing is critical",
+      "angle": "Reframe the question",
+      "draft_hook": "Before a project starts, imagine it has already failed.",
+      "explanatory_task": "Contrast an assumed failure with asking what might go wrong; attribute the method.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-07",
+      "source_url": "https://leonlins.com/writing/premortem",
+      "label": "ASK A BETTER FAILURE QUESTION",
+      "visual": "reframe",
+      "presenter": true,
+      "scenes": [
+        {
+          "narration": "Before a project starts, imagine it has already failed.",
+          "headline": "YOUR PROJECT FAILED.",
+          "detail": "NOW EXPLAIN WHY."
+        },
+        {
+          "narration": "That is the starting point of this exercise. It reframes a vague question about what might go wrong.",
+          "headline": "THE PREMORTEM",
+          "detail": "ASSUME FAILURE FIRST"
+        },
+        {
+          "narration": "Ask everyone to write possible reasons, then share them. The aim is to surface weaknesses before you commit.",
+          "headline": "WRITE. THEN SHARE.",
+          "detail": "FIND THE HIDDEN ASSUMPTION"
+        },
+        {
+          "narration": "Try it on your next important plan. Follow for practical tools for better decisions.",
+          "headline": "USE IT BEFORE LAUNCH.",
+          "detail": "WHAT CAUSED THE FAILURE?"
+        }
+      ],
+      "text": "Before a project starts, imagine it has already failed. That is the starting point of this exercise. It reframes a vague question about what might go wrong. Ask everyone to write possible reasons, then share them. The aim is to surface weaknesses before you commit. Try it on your next important plan. Follow for practical tools for better decisions.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "The reframing is critical"
+      }
+    },
+    {
+      "id": "ABP002-08",
+      "source_file": "src/content/blog/2019_11_23_premortem/index.md",
+      "source_sha256": "7bc7593741c98b86ef78ac07b7086bf773091fef32f653890ee0c81252a43255",
+      "source_anchor": "everyone must participate and share their ideas",
+      "angle": "Equal participation",
+      "draft_hook": "Your loudest teammate may be hiding your biggest risk.",
+      "explanatory_task": "Show a round-robin of one concern per person, without claiming a quantified success effect.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-08",
+      "source_url": "https://leonlins.com/writing/premortem",
+      "label": "WHO GETS HEARD",
+      "visual": "roundrobin",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "Your loudest teammate may be hiding your biggest risk.",
+          "headline": "WHO GETS HEARD?",
+          "detail": "THE LOUDEST ≠ THE BEST INFORMED"
+        },
+        {
+          "narration": "Before a project starts, asking for volunteers can let a few people dominate the failure review.",
+          "headline": "VOLUNTEERS ONLY?",
+          "detail": "SOME VOICES DISAPPEAR"
+        },
+        {
+          "narration": "Instead, have everyone contribute. Take one concern from each person before going around again.",
+          "headline": "ONE PERSON. ONE CONCERN.",
+          "detail": "THEN THE NEXT PERSON."
+        },
+        {
+          "narration": "The goal is to hear the risk the group would otherwise miss. Follow for tools for clearer decisions.",
+          "headline": "MAKE ROOM FOR THE OUTLIER.",
+          "detail": "BETTER INPUTS BEFORE COMMITMENT"
+        }
+      ],
+      "text": "Your loudest teammate may be hiding your biggest risk. Before a project starts, asking for volunteers can let a few people dominate the failure review. Instead, have everyone contribute. Take one concern from each person before going around again. The goal is to hear the risk the group would otherwise miss. Follow for tools for clearer decisions.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "everyone must participate and share their ideas"
+      }
+    },
+    {
+      "id": "ABP002-12",
+      "source_file": "src/content/blog/2019_04_18_investing/index.md",
+      "source_sha256": "2b5ae4861e38024857b715159729cb06f4235c024c4fe9cfbab981130ab0f1d2",
+      "source_anchor": "only 5 or 10 items",
+      "angle": "Information budget",
+      "draft_hook": "If you could keep only five facts, which would you choose?",
+      "explanatory_task": "Present the article proposed decision exercise; do not claim it is a proven investing strategy.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-12",
+      "source_url": "https://leonlins.com/writing/investing",
+      "label": "YOUR INFORMATION BUDGET",
+      "visual": "filter",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "If you could keep only five facts, which would you choose?",
+          "headline": "ONLY FIVE FACTS.",
+          "detail": "WHICH ONES MATTER?"
+        },
+        {
+          "narration": "The essay Investing and Information proposes limiting the information you use, then tracking your decisions.",
+          "headline": "AN EXPERIMENT TO TRY",
+          "detail": "CHOOSE THE RELEVANT SIGNALS"
+        },
+        {
+          "narration": "The point is not that five is a magic number. It is to distinguish useful evidence from simply collecting more.",
+          "headline": "FIVE IS NOT MAGIC.",
+          "detail": "MORE DATA ≠ MORE VALUE"
+        },
+        {
+          "narration": "Write down your choices before you know the outcome. Follow for ideas that improve how you think.",
+          "headline": "PICK. RECORD. REVIEW.",
+          "detail": "DO NOT LET HINDSIGHT CHOOSE."
+        }
+      ],
+      "text": "If you could keep only five facts, which would you choose? The essay Investing and Information proposes limiting the information you use, then tracking your decisions. The point is not that five is a magic number. It is to distinguish useful evidence from simply collecting more. Write down your choices before you know the outcome. Follow for ideas that improve how you think.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "only 5 or 10 items"
+      }
+    },
+    {
+      "id": "ABP002-18",
+      "source_file": "src/content/blog/2020_07_01_stories/index.md",
+      "source_sha256": "cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04",
+      "source_anchor": "Equity is a stake in your story",
+      "angle": "Who buys the startup story",
+      "draft_hook": "Your startup pitch is also a bet employees are making.",
+      "explanatory_task": "Explain cash-versus-equity opportunity costs as the author framework, without personal career or investment recommendations.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-18",
+      "source_url": "https://leonlins.com/writing/stories",
+      "label": "STARTUP EQUITY IS A STORY BET",
+      "visual": "equity",
+      "presenter": true,
+      "scenes": [
+        {
+          "narration": "Your startup pitch is also a bet employees are making.",
+          "headline": "WHO ELSE BUYS THE STORY?",
+          "detail": "YOUR FUTURE TEAM."
+        },
+        {
+          "narration": "The essay frames equity as a stake in a company story.",
+          "headline": "EQUITY = A STAKE",
+          "detail": "IN A POSSIBLE FUTURE"
+        },
+        {
+          "narration": "A candidate weighs the promise of that future against the cash and alternatives they give up today.",
+          "headline": "PROMISE / OPPORTUNITY COST",
+          "detail": "THE FUTURE IS UNCERTAIN."
+        },
+        {
+          "narration": "A compelling narrative matters, but it does not guarantee the ending. Follow for ideas about business and incentives.",
+          "headline": "THE PITCH IS NOT THE OUTCOME.",
+          "detail": "STORY → EVIDENCE → DECISION"
+        }
+      ],
+      "text": "Your startup pitch is also a bet employees are making. The essay frames equity as a stake in a company story. A candidate weighs the promise of that future against the cash and alternatives they give up today. A compelling narrative matters, but it does not guarantee the ending. Follow for ideas about business and incentives.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "Equity is a stake in your story"
+      }
+    },
+    {
+      "id": "ABP002-19",
+      "source_file": "src/content/blog/2020_07_08_dividend/index.md",
+      "source_sha256": "ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7",
+      "source_anchor": "stock price going down a lot",
+      "angle": "The yield denominator",
+      "draft_hook": "A rising dividend yield can be a falling share price.",
+      "explanatory_task": "Animate unchanged hypothetical dividend divided by a falling price; do not imply dividends are always bad.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-19",
+      "source_url": "https://leonlins.com/writing/dividend",
+      "label": "THE YIELD DENOMINATOR",
+      "visual": "yield",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "A rising dividend yield can be a falling share price.",
+          "headline": "YIELD UP.",
+          "detail": "PRICE DOWN?"
+        },
+        {
+          "narration": "Imagine a stock paying four dollars a year. At a hundred dollar price, that is a four percent yield.",
+          "headline": "$4 ANNUAL DIVIDEND",
+          "detail": "$4 / $100 = 4%"
+        },
+        {
+          "narration": "If its price falls to fifty and the payment stays unchanged, the quoted yield becomes eight percent.",
+          "headline": "SAME $4 PAYMENT",
+          "detail": "$4 / $50 = 8%"
+        },
+        {
+          "narration": "The income did not double. The price halved. Check the denominator. Follow for finance explained clearly.",
+          "headline": "CHECK THE DENOMINATOR.",
+          "detail": "HIGHER YIELD ≠ HIGHER INCOME"
+        }
+      ],
+      "text": "A rising dividend yield can be a falling share price. Imagine a stock paying four dollars a year. At a hundred dollar price, that is a four percent yield. If its price falls to fifty and the payment stays unchanged, the quoted yield becomes eight percent. The income did not double. The price halved. Check the denominator. Follow for finance explained clearly.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "stock price going down a lot"
+      }
+    },
+    {
+      "id": "ABP002-20",
+      "source_file": "src/content/blog/2020_07_08_dividend/index.md",
+      "source_sha256": "ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7",
+      "source_anchor": "total return figure",
+      "angle": "Total return",
+      "draft_hook": "Cash income is only part of your investment result.",
+      "explanatory_task": "Show hypothetical price loss plus dividend; state taxes and timing assumptions and avoid bond-equivalence claims.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-20",
+      "source_url": "https://leonlins.com/writing/dividend",
+      "label": "INCOME IS NOT TOTAL RETURN",
+      "visual": "totalreturn",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "Cash income is only part of your investment result.",
+          "headline": "YOU RECEIVED CASH.",
+          "detail": "DID YOU MAKE MONEY?"
+        },
+        {
+          "narration": "Imagine buying a share for a hundred dollars, receiving four dollars, then selling for ninety.",
+          "headline": "A HYPOTHETICAL YEAR",
+          "detail": "BUY $100 / CASH +$4"
+        },
+        {
+          "narration": "Ignoring taxes and fees, you finish with ninety four dollars. Your total return is minus six percent.",
+          "headline": "SELL $90. KEEP $4.",
+          "detail": "$94 TOTAL / −6% RETURN"
+        },
+        {
+          "narration": "Dividend yield alone misses the price change. Follow for clearer thinking about investing.",
+          "headline": "LOOK AT TOTAL RETURN.",
+          "detail": "PRICE CHANGE + CASH RECEIVED"
+        }
+      ],
+      "text": "Cash income is only part of your investment result. Imagine buying a share for a hundred dollars, receiving four dollars, then selling for ninety. Ignoring taxes and fees, you finish with ninety four dollars. Your total return is minus six percent. Dividend yield alone misses the price change. Follow for clearer thinking about investing.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "total return figure"
+      }
+    },
+    {
+      "id": "ABP002-22",
+      "source_file": "src/content/blog/2020_12_23_practice/index.md",
+      "source_sha256": "83d92533e1852a96e9a14531fd19964e22effd24ea5d03d0e06149c338b1ee69",
+      "source_anchor": "diagram all your steps",
+      "angle": "Map the process",
+      "draft_hook": "Before practicing harder, draw what you actually do.",
+      "explanatory_task": "Animate an example process map and a weak step; present this as a decision tool.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-22",
+      "source_url": "https://leonlins.com/writing/practice",
+      "label": "MAP BEFORE PRACTICE",
+      "visual": "process",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "Before practicing harder, draw what you actually do.",
+          "headline": "PRACTICE HARDER?",
+          "detail": "FIRST, MAP THE PROCESS."
+        },
+        {
+          "narration": "The essay Getting Better at Getting Better starts with listing the steps in your process.",
+          "headline": "MAKE THE INVISIBLE VISIBLE.",
+          "detail": "INPUT → ACTION → FEEDBACK"
+        },
+        {
+          "narration": "Pick one weak step and make a deliberate adjustment. Repeating everything harder may repeat the same mistake.",
+          "headline": "CHANGE ONE WEAK STEP.",
+          "detail": "REPETITION ≠ IMPROVEMENT"
+        },
+        {
+          "narration": "Record what changed and what happened. Follow for practical ideas about improving your decisions.",
+          "headline": "ADJUST. RECORD. RETRY.",
+          "detail": "MAKE THE NEXT ATTEMPT INFORMED."
+        }
+      ],
+      "text": "Before practicing harder, draw what you actually do. The essay Getting Better at Getting Better starts with listing the steps in your process. Pick one weak step and make a deliberate adjustment. Repeating everything harder may repeat the same mistake. Record what changed and what happened. Follow for practical ideas about improving your decisions.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "diagram all your steps"
+      }
+    },
+    {
+      "id": "ABP002-24",
+      "source_file": "src/content/blog/2020_12_23_practice/index.md",
+      "source_sha256": "83d92533e1852a96e9a14531fd19964e22effd24ea5d03d0e06149c338b1ee69",
+      "source_anchor": "make small adjustments deliberately",
+      "angle": "Record before hindsight",
+      "draft_hook": "If you never log the change, hindsight writes your results.",
+      "explanatory_task": "Show hypothesis, adjustment and recorded outcome; connect deliberately to this experiment without inventing success metrics.",
+      "status": "concept_requires_script_fact_rights_and_creative_review",
+      "media_path": null,
+      "publication_authorized": false,
+      "concept_id": "abp002-24",
+      "source_url": "https://leonlins.com/writing/practice",
+      "label": "HINDSIGHT WRITES THE STORY",
+      "visual": "log",
+      "presenter": false,
+      "scenes": [
+        {
+          "narration": "If you never log the change, hindsight writes your results.",
+          "headline": "WHAT DID YOU PREDICT?",
+          "detail": "BEFORE YOU KNEW THE RESULT."
+        },
+        {
+          "narration": "Before trying a new approach, write your hypothesis and the result you expect.",
+          "headline": "1. HYPOTHESIS",
+          "detail": "WHAT SHOULD CHANGE?"
+        },
+        {
+          "narration": "Record the change, then the actual outcome. Without that record, it is easy to invent a flattering explanation later.",
+          "headline": "2. CHANGE / 3. OBSERVE",
+          "detail": "KEEP THE ORIGINAL PREDICTION."
+        },
+        {
+          "narration": "That is why we are logging this content experiment. Follow for ideas about learning from your own decisions.",
+          "headline": "LEARN FROM YOUR RECORD.",
+          "detail": "A RESULT IS NOT YET A RECIPE."
+        }
+      ],
+      "text": "If you never log the change, hindsight writes your results. Before trying a new approach, write your hypothesis and the result you expect. Record the change, then the actual outcome. Without that record, it is easy to invent a flattering explanation later. That is why we are logging this content experiment. Follow for ideas about learning from your own decisions.",
+      "fact_review": {
+        "status": "source_and_arithmetic_reviewed_by_Codex",
+        "scope": "Original article adaptation; hypothetical worked examples explicitly labelled; no empirical performance promises or current market statistics",
+        "external_media": "none; draw all diagrams from original code",
+        "copyright": "Owned essay paraphrase, original graphics, licensed synthetic voice; no embedded source photos or screenshots reused",
+        "source_anchor": "make small adjustments deliberately"
+      }
+    }
+  ]
+}

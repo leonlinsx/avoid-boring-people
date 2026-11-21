@@ -8,8 +8,8 @@
   "video_sha256": "e86d84d60083e4c9218b212326a38874300ba15731a5bcf77220550d884c847d",
   "caption": "Up 50%. Down 40%. You still lose money.\n\n1.50 × 0.60 = 0.90\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/ergodicity\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
   "ai_generated": true,
-  "trial": true,
-  "graduation_strategy": "MANUAL",
+  "trial": false,
+  "graduation_strategy": null,
   "review_status": "approved",
   "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
   "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
@@ -29,5 +29,8 @@
   "voice": "af_heart",
   "duration_seconds": 17.874,
   "cta_type": "follow",
-  "experiment_hypothesis": "specific numerical consequence"
+  "experiment_hypothesis": "specific numerical consequence",
+  "delivery_mode": "ordinary_cold_start",
+  "cohort_id": "ABP-REELS-002-STANDARD-COLDSTART",
+  "delivery_evidence": "https://github.com/leonlinsx/avoid-boring-people/actions/runs/44921907307"
 }

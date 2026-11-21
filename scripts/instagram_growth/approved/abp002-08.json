@@ -8,8 +8,8 @@
   "video_sha256": "d8e2d3823874a5d8319c1b114e8ca26ad1c9ce003e2a797e89347cc3ebcac4af",
   "caption": "Your loudest teammate may be hiding your biggest risk.\n\nBetter inputs before commitment\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/premortem\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
   "ai_generated": true,
-  "trial": true,
-  "graduation_strategy": "MANUAL",
+  "trial": false,
+  "graduation_strategy": null,
   "review_status": "approved",
   "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
   "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
@@ -29,5 +29,8 @@
   "voice": "af_heart",
   "duration_seconds": 21.611,
   "cta_type": "follow",
-  "experiment_hypothesis": "practical decision tool"
+  "experiment_hypothesis": "practical decision tool",
+  "delivery_mode": "ordinary_cold_start",
+  "cohort_id": "ABP-REELS-002-STANDARD-COLDSTART",
+  "delivery_evidence": "https://github.com/leonlinsx/avoid-boring-people/actions/runs/44921907307"
 }

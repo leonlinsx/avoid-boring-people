@@ -8,8 +8,8 @@
   "video_sha256": "f13058a9a129accc235b8b0479fd46767d5da066de42b3ed84e8993fe40fdb2f",
   "caption": "If you could keep only five facts, which would you choose?\n\nDo not let hindsight choose.\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/investing\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
   "ai_generated": true,
-  "trial": true,
-  "graduation_strategy": "MANUAL",
+  "trial": false,
+  "graduation_strategy": null,
   "review_status": "approved",
   "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
   "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
@@ -29,5 +29,8 @@
   "voice": "af_heart",
   "duration_seconds": 22.938,
   "cta_type": "follow",
-  "experiment_hypothesis": "practical decision tool"
+  "experiment_hypothesis": "practical decision tool",
+  "delivery_mode": "ordinary_cold_start",
+  "cohort_id": "ABP-REELS-002-STANDARD-COLDSTART",
+  "delivery_evidence": "https://github.com/leonlinsx/avoid-boring-people/actions/runs/44921907307"
 }

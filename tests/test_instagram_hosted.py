@@ -106,3 +106,24 @@ def test_verify_pilot_does_not_pass_when_insights_missing(monkeypatch):
     monkeypatch.setattr(p,'fetch_insights',lambda _: {'metrics':{'reach':None}})
     with pytest.raises(h.StateError,match='unavailable'):h.verify_pilot(store)
     assert store.state['pilot_verified'] is False
+
+
+def test_known_container_rejection_can_be_reconciled_explicitly():
+    record={'status':'reconciliation_required','error_type':'GraphApiError','trial':True}
+    saved=[];store=SimpleNamespace(state={'receipts':{'trial':record}},save=lambda:saved.append(1))
+    h.reconcile_no_publish(store,'trial')
+    assert record['status']=='confirmed_unpublished' and saved==[1]
+
+
+@pytest.mark.parametrize('extra',[{'container_id':'existing-container'},{'media_id':'existing-media'},{'error_type':'ConnectionError'}])
+def test_uncertain_publish_cannot_be_declared_unpublished(extra):
+    record={'status':'reconciliation_required','error_type':'GraphApiError',**extra}
+    store=SimpleNamespace(state={'receipts':{'trial':record}},save=lambda:pytest.fail('must not clear uncertainty'))
+    with pytest.raises(h.StateError,match='cannot prove'):h.reconcile_no_publish(store,'trial')
+    assert record['status']=='reconciliation_required'
+
+
+def test_insights_probe_uses_existing_media_and_accepts_real_zero(monkeypatch):
+    monkeypatch.setattr(h,'read_api',lambda *a:{'data':[{'id':'123456789'}]})
+    monkeypatch.setattr(p,'fetch_insights',lambda _: {'metrics':{'reach':0},'availability':{'reach':'available'}})
+    assert h.insights_probe()['available'] is True

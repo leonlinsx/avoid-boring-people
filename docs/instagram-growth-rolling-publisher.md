@@ -1,6 +1,8 @@
 # ABP Instagram — rolling Trial Reel pilot, November 2026
 
-**NOT LIVE.** This is an independent, locally hosted, opt-in Reel subsystem for
+**Current implementation:** [Continuous hosted experiments](instagram-growth-continuous.md) supersedes the local publication/measurement timer instructions below. The original local templates remain inactive. Twelve MP4s are hosted and verified; the November 21 Trial request was rejected for the account follower requirement before publication. The separately declared ordinary-Reel pilot must pass before recurring activation.
+
+**Historical preparation contract.** This is an independent, locally hosted, opt-in Reel subsystem for
 @avoidboringpeople only. Existing carousel automation and @leon.lin.s are untouched.
 
 ## Source and activation boundary

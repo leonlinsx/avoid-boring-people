@@ -8,8 +8,8 @@
   "video_sha256": "d5e0137f443f18ae96df788a7c558ac670c371d292064f4ea21fc866244de513",
   "caption": "Your startup pitch is also a bet employees are making.\n\nStory → evidence → decision\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/stories\n\nAI-generated voice and fictional AI presenter. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
   "ai_generated": true,
-  "trial": true,
-  "graduation_strategy": "MANUAL",
+  "trial": false,
+  "graduation_strategy": null,
   "review_status": "approved",
   "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
   "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
@@ -29,5 +29,8 @@
   "voice": "af_heart",
   "duration_seconds": 20.466667,
   "cta_type": "follow",
-  "experiment_hypothesis": "practical decision tool"
+  "experiment_hypothesis": "practical decision tool",
+  "delivery_mode": "ordinary_cold_start",
+  "cohort_id": "ABP-REELS-002-STANDARD-COLDSTART",
+  "delivery_evidence": "https://github.com/leonlinsx/avoid-boring-people/actions/runs/44921907307"
 }

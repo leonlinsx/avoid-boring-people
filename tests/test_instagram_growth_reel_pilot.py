@@ -223,10 +223,11 @@ def test_concurrent_publisher_is_refused_before_network(monkeypatch, tmp_path):
             pilot.publish(item(), state_dir=tmp_path)
 
 
-def test_distinct_video_can_publish_after_completed_history(monkeypatch, tmp_path):
+@pytest.mark.parametrize('prior_status, prior_hash', [('published', 'b' * 64), ('confirmed_unpublished', 'a' * 64)])
+def test_distinct_delivery_can_publish_after_safe_history(monkeypatch, tmp_path, prior_status, prior_hash):
     (tmp_path / 'previous-name.json').write_text(json.dumps({
-        'concept_id': 'previous-name', 'sha256': 'b' * 64,
-        'status': 'published', 'media_id': '123456789012345',
+        'concept_id': 'previous-name', 'sha256': prior_hash,
+        'status': prior_status, 'media_id': '123456789012345' if prior_status == 'published' else None,
     }))
     monkeypatch.setattr(pilot, 'local_video_preflight', lambda v: {'sha256': v['video_sha256']})
     monkeypatch.setattr(pilot, 'hosted_video_preflight', lambda v: 2048)
@@ -259,3 +260,15 @@ def test_professional_identity_must_still_match_configuration(monkeypatch,patch)
         def json(self):return {'id':'app-scope-999','user_id':'123','username':'avoidboringpeople',**patch}
     monkeypatch.setattr(pilot.requests,'get',lambda *a,**k:Response())
     with pytest.raises(RefreshError):pilot.confirmed_account()
+
+
+def test_missing_insights_preserve_safe_permission_diagnostics(monkeypatch):
+    monkeypatch.setattr(pilot,'confirmed_account',lambda:('123','private-token'))
+    class Response:
+        status_code=403
+        def json(self):return {'error':{'code':10,'message':'unsafe provider detail private-token'}}
+    monkeypatch.setattr(pilot.requests,'get',lambda *a,**k:Response())
+    value=pilot.fetch_insights('123456789')
+    assert value['metrics']['reach'] is None
+    assert value['availability']['reach']=={'http_status':403,'api_code':10}
+    assert 'private-token' not in json.dumps(value)

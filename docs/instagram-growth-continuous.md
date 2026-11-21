@@ -29,6 +29,20 @@ local Instagram token, paid generation API or ChatGPT/Codex runtime is required.
   This state branch is excluded from Vercel deployment and does not mutate
   `posted.json`, the newsletter, other social destinations or the personal account.
 
+## Verified cold-start delivery decision
+
+The November 21 live Trial container request was rejected by Meta because ABP
+does not meet the Trial Reel follower requirement. No container ID or
+media_publish call was created. Keep its original durable receipt. An explicit
+`reconcile-no-publish` action can classify only a Graph API container refusal
+with no container or media ID; uncertain publishes remain blocked.
+
+The initial live cohort is therefore explicitly **ordinary Reels**, registered
+as `ABP-REELS-002-STANDARD-COLDSTART`. Concept `abp002-19-standard` is the
+ordinary delivery of the rejected, never-published Trial creative. Do not pool
+future Trial outcomes with these observations. Other approved creatives use
+ordinary delivery until a separately checked Trial cohort becomes eligible.
+
 ## Activation and operation
 
 A workflow dispatch defaults to read-only `preflight`. A separate explicit
@@ -49,7 +63,9 @@ Create the state branch from the reviewed merged head, with an initial object:
 # No publishing and no token rotation:
 gh workflow run instagram-reels.yml -f action=preflight
 # One already-authorized live pilot, not a recurring schedule:
-gh workflow run instagram-reels.yml -f action=pilot -f concept=abp002-19
+gh workflow run instagram-reels.yml -f action=pilot -f concept=abp002-19-standard
+# If initial Insights are delayed, recheck without publishing again:
+gh workflow run instagram-reels.yml -f action=verify
 # Only after read-back verification and available Insights pass:
 gh variable set ABP_REELS_ENABLED --body true
 # Kill switch: disable future scheduled jobs and publication permission.

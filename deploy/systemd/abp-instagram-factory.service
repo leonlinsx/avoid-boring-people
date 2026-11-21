@@ -1,0 +1,10 @@
+[Unit]
+Description=Generate source-grounded ABP Reels for review (never publishes)
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/repos/avoid-boring-people
+ExecStart=%h/repos/avoid-boring-people/.venv-ig-reels/bin/python -m scripts.instagram_growth.factory.weekly --count 40 --render-limit 21
+TimeoutStartSec=7200
+NoNewPrivileges=true
+UMask=0077

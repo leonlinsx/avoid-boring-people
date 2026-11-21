@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly local ABP creative experiment factory
+
+[Timer]
+OnCalendar=Mon *-*-* 04:30:00 America/New_York
+Persistent=true
+Unit=abp-instagram-factory.service
+
+[Install]
+WantedBy=timers.target
