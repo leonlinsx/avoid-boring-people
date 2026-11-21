@@ -45,7 +45,9 @@ def choose(queue_dir: Path, state_dir: Path, now: datetime,
     for r in history:
         if r.get("status") == "confirmed_unpublished":
             continue
-        ts = instant(r["created_at"])
+        # Meta processing can take minutes after reservation. Throttle completed
+        # posts from their publication time, not the earlier reservation time.
+        ts = instant(r.get("published_at") or r["created_at"])
         if now - timedelta(hours=24) <= ts <= now:
             starts.append(ts)
     if len(starts) >= max_per_24h:

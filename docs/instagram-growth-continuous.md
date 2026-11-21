@@ -74,7 +74,8 @@ gh variable set ABP_REELS_ENABLED --body false
 
 Publication eligibility checks run hourly at :15 UTC. A check publishes at most
 one approved item; the rolling cap remains three per 24 hours, with at least
-three hours between reservations. Hourly checks recover from delayed slots:
+three hours between completed publications. Successful receipts use publication
+time, so Meta container processing cannot shorten the spacing. Hourly checks recover from delayed slots:
 three fixed daily ticks can lose an entire slot when yesterday's reservation
 is still inside the rolling window. These are operational checks, not a claim
 of optimal viral timing. Actual delivery can be delayed by Actions or Meta.
