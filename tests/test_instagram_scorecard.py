@@ -63,6 +63,9 @@ def test_outlier_on_one_article_cannot_drive_exploitation():
     another = {**row, 'source_url': 'https://leonlins.com/writing/two', 'concept_id': 'example-two'}
     result = s.replicated_patterns([row, another])
     assert result[0]['n_reels'] == 2 and result[0]['shares_per_1000_reached'] == 10
+    assert result[0]['replication_eligible']
+    weak = {**another, 'metrics':{'reach':10000,'shares':0}}
+    assert not s.replicated_patterns([row,weak])[0]['replication_eligible']
 
 
 def test_pending_is_not_due_before_actual_age():
@@ -70,3 +73,12 @@ def test_pending_is_not_due_before_actual_age():
     report = s.build(st, [asset()], NOW)
     assert len(report['pending_windows']) == 3
     assert all(x['status'] == 'not_due' for x in report['pending_windows'])
+
+
+def test_presentation_pairs_need_both_sides_and_matching_ages():
+    a={'concept_id':'example-head','pair_id':'pair-one','pair_role':'presenter','window':'7d','actual_age_hours':168.2,'eligible_for_comparison':True,'metrics':{'reach':120}}
+    b={**a,'concept_id':'example-graphics','pair_role':'graphics','actual_age_hours':168.8}
+    assert s.paired_presentations([a])[0]['status']=='insufficient_or_mismatched_evidence'
+    assert s.paired_presentations([a,b])[0]['status']=='comparable_observational_pair'
+    b['actual_age_hours']=171
+    assert s.paired_presentations([a,b])[0]['status']=='insufficient_or_mismatched_evidence'

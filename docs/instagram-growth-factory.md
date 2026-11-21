@@ -13,7 +13,7 @@ there is no permanent self-hosted GitHub Actions runner.
   --spec scripts/instagram_growth/specs/batch-v2.json \
   --output .tmp/instagram-growth/my-reviewed-template-run --limit 12
 
-# Propose 32 candidates: source-passage controls plus cached local-model experiments:
+# Propose context-complete candidates with cached local models and source critique:
 .venv-ig-reels/bin/python -m scripts.instagram_growth.factory.draft \
   --output .tmp/instagram-growth/new-drafts --count 32
 
@@ -30,7 +30,12 @@ contact sheets, and a `review-queue/`. The renderer supports the cached fictiona
 FlashHead Pro presenter and optional cached Kokoro Nicole comparisons. Generated
 B-roll is not used when it adds no explanatory value.
 
-The initial model-only test quarantined all 32 proposals. The safer hybrid keeps exact source-passage controls alongside local-model creative experiments, preserving word-for-word factual content rather than forcing short fragments to fill a script. A model critic is only a screen. The real validation found that a critic could
+The initial model-only test quarantined all 32 proposals. A later raw-passage
+batch passed technical checks but failed owner review because viewers lacked
+context. Raw extraction no longer feeds production. New scripts need an explicit
+subject, situation and payoff; surrounding exact source anchors support the
+setup. One bounded repair uses concrete context/source findings, then remaining
+failures are quarantined. A model critic is only a screen. Earlier validation found that a critic could
 miss an inverse-causation claim; that candidate was rejected manually. Neither a
 source anchor nor a technical PASS authorizes publication. Correct weak hooks,
 unsupported mechanisms, missing qualifications, inaccurate pronunciation and
@@ -38,8 +43,10 @@ layout issues before approving. Generated concepts can be quarantined without
 making the renderer or publisher accept them. Candidates and rejections are
 recorded in `proposals.jsonl`; no run overwrites an existing frozen draft batch.
 
-After full source/rights and audio/video playback review, an operator can approve
-one exact asset. This operation is never called by a timer:
+Use the [batch review and replenishment commands](instagram-growth-optimization.md)
+to review 20–30 videos, import durable decisions and open a queue PR. The older
+single-asset approval command still requires standalone context and full review;
+it is never called by a timer:
 
 ```sh
 .venv-ig-reels/bin/python -m scripts.instagram_growth.factory.approve \
@@ -65,8 +72,13 @@ concept ID or ignore the publisher's hash/receipt halt. The default approval del
 
 `factory.weekly` reads only the public aggregate experiment state, uses the last
 weekly attention report to propose fresh-source replications while preserving
-exploration, attempts up to 40 candidates (three source-passage controls for each local-model attempt), and renders at most 21 source-screened
-assets. The 32-attempt hybrid validation produced 19 source-screened drafts; the initial production budget is therefore 40 candidates to aim for 21 reviewable renders, with no guarantee of approval. The source-passage controls retain whole sentences and qualifications from one owned insight; they are not article summaries. Historical publication dates stay visible. Local-model candidates may be quarantined. Most use Heart; approximately one in seven uses Nicole as an experiment.
+exploration, attempts up to 40 context-complete candidates, and renders at most
+21 source-screened assets. Planned allocation is 60/25/15 exploration,
+exploitation and controls; unsupported exploitation returns to exploration.
+Actual accepted/rendered allocation and duration are reported, not guaranteed.
+Controls preserve established production attributes, not raw prose fragments.
+Historical dates stay visible. Most use Heart, with Nicole comparisons. A
+review HTML package and durable success/failure marker are automatic outputs.
 It places **all** new outputs in review, not the live queue. It has no Instagram
 credential or publishing action. A low-quality draft yield or an empty approved
 inventory is an operational issue requiring review, not permission to lower the

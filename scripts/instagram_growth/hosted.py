@@ -128,7 +128,7 @@ def source_check(item):
     if not path.is_relative_to(Path('src/content/blog').resolve()) or not path.is_file():
         raise StateError('invalid source path')
     data=path.read_bytes()
-    if hashlib.sha256(data).hexdigest()!=item['source_sha256'] or item['source_anchor'] not in data.decode():
+    if hashlib.sha256(data).hexdigest()!=item['source_sha256'] or item['source_anchor'] not in data.decode() or any(a not in data.decode() for a in item.get('context_anchors',[])):
         raise StateError('approved source has changed')
 
 
