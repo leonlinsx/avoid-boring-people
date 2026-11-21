@@ -6,6 +6,14 @@ from scripts.instagram_growth.factory.run import validate
 from scripts.instagram_growth.factory.draft import claim_pool
 
 
+def test_presenter_cuts_to_graphics_for_long_narration():
+    from scripts.instagram_growth.factory.run import presenter_window
+    assert presenter_window(200, 8.364) == 8
+    assert presenter_window(200, 4.2) == 4.2
+    with pytest.raises(ValueError, match='decoded frames'):
+        presenter_window(0, 8.364)
+
+
 def sample(tmp_path,monkeypatch):
     monkeypatch.chdir(tmp_path);p=Path('src/content/blog/2020_01_01_example/index.md');p.parent.mkdir(parents=True);p.write_text('---\ntitle: Example\npubDate: 2020-01-01\n---\nA source claim about observing the steps in a process before changing them. This is only the author framework, not a guarantee of success.\n')
     narration='Observe the steps in your process before making a change. This is a framework to try and evaluate, rather than a guarantee that every change will work. Follow for practical ideas about making decisions and learning from your results.'

@@ -88,6 +88,31 @@ def test_throttling_and_spacing(tmp_path):
     assert entry is None and "24h" in status
 
 
+def test_hourly_check_recovers_after_rolling_window_boundary(tmp_path):
+    queue, state = tmp_path / 'queue', tmp_path / 'receipts'
+    put(queue, 'waiting')
+    receipt(state, 'first', created_at='2026-11-20T15:00:30Z')
+    receipt(state, 'second', created_at='2026-11-20T23:00:30Z')
+    receipt(state, 'third', created_at='2026-11-21T07:00:30Z')
+    entry, reason = q.choose(queue, state, NOW)
+    assert entry is None and '24h' in reason
+    entry, reason = q.choose(queue, state, NOW + timedelta(hours=1))
+    assert reason == 'READY' and entry['concept_id'] == 'waiting'
+
+
+def test_spacing_uses_publication_after_container_processing(tmp_path):
+    queue, state = tmp_path / 'queue', tmp_path / 'receipts'
+    put(queue, 'waiting')
+    receipt(state, 'recent', created_at='2026-11-21T11:59:00Z')
+    p = state / 'recent.json'
+    r = json.loads(p.read_text()); r['published_at'] = '2026-11-21T12:02:00Z'
+    p.write_text(json.dumps(r))
+    entry, reason = q.choose(queue, state, NOW)
+    assert entry is None and 'spacing' in reason
+    entry, reason = q.choose(queue, state, NOW + timedelta(minutes=2))
+    assert reason == 'READY' and entry['concept_id'] == 'waiting'
+
+
 def test_sampler_records_missing_as_missing_and_does_not_refetch(monkeypatch, tmp_path):
     receipt(tmp_path, "test-one", created_at="2026-11-20T12:00:00Z")
     calls = []

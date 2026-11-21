@@ -2,6 +2,7 @@
 import json,pathlib,math,time,hashlib,subprocess,sys,os
 from PIL import Image,ImageDraw,ImageFont,ImageOps
 import numpy as np,cv2
+from run import presenter_window
 R=pathlib.Path(os.environ.get('ABP_GPU_ROOT','.tmp/instagram-growth')).resolve();O=pathlib.Path(os.environ['ABP_FACTORY_OUTPUT']).resolve();F=O/'final';F.mkdir(exist_ok=True)
 FF=next((R/'tools').glob('ffmpeg-*/ffmpeg'));FP=FF.with_name('ffprobe');FPS=30
 W,H=1080,1920;WHITE='#f6f3eb';MUTED='#a3b4b2';GREEN='#d4f28d';RED='#ffac96';PANEL='#203337';fonts={};bounds=[1080,1920,0,0]
@@ -127,14 +128,16 @@ def render(item,preview=False):
     if not ok:break
     frames.append(Image.fromarray(cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)))
    cap.release()
-  assert preview or len(frames)/25>=starts[1]-.08,(name,len(frames),starts[1])
+  if not preview:presenter_window(len(frames),starts[1])
+ presenter_end=presenter_window(len(frames),starts[1]) if frames else 0
  def draw(t):
   stage=max(i for i,s in enumerate(starts) if t>=s);elapsed=t-starts[stage]; im=Image.new('RGB',(W,H),'#0c1b20')
   # Quiet background rails keep motion without distracting stock footage.
   d=ImageDraw.Draw(im)
   for k in range(7):
    y=int(540+k*150+(t*9)%150);d.line((96,y,900,y),fill='#12252a',width=1)
-  if stage==0 and frames:
+  show_presenter=stage==0 and t<presenter_end
+  if show_presenter:
    idx=min(int(t*25),len(frames)-1); im=ImageOps.fit(frames[idx],(W,H),method=Image.Resampling.LANCZOS)
    overlay=Image.new('RGBA',(W,H),(0,0,0,0)); od=ImageDraw.Draw(overlay)
    for y in range(H):
@@ -145,7 +148,7 @@ def render(item,preview=False):
   text(d,'AI VOICE'+(' · FICTIONAL PRESENTER' if item['presenter'] else ''),110,330,30,MUTED)
   if item.get('source_date'):text(d,'SOURCE ESSAY · '+item['source_date'],110,375,22,MUTED)
   wrap(d,item['scenes'][stage]['headline'],110,410,64)
-  if stage==0 and frames:
+  if show_presenter:
    wrap(d,item['scenes'][stage]['detail'],110,1080,54,c=GREEN)
   else:
    wrap(d,item['scenes'][stage]['detail'],110,570,32,c=GREEN)
@@ -181,7 +184,10 @@ def render(item,preview=False):
  proc.stdin.close();assert proc.wait()==0
  scan=json.loads(subprocess.check_output([str(FP),'-v','quiet','-show_format','-show_streams','-of','json',str(p)]));p.with_suffix('.ffprobe.json').write_text(json.dumps(scan,indent=2))
  out={'concept':item,'audio':audio,'captions':align,'caption_groups':groups,'scene_starts':starts,'verified_text_bounds':bounds.copy(),'safe_area_note':'Conservative central region; actual native Instagram overlay unverified until pilot','render_seconds':time.monotonic()-start,'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size,'rights':'Original owned article paraphrase and code-drawn graphics. No article photos, copyrighted clips or music. Lato OFL-1.1; Kokoro Apache-2.0; fictional Z-Image portrait and FlashHead Pro DiT/Wan VAE Apache-2.0. No real person likeness or voice cloning.','quality_review':'technical/source/frame review pending; no human full playback claimed','head':json.loads((O/'briefs.json').read_text())['head'],'ffprobe':scan}
- if item['presenter']:out['presenter']=json.loads((O/'presenters'/name/'flashhead-pro.manifest.json').read_text())
+ if item['presenter']:
+  out['presenter']=json.loads((O/'presenters'/name/'flashhead-pro.manifest.json').read_text())
+  out['presenter_display_until_seconds']=presenter_end
+  out['presenter_transition']='Cut to motion graphics at native clip end or next scene; narration and word alignment continue unchanged.'
  p.with_suffix('.manifest.json').write_text(json.dumps(out,indent=2));print('RENDERED',name,round(dur,2),round(out['render_seconds'],2),out['bytes'],flush=True)
 if __name__=='__main__':
  items=json.loads((O/'briefs.json').read_text())['items']

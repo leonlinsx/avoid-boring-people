@@ -12,7 +12,9 @@ on:
         type: string
         required: false
   schedule:
-    - cron: '15 0,8,16 * * *'
+    # Hourly eligibility checks recover from delayed/blocked slots. The queue,
+    # not the number of cron ticks, enforces 3/rolling-24h and >=3h spacing.
+    - cron: '15 * * * *'
     - cron: '45 * * * *'
     - cron: '25 7 * * 1'
 
@@ -39,6 +41,7 @@ jobs:
       - name: Install pinned HTTP dependencies
         run: python -m pip install --require-hashes -r scripts/instagram_growth/requirements-hosted.lock
       - name: Install video preflight dependency on ephemeral runner
+        if: inputs.action == 'pilot' || inputs.action == 'publish' || github.event.schedule == '15 * * * *'
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends ffmpeg
@@ -56,7 +59,7 @@ jobs:
           EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
           case "$GITHUB_EVENT_NAME:$EVENT_SCHEDULE" in
-            schedule:'15 0,8,16 * * *') action=publish ;;
+            schedule:'15 * * * *') action=publish ;;
             schedule:'45 * * * *') action=measure ;;
             schedule:'25 7 * * 1') action=weekly ;;
             workflow_dispatch:*) action="$MANUAL_ACTION" ;;
