@@ -24,5 +24,10 @@
     "ABP_credentials_identity_and_Trial_eligibility",
     "one_confirmed_pilot_before_unattended_dispatch"
   ],
-  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c"
+  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c",
+  "creative_format": "narrated_motion_graphics",
+  "voice": "af_heart",
+  "duration_seconds": 17.874,
+  "cta_type": "follow",
+  "experiment_hypothesis": "specific numerical consequence"
 }

@@ -186,11 +186,14 @@ def measure(store):
 def weekly(store):
     state=store.state
     observations=list(state.get('observations',{}).values())
-    cohorts={label:[] for label in queue.WINDOWS}
+    cohorts={label:[] for label in queue.WINDOWS};late=[]
+    manifest_meta={p.stem:json.loads(p.read_text()) for p in QUEUE_DIR.glob('*.json')}
     for x in observations:
         m=x['metrics'];reach=m.get('reach');shares=m.get('shares')
-        cohorts[x['window']].append({'concept_id':x['concept_id'],'actual_age_hours':x['actual_age_hours'],'reach':reach,'views':m.get('views'),'shares_per_1000_reached':1000*shares/reach if isinstance(reach,(int,float)) and reach>0 and isinstance(shares,(int,float)) else None,'average_watch_seconds':m.get('ig_reels_avg_watch_time'),'attributed_follows':None})
-    report={'created_at':datetime.now(timezone.utc).isoformat(),'account':pilot.ACCOUNT,'equal_target_age_cohorts':cohorts,'follower_snapshots':state.get('account_snapshots',{}),'conclusion':'Exploratory attention evidence only; per-Reel follow attribution unavailable; no causal or statistical winner declared','next_generation':'Use fresh source claims and one or two promising patterns; preserve exploration and human approval.'}
+        intended=queue.WINDOWS[x['window']].total_seconds()/3600
+        if x['actual_age_hours']>intended+(24 if x['window']=='7d' else 6):late.append(x['concept_id']+'-'+x['window']);continue
+        cohorts[x['window']].append({'concept_id':x['concept_id'],'hypothesis':manifest_meta.get(x['concept_id'],{}).get('experiment_hypothesis'),'creative_format':manifest_meta.get(x['concept_id'],{}).get('creative_format'),'voice':manifest_meta.get(x['concept_id'],{}).get('voice'),'source_url':manifest_meta.get(x['concept_id'],{}).get('source_url'),'actual_age_hours':x['actual_age_hours'],'reach':reach,'views':m.get('views'),'shares_per_1000_reached':1000*shares/reach if isinstance(reach,(int,float)) and reach>0 and isinstance(shares,(int,float)) else None,'average_watch_time_api_value':m.get('ig_reels_avg_watch_time'),'watch_time_unit':'provider value; not normalized to seconds','attributed_follows':None})
+    report={'created_at':datetime.now(timezone.utc).isoformat(),'account':pilot.ACCOUNT,'equal_target_age_cohorts':cohorts,'late_snapshots_excluded':late,'follower_snapshots':state.get('account_snapshots',{}),'conclusion':'Exploratory attention evidence only; per-Reel follow attribution unavailable; no causal or statistical winner declared','next_generation':'Use fresh source claims and one or two promising patterns; preserve exploration and human approval.'}
     state['weekly_review']=report;store.save();print(json.dumps(report,indent=2))
 
 
