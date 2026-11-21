@@ -9,6 +9,7 @@ from scripts.instagram_growth import reel_pilot as pilot
 
 def approve(batch: Path, concept: str, reviewer: str, confirmed: bool, trial: bool=False):
     if not confirmed or not reviewer.strip():raise ValueError('explicit reviewed-playback/source confirmation and named reviewer required')
+    if (batch/'editorial-hold.json').exists() or (batch.parent/'editorial-hold.json').exists():raise ValueError('editorial revision hold prevents approval')
     review=batch/'review-queue'/f'{concept}.json'
     row=json.loads(review.read_text())
     if row['review_status'] in ('rejected','revise'):raise ValueError('rejected/revise creative requires a corrected new batch, not approval override')
