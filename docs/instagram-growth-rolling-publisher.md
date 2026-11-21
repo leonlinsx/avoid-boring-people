@@ -154,3 +154,37 @@ their actual quality and rights, and put only approved, already-hosted MP4s
 into the queue. Then validate one real live Reel before scheduling the
 rolling dispatch. No Instagram posts, followers or signups were generated
 while this PR was prepared.
+
+
+## Optional unattended local user timers — disabled by default
+
+The repo includes four **uninstalled** templates under deploy/systemd:
+abp-instagram-rolling-publish.service/.timer and
+abp-instagram-rolling-measure.service/.timer. These are NOT enabled by GitHub
+and do not execute on the user's computer unless locally installed and started.
+
+Once one real Reel is fully confirmed, the operator can create a private
+$HOME/.config/abp-instagram/reels.env (mode 0600) with the exact ABP Instagram
+User token/id and ABP_REELS_PUBLISH=enabled, and an isolated
+$HOME/repos/avoid-boring-people/.venv-ig-reels with Python requests installed.
+Do not reuse @leon.lin.s credentials.
+
+~~~sh
+# ONLY after the first approved live pilot is verified:
+mkdir -p "$HOME/.config/systemd/user"
+cp deploy/systemd/abp-instagram-rolling-* "$HOME/.config/systemd/user/"
+systemctl --user daemon-reload
+systemctl --user enable --now abp-instagram-rolling-publish.timer
+systemctl --user enable --now abp-instagram-rolling-measure.timer
+systemctl --user list-timers 'abp-instagram-*'
+
+# Pause live publishing without deleting the approved queue or measurements:
+systemctl --user disable --now abp-instagram-rolling-publish.timer
+~~~
+
+The publish timer checks four local-time windows per day but the queue limits
+actual publications to at most two within 24 hours, separated by at least four
+hours. Measurement runs independently twice a day. Keep the timer disabled if
+the user asks for a pause, if Meta's account/permission check changes, or if
+captions/artifacts fail QA. Do not install timers as part of CI or a repository
+merge.
