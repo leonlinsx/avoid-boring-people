@@ -71,13 +71,18 @@ All synthetic people must be clearly fictional and disclosed where required. Nev
 
 ## Broader creative experiments: explore widely, publish selectively
 
-Generate up to **12 offline treatments** across three source articles:
+The [November 21 rolling-batch protocol](instagram-growth-rolling-batches.md)
+replaces the earlier twelve-treatment/six-post ceiling with 24 source-anchored
+concepts across eight articles, rolling observation windows, and independent
+confirmation on fresh material. This is the current planning direction; API
+publishing/measurement integration and live authorization remain outstanding.
+The three-article examples below describe the earlier creative screen:
 
 - Ergodicity: ink typography, high-contrast signal typography, true animated math/diagram via Remotion, fictional avatar hook followed by charts.
 - Anthropic: numerical motion-graphic story, fictional avatar, AI-generated editorial visual B-roll with verified figures overlaid, one striking image-led post.
 - Kelly: paper typography, animated bet sizing diagram, human-narrated analysis if recorded voluntarily, fictional avatar.
 
-The three palettes are not three genuinely different growth hypotheses by themselves. They are styling choices; stronger tests compare a face, original research shown visually, clear charts, narration and information density. Produce up to 12 offline concepts, review and release the best **six distinct pieces first**, then expand as evidence supports. No more than a few well-edited posts per week, no duplicate spam.
+The three palettes are not three genuinely different growth hypotheses by themselves. They are styling choices; stronger tests compare a face, original research shown visually, clear charts, narration and information density. Generate substantive alternatives in batches; release distinct reviewed stories under a bounded account-specific plan. Neither a few posts per week nor dozens per day is established here as an optimal cadence.
 
 Each published asset must have an approved source/claim ledger, media-license provenance, audio and captions quality gate, and approval to post. Keep original and synthetic voices, appearance, and rights recorded separately. The personal account's footage is not automatically reusable.
 

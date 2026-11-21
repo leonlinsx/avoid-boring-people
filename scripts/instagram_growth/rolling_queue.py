@@ -1,7 +1,7 @@
 """Rolling ABP Reel queue, local-only. Never activated by the existing workflows.
 
 Designed for a persistent workstation/timer, not ephemeral GitHub Actions.
-At most one Reel per invocation; 2 per 24 hours by default, 4h apart.
+At most one Reel per invocation; 3 per 24 hours by default, 3h apart.
 Only reviewed, public hosted, byte-verified MP4s are eligible.
 """
 from __future__ import annotations
@@ -36,7 +36,7 @@ def receipts(state_dir: Path) -> list[dict]:
 
 
 def choose(queue_dir: Path, state_dir: Path, now: datetime,
-           *, max_per_24h: int = 2, min_spacing_hours: int = 4) -> tuple[dict | None, str]:
+           *, max_per_24h: int = 3, min_spacing_hours: int = 3) -> tuple[dict | None, str]:
     history = receipts(state_dir)
     if any(r.get("status") in {"reconciliation_required", "reserved", "container_created", "publish_attempted"}
            for r in history):
@@ -97,8 +97,8 @@ def main():
     parser.add_argument("action", choices=("queue", "run", "measure"))
     parser.add_argument("--queue-dir", type=Path)
     parser.add_argument("--state-dir", type=Path, required=True)
-    parser.add_argument("--max-per-24h", type=int, default=2)
-    parser.add_argument("--min-spacing-hours", type=int, default=4)
+    parser.add_argument("--max-per-24h", type=int, default=3)
+    parser.add_argument("--min-spacing-hours", type=int, default=3)
     parser.add_argument("--live", action="store_true")
     args = parser.parse_args()
     if args.max_per_24h not in (1, 2, 3):

@@ -22,6 +22,7 @@ export default [
       '.netlify',
       'coverage',
       '.venv',
+      '.venv-ig-reels',
       '.tmp',
       'VERSION.md',
       'CHANGELOG.md',

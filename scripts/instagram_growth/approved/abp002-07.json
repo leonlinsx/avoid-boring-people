@@ -1,0 +1,28 @@
+{
+  "account": "avoidboringpeople",
+  "concept_id": "abp002-07",
+  "source_url": "https://leonlins.com/writing/premortem",
+  "format": "REELS",
+  "video_path": "downloads/248cc0d3e99dfcabc29e13bcf97b8e408eade4f3e2b56a147c4bed56215c9940.mp4",
+  "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/abp002-07/248cc0d3e99dfcabc29e13bcf97b8e408eade4f3e2b56a147c4bed56215c9940.mp4",
+  "video_sha256": "248cc0d3e99dfcabc29e13bcf97b8e408eade4f3e2b56a147c4bed56215c9940",
+  "caption": "Before a project starts, imagine it has already failed.\n\nWhat caused the failure?\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/premortem\n\nAI-generated voice and fictional AI presenter. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
+  "ai_generated": true,
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "review_status": "approved",
+  "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
+  "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
+  "release_after": "2026-11-21T00:00:00Z",
+  "release_status": "APPROVED_HOSTED",
+  "source_file": "src/content/blog/2019_11_23_premortem/index.md",
+  "source_sha256": "7bc7593741c98b86ef78ac07b7086bf773091fef32f653890ee0c81252a43255",
+  "source_anchor": "The reframing is critical",
+  "unresolved_gates": [
+    "actual_public_Blob_URL_and_byte_integrity",
+    "verified_remaining_free_Blob_transfer_usage",
+    "ABP_credentials_identity_and_Trial_eligibility",
+    "one_confirmed_pilot_before_unattended_dispatch"
+  ],
+  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c"
+}

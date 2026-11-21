@@ -1,0 +1,28 @@
+{
+  "account": "avoidboringpeople",
+  "concept_id": "abp002-04",
+  "source_url": "https://leonlins.com/writing/kelly",
+  "format": "REELS",
+  "video_path": "downloads/c6cf1e00d2f3269c78635f1cd9592282675d9abf25747586457e369a7ec93e88.mp4",
+  "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/abp002-04/c6cf1e00d2f3269c78635f1cd9592282675d9abf25747586457e369a7ec93e88.mp4",
+  "video_sha256": "c6cf1e00d2f3269c78635f1cd9592282675d9abf25747586457e369a7ec93e88",
+  "caption": "A fair bet can have an optimal stake of zero.\n\nOpportunity ≠ advantage\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/kelly\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
+  "ai_generated": true,
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "review_status": "approved",
+  "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
+  "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
+  "release_after": "2026-11-21T00:00:00Z",
+  "release_status": "APPROVED_HOSTED",
+  "source_file": "src/content/blog/2020_12_02_kelly/index.md",
+  "source_sha256": "360b60f1699a1f7679aa8e710a2d62b9ff39faaf7b217118a06c5a13e2b226cb",
+  "source_anchor": "Since you have no edge",
+  "unresolved_gates": [
+    "actual_public_Blob_URL_and_byte_integrity",
+    "verified_remaining_free_Blob_transfer_usage",
+    "ABP_credentials_identity_and_Trial_eligibility",
+    "one_confirmed_pilot_before_unattended_dispatch"
+  ],
+  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c"
+}

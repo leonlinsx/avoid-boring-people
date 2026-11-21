@@ -2,6 +2,16 @@
 
 Status: **PROPOSED / NOT ACTIVE**. This document authorizes no automatic Reel creation or publication.
 
+## Rolling archive experiments: ABP-REELS-002
+
+The November 21 [rolling-batch protocol](instagram-growth-rolling-batches.md)
+supersedes the six-post ceiling below for future planning. Its
+[24-concept discovery register](instagram-growth-reels-v2.json) draws on eight
+owned articles. Concepts are source-anchored drafts, not rendered videos,
+approved scripts, frozen preregistrations or live observations. The original v1
+register and frozen local assets remain unchanged for provenance; its local
+evaluator only supports that six-post design.
+
 ## Preregistered pilot: ABP-REELS-001
 
 The November 20 creative follow-up is defined in

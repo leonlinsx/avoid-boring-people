@@ -1,0 +1,28 @@
+{
+  "account": "avoidboringpeople",
+  "concept_id": "abp002-18",
+  "source_url": "https://leonlins.com/writing/stories",
+  "format": "REELS",
+  "video_path": "downloads/d5e0137f443f18ae96df788a7c558ac670c371d292064f4ea21fc866244de513.mp4",
+  "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/abp002-18/d5e0137f443f18ae96df788a7c558ac670c371d292064f4ea21fc866244de513.mp4",
+  "video_sha256": "d5e0137f443f18ae96df788a7c558ac670c371d292064f4ea21fc866244de513",
+  "caption": "Your startup pitch is also a bet employees are making.\n\nStory → evidence → decision\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/stories\n\nAI-generated voice and fictional AI presenter. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
+  "ai_generated": true,
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "review_status": "approved",
+  "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
+  "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
+  "release_after": "2026-11-21T00:00:00Z",
+  "release_status": "APPROVED_HOSTED",
+  "source_file": "src/content/blog/2020_07_01_stories/index.md",
+  "source_sha256": "cd3a6dfdd046ad8bf3ffeee09951340a981244376bf1701aa1a4af38ff2c2d04",
+  "source_anchor": "Equity is a stake in your story",
+  "unresolved_gates": [
+    "actual_public_Blob_URL_and_byte_integrity",
+    "verified_remaining_free_Blob_transfer_usage",
+    "ABP_credentials_identity_and_Trial_eligibility",
+    "one_confirmed_pilot_before_unattended_dispatch"
+  ],
+  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c"
+}

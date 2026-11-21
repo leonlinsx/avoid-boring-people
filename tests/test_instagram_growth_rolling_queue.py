@@ -84,7 +84,7 @@ def test_throttling_and_spacing(tmp_path):
     entry, status = q.choose(queue, state, NOW)
     assert entry is None and "spacing" in status
     receipt(state, "second", created_at="2026-11-21T09:00:00Z")
-    entry, status = q.choose(queue, state, NOW)
+    entry, status = q.choose(queue, state, NOW, max_per_24h=2)
     assert entry is None and "24h" in status
 
 

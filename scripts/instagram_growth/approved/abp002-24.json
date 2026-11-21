@@ -1,0 +1,28 @@
+{
+  "account": "avoidboringpeople",
+  "concept_id": "abp002-24",
+  "source_url": "https://leonlins.com/writing/practice",
+  "format": "REELS",
+  "video_path": "downloads/baa5319a85ad836eca28f8af35c528a31c0d0c96ec359f40a26a9b7db1e205ea.mp4",
+  "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/abp002-24/baa5319a85ad836eca28f8af35c528a31c0d0c96ec359f40a26a9b7db1e205ea.mp4",
+  "video_sha256": "baa5319a85ad836eca28f8af35c528a31c0d0c96ec359f40a26a9b7db1e205ea",
+  "caption": "If you never log the change, hindsight writes your results.\n\nA result is not yet a recipe.\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/practice\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
+  "ai_generated": true,
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "review_status": "approved",
+  "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
+  "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
+  "release_after": "2026-11-21T00:00:00Z",
+  "release_status": "APPROVED_HOSTED",
+  "source_file": "src/content/blog/2020_12_23_practice/index.md",
+  "source_sha256": "83d92533e1852a96e9a14531fd19964e22effd24ea5d03d0e06149c338b1ee69",
+  "source_anchor": "make small adjustments deliberately",
+  "unresolved_gates": [
+    "actual_public_Blob_URL_and_byte_integrity",
+    "verified_remaining_free_Blob_transfer_usage",
+    "ABP_credentials_identity_and_Trial_eligibility",
+    "one_confirmed_pilot_before_unattended_dispatch"
+  ],
+  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c"
+}

@@ -1,0 +1,28 @@
+{
+  "account": "avoidboringpeople",
+  "concept_id": "abp002-19",
+  "source_url": "https://leonlins.com/writing/dividend",
+  "format": "REELS",
+  "video_path": "downloads/1cb12c3cb7a48d2a16796d2df53b78542f95da5023a01cac5f6d8bdecb8f155b.mp4",
+  "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/abp002-19/1cb12c3cb7a48d2a16796d2df53b78542f95da5023a01cac5f6d8bdecb8f155b.mp4",
+  "video_sha256": "1cb12c3cb7a48d2a16796d2df53b78542f95da5023a01cac5f6d8bdecb8f155b",
+  "caption": "A rising dividend yield can be a falling share price.\n\nHigher yield ≠ higher income\n\nAdapted from Leon Lin’s essay: https://leonlins.com/writing/dividend\n\nAI-generated voice. Original explanatory graphics. Follow @avoidboringpeople for ideas about risk, business and better decisions.",
+  "ai_generated": true,
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "review_status": "approved",
+  "approved_by": "Codex: source/arithmetic, independent ASR, sampled frames and objective media QA",
+  "approval_scope": "Local creative review only. Hosting, ABP identity/eligibility, native overlay and actual pilot verification remain unresolved. Not a human-playback approval.",
+  "release_after": "2026-11-21T00:00:00Z",
+  "release_status": "APPROVED_HOSTED",
+  "source_file": "src/content/blog/2020_07_08_dividend/index.md",
+  "source_sha256": "ccf20aa768ac3d782d20e2328712dd824b345867cd34329c0e2a6398eb0fccd7",
+  "source_anchor": "stock price going down a lot",
+  "unresolved_gates": [
+    "actual_public_Blob_URL_and_byte_integrity",
+    "verified_remaining_free_Blob_transfer_usage",
+    "ABP_credentials_identity_and_Trial_eligibility",
+    "one_confirmed_pilot_before_unattended_dispatch"
+  ],
+  "head": "48ebe9a732cf631e9d8ae90ba63670b780562f1c"
+}

@@ -190,3 +190,51 @@ def test_account_snapshot_refuses_personal_account(monkeypatch):
     monkeypatch.setattr(pilot.requests, "get", lambda *a, **k: Response())
     with pytest.raises(ValueError, match="different Instagram identity"):
         pilot.account_snapshot()
+
+
+def test_renamed_identical_video_is_rejected_before_network(monkeypatch, tmp_path):
+    (tmp_path / 'previous-name.json').write_text(json.dumps({
+        'concept_id': 'previous-name', 'sha256': 'a' * 64,
+        'status': 'published', 'media_id': '123456789012345',
+    }))
+    def unexpected_network(*args):
+        pytest.fail('a duplicate or unresolved publish must be refused before network preflight')
+    monkeypatch.setattr(pilot, 'local_video_preflight', unexpected_network)
+    with pytest.raises(ValueError, match='identical video'):
+        pilot.publish(item(), state_dir=tmp_path)
+
+
+def test_unresolved_receipt_blocks_manual_publish_too(monkeypatch, tmp_path):
+    (tmp_path / 'different-video.json').write_text(json.dumps({
+        'concept_id': 'different-video', 'sha256': 'b' * 64,
+        'status': 'reconciliation_required',
+    }))
+    monkeypatch.setattr(pilot, 'local_video_preflight', lambda *_: pytest.fail('must halt before preflight'))
+    with pytest.raises(ValueError, match='reconciliation'):
+        pilot.publish(item(), state_dir=tmp_path)
+
+
+def test_concurrent_publisher_is_refused_before_network(monkeypatch, tmp_path):
+    import fcntl
+    with (tmp_path / '.publish.lock').open('w') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        monkeypatch.setattr(pilot, 'local_video_preflight', lambda *_: pytest.fail('must halt before preflight'))
+        with pytest.raises(ValueError, match='another publisher'):
+            pilot.publish(item(), state_dir=tmp_path)
+
+
+def test_distinct_video_can_publish_after_completed_history(monkeypatch, tmp_path):
+    (tmp_path / 'previous-name.json').write_text(json.dumps({
+        'concept_id': 'previous-name', 'sha256': 'b' * 64,
+        'status': 'published', 'media_id': '123456789012345',
+    }))
+    monkeypatch.setattr(pilot, 'local_video_preflight', lambda v: {'sha256': v['video_sha256']})
+    monkeypatch.setattr(pilot, 'hosted_video_preflight', lambda v: 2048)
+    monkeypatch.setattr(pilot, 'confirmed_account', lambda: ('123', 'token'))
+    monkeypatch.setattr(pilot, 'create_reel_container', lambda *a: 'container')
+    monkeypatch.setattr(pilot.ig, 'wait_for_container', lambda *a: None)
+    monkeypatch.setattr(pilot.ig, 'publish_container', lambda *a: '123456789012346')
+    monkeypatch.setattr(pilot.ig, '_permalink', lambda *a: 'https://www.instagram.com/reel/mock/')
+    result = pilot.publish(item(), state_dir=tmp_path)
+    assert result['status'] == 'published'
+    assert result['media_id'] == '123456789012346'

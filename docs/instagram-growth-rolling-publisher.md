@@ -5,6 +5,19 @@
 
 ## Source and activation boundary
 
+**November 21 local integration:** latest main including PR #140 was merged
+without losing the workstation's four local documentation changes. All 24 v2
+source anchors and hashes matched; the v2 register and protocol were preserved
+byte for byte. Twelve distinct narrated/captioned exports and local review
+manifests now exist under ignored `.tmp/instagram-growth/batch-v2/`; see its
+`REVIEW_REPORT.txt`, `BATCH_STATUS.json`, and `publisher-real-artifact-checks.json`.
+The source register remains uncommitted. Public Blob URLs and release times in
+the local approval manifests are null, so they cannot enter the live queue.
+No upload or real publish has been attempted: ABP credentials, authenticated
+Blob upload and verified remaining free transfer usage are unresolved. Both
+timers were verified uninstalled/inactive. The historical PR preparation notes
+below explain the original handoff; they are not current render status.
+
 The user's 24-concept register, docs/instagram-growth-reels-v2.json, and protocol,
 docs/instagram-growth-rolling-batches.md, were reported as **uncommitted on the
 Linux workstation**. They are not in the GitHub repository, and have not been
@@ -24,6 +37,10 @@ Existing silent layout previews are **not** publishable Reels.
 - scripts/instagram_growth/rolling_queue.py selects at most one due approved
   concept each invocation. Default throttle: two total per rolling 24 hours,
   at least four hours apart. An ambiguous or unfinished receipt halts the queue.
+- The local publisher follow-up also locks dispatch across processes, rejects
+  identical video hashes under renamed concepts, and refuses direct manual
+  publication while any earlier receipt is unresolved. These guards apply
+  before network preflight and have focused negative and valid-control tests.
 - The queue can sample each successful Reel at 24h, 48h, and seven days without
   publishing. This is overlapping measurement, not an unsupervised infinite
   posting mandate.

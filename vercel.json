@@ -11,7 +11,9 @@
       "codex/newsletter-inline-closing": false,
       "codex/newsletter-closing-no-separator": false,
       "codex/prose-table-spacing": false,
-      "codex/actions-budget": false
+      "codex/actions-budget": false,
+      "abp-instagram-state": false,
+      "codex/instagram-continuous": false
     }
   }
 }
