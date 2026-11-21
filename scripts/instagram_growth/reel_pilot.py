@@ -209,7 +209,8 @@ def publish(item: dict, *, state_dir: Path) -> dict:
         record["status"] = "publish_attempted"
         write_receipt(receipt, record)  # persisted BEFORE the irreversible request
         mid = ig.publish_container(uid, token, cid)
-        record.update(status="published", media_id=mid, permalink=ig._permalink(token, mid))
+        record.update(status="published", media_id=mid, permalink=ig._permalink(token, mid),
+                      published_at=datetime.now(timezone.utc).isoformat())
         write_receipt(receipt, record)
     except Exception as exc:
         record["status"] = "reconciliation_required"
