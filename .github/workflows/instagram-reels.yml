@@ -6,7 +6,7 @@ on:
       action:
         type: choice
         default: preflight
-        options: [preflight, pilot, publish, measure, weekly]
+        options: [preflight, pilot, publish, measure, weekly, verify]
       concept:
         description: 'Exact approved concept for one explicit pilot (e.g. abp002-19)'
         type: string
@@ -38,6 +38,11 @@ jobs:
           python-version: '3.12'
       - name: Install pinned HTTP dependencies
         run: python -m pip install --require-hashes -r scripts/instagram_growth/requirements-hosted.lock
+      - name: Install video preflight dependency on ephemeral runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+          ffprobe -version
       - name: Run one bounded ABP operation
         env:
           GITHUB_TOKEN: ${{ github.token }}

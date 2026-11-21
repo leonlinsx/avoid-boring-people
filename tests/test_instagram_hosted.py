@@ -87,3 +87,22 @@ def test_three_posts_default_and_fourth_throttled(tmp_path):
     assert q.choose(queue,state,NOW)[1]=='READY'
     receipt(state,'third',created_at='2026-11-21T09:00:00Z')
     assert '24h' in q.choose(queue,state,NOW)[1]
+
+
+def test_verify_pilot_rechecks_metrics_without_publishing(monkeypatch):
+    record={'concept_id':'first-pilot','status':'published','media_id':'123456789','published_at':'2026-11-21T12:00:00+00:00'}
+    store=SimpleNamespace(state={'receipts':{'first-pilot':record},'pilot_verified':False},save=lambda:None)
+    monkeypatch.setattr(h,'verify_media',lambda _: {'id':'123456789','username':'avoidboringpeople'})
+    monkeypatch.setattr(p,'fetch_insights',lambda _: {'metrics':{'reach':0}})
+    monkeypatch.setattr(p,'publish',lambda *_:pytest.fail('verification must never publish'))
+    h.verify_pilot(store)
+    assert store.state['pilot_verified'] is True
+
+
+def test_verify_pilot_does_not_pass_when_insights_missing(monkeypatch):
+    record={'status':'published','media_id':'123456789','published_at':'2026-11-21T12:00:00+00:00'}
+    store=SimpleNamespace(state={'receipts':{'first-pilot':record}},save=lambda:None)
+    monkeypatch.setattr(h,'verify_media',lambda _: {'id':'123456789'})
+    monkeypatch.setattr(p,'fetch_insights',lambda _: {'metrics':{'reach':None}})
+    with pytest.raises(h.StateError,match='unavailable'):h.verify_pilot(store)
+    assert store.state['pilot_verified'] is False

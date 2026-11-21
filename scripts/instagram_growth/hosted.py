@@ -183,6 +183,23 @@ def measure(store):
     print(json.dumps({'account':account,'new_snapshots':count},indent=2))
 
 
+def verify_pilot(store):
+    """Read-only recheck after delayed Insights; never repeat media_publish."""
+    published=[r for r in store.state['receipts'].values() if r.get('status')=='published']
+    if not published:
+        raise StateError('no published pilot receipt to verify; reconcile uncertain receipts first')
+    receipt=min(published,key=lambda r:r['published_at'])
+    media=verify_media(str(receipt['media_id']))
+    metrics=pilot.fetch_insights(str(receipt['media_id']))
+    receipt.update(verified_media=media,initial_insights=metrics)
+    available=any(metrics['metrics'].get(k) is not None for k in pilot.METRICS)
+    store.state['pilot_verified']=available
+    store.save()
+    print(json.dumps({'media':media,'insights':metrics,'pilot_verified':available},indent=2))
+    if not available:
+        raise StateError('pilot exists but Insights remain unavailable; keep scheduling disabled')
+
+
 def weekly(store):
     state=store.state
     observations=list(state.get('observations',{}).values())
@@ -198,12 +215,13 @@ def weekly(store):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly']);p.add_argument('--concept');args=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly','verify']);p.add_argument('--concept');args=p.parse_args()
     store=Store();store.load()
     if args.action=='preflight':
         print(json.dumps({'account':pilot.account_snapshot(),'quota':live_quota(),'state_account':store.state['account'],'no_publication':True},indent=2))
     elif args.action in ('pilot','publish'):publish_one(store,args.concept,is_pilot=args.action=='pilot')
     elif args.action=='measure':measure(store)
+    elif args.action=='verify':verify_pilot(store)
     else:weekly(store)
 
 if __name__=='__main__':main()
