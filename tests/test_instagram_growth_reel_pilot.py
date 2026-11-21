@@ -260,3 +260,15 @@ def test_professional_identity_must_still_match_configuration(monkeypatch,patch)
         def json(self):return {'id':'app-scope-999','user_id':'123','username':'avoidboringpeople',**patch}
     monkeypatch.setattr(pilot.requests,'get',lambda *a,**k:Response())
     with pytest.raises(RefreshError):pilot.confirmed_account()
+
+
+def test_missing_insights_preserve_safe_permission_diagnostics(monkeypatch):
+    monkeypatch.setattr(pilot,'confirmed_account',lambda:('123','private-token'))
+    class Response:
+        status_code=403
+        def json(self):return {'error':{'code':10,'message':'unsafe provider detail private-token'}}
+    monkeypatch.setattr(pilot.requests,'get',lambda *a,**k:Response())
+    value=pilot.fetch_insights('123456789')
+    assert value['metrics']['reach'] is None
+    assert value['availability']['reach']=={'http_status':403,'api_code':10}
+    assert 'private-token' not in json.dumps(value)

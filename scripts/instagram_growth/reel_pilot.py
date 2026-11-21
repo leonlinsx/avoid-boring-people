@@ -258,7 +258,7 @@ def fetch_insights(media_id: str) -> dict:
         raise ValueError("invalid Instagram media id")
     _, token = confirmed_account()
     output = {"media_id": media_id, "captured_at": datetime.now(timezone.utc).isoformat(),
-              "metrics": {}}
+              "metrics": {}, "availability": {}}
     for key in METRICS:
         try:
             response = requests.get(
@@ -268,14 +268,19 @@ def fetch_insights(media_id: str) -> dict:
             )
             if response.status_code != 200:
                 output["metrics"][key] = None
+                code = response.json().get("error", {}).get("code")
+                output["availability"][key] = {"http_status": response.status_code,
+                                               "api_code": code if type(code) is int else None}
                 continue
             data = response.json().get("data") or []
             values = (data[0].get("values") or []) if data else []
             output["metrics"][key] = values[-1].get("value") if values else (
                 data[0].get("total_value", {}).get("value") if data else None
             )
+            output["availability"][key] = "available" if output["metrics"][key] is not None else "not_yet_available"
         except (requests.RequestException, ValueError, KeyError, IndexError, TypeError):
             output["metrics"][key] = None
+            output["availability"][key] = "request_failed"
     # The per-Reel follows metric is not available through this endpoint.
     output["metrics"]["follows"] = None
     return output

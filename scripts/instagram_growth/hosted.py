@@ -77,6 +77,16 @@ def live_quota():
     return {'usage':usage,'limit':limit}
 
 
+def insights_probe():
+    """Check existing owned media, so new-post processing lag isn't a scope test."""
+    raw=read_api('{uid}/media',{'fields':'id,media_type','limit':1})
+    media=raw.get('data') or []
+    if not media:return {'status':'no_existing_media'}
+    result=pilot.fetch_insights(str(media[0]['id']))
+    return {'available':any(result['metrics'].get(k) is not None for k in pilot.METRICS),
+            'media_id':media[0]['id'],'availability':result.get('availability',{})}
+
+
 def verify_media(media_id):
     # Query fields individually: an unsupported field must not mask identity.
     raw = read_api(media_id, {'fields':'id,username,media_type,permalink,timestamp'})
@@ -233,7 +243,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly','verify','reconcile-no-publish']);p.add_argument('--concept');args=p.parse_args()
     store=Store();store.load()
     if args.action=='preflight':
-        print(json.dumps({'account':pilot.account_snapshot(),'quota':live_quota(),'state_account':store.state['account'],'no_publication':True},indent=2))
+        print(json.dumps({'account':pilot.account_snapshot(),'quota':live_quota(),'insights_probe':insights_probe(),'state_account':store.state['account'],'no_publication':True},indent=2))
     elif args.action in ('pilot','publish'):publish_one(store,args.concept,is_pilot=args.action=='pilot')
     elif args.action=='measure':measure(store)
     elif args.action=='verify':verify_pilot(store)

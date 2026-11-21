@@ -121,3 +121,9 @@ def test_uncertain_publish_cannot_be_declared_unpublished(extra):
     store=SimpleNamespace(state={'receipts':{'trial':record}},save=lambda:pytest.fail('must not clear uncertainty'))
     with pytest.raises(h.StateError,match='cannot prove'):h.reconcile_no_publish(store,'trial')
     assert record['status']=='reconciliation_required'
+
+
+def test_insights_probe_uses_existing_media_and_accepts_real_zero(monkeypatch):
+    monkeypatch.setattr(h,'read_api',lambda *a:{'data':[{'id':'123456789'}]})
+    monkeypatch.setattr(p,'fetch_insights',lambda _: {'metrics':{'reach':0},'availability':{'reach':'available'}})
+    assert h.insights_probe()['available'] is True
