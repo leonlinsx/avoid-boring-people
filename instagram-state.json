@@ -159,14 +159,14 @@
     "account": "avoidboringpeople",
     "aggregation": "Cumulative outcomes are separated by target age. Do not sum repeated windows or call summed reach unique people.",
     "conclusion": "Observational attention evidence; no causal, statistically validated or per-Reel follower winner.",
-    "created_at": "2026-11-21T21:48:35.130874+00:00",
+    "created_at": "2026-11-21T22:32:38.268151+00:00",
     "failures": [],
     "followers": {
       "attribution": "Account-level only; overlapping posts do not identify per-Reel acquisition.",
       "complete_week_boundary_coverage": false,
       "end": {
         "account": "avoidboringpeople",
-        "captured_at": "2026-11-21T21:10:11.502299+00:00",
+        "captured_at": "2026-11-21T22:23:59.142695+00:00",
         "followers_count": 0,
         "media_count": 28
       },
@@ -242,6 +242,7 @@
       "target_seven_days": 21
     },
     "low_information": true,
+    "matched_presentation_pairs": [],
     "minimum_reach_per_reel": 100,
     "next_experiments": [
       {
@@ -281,7 +282,7 @@
         "window": "7d"
       }
     ],
-    "period_start": "2026-11-14T21:48:35.130874+00:00",
+    "period_start": "2026-11-14T22:32:38.268151+00:00",
     "published_this_week": 2,
     "published_total": 2,
     "replication_candidates": [],
