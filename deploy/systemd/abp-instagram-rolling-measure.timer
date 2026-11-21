@@ -1,0 +1,10 @@
+[Unit]
+Description=Check ABP Reel results twice daily
+
+[Timer]
+OnCalendar=*-*-* 10,22:45:00
+Persistent=true
+Unit=abp-instagram-rolling-measure.service
+
+[Install]
+WantedBy=timers.target
