@@ -1,0 +1,10 @@
+[Unit]
+Description=Check approved ABP Reel queue four times a day (max two posts per 24 hours)
+
+[Timer]
+OnCalendar=*-*-* 09,13,17,21:15:00
+Persistent=true
+Unit=abp-instagram-rolling-publish.service
+
+[Install]
+WantedBy=timers.target
