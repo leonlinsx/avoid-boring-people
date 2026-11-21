@@ -22,6 +22,7 @@ from pathlib import Path
 import requests
 
 from scripts.automation.publishers import instagram as ig
+from scripts.automation.refresh_meta_tokens import PLATFORMS, _profile
 
 ACCOUNT = "avoidboringpeople"
 MAX_BYTES = 200 * 1024 * 1024
@@ -148,8 +149,9 @@ def hosted_video_preflight(item: dict, session=requests) -> int:
 
 def confirmed_account() -> tuple[str, str]:
     user_id, token = ig._get_config()
-    profile = ig.verify_credentials(user_id, token)
-    if str(profile.get("id")) != str(user_id) or str(profile.get("username", "")).lower() != ACCOUNT:
+    # Instagram Login's id is app-scoped. The existing token-maintenance
+    # verifier checks username AND professional user_id against configuration.
+    if _profile(PLATFORMS["instagram"], token) != user_id:
         raise ValueError("token does not belong to @avoidboringpeople; refusing any Reel operation")
     return user_id, token
 
@@ -282,14 +284,14 @@ def account_snapshot() -> dict:
     """Read only ABP's aggregate follower count; not per-Reel follow attribution."""
     uid, token = confirmed_account()
     response = requests.get(
-        f"{ig.INSTAGRAM_API_BASE}/{uid}",
-        params={"fields": "id,username,followers_count,media_count"},
+        f"{ig.INSTAGRAM_API_BASE}/me",
+        params={"fields": "id,user_id,username,followers_count,media_count"},
         headers=ig._auth_headers(token), timeout=ig.REQUEST_TIMEOUT_SECONDS,
     )
     if response.status_code != 200:
         raise ig._api_error(response)
     raw = response.json()
-    if str(raw.get("id")) != uid or str(raw.get("username", "")).lower() != ACCOUNT:
+    if str(raw.get("user_id")) != uid or str(raw.get("username", "")).lower() != ACCOUNT:
         raise ValueError("account snapshot returned a different Instagram identity")
     follower_count = raw.get("followers_count")
     return {
