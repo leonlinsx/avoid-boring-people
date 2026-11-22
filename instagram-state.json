@@ -30,6 +30,12 @@
       "captured_at": "2026-11-22T01:34:28.199137+00:00",
       "followers_count": 0,
       "media_count": 29
+    },
+    "20261122T084951Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-22T08:49:52.056603+00:00",
+      "followers_count": 0,
+      "media_count": 29
     }
   },
   "last_account": {
@@ -38,7 +44,7 @@
     "followers_count": 0,
     "media_count": 28
   },
-  "last_measurement_at": "2026-11-22T01:34:28.026484+00:00",
+  "last_measurement_at": "2026-11-22T08:49:51.773802+00:00",
   "last_published_at": "2026-11-22T01:17:21.277501+00:00",
   "last_quota": {
     "limit": 50,
