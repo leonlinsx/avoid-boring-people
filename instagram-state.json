@@ -97,7 +97,7 @@
       "created_at": "2026-11-22T01:16:08.984466+00:00",
       "sha256": "c45f49deccd5dc8bc1d03a6427f5ba5f7da617d8af4e16cd68db84bdca8ad0fa",
       "source_url": "https://leonlins.com/writing/ergodicity",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     },
     "abp002-19": {
