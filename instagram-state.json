@@ -188,6 +188,15 @@
         "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
       }
     },
+    "abp002-04": {
+      "ai_generated": true,
+      "concept_id": "abp002-04",
+      "created_at": "2026-11-22T17:48:30.006151+00:00",
+      "sha256": "c6cf1e00d2f3269c78635f1cd9592282675d9abf25747586457e369a7ec93e88",
+      "source_url": "https://leonlins.com/writing/kelly",
+      "status": "reserved",
+      "trial": false
+    },
     "abp002-19": {
       "ai_generated": true,
       "concept_id": "abp002-19",
