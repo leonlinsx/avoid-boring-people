@@ -48,6 +48,12 @@
       "captured_at": "2026-11-22T22:47:39.987498+00:00",
       "followers_count": 0,
       "media_count": 30
+    },
+    "20261123T040029Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-23T04:00:29.421124+00:00",
+      "followers_count": 0,
+      "media_count": 33
     }
   },
   "last_account": {
@@ -56,7 +62,7 @@
     "followers_count": 0,
     "media_count": 30
   },
-  "last_measurement_at": "2026-11-22T22:47:39.325102+00:00",
+  "last_measurement_at": "2026-11-23T04:00:29.121977+00:00",
   "last_published_at": "2026-11-22T23:38:04.747352+00:00",
   "last_quota": {
     "limit": 50,
@@ -91,6 +97,36 @@
         "views": 46
       },
       "published_at": "2026-11-21T20:43:00.363445+00:00",
+      "window": "24h"
+    },
+    "abp002-02-24h": {
+      "account": "avoidboringpeople",
+      "actual_age_hours": 26.718845687777776,
+      "availability": {
+        "comments": "available",
+        "ig_reels_avg_watch_time": "available",
+        "likes": "available",
+        "reach": "available",
+        "reels_skip_rate": "available",
+        "saved": "available",
+        "shares": "available",
+        "views": "available"
+      },
+      "captured_at": "2026-11-23T04:00:29.555927+00:00",
+      "concept_id": "abp002-02",
+      "media_id": "17904335493608558",
+      "metrics": {
+        "comments": 0,
+        "follows": null,
+        "ig_reels_avg_watch_time": 3478,
+        "likes": 0,
+        "reach": 56,
+        "reels_skip_rate": 77.6,
+        "saved": 0,
+        "shares": 0,
+        "views": 60
+      },
+      "published_at": "2026-11-22T01:17:21.277501+00:00",
       "window": "24h"
     },
     "abp002-19-standard-24h": {
