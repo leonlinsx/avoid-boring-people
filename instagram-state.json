@@ -365,7 +365,7 @@
       "created_at": "2026-11-23T07:30:58.306231+00:00",
       "sha256": "248cc0d3e99dfcabc29e13bcf97b8e408eade4f3e2b56a147c4bed56215c9940",
       "source_url": "https://leonlins.com/writing/premortem",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     },
     "abp002-19": {
