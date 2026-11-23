@@ -416,10 +416,11 @@
     "abp002-08": {
       "ai_generated": true,
       "concept_id": "abp002-08",
+      "container_id": "18136742326753300",
       "created_at": "2026-11-23T20:15:25.506044+00:00",
       "sha256": "d8e2d3823874a5d8319c1b114e8ca26ad1c9ce003e2a797e89347cc3ebcac4af",
       "source_url": "https://leonlins.com/writing/premortem",
-      "status": "reserved",
+      "status": "container_created",
       "trial": false
     },
     "abp002-19": {
