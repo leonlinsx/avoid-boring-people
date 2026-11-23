@@ -482,18 +482,18 @@
     "account": "avoidboringpeople",
     "aggregation": "Cumulative outcomes are separated by target age. Do not sum repeated windows or call summed reach unique people.",
     "conclusion": "Observational attention evidence; no causal, statistically validated or per-Reel follower winner.",
-    "created_at": "2026-11-21T22:32:38.268151+00:00",
+    "created_at": "2026-11-23T19:24:11.203239+00:00",
     "failures": [],
     "followers": {
       "attribution": "Account-level only; overlapping posts do not identify per-Reel acquisition.",
       "complete_week_boundary_coverage": false,
       "end": {
         "account": "avoidboringpeople",
-        "captured_at": "2026-11-21T22:23:59.142695+00:00",
+        "captured_at": "2026-11-23T15:22:57.807757+00:00",
         "followers_count": 0,
-        "media_count": 28
+        "media_count": 34
       },
-      "end_snapshot_fresh": true,
+      "end_snapshot_fresh": false,
       "net_new_followers_week": null,
       "observed_change": 0,
       "start": {
@@ -505,30 +505,10 @@
     },
     "generation_health": "Not visible from hosted state; inspect local factory status/report.",
     "inventory": {
-      "approved_unpublished": 10,
-      "days_at_max_cadence": 3.3333333333333335,
+      "approved_unpublished": 6,
+      "days_at_max_cadence": 2.0,
       "invalid_or_duplicate": [],
       "items": [
-        {
-          "concept_id": "abp002-02",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-04",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-05",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-07",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
         {
           "concept_id": "abp002-08",
           "ready_now": true,
@@ -560,8 +540,8 @@
           "release_after": "2026-11-21T00:00:00+00:00"
         }
       ],
-      "level": "BUFFER_SHORT",
-      "ready_now": 10,
+      "level": "LOW",
+      "ready_now": 6,
       "target_seven_days": 21
     },
     "low_information": true,
@@ -577,11 +557,6 @@
       {
         "concept_id": "abp002-01",
         "status": "not_due",
-        "window": "24h"
-      },
-      {
-        "concept_id": "abp002-01",
-        "status": "not_due",
         "window": "48h"
       },
       {
@@ -590,13 +565,63 @@
         "window": "7d"
       },
       {
-        "concept_id": "abp002-19-standard",
+        "concept_id": "abp002-02",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abp002-02",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-04",
+        "status": "overdue",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abp002-04",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abp002-04",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-05",
         "status": "not_due",
         "window": "24h"
       },
       {
-        "concept_id": "abp002-19-standard",
+        "concept_id": "abp002-05",
         "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abp002-05",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-07",
+        "status": "not_due",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abp002-07",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abp002-07",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-19-standard",
+        "status": "overdue",
         "window": "48h"
       },
       {
@@ -605,9 +630,9 @@
         "window": "7d"
       }
     ],
-    "period_start": "2026-11-14T22:32:38.268151+00:00",
-    "published_this_week": 2,
-    "published_total": 2,
+    "period_start": "2026-11-16T19:24:11.203239+00:00",
+    "published_this_week": 6,
+    "published_total": 6,
     "replication_candidates": [],
     "top_hypotheses": [],
     "unavailable": [
