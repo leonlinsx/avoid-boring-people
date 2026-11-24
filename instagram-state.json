@@ -654,6 +654,15 @@
         "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
       }
     },
+    "abp002-12": {
+      "ai_generated": true,
+      "concept_id": "abp002-12",
+      "created_at": "2026-11-24T15:50:49.962655+00:00",
+      "sha256": "f13058a9a129accc235b8b0479fd46767d5da066de42b3ed84e8993fe40fdb2f",
+      "source_url": "https://leonlins.com/writing/investing",
+      "status": "reserved",
+      "trial": false
+    },
     "abp002-19": {
       "ai_generated": true,
       "concept_id": "abp002-19",
