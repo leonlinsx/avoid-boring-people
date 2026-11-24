@@ -661,7 +661,7 @@
       "created_at": "2026-11-24T15:50:49.962655+00:00",
       "sha256": "f13058a9a129accc235b8b0479fd46767d5da066de42b3ed84e8993fe40fdb2f",
       "source_url": "https://leonlins.com/writing/investing",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     },
     "abp002-19": {
