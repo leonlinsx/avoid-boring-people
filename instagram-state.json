@@ -776,7 +776,7 @@
       "created_at": "2026-11-25T00:41:32.400421+00:00",
       "sha256": "d5e0137f443f18ae96df788a7c558ac670c371d292064f4ea21fc866244de513",
       "source_url": "https://leonlins.com/writing/stories",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     },
     "abp002-19": {
