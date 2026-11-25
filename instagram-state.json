@@ -970,10 +970,11 @@
     "abp002-22": {
       "ai_generated": true,
       "concept_id": "abp002-22",
+      "container_id": "18137123659753300",
       "created_at": "2026-11-25T19:56:27.820823+00:00",
       "sha256": "8e7a7b544c7e42ed2d49c13ba8d59aabca38a8596c19ae2e6e680ca3198c67a6",
       "source_url": "https://leonlins.com/writing/practice",
-      "status": "reserved",
+      "status": "container_created",
       "trial": false
     }
   },
