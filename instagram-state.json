@@ -925,7 +925,7 @@
       "created_at": "2026-11-25T09:50:14.328041+00:00",
       "sha256": "7920114e0628712db7e288181bdaff66aac4bbb4784ce14a21a4c46ed856d474",
       "source_url": "https://leonlins.com/writing/dividend",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     }
   },
