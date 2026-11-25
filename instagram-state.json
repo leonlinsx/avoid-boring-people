@@ -88,15 +88,15 @@
   },
   "last_account": {
     "account": "avoidboringpeople",
-    "captured_at": "2026-11-25T00:41:30.673102+00:00",
+    "captured_at": "2026-11-25T09:50:12.857140+00:00",
     "followers_count": 0,
-    "media_count": 38
+    "media_count": 39
   },
   "last_measurement_at": "2026-11-25T05:41:29.465780+00:00",
   "last_published_at": "2026-11-25T00:42:45.138940+00:00",
   "last_quota": {
     "limit": 50,
-    "usage": 2
+    "usage": 3
   },
   "observations": {
     "abp002-01-24h": {
