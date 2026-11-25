@@ -93,7 +93,7 @@
     "media_count": 40
   },
   "last_measurement_at": "2026-11-25T05:41:29.465780+00:00",
-  "last_published_at": "2026-11-25T09:51:26.267152+00:00",
+  "last_published_at": "2026-11-25T19:57:39.512151+00:00",
   "last_quota": {
     "limit": 50,
     "usage": 3
@@ -972,13 +972,49 @@
       "concept_id": "abp002-22",
       "container_id": "18137123659753300",
       "created_at": "2026-11-25T19:56:27.820823+00:00",
+      "initial_insights": {
+        "availability": {
+          "comments": "available",
+          "ig_reels_avg_watch_time": "available",
+          "likes": "available",
+          "reach": "available",
+          "reels_skip_rate": "available",
+          "saved": "available",
+          "shares": "available",
+          "views": "available"
+        },
+        "captured_at": "2026-11-25T19:57:41.704833+00:00",
+        "media_id": "18078600170757068",
+        "metrics": {
+          "comments": 0,
+          "follows": null,
+          "ig_reels_avg_watch_time": 0,
+          "likes": 0,
+          "reach": 0,
+          "reels_skip_rate": 0,
+          "saved": 0,
+          "shares": 0,
+          "views": 0
+        }
+      },
       "media_id": "18078600170757068",
       "permalink": "https://www.instagram.com/reel/DgLVR2sBqfo/",
       "published_at": "2026-11-25T19:57:39.512151+00:00",
       "sha256": "8e7a7b544c7e42ed2d49c13ba8d59aabca38a8596c19ae2e6e680ca3198c67a6",
       "source_url": "https://leonlins.com/writing/practice",
       "status": "published",
-      "trial": false
+      "trial": false,
+      "verified_media": {
+        "id": "18078600170757068",
+        "is_ai_generated": true,
+        "is_shared_to_feed": true,
+        "media_product_type": "REELS",
+        "media_type": "VIDEO",
+        "permalink": "https://www.instagram.com/reel/DgLVR2sBqfo/",
+        "timestamp": "2026-11-25T19:57:33+0000",
+        "username": "avoidboringpeople",
+        "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
+      }
     }
   },
   "weekly_review": {
