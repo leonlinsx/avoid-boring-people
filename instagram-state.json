@@ -972,9 +972,12 @@
       "concept_id": "abp002-22",
       "container_id": "18137123659753300",
       "created_at": "2026-11-25T19:56:27.820823+00:00",
+      "media_id": "18078600170757068",
+      "permalink": "https://www.instagram.com/reel/DgLVR2sBqfo/",
+      "published_at": "2026-11-25T19:57:39.512151+00:00",
       "sha256": "8e7a7b544c7e42ed2d49c13ba8d59aabca38a8596c19ae2e6e680ca3198c67a6",
       "source_url": "https://leonlins.com/writing/practice",
-      "status": "publish_attempted",
+      "status": "published",
       "trial": false
     }
   },
