@@ -772,10 +772,11 @@
     "abp002-18": {
       "ai_generated": true,
       "concept_id": "abp002-18",
+      "container_id": "18136964407753300",
       "created_at": "2026-11-25T00:41:32.400421+00:00",
       "sha256": "d5e0137f443f18ae96df788a7c558ac670c371d292064f4ea21fc866244de513",
       "source_url": "https://leonlins.com/writing/stories",
-      "status": "reserved",
+      "status": "container_created",
       "trial": false
     },
     "abp002-19": {
