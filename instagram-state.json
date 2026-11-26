@@ -1111,6 +1111,15 @@
         "username": "avoidboringpeople",
         "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
       }
+    },
+    "abp002-24": {
+      "ai_generated": true,
+      "concept_id": "abp002-24",
+      "created_at": "2026-11-26T02:50:17.868295+00:00",
+      "sha256": "baa5319a85ad836eca28f8af35c528a31c0d0c96ec359f40a26a9b7db1e205ea",
+      "source_url": "https://leonlins.com/writing/practice",
+      "status": "reserved",
+      "trial": false
     }
   },
   "weekly_review": {
