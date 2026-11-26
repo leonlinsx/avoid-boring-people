@@ -1119,7 +1119,7 @@
       "created_at": "2026-11-26T02:50:17.868295+00:00",
       "sha256": "baa5319a85ad836eca28f8af35c528a31c0d0c96ec359f40a26a9b7db1e205ea",
       "source_url": "https://leonlins.com/writing/practice",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     }
   },
