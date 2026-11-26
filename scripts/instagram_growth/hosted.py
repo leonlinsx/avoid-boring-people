@@ -177,20 +177,42 @@ def measure(store):
     account['account']=pilot.ACCOUNT
     state.setdefault('account_snapshots',{})[now.strftime('%Y%m%dT%H%M%SZ')]=account
     snapshots=state.setdefault('observations',{})
-    count=0
+    gaps=state.setdefault('measurement_gaps',{})
+    due=[]
     for concept,r in state['receipts'].items():
         if r.get('status')!='published':continue
-        age=now-queue.instant(r['published_at'])
+        published=queue.instant(r['published_at'])
         for label,target in queue.WINDOWS.items():
             key=f'{concept}-{label}'
-            if key in snapshots or age<target:continue
+            if key in snapshots or now<published+target:continue
+            deadline=scorecard.window_end(label,published)
+            if now>deadline:
+                gaps.setdefault(key,{'concept_id':concept,'window':label,'reason':'age_window_missed',
+                                     'deadline':deadline.isoformat(),'detected_at':now.isoformat()})
+                continue
+            due.append((deadline,concept,label,r))
+    # Earliest deadlines first; one budget across the whole ledger, including
+    # unavailable reads. Expired windows never consume scarce API requests.
+    count=0;failures=[]
+    for _,concept,label,r in sorted(due)[:12]:
+        key=f'{concept}-{label}'
+        try:
             value=pilot.fetch_insights(str(r['media_id']))
+            age=queue.instant(value['captured_at'])-queue.instant(r['published_at'])
             value.update(concept_id=concept,window=label,published_at=r['published_at'],actual_age_hours=age.total_seconds()/3600,account=pilot.ACCOUNT)
             if not any(value['metrics'].get(k) is not None for k in pilot.METRICS):
                 raise StateError('all media Insights unavailable; snapshot remains pending for next scheduled read')
             snapshots[key]=value;count+=1
-            if count>=12:break
-    state['last_measurement_at']=now.isoformat();store.save()
+        except (requests.RequestException,ValueError,KeyError,StateError) as error:
+            # Preserve other readings and the follower snapshot, then fail the
+            # job visibly. Never persist provider exception text or retry now.
+            failures.append({'concept_id':concept,'window':label,'error_type':type(error).__name__})
+    state['measurement_health']={'checked_at':now.isoformat(),'status':'failed' if failures else 'healthy',
+                                 'attempted':min(12,len(due)),'new_snapshots':count,
+                                 'remaining_due':len(due)-count,'failures':failures}
+    if not failures:state['last_measurement_at']=now.isoformat()
+    store.save()
+    if failures:raise StateError('measurement incomplete; successful readings saved, unavailable readings remain pending')
     print(json.dumps({'account':account,'new_snapshots':count},indent=2))
 
 
@@ -227,6 +249,9 @@ def reconcile_no_publish(store,concept):
 
 
 def weekly(store):
+    # Fresh account evidence and due age windows must precede production advice.
+    # This is read-only at Meta; it cannot publish or alter frozen releases.
+    measure(store)
     report=scorecard.build(store.state,scorecard.load_manifests(QUEUE_DIR))
     # Keep detailed rows in downloadable artifacts, not repeated in the CAS ledger.
     store.state['weekly_review']={k:v for k,v in report.items() if k not in ('rows','equal_target_age_cohorts')}

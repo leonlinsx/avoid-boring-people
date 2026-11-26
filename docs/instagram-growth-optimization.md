@@ -12,6 +12,16 @@ The existing Monday 07:25 UTC GitHub job writes `weekly-scorecard.json` and
 the readable report to its job summary. It retains the compact learning
 summary on `abp-instagram-state`; detailed observations remain recomputable.
 
+Before building that weekly summary, the job refreshes the ABP account snapshot
+and runs the existing bounded measurement pass. An unavailable read preserves
+successful observations and the account snapshot through CAS, then fails visibly;
+it does not replace the previous weekly learning summary with a success.
+Each pass attempts at most 12 media Insights fetches across the entire ledger
+(each fetch queries the existing metrics separately), prioritizing the earliest
+comparison deadlines. A missed comparison window is recorded in
+`measurement_gaps`, not reconstructed from a later cumulative reading. Existing
+late observations stay in the ledger and remain excluded from comparisons.
+
 Primary KPI: net new account followers across observed week boundaries. A
 partial first week has an observed change and actual timestamps, but no
 fabricated full-week result. An ending snapshot older than two hours is stale;
