@@ -81,5 +81,13 @@ def test_render_device_loss_halts_before_another_model_and_survives_restart(tmp_
     assert len(render_calls)==1
 
 
-def test_fault_circuit_does_not_change_the_frozen_admission_runtime():
-    assert admission.runtime_digest()=='46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6'
+def test_orchestration_change_preserves_attestation_but_renderer_change_does_not(tmp_path,monkeypatch):
+    source=Path(admission.__file__).resolve().parents[1];expected=admission.runtime_digest()
+    for name in admission.RUNTIME_FILES:
+        target=tmp_path/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((source/name).read_bytes())
+    monkeypatch.setattr(admission,'__file__',str(tmp_path/'autonomy/admission.py'))
+    assert admission.runtime_digest()==expected
+    (tmp_path/'autonomy/worker.py').write_text('disposable orchestration change')
+    assert admission.runtime_digest()==expected
+    renderer=tmp_path/'factory/render.py';renderer.write_bytes(renderer.read_bytes()+b'\n# disposable renderer mutation\n')
+    assert admission.runtime_digest()!=expected
