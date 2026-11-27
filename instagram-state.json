@@ -1700,7 +1700,7 @@
       "created_at": "2026-11-27T05:01:02.058969+00:00",
       "sha256": "5ce5a0ee429adbb934d51dd6414fbcac26f72bcb697a8b8f3ec3758f755feefc",
       "source_url": "https://leonlins.com/writing/city",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     }
   },
