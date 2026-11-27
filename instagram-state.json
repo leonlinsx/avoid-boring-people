@@ -144,14 +144,15 @@
   "auto_canary_verified": true,
   "auto_health": {
     "factory": {
-      "admitted": 2,
+      "admitted": 6,
       "allocation": {
         "control": 6,
         "exploitation": 10,
         "exploration": 24
       },
-      "attempted": 2,
-      "elapsed_seconds": 43.55,
+      "attempted": 6,
+      "completed_at": "2026-11-27T23:41:56.393368+00:00",
+      "elapsed_seconds": 135.1,
       "electricity_cost": "Not metered; unavailable",
       "eligible_source_units": 16,
       "exploitation": "Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.",
@@ -160,23 +161,30 @@
       "gpu_fault_latched": true,
       "growth_context_available": false,
       "head": "90f37ce8af06507c1921c318ef214f3569244f6d",
+      "inventory_before": 12,
+      "newly_hosted": 6,
+      "offline_verified": null,
       "policy": "ABP-AUTO-OWNED-COMMENTARY-1",
       "production_mode": "graphics_gpu",
       "quarantined": 0,
+      "recovered_hosted": 0,
+      "remaining_eligible": 10,
       "software_spend_usd": 0,
       "source_quarantined": 3032,
-      "started_at": "2026-11-27T23:39:41.289099+00:00"
+      "started_at": "2026-11-27T23:39:41.289099+00:00",
+      "status": "healthy",
+      "weekly_render_reservations": 21
     },
-    "feed_generated_at": "2026-11-27T23:40:26.469Z",
-    "newly_promoted": 2,
-    "promoted_at": "2026-11-27T23:40:28.999058+00:00",
+    "feed_generated_at": "2026-11-27T23:41:57.959Z",
+    "newly_promoted": 4,
+    "promoted_at": "2026-11-27T23:43:48.046784+00:00",
     "quarantined": [],
     "storage": {
-      "checked_at": "2026-11-27T23:40:25.716Z",
+      "checked_at": "2026-11-27T23:41:57.583Z",
       "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
-      "objects": 219,
+      "objects": 227,
       "plan": "hobby",
-      "size_bytes": 73475321,
+      "size_bytes": 78209025,
       "status": "active",
       "store": "store_kvEENsOeMZ2J3t8D",
       "team": "team_cilwkczruho74HBIaE1IlQIt",
@@ -184,8 +192,8 @@
       "usage_quota_exceeded": false
     },
     "usage": {
-      "bytes_reserved": 42185576,
-      "operations_reserved": 267
+      "bytes_reserved": 46714518,
+      "operations_reserved": 327
     }
   },
   "auto_inventory": {
@@ -811,6 +819,162 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
+    "abpa-235a4dde387e71542cede217": {
+      "envelope_sha256": "dc8c9bd5bdba44106db7f2f7f8545aa914e9ac0d464796d0ef3e7c8ea1a9c5b5",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/dc8c9bd5bdba44106db7f2f7f8545aa914e9ac0d464796d0ef3e7c8ea1a9c5b5.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-1ce2902d82101dfdd309b996",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "e2295c3ceb1b15f551175bfc394003317e4519295868b2dc2eafa0553b404d52",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 24.933333,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.24,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "ccc2b11c4b2ce15f8803ac973a85c6736d3c032914609d3aaed1b64b3003e5f0",
+            "qualifications_audible": true,
+            "render_seconds": 13.489883573001862,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              863,
+              1451
+            ],
+            "true_peak_dbtp": -1.99,
+            "voice_peak_allocated_mib": 1020.99267578125,
+            "voice_seconds": 0.3930356730015774
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T23:41:12.283469+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "kG8ynWDJVt2GtAYCfVtwobMqsic4gZWregk8gxPRsBIWTZG/X+ub+AJuAkC5ZeXZrv+qQSG3hANXF2B1QXSRCw==",
+        "caption": "Which city would fit the life you want? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/city\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-1ce2902d82101dfdd309b996",
+        "concept_id": "abpa-235a4dde387e71542cede217",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 24.933333,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / city",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-7d104088f867c80ce07f",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T23:41:12.283473+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-1ce2902d82101dfdd309b996",
+          "concept_id": "abpa-235a4dde387e71542cede217",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / city",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "Which city would fit the life you want?",
+          "pair_id": "autopair-7d104088f867c80ce07f",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "CITY",
+              "headline": "WHICH CITY WOULD FIT THE LIFE YOU WANT?",
+              "narration": "Which city would fit the life you want? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "Picking a city is like picking a house."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "It's not a purely financial decision for most. If it was, rents would be much more similar across the country, and it'd be easy to choose the optimal city to live in by comparing the median rent for an apartment of your choice."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "Picking a city is like picking a house. It's not a purely financial decision for most. If it was, rents would be much more similar across the country, and it'd be easy to choose the optimal city to live in by comparing the median rent for an apartment of your choice.",
+          "source_date": "2020-08-19",
+          "source_file": "src/content/blog/2020_08_19_city/index.md",
+          "source_sentences": [
+            "Picking a city is like picking a house.",
+            "It's not a purely financial decision for most.",
+            "If it was, rents would be much more similar across the country, and it'd be easy to choose the optimal city to live in by comparing the median rent for an apartment of your choice."
+          ],
+          "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+          "source_url": "https://leonlins.com/writing/city",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "Which city would fit the life you want?",
+            "subject": "city"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": false,
+            "visual": "statement",
+            "voice": "af_heart"
+          },
+          "text": "Which city would fit the life you want? Leon Lin offers this perspective. Picking a city is like picking a house. It's not a purely financial decision for most. If it was, rents would be much more similar across the country, and it'd be easy to choose the optimal city to live in by comparing the median rent for an apartment of your choice. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "City hunter",
+          "topic": "city",
+          "visual": "statement",
+          "voice": "af_heart"
+        },
+        "source_anchor": "Picking a city is like picking a house. It's not a purely financial decision for most. If it was, rents would be much more similar across the country, and it'd be easy to choose the optimal city to live in by comparing the median rent for an apartment of your choice.",
+        "source_file": "src/content/blog/2020_08_19_city/index.md",
+        "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+        "source_url": "https://leonlins.com/writing/city",
+        "trial": false,
+        "video_path": "downloads/0aa02f928246b7d5b48cb570560cd60e318d57f990e346adf2c9ae19f099e341.mp4",
+        "video_sha256": "0aa02f928246b7d5b48cb570560cd60e318d57f990e346adf2c9ae19f099e341",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-235a4dde387e71542cede217/0aa02f928246b7d5b48cb570560cd60e318d57f990e346adf2c9ae19f099e341.mp4",
+        "visual_style": "statement",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T23:43:48.046784+00:00"
     },
     "abpa-3d099fa98baa7497804b9669": {
       "envelope_sha256": "4ab6a273f4d05ce32e747af422d54ecbb7999c04fa42cd176288b5bf7e5af93f",
@@ -1902,6 +2066,161 @@
       },
       "promoted_at": "2026-11-27T16:39:10.460544+00:00"
     },
+    "abpa-8ff2f8234a8e87fe4f16cac1": {
+      "envelope_sha256": "1d2fc1d4e9c6cfed2a54c3d01ca03a9aaacdc8fc3772f616018390758db47727",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/1d2fc1d4e9c6cfed2a54c3d01ca03a9aaacdc8fc3772f616018390758db47727.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-63834eb1240ec9986aabc5b5",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "042d307d96d880fef3f16d12e1e956d2c7fa6877b8b0cbbfac8e57253f2fb4ba",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 20.882,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.33,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "9aedd24c1e841bf10204abc18ab4f84cebd56c443fbf84d38fe359e680a2021b",
+            "qualifications_audible": true,
+            "render_seconds": 9.602498009000556,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              863,
+              1451
+            ],
+            "true_peak_dbtp": -1.91,
+            "voice_peak_allocated_mib": 942.97412109375,
+            "voice_seconds": 0.36727634700218914
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T23:41:30.733706+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "8Z6AFU0efSQ3odadz3DXqCH0YiIuofWzS0K8LgW+Z/MsfsyclPXdC25Q7FiWlWpA0THAPi3lr8SruFOvDybXDw==",
+        "caption": "Which city would fit the life you want? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/city\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-63834eb1240ec9986aabc5b5",
+        "concept_id": "abpa-8ff2f8234a8e87fe4f16cac1",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 20.882,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / city",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-4f67419da01396f49199",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T23:41:30.733710+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 3,
+          "claim_id": "claim-63834eb1240ec9986aabc5b5",
+          "concept_id": "abpa-8ff2f8234a8e87fe4f16cac1",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / city",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "Which city would fit the life you want?",
+          "pair_id": "autopair-4f67419da01396f49199",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "CITY",
+              "headline": "WHICH CITY WOULD FIT THE LIFE YOU WANT?",
+              "narration": "Which city would fit the life you want? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "Many people also move because of their expectations of the social environment of a city."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "They want to be around people of the same age, meeting new friends, and have plenty of interaction with others."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "Many people also move because of their expectations of the social environment of a city. They want to be around people of the same age, meeting new friends, and have plenty of interaction with others.",
+          "source_date": "2020-08-19",
+          "source_file": "src/content/blog/2020_08_19_city/index.md",
+          "source_sentences": [
+            "Many people also move because of their expectations of the social environment of a city.",
+            "They want to be around people of the same age, meeting new friends, and have plenty of interaction with others."
+          ],
+          "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+          "source_url": "https://leonlins.com/writing/city",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "Which city would fit the life you want?",
+            "subject": "city"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 3,
+            "hook": 0,
+            "presenter": false,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "Which city would fit the life you want? Leon Lin offers this perspective. Many people also move because of their expectations of the social environment of a city. They want to be around people of the same age, meeting new friends, and have plenty of interaction with others. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "City hunter",
+          "topic": "city",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "Many people also move because of their expectations of the social environment of a city. They want to be around people of the same age, meeting new friends, and have plenty of interaction with others.",
+        "source_file": "src/content/blog/2020_08_19_city/index.md",
+        "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+        "source_url": "https://leonlins.com/writing/city",
+        "trial": false,
+        "video_path": "downloads/3cdb6268547da05f1cbdc04b337bd88c5e6594f5cd9105334954494339041141.mp4",
+        "video_sha256": "3cdb6268547da05f1cbdc04b337bd88c5e6594f5cd9105334954494339041141",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-8ff2f8234a8e87fe4f16cac1/3cdb6268547da05f1cbdc04b337bd88c5e6594f5cd9105334954494339041141.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T23:43:48.046784+00:00"
+    },
     "abpa-973d2e169e179358776c057a": {
       "envelope_sha256": "e5cbc1817722a3b98a20d2409a9fa4c1fb209fd1c332cda162b66fb885651390",
       "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/e5cbc1817722a3b98a20d2409a9fa4c1fb209fd1c332cda162b66fb885651390.json",
@@ -2212,6 +2531,161 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T16:39:10.460544+00:00"
+    },
+    "abpa-ab6f0a346969817eeb72867a": {
+      "envelope_sha256": "1385b335493cc0a5a26f40ac273d799d155589a218d95113a31a336c8c10ed22",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/1385b335493cc0a5a26f40ac273d799d155589a218d95113a31a336c8c10ed22.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-51d28307afa28ce3678c0d0b",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "bdc203d10363eb49297214c4edb0bd0cc729b05183ed21282829197c9db104bb",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 27.782,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.74,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "c6d43cad6cc97c051127792ec98ee52d1973bb1ffb8a4aa1f9c8b46a2a1ff4df",
+            "qualifications_audible": true,
+            "render_seconds": 14.886600223999267,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              881,
+              1451
+            ],
+            "true_peak_dbtp": -1.91,
+            "voice_peak_allocated_mib": 1067.10986328125,
+            "voice_seconds": 0.4048592550025205
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T23:41:54.683776+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "LU8lth3xwiNzWTOtybl4ZdYSn9rU1ql2RLPhYaJ8yKqI+Jgz6ZOQQ4WDC7JkDDyeYnQ6NmMPuiMXYd9oaz6iDg==",
+        "caption": "Could the order of steps change a process? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/practice\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-51d28307afa28ce3678c0d0b",
+        "concept_id": "abpa-ab6f0a346969817eeb72867a",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 27.782,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / process",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-192bf4a9ebbb447730ba",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T23:41:54.683781+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 3,
+          "claim_id": "claim-51d28307afa28ce3678c0d0b",
+          "concept_id": "abpa-ab6f0a346969817eeb72867a",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / process",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "Could the order of steps change a process?",
+          "pair_id": "autopair-192bf4a9ebbb447730ba",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "PROCESS",
+              "headline": "COULD THE ORDER OF STEPS CHANGE A PROCESS?",
+              "narration": "Could the order of steps change a process? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "Starting from the basics, you need to be able to diagram all your steps."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "If you don't even know what you're doing you can't consciously choose to work on anything."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "Starting from the basics, you need to be able to diagram all your steps. If you don't even know what you're doing you can't consciously choose to work on anything.",
+          "source_date": "2020-12-23",
+          "source_file": "src/content/blog/2020_12_23_practice/index.md",
+          "source_sentences": [
+            "Starting from the basics, you need to be able to diagram all your steps.",
+            "If you don't even know what you're doing you can't consciously choose to work on anything."
+          ],
+          "source_sha256": "83d92533e1852a96e9a14531fd19964e22effd24ea5d03d0e06149c338b1ee69",
+          "source_url": "https://leonlins.com/writing/practice",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "Could the order of steps change a process?",
+            "subject": "process"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 3,
+            "hook": 0,
+            "presenter": false,
+            "visual": "statement",
+            "voice": "af_nicole"
+          },
+          "text": "Could the order of steps change a process? Leon Lin offers this perspective. Starting from the basics, you need to be able to diagram all your steps. If you don't even know what you're doing you can't consciously choose to work on anything. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "Getting better at getting better",
+          "topic": "process",
+          "visual": "statement",
+          "voice": "af_nicole"
+        },
+        "source_anchor": "Starting from the basics, you need to be able to diagram all your steps. If you don't even know what you're doing you can't consciously choose to work on anything.",
+        "source_file": "src/content/blog/2020_12_23_practice/index.md",
+        "source_sha256": "83d92533e1852a96e9a14531fd19964e22effd24ea5d03d0e06149c338b1ee69",
+        "source_url": "https://leonlins.com/writing/practice",
+        "trial": false,
+        "video_path": "downloads/49bdcaf7eeb89de220e44205c89e9fd0dcc25c9ff0a98f59b3f2e08ea8dd8e7e.mp4",
+        "video_sha256": "49bdcaf7eeb89de220e44205c89e9fd0dcc25c9ff0a98f59b3f2e08ea8dd8e7e",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-ab6f0a346969817eeb72867a/49bdcaf7eeb89de220e44205c89e9fd0dcc25c9ff0a98f59b3f2e08ea8dd8e7e.mp4",
+        "visual_style": "statement",
+        "voice": "af_nicole"
+      },
+      "promoted_at": "2026-11-27T23:43:48.046784+00:00"
     },
     "abpa-b85359c8303c5ff82bea4dc0": {
       "envelope_sha256": "238fcee738bf01049eb776c6a5b167a7f0f2ca5c86ac1a50f219e69ba26f2aac",
@@ -2834,6 +3308,161 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T16:39:10.460544+00:00"
+    },
+    "abpa-dede15fa18cb35fb6e6d6206": {
+      "envelope_sha256": "6f5f63c1d5a6d3ce5895da7d5cfaec2bb4f98013bb8cca1c08b6df82e56abbd9",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/6f5f63c1d5a6d3ce5895da7d5cfaec2bb4f98013bb8cca1c08b6df82e56abbd9.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-07836cb730b1ff24ad3c7309",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "fc64be16d6fbe245152ce7bba9c9f102dc80b73b8d3eea23056738916d563215",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 33.603,
+            "independent_asr_word_error_rate": 0.05172413793103448,
+            "loudness_lufs": -16.6,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "9c8efc4cc5064803d3c6113503e5f32a9da64d62c6e5f8643bc99c40060dab6b",
+            "qualifications_audible": true,
+            "render_seconds": 15.439139116999286,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              863,
+              1451
+            ],
+            "true_peak_dbtp": -1.94,
+            "voice_peak_allocated_mib": 1173.39208984375,
+            "voice_seconds": 0.47545961099967826
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T23:40:49.483574+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "T2En2GSAA4EshkldaD+P8OVjgj+JSnLdbEwSVXPCuIbvnoeHD4vtsr5S5ejGs485JCYQgKnwLcR/tgrbh2cwDQ==",
+        "caption": "Which city would fit the life you want? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/city\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-07836cb730b1ff24ad3c7309",
+        "concept_id": "abpa-dede15fa18cb35fb6e6d6206",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 33.603,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / city",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-b495a3d5abfd26c92fdf",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T23:40:49.483584+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 3,
+          "claim_id": "claim-07836cb730b1ff24ad3c7309",
+          "concept_id": "abpa-dede15fa18cb35fb6e6d6206",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / city",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "Which city would fit the life you want?",
+          "pair_id": "autopair-b495a3d5abfd26c92fdf",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "CITY",
+              "headline": "WHICH CITY WOULD FIT THE LIFE YOU WANT?",
+              "narration": "Which city would fit the life you want? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "There'll be continued tension from city folks seeing suburban folks enjoy a more normal life, seemingly without consequences."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "Many will even make the choice to move, finally deciding the tradeoff is worth it."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "There'll be continued tension from city folks seeing suburban folks enjoy a more normal life, seemingly without consequences. Many will even make the choice to move, finally deciding the tradeoff is worth it.",
+          "source_date": "2020-08-19",
+          "source_file": "src/content/blog/2020_08_19_city/index.md",
+          "source_sentences": [
+            "There'll be continued tension from city folks seeing suburban folks enjoy a more normal life, seemingly without consequences.",
+            "Many will even make the choice to move, finally deciding the tradeoff is worth it."
+          ],
+          "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+          "source_url": "https://leonlins.com/writing/city",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "Which city would fit the life you want?",
+            "subject": "city"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 3,
+            "hook": 0,
+            "presenter": false,
+            "visual": "cards",
+            "voice": "af_nicole"
+          },
+          "text": "Which city would fit the life you want? Leon Lin offers this perspective. There'll be continued tension from city folks seeing suburban folks enjoy a more normal life, seemingly without consequences. Many will even make the choice to move, finally deciding the tradeoff is worth it. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "City hunter",
+          "topic": "city",
+          "visual": "cards",
+          "voice": "af_nicole"
+        },
+        "source_anchor": "There'll be continued tension from city folks seeing suburban folks enjoy a more normal life, seemingly without consequences. Many will even make the choice to move, finally deciding the tradeoff is worth it.",
+        "source_file": "src/content/blog/2020_08_19_city/index.md",
+        "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+        "source_url": "https://leonlins.com/writing/city",
+        "trial": false,
+        "video_path": "downloads/9b0c61f838c4fdc550b66bd83121a2c797f108f1f9f4f19ef00d9fb6a503ec81.mp4",
+        "video_sha256": "9b0c61f838c4fdc550b66bd83121a2c797f108f1f9f4f19ef00d9fb6a503ec81",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-dede15fa18cb35fb6e6d6206/9b0c61f838c4fdc550b66bd83121a2c797f108f1f9f4f19ef00d9fb6a503ec81.mp4",
+        "visual_style": "cards",
+        "voice": "af_nicole"
+      },
+      "promoted_at": "2026-11-27T23:43:48.046784+00:00"
     }
   },
   "last_account": {
