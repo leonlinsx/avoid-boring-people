@@ -1137,6 +1137,11 @@
     }
   },
   "operation_health": {
+    "measurement": {
+      "checked_at": "2026-11-27T11:25:50.545191+00:00",
+      "consecutive_failures": 0,
+      "error": null
+    },
     "promotion": {
       "checked_at": "2026-11-27T05:00:58.577516+00:00",
       "consecutive_failures": 0,
