@@ -22,7 +22,10 @@ no FlashHead process is created and no simultaneous model stages are scheduled.
 It is never removed by code. `GPU_FAULT.json` separately records the hardware
 incident. Only an explicit owner configuration binding the exact incident bytes
 with `validated_graphics_fault_sha256` permits a validated graphics workload after
-that incident; this cannot enable presenter production. A new incident replaces
+that incident; this cannot enable presenter production. Production also requires
+`validated_gpu_workload_digest` to bind authorization to the independently
+exercised audio/transcription/runner/supervisor code. Caption and metadata edits
+do not authorize a different GPU workload or require individual video approval. A new incident replaces
 the fault record, creates a fresh `PAUSE` without overwriting an existing hold,
 saves local diagnostics and stops the invocation. A healthy boot/probe never
 clears either hold or reauthorizes the workload.

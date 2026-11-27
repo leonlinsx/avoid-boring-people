@@ -69,6 +69,13 @@ def require_idle_gpu(root=None):
     if active:raise RuntimeError('GPU busy; defer without terminating other processes')
 
 
+def gpu_workload_digest():
+    # Bind recovery to the independently exercised inference/supervision code,
+    # not unrelated captions, metadata or each individual Reel.
+    root=Path(__file__).resolve().parents[1]/'factory'
+    return policy.sha({name:policy.sha((root/name).read_bytes()) for name in ('audio.py','transcribe.py','run.py','gpu_guard.py')})
+
+
 def graphics_mode(config):
     mode=config.get('production_mode','graphics_gpu')
     if mode not in ('graphics_gpu','native'):raise RuntimeError('unknown production mode')
@@ -199,6 +206,8 @@ def main():
         graphics=graphics_mode(config)
         if not graphics and not args.dry_run:raise RuntimeError('native presenter production remains disabled')
         check_pause(root,config)
+        if not args.dry_run and config.get('validated_gpu_workload_digest')!=gpu_workload_digest():
+            raise RuntimeError('GPU workload requires bounded validation before production')
         if not config.get('enabled') and not (args.canary or args.dry_run):raise RuntimeError('continuous generation is not activated')
         (root/'admitted').mkdir(exist_ok=True);(root/'uploads').mkdir(exist_ok=True)
         key=Path(os.environ.get('CREDENTIALS_DIRECTORY',''))/'auto-admission-key' if os.environ.get('CREDENTIALS_DIRECTORY') else Path(config['signing_key'])

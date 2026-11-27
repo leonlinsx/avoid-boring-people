@@ -114,3 +114,9 @@ def test_new_device_incident_archives_evidence_and_revokes_validation(tmp_path):
 def test_operator_hold_blocks_upload_before_reading_pending_media(tmp_path):
     (tmp_path/'PAUSE').write_text('stop now')
     with pytest.raises(RuntimeError,match='kill switch'):worker.finish_upload(tmp_path,tmp_path/'does-not-exist.json')
+
+
+def test_unvalidated_gpu_production_refused_before_credentials(tmp_path,monkeypatch):
+    cfg=tmp_path/'config.json';cfg.write_text(json.dumps({'root':str(tmp_path/'root'),'enabled':True}))
+    monkeypatch.setenv('ABP_AUTO_CONFIG',str(cfg));monkeypatch.setattr(sys,'argv',['worker','--limit','1'])
+    with pytest.raises(RuntimeError,match='bounded validation'):worker.main()
