@@ -10,6 +10,7 @@ import requests
 from scripts.instagram_growth.autonomy import admission as a, policy
 
 FEED=f'https://{a.HOST}/instagram/reels/auto/feed.json'
+CANARY_ID='abpa-973d2e169e179358776c057a'
 
 
 def fetch(url, limit):
@@ -92,5 +93,6 @@ def eligible(state, mode, *, canary=False):
     if any(x.get('consecutive_failures',0)>=3 for x in state.get('operation_health',{}).values()):return []
     health=state.get('auto_health',{})
     when=health.get('feed_generated_at')
-    if not when or datetime.now(timezone.utc)-datetime.fromisoformat(when.replace('Z','+00:00'))>timedelta(days=8):return []
+    now=datetime.now(timezone.utc)
+    if not when or not now-timedelta(days=8)<=datetime.fromisoformat(when.replace('Z','+00:00'))<=now+timedelta(minutes=5):return []
     return [a.verify_manifest(x['manifest']) for x in state.get('auto_inventory',{}).values()]

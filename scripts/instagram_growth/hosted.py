@@ -11,7 +11,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import requests
 from scripts.instagram_growth import reel_pilot as pilot, rolling_queue as queue
 from scripts.instagram_growth import scorecard
@@ -148,8 +148,9 @@ def publish_one(store, concept=None, *, is_pilot=False, auto_canary=False):
     if auto_canary:
         if state.get('auto_canary_verified'):raise StateError('automatic canary already passed; never repeat it')
         # This ID is a fixed low-risk source-exact graphics treatment, not feed-selected code.
-        auto=[x for x in auto if x['concept_id']=='abpa-973d2e169e179358776c057a']
+        auto=[x for x in auto if x['concept_id']==promotion.CANARY_ID]
         if not auto:raise StateError('verified automatic canary is not eligible')
+        if verify_auto_canary(store,auto[0]):return
     with tempfile.TemporaryDirectory(prefix='abp-reels-') as tmp:
         root=Path(tmp);receipts=root/'receipts';receipts.mkdir()
         for name,record in state['receipts'].items():
@@ -188,7 +189,29 @@ def publish_one(store, concept=None, *, is_pilot=False, auto_canary=False):
         state['last_published_at']=record['published_at']
         store.save()
         print(json.dumps({'media':media,'insights':metrics,'pilot_verified':state['pilot_verified']},indent=2))
-        if (is_pilot or auto_canary) and not available:raise StateError('real post exists, but Insights unavailable; recurring publication remains disabled')
+        if auto_canary and not available:
+            print('AUTO_CANARY_AWAITING_INSIGHTS: published receipt preserved; later checks only read this media')
+        elif is_pilot and not available:raise StateError('real post exists, but Insights unavailable; recurring publication remains disabled')
+
+
+def verify_auto_canary(store,item):
+    """Only re-read a known published canary; never repeat media_publish."""
+    record=store.state['receipts'].get(promotion.CANARY_ID)
+    if not record or record.get('status')!='published':return False
+    if record.get('sha256')!=item['video_sha256']:
+        raise StateError('automatic canary receipt does not bind the admitted media')
+    media=verify_media(str(record['media_id']))
+    metrics=pilot.fetch_insights(str(record['media_id']))
+    available=any(metrics['metrics'].get(k) is not None for k in pilot.METRICS)
+    record.update(verified_media=media,initial_insights=metrics)
+    store.state.update(auto_canary_verified=available,auto_canary_media_id=str(record['media_id']))
+    store.save()
+    if not available:
+        if datetime.now(timezone.utc)-queue.instant(record['published_at'])>timedelta(hours=48):
+            raise StateError('automatic canary Insights unavailable after 48h; check permissions')
+        print('AUTO_CANARY_AWAITING_INSIGHTS: no new publication')
+    else:print('AUTO_CANARY_VERIFIED: existing media ownership, permalink and Insights confirmed')
+    return True
 
 
 def measure(store):
@@ -238,6 +261,10 @@ def measure(store):
 
 def verify_pilot(store):
     """Read-only recheck after delayed Insights; never repeat media_publish."""
+    canary=store.state.get('auto_inventory',{}).get(promotion.CANARY_ID)
+    if canary:
+        from scripts.instagram_growth.autonomy.admission import verify_manifest
+        if verify_auto_canary(store,verify_manifest(canary['manifest'])):return
     published=[r for r in store.state['receipts'].values() if r.get('status')=='published']
     if not published:
         raise StateError('no published pilot receipt to verify; reconcile uncertain receipts first')
@@ -318,7 +345,7 @@ def main():
         print(json.dumps({'account':pilot.account_snapshot(),'quota':live_quota(),'insights_probe':insights_probe(),'state_account':store.state['account'],'no_publication':True},indent=2))
     elif args.action in ('pilot','publish','auto-canary'):
         try:
-            publish_one(store,args.concept,is_pilot=args.action=='pilot',auto_canary=args.action=='auto-canary' or (args.action=='publish' and mode=='canary' and not store.state.get('auto_canary_verified')))
+            publish_one(store,args.concept,is_pilot=args.action=='pilot',auto_canary=args.action=='auto-canary' or (args.action=='publish' and mode in ('canary','enabled') and not store.state.get('auto_canary_verified')))
             promotion.circuit(store.state,'publishing');store.save()
         except Exception as error:
             promotion.circuit(store.state,'publishing',error);store.save();raise

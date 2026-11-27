@@ -26,8 +26,12 @@ async function quota(){
 const usageFile=path.join(config.root,`usage-${new Date().toISOString().slice(0,7)}.json`);
 async function reserve(bytes){
  let usage={bytes_reserved:0,operations_reserved:0};try{usage=JSON.parse(await fs.readFile(usageFile,'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
- if(usage.bytes_reserved+bytes>256*1024*1024||usage.operations_reserved+4>900)throw Error('Monthly autonomous allowance circuit breaker');
- usage.bytes_reserved+=bytes;usage.operations_reserved+=4;await fs.mkdir(config.root,{recursive:true,mode:0o700});await fs.writeFile(usageFile,JSON.stringify(usage),{mode:0o600});return usage;
+ if(!Number.isSafeInteger(usage.bytes_reserved)||usage.bytes_reserved<0||!Number.isSafeInteger(usage.operations_reserved)||usage.operations_reserved<0)throw Error('Invalid durable usage ledger');
+ // Conservative allowance for HEAD, immutable writes and public verification;
+ // not a claim of measured provider billing or transfer usage.
+ if(usage.bytes_reserved+bytes>256*1024*1024||usage.operations_reserved+12>900)throw Error('Monthly autonomous allowance circuit breaker');
+ usage.bytes_reserved+=bytes;usage.operations_reserved+=12;await fs.mkdir(config.root,{recursive:true,mode:0o700});
+ const pending=usageFile+'.tmp';await fs.writeFile(pending,JSON.stringify(usage),{mode:0o600});await fs.rename(pending,usageFile);return usage;
 }
 if(process.argv[2]==='quota'){console.log(JSON.stringify(await quota()));process.exit(0);}
 if(process.argv[2]!=='upload')throw Error('Expected quota or upload');
@@ -52,6 +56,9 @@ if(!confirmation.ok||sha(Buffer.from(await confirmation.arrayBuffer()))!==manife
 const feedUrl=`https://${HOST}/instagram/reels/auto/feed.json`;let old,etag;
 try{const info=await head(feedUrl,auth);etag=info.etag;const response=await fetch(feedUrl+'?v='+Date.now(),{redirect:'error',cache:'no-store'});if(!response.ok)throw Error('Existing feed unavailable');old=authenticated(await response.json());}catch(error){if(error.constructor?.name!=='BlobNotFoundError')throw error;}
 const entries=(old?.items??[]).filter(x=>x.concept_id!==m.concept_id);
+if(old&&(old.artifact_type!=='abp_auto_feed_v1'||old.account!=='avoidboringpeople'))throw Error('Wrong existing feed identity');
+const previous=old?.items?.find(x=>x.concept_id===m.concept_id);
+if(previous&&previous.sha256!==manifestHash)throw Error('Cannot replace an immutable concept envelope');
 entries.push({concept_id:m.concept_id,url:manifestUrl,sha256:manifestHash});
 if(entries.length>64)throw Error('Feed retention circuit breaker; no silent evidence eviction');
 const body={artifact_type:'abp_auto_feed_v1',account:'avoidboringpeople',generated_at:new Date().toISOString(),items:entries,factory:input.factory,storage:quotaEvidence,usage};
