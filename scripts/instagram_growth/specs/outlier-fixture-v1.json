@@ -1,0 +1,114 @@
+{
+  "version": "ABP-OUTLIER-RESEARCH-1",
+  "mode": "fixture",
+  "created_at": "2026-11-26T12:00:00+00:00",
+  "notice": "Synthetic signed fixture. No actual public creator or performance evidence. Never eligible for live admission.",
+  "receipts": [
+    {
+      "artifact_type": "abp_research_receipt_v1",
+      "version": "ABP-OUTLIER-RESEARCH-1",
+      "mode": "fixture",
+      "provider": "meta_business_discovery",
+      "creator": "abp_synthetic_fixture",
+      "permalink": "https://www.instagram.com/reel/ABPFIXTURE00000/",
+      "retrieved_at": "2026-11-26T12:00:00+00:00",
+      "posted_at": "2026-11-18T12:00:00+00:00",
+      "views": 100000,
+      "followers": 10000,
+      "baseline": [
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00001/",
+          "posted_at": "2026-11-17T12:00:00+00:00",
+          "views": 110000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00002/",
+          "posted_at": "2026-11-16T12:00:00+00:00",
+          "views": 90000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00003/",
+          "posted_at": "2026-11-15T12:00:00+00:00",
+          "views": 120000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00004/",
+          "posted_at": "2026-11-14T12:00:00+00:00",
+          "views": 100000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00005/",
+          "posted_at": "2026-11-13T12:00:00+00:00",
+          "views": 110000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00006/",
+          "posted_at": "2026-11-12T12:00:00+00:00",
+          "views": 500000
+        }
+      ],
+      "topic": "city",
+      "pattern": "statement_context_question",
+      "caption_sha256": "c896061606570c5ed82316f2dbb386040f1ec71265439a73b5ab69258463655c",
+      "promotion_status": "unknown",
+      "uncertainties": [
+        "Public views may include paid and Facebook views; organic performance is unverified.",
+        "Caption structure only; first-three-second hook, pacing and audiovisual content are unobserved."
+      ],
+      "auto_signature": "wF/ZgU+o2Fe724yMOasQQnAiSf6/e6cECjNJmALa0pUKTLOMYDdmjzwkP4wfxPVXYHy8pOq99Cdjzdcrj81dBA=="
+    },
+    {
+      "artifact_type": "abp_research_receipt_v1",
+      "version": "ABP-OUTLIER-RESEARCH-1",
+      "mode": "fixture",
+      "provider": "meta_business_discovery",
+      "creator": "abp_synthetic_fixture",
+      "permalink": "https://www.instagram.com/reel/ABPFIXTURE00006/",
+      "retrieved_at": "2026-11-26T12:00:00+00:00",
+      "posted_at": "2026-11-12T12:00:00+00:00",
+      "views": 500000,
+      "followers": 10000,
+      "baseline": [
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00000/",
+          "posted_at": "2026-11-18T12:00:00+00:00",
+          "views": 100000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00001/",
+          "posted_at": "2026-11-17T12:00:00+00:00",
+          "views": 110000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00002/",
+          "posted_at": "2026-11-16T12:00:00+00:00",
+          "views": 90000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00003/",
+          "posted_at": "2026-11-15T12:00:00+00:00",
+          "views": 120000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00004/",
+          "posted_at": "2026-11-14T12:00:00+00:00",
+          "views": 100000
+        },
+        {
+          "permalink": "https://www.instagram.com/reel/ABPFIXTURE00005/",
+          "posted_at": "2026-11-13T12:00:00+00:00",
+          "views": 110000
+        }
+      ],
+      "topic": "city",
+      "pattern": "statement_context_question",
+      "caption_sha256": "c896061606570c5ed82316f2dbb386040f1ec71265439a73b5ab69258463655c",
+      "promotion_status": "unknown",
+      "uncertainties": [
+        "Public views may include paid and Facebook views; organic performance is unverified.",
+        "Caption structure only; first-three-second hook, pacing and audiovisual content are unobserved."
+      ],
+      "auto_signature": "AorIQwm1MmDP4gSEsdk+9sQxENcbk0OJ9UgW3/epjudNwRDVuJ6JvL7DgH3BTF+9+mhRvISy85c4X+7M71HaCA=="
+    }
+  ]
+}
