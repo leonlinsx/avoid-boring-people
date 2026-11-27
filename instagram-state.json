@@ -1088,6 +1088,11 @@
       "checked_at": "2026-11-27T05:00:58.577516+00:00",
       "consecutive_failures": 0,
       "error": null
+    },
+    "publishing": {
+      "checked_at": "2026-11-27T05:02:15.661197+00:00",
+      "consecutive_failures": 0,
+      "error": null
     }
   },
   "pilot_verified": true,
