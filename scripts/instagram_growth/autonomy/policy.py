@@ -53,7 +53,8 @@ def sha(value):
 
 
 def policy_digest():
-    # Changes to policy/compiler checks invalidate old automatic admissions.
+    # Compiler changes produce a new digest. Admission recognizes just one
+    # frozen V1 digest pair after unchanged legacy source reconstruction.
     return sha(Path(__file__).read_bytes() + canonical(POLICY))
 
 
@@ -109,7 +110,7 @@ def source_record(path, anchor, today=None):
             'source_sentences':units, 'copyright_basis':'owned_nonquoted_commentary'}
 
 
-def compile_script(record, *, hook=0, voice='af_heart', presenter=False, visual='cards', caption_words=5, bucket='exploration'):
+def compile_script(record, *, hook=0, voice='af_heart', presenter=False, visual='cards', caption_words=5, bucket='exploration', creative=None):
     source=source_record(record['source_file'],record['source_anchor'])
     if any(source[k]!=record[k] for k in ('source_sha256','claim_id','topic')):
         raise Quarantine('source_record_changed')
@@ -133,6 +134,9 @@ def compile_script(record, *, hook=0, voice='af_heart', presenter=False, visual=
           'experiment_hypothesis':f'{"question" if hook else "concrete situation"} / {source["topic"]}',
           'hook_type':'question' if hook else 'concrete situation','cta_type':'follow',
           'auto_policy':VERSION,'template_parameters':{'hook':hook,'voice':voice,'presenter':presenter,'visual':visual,'caption_words':caption_words,'bucket':bucket}}
+    if creative is not None:
+        from scripts.instagram_growth.autonomy.creative import apply
+        item=apply(item,creative)
     try:return validate(item)
     except ValueError as error:raise Quarantine(str(error)) from error
 
@@ -151,7 +155,7 @@ def verify_script(item):
             'factual_text_sha256':sha(factual.encode()),'human_approval_required':False}
 
 
-def compile_reference(reference_index, *, voice='af_heart', presenter=False, visual='cards', caption_words=5, bucket='exploration'):
+def compile_reference(reference_index, *, voice='af_heart', presenter=False, visual='cards', caption_words=5, bucket='exploration',creative=None):
     if reference_index not in REFERENCE_INDICES:raise Quarantine('reference_outside_low_risk_policy')
     catalog=Path(__file__).resolve().parents[1]/'specs/standalone-v3.json'
     source=json.loads(catalog.read_text())['items'][reference_index]
@@ -165,6 +169,9 @@ def compile_reference(reference_index, *, voice='af_heart', presenter=False, vis
                 claim_id=claim_id,pair_id=pair_id,pair_role='presenter' if presenter else 'graphics',pair_primary_factor='fictional_presenter_opening_vs_graphics',
                 concept_id='abpa-'+sha({'pair':pair_id,'presenter':presenter})[:24],auto_policy=VERSION,
                 template_parameters={'reference_index':reference_index,'voice':voice,'presenter':presenter,'visual':visual,'caption_words':caption_words,'bucket':bucket})
+    if creative is not None:
+        from scripts.instagram_growth.autonomy.creative import apply
+        item=apply(item,creative)
     return validate(item)
 
 

@@ -109,6 +109,43 @@ def paired_presentations(rows):
     return result
 
 
+def creative_results(rows,manifests,published):
+    """Existing scorecard only; paired formats never become independent claims."""
+    from scripts.instagram_growth.autonomy.creative import PROTOCOL,HYPOTHESES,MAX_POSTS_PER_ARM
+    result=[]
+    for factor,hypothesis in HYPOTHESES.items():
+        members=[m for m in manifests if m.get('script',{}).get('creative_trial',{}).get('protocol')==PROTOCOL
+                 and m['script']['creative_trial']['factor']==factor]
+        if not members:continue
+        arms={arm:[m for m in members if m['script']['creative_trial']['arm']==arm] for arm in ('control','treatment')}
+        counts={arm:{'admitted':len(group),'published':sum(m['concept_id'] in published for m in group),
+                     'distinct_claims':len({m['claim_id'] for m in group})} for arm,group in arms.items()}
+        comparisons=[]
+        for window in queue.WINDOWS:
+            summary={}
+            for arm in arms:
+                observed=[r for r in rows if r['window']==window and r.get('creative_trial',{}).get('factor')==factor and r['creative_trial']['arm']==arm]
+                eligible=[r for r in observed if r['eligible_for_comparison']]
+                reach=sum(r['metrics']['reach'] for r in eligible)
+                shares=[r['metrics'].get('shares') for r in eligible]
+                summary[arm]={'observed_posts':len(observed),'eligible_posts':len(eligible),
+                              'distinct_claims':len({r['claim_id'] for r in eligible}),
+                              'independent_source_articles':len({r['source_url'] for r in eligible}),
+                              'summed_reel_reach_nonunique':reach,
+                              'shares_per_1000_reached':1000*sum(shares)/reach if reach and all(x is not None for x in shares) else None,
+                              'blocks':[{'topic':r['topic'],'source_article':r['source_url'],'format':r['creative_format'],
+                                         'publication_slot_utc_start_hour':6*(queue.instant(r['published_at']).hour//6),
+                                         'voice':r['voice'],'duration_seconds':r['duration_seconds'],'cta':r['cta_type']} for r in eligible],
+                              'per_reel_follows':None,'qualified_owned_site_outcomes':None}
+            blocksets=[{(b['topic'],b['source_article'],b['format'],b['publication_slot_utc_start_hour']) for b in summary[arm]['blocks']} for arm in ('control','treatment')]
+            comparisons.append({'window':window,'arms':summary,'shared_observational_blocks':len(blocksets[0]&blocksets[1]),'winner':None})
+        result.append({'protocol':PROTOCOL,'factor':factor,'hypothesis':hypothesis,'max_posts_per_arm':MAX_POSTS_PER_ARM,
+                       'counts':counts,'status':'bounded_arm_complete' if all(v['published']>=MAX_POSTS_PER_ARM for v in counts.values()) else 'collecting_or_supply_limited',
+                       'comparisons':comparisons,'decision':'ADJUST',
+                       'limitation':'Directional observational comparisons only. Account follower change cannot be assigned to overlapping arms; qualified owned-site outcomes unavailable. Never select a growth winner from attention alone.'})
+    return result
+
+
 def build(state, manifests, now=None):
     now = now or datetime.now(timezone.utc)
     if state.get('account') != pilot.ACCOUNT:
@@ -120,7 +157,9 @@ def build(state, manifests, now=None):
     for name, receipt in published.items():
         m = meta.get(name, {})
         script=m.get('script',{});template=script.get('template_parameters',{})
-        parameters=production_parameters({k:template.get(k) for k in ('hook','voice','visual','caption_words')}) if script.get('reference_index') is None else None
+        attributes={k:template.get(k) for k in ('hook','voice','visual','caption_words')}
+        if 'creative' in template:attributes['creative']=template['creative']
+        parameters=production_parameters(attributes) if script.get('reference_index') is None else None
         for label, target in queue.WINDOWS.items():
             obs = state.get('observations', {}).get(f'{name}-{label}')
             if not obs:
@@ -135,12 +174,15 @@ def build(state, manifests, now=None):
             reach = metrics.get('reach')
             eligible = timely and isinstance(reach, (int, float)) and reach >= MIN_REACH
             row = {'concept_id': name, 'source_url': m.get('source_url', receipt.get('source_url')),
-                   'source_claim': m.get('source_anchor'), 'hook': m.get('opening_hook', m.get('caption', '').split('\n')[0]),
+                   'source_claim': m.get('source_anchor'), 'hook': (script.get('scenes') or [{}])[0].get('narration',m.get('opening_hook', m.get('caption', '').split('\n')[0])),
                    'hook_type': m.get('hook_type', m.get('experiment_hypothesis')), 'hypothesis': m.get('experiment_hypothesis'),
                    'voice': m.get('voice'), 'creative_format': m.get('creative_format'), 'visual_style': m.get('visual_style', m.get('creative_format')),
                    'duration_seconds': m.get('duration_seconds'), 'cta_type': m.get('cta_type'),
                    'pair_id':m.get('pair_id'),'pair_role':m.get('pair_role'),
                    'production_parameters':parameters,'topic':script.get('topic'),
+                   'claim_id':m.get('claim_id'),'creative_trial':script.get('creative_trial',{}),'audience':script.get('audience'),
+                   'hook_structure':script.get('hook_structure'),'caption_strategy':script.get('caption_strategy'),
+                   'research_origin':script.get('research_origin'),'research_evidence_id':script.get('research_evidence_id'),
                    'published_at': receipt['published_at'], 'format': 'ordinary_reel', 'window': label,
                    'actual_age_hours': age, 'metrics': metrics, 'missing': [k for k, v in metrics.items() if v is None],
                    'availability': obs.get('availability', {}), 'eligible_for_comparison': eligible,
@@ -169,6 +211,7 @@ def build(state, manifests, now=None):
             'published_this_week': sum(start <= queue.instant(r['published_at']) <= now for r in published.values()),
             'inventory': inventory(manifests, state, now), 'rows': rows, 'equal_target_age_cohorts': cohorts,
             'matched_presentation_pairs':paired_presentations(rows),
+            'creative_experiments':creative_results(rows,manifests,published),
             'measurement_health': state.get('measurement_health', {}),
             'pending_windows': pending, 'failures': failures, 'minimum_reach_per_reel': MIN_REACH,
             'top_hypotheses': ranked[:3] if sufficient else [],
@@ -195,7 +238,7 @@ def markdown(report):
              '|---|---|---:|---:|---:|---:|---:|---:|---|']
     for r in report['rows']:
         m = r['metrics']; lines.append(f"| {r['concept_id']} | {r['window']} | {r['actual_age_hours']} | {m['reach']} | {m['views']} | {m['shares']} | {m['saved']} | {m['reels_skip_rate']} | {', '.join(r['missing'])} |")
-    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
+    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Creative protocol','creative_experiments'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
         lines += ['', '## ' + title, '', json.dumps(report[key], indent=2)]
     measurement = report.get('measurement_health') or {}
     lines += ['', f"Measurement: {measurement.get('status', 'unavailable')}; {sum(x['status'] == 'missed' for x in report['pending_windows'])} missed age windows; {measurement.get('remaining_due', 'unavailable')} readings still due. Late cumulative readings cannot reconstruct earlier outcomes."]

@@ -44,4 +44,9 @@ if not checkout.exists():
     git('worktree','add','--detach',str(checkout),head)
 if not (checkout/'node_modules').exists():(checkout/'node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
 env.update(ABP_AUTO_CONFIG=str(config_path),ABP_GPU_ROOT=str(repo/'.tmp/instagram-growth'))
+if config.get('creative_experiments') and config.get('research_enabled') and config.get('research_meta_credential_file'):
+    credential=Path(config['research_meta_credential_file'])
+    if not credential.is_absolute() or credential.stat().st_mode&0o077:raise SystemExit('Research credential must be an owner-only absolute file')
+    secret=json.loads(credential.read_text())
+    env.update(ABP_RESEARCH_META_TOKEN=secret['token'],ABP_RESEARCH_META_USER_ID=secret['user_id'])
 subprocess.run([str(repo/'.venv-ig-reels/bin/python'),'-m','scripts.instagram_growth.autonomy.worker',*sys.argv[1:]],cwd=checkout,env=env,check=True)

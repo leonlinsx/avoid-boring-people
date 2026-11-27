@@ -11,10 +11,14 @@ from scripts.instagram_growth.autonomy import policy
 
 PUBLIC_KEY = Path(__file__).with_name('public-key.pem')
 HOST = 'kveensoemz2j3t8d.public.blob.vercel-storage.com'
-RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','factory/render.py','factory/audio.py','factory/transcribe.py','factory/gpu_guard.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
-# Only the immutable pre-CPU runtime; source/compiler policy must still match.
-LEGACY_RUNTIME='46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6'
-LEGACY_POLICY='f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd'
+RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','autonomy/creative.py','autonomy/research.py','autonomy/research-fixture-public.pem','factory/render.py','factory/audio.py','factory/transcribe.py','factory/gpu_guard.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
+# Frozen protected-main V1 releases, still reconstructed without creative fields.
+LEGACY_POLICY_DIGEST='f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd'
+LEGACY_RUNTIME_DIGEST='46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6'
+GRAPHICS_RUNTIME_DIGEST='698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2'
+LEGACY_RUNTIMES=(LEGACY_RUNTIME_DIGEST,GRAPHICS_RUNTIME_DIGEST)
+LEGACY_RUNTIME=LEGACY_RUNTIME_DIGEST
+LEGACY_POLICY=LEGACY_POLICY_DIGEST
 PORTRAIT_SHA='ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb'
 FLASH_REV='74d81686a7bd750b276ec1ade295bc4077c5868a'
 
@@ -94,8 +98,16 @@ def qa_check(item, meta, independent_asr):
 
 
 def admit(item, meta, independent_asr, key):
-    evidence=policy.verify_script(item);quality=qa_check(item,meta,independent_asr)
+    evidence=policy.verify_script(item)
+    if item['presenter'] and item['template_parameters'].get('creative'):raise policy.Quarantine('experimental_native_presenter_disabled')
+    quality=qa_check(item,meta,independent_asr)
+    if item['template_parameters'].get('creative'):
+        from scripts.instagram_growth.autonomy.creative import require_live_evidence
+        require_live_evidence(item)
     source=item['source_url'];caption=item['scenes'][0]['narration']+'\n\nLeon Lin’s perspective: '+source+'\n\nAI-generated narration'+(' and fictional presenter.' if item['presenter'] else '. Original graphics.')
+    if item['template_parameters'].get('creative'):
+        from scripts.instagram_growth.autonomy.creative import caption as creative_caption
+        caption=creative_caption(item)
     manifest={'account':'avoidboringpeople','concept_id':item['concept_id'],'format':'REELS','ai_generated':True,'trial':False,'graduation_strategy':None,
               'source_url':source,'source_file':item['source_file'],'source_sha256':item['source_sha256'],'source_anchor':item['source_anchor'],
               'video_sha256':meta['sha256'],'video_url':f'https://{HOST}/instagram/reels/auto/{item["concept_id"]}/{meta["sha256"]}.mp4',
@@ -111,6 +123,8 @@ def admit(item, meta, independent_asr, key):
               'voice':item['voice'],'duration_seconds':quality['duration_seconds'],'creative_format':'presenter_then_graphics' if item['presenter'] else 'narrated_motion_graphics',
               'visual_style':item['visual'],'cta_type':'follow','experiment_hypothesis':item['experiment_hypothesis'],
               'experiment_bucket':item['experiment_bucket'],'pair_id':item['pair_id'],'pair_role':item['pair_role'],'claim_id':item['claim_id']}
+    if item['template_parameters'].get('creative'):
+        manifest.update({k:item[k] for k in ('audience','hook_structure','caption_strategy','creative_trial','research_origin','research_evidence_id')})
     return seal(manifest,key)
 
 
@@ -120,10 +134,19 @@ def verify_manifest(item):
         raise policy.Quarantine('wrong_auto_admission_contract')
     if item.get('approved_by') is not None or item.get('trial') is not False:raise policy.Quarantine('forged_human_review_or_trial')
     evidence=policy.verify_script(item['script']);admission=item['admission']
-    compatible=admission['runtime_digest']==LEGACY_RUNTIME and evidence['policy_digest']==LEGACY_POLICY
-    if (admission['runtime_digest']!=runtime_digest() and not compatible) or any(admission[k]!=v for k,v in evidence.items()):raise policy.Quarantine('stale_or_changed_auto_policy')
-    for field in ('concept_id','claim_id','pair_id','pair_role','source_file','source_sha256','source_anchor','voice'):
+    if item['script']['presenter'] and item['script']['template_parameters'].get('creative'):raise policy.Quarantine('experimental_native_presenter_disabled')
+    legacy=(not item['script']['template_parameters'].get('creative') and admission.get('policy_digest')==LEGACY_POLICY_DIGEST
+            and admission.get('runtime_digest') in LEGACY_RUNTIMES)
+    if not legacy and admission['runtime_digest']!=runtime_digest():raise policy.Quarantine('stale_or_changed_auto_policy')
+    if any(admission[k]!=v for k,v in evidence.items() if not (legacy and k=='policy_digest')):raise policy.Quarantine('stale_or_changed_auto_policy')
+    for field in ('concept_id','claim_id','pair_id','pair_role','source_file','source_sha256','source_anchor','source_url','voice'):
         if item.get(field)!=item['script'][field]:raise policy.Quarantine('manifest_script_disagreement')
+    if item['script']['template_parameters'].get('creative'):
+        from scripts.instagram_growth.autonomy.creative import caption,require_live_evidence
+        require_live_evidence(item['script'],now=datetime.fromisoformat(item['admitted_at']))
+        if item.get('caption')!=caption(item['script']):raise policy.Quarantine('creative_caption_disagreement')
+        for field in ('audience','hook_structure','caption_strategy','creative_trial','research_origin','research_evidence_id'):
+            if item.get(field)!=item['script'][field]:raise policy.Quarantine('manifest_creative_disagreement')
     if admission['quality']['status']!='PASS' or item['account']!='avoidboringpeople':raise policy.Quarantine('qa_or_identity_failure')
     expected=f'https://{HOST}/instagram/reels/auto/{item["concept_id"]}/{item["video_sha256"]}.mp4'
     if item['video_url']!=expected:raise policy.Quarantine('unowned_auto_video_url')

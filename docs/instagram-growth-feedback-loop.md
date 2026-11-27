@@ -91,9 +91,45 @@ envelopes, duplicate concepts, registry overflow and a competing CAS write.
 The Python-to-JavaScript bridge still exercises exact canonical floating-point
 bytes. These are disposable fixtures, not additional publication evidence.
 
-Subsequent availability: the live feed repair retained fourteen automatic
-admissions and twelve unpublished assets at its last verification. An offline
-FlashHead test then triggered a GPU bus-loss incident. GPU replenishment is held
-with the existing private kill switch and a disabled factory timer; cached
-publication and measurement remain available. See the
-[GPU incident and durable fault circuit](instagram-growth-gpu-safety.md).
+At merged main `dcddb9004503d471406cc8353346443aab9d4155`, the live data-only
+repair rebuilt all 14 signed envelopes, reused media and reserved zero new
+video bytes. Independent promotion run `46037492255` accepted the remaining
+six entries with no quarantine: 14 automatic admissions total, including the
+two published canary members, and 12 ready unpublished assets. A second live
+checkpoint update retained all 14 entries using 12 operation reservations and
+zero new video bytes. The factory timer was enabled for that verification. These are
+infrastructure and publication proofs, not validated growth.
+
+Subsequently, GPU bus loss occurred during an offline presenter experiment.
+The factory's local service was stopped, its timer disabled, and the existing
+private `PAUSE` kill switch set. Existing hosted inventory and GitHub
+measurement/publication remain available. See the
+[incident](instagram-growth-gpu-incident.md) and
+[durable retry circuit](instagram-growth-gpu-safety.md).
+
+At 22:50 UTC on November 27, the normal automatic queue independently published
+and verified a replenished asset, `abpa-101484b319c52682a75bfdbe`, as ordinary Reel
+`18136744558780274`: https://www.instagram.com/reel/DgQyg5vhprW/ .
+Workflow `46078737635` succeeded on reviewed main, with the account/AI/feed flags
+verified and no individual approval or local GPU work. This leaves eleven
+unpublished automatic assets. It establishes normal replenishment-to-publication
+behavior while GPU generation is held; it does not establish follower growth.
+
+
+## Guarded GPU graphics recovery
+
+Production infrastructure #158 separates the preserved incident record from an
+unconditional operator PAUSE and explicitly authorizes the independently
+validated GPU inference configuration. FlashHead remains disabled. The installed
+one-Reel service completed on November 27 at 23:37:29 UTC: fresh GPU narration,
+alignment and independent GPU ASR, graphics composition, automatic admission and
+hosting all passed in 18.85 seconds, with no quarantines or new driver errors.
+Hosted consumer run 46083566751 independently promoted its immutable MP4/envelope.
+
+The original timer was restored and triggered unattended graphics replenishment
+at 23:39:39 UTC. Publication run 46083723491 exercised the real existing pipeline
+and correctly returned THROTTLED at the rolling 24-hour limit. A new restored-path
+Reel is therefore not yet claimed as published; the existing schedule can publish
+at a permitted future slot. Growth remains unvalidated and weekly learning keeps
+its follower/qualified-owned-outcome requirements. Presenter restoration remains
+a separate optional experiment, not a dependency of graphics production.
