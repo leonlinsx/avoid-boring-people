@@ -1,4 +1,4 @@
-"""Bounded unattended local GPU producer. No Instagram or GitHub write token."""
+"""Bounded unattended local graphics producer. No Instagram or GitHub write token."""
 from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
@@ -40,6 +40,11 @@ class GpuUnavailable(RuntimeError):
 def pause_unavailable_gpu(root):
     """Use the existing durable kill switch; never overwrite an owner's hold."""
     if root is not None:
+        fault=root/'GPU_FAULT.json'
+        if fault.exists():
+            archive=root/('gpu-fault-'+policy.sha(fault.read_bytes())+'.json')
+            if not archive.exists():archive.write_bytes(fault.read_bytes())
+        write(fault,{'reason':'gpu_device_unavailable','captured_at':datetime.now(timezone.utc).isoformat()})
         try:fd=os.open(root/'PAUSE',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
         except FileExistsError:pass
         else:
@@ -64,6 +69,28 @@ def require_idle_gpu(root=None):
     if active:raise RuntimeError('GPU busy; defer without terminating other processes')
 
 
+def gpu_workload_digest():
+    # Bind recovery to the independently exercised inference/supervision code,
+    # not unrelated captions, metadata or each individual Reel.
+    root=Path(__file__).resolve().parents[1]/'factory'
+    return policy.sha({name:policy.sha((root/name).read_bytes()) for name in ('audio.py','transcribe.py','run.py','gpu_guard.py')})
+
+
+def graphics_mode(config):
+    mode=config.get('production_mode','graphics_gpu')
+    if mode not in ('graphics_gpu','native'):raise RuntimeError('unknown production mode')
+    return mode=='graphics_gpu'
+
+
+def check_pause(root,config):
+    # PAUSE is always an operator/global stop. A separate immutable incident
+    # record can authorize only a previously validated non-presenter workload.
+    if (root/'PAUSE').exists():raise RuntimeError('local kill switch PAUSE exists')
+    fault=root/'GPU_FAULT.json'
+    if fault.exists() and not (graphics_mode(config) and config.get('validated_graphics_fault_sha256')==policy.sha(fault.read_bytes())):
+        raise RuntimeError('GPU fault requires explicit workload validation/recovery')
+
+
 def rendered_manifest(item,out,key):
     """Verify a frozen completed render without synthesizing it again."""
     if item not in json.loads((out/'briefs.json').read_text())['items']:raise policy.Quarantine('seed_script_mismatch')
@@ -76,6 +103,7 @@ def rendered_manifest(item,out,key):
 
 
 def finish_upload(root,pending):
+    if (root/'PAUSE').exists():raise RuntimeError('local kill switch PAUSE exists')
     request=json.loads(pending.read_text());m=admission.verify_manifest(request['manifest'])
     if 'signing_payload' not in request or 'manifest_json' not in request:
         write(pending,upload_request(m,request['local_video'],request['factory']))
@@ -100,11 +128,12 @@ def validate_upload_receipt(manifest,receipt):
         raise RuntimeError('upload receipt does not bind the admitted envelope')
 
 
-def recover(root,key,budget,ledger,limit):
+def recover(root,key,budget,ledger,limit,graphics=False):
     """Resume persisted uploads and untouched paired members; never rerender."""
     completed=[];known=set();quarantined=failed_concepts(root)
     for pending in sorted((root/'runs').glob('*/*-upload.json')):
         m=json.loads(pending.read_text())['manifest'];known.add(m['concept_id'])
+        if graphics and m['script']['presenter']:continue
         if len(completed)>=limit:continue
         if finish_upload(root,pending):completed.append(m['concept_id'])
     for proof in sorted((root/'runs').glob('*/autopair-*/verification.json')):
@@ -113,6 +142,7 @@ def recover(root,key,budget,ledger,limit):
         if any(item['concept_id'] in quarantined for item in members):continue
         for item in members:
             concept=item['concept_id']
+            if graphics and item['presenter']:continue
             if concept in known or (root/'admitted'/f'{concept}.json').exists():continue
             if len(completed)>=limit or budget['attempted']>=40:return completed
             budget['attempted']+=1;write(ledger,budget)
@@ -173,7 +203,11 @@ def main():
     with (root/'worker.lock').open('a') as lock:
         try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:raise RuntimeError('another GPU worker owns the lock')
-        if (root/'PAUSE').exists():raise RuntimeError('local kill switch PAUSE exists')
+        graphics=graphics_mode(config)
+        if not graphics and not args.dry_run:raise RuntimeError('native presenter production remains disabled')
+        check_pause(root,config)
+        if not args.dry_run and config.get('validated_gpu_workload_digest')!=gpu_workload_digest():
+            raise RuntimeError('GPU workload requires bounded validation before production')
         if not config.get('enabled') and not (args.canary or args.dry_run):raise RuntimeError('continuous generation is not activated')
         (root/'admitted').mkdir(exist_ok=True);(root/'uploads').mkdir(exist_ok=True)
         key=Path(os.environ.get('CREDENTIALS_DIRECTORY',''))/'auto-admission-key' if os.environ.get('CREDENTIALS_DIRECTORY') else Path(config['signing_key'])
@@ -186,7 +220,7 @@ def main():
             state_response.raise_for_status();state=state_response.json()
         if state.get('account')!='avoidboringpeople':raise RuntimeError('wrong durable account')
         if not (args.canary or args.dry_run) and not state.get('auto_canary_verified'):raise RuntimeError('automatic canary not verified')
-        recovered=[] if args.dry_run else recover(root,key,budget,ledger,args.limit)
+        recovered=[] if args.dry_run else recover(root,key,budget,ledger,args.limit,graphics=graphics)
         existing=scorecard.load_manifests('scripts/instagram_growth/approved')+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
         local=list((root/'admitted').glob('*.json'));prior={x['concept_id']:x for x in existing}
         for file in local:
@@ -202,10 +236,12 @@ def main():
             # Fixed canary treatment must be exactly the shadow-tested low-risk pair.
             record=next(r for r in policy.discover()[0] if r['claim_id']=='claim-e54e87db222ee4fe66d84d2b')
             plan=[policy.compile_script(record,presenter=p,bucket='control') for p in (False,True)];needed=min(2,args.limit-len(recovered))
+        if graphics:plan=[x for x in plan if not x['presenter']]
         start=time.monotonic();admitted=[];failures=[];reserved=set();failed_pairs=set()
         run=root/'runs'/datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ');run.mkdir(parents=True)
         factory={'started_at':datetime.now(timezone.utc).isoformat(),'policy':policy.VERSION,'head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-                 'eligible_source_units':len(plan)//2,'source_quarantined':len(quarantined),'attempted':0,'admitted':0,'quarantined':0,
+                 'production_mode':'graphics_gpu' if graphics else 'native',
+                 'gpu_fault_latched':(root/'GPU_FAULT.json').exists(),'eligible_source_units':len({x['claim_id'] for x in plan}),'source_quarantined':len(quarantined),'attempted':0,'admitted':0,'quarantined':0,
                  'allocation':slots['planned_counts'],'growth_context_available':slots.get('growth_context_available',False),
                  'exploitation':'Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.',
                  'software_spend_usd':0,'electricity_cost':'Not metered; unavailable','gpu':'RTX 5070 Ti 16GB','gpu_busy_policy':'Never terminate unrelated processes'}
@@ -214,6 +250,7 @@ def main():
         # Completed shadow media is immutable input only; all admission checks rerun.
         seed={x['concept_id']:args.seed_render for x in json.loads((args.seed_render/'briefs.json').read_text())['items']} if args.seed_render else {}
         for item in plan:
+            check_pause(root,config)
             if len(admitted)>=needed:break
             concept=item['concept_id']
             if concept in prior or item['pair_id'] in failed_pairs:continue
@@ -230,7 +267,8 @@ def main():
                 if concept not in seed and not (out/'verification.json').exists():
                     members=[x for x in plan if x['pair_id']==item['pair_id'] and x['concept_id'] in reserved]
                     out.mkdir(parents=True,exist_ok=True);spec=out/'spec.json';write(spec,{'items':members})
-                    subprocess.run([sys.executable,'-m','scripts.instagram_growth.factory.run','--spec',str(spec),'--output',str(out),'--voice',item['voice'],'--limit',str(len(members))],check=True,timeout=min(3600,max(1,5400-(time.monotonic()-start))))
+                    subprocess.run([sys.executable,'-m','scripts.instagram_growth.factory.run','--spec',str(spec),'--output',str(out),'--voice',item['voice'],'--limit',str(len(members)),*(['--graphics-only'] if graphics else [])],check=True,timeout=min(3600,max(1,5400-(time.monotonic()-start))))
+                check_pause(root,config)
                 manifest,video=rendered_manifest(item,out,key)
                 request=run/f'{concept}-upload.json'
                 factory['admitted']+=1;factory['elapsed_seconds']=round(time.monotonic()-start,2)
@@ -247,7 +285,11 @@ def main():
                 write(run/'failures.json',failures)
                 # A lost device is not a media rejection. Persist the hold
                 # before another model job or a later reboot can retry it.
-                if isinstance(error,subprocess.SubprocessError):require_gpu(root)
+                if isinstance(error,subprocess.SubprocessError):
+                    if (out/'gpu-fault.json').exists():
+                        write(root/'last-gpu-diagnostic.json',json.loads((out/'gpu-fault.json').read_text()))
+                        pause_unavailable_gpu(root)
+                    require_gpu(root)
                 # Three media failures is a quality circuit; no blind rerender loop.
                 if len(failures)>=3:break
         factory.update(completed_at=datetime.now(timezone.utc).isoformat(),elapsed_seconds=round(time.monotonic()-start,2),newly_hosted=0 if args.dry_run else len(admitted)+len(recovered),recovered_hosted=len(recovered),offline_verified=len(admitted) if args.dry_run else None,inventory_before=inventory['approved_unpublished'],remaining_eligible=max(0,len(plan)-factory['attempted']),weekly_render_reservations=budget['rendered'],status='failed' if failures else 'verified_offline' if args.dry_run else 'healthy')

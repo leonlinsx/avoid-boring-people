@@ -11,7 +11,10 @@ from scripts.instagram_growth.autonomy import policy
 
 PUBLIC_KEY = Path(__file__).with_name('public-key.pem')
 HOST = 'kveensoemz2j3t8d.public.blob.vercel-storage.com'
-RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','factory/render.py','factory/audio.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
+RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','factory/render.py','factory/audio.py','factory/transcribe.py','factory/gpu_guard.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
+# Only the immutable pre-CPU runtime; source/compiler policy must still match.
+LEGACY_RUNTIME='46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6'
+LEGACY_POLICY='f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd'
 PORTRAIT_SHA='ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb'
 FLASH_REV='74d81686a7bd750b276ec1ade295bc4077c5868a'
 
@@ -117,7 +120,8 @@ def verify_manifest(item):
         raise policy.Quarantine('wrong_auto_admission_contract')
     if item.get('approved_by') is not None or item.get('trial') is not False:raise policy.Quarantine('forged_human_review_or_trial')
     evidence=policy.verify_script(item['script']);admission=item['admission']
-    if admission['runtime_digest']!=runtime_digest() or any(admission[k]!=v for k,v in evidence.items()):raise policy.Quarantine('stale_or_changed_auto_policy')
+    compatible=admission['runtime_digest']==LEGACY_RUNTIME and evidence['policy_digest']==LEGACY_POLICY
+    if (admission['runtime_digest']!=runtime_digest() and not compatible) or any(admission[k]!=v for k,v in evidence.items()):raise policy.Quarantine('stale_or_changed_auto_policy')
     for field in ('concept_id','claim_id','pair_id','pair_role','source_file','source_sha256','source_anchor','voice'):
         if item.get(field)!=item['script'][field]:raise policy.Quarantine('manifest_script_disagreement')
     if admission['quality']['status']!='PASS' or item['account']!='avoidboringpeople':raise policy.Quarantine('qa_or_identity_failure')

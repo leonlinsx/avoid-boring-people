@@ -52,7 +52,7 @@ def test_render_device_loss_halts_before_another_model_and_survives_restart(tmp_
     other=next(r for r in policy.discover()[0] if r['claim_id']!=record['claim_id'])
     plan=[policy.compile_script(r,presenter=p) for r in (record,other) for p in (False,True)]
     production=tmp_path/'production';root=tmp_path/'offline';config=tmp_path/'config.json';state=tmp_path/'state.json'
-    config.write_text(json.dumps({'root':str(production),'enabled':False,'signing_key':str(key)}));state.write_text(json.dumps({'account':'avoidboringpeople','receipts':{}}))
+    config.write_text(json.dumps({'root':str(production),'enabled':False,'signing_key':str(key),'production_mode':'native'}));state.write_text(json.dumps({'account':'avoidboringpeople','receipts':{}}))
     monkeypatch.setenv('ABP_AUTO_CONFIG',str(config));monkeypatch.delenv('CREDENTIALS_DIRECTORY',raising=False)
     monkeypatch.setattr(worker.requests,'get',lambda *a,**k:pytest.fail('offline path must not fetch public data'))
     monkeypatch.setattr(worker.scorecard,'load_manifests',lambda *a:[])
