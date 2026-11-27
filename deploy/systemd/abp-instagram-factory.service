@@ -1,10 +1,10 @@
 [Unit]
-Description=Generate source-grounded ABP Reels for review (never publishes)
+Description=Generate and automatically admit low-risk ABP Reel inventory
 
 [Service]
 Type=oneshot
-WorkingDirectory=%h/repos/avoid-boring-people
-ExecStart=%h/repos/avoid-boring-people/.venv-ig-reels/bin/python -m scripts.instagram_growth.factory.weekly --count 40 --render-limit 21
+ExecStart=/usr/bin/python3 %h/.local/bin/abp-instagram-auto --limit 12
+LoadCredential=auto-admission-key:%h/.config/abp-instagram/auto-admission-ed25519.pem
 TimeoutStartSec=7200
 NoNewPrivileges=true
 UMask=0077

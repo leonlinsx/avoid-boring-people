@@ -65,9 +65,13 @@ def validate_manifest(item: dict) -> dict:
     if not isinstance(caption, str):
         raise ValueError("caption required")
     ig.validate_caption(caption)
-    if item.get("review_status") != "approved":
+    automatic = item.get('review_status') == 'AUTO_ADMITTED'
+    if automatic:
+        from scripts.instagram_growth.autonomy.admission import verify_manifest
+        verify_manifest(item)
+    elif item.get("review_status") != "approved":
         raise ValueError("only explicitly approved creative can be published")
-    if not isinstance(item.get("approved_by"), str) or not item["approved_by"].strip():
+    if not automatic and (not isinstance(item.get("approved_by"), str) or not item["approved_by"].strip()):
         raise ValueError("approved_by must identify the reviewer")
     for field in ("ai_generated", "trial"):
         if type(item.get(field)) is not bool:

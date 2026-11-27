@@ -1,8 +1,9 @@
 [Unit]
-Description=Weekly local ABP creative experiment factory
+Description=Replenish ABP inventory every six hours and Monday morning
 
 [Timer]
 OnCalendar=Mon *-*-* 04:30:00 America/New_York
+OnCalendar=*-*-* 00,06,12,18:30:00 America/New_York
 Persistent=true
 Unit=abp-instagram-factory.service
 
