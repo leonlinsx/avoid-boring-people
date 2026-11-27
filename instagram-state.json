@@ -114,6 +114,12 @@
       "captured_at": "2026-11-27T11:25:48.322989+00:00",
       "followers_count": 0,
       "media_count": 45
+    },
+    "20261127T163135Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-27T16:31:35.848506+00:00",
+      "followers_count": 0,
+      "media_count": 46
     }
   },
   "auto_canary_media_id": "18111970808338846",
@@ -481,7 +487,7 @@
     "followers_count": 0,
     "media_count": 45
   },
-  "last_measurement_at": "2026-11-27T11:25:48.152172+00:00",
+  "last_measurement_at": "2026-11-27T16:31:35.664268+00:00",
   "last_published_at": "2026-11-27T16:01:27.283029+00:00",
   "last_quota": {
     "limit": 50,
@@ -497,10 +503,10 @@
     }
   },
   "measurement_health": {
-    "attempted": 1,
-    "checked_at": "2026-11-27T11:25:48.152172+00:00",
+    "attempted": 0,
+    "checked_at": "2026-11-27T16:31:35.664268+00:00",
     "failures": [],
-    "new_snapshots": 1,
+    "new_snapshots": 0,
     "remaining_due": 0,
     "status": "healthy"
   },
