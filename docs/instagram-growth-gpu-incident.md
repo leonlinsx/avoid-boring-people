@@ -29,8 +29,10 @@ safe on the machine. The exact underlying cause remains unresolved.
 The machine rebooted at 12:26 EST and the GPU became visible again. The agent
 then stopped its factory service and timer before the next 12:30 tick. No GPU
 reset, clock/power change, driver installation or further GPU stress test was
-performed. The timer was observed inactive but still enabled for future user
-sessions; durable disable/host investigation remains an operator exception.
+performed. The timer was subsequently disabled, the existing private `PAUSE`
+kill switch was created, and the installed launcher refused before Git/model
+work. The hold now survives login/reboot; host recovery remains an operator
+exception.
 
 Already hosted and independently admitted inventory is unaffected: the last
 verified state had twelve unpublished assets, and GitHub-hosted publication and
@@ -43,3 +45,17 @@ lint and the Astro build. These checks do not validate GPU stability. The
 creative integration must remain a draft until its missing media verification
 and the GPU availability exception are resolved. There is no validated growth
 result or verified external outlier dataset.
+
+## CPU-only completion of the graphics treatment
+
+At head `be796892e309450fdf6279a6fc1ccd84906d5988`, the graphics-only treatment
+was rendered and verified with GPU devices hidden and OpenCL disabled. It reused
+the exact narration waveform, measured timings and independent ASR completed
+before the crash; it launched no new voice/model/presenter workload. The actual
+23.5-second MP4 passed decode, codec/format, faststart, source hash, caption timing,
+clipping, safe bounds and independent ASR (WER 0.0, qualifiers audible), at
+-16.36 LUFS and -1.99 dBTP. SHA-256:
+`9f183ed0c431e300cfa9cb4ee88274fb05ecf935b54aa013ed2229a011b09a0d`.
+Admission/verification used a disposable signing key; nothing was uploaded or
+published. This verifies the graphics path, not a complete matched format pair
+or GPU stability. Native presenter verification remains incomplete.

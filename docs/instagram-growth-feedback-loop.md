@@ -104,3 +104,11 @@ Subsequently, an offline presenter experiment caused a GPU bus-loss incident.
 The factory's local service and timer were stopped; existing hosted inventory
 and GitHub measurement/publication remain available. See the
 [incident and current availability limits](instagram-growth-gpu-incident.md).
+
+At 22:50 UTC on November 27, the normal automatic queue independently published
+and verified a replenished asset, `abpa-101484b319c52682a75bfdbe`, as ordinary Reel
+`18136744558780274`: https://www.instagram.com/reel/DgQyg5vhprW/ .
+Workflow `46078737635` succeeded on reviewed main, with the account/AI/feed flags
+verified and no individual approval or local GPU work. This leaves eleven
+unpublished automatic assets. It establishes normal replenishment-to-publication
+behavior while GPU generation is held; it does not establish follower growth.

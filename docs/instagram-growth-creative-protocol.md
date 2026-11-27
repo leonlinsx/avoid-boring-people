@@ -106,3 +106,9 @@ and independent transcription but crashed during FlashHead generation with
 Xid 79. It admitted, uploaded and published nothing. See the
 [GPU incident](instagram-growth-gpu-incident.md). Native media verification
 remains incomplete, and this integration is a draft rather than an activation.
+
+A subsequent CPU-only graphics export reused the identical pre-crash voice and
+ASR and passed the source/media admission gates with a disposable key; it made
+no new GPU call and uploaded/published nothing. All fourteen genuine hosted V1
+admissions also verified unchanged under this compiler. See the incident record
+for the exact export head, quality measurements and remaining presenter gap.
