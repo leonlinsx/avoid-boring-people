@@ -10,11 +10,15 @@ WEIGHTS = {'exploration': .60, 'exploitation': .25, 'control': .15}
 
 def production_parameters(value):
     """Only repeat treatments already supported by the source-bound compiler."""
-    if not isinstance(value,dict) or set(value)!={'hook','voice','visual','caption_words'}:return None
+    if not isinstance(value,dict) or set(value) not in ({'hook','voice','visual','caption_words'},{'hook','voice','visual','caption_words','creative'}):return None
     if (type(value['hook']) is not int or value['hook'] not in (0,1)
         or value['voice'] not in ('af_heart','af_nicole') or value['visual'] not in ('cards','statement')
         or value['caption_words'] not in (3,5)):return None
-    return dict(value)
+    if 'creative' in value:
+        from scripts.instagram_growth.autonomy.creative import config
+        try:config(value['creative'])
+        except (ValueError,KeyError,TypeError):return None
+    return copy.deepcopy(value)
 
 
 def plan(count, state, *, now=None):

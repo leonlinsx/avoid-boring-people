@@ -10,7 +10,7 @@ import subprocess
 import sys
 import time
 import requests
-from scripts.instagram_growth.autonomy import policy, admission, promotion
+from scripts.instagram_growth.autonomy import policy, admission, promotion,creative,research
 from scripts.instagram_growth.factory import allocation
 from scripts.instagram_growth import scorecard
 
@@ -103,7 +103,7 @@ def failed_concepts(root):
             for row in json.loads(path.read_text()) if row.get('error')=='Quarantine'}
 
 
-def candidates(state, previous):
+def candidates(state, previous,*,experiments=False,research_cycle=None,shadow=False):
     records,quarantined=policy.discover()
     # Round-robin articles instead of exhausting adjacent paragraphs of one essay.
     records.sort(key=lambda r:(sum(x['source_file']==r['source_file'] for x in previous),r['source_file'],r['claim_id']))
@@ -120,6 +120,19 @@ def candidates(state, previous):
         kwargs={'voice':slot['voice'],'visual':slot['visual_style'],'caption_words':slot['caption_words'],'bucket':slot['experiment_bucket']}
         if kind=='source' and evidence:kwargs['hook']=evidence['production_parameters']['hook']
         try:
+            if experiments:
+                previous_script=next((old.get('script',old) for old in seen if kind=='source' and old.get('claim_id')==record['claim_id'] and old.get('script',old).get('template_parameters',{}).get('creative')),None)
+                if previous_script:
+                    kwargs={k:v for k,v in previous_script['template_parameters'].items() if k!='presenter'}
+                elif kind=='source' and evidence and evidence['production_parameters'].get('creative'):
+                    treatment=evidence['production_parameters']['creative']
+                    if creative.has_capacity(treatment,seen):kwargs['creative']=treatment
+                    else:
+                        kwargs.update(bucket='exploration',creative={'protocol':creative.PROTOCOL,'factor':'baseline','arm':0,'evidence':None})
+                else:
+                    treatment=creative.choose(record,slot,seen,research_cycle or {},shadow=shadow) if kind=='source' else {'protocol':creative.PROTOCOL,'factor':'baseline','arm':0,'evidence':None}
+                    kwargs['creative']=treatment
+                    if treatment['factor']!='baseline':kwargs.update(hook=0,voice='af_heart',visual='cards',caption_words=5)
             pair=[policy.compile_script(record,presenter=p,**kwargs) if kind=='source' else policy.compile_reference(record,presenter=p,**kwargs) for p in (False,True)]
             # Duplicate screening uses the same fields before video hashes exist.
             fresh=[]
@@ -137,10 +150,11 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--limit',type=int,default=12);p.add_argument('--canary',action='store_true');p.add_argument('--seed-render',type=Path)
     p.add_argument('--dry-run',action='store_true',help='Offline rendering/verification, no hosting or publication')
     p.add_argument('--output-root',type=Path,help='Required disposable output root for dry-run')
-    p.add_argument('--state',type=Path,help='Offline aggregate snapshot, dry-run only');args=p.parse_args()
+    p.add_argument('--state',type=Path,help='Offline aggregate snapshot, dry-run only');p.add_argument('--creative-shadow',action='store_true');args=p.parse_args()
     if not 1<=args.limit<=21:p.error('1–21 assets per invocation')
     if args.dry_run and not args.output_root:p.error('dry-run requires its own --output-root')
     if not args.dry_run and (args.output_root or args.state):p.error('output/state overrides are dry-run only')
+    if args.creative_shadow and not args.dry_run:p.error('creative shadow is offline-only')
     config=json.loads(Path(os.environ['ABP_AUTO_CONFIG']).read_text());root=args.output_root if args.dry_run else Path(config['root'])
     if args.dry_run and root.resolve()==Path(config['root']).resolve():p.error('dry-run must not use production state')
     root.mkdir(parents=True,exist_ok=True)
@@ -161,13 +175,19 @@ def main():
         if state.get('account')!='avoidboringpeople':raise RuntimeError('wrong durable account')
         if not (args.canary or args.dry_run) and not state.get('auto_canary_verified'):raise RuntimeError('automatic canary not verified')
         recovered=[] if args.dry_run else recover(root,key,budget,ledger,args.limit)
+        cycle={}
+        experimental=bool(config.get('creative_experiments') or args.creative_shadow) and not args.canary
+        if args.creative_shadow:cycle=research.fixture()
+        elif experimental and config.get('research_enabled'):cycle=research.collect(root,config.get('research_creators',[]),key)
+        # Never pass even a read-only research token to render/model children.
+        os.environ.pop('ABP_RESEARCH_META_TOKEN',None);os.environ.pop('ABP_RESEARCH_META_USER_ID',None)
         existing=scorecard.load_manifests('scripts/instagram_growth/approved')+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
         local=list((root/'admitted').glob('*.json'));prior={x['concept_id']:x for x in existing}
         for file in local:
             m=json.loads(file.read_text());admission.verify_manifest(m);prior[m['concept_id']]=m
         inventory=scorecard.inventory(list(prior.values()),state,datetime.now(timezone.utc))
         needed=min(args.limit-len(recovered),max(0,21-inventory['approved_unpublished']))
-        plan,quarantined,slots=candidates(state,list(prior.values()))
+        plan,quarantined,slots=candidates(state,list(prior.values()),experiments=True,research_cycle=cycle,shadow=args.creative_shadow) if experimental else candidates(state,list(prior.values()))
         rejected=failed_concepts(root);rejected_pairs={x['pair_id'] for x in plan if x['concept_id'] in rejected}
         plan=[x for x in plan if x['pair_id'] not in rejected_pairs]
         needed=min(needed,max(0,21-budget['rendered']),max(0,40-budget['attempted']))
@@ -183,6 +203,12 @@ def main():
                  'allocation':slots['planned_counts'],'growth_context_available':slots.get('growth_context_available',False),
                  'exploitation':'Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.',
                  'software_spend_usd':0,'electricity_cost':'Not metered; unavailable','gpu':'RTX 5070 Ti 16GB','gpu_busy_policy':'Never terminate unrelated processes'}
+        if experimental:
+            factory['creative_protocol']=creative.PROTOCOL
+            factory['research']={'status':cycle.get('status','fixture' if args.creative_shadow else 'disabled'),'cost_usd':cycle.get('cost_usd',0),
+                                 'calls':cycle.get('calls',0),'receipts':len(cycle.get('receipts',[])),
+                                 'actual_live_eligible':len(research.eligible(cycle)),'reason':cycle.get('reason'),
+                                 'fixture_is_not_live_evidence':args.creative_shadow}
         write(run/'source-quarantine.json',quarantined)
         (root/'admitted').mkdir(exist_ok=True);(root/'uploads').mkdir(exist_ok=True)
         # Completed shadow media is immutable input only; all admission checks rerun.
