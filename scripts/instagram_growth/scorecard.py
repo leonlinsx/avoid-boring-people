@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 from scripts.instagram_growth import reel_pilot as pilot, rolling_queue as queue
+from scripts.instagram_growth.factory.allocation import production_parameters,plan
 
 MIN_REACH = 100  # Screening floor, not a statistical confidence threshold.
 UNAVAILABLE = ('follows', 'non_follower_reach', 'profile_visits', 'website_sessions', 'newsletter_signups')
@@ -78,10 +79,14 @@ def replicated_patterns(rows):
         reach = sum(x['metrics']['reach'] for x in group)
         shares = [x['metrics'].get('shares') for x in group]
         encouraging_articles = sorted({x['source_url'] for x in group if (x['metrics'].get('shares') or 0)>0 and x.get('source_url')})
+        parameters=[production_parameters(x.get('production_parameters')) for x in group]
+        repeatable=parameters[0] if all(p is not None and p==parameters[0] for p in parameters) else None
+        topics={x.get('topic') for x in group}
         result.append({'hypothesis': hypothesis, 'source_articles': articles, 'n_reels': len(group),
                        'reach': reach, 'shares_per_1000_reached': 1000 * sum(shares) / reach if all(x is not None for x in shares) else None,
                        'evidence_concepts': [x['concept_id'] for x in group],
                        'encouraging_source_articles': encouraging_articles, 'replication_eligible': len(encouraging_articles)>=2,
+                       'production_parameters':repeatable,'topic':next(iter(topics)) if len(topics)==1 else None,
                        'status': 'replicated_attention_candidate_not_causal_follow_winner'})
     return sorted(result, key=lambda x: (x['shares_per_1000_reached'] is not None, x['shares_per_1000_reached'] or 0), reverse=True)
 
@@ -114,6 +119,8 @@ def build(state, manifests, now=None):
     rows = []; pending = []; cohorts = {label: [] for label in queue.WINDOWS}
     for name, receipt in published.items():
         m = meta.get(name, {})
+        script=m.get('script',{});template=script.get('template_parameters',{})
+        parameters=production_parameters({k:template.get(k) for k in ('hook','voice','visual','caption_words')}) if script.get('reference_index') is None else None
         for label, target in queue.WINDOWS.items():
             obs = state.get('observations', {}).get(f'{name}-{label}')
             if not obs:
@@ -133,6 +140,7 @@ def build(state, manifests, now=None):
                    'voice': m.get('voice'), 'creative_format': m.get('creative_format'), 'visual_style': m.get('visual_style', m.get('creative_format')),
                    'duration_seconds': m.get('duration_seconds'), 'cta_type': m.get('cta_type'),
                    'pair_id':m.get('pair_id'),'pair_role':m.get('pair_role'),
+                   'production_parameters':parameters,'topic':script.get('topic'),
                    'published_at': receipt['published_at'], 'format': 'ordinary_reel', 'window': label,
                    'actual_age_hours': age, 'metrics': metrics, 'missing': [k for k, v in metrics.items() if v is None],
                    'availability': obs.get('availability', {}), 'eligible_for_comparison': eligible,
@@ -147,10 +155,17 @@ def build(state, manifests, now=None):
     ranked = [p for p in patterns if p['shares_per_1000_reached'] is not None]
     sufficient = len(ranked) >= 2
     encouraging = [p for p in ranked if p['replication_eligible']]
+    follower_result=followers(state,start,now)
+    allocation=plan(40,{'weekly_review':{'created_at':now.isoformat(),'followers':follower_result,
+                                      'replication_candidates':encouraging}},now=now)
+    repeatable={x['allocation_evidence']['hypothesis']:x['allocation_evidence'] for x in allocation['slots'] if x.get('allocation_evidence')}
     failures = [{'concept_id': k, 'status': r.get('status'), 'error_type': r.get('error_type')}
                 for k, r in state.get('receipts', {}).items() if r.get('status') not in ('published', 'confirmed_unpublished')]
+    halted=bool(failures or any(x.get('consecutive_failures',0)>=3 for x in state.get('operation_health',{}).values()))
     return {'account': pilot.ACCOUNT, 'created_at': now.isoformat(), 'period_start': start.isoformat(),
-            'followers': followers(state, start, now), 'published_total': len(published),
+            'followers': follower_result, 'published_total': len(published),
+            'recommendation':'STOP' if halted else 'CONTINUE' if repeatable else 'ADJUST',
+            'recommendation_reason':'Resolve publication/operation exceptions.' if halted else 'Bounded follow-up tests; account growth does not causally identify a Reel winner.' if repeatable else 'No follower-backed reproducible pattern yet; preserve controls and explore. Owned-site outcomes remain unavailable.',
             'published_this_week': sum(start <= queue.instant(r['published_at']) <= now for r in published.values()),
             'inventory': inventory(manifests, state, now), 'rows': rows, 'equal_target_age_cohorts': cohorts,
             'matched_presentation_pairs':paired_presentations(rows),
@@ -159,10 +174,12 @@ def build(state, manifests, now=None):
             'top_hypotheses': ranked[:3] if sufficient else [],
             'underperforming_hypotheses': ranked[-2:] if sufficient else [],
             'replication_candidates': encouraging, 'low_information': not sufficient,
-            'next_experiments': [{'hypothesis': p['hypothesis'], 'test': 'Replicate on a fresh article; preserve exploration.', 'evidence': p['evidence_concepts']} for p in encouraging[:3]] or
+            'next_experiments': [{'hypothesis': p['hypothesis'], 'test': 'Replicate frozen attributes on a fresh article; preserve exploration. This is a follow-up test, not causal follower attribution.', 'evidence': p['evidence_concepts']} for p in list(repeatable.values())[:3]] or
                                 [{'hypothesis': 'Cold-start exploration', 'test': 'Keep 60/25/15 planned allocation; with no replicated evidence, reassign exploitation to exploration.'}],
             'conclusion': 'Observational attention evidence; no causal, statistically validated or per-Reel follower winner.',
-            'unavailable': list(UNAVAILABLE), 'generation_health': 'Not visible from hosted state; inspect local factory status/report.',
+            'unavailable': list(UNAVAILABLE),
+            'generation_health': 'Producer telemetry is from its signed feed; see automatic_operations and its timestamps.' if state.get('auto_health') else 'Not visible from hosted state; inspect local factory status/report.',
+            'automatic_operations':{'producer':state.get('auto_health',{}),'operations':state.get('operation_health',{})},
             'aggregation': 'Cumulative outcomes are separated by target age. Do not sum repeated windows or call summed reach unique people.'}
 
 
@@ -171,13 +188,14 @@ def markdown(report):
     lines = ['# ABP weekly growth scorecard', '', f"Period: {report['period_start']} → {report['created_at']}",
              f"Followers: start={(f.get('start') or {}).get('followers_count')}; end={end.get('followers_count')}; full-week net={f['net_new_followers_week']}; observed change={f['observed_change']}.",
              'Missing week boundaries mean unavailable weekly growth, not zero.',
+             f"Decision: {report['recommendation']} — {report['recommendation_reason']}",
              f"Published this week: {report['published_this_week']}; total: {report['published_total']}.",
              f"Inventory: {inv['approved_unpublished']} approved unpublished ({inv['level']}); target21; {inv['days_at_max_cadence']:.1f} days at maximum cadence.", '',
              '| Reel | Age | Actual hours | Reach | Views | Shares | Saves | Skip rate | Missing |',
              '|---|---|---:|---:|---:|---:|---:|---:|---|']
     for r in report['rows']:
         m = r['metrics']; lines.append(f"| {r['concept_id']} | {r['window']} | {r['actual_age_hours']} | {m['reach']} | {m['views']} | {m['shares']} | {m['saved']} | {m['reels_skip_rate']} | {', '.join(r['missing'])} |")
-    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures')]:
+    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
         lines += ['', '## ' + title, '', json.dumps(report[key], indent=2)]
     measurement = report.get('measurement_health') or {}
     lines += ['', f"Measurement: {measurement.get('status', 'unavailable')}; {sum(x['status'] == 'missed' for x in report['pending_windows'])} missed age windows; {measurement.get('remaining_due', 'unavailable')} readings still due. Late cumulative readings cannot reconstruct earlier outcomes."]
