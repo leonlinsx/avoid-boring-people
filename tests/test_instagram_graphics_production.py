@@ -39,7 +39,7 @@ def test_real_worker_graphics_failure_checks_gpu_and_keeps_incident(tmp_path,mon
     config=tmp_path/'config.json';config.write_text(json.dumps({'root':str(tmp_path/'production'),'enabled':False,'signing_key':str(key),'validated_graphics_fault_sha256':policy.sha(pause.read_bytes())}))
     monkeypatch.setenv('ABP_AUTO_CONFIG',str(config));monkeypatch.delenv('CREDENTIALS_DIRECTORY',raising=False)
     pair=[dict(item,presenter=False),dict(item,presenter=True,concept_id='forbidden-presenter')]
-    monkeypatch.setattr(worker,'candidates',lambda *a:(pair,[],{'planned_counts':{}}))
+    monkeypatch.setattr(worker,'candidates',lambda *a,**kw:(pair,[],{'planned_counts':{}}))
     monkeypatch.setattr(worker.scorecard,'load_manifests',lambda *a:[])
     monkeypatch.setattr(worker,'gpu_query',lambda args,*a:'0' if '--query-gpu=index' in args else '')
     original=worker.subprocess.run;calls=[]
