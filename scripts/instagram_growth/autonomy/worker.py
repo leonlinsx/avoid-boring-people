@@ -38,15 +38,87 @@ def require_idle_gpu():
     if active:raise RuntimeError('GPU busy; defer without terminating other processes')
 
 
+def rendered_manifest(item,out,key):
+    """Verify a frozen completed render without synthesizing it again."""
+    if item not in json.loads((out/'briefs.json').read_text())['items']:raise policy.Quarantine('seed_script_mismatch')
+    video=out/'final'/f'{item["concept_id"]}-REVIEW_ONLY.mp4'
+    meta=json.loads(video.with_suffix('.manifest.json').read_text())
+    asr=json.loads((out/'audio'/f'{item["concept_id"]}-independent-asr.json').read_text())['text']
+    if policy.sha(video.read_bytes())!=meta['sha256']:raise policy.Quarantine('rendered_bytes_changed')
+    manifest=admission.admit(item,meta,asr,key);admission.verify_manifest(manifest)
+    return manifest,video
+
+
+def finish_upload(root,pending):
+    request=json.loads(pending.read_text());m=admission.verify_manifest(request['manifest'])
+    if 'signing_payload' not in request or 'manifest_json' not in request:
+        write(pending,upload_request(m,request['local_video'],request['factory']))
+    receipt=root/'uploads'/f'{m["concept_id"]}.json'
+    admitted=root/'admitted'/f'{m["concept_id"]}.json'
+    if admitted.exists() and json.loads(admitted.read_text())!=m:raise policy.Quarantine('immutable_local_admission_changed')
+    if receipt.exists():
+        validate_upload_receipt(m,json.loads(receipt.read_text()))
+        if not admitted.exists():write(admitted,m)
+        return False
+    result=subprocess.run(['node','scripts/instagram_growth/autonomy/storage.mjs','upload',str(pending)],check=True,capture_output=True,text=True,timeout=300)
+    saved=json.loads(result.stdout)
+    validate_upload_receipt(m,saved)
+    write(receipt,saved);write(admitted,m)
+    write(root/'heartbeat.json',{'at':datetime.now(timezone.utc).isoformat()})
+    return True
+
+
+def validate_upload_receipt(manifest,receipt):
+    if (receipt.get('status')!='AUTO_HOSTED' or receipt.get('concept_id')!=manifest['concept_id']
+        or receipt.get('manifest_sha256')!=policy.sha(policy.canonical(manifest))):
+        raise RuntimeError('upload receipt does not bind the admitted envelope')
+
+
+def recover(root,key,budget,ledger,limit):
+    """Resume persisted uploads and untouched paired members; never rerender."""
+    completed=[];known=set();quarantined=failed_concepts(root)
+    for pending in sorted((root/'runs').glob('*/*-upload.json')):
+        m=json.loads(pending.read_text())['manifest'];known.add(m['concept_id'])
+        if len(completed)>=limit:continue
+        if finish_upload(root,pending):completed.append(m['concept_id'])
+    for proof in sorted((root/'runs').glob('*/autopair-*/verification.json')):
+        out=proof.parent
+        members=json.loads((out/'briefs.json').read_text())['items']
+        if any(item['concept_id'] in quarantined for item in members):continue
+        for item in members:
+            concept=item['concept_id']
+            if concept in known or (root/'admitted'/f'{concept}.json').exists():continue
+            if len(completed)>=limit or budget['attempted']>=40:return completed
+            budget['attempted']+=1;write(ledger,budget)
+            m,video=rendered_manifest(item,out,key)
+            pending=out.parent/f'{concept}-upload.json'
+            write(pending,upload_request(m,video,{'status':'recovering_completed_render','new_render':False}))
+            if finish_upload(root,pending):completed.append(concept)
+            known.add(concept)
+    return completed
+
+
+def failed_concepts(root):
+    return {row['concept_id'] for path in (root/'runs').glob('*/failures.json')
+            for row in json.loads(path.read_text()) if row.get('error')=='Quarantine'}
+
+
 def candidates(state, previous):
     records,quarantined=policy.discover()
     # Round-robin articles instead of exhausting adjacent paragraphs of one essay.
     records.sort(key=lambda r:(sum(x['source_file']==r['source_file'] for x in previous),r['source_file'],r['claim_id']))
     units=[('source',r) for r in records]+[('reference',i) for i in policy.REFERENCE_INDICES]
     slots=allocation.plan(40,state);result=[];seen=list(previous)
-    for n,(kind,record) in enumerate(units):
+    for n in range(len(units)):
         slot=slots['slots'][n%len(slots['slots'])]
+        evidence=slot.get('allocation_evidence');index=0
+        if evidence:
+            matches=[i for i,(kind,record) in enumerate(units) if kind=='source' and record['topic']==evidence['topic'] and record['source_url'] not in evidence['source_articles']]
+            if matches:index=matches[0]
+            else:slot={**slot,'experiment_bucket':'exploration','allocation_evidence':None};evidence=None
+        kind,record=units.pop(index)
         kwargs={'voice':slot['voice'],'visual':slot['visual_style'],'caption_words':slot['caption_words'],'bucket':slot['experiment_bucket']}
+        if kind=='source' and evidence:kwargs['hook']=evidence['production_parameters']['hook']
         try:
             pair=[policy.compile_script(record,presenter=p,**kwargs) if kind=='source' else policy.compile_reference(record,presenter=p,**kwargs) for p in (False,True)]
             # Duplicate screening uses the same fields before video hashes exist.
@@ -78,45 +150,38 @@ def main():
         if (root/'PAUSE').exists():raise RuntimeError('local kill switch PAUSE exists')
         if not config.get('enabled') and not (args.canary or args.dry_run):raise RuntimeError('continuous generation is not activated')
         (root/'admitted').mkdir(exist_ok=True);(root/'uploads').mkdir(exist_ok=True)
-        # Crash recovery retries only immutable hosting, never regenerates or posts.
-        for pending in sorted((root/'runs').glob('*/*-upload.json')):
-            if args.dry_run:break
-            request=json.loads(pending.read_text());m=admission.verify_manifest(request['manifest'])
-            if 'signing_payload' not in request or 'manifest_json' not in request:
-                write(pending,upload_request(m,request['local_video'],request['factory']))
-            receipt=root/'uploads'/f'{m["concept_id"]}.json'
-            if receipt.exists():continue
-            response=subprocess.run(['node','scripts/instagram_growth/autonomy/storage.mjs','upload',str(pending)],check=True,capture_output=True,text=True,timeout=300)
-            receipt.parent.mkdir(exist_ok=True);write(receipt,json.loads(response.stdout))
-            write(root/'admitted'/f'{m["concept_id"]}.json',m)
+        key=Path(os.environ.get('CREDENTIALS_DIRECTORY',''))/'auto-admission-key' if os.environ.get('CREDENTIALS_DIRECTORY') else Path(config['signing_key'])
+        if key.stat().st_mode&0o077:raise RuntimeError('automatic signing credential must be owner-only')
+        week=datetime.now(timezone.utc).strftime('%G-W%V');ledger=root/f'budget-{week}.json'
+        budget=json.loads(ledger.read_text()) if ledger.exists() else {'attempted':0,'rendered':0}
         if args.state:state=json.loads(args.state.read_text())
         else:
             state_response=requests.get('https://raw.githubusercontent.com/leonlinsx/avoid-boring-people/abp-instagram-state/instagram-state.json',params={'v':int(time.time())},headers={'Cache-Control':'no-cache'},timeout=30)
             state_response.raise_for_status();state=state_response.json()
         if state.get('account')!='avoidboringpeople':raise RuntimeError('wrong durable account')
         if not (args.canary or args.dry_run) and not state.get('auto_canary_verified'):raise RuntimeError('automatic canary not verified')
+        recovered=[] if args.dry_run else recover(root,key,budget,ledger,args.limit)
         existing=scorecard.load_manifests('scripts/instagram_growth/approved')+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
         local=list((root/'admitted').glob('*.json'));prior={x['concept_id']:x for x in existing}
         for file in local:
             m=json.loads(file.read_text());admission.verify_manifest(m);prior[m['concept_id']]=m
         inventory=scorecard.inventory(list(prior.values()),state,datetime.now(timezone.utc))
-        needed=min(args.limit,max(0,21-inventory['approved_unpublished']))
+        needed=min(args.limit-len(recovered),max(0,21-inventory['approved_unpublished']))
         plan,quarantined,slots=candidates(state,list(prior.values()))
-        week=datetime.now(timezone.utc).strftime('%G-W%V');ledger=root/f'budget-{week}.json'
-        budget=json.loads(ledger.read_text()) if ledger.exists() else {'attempted':0,'rendered':0}
+        rejected=failed_concepts(root);rejected_pairs={x['pair_id'] for x in plan if x['concept_id'] in rejected}
+        plan=[x for x in plan if x['pair_id'] not in rejected_pairs]
         needed=min(needed,max(0,21-budget['rendered']),max(0,40-budget['attempted']))
         if args.canary:
             plan=[x for x in plan if x['source_file']=='src/content/blog/2020_08_19_city/index.md' and x['claim_id']=='claim-e54e87db222ee4fe66d84d2b']
             # Fixed canary treatment must be exactly the shadow-tested low-risk pair.
             record=next(r for r in policy.discover()[0] if r['claim_id']=='claim-e54e87db222ee4fe66d84d2b')
-            plan=[policy.compile_script(record,presenter=p,bucket='control') for p in (False,True)];needed=min(2,args.limit)
-        key=Path(os.environ.get('CREDENTIALS_DIRECTORY',''))/'auto-admission-key' if os.environ.get('CREDENTIALS_DIRECTORY') else Path(config['signing_key'])
-        if key.stat().st_mode&0o077:raise RuntimeError('automatic signing credential must be owner-only')
+            plan=[policy.compile_script(record,presenter=p,bucket='control') for p in (False,True)];needed=min(2,args.limit-len(recovered))
         start=time.monotonic();admitted=[];failures=[];reserved=set();failed_pairs=set()
         run=root/'runs'/datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ');run.mkdir(parents=True)
         factory={'started_at':datetime.now(timezone.utc).isoformat(),'policy':policy.VERSION,'head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
                  'eligible_source_units':len(plan)//2,'source_quarantined':len(quarantined),'attempted':0,'admitted':0,'quarantined':0,
-                 'allocation':slots['planned_counts'],'exploitation':'Reassigned to exploration without cross-article replication',
+                 'allocation':slots['planned_counts'],'growth_context_available':slots.get('growth_context_available',False),
+                 'exploitation':'Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.',
                  'software_spend_usd':0,'electricity_cost':'Not metered; unavailable','gpu':'RTX 5070 Ti 16GB','gpu_busy_policy':'Never terminate unrelated processes'}
         write(run/'source-quarantine.json',quarantined)
         (root/'admitted').mkdir(exist_ok=True);(root/'uploads').mkdir(exist_ok=True)
@@ -140,12 +205,7 @@ def main():
                     members=[x for x in plan if x['pair_id']==item['pair_id'] and x['concept_id'] in reserved]
                     out.mkdir(parents=True,exist_ok=True);spec=out/'spec.json';write(spec,{'items':members})
                     subprocess.run([sys.executable,'-m','scripts.instagram_growth.factory.run','--spec',str(spec),'--output',str(out),'--voice',item['voice'],'--limit',str(len(members))],check=True,timeout=min(3600,max(1,5400-(time.monotonic()-start))))
-                frozen=json.loads((out/'briefs.json').read_text())['items']
-                if item not in frozen:raise policy.Quarantine('seed_script_mismatch')
-                video=out/'final'/f'{concept}-REVIEW_ONLY.mp4';meta=json.loads(video.with_suffix('.manifest.json').read_text())
-                asr=json.loads((out/'audio'/f'{concept}-independent-asr.json').read_text())['text']
-                if policy.sha(video.read_bytes())!=meta['sha256']:raise policy.Quarantine('rendered_bytes_changed')
-                manifest=admission.admit(item,meta,asr,key);admission.verify_manifest(manifest)
+                manifest,video=rendered_manifest(item,out,key)
                 request=run/f'{concept}-upload.json'
                 factory['admitted']+=1;factory['elapsed_seconds']=round(time.monotonic()-start,2)
                 if args.dry_run:
@@ -153,9 +213,7 @@ def main():
                 # Persist recovery intent before local inventory counts the item.
                 write(request,upload_request(manifest,video,factory))
                 write(root/'admitted'/f'{concept}.json',manifest)
-                result=subprocess.run(['node','scripts/instagram_growth/autonomy/storage.mjs','upload',str(request)],check=True,capture_output=True,text=True,timeout=300)
-                receipt=json.loads(result.stdout);write(root/'uploads'/f'{concept}.json',receipt)
-                write(root/'heartbeat.json',{'at':datetime.now(timezone.utc).isoformat()})
+                finish_upload(root,request)
                 admitted.append(concept)
             except (subprocess.SubprocessError,policy.Quarantine,ValueError,KeyError) as error:
                 failures.append({'concept_id':concept,'error':type(error).__name__,'reason':str(error)[:200]});factory['quarantined']+=1
@@ -163,7 +221,7 @@ def main():
                 write(run/'failures.json',failures)
                 # Three media failures is a quality circuit; no blind rerender loop.
                 if len(failures)>=3:break
-        factory.update(completed_at=datetime.now(timezone.utc).isoformat(),elapsed_seconds=round(time.monotonic()-start,2),newly_hosted=0 if args.dry_run else len(admitted),offline_verified=len(admitted) if args.dry_run else None,inventory_before=inventory['approved_unpublished'],remaining_eligible=max(0,len(plan)-factory['attempted']),weekly_render_reservations=budget['rendered'],status='failed' if failures else 'verified_offline' if args.dry_run else 'healthy')
+        factory.update(completed_at=datetime.now(timezone.utc).isoformat(),elapsed_seconds=round(time.monotonic()-start,2),newly_hosted=0 if args.dry_run else len(admitted)+len(recovered),recovered_hosted=len(recovered),offline_verified=len(admitted) if args.dry_run else None,inventory_before=inventory['approved_unpublished'],remaining_eligible=max(0,len(plan)-factory['attempted']),weekly_render_reservations=budget['rendered'],status='failed' if failures else 'verified_offline' if args.dry_run else 'healthy')
         if len(admitted)<needed and (budget['rendered']>=21 or budget['attempted']>=40):factory['pause_reason']='weekly_budget_exhausted'
         if needed and not plan:factory.update(status='source_exhausted',pause_reason='no_fresh_admissible_claims')
         write(run/'factory-report.json',factory);write(root/'status.json',factory)
@@ -171,9 +229,10 @@ def main():
         # a previously signed immutable admission, never a fabricated new approval.
         heartbeat=json.loads((root/'heartbeat.json').read_text()) if (root/'heartbeat.json').exists() else None
         refresh_due=not heartbeat or (datetime.now(timezone.utc)-datetime.fromisoformat(heartbeat['at'])).total_seconds()>=86400
-        if not args.dry_run and not admitted and not failures and local and refresh_due:
-            m=json.loads(local[-1].read_text());receipt=json.loads((root/'uploads'/f'{m["concept_id"]}.json').read_text())
-            video=root/'heartbeat.mp4';response=requests.get(receipt['video_url'],timeout=60);response.raise_for_status();video.write_bytes(response.content)
+        local=sorted(path for path in (root/'admitted').glob('*.json') if (root/'uploads'/path.name).is_file())
+        if not args.dry_run and local and (admitted or recovered or failures or refresh_due):
+            m=admission.verify_manifest(json.loads(local[-1].read_text()))
+            video=root/'heartbeat.mp4';video.write_bytes(promotion.fetch(m['video_url'],policy.POLICY['max_bytes']))
             request=run/'heartbeat.json';write(request,upload_request(m,video,factory))
             subprocess.run(['node','scripts/instagram_growth/autonomy/storage.mjs','upload',str(request)],check=True,timeout=300)
             write(root/'heartbeat.json',{'at':datetime.now(timezone.utc).isoformat()})

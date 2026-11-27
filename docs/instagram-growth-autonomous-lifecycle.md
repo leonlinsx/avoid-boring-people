@@ -132,3 +132,6 @@ was prepared.
 
 Audience positioning, structural hook/caption experiments and Issue #149 stay
 behind that operational gate. No empirical growth improvement is established.
+
+Subsequent live publication evidence and the factory recovery work are recorded
+in [the feedback-loop verification](instagram-growth-feedback-loop.md).

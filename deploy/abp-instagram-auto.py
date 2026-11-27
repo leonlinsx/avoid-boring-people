@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import shutil
 
 config_path=Path.home()/'.config/abp-instagram/auto.json'
 config=json.loads(config_path.read_text())
@@ -22,6 +23,10 @@ allowed=('PATH','HOME','USER','LOGNAME','LANG','LC_ALL','XDG_CACHE_HOME','XDG_CO
          'REQUESTS_CA_BUNDLE','NODE_EXTRA_CA_CERTS','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY',
          'NO_PROXY','http_proxy','https_proxy','all_proxy','no_proxy')
 env={k:os.environ[k] for k in allowed if k in os.environ}
+node=config.get('node_executable') or shutil.which('node',path=env.get('PATH',os.defpath))
+if not node or not Path(node).is_absolute() or not Path(node).is_file() or not os.access(node,os.X_OK):
+    raise SystemExit('Configure node_executable with the existing absolute Node binary; service PATH has no usable Node')
+env['PATH']=str(Path(node).parent)+os.pathsep+env.get('PATH',os.defpath)
 env['GIT_TERMINAL_PROMPT']='0'
 def git(*args):return subprocess.check_output(['git','-c','credential.helper=','-C',str(repo),*args],env=env,text=True).strip()
 git('fetch','https://github.com/leonlinsx/avoid-boring-people.git','refs/heads/main:refs/abp-instagram/main')

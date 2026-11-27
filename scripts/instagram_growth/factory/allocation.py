@@ -3,14 +3,32 @@ from math import floor
 import copy
 import hashlib
 import json
+from datetime import datetime,timedelta,timezone
 
 WEIGHTS = {'exploration': .60, 'exploitation': .25, 'control': .15}
 
 
-def plan(count, state):
-    candidates = [x for x in state.get('weekly_review', {}).get('replication_candidates', [])
+def production_parameters(value):
+    """Only repeat treatments already supported by the source-bound compiler."""
+    if not isinstance(value,dict) or set(value)!={'hook','voice','visual','caption_words'}:return None
+    if (type(value['hook']) is not int or value['hook'] not in (0,1)
+        or value['voice'] not in ('af_heart','af_nicole') or value['visual'] not in ('cards','statement')
+        or value['caption_words'] not in (3,5)):return None
+    return dict(value)
+
+
+def plan(count, state, *, now=None):
+    review=state.get('weekly_review',{});followers=review.get('followers',{})
+    net=followers.get('net_new_followers_week');now=now or datetime.now(timezone.utc)
+    try:
+        created=datetime.fromisoformat(review['created_at'].replace('Z','+00:00'))
+        fresh=created.utcoffset() is not None and now-timedelta(days=8)<=created<=now+timedelta(minutes=5)
+    except (ValueError,KeyError,TypeError):fresh=False
+    growth=fresh and followers.get('complete_week_boundary_coverage') is True and type(net) is int and net>0
+    candidates = [x for x in review.get('replication_candidates', [])
                   if x.get('replication_eligible') is True and len(set(x.get('encouraging_source_articles', []))) >= 2 and x.get('n_reels', 0) >= 2
-                  and x.get('reach', 0) >= 200 and (x.get('shares_per_1000_reached') or 0) > 0]
+                  and x.get('reach', 0) >= 200 and (x.get('shares_per_1000_reached') or 0) > 0
+                  and growth and x.get('topic') and production_parameters(x.get('production_parameters'))]
     quotas = {k: floor(count * w) for k, w in WEIGHTS.items()}
     for key in sorted(WEIGHTS, key=lambda k: count * WEIGHTS[k] - quotas[k], reverse=True)[:count - sum(quotas.values())]:
         quotas[key] += 1
@@ -32,8 +50,12 @@ def plan(count, state):
                       'cta_type': 'website' if i % 5 == 4 else 'follow'})
         if actual=='control':
             slots[-1].update(voice='af_heart',presenter=False,caption_words=5,duration_target='25-40s',visual_style='cards',cta_type='follow')
+        elif evidence:
+            params=evidence['production_parameters']
+            slots[-1].update(voice=params['voice'],visual_style=params['visual'],caption_words=params['caption_words'])
     return {'weights': WEIGHTS, 'planned_counts': quotas, 'slots': slots,
-            'policy': 'Initial experimental weights; minimum reach and multi-article replication required; never auto-approve.'}
+            'growth_context_available':growth,
+            'policy': 'Unchanged 60/25/15 weights; reproducible multi-article attention plus an observed positive follower week permits a bounded replication, not causal attribution or an admission override.'}
 
 
 def presentation_pairs(items, limit):

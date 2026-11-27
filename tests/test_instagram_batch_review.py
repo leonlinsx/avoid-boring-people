@@ -117,6 +117,12 @@ def test_allocation_is_bounded_and_does_not_invent_winners():
     assert sum(x['planned_bucket'] == 'control' for x in p['slots'][:21]) in (3, 4)
     evidence = {'hypothesis': 'contrast', 'source_articles': ['one', 'two'], 'encouraging_source_articles':['one','two'], 'replication_eligible':True, 'n_reels': 2, 'reach': 800, 'shares_per_1000_reached': 10}
     p = plan(40, {'weekly_review': {'replication_candidates': [evidence]}})
+    assert all(x['experiment_bucket']!='exploitation' for x in p['slots'])  # Attention alone is not growth.
+    from datetime import datetime,timezone
+    evidence.update(topic='city',production_parameters={'hook':0,'voice':'af_heart','visual':'cards','caption_words':5})
+    p = plan(40, {'weekly_review': {'created_at':datetime.now(timezone.utc).isoformat(),
+                                  'followers':{'net_new_followers_week':3,'complete_week_boundary_coverage':True},
+                                  'replication_candidates':[evidence]}})
     assert sum(x['experiment_bucket'] == 'exploitation' for x in p['slots']) == 10
 
 
