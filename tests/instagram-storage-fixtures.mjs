@@ -60,8 +60,9 @@ async function scenario(name, supplied) {
       fetch:async(url,options)=>{
         requests++;assert.equal(options.redirect,'error');
         const u=new URL(url);u.search='';assert.equal(u.hostname,host);
-        assert.notEqual(u.href,feedUrl,'Mutable public CDN reads must never supply a feed write base');
-        const row=objects.get(u.href);
+        if(u.href===feedUrl)assert.equal(name,'stale_feed','Mutable public CDN reads must never supply a feed write base');
+        // HEAD sees both earlier entries, but the CDN still has only the first.
+        const row=u.href===feedUrl?{data:Buffer.from(stable(sign({artifact_type:'abp_auto_feed_v1',account:'avoidboringpeople',items:prior.slice(0,1)})))}:objects.get(u.href);
         return {status:row?200:404,ok:!!row,body:{async *[Symbol.asyncIterator](){yield row.data;}},arrayBuffer:async()=>row.data,json:async()=>JSON.parse(row.data.toString())};
       }});
     const modules={
@@ -98,13 +99,14 @@ async function scenario(name, supplied) {
     });
     if(['valid','stale_feed','checkpoint','stale_checkpoint'].includes(name)){
       await module.evaluate();const receipt=JSON.parse(lines[0]);
-      assert.equal(receipt.status,'AUTO_HOSTED');assert.equal(receipt.usage.operations_reserved,name==='checkpoint'?12:name==='valid'?14:16);assert.equal(receipt.usage.bytes_reserved,media.length);
+      assert.equal(receipt.status,'AUTO_HOSTED');
       const {auto_signature,...body}=JSON.parse(objects.get(feedUrl).data);
       assert.ok(crypto.verify(null,Buffer.from(stable(body)),publicKey,Buffer.from(auto_signature,'base64')));
       if(name==='valid')assert.ok(puts.every(row=>row.options.allowOverwrite===false));
       else assert.equal(puts.at(-1).options.ifMatch,'current');
       assert.equal(body.items.length,name==='valid'?1:3);
       assert.deepEqual(body.items.map(x=>x.concept_id).sort(),[...prior.map(x=>x.concept_id),m.concept_id].sort());
+      assert.equal(receipt.usage.operations_reserved,name==='checkpoint'?12:name==='valid'?14:16);assert.equal(receipt.usage.bytes_reserved,media.length);
       const checkpoint=JSON.parse(await fs.readFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),'utf8')).feed_snapshot;
       assert.equal(checkpoint.etag,objects.get(feedUrl).etag);assert.deepEqual(checkpoint.feed,JSON.parse(objects.get(feedUrl).data));
       assert.equal(body.usage.feed_snapshot,undefined,'Do not recursively publish the local checkpoint');
