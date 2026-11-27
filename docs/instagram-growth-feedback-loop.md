@@ -57,3 +57,36 @@ nor passing infrastructure tests establish validated growth. Structural
 creative experiments and Issue #149 remain behind verification of successful
 recurring replenishment and measurement. No additional paid provider, calendar,
 reporting service or manual per-Reel gate is introduced.
+
+## Live replenishment exposed a cached-feed write defect
+
+At reviewed main `cefca7dfbf00ab743677fcc90666e6b357fc5c71`, the installed
+systemd service completed successfully at 11:38 EST: two uploads recovered,
+ten fresh assets rendered/verified/hosted, zero quarantines, 435.76 seconds.
+Weekly reservations were 14/21 renders. The actual weekly measurement run
+`46034305057` saved a fresh zero-follower account snapshot and the existing
+scorecard artifact, with ADJUST and unavailable full-week growth.
+
+Independent hosted promotion run `46035348458` succeeded but found only six
+new entries, despite twelve valid hosted receipts. Read-only diagnosis found a
+public feed ETag/body from an older revision than authenticated HEAD. Combining
+the latest HEAD ETag with a cached public body let a CAS write lose entries.
+Unique query strings and no-store did not prevent this in the observed store.
+The installed SDK also only implements `get(useCache:false)` cache bypass for
+private blobs; this store is public.
+
+The fix never uses a public mutable body as the base for a write. The existing
+private usage ledger checkpoints the signed feed and the ETag returned by its
+successful write. A matching HEAD allows the next bounded update. Missing or
+stale checkpoints trigger a bounded origin listing of immutable envelopes;
+each envelope's filename hash, exact canonical signature, identity and concept
+uniqueness are verified before rebuilding the feed. Both paths retain ETag CAS.
+An upload failure between feed write and checkpoint is recovered by the same
+registry path. The listing and envelope reads reserve the existing operation
+allowance before use; >64 envelopes fail rather than truncate history.
+
+Tests deliberately prohibit mutable CDN reads and cover old-body/new-ETag
+conditions, matching/stale/tampered checkpoints, forged or altered registered
+envelopes, duplicate concepts, registry overflow and a competing CAS write.
+The Python-to-JavaScript bridge still exercises exact canonical floating-point
+bytes. These are disposable fixtures, not additional publication evidence.
