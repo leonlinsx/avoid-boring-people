@@ -161,16 +161,16 @@
       "status": "healthy",
       "weekly_render_reservations": 14
     },
-    "feed_generated_at": "2026-11-27T16:54:07.569Z",
-    "newly_promoted": 6,
-    "promoted_at": "2026-11-27T16:55:11.931293+00:00",
+    "feed_generated_at": "2026-11-27T17:10:23.626Z",
+    "newly_promoted": 0,
+    "promoted_at": "2026-11-27T22:48:23.676518+00:00",
     "quarantined": [],
     "storage": {
-      "checked_at": "2026-11-27T16:54:06.033Z",
+      "checked_at": "2026-11-27T17:10:23.011Z",
       "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
       "objects": 215,
       "plan": "hobby",
-      "size_bytes": 71360886,
+      "size_bytes": 71362614,
       "status": "active",
       "store": "store_kvEENsOeMZ2J3t8D",
       "team": "team_cilwkczruho74HBIaE1IlQIt",
@@ -179,7 +179,7 @@
     },
     "usage": {
       "bytes_reserved": 38749773,
-      "operations_reserved": 207
+      "operations_reserved": 219
     }
   },
   "auto_inventory": {
