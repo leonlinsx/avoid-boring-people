@@ -3675,6 +3675,15 @@
         "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
       }
     },
+    "abpa-101484b319c52682a75bfdbe": {
+      "ai_generated": true,
+      "concept_id": "abpa-101484b319c52682a75bfdbe",
+      "created_at": "2026-11-27T22:48:29.712250+00:00",
+      "sha256": "ca7632973a99f97659ed5eefd14d1f50e9b2ce66758b3bca52b0a7186714e16d",
+      "source_url": "https://leonlins.com/writing/write",
+      "status": "reserved",
+      "trial": false
+    },
     "abpa-973d2e169e179358776c057a": {
       "ai_generated": true,
       "auto_admission": {
