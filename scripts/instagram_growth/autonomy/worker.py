@@ -40,7 +40,11 @@ class GpuUnavailable(RuntimeError):
 def pause_unavailable_gpu(root):
     """Use the existing durable kill switch; never overwrite an owner's hold."""
     if root is not None:
-        write(root/'GPU_FAULT.json',{'reason':'gpu_device_unavailable','captured_at':datetime.now(timezone.utc).isoformat()})
+        fault=root/'GPU_FAULT.json'
+        if fault.exists():
+            archive=root/('gpu-fault-'+policy.sha(fault.read_bytes())+'.json')
+            if not archive.exists():archive.write_bytes(fault.read_bytes())
+        write(fault,{'reason':'gpu_device_unavailable','captured_at':datetime.now(timezone.utc).isoformat()})
         try:fd=os.open(root/'PAUSE',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
         except FileExistsError:pass
         else:
@@ -92,6 +96,7 @@ def rendered_manifest(item,out,key):
 
 
 def finish_upload(root,pending):
+    if (root/'PAUSE').exists():raise RuntimeError('local kill switch PAUSE exists')
     request=json.loads(pending.read_text());m=admission.verify_manifest(request['manifest'])
     if 'signing_payload' not in request or 'manifest_json' not in request:
         write(pending,upload_request(m,request['local_video'],request['factory']))
@@ -236,6 +241,7 @@ def main():
         # Completed shadow media is immutable input only; all admission checks rerun.
         seed={x['concept_id']:args.seed_render for x in json.loads((args.seed_render/'briefs.json').read_text())['items']} if args.seed_render else {}
         for item in plan:
+            check_pause(root,config)
             if len(admitted)>=needed:break
             concept=item['concept_id']
             if concept in prior or item['pair_id'] in failed_pairs:continue
@@ -253,6 +259,7 @@ def main():
                     members=[x for x in plan if x['pair_id']==item['pair_id'] and x['concept_id'] in reserved]
                     out.mkdir(parents=True,exist_ok=True);spec=out/'spec.json';write(spec,{'items':members})
                     subprocess.run([sys.executable,'-m','scripts.instagram_growth.factory.run','--spec',str(spec),'--output',str(out),'--voice',item['voice'],'--limit',str(len(members)),*(['--graphics-only'] if graphics else [])],check=True,timeout=min(3600,max(1,5400-(time.monotonic()-start))))
+                check_pause(root,config)
                 manifest,video=rendered_manifest(item,out,key)
                 request=run/f'{concept}-upload.json'
                 factory['admitted']+=1;factory['elapsed_seconds']=round(time.monotonic()-start,2)

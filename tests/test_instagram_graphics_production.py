@@ -99,3 +99,18 @@ def test_genuine_published_v1_stays_valid_and_unknown_runtime_does_not(tmp_path,
     with pytest.raises(policy.Quarantine,match='stale_or_changed'):admission.verify_manifest(admission.seal(changed,key))
     changed=json.loads(json.dumps(manifest));changed['script']['scenes'][1]['narration']='An unsupported generated factual claim.'
     with pytest.raises(policy.Quarantine):admission.verify_manifest(admission.seal(changed,key))
+
+
+def test_new_device_incident_archives_evidence_and_revokes_validation(tmp_path):
+    fault=tmp_path/'GPU_FAULT.json';fault.write_text('historical incident bytes')
+    authorized={'validated_graphics_fault_sha256':policy.sha(fault.read_bytes())}
+    worker.check_pause(tmp_path,authorized)
+    with pytest.raises(worker.GpuUnavailable):worker.pause_unavailable_gpu(tmp_path)
+    assert (tmp_path/('gpu-fault-'+policy.sha(b'historical incident bytes')+'.json')).read_bytes()==b'historical incident bytes'
+    assert policy.sha(fault.read_bytes())!=authorized['validated_graphics_fault_sha256']
+    with pytest.raises(RuntimeError,match='kill switch'):worker.check_pause(tmp_path,authorized)
+
+
+def test_operator_hold_blocks_upload_before_reading_pending_media(tmp_path):
+    (tmp_path/'PAUSE').write_text('stop now')
+    with pytest.raises(RuntimeError,match='kill switch'):worker.finish_upload(tmp_path,tmp_path/'does-not-exist.json')
