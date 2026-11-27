@@ -1,7 +1,7 @@
 # Bounded creative protocol ABP-CREATIVE-001
 
 Depends on the [read-only Issue #149 proof](instagram-growth-outlier-research.md).
-This protocol is opt-in and is not activated by this PR. Issue #149 requires
+This protocol was introduced as opt-in; a separately reviewed default activation now permits guarded graphics production unless explicitly disabled in local configuration. Issue #149 requires
 strategic review before merge; it does not require individual video approval.
 
 ## Tests and boundaries
@@ -81,8 +81,13 @@ Signed synthetic fixtures exercise shadow selection and can never pass live
 admission. There are zero actual external outlier receipts in this delivery.
 No Monid credit or paid provider is activated.
 
-After strategic approval, private existing factory configuration can opt into
-`creative_experiments: true`. Optional `research_enabled: true`,
+Following the owner's explicit November 27 approval to activate unattended
+creative experiments, the guarded graphics factory defaults to running the finite
+`ABP-CREATIVE-001` trial plan. A private `creative_experiments: false` remains an
+explicit operator opt-out. The existing global `enabled`, GPU safety hold, and
+publication switches remain authoritative; this does not start a stopped service,
+create new source material, or override the current inventory budget. Optional
+`research_enabled: true`,
 `research_creators` (at most four usernames) and
 `research_meta_credential_file` select the read-only arm. That absolute file
 must be owner-only JSON with `user_id` and `token`; identity must resolve to
@@ -124,6 +129,5 @@ for these graphics trials. Native treatment admission is explicitly rejected.
 The three-claim arm cap counts graphics posts once; no absent presenter partner
 is treated as a replication, a queue obligation or a reason to duplicate content.
 
-This remains an opt-in protocol pending the strategic review required by #149.
-No experiment is activated and no merge restriction is waived here. Missing
+The strategic review and PR merges are complete. Guarded graphics creative selection now defaults on in the factory while live external research remains separately credential-gated. Missing
 external research credentials affect only that arm, not existing production.
