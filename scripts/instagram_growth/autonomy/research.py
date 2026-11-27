@@ -119,9 +119,11 @@ def receipts_from_profile(profile,creator,*,retrieved_at,key,mode='live'):
     return result,rejected
 
 
-def collect(root,creators,key,*,now=None):
+def collect(root,creators,key,*,now=None,token=None,user_id=None):
     """One optional read-only cycle/week, including failures; zero paid calls."""
-    token=os.environ.pop('ABP_RESEARCH_META_TOKEN',None);user=os.environ.pop('ABP_RESEARCH_META_USER_ID','')
+    environment_token=os.environ.pop('ABP_RESEARCH_META_TOKEN',None);environment_user=os.environ.pop('ABP_RESEARCH_META_USER_ID','')
+    token=token if token is not None else environment_token
+    user=user_id if user_id is not None else environment_user
     now=now or datetime.now(timezone.utc);root=Path(root);root.mkdir(parents=True,exist_ok=True)
     path=root/f'research-{now.strftime("%G-W%V")}.json'
     if path.exists():return json.loads(path.read_text())

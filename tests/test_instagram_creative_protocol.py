@@ -184,3 +184,27 @@ def test_follower_backed_replication_copies_the_new_structure_not_just_legacy_ho
     candidates,_,_=worker.candidates({'weekly_review':r},[],experiments=True)
     copied=[i for i in candidates if i['experiment_bucket']=='exploitation']
     assert len(copied)==2 and all(i['hook_structure']=='attributed_source_first' for i in copied)
+
+
+def test_recovery_children_never_inherit_the_separate_research_credential(tmp_path,monkeypatch):
+    import os,sys
+    from types import SimpleNamespace
+    key=keys(tmp_path,monkeypatch);root=tmp_path/'state';config=tmp_path/'config.json'
+    config.write_text(json.dumps({'root':str(root),'enabled':True,'signing_key':str(key),'creative_experiments':True,'research_enabled':True,'research_creators':[]}))
+    monkeypatch.setenv('ABP_AUTO_CONFIG',str(config));monkeypatch.delenv('CREDENTIALS_DIRECTORY',raising=False)
+    monkeypatch.setenv('ABP_RESEARCH_META_TOKEN','fixture-read-only');monkeypatch.setenv('ABP_RESEARCH_META_USER_ID','12345678')
+    monkeypatch.setattr(worker.requests,'get',lambda *a,**k:SimpleNamespace(raise_for_status=lambda:None,json=lambda:{'account':'avoidboringpeople','auto_canary_verified':True,'receipts':{}}))
+    monkeypatch.setattr(worker.scorecard,'load_manifests',lambda *a:[])
+    monkeypatch.setattr(worker,'candidates',lambda *a,**k:([],[],{'planned_counts':{'exploration':24,'exploitation':10,'control':6}}))
+    events=[]
+    def recover(*args):
+        assert 'ABP_RESEARCH_META_TOKEN' not in os.environ and 'ABP_RESEARCH_META_USER_ID' not in os.environ
+        events.append('recovery');return []
+    def collect(*args,**kwargs):
+        assert kwargs['token']=='fixture-read-only' and kwargs['user_id']=='12345678'
+        assert 'ABP_RESEARCH_META_TOKEN' not in os.environ
+        events.append('research');return {'status':'unavailable','receipts':[]}
+    monkeypatch.setattr(worker,'recover',recover);monkeypatch.setattr(research,'collect',collect)
+    monkeypatch.setattr(worker,'require_idle_gpu',lambda *a:pytest.fail('no eligible source, no GPU'))
+    monkeypatch.setattr(sys,'argv',['worker','--limit','1']);worker.main()
+    assert events==['recovery','research']

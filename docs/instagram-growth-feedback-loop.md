@@ -97,13 +97,15 @@ video bytes. Independent promotion run `46037492255` accepted the remaining
 six entries with no quarantine: 14 automatic admissions total, including the
 two published canary members, and 12 ready unpublished assets. A second live
 checkpoint update retained all 14 entries using 12 operation reservations and
-zero new video bytes. The installed factory timer remains enabled. These are
+zero new video bytes. The factory timer was enabled for that verification. These are
 infrastructure and publication proofs, not validated growth.
 
-Subsequently, an offline presenter experiment caused a GPU bus-loss incident.
-The factory's local service and timer were stopped; existing hosted inventory
-and GitHub measurement/publication remain available. See the
-[incident and current availability limits](instagram-growth-gpu-incident.md).
+Subsequently, GPU bus loss occurred during an offline presenter experiment.
+The factory's local service was stopped, its timer disabled, and the existing
+private `PAUSE` kill switch set. Existing hosted inventory and GitHub
+measurement/publication remain available. See the
+[incident](instagram-growth-gpu-incident.md) and
+[durable retry circuit](instagram-growth-gpu-safety.md).
 
 At 22:50 UTC on November 27, the normal automatic queue independently published
 and verified a replenished asset, `abpa-101484b319c52682a75bfdbe`, as ordinary Reel
