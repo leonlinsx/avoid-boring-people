@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 from scripts.instagram_growth.autonomy import policy,research
 
 PROTOCOL='ABP-CREATIVE-001'
-MAX_POSTS_PER_ARM=6  # Three distinct claims, each with a matched format pair.
+MAX_POSTS_PER_ARM=3  # Three distinct claims; graphics only in this protocol.
 HYPOTHESES={
     'audience':'People reassessing an earlier choice respond differently from people making that choice for the first time.',
     'hook':'An attributed source statement before its conditions earns more qualified discovery than a diagnostic question before the same type of perspective.',
@@ -62,7 +62,7 @@ def apply(item,value):
                                 'hypothesis':HYPOTHESES.get(factor),'max_posts_per_arm':MAX_POSTS_PER_ARM,
                                 'block':{'topic':topic,'source_article':item['source_url'],
                                          'publication_slot_rule':'UTC six-hour bin derived from the actual publication receipt; no new calendar'},
-                                'unit':'distinct_owned_claim_with_matched_presenter_graphics_pair',
+                                'unit':'distinct_owned_claim_graphics_only',
                                 'primary_outcomes':['account_net_followers','qualified_owned_site_outcomes'],
                                 'owned_site_campaign':campaign,
                                 'limitations':'Different claims and publishing slots are observational blocks; matched format members are not independent idea replications.'})
@@ -100,7 +100,7 @@ def choose(record,slot,previous,cycle,*,shadow=False):
             counts[factor,arm].add(script['claim_id'])
             if script.get('source_url')==record['source_url']:blocks[factor,arm].add(script['claim_id'])
             if script.get('topic')==record['topic']:topics[factor,arm].add(script['claim_id'])
-    available=[key for key in counts if 2*len(counts[key])<MAX_POSTS_PER_ARM]
+    available=[key for key in counts if len(counts[key])<MAX_POSTS_PER_ARM]
     if not available:return baseline
     # Balance single-factor trials and within-article blocks, not copy hashes.
     factor,arm=min(available,key=lambda key:(len(blocks[key]),len(topics[key]),len(counts[key]),factors.index(key[0]),key[1]))
@@ -119,7 +119,7 @@ def has_capacity(value,previous):
     used={old.get('script',old)['claim_id'] for old in previous
           if old.get('script',old).get('template_parameters',{}).get('creative',{}).get('factor')==value['factor']
           and old.get('script',old).get('template_parameters',{}).get('creative',{}).get('arm')==value['arm']}
-    return 2*len(used)<MAX_POSTS_PER_ARM
+    return len(used)<MAX_POSTS_PER_ARM
 
 
 if __name__=='__main__':

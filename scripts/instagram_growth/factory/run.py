@@ -51,10 +51,11 @@ def validate(item):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--spec',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--voice',choices=['af_heart','af_nicole'],default='af_heart');p.add_argument('--limit',type=int,default=12);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--graphics-only',action='store_true',help='GPU-accelerated graphics production; reject presenter workloads');p.add_argument('--spec',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--voice',choices=['af_heart','af_nicole'],default='af_heart');p.add_argument('--limit',type=int,default=12);a=p.parse_args()
     if not 1<=a.limit<=24:p.error('bounded batches require 1–24 items')
     root=Path(os.getenv('ABP_GPU_ROOT','.tmp/instagram-growth')).resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
     raw=json.loads(a.spec.read_text());items=[validate(dict(x)) for x in raw['items'][:a.limit]]
+    if a.graphics_only and any(i.get('presenter') for i in items):raise ValueError('graphics-only production rejects presenter workloads')
     if len({i['concept_id'] for i in items})!=len(items):raise ValueError('duplicate concepts')
     plan={'head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'account':'avoidboringpeople','status':'review_required','items':items}
     encoded=json.dumps(plan,indent=2)
@@ -62,9 +63,20 @@ def main():
     if lock.exists() and json.loads(lock.read_text())['items']!=items:raise ValueError('output directory belongs to another frozen batch; choose a new path')
     lock.write_text(encoded+'\n')
     env={**os.environ,'ABP_GPU_ROOT':str(root),'ABP_FACTORY_OUTPUT':str(out),'ABP_TTS_VOICE':a.voice}
+    if a.graphics_only:
+        env.update(ABP_ASR_DEVICE='cuda',OMP_NUM_THREADS='4',MKL_NUM_THREADS='4',OPENBLAS_NUM_THREADS='4',OPENCV_OPENCL_RUNTIME='disabled')
+        # CTranslate2 loads CUDA12/cuDNN9 by soname; use the already installed
+        # pinned environment's libraries, never replace the system CUDA13.
+        libs=[str(p) for name in ('cublas','cudnn') for p in sorted((root/'env/lib').glob(f'python*/site-packages/nvidia/{name}/lib'))]
+        if libs:env['LD_LIBRARY_PATH']=os.pathsep.join(libs+[env.get('LD_LIBRARY_PATH','')])
     here=Path(__file__).resolve().parent
     def run(script,python=None):
-        with (out/f'{script}.log').open('a') as log:subprocess.run([str(python or root/'env/bin/python'),str(here/script)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+        with (out/f'{script}.log').open('a') as log:
+            command=[str(python or root/'env/bin/python'),str(here/script)]
+            if a.graphics_only and script in ('audio.py','transcribe.py'):
+                from scripts.instagram_growth.factory import gpu_guard
+                gpu_guard.run(command,log,out,env=env)
+            else:subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
     run('audio.py');run('transcribe.py')
     for item in items:
         if not item.get('presenter'):continue

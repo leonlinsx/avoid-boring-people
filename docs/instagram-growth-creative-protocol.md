@@ -19,14 +19,14 @@ attributed perspective with its conditions, never a guaranteed life outcome.
 | Research | Article-first question structure | Original source-first structure informed by a verified relative outlier's caption pattern | External structural evidence improves bounded follow-up selection over the article-first control. |
 
 Only a subset of exploration enters these trials. Planned 60/25/15 allocation,
-article-first controls and the presenter/graphics comparison remain. Trial
-voices, graphics and caption segmentation are held constant where possible;
-each distinct claim has a matched presenter/graphics pair with identical audio.
-Those two formats are **one idea**, not independent replications. Different
+article-first controls remain. Trial voices, graphics and caption segmentation
+are held constant where possible. This production protocol is graphics-only;
+new native-presenter experiments cannot be admitted. Historical matched-format
+results remain one idea rather than independent replications. Different
 claims are used between arms; the duplicate exception remains limited to the
 existing exact matched format pair.
 
-Each arm stops at six posts (three distinct claims with paired formats). Arms
+Each arm stops at three graphics posts from three distinct claims. Arms
 may run concurrently. Selection balances source-article/topic blocks; analysis
 also records the preregistered UTC six-hour bin from actual publication
 receipts. There is no fixed content calendar or new schedule. Actual durations,
@@ -45,8 +45,8 @@ technical QA, fictional-presenter provenance, byte hashes, signatures, CAS,
 kill switches and <=3 ordinary Reels/rolling 24h with >=3h spacing remain.
 
 New metadata and captions must reconstruct exactly. Existing released V1
-envelopes are never rewritten or re-signed: their one protected-base policy /
-runtime digest pair remains valid **only** after unchanged V1 reconstruction.
+envelopes are never rewritten or re-signed: the two frozen protected-main V1 runtime releases (original and guarded GPU
+graphics), with their unchanged source policy, remain valid **only** after unchanged V1 reconstruction.
 It cannot validate new creative fields or arbitrary historical runtimes. A
 genuine published V1 canary receipt is a public regression fixture, alongside
 negative cases for mixed digests, changed content and forged fields.
@@ -105,10 +105,25 @@ At code commit `c02664ce3a71e88d87af0f89112314421a46940f`, CPU checks passed
 and independent transcription but crashed during FlashHead generation with
 Xid 79. It admitted, uploaded and published nothing. See the
 [GPU incident](instagram-growth-gpu-incident.md). Native media verification
-remains incomplete, and this integration is a draft rather than an activation.
+remains incomplete for the optional native presenter. It is not a dependency
+of this graphics-only protocol; new native experiment admission is rejected.
 
 A subsequent CPU-only graphics export reused the identical pre-crash voice and
 ASR and passed the source/media admission gates with a disposable key; it made
 no new GPU call and uploaded/published nothing. All fourteen genuine hosted V1
 admissions also verified unchanged under this compiler. See the incident record
-for the exact export head, quality measurements and remaining presenter gap.
+for the historical export head, quality measurements and optional presenter gap.
+
+## Graphics production closeout
+
+Merged infrastructure #158 independently validated GPU Kokoro, WhisperX and
+faster-whisper without FlashHead and restored the bounded graphics factory.
+This protocol inherits that same workload digest, resource limits, incident latch
+and unconditional operator PAUSE. Presenter verification is not a prerequisite
+for these graphics trials. Native treatment admission is explicitly rejected.
+The three-claim arm cap counts graphics posts once; no absent presenter partner
+is treated as a replication, a queue obligation or a reason to duplicate content.
+
+This remains an opt-in protocol pending the strategic review required by #149.
+No experiment is activated and no merge restriction is waived here. Missing
+external research credentials affect only that arm, not existing production.

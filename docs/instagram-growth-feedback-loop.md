@@ -114,3 +114,22 @@ Workflow `46078737635` succeeded on reviewed main, with the account/AI/feed flag
 verified and no individual approval or local GPU work. This leaves eleven
 unpublished automatic assets. It establishes normal replenishment-to-publication
 behavior while GPU generation is held; it does not establish follower growth.
+
+
+## Guarded GPU graphics recovery
+
+Production infrastructure #158 separates the preserved incident record from an
+unconditional operator PAUSE and explicitly authorizes the independently
+validated GPU inference configuration. FlashHead remains disabled. The installed
+one-Reel service completed on November 27 at 23:37:29 UTC: fresh GPU narration,
+alignment and independent GPU ASR, graphics composition, automatic admission and
+hosting all passed in 18.85 seconds, with no quarantines or new driver errors.
+Hosted consumer run 46083566751 independently promoted its immutable MP4/envelope.
+
+The original timer was restored and triggered unattended graphics replenishment
+at 23:39:39 UTC. Publication run 46083723491 exercised the real existing pipeline
+and correctly returned THROTTLED at the rolling 24-hour limit. A new restored-path
+Reel is therefore not yet claimed as published; the existing schedule can publish
+at a permitted future slot. Growth remains unvalidated and weekly learning keeps
+its follower/qualified-owned-outcome requirements. Presenter restoration remains
+a separate optional experiment, not a dependency of graphics production.

@@ -185,7 +185,7 @@ def test_offline_worker_preserves_frozen_control_and_never_uploads(tmp_path,monk
         video.with_suffix('.manifest.json').write_text(json.dumps(meta))
         (seed/'audio'/f'{item["concept_id"]}-independent-asr.json').write_text(json.dumps({'text':item['text']}))
     root=tmp_path/'offline';production=tmp_path/'production';config=tmp_path/'config.json';state=tmp_path/'state.json'
-    config.write_text(json.dumps({'root':str(production),'enabled':False,'signing_key':str(key)}));state.write_text(json.dumps({'account':'avoidboringpeople','receipts':{}}))
+    config.write_text(json.dumps({'root':str(production),'enabled':False,'signing_key':str(key),'production_mode':'native'}));state.write_text(json.dumps({'account':'avoidboringpeople','receipts':{}}))
     monkeypatch.setenv('ABP_AUTO_CONFIG',str(config));monkeypatch.delenv('CREDENTIALS_DIRECTORY',raising=False)
     monkeypatch.setattr(worker.requests,'get',lambda *a,**kw:pytest.fail('offline run must not fetch live data'))
     monkeypatch.setattr(worker,'candidates',lambda *args:(pair,[],{'planned_counts':{'exploration':24,'exploitation':10,'control':6}}))

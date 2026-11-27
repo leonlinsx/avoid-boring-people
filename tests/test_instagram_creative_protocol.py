@@ -98,9 +98,9 @@ def test_finite_parallel_trials_count_claim_pairs_not_independent_format_posts()
         record={'topic':'city','source_url':'https://leonlins.com/writing/block'+str(n%2)}
         c=creative.choose(record,{'experiment_bucket':'exploration'},previous,{})
         if c['factor']=='baseline':continue
-        counts[c['factor'],c['arm']]=counts.get((c['factor'],c['arm']),0)+2
+        counts[c['factor'],c['arm']]=counts.get((c['factor'],c['arm']),0)+1
         previous.append({'claim_id':str(n),'source_url':record['source_url'],'template_parameters':{'creative':c}})
-    assert counts=={(f,arm):6 for f in ('audience','hook','caption') for arm in (0,1)}
+    assert counts=={(f,arm):3 for f in ('audience','hook','caption') for arm in (0,1)}
     assert creative.choose({'topic':'city','source_url':'new'}, {'experiment_bucket':'control'},[],{})==treatment('baseline',0)
     assert not creative.has_capacity(treatment('hook',1),previous)
 
@@ -190,14 +190,14 @@ def test_recovery_children_never_inherit_the_separate_research_credential(tmp_pa
     import os,sys
     from types import SimpleNamespace
     key=keys(tmp_path,monkeypatch);root=tmp_path/'state';config=tmp_path/'config.json'
-    config.write_text(json.dumps({'root':str(root),'enabled':True,'signing_key':str(key),'creative_experiments':True,'research_enabled':True,'research_creators':[]}))
+    config.write_text(json.dumps({'root':str(root),'enabled':True,'signing_key':str(key),'creative_experiments':True,'research_enabled':True,'research_creators':[],'validated_gpu_workload_digest':worker.gpu_workload_digest()}))
     monkeypatch.setenv('ABP_AUTO_CONFIG',str(config));monkeypatch.delenv('CREDENTIALS_DIRECTORY',raising=False)
     monkeypatch.setenv('ABP_RESEARCH_META_TOKEN','fixture-read-only');monkeypatch.setenv('ABP_RESEARCH_META_USER_ID','12345678')
     monkeypatch.setattr(worker.requests,'get',lambda *a,**k:SimpleNamespace(raise_for_status=lambda:None,json=lambda:{'account':'avoidboringpeople','auto_canary_verified':True,'receipts':{}}))
     monkeypatch.setattr(worker.scorecard,'load_manifests',lambda *a:[])
     monkeypatch.setattr(worker,'candidates',lambda *a,**k:([],[],{'planned_counts':{'exploration':24,'exploitation':10,'control':6}}))
     events=[]
-    def recover(*args):
+    def recover(*args,**kwargs):
         assert 'ABP_RESEARCH_META_TOKEN' not in os.environ and 'ABP_RESEARCH_META_USER_ID' not in os.environ
         events.append('recovery');return []
     def collect(*args,**kwargs):
@@ -208,3 +208,26 @@ def test_recovery_children_never_inherit_the_separate_research_credential(tmp_pa
     monkeypatch.setattr(worker,'require_idle_gpu',lambda *a:pytest.fail('no eligible source, no GPU'))
     monkeypatch.setattr(sys,'argv',['worker','--limit','1']);worker.main()
     assert events==['recovery','research']
+
+
+def test_graphics_experiment_planning_never_reserves_a_presenter(monkeypatch):
+    original=item('hook',1);record=policy.source_record(original['source_file'],original['source_anchor'])
+    monkeypatch.setattr(policy,'discover',lambda:([record],[]));monkeypatch.setattr(policy,'REFERENCE_INDICES',())
+    candidates,_,_=worker.candidates({'account':'avoidboringpeople'},[],experiments=True,graphics_only=True)
+    assert len(candidates)==1 and not candidates[0]['presenter']
+    assert candidates[0]['creative_trial']['unit']=='distinct_owned_claim_graphics_only'
+    assert candidates[0]['creative_trial']['max_posts_per_arm']==3
+
+
+def test_new_native_experiment_cannot_be_admitted(tmp_path,monkeypatch):
+    key=keys(tmp_path,monkeypatch);native=item(presenter=True)
+    with pytest.raises(policy.Quarantine,match='native_presenter_disabled'):a.admit(native,metadata(native),native['text'],key)
+
+
+def test_protected_gpu_graphics_v1_runtime_is_compatible_but_not_new_creative(tmp_path,monkeypatch):
+    key=keys(tmp_path,monkeypatch);i=city();m=a.admit(i,metadata(i),i['text'],key)
+    m['admission'].update(policy_digest=a.LEGACY_POLICY_DIGEST,runtime_digest=a.GRAPHICS_RUNTIME_DIGEST)
+    assert a.verify_manifest(a.seal(m,key))['script']==i
+    new=item();m=a.admit(new,metadata(new),new['text'],key)
+    m['admission'].update(policy_digest=a.LEGACY_POLICY_DIGEST,runtime_digest=a.GRAPHICS_RUNTIME_DIGEST)
+    with pytest.raises(policy.Quarantine,match='policy'):a.verify_manifest(a.seal(m,key))

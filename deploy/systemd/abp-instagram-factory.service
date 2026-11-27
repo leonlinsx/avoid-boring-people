@@ -8,3 +8,8 @@ LoadCredential=auto-admission-key:%h/.config/abp-instagram/auto-admission-ed2551
 TimeoutStartSec=7200
 NoNewPrivileges=true
 UMask=0077
+
+# Serialized GPU inference, CPU composition and bounded process resources.
+CPUQuota=400%
+MemoryMax=8G
+TasksMax=128

@@ -1,5 +1,11 @@
 # Durable hold after GPU device loss
 
+Subsequent authorized recovery separates the recorded GPU incident from a general
+operator hold and validates graphics-only GPU workloads. See
+[GPU-accelerated graphics production](instagram-growth-graphics-production.md).
+The incident and original containment below remain historical evidence; native
+presenter restoration is not a dependency of the safe production path.
+
 The November 27 offline FlashHead verification crashed at 12:22:58 EST.
 The first kernel event was Xid 79 (`GPU has fallen off the bus`), followed by
 Xid 154 (`Node Reboot Required`). No PCIe AER precursor was logged in the
