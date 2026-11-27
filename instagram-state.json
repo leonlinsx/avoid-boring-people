@@ -138,41 +138,43 @@
   "auto_canary_verified": true,
   "auto_health": {
     "factory": {
-      "admitted": 10,
+      "admitted": 1,
       "allocation": {
         "control": 6,
         "exploitation": 10,
         "exploration": 24
       },
-      "attempted": 10,
-      "completed_at": "2026-11-27T16:38:21.545737+00:00",
-      "elapsed_seconds": 435.76,
+      "attempted": 1,
+      "completed_at": "2026-11-27T23:37:29.267071+00:00",
+      "elapsed_seconds": 18.85,
       "electricity_cost": "Not metered; unavailable",
-      "eligible_source_units": 22,
+      "eligible_source_units": 17,
       "exploitation": "Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.",
       "gpu": "RTX 5070 Ti 16GB",
       "gpu_busy_policy": "Never terminate unrelated processes",
+      "gpu_fault_latched": true,
       "growth_context_available": false,
-      "head": "cefca7dfbf00ab743677fcc90666e6b357fc5c71",
-      "inventory_before": 2,
-      "newly_hosted": 12,
+      "head": "90f37ce8af06507c1921c318ef214f3569244f6d",
+      "inventory_before": 11,
+      "newly_hosted": 1,
       "offline_verified": null,
       "policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+      "production_mode": "graphics_gpu",
       "quarantined": 0,
-      "recovered_hosted": 2,
-      "remaining_eligible": 34,
+      "recovered_hosted": 0,
+      "remaining_eligible": 16,
       "software_spend_usd": 0,
-      "source_quarantined": 3029,
-      "started_at": "2026-11-27T16:31:05.786897+00:00",
+      "source_quarantined": 3031,
+      "started_at": "2026-11-27T23:37:10.412174+00:00",
       "status": "healthy",
-      "weekly_render_reservations": 14
+      "weekly_render_reservations": 15
     },
-    "feed_generated_at": "2026-11-27T17:10:23.626Z",
-    "newly_promoted": 0,
-    "promoted_at": "2026-11-27T23:25:47.680876+00:00",
+    "feed_generated_at": "2026-11-27T23:37:31.238Z",
+    "newly_promoted": 1,
+    "promoted_at": "2026-11-27T23:38:49.124232+00:00",
     "quarantined": [],
     "storage": {
-      "checked_at": "2026-11-27T17:10:23.011Z",
+      "checked_at": "2026-11-27T23:37:30.589Z",
       "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
       "objects": 215,
       "plan": "hobby",
@@ -184,8 +186,8 @@
       "usage_quota_exceeded": false
     },
     "usage": {
-      "bytes_reserved": 38749773,
-      "operations_reserved": 219
+      "bytes_reserved": 39645170,
+      "operations_reserved": 243
     }
   },
   "auto_inventory": {
@@ -811,6 +813,161 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
+    "abpa-422593abdba47c2b0206f05e": {
+      "envelope_sha256": "ec09855a12cc32d2515e2f74549bdf6bae6398dcdd76b45bc4e6a3925a736603",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/ec09855a12cc32d2515e2f74549bdf6bae6398dcdd76b45bc4e6a3925a736603.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-9f9ed142510c30ded911cb99",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "a1449252817399a8e87e759c42c16f3cc2c25727fa9fc6eb4334eb2d510393d6",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 19.4,
+            "independent_asr_word_error_rate": 0.037037037037037035,
+            "loudness_lufs": -16.28,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "47030fd35c3947719aebafe96500fd6e629fb58bc353c878f0e82ab2241c20ec",
+            "qualifications_audible": true,
+            "render_seconds": 9.718106855998485,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              888,
+              1451
+            ],
+            "true_peak_dbtp": -1.99,
+            "voice_peak_allocated_mib": 916.2919921875,
+            "voice_seconds": 0.36909804300012183
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T23:37:27.204313+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "hNkSmExRuUu2pGaDdD8h5dRbL84xj0EtxLaIEHf14a7RfQQCR46vbPgt38mV3f3csWhRKddMvhbzKDGOCtSjDw==",
+        "caption": "How do you make room for useful creative ideas? In Leon Lin's words:\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/notion\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-9f9ed142510c30ded911cb99",
+        "concept_id": "abpa-422593abdba47c2b0206f05e",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 19.4,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / creative ideas",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-2246040af9b4771edc56",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T23:37:27.204317+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-9f9ed142510c30ded911cb99",
+          "concept_id": "abpa-422593abdba47c2b0206f05e",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / creative ideas",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "How do you make room for useful creative ideas?",
+          "pair_id": "autopair-2246040af9b4771edc56",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "CREATIVE IDEAS",
+              "headline": "HOW DO YOU MAKE ROOM FOR USEFUL CREATIVE IDEAS?",
+              "narration": "How do you make room for useful creative ideas? In Leon Lin's words:"
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "We've covered some problems, let's look at some ideas."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "I'll split these into community/marketing ideas that are more actionable, and product ideas that are more farfetched."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "We've covered some problems, let's look at some ideas. I'll split these into community/marketing ideas that are more actionable, and product ideas that are more farfetched.",
+          "source_date": "2020-08-23",
+          "source_file": "src/content/blog/2020_08_23_notion/index.md",
+          "source_sentences": [
+            "We've covered some problems, let's look at some ideas.",
+            "I'll split these into community/marketing ideas that are more actionable, and product ideas that are more farfetched."
+          ],
+          "source_sha256": "96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6",
+          "source_url": "https://leonlins.com/writing/notion",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "How do you make room for useful creative ideas?",
+            "subject": "creative ideas"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": false,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "How do you make room for useful creative ideas? In Leon Lin's words: We've covered some problems, let's look at some ideas. I'll split these into community/marketing ideas that are more actionable, and product ideas that are more farfetched. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "Inception, Nolan, and Notion",
+          "topic": "creative ideas",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "We've covered some problems, let's look at some ideas. I'll split these into community/marketing ideas that are more actionable, and product ideas that are more farfetched.",
+        "source_file": "src/content/blog/2020_08_23_notion/index.md",
+        "source_sha256": "96d88900e467c7798b6fda321a3c654171ba2d2c110b305317f8412c967e03a6",
+        "source_url": "https://leonlins.com/writing/notion",
+        "trial": false,
+        "video_path": "downloads/e0ef74d91abe3e14aab58e9f97bdd588a909ca9a4ae919041e1dd3922e2679fa.mp4",
+        "video_sha256": "e0ef74d91abe3e14aab58e9f97bdd588a909ca9a4ae919041e1dd3922e2679fa",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-422593abdba47c2b0206f05e/e0ef74d91abe3e14aab58e9f97bdd588a909ca9a4ae919041e1dd3922e2679fa.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T23:38:49.124232+00:00"
     },
     "abpa-43fdd2309415b4051e6a937f": {
       "envelope_sha256": "6499d8043850676ea2790685a617d12b84a884686e24ba3824c87add6374b4b0",
