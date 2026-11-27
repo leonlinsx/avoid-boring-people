@@ -90,3 +90,10 @@ conditions, matching/stale/tampered checkpoints, forged or altered registered
 envelopes, duplicate concepts, registry overflow and a competing CAS write.
 The Python-to-JavaScript bridge still exercises exact canonical floating-point
 bytes. These are disposable fixtures, not additional publication evidence.
+
+Subsequent availability: the live feed repair retained fourteen automatic
+admissions and twelve unpublished assets at its last verification. An offline
+FlashHead test then triggered a GPU bus-loss incident. GPU replenishment is held
+with the existing private kill switch and a disabled factory timer; cached
+publication and measurement remain available. See the
+[GPU incident and durable fault circuit](instagram-growth-gpu-safety.md).
