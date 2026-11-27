@@ -115,14 +115,20 @@ frozen control treatment and existing artifact bytes/QA/ASR/signature, and invok
 no storage upload or publisher. Omitting `--seed-render` tests fresh rendering
 when the GPU is available. The public snapshot override is dry-run only.
 
-The observed existing canary pair passes real-artifact offline admission; this
-is reuse verification, **not fresh generation**. A read-only storage check found
-an active Hobby store with 32,515,725 bytes and no quota-exceeded flag. The host's
-GPU check failed outside the sandbox with an unknown NVIDIA device error and
-no usable device; kernel logs showed memory-management/invalidation failures.
-Fresh production and a live automatic canary remain **NOT VERIFIED** until GPU
-availability is restored and this reviewed code is installed. No timer was
-installed or activated by preparing this change, and no new Reel was published.
+An existing canary pair first passed reuse-only verification. After an initial
+GPU driver failure recovered, a **fresh** pair was generated and automatically
+admitted at code head `ccb7666e9b037ed08c74d7732f03e41156273d24`: 86.55 seconds
+total, two 22.807-second assets, identical narration/timings, ASR word error 0,
+-16.35 LUFS and -1.98 dBTP. Decode, codec, faststart, source, caption, clipping
+and safe-bounds checks passed. The graphics MP4 SHA-256 is
+`5ce5a0ee429adbb934d51dd6414fbcac26f72bcb697a8b8f3ec3758f755feefc`;
+the presenter treatment is
+`52b3da3b84e154f0e0b8987efed13e22d9c0b8d7dfe41c31cf238d8112d5f233`.
+These are local artifacts, not publication receipts. The offline run uploaded
+nothing. A read-only storage check found an active Hobby store with 32,515,725
+bytes and no quota-exceeded flag. A **live automatic canary remains NOT RUN**;
+no timer was installed or activated and no new Reel was published while this PR
+was prepared.
 
 Audience positioning, structural hook/caption experiments and Issue #149 stay
 behind that operational gate. No empirical growth improvement is established.
