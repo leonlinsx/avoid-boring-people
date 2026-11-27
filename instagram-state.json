@@ -1874,19 +1874,81 @@
   "weekly_review": {
     "account": "avoidboringpeople",
     "aggregation": "Cumulative outcomes are separated by target age. Do not sum repeated windows or call summed reach unique people.",
+    "automatic_operations": {
+      "operations": {
+        "measurement": {
+          "checked_at": "2026-11-27T11:25:50.545191+00:00",
+          "consecutive_failures": 0,
+          "error": null
+        },
+        "promotion": {
+          "checked_at": "2026-11-27T16:00:11.569386+00:00",
+          "consecutive_failures": 0,
+          "error": null
+        },
+        "publishing": {
+          "checked_at": "2026-11-27T16:01:31.807086+00:00",
+          "consecutive_failures": 0,
+          "error": null
+        }
+      },
+      "producer": {
+        "factory": {
+          "admitted": 2,
+          "allocation": {
+            "control": 6,
+            "exploitation": 10,
+            "exploration": 24
+          },
+          "attempted": 2,
+          "elapsed_seconds": 1.97,
+          "electricity_cost": "Not metered; unavailable",
+          "eligible_source_units": 1,
+          "exploitation": "Reassigned to exploration without cross-article replication",
+          "gpu": "RTX 5070 Ti 16GB",
+          "gpu_busy_policy": "Never terminate unrelated processes",
+          "head": "12d10d9a0d62ab1c94c6bdb7d2b3b7cf85f0efcf",
+          "policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quarantined": 0,
+          "software_spend_usd": 0,
+          "source_quarantined": 3028,
+          "started_at": "2026-11-27T03:54:19.140041+00:00"
+        },
+        "feed_generated_at": "2026-11-27T03:54:23.113Z",
+        "newly_promoted": 0,
+        "promoted_at": "2026-11-27T16:00:10.020524+00:00",
+        "quarantined": [],
+        "storage": {
+          "checked_at": "2026-11-27T03:54:22.004Z",
+          "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
+          "objects": 186,
+          "plan": "hobby",
+          "size_bytes": 32515725,
+          "status": "active",
+          "store": "store_kvEENsOeMZ2J3t8D",
+          "team": "team_cilwkczruho74HBIaE1IlQIt",
+          "transfer_usage": "Unavailable from Hobby billing API; not zero. Provider hard free limit applies.",
+          "usage_quota_exceeded": false
+        },
+        "usage": {
+          "bytes_reserved": 5299336,
+          "operations_reserved": 24
+        }
+      }
+    },
     "conclusion": "Observational attention evidence; no causal, statistically validated or per-Reel follower winner.",
-    "created_at": "2026-11-23T19:24:11.203239+00:00",
+    "created_at": "2026-11-27T16:31:36.986447+00:00",
     "failures": [],
     "followers": {
       "attribution": "Account-level only; overlapping posts do not identify per-Reel acquisition.",
       "complete_week_boundary_coverage": false,
       "end": {
         "account": "avoidboringpeople",
-        "captured_at": "2026-11-23T15:22:57.807757+00:00",
+        "captured_at": "2026-11-27T16:31:35.848506+00:00",
         "followers_count": 0,
-        "media_count": 34
+        "media_count": 46
       },
-      "end_snapshot_fresh": false,
+      "end_snapshot_fresh": true,
       "net_new_followers_week": null,
       "observed_change": 0,
       "start": {
@@ -1896,49 +1958,26 @@
         "media_count": 27
       }
     },
-    "generation_health": "Not visible from hosted state; inspect local factory status/report.",
+    "generation_health": "Producer telemetry is from its signed feed; see automatic_operations and its timestamps.",
     "inventory": {
-      "approved_unpublished": 6,
-      "days_at_max_cadence": 2.0,
+      "approved_unpublished": 0,
+      "days_at_max_cadence": 0.0,
       "invalid_or_duplicate": [],
-      "items": [
-        {
-          "concept_id": "abp002-08",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-12",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-18",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-20",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-22",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        },
-        {
-          "concept_id": "abp002-24",
-          "ready_now": true,
-          "release_after": "2026-11-21T00:00:00+00:00"
-        }
-      ],
-      "level": "LOW",
-      "ready_now": 6,
+      "items": [],
+      "level": "EXHAUSTED",
+      "ready_now": 0,
       "target_seven_days": 21
     },
     "low_information": true,
     "matched_presentation_pairs": [],
+    "measurement_health": {
+      "attempted": 0,
+      "checked_at": "2026-11-27T16:31:35.664268+00:00",
+      "failures": [],
+      "new_snapshots": 0,
+      "remaining_due": 0,
+      "status": "healthy"
+    },
     "minimum_reach_per_reel": 100,
     "next_experiments": [
       {
@@ -1950,32 +1989,12 @@
       {
         "concept_id": "abp002-01",
         "status": "not_due",
-        "window": "48h"
-      },
-      {
-        "concept_id": "abp002-01",
-        "status": "not_due",
         "window": "7d"
       },
       {
         "concept_id": "abp002-02",
         "status": "not_due",
-        "window": "48h"
-      },
-      {
-        "concept_id": "abp002-02",
-        "status": "not_due",
         "window": "7d"
-      },
-      {
-        "concept_id": "abp002-04",
-        "status": "overdue",
-        "window": "24h"
-      },
-      {
-        "concept_id": "abp002-04",
-        "status": "not_due",
-        "window": "48h"
       },
       {
         "concept_id": "abp002-04",
@@ -1985,47 +2004,99 @@
       {
         "concept_id": "abp002-05",
         "status": "not_due",
-        "window": "24h"
-      },
-      {
-        "concept_id": "abp002-05",
-        "status": "not_due",
-        "window": "48h"
-      },
-      {
-        "concept_id": "abp002-05",
-        "status": "not_due",
         "window": "7d"
       },
       {
         "concept_id": "abp002-07",
         "status": "not_due",
-        "window": "24h"
+        "window": "7d"
       },
       {
-        "concept_id": "abp002-07",
+        "concept_id": "abp002-08",
         "status": "not_due",
-        "window": "48h"
+        "window": "7d"
       },
       {
-        "concept_id": "abp002-07",
+        "concept_id": "abp002-12",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-18",
         "status": "not_due",
         "window": "7d"
       },
       {
         "concept_id": "abp002-19-standard",
-        "status": "overdue",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-20",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-22",
+        "status": "not_due",
         "window": "48h"
       },
       {
-        "concept_id": "abp002-19-standard",
+        "concept_id": "abp002-22",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abp002-24",
+        "status": "missed",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abp002-24",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abp002-24",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abpa-973d2e169e179358776c057a",
+        "status": "not_due",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abpa-973d2e169e179358776c057a",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abpa-973d2e169e179358776c057a",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abpa-b85359c8303c5ff82bea4dc0",
+        "status": "not_due",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abpa-b85359c8303c5ff82bea4dc0",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abpa-b85359c8303c5ff82bea4dc0",
         "status": "not_due",
         "window": "7d"
       }
     ],
-    "period_start": "2026-11-16T19:24:11.203239+00:00",
-    "published_this_week": 6,
-    "published_total": 6,
+    "period_start": "2026-11-20T16:31:36.986447+00:00",
+    "published_this_week": 14,
+    "published_total": 14,
+    "recommendation": "ADJUST",
+    "recommendation_reason": "No follower-backed reproducible pattern yet; preserve controls and explore. Owned-site outcomes remain unavailable.",
     "replication_candidates": [],
     "top_hypotheses": [],
     "unavailable": [
