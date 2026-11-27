@@ -108,6 +108,12 @@
       "captured_at": "2026-11-27T02:24:48.175924+00:00",
       "followers_count": 0,
       "media_count": 44
+    },
+    "20261127T112548Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-27T11:25:48.322989+00:00",
+      "followers_count": 0,
+      "media_count": 45
     }
   },
   "auto_canary_media_id": "18111970808338846",
@@ -475,11 +481,28 @@
     "followers_count": 0,
     "media_count": 44
   },
-  "last_measurement_at": "2026-11-27T02:24:47.802482+00:00",
+  "last_measurement_at": "2026-11-27T11:25:48.152172+00:00",
   "last_published_at": "2026-11-27T05:02:10.839351+00:00",
   "last_quota": {
     "limit": 50,
     "usage": 1
+  },
+  "measurement_gaps": {
+    "abp002-24-24h": {
+      "concept_id": "abp002-24",
+      "deadline": "2026-11-27T08:51:31.232520+00:00",
+      "detected_at": "2026-11-27T11:25:48.152172+00:00",
+      "reason": "age_window_missed",
+      "window": "24h"
+    }
+  },
+  "measurement_health": {
+    "attempted": 1,
+    "checked_at": "2026-11-27T11:25:48.152172+00:00",
+    "failures": [],
+    "new_snapshots": 1,
+    "remaining_due": 0,
+    "status": "healthy"
   },
   "observations": {
     "abp002-01-24h": {
@@ -1051,6 +1074,36 @@
       },
       "published_at": "2026-11-25T09:51:26.267152+00:00",
       "window": "24h"
+    },
+    "abp002-20-48h": {
+      "account": "avoidboringpeople",
+      "actual_age_hours": 49.572813571944444,
+      "availability": {
+        "comments": "available",
+        "ig_reels_avg_watch_time": "available",
+        "likes": "available",
+        "reach": "available",
+        "reels_skip_rate": "available",
+        "saved": "available",
+        "shares": "available",
+        "views": "available"
+      },
+      "captured_at": "2026-11-27T11:25:48.396011+00:00",
+      "concept_id": "abp002-20",
+      "media_id": "17917753890280629",
+      "metrics": {
+        "comments": 0,
+        "follows": null,
+        "ig_reels_avg_watch_time": 3283,
+        "likes": 0,
+        "reach": 29,
+        "reels_skip_rate": 76.7,
+        "saved": 0,
+        "shares": 0,
+        "views": 32
+      },
+      "published_at": "2026-11-25T09:51:26.267152+00:00",
+      "window": "48h"
     },
     "abp002-22-24h": {
       "account": "avoidboringpeople",
