@@ -1083,7 +1083,7 @@
   },
   "operation_health": {
     "promotion": {
-      "checked_at": "2026-11-27T03:56:58.875998+00:00",
+      "checked_at": "2026-11-27T05:00:58.577516+00:00",
       "consecutive_failures": 0,
       "error": null
     }
