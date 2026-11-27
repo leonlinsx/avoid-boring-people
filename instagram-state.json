@@ -138,47 +138,39 @@
   "auto_canary_verified": true,
   "auto_health": {
     "factory": {
-      "admitted": 1,
+      "admitted": 2,
       "allocation": {
         "control": 6,
         "exploitation": 10,
         "exploration": 24
       },
-      "attempted": 1,
-      "completed_at": "2026-11-27T23:37:29.267071+00:00",
-      "elapsed_seconds": 18.85,
+      "attempted": 2,
+      "elapsed_seconds": 43.55,
       "electricity_cost": "Not metered; unavailable",
-      "eligible_source_units": 17,
+      "eligible_source_units": 16,
       "exploitation": "Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.",
       "gpu": "RTX 5070 Ti 16GB",
       "gpu_busy_policy": "Never terminate unrelated processes",
       "gpu_fault_latched": true,
       "growth_context_available": false,
       "head": "90f37ce8af06507c1921c318ef214f3569244f6d",
-      "inventory_before": 11,
-      "newly_hosted": 1,
-      "offline_verified": null,
       "policy": "ABP-AUTO-OWNED-COMMENTARY-1",
       "production_mode": "graphics_gpu",
       "quarantined": 0,
-      "recovered_hosted": 0,
-      "remaining_eligible": 16,
       "software_spend_usd": 0,
-      "source_quarantined": 3031,
-      "started_at": "2026-11-27T23:37:10.412174+00:00",
-      "status": "healthy",
-      "weekly_render_reservations": 15
+      "source_quarantined": 3032,
+      "started_at": "2026-11-27T23:39:41.289099+00:00"
     },
-    "feed_generated_at": "2026-11-27T23:37:31.238Z",
-    "newly_promoted": 1,
-    "promoted_at": "2026-11-27T23:38:49.124232+00:00",
+    "feed_generated_at": "2026-11-27T23:40:26.469Z",
+    "newly_promoted": 2,
+    "promoted_at": "2026-11-27T23:40:28.999058+00:00",
     "quarantined": [],
     "storage": {
-      "checked_at": "2026-11-27T23:37:30.589Z",
+      "checked_at": "2026-11-27T23:40:25.716Z",
       "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
-      "objects": 215,
+      "objects": 219,
       "plan": "hobby",
-      "size_bytes": 71362614,
+      "size_bytes": 73475321,
       "status": "active",
       "store": "store_kvEENsOeMZ2J3t8D",
       "team": "team_cilwkczruho74HBIaE1IlQIt",
@@ -186,8 +178,8 @@
       "usage_quota_exceeded": false
     },
     "usage": {
-      "bytes_reserved": 39645170,
-      "operations_reserved": 243
+      "bytes_reserved": 42185576,
+      "operations_reserved": 267
     }
   },
   "auto_inventory": {
@@ -813,6 +805,163 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
+    "abpa-3d099fa98baa7497804b9669": {
+      "envelope_sha256": "4ab6a273f4d05ce32e747af422d54ecbb7999c04fa42cd176288b5bf7e5af93f",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/4ab6a273f4d05ce32e747af422d54ecbb7999c04fa42cd176288b5bf7e5af93f.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-dac6cc128929cec969ee7a8e",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "968e0afe2a9119d9841a146d27862d461e776875e2fe1cddbb163925eb078937",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 30.633333,
+            "independent_asr_word_error_rate": 0.025974025974025976,
+            "loudness_lufs": -16.26,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "9db43d9d7f5f8e3df7d7ea798caf325484503ca30dd5dccccecd642f8145b27b",
+            "qualifications_audible": true,
+            "render_seconds": 14.226679384999443,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              882,
+              1451
+            ],
+            "true_peak_dbtp": -1.93,
+            "voice_peak_allocated_mib": 1121.05029296875,
+            "voice_seconds": 0.41170256400073413
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T23:40:24.833188+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "CNyweYrIJQyV376e/SS45mvT5E3vpL6noh1ZxeywntGz+4mpO3zV1T74jwW85NL1DIGdi1ro2/mSsOLtXcdoDA==",
+        "caption": "What job does a useful product need to do? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/data_landscape\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-dac6cc128929cec969ee7a8e",
+        "concept_id": "abpa-3d099fa98baa7497804b9669",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 30.633333,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / product",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-fcd2e278c9c824e83815",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T23:40:24.833194+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 3,
+          "claim_id": "claim-dac6cc128929cec969ee7a8e",
+          "concept_id": "abpa-3d099fa98baa7497804b9669",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / product",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "What job does a useful product need to do?",
+          "pair_id": "autopair-fcd2e278c9c824e83815",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "PRODUCT",
+              "headline": "WHAT JOB DOES A USEFUL PRODUCT NEED TO DO?",
+              "narration": "What job does a useful product need to do? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "Data flows from customer or supplier generated interactions, into raw transactional databases. The data is then moved and transformed to the appropriate model for analytical data warehouses."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "From there, analysts can query for the data they're interested in analysing. They use the results for end user data visualisation of business metrics."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "Data flows from customer or supplier generated interactions, into raw transactional\u00a0**databases**. The data is then\u00a0**moved\u00a0**and\u00a0**transformed**\u00a0to the appropriate model for analytical data warehouses. From there, analysts can query for the data they're interested in\u00a0**analysing**. They use the results for end user\u00a0**data visualisation**\u00a0of business metrics.",
+          "source_date": "2021-03-07",
+          "source_file": "src/content/blog/2021_03_07_data_landscape/index.md",
+          "source_sentences": [
+            "Data flows from customer or supplier generated interactions, into raw transactional databases.",
+            "The data is then moved and transformed to the appropriate model for analytical data warehouses.",
+            "From there, analysts can query for the data they're interested in analysing.",
+            "They use the results for end user data visualisation of business metrics."
+          ],
+          "source_sha256": "3ceeb4d616b74fcc264ff995790c97a06de33969f39d827a51204c59697972d0",
+          "source_url": "https://leonlins.com/writing/data_landscape",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "What job does a useful product need to do?",
+            "subject": "product"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 3,
+            "hook": 0,
+            "presenter": false,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "What job does a useful product need to do? Leon Lin offers this perspective. Data flows from customer or supplier generated interactions, into raw transactional databases. The data is then moved and transformed to the appropriate model for analytical data warehouses. From there, analysts can query for the data they're interested in analysing. They use the results for end user data visualisation of business metrics. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "Data analysis industry landscape",
+          "topic": "product",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "Data flows from customer or supplier generated interactions, into raw transactional\u00a0**databases**. The data is then\u00a0**moved\u00a0**and\u00a0**transformed**\u00a0to the appropriate model for analytical data warehouses. From there, analysts can query for the data they're interested in\u00a0**analysing**. They use the results for end user\u00a0**data visualisation**\u00a0of business metrics.",
+        "source_file": "src/content/blog/2021_03_07_data_landscape/index.md",
+        "source_sha256": "3ceeb4d616b74fcc264ff995790c97a06de33969f39d827a51204c59697972d0",
+        "source_url": "https://leonlins.com/writing/data_landscape",
+        "trial": false,
+        "video_path": "downloads/818dcc9976d68225b3bc76e88e94b2d964dc92dd1ed9799993024f22067aa915.mp4",
+        "video_sha256": "818dcc9976d68225b3bc76e88e94b2d964dc92dd1ed9799993024f22067aa915",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-3d099fa98baa7497804b9669/818dcc9976d68225b3bc76e88e94b2d964dc92dd1ed9799993024f22067aa915.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T23:40:28.999058+00:00"
     },
     "abpa-422593abdba47c2b0206f05e": {
       "envelope_sha256": "ec09855a12cc32d2515e2f74549bdf6bae6398dcdd76b45bc4e6a3925a736603",
@@ -2368,6 +2517,162 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
+    "abpa-c8cebf2b996c63ce88458c5f": {
+      "envelope_sha256": "b1ef85b5d5e20a3668342f5fede92d63317a9ba37ceee703d6929b96f55ef320",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/b1ef85b5d5e20a3668342f5fede92d63317a9ba37ceee703d6929b96f55ef320.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-0016edb6f7cede444a620f86",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "2d9b21456f4896a8deee11a11bef61896b31781a69789bc2a1df42601e2a784e",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 25.873,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.36,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "6f94007e3c17183003713842ad2044b5f22cc58276839a55e7a0deea7ed3f392",
+            "qualifications_audible": true,
+            "render_seconds": 12.770500508002442,
+            "status": "PASS",
+            "text_bounds": [
+              108,
+              292,
+              879,
+              1451
+            ],
+            "true_peak_dbtp": -1.97,
+            "voice_peak_allocated_mib": 1034.57763671875,
+            "voice_seconds": 0.43494599100085907
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f57257a16d2",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T23:40:01.384267+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "XZh29m7SBIPcYb+UXRxTNCPZjkQFl9yzjTF+Qol7dq8XQp4EukOuJEK++nYrKzDot6IGzEM77JN7DTnbg4s7Bw==",
+        "caption": "What makes a community worth joining? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/gatekeep\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-0016edb6f7cede444a620f86",
+        "concept_id": "abpa-c8cebf2b996c63ce88458c5f",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 25.873,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / community",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-913be72933aab9b9e706",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T23:40:01.384274+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-0016edb6f7cede444a620f86",
+          "concept_id": "abpa-c8cebf2b996c63ce88458c5f",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / community",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "What makes a community worth joining?",
+          "pair_id": "autopair-913be72933aab9b9e706",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "COMMUNITY",
+              "headline": "WHAT MAKES A COMMUNITY WORTH JOINING?",
+              "narration": "What makes a community worth joining? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "There are valid forms of gatekeeping."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "If you're excluding someone because they would be harmful to the community, that's reasonable. For example, if you're building a group of video gamers, and you get a membership request from someone who wants to ban video games, it probably doesn't make sense to accept her in."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "There are valid forms of gatekeeping. If you're excluding someone because they would be harmful to the community, that's reasonable. For example, if you're building a group of video gamers, and you get a membership request from someone who wants to ban video games, it probably doesn't make sense to accept her in.",
+          "source_date": "2020-10-28",
+          "source_file": "src/content/blog/2020_10_28_gatekeep/index.md",
+          "source_sentences": [
+            "There are valid forms of gatekeeping.",
+            "If you're excluding someone because they would be harmful to the community, that's reasonable.",
+            "For example, if you're building a group of video gamers, and you get a membership request from someone who wants to ban video games, it probably doesn't make sense to accept her in."
+          ],
+          "source_sha256": "a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729",
+          "source_url": "https://leonlins.com/writing/gatekeep",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "What makes a community worth joining?",
+            "subject": "community"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": false,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "What makes a community worth joining? Leon Lin offers this perspective. There are valid forms of gatekeeping. If you're excluding someone because they would be harmful to the community, that's reasonable. For example, if you're building a group of video gamers, and you get a membership request from someone who wants to ban video games, it probably doesn't make sense to accept her in. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "Who gatekeeps the gatekeepers",
+          "topic": "community",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "There are valid forms of gatekeeping. If you're excluding someone because they would be harmful to the community, that's reasonable. For example, if you're building a group of video gamers, and you get a membership request from someone who wants to ban video games, it probably doesn't make sense to accept her in.",
+        "source_file": "src/content/blog/2020_10_28_gatekeep/index.md",
+        "source_sha256": "a726c7c131fb27b670f7a03994bb2d6dc9f6d19bb210d87084183e4dabde1729",
+        "source_url": "https://leonlins.com/writing/gatekeep",
+        "trial": false,
+        "video_path": "downloads/9ed63480a0ce8925108d1eeb61f9be3f4a8dcc7a1b92ba94863f2f40b05b3d74.mp4",
+        "video_sha256": "9ed63480a0ce8925108d1eeb61f9be3f4a8dcc7a1b92ba94863f2f40b05b3d74",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-c8cebf2b996c63ce88458c5f/9ed63480a0ce8925108d1eeb61f9be3f4a8dcc7a1b92ba94863f2f40b05b3d74.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T23:40:28.999058+00:00"
     },
     "abpa-dba7c93f770d6f7da2eaa0b2": {
       "envelope_sha256": "622ec7c1bf14fb2fc1d19a70f86407f287d148eca935e6bbe721d3426192382e",
