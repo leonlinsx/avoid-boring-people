@@ -110,6 +110,8 @@
       "media_count": 44
     }
   },
+  "auto_canary_media_id": "18111970808338846",
+  "auto_canary_verified": true,
   "auto_health": {
     "factory": {
       "admitted": 2,
@@ -474,7 +476,7 @@
     "media_count": 44
   },
   "last_measurement_at": "2026-11-27T02:24:47.802482+00:00",
-  "last_published_at": "2026-11-26T02:51:31.232520+00:00",
+  "last_published_at": "2026-11-27T05:02:10.839351+00:00",
   "last_quota": {
     "limit": 50,
     "usage": 1
@@ -1695,16 +1697,56 @@
     },
     "abpa-973d2e169e179358776c057a": {
       "ai_generated": true,
+      "auto_admission": {
+        "envelope_sha256": "e5cbc1817722a3b98a20d2409a9fa4c1fb209fd1c332cda162b66fb885651390",
+        "policy": "ABP-AUTO-OWNED-COMMENTARY-1"
+      },
       "concept_id": "abpa-973d2e169e179358776c057a",
       "container_id": "18137375893753300",
       "created_at": "2026-11-27T05:01:02.058969+00:00",
+      "initial_insights": {
+        "availability": {
+          "comments": "available",
+          "ig_reels_avg_watch_time": "available",
+          "likes": "available",
+          "reach": "available",
+          "reels_skip_rate": "available",
+          "saved": "available",
+          "shares": "available",
+          "views": "available"
+        },
+        "captured_at": "2026-11-27T05:02:13.117765+00:00",
+        "media_id": "18111970808338846",
+        "metrics": {
+          "comments": 0,
+          "follows": null,
+          "ig_reels_avg_watch_time": 0,
+          "likes": 0,
+          "reach": 0,
+          "reels_skip_rate": 0,
+          "saved": 0,
+          "shares": 0,
+          "views": 0
+        }
+      },
       "media_id": "18111970808338846",
       "permalink": "https://www.instagram.com/reel/DgO4WmdOCWL/",
       "published_at": "2026-11-27T05:02:10.839351+00:00",
       "sha256": "5ce5a0ee429adbb934d51dd6414fbcac26f72bcb697a8b8f3ec3758f755feefc",
       "source_url": "https://leonlins.com/writing/city",
       "status": "published",
-      "trial": false
+      "trial": false,
+      "verified_media": {
+        "id": "18111970808338846",
+        "is_ai_generated": true,
+        "is_shared_to_feed": true,
+        "media_product_type": "REELS",
+        "media_type": "VIDEO",
+        "permalink": "https://www.instagram.com/reel/DgO4WmdOCWL/",
+        "timestamp": "2026-11-27T05:02:06+0000",
+        "username": "avoidboringpeople",
+        "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
+      }
     }
   },
   "weekly_review": {
