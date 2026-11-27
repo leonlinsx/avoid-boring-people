@@ -4320,57 +4320,51 @@
           "error": null
         },
         "promotion": {
-          "checked_at": "2026-11-27T22:48:25.243961+00:00",
+          "checked_at": "2026-11-27T23:40:30.566419+00:00",
           "consecutive_failures": 0,
           "error": null
         },
         "publishing": {
-          "checked_at": "2026-11-27T22:50:11.003885+00:00",
+          "checked_at": "2026-11-27T23:40:31.821684+00:00",
           "consecutive_failures": 0,
           "error": null
         }
       },
       "producer": {
         "factory": {
-          "admitted": 10,
+          "admitted": 2,
           "allocation": {
             "control": 6,
             "exploitation": 10,
             "exploration": 24
           },
-          "attempted": 10,
-          "completed_at": "2026-11-27T16:38:21.545737+00:00",
-          "elapsed_seconds": 435.76,
+          "attempted": 2,
+          "elapsed_seconds": 43.55,
           "electricity_cost": "Not metered; unavailable",
-          "eligible_source_units": 22,
+          "eligible_source_units": 16,
           "exploitation": "Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.",
           "gpu": "RTX 5070 Ti 16GB",
           "gpu_busy_policy": "Never terminate unrelated processes",
+          "gpu_fault_latched": true,
           "growth_context_available": false,
-          "head": "cefca7dfbf00ab743677fcc90666e6b357fc5c71",
-          "inventory_before": 2,
-          "newly_hosted": 12,
-          "offline_verified": null,
+          "head": "90f37ce8af06507c1921c318ef214f3569244f6d",
           "policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "production_mode": "graphics_gpu",
           "quarantined": 0,
-          "recovered_hosted": 2,
-          "remaining_eligible": 34,
           "software_spend_usd": 0,
-          "source_quarantined": 3029,
-          "started_at": "2026-11-27T16:31:05.786897+00:00",
-          "status": "healthy",
-          "weekly_render_reservations": 14
+          "source_quarantined": 3032,
+          "started_at": "2026-11-27T23:39:41.289099+00:00"
         },
-        "feed_generated_at": "2026-11-27T17:10:23.626Z",
-        "newly_promoted": 0,
-        "promoted_at": "2026-11-27T22:48:23.676518+00:00",
+        "feed_generated_at": "2026-11-27T23:40:26.469Z",
+        "newly_promoted": 2,
+        "promoted_at": "2026-11-27T23:40:28.999058+00:00",
         "quarantined": [],
         "storage": {
-          "checked_at": "2026-11-27T17:10:23.011Z",
+          "checked_at": "2026-11-27T23:40:25.716Z",
           "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
-          "objects": 215,
+          "objects": 219,
           "plan": "hobby",
-          "size_bytes": 71362614,
+          "size_bytes": 73475321,
           "status": "active",
           "store": "store_kvEENsOeMZ2J3t8D",
           "team": "team_cilwkczruho74HBIaE1IlQIt",
@@ -4378,20 +4372,20 @@
           "usage_quota_exceeded": false
         },
         "usage": {
-          "bytes_reserved": 38749773,
-          "operations_reserved": 219
+          "bytes_reserved": 42185576,
+          "operations_reserved": 267
         }
       }
     },
     "conclusion": "Observational attention evidence; no causal, statistically validated or per-Reel follower winner.",
-    "created_at": "2026-11-27T22:55:57.183384+00:00",
+    "created_at": "2026-11-27T23:41:12.842287+00:00",
     "failures": [],
     "followers": {
       "attribution": "Account-level only; overlapping posts do not identify per-Reel acquisition.",
       "complete_week_boundary_coverage": false,
       "end": {
         "account": "avoidboringpeople",
-        "captured_at": "2026-11-27T22:55:56.132964+00:00",
+        "captured_at": "2026-11-27T23:41:11.634819+00:00",
         "followers_count": 0,
         "media_count": 47
       },
@@ -4407,8 +4401,8 @@
     },
     "generation_health": "Producer telemetry is from its signed feed; see automatic_operations and its timestamps.",
     "inventory": {
-      "approved_unpublished": 11,
-      "days_at_max_cadence": 3.6666666666666665,
+      "approved_unpublished": 14,
+      "days_at_max_cadence": 4.666666666666667,
       "invalid_or_duplicate": [],
       "items": [
         {
@@ -4425,6 +4419,16 @@
           "concept_id": "abpa-22a8714166833955f6a5740b",
           "ready_now": true,
           "release_after": "2026-11-27T16:35:25.554452+00:00"
+        },
+        {
+          "concept_id": "abpa-3d099fa98baa7497804b9669",
+          "ready_now": true,
+          "release_after": "2026-11-27T23:40:24.833194+00:00"
+        },
+        {
+          "concept_id": "abpa-422593abdba47c2b0206f05e",
+          "ready_now": true,
+          "release_after": "2026-11-27T23:37:27.204317+00:00"
         },
         {
           "concept_id": "abpa-43fdd2309415b4051e6a937f",
@@ -4462,20 +4466,25 @@
           "release_after": "2026-11-27T16:32:15.798374+00:00"
         },
         {
+          "concept_id": "abpa-c8cebf2b996c63ce88458c5f",
+          "ready_now": true,
+          "release_after": "2026-11-27T23:40:01.384274+00:00"
+        },
+        {
           "concept_id": "abpa-dba7c93f770d6f7da2eaa0b2",
           "ready_now": true,
           "release_after": "2026-11-27T16:38:19.378459+00:00"
         }
       ],
       "level": "BUFFER_SHORT",
-      "ready_now": 11,
+      "ready_now": 14,
       "target_seven_days": 21
     },
     "low_information": true,
     "matched_presentation_pairs": [],
     "measurement_health": {
       "attempted": 0,
-      "checked_at": "2026-11-27T22:55:55.635014+00:00",
+      "checked_at": "2026-11-27T23:41:11.426373+00:00",
       "failures": [],
       "new_snapshots": 0,
       "remaining_due": 0,
@@ -4605,7 +4614,7 @@
         "window": "7d"
       }
     ],
-    "period_start": "2026-11-20T22:55:57.183384+00:00",
+    "period_start": "2026-11-20T23:41:12.842287+00:00",
     "published_this_week": 15,
     "published_total": 15,
     "recommendation": "ADJUST",
