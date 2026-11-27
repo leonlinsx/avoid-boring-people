@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 import requests
 from scripts.instagram_growth import reel_pilot as pilot, rolling_queue as queue
 from scripts.instagram_growth import scorecard
+from scripts.instagram_growth.autonomy import promotion
 
 REPO = 'leonlinsx/avoid-boring-people'
 BRANCH = 'abp-instagram-state'
@@ -35,6 +36,10 @@ class Store:
         self.sha = None
         self.state = None
     def request(self, method, route, **kwargs):
+        if method not in ('GET','PUT') or route!=f'contents/{STATE_PATH}':
+            raise StateError('state client cannot write application code or other refs')
+        if method=='PUT' and kwargs.get('json',{}).get('branch')!=BRANCH:
+            raise StateError('state client can write only the dedicated data branch')
         response = self.session.request(method, f'https://api.github.com/repos/{REPO}/{route}', timeout=30, **kwargs)
         if response.status_code not in (200, 201):
             raise StateError(f'GitHub durable state refused HTTP {response.status_code}; no blind retry')
@@ -132,13 +137,19 @@ def source_check(item):
         raise StateError('approved source has changed')
 
 
-def publish_one(store, concept=None, *, is_pilot=False):
+def publish_one(store, concept=None, *, is_pilot=False, auto_canary=False):
     state=store.state
     maximum=int(os.getenv('ABP_REELS_MAX_PER_24H','3'))
     if maximum not in (1,2,3):raise StateError('cadence must be bounded to 1–3 posts per 24h')
     if not is_pilot and (not state.get('pilot_verified') or os.getenv('ABP_REELS_PUBLISH')!='enabled'):
         raise StateError('kill switch or unverified pilot prevents scheduling')
     now=datetime.now(timezone.utc)
+    auto=promotion.eligible(state,os.getenv('ABP_AUTO_MODE','off'),canary=auto_canary)
+    if auto_canary:
+        if state.get('auto_canary_verified'):raise StateError('automatic canary already passed; never repeat it')
+        # This ID is a fixed low-risk source-exact graphics treatment, not feed-selected code.
+        auto=[x for x in auto if x['concept_id']=='abpa-973d2e169e179358776c057a']
+        if not auto:raise StateError('verified automatic canary is not eligible')
     with tempfile.TemporaryDirectory(prefix='abp-reels-') as tmp:
         root=Path(tmp);receipts=root/'receipts';receipts.mkdir()
         for name,record in state['receipts'].items():
@@ -149,7 +160,11 @@ def publish_one(store, concept=None, *, is_pilot=False):
             if not concept:raise StateError('pilot requires exact concept')
             item=pilot.load_manifest(QUEUE_DIR/f'{concept}.json')
         else:
-            item,reason=queue.choose(QUEUE_DIR,receipts,now,max_per_24h=maximum,min_spacing_hours=max(3,int(os.getenv('ABP_REELS_MIN_SPACING_HOURS','3'))))
+            candidates=root/'queue';candidates.mkdir()
+            if not auto_canary:
+                for path in QUEUE_DIR.glob('*.json'):(candidates/path.name).write_bytes(path.read_bytes())
+            for m in auto:(candidates/f'{m["concept_id"]}.json').write_text(json.dumps(m))
+            item,reason=queue.choose(candidates,receipts,now,max_per_24h=maximum,min_spacing_hours=max(3,int(os.getenv('ABP_REELS_MIN_SPACING_HOURS','3'))))
             if item is None:
                 print(reason)
                 if reason.startswith('HALT'):raise StateError(reason)
@@ -165,10 +180,15 @@ def publish_one(store, concept=None, *, is_pilot=False):
         state['receipts'][item['concept_id']].update(verified_media=media,initial_insights=metrics)
         available=any(metrics['metrics'].get(k) is not None for k in pilot.METRICS)
         state['pilot_verified']=bool(is_pilot and available) or bool(state.get('pilot_verified'))
+        if item.get('review_status')=='AUTO_ADMITTED':
+            state['receipts'][item['concept_id']]['auto_admission']={'policy':item['admitted_by'],'envelope_sha256':state['auto_inventory'][item['concept_id']]['envelope_sha256']}
+            if auto_canary:
+                state['auto_canary_verified']=available
+                state['auto_canary_media_id']=str(record['media_id'])
         state['last_published_at']=record['published_at']
         store.save()
         print(json.dumps({'media':media,'insights':metrics,'pilot_verified':state['pilot_verified']},indent=2))
-        if is_pilot and not available:raise StateError('real post exists, but Insights unavailable; recurring publication remains disabled')
+        if (is_pilot or auto_canary) and not available:raise StateError('real post exists, but Insights unavailable; recurring publication remains disabled')
 
 
 def measure(store):
@@ -249,10 +269,8 @@ def reconcile_no_publish(store,concept):
 
 
 def weekly(store):
-    # Fresh account evidence and due age windows must precede production advice.
-    # This is read-only at Meta; it cannot publish or alter frozen releases.
     measure(store)
-    report=scorecard.build(store.state,scorecard.load_manifests(QUEUE_DIR))
+    report=scorecard.build(store.state,all_manifests(store.state))
     # Keep detailed rows in downloadable artifacts, not repeated in the CAS ledger.
     store.state['weekly_review']={k:v for k,v in report.items() if k not in ('rows','equal_target_age_cohorts')}
     store.save();scorecard.write(report,'reports/instagram-growth')
@@ -263,7 +281,7 @@ def weekly(store):
 
 
 def inventory_health(store):
-    report=scorecard.inventory(scorecard.load_manifests(QUEUE_DIR),store.state,datetime.now(timezone.utc))
+    report=scorecard.inventory(all_manifests(store.state),store.state,datetime.now(timezone.utc))
     print(json.dumps({'instagram_inventory':report},indent=2))
     if report['level']!='OK':
         message=f"ABP inventory {report['level']}: {report['approved_unpublished']} approved unpublished; target21; never auto-approve to fill quota"
@@ -274,14 +292,40 @@ def inventory_health(store):
     return report
 
 
+def all_manifests(state):
+    return scorecard.load_manifests(QUEUE_DIR)+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
+
+
+def promote_auto(store):
+    with tempfile.TemporaryDirectory(prefix='abp-promote-') as tmp:
+        return promotion.promote(store,scorecard.load_manifests(QUEUE_DIR),lambda item:download(item,Path(tmp)))
+
+
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly','verify','reconcile-no-publish']);p.add_argument('--concept');args=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['preflight','pilot','publish','measure','weekly','verify','reconcile-no-publish','auto-promote','auto-canary']);p.add_argument('--concept');args=p.parse_args()
     store=Store();store.load()
+    mode=os.getenv('ABP_AUTO_MODE','off')
+    if args.action in ('auto-promote','auto-canary') and mode not in ('canary','enabled'):raise StateError('automatic path is disabled')
+    if args.action in ('publish','auto-promote','auto-canary') and mode in ('canary','enabled'):
+        try:
+            count=promote_auto(store);promotion.circuit(store.state,'promotion');store.save();print(f'Auto promoted: {count}')
+        except Exception as error:
+            promotion.circuit(store.state,'promotion',error);store.save()
+            # Do not conceal a failed promotion, nor publish behind an invalid feed.
+            raise
     inventory_health(store)
     if args.action=='preflight':
         print(json.dumps({'account':pilot.account_snapshot(),'quota':live_quota(),'insights_probe':insights_probe(),'state_account':store.state['account'],'no_publication':True},indent=2))
-    elif args.action in ('pilot','publish'):publish_one(store,args.concept,is_pilot=args.action=='pilot')
-    elif args.action=='measure':measure(store)
+    elif args.action in ('pilot','publish','auto-canary'):
+        try:
+            publish_one(store,args.concept,is_pilot=args.action=='pilot',auto_canary=args.action=='auto-canary' or (args.action=='publish' and mode=='canary' and not store.state.get('auto_canary_verified')))
+            promotion.circuit(store.state,'publishing');store.save()
+        except Exception as error:
+            promotion.circuit(store.state,'publishing',error);store.save();raise
+    elif args.action=='measure':
+        try:measure(store);promotion.circuit(store.state,'measurement');store.save()
+        except Exception as error:promotion.circuit(store.state,'measurement',error);store.save();raise
+    elif args.action=='auto-promote':print('Data-only promotion complete; no Meta write')
     elif args.action=='verify':verify_pilot(store)
     elif args.action=='reconcile-no-publish':reconcile_no_publish(store,args.concept)
     else:weekly(store)

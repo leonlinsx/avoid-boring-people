@@ -6,7 +6,7 @@ on:
       action:
         type: choice
         default: preflight
-        options: [preflight, pilot, publish, measure, weekly, verify, reconcile-no-publish]
+        options: [preflight, pilot, publish, measure, weekly, verify, reconcile-no-publish, auto-promote, auto-canary]
       concept:
         description: 'Exact approved concept for one explicit pilot (e.g. abp002-19)'
         type: string
@@ -41,7 +41,7 @@ jobs:
       - name: Install pinned HTTP dependencies
         run: python -m pip install --require-hashes -r scripts/instagram_growth/requirements-hosted.lock
       - name: Install video preflight dependency on ephemeral runner
-        if: inputs.action == 'pilot' || inputs.action == 'publish' || github.event.schedule == '15 * * * *'
+        if: inputs.action == 'pilot' || inputs.action == 'publish' || inputs.action == 'auto-promote' || inputs.action == 'auto-canary' || github.event.schedule == '15 * * * *'
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends ffmpeg
@@ -54,6 +54,7 @@ jobs:
           ABP_REELS_PUBLISH: ${{ vars.ABP_REELS_ENABLED == 'true' && 'enabled' || '' }}
           ABP_REELS_MAX_PER_24H: '3'
           ABP_REELS_MIN_SPACING_HOURS: '3'
+          ABP_AUTO_MODE: ${{ vars.ABP_AUTO_MODE }}
           MANUAL_ACTION: ${{ inputs.action }}
           PILOT_CONCEPT: ${{ inputs.concept }}
           EVENT_SCHEDULE: ${{ github.event.schedule }}
