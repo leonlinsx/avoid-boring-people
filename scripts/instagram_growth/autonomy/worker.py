@@ -33,8 +33,34 @@ def reserve_render(budget,count,ledger):
     budget['rendered']+=count;write(ledger,budget)
 
 
-def require_idle_gpu():
-    active=subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True,timeout=15).strip()
+class GpuUnavailable(RuntimeError):
+    pass
+
+
+def pause_unavailable_gpu(root):
+    """Use the existing durable kill switch; never overwrite an owner's hold."""
+    if root is not None:
+        try:fd=os.open(root/'PAUSE',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
+        except FileExistsError:pass
+        else:
+            with os.fdopen(fd,'w') as out:
+                json.dump({'reason':'gpu_device_unavailable','captured_at':datetime.now(timezone.utc).isoformat()},out)
+    raise GpuUnavailable('GPU unavailable; generation requires operator recovery and clearing the existing PAUSE')
+
+
+def gpu_query(arguments,root):
+    try:return subprocess.check_output(['nvidia-smi',*arguments,'--format=csv,noheader,nounits'],text=True,stderr=subprocess.DEVNULL,timeout=15).strip()
+    except (subprocess.SubprocessError,OSError):pause_unavailable_gpu(root)
+
+
+def require_gpu(root=None):
+    devices=gpu_query(['--query-gpu=index'],root).splitlines()
+    if not devices or any(not row.strip().isdecimal() for row in devices):pause_unavailable_gpu(root)
+
+
+def require_idle_gpu(root=None):
+    require_gpu(root)
+    active=gpu_query(['--query-compute-apps=pid'],root)
     if active:raise RuntimeError('GPU busy; defer without terminating other processes')
 
 
@@ -197,7 +223,7 @@ def main():
             if concept not in reserved:
                 members=[x for x in plan if x['pair_id']==item['pair_id'] and x['concept_id'] not in prior][:min(needed-len(admitted),21-budget['rendered'])]
                 if not members:break
-                if concept not in seed:require_idle_gpu()
+                if concept not in seed:require_idle_gpu(root)
                 reserve_render(budget,len(members),ledger);reserved.update(x['concept_id'] for x in members)
             factory['attempted']+=1;budget['attempted']+=1;write(ledger,budget)
             try:
@@ -219,6 +245,9 @@ def main():
                 failures.append({'concept_id':concept,'error':type(error).__name__,'reason':str(error)[:200]});factory['quarantined']+=1
                 failed_pairs.add(item['pair_id'])
                 write(run/'failures.json',failures)
+                # A lost device is not a media rejection. Persist the hold
+                # before another model job or a later reboot can retry it.
+                if isinstance(error,subprocess.SubprocessError):require_gpu(root)
                 # Three media failures is a quality circuit; no blind rerender loop.
                 if len(failures)>=3:break
         factory.update(completed_at=datetime.now(timezone.utc).isoformat(),elapsed_seconds=round(time.monotonic()-start,2),newly_hosted=0 if args.dry_run else len(admitted)+len(recovered),recovered_hosted=len(recovered),offline_verified=len(admitted) if args.dry_run else None,inventory_before=inventory['approved_unpublished'],remaining_eligible=max(0,len(plan)-factory['attempted']),weekly_render_reservations=budget['rendered'],status='failed' if failures else 'verified_offline' if args.dry_run else 'healthy')
