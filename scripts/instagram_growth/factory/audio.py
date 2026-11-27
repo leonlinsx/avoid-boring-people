@@ -3,9 +3,9 @@ R=pathlib.Path(os.environ.get('ABP_GPU_ROOT','.tmp/instagram-growth')).resolve()
 os.environ.update(HF_HUB_OFFLINE='1',HF_HUB_DISABLE_IMPLICIT_TOKEN='1',HF_HUB_DISABLE_TELEMETRY='1',NLTK_DATA=str(R/'nltk'))
 import torch,numpy as np,soundfile as sf
 from kokoro import KModel,KPipeline
-items=json.loads((O/'briefs.json').read_text())['items']; torch.set_num_threads(6); torch.manual_seed(20261121)
+items=json.loads((O/'briefs.json').read_text())['items']; torch.set_num_threads(4); torch.manual_seed(20261121)
 assert torch.cuda.is_available(); print('GPU',torch.cuda.get_device_name(),torch.__version__,flush=True)
-t0=time.monotonic(); torch.cuda.reset_peak_memory_stats()
+t0=time.monotonic(); torch.cuda.set_per_process_memory_fraction(.35); torch.cuda.reset_peak_memory_stats()
 model=KModel(repo_id='hexgrad/Kokoro-82M',config=str(R/'models/kokoro/config.json'),model=str(R/'models/kokoro/kokoro-v1_0.pth')).to('cuda').eval()
 pipe=KPipeline(lang_code='a',repo_id='hexgrad/Kokoro-82M',model=model,device='cuda');voice_name=os.environ.get('ABP_TTS_VOICE','af_heart');voice=torch.load(R/f'models/kokoro/voices/{voice_name}.pt',weights_only=True,map_location='cpu')
 pairs={}
@@ -35,6 +35,7 @@ from whisperx.alignment import load_align_model,align
 from scipy.signal import resample_poly
 import nltk
 nltk.data.path.insert(0,str(R/'nltk'))
+torch.cuda.reset_peak_memory_stats()
 model,metadata=load_align_model('en','cuda',model_name='facebook/wav2vec2-base-960h',model_dir=str(R/'models/wav2vec'))
 aligned_pairs={}
 for item in items:
@@ -55,6 +56,6 @@ for item in items:
  starts=[];offset=0
  for scene in item['scenes']:
   starts.append(words[offset]['start']);offset+=len(scene['narration'].split())
- dest.write_text(json.dumps({'engine':'whisperx 3.8.6','model_revision':json.loads((R/'models/wav2vec-provenance.json').read_text())['revision'],'method':'exact narration CTC-aligned to final waveform; no estimated script timings','seconds':time.monotonic()-t,'scene_starts':starts,'words':words},indent=2))
+ dest.write_text(json.dumps({'peak_torch_allocated_mib':torch.cuda.max_memory_allocated()/2**20,'peak_torch_reserved_mib':torch.cuda.max_memory_reserved()/2**20,'engine':'whisperx 3.8.6','model_revision':json.loads((R/'models/wav2vec-provenance.json').read_text())['revision'],'method':'exact narration CTC-aligned to final waveform; no estimated script timings','seconds':time.monotonic()-t,'scene_starts':starts,'words':words},indent=2))
  print('ALIGN',name,len(words),starts,flush=True)
 print('AUDIO_BATCH_SECONDS',time.monotonic()-t0,flush=True)

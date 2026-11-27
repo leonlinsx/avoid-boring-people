@@ -1,0 +1,151 @@
+{
+  "account": "avoidboringpeople",
+  "admission": {
+    "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+    "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+    "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+    "factual_text_sha256": "ec470ac1c9b4f421e585670b8515352a1ea7cd1b79cefc7f506ffe3566acfc66",
+    "human_approval_required": false,
+    "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+    "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+    "quality": {
+      "checks": [
+        "decode",
+        "ffprobe",
+        "faststart",
+        "source_anchor_and_hash",
+        "caption_exact_text_and_measured_word_timings",
+        "audio_clipping"
+      ],
+      "duration_seconds": 22.807,
+      "independent_asr_word_error_rate": 0.0,
+      "loudness_lufs": -16.35,
+      "presenter_peak_allocated_mib": null,
+      "presenter_seconds": null,
+      "qa_digest": "742e439e93937f55d7fa7ae3a4ec058789ba3d37f0bbd16fbb715fa7367be74c",
+      "qualifications_audible": true,
+      "render_seconds": 10.69266595399995,
+      "status": "PASS",
+      "text_bounds": [
+        109,
+        292,
+        863,
+        1451
+      ],
+      "true_peak_dbtp": -1.98,
+      "voice_peak_allocated_mib": 978.18115234375,
+      "voice_seconds": 0.6981876309999961
+    },
+    "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+    "runtime_digest": "46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6",
+    "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+  },
+  "admitted_at": "2026-11-27T03:54:19.147579+00:00",
+  "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+  "ai_generated": true,
+  "artifact_type": "abp_auto_manifest_v1",
+  "auto_signature": "+Vfc7ZoihuHT81kuH53bhqtG9+5L032IhXOizy16gI8tTgN4/p9rAv6NmzSdnZ5fEuFMi5V3nAfRcQcIoR/XDQ==",
+  "caption": "Which city would fit the life you want? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/city\n\nAI-generated narration. Original graphics.",
+  "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+  "concept_id": "abpa-973d2e169e179358776c057a",
+  "creative_format": "narrated_motion_graphics",
+  "cta_type": "follow",
+  "duration_seconds": 22.807,
+  "experiment_bucket": "control",
+  "experiment_hypothesis": "concrete situation / city",
+  "format": "REELS",
+  "graduation_strategy": null,
+  "model_provenance": {
+    "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+    "fictional_portrait_sha256": null,
+    "presenter_model_revision": null,
+    "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+    "voice_engine": "kokoro==0.9.4",
+    "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+  },
+  "pair_id": "autopair-5a8abe6a40eaed3c1fd2",
+  "pair_role": "graphics",
+  "release_after": "2026-11-27T03:54:19.147582+00:00",
+  "review_status": "AUTO_ADMITTED",
+  "script": {
+    "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+    "caption_words": 5,
+    "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+    "concept_id": "abpa-973d2e169e179358776c057a",
+    "copyright_basis": "owned_nonquoted_commentary",
+    "cta_type": "follow",
+    "experiment_bucket": "control",
+    "experiment_hypothesis": "concrete situation / city",
+    "graphic_labels": [
+      "THE SITUATION",
+      "THE PERSPECTIVE",
+      "THE CONDITIONS"
+    ],
+    "hook_type": "concrete situation",
+    "label": "Which city would fit the life you want?",
+    "pair_id": "autopair-5a8abe6a40eaed3c1fd2",
+    "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+    "pair_role": "graphics",
+    "presenter": false,
+    "scenes": [
+      {
+        "detail": "CITY",
+        "headline": "WHICH CITY WOULD FIT THE LIFE YOU WANT?",
+        "narration": "Which city would fit the life you want? Leon Lin offers this perspective."
+      },
+      {
+        "detail": "AN IDEA TO EXAMINE",
+        "headline": "THE PERSPECTIVE",
+        "narration": "People have their own unique priorities when evaluating cities."
+      },
+      {
+        "detail": "KEEP THE WHOLE ARGUMENT",
+        "headline": "THE CONDITIONS MATTER",
+        "narration": "The person's priorities can change, and so can the city's ability to provide that priority. Once cities no longer give you what you need, you move (if you can)."
+      },
+      {
+        "detail": "FOLLOW AVOID BORING PEOPLE",
+        "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+        "narration": "Follow Avoid Boring People for more ways to think through decisions."
+      }
+    ],
+    "source_anchor": "People have their own unique priorities when evaluating cities. The person's priorities can change, and so can the city's ability to provide that priority. Once cities no longer give you what you need, you move (if you can).",
+    "source_date": "2020-08-19",
+    "source_file": "src/content/blog/2020_08_19_city/index.md",
+    "source_sentences": [
+      "People have their own unique priorities when evaluating cities.",
+      "The person's priorities can change, and so can the city's ability to provide that priority.",
+      "Once cities no longer give you what you need, you move (if you can)."
+    ],
+    "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+    "source_url": "https://leonlins.com/writing/city",
+    "standalone_context": {
+      "payoff": "An attributed perspective with the complete original conditions retained.",
+      "situation": "Which city would fit the life you want?",
+      "subject": "city"
+    },
+    "template_parameters": {
+      "bucket": "control",
+      "caption_words": 5,
+      "hook": 0,
+      "presenter": false,
+      "visual": "cards",
+      "voice": "af_heart"
+    },
+    "text": "Which city would fit the life you want? Leon Lin offers this perspective. People have their own unique priorities when evaluating cities. The person's priorities can change, and so can the city's ability to provide that priority. Once cities no longer give you what you need, you move (if you can). Follow Avoid Boring People for more ways to think through decisions.",
+    "title": "City hunter",
+    "topic": "city",
+    "visual": "cards",
+    "voice": "af_heart"
+  },
+  "source_anchor": "People have their own unique priorities when evaluating cities. The person's priorities can change, and so can the city's ability to provide that priority. Once cities no longer give you what you need, you move (if you can).",
+  "source_file": "src/content/blog/2020_08_19_city/index.md",
+  "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+  "source_url": "https://leonlins.com/writing/city",
+  "trial": false,
+  "video_path": "downloads/5ce5a0ee429adbb934d51dd6414fbcac26f72bcb697a8b8f3ec3758f755feefc.mp4",
+  "video_sha256": "5ce5a0ee429adbb934d51dd6414fbcac26f72bcb697a8b8f3ec3758f755feefc",
+  "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-973d2e169e179358776c057a/5ce5a0ee429adbb934d51dd6414fbcac26f72bcb697a8b8f3ec3758f755feefc.mp4",
+  "visual_style": "cards",
+  "voice": "af_heart"
+}
