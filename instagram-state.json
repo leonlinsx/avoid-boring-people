@@ -155,16 +155,16 @@
       "status": "healthy",
       "weekly_render_reservations": 14
     },
-    "feed_generated_at": "2026-11-27T16:38:23.520Z",
+    "feed_generated_at": "2026-11-27T16:54:07.569Z",
     "newly_promoted": 6,
-    "promoted_at": "2026-11-27T16:39:10.460544+00:00",
+    "promoted_at": "2026-11-27T16:55:11.931293+00:00",
     "quarantined": [],
     "storage": {
-      "checked_at": "2026-11-27T16:38:22.802Z",
+      "checked_at": "2026-11-27T16:54:06.033Z",
       "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
-      "objects": 211,
+      "objects": 215,
       "plan": "hobby",
-      "size_bytes": 65964046,
+      "size_bytes": 71360886,
       "status": "active",
       "store": "store_kvEENsOeMZ2J3t8D",
       "team": "team_cilwkczruho74HBIaE1IlQIt",
@@ -173,10 +173,166 @@
     },
     "usage": {
       "bytes_reserved": 38749773,
-      "operations_reserved": 180
+      "operations_reserved": 207
     }
   },
   "auto_inventory": {
+    "abpa-0500bd48c67929ef0e76b9b7": {
+      "envelope_sha256": "b2c933e47273a703d906e89aee8489e2f85a245766841fda0b184aec9c1e6d5e",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/b2c933e47273a703d906e89aee8489e2f85a245766841fda0b184aec9c1e6d5e.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-26753acb874975ae6320e732",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "464b4c0fb67a1cfb6a12c906e2663cf0c08e7cf3651913fa3afd50453402c2ff",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 29.133333,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.26,
+            "presenter_peak_allocated_mib": 7682.03564453125,
+            "presenter_seconds": 39.733509965997655,
+            "qa_digest": "e368dab66631ec63465848440def2a601bb3dfdd124569b236d678672058f914",
+            "qualifications_audible": true,
+            "render_seconds": 18.51008155400632,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              888,
+              1451
+            ],
+            "true_peak_dbtp": -1.99,
+            "voice_peak_allocated_mib": 1097.19873046875,
+            "voice_seconds": 0
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T16:31:02.042172+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "po3sZIK+l196Od9VFYozpzRUQqMqGHKBg8kIt5ITUPfAjvQraKhO6Hg7VoAWOKN2qdcrh/eyiBRJtuh7AUtFBg==",
+        "caption": "How do you make room for useful creative ideas? In Leon Lin's words:\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/write\n\nAI-generated narration and fictional presenter.",
+        "claim_id": "claim-26753acb874975ae6320e732",
+        "concept_id": "abpa-0500bd48c67929ef0e76b9b7",
+        "creative_format": "presenter_then_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 29.133333,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / creative ideas",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": "ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb",
+          "presenter_model_revision": "74d81686a7bd750b276ec1ade295bc4077c5868a",
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-7afa44149d5e14c7b4c2",
+        "pair_role": "presenter",
+        "release_after": "2026-11-27T16:31:02.042176+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-26753acb874975ae6320e732",
+          "concept_id": "abpa-0500bd48c67929ef0e76b9b7",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / creative ideas",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "How do you make room for useful creative ideas?",
+          "pair_id": "autopair-7afa44149d5e14c7b4c2",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "presenter",
+          "presenter": true,
+          "scenes": [
+            {
+              "detail": "CREATIVE IDEAS",
+              "headline": "HOW DO YOU MAKE ROOM FOR USEFUL CREATIVE IDEAS?",
+              "narration": "How do you make room for useful creative ideas? In Leon Lin's words:"
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "I agree that the internet has helped good ideas succeed on merit, though there's an inherent advantage for a famous person's ideas to spread compared to someone more obscure."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "The reduction in cost of publication does mean your ideas can stay discoverable for a longer period of time. With luck you'll get the response you desire, though it can't be your driving motivation."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "I agree that the internet has helped good ideas succeed on merit, though there's an inherent advantage for a famous person's ideas to spread compared to someone more obscure. The reduction in cost of publication does mean your ideas can stay discoverable for a longer period of time. With luck you'll get the response you desire, though it can't be your driving motivation.",
+          "source_date": "2019-03-10",
+          "source_file": "src/content/blog/2019_03_10_write/index.md",
+          "source_sentences": [
+            "I agree that the internet has helped good ideas succeed on merit, though there's an inherent advantage for a famous person's ideas to spread compared to someone more obscure.",
+            "The reduction in cost of publication does mean your ideas can stay discoverable for a longer period of time.",
+            "With luck you'll get the response you desire, though it can't be your driving motivation."
+          ],
+          "source_sha256": "952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d",
+          "source_url": "https://leonlins.com/writing/write",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "How do you make room for useful creative ideas?",
+            "subject": "creative ideas"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": true,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "How do you make room for useful creative ideas? In Leon Lin's words: I agree that the internet has helped good ideas succeed on merit, though there's an inherent advantage for a famous person's ideas to spread compared to someone more obscure. The reduction in cost of publication does mean your ideas can stay discoverable for a longer period of time. With luck you'll get the response you desire, though it can't be your driving motivation. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "Why I write",
+          "topic": "creative ideas",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "I agree that the internet has helped good ideas succeed on merit, though there's an inherent advantage for a famous person's ideas to spread compared to someone more obscure. The reduction in cost of publication does mean your ideas can stay discoverable for a longer period of time. With luck you'll get the response you desire, though it can't be your driving motivation.",
+        "source_file": "src/content/blog/2019_03_10_write/index.md",
+        "source_sha256": "952d829bddc8071371c4f34e7314a10b06a59a6ddcad8deac2494e093973cb0d",
+        "source_url": "https://leonlins.com/writing/write",
+        "trial": false,
+        "video_path": "downloads/d8456d75e4fa200b115b6aa9776007de9f4e462f48eae6e845aca71a9ff1324c.mp4",
+        "video_sha256": "d8456d75e4fa200b115b6aa9776007de9f4e462f48eae6e845aca71a9ff1324c",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-0500bd48c67929ef0e76b9b7/d8456d75e4fa200b115b6aa9776007de9f4e462f48eae6e845aca71a9ff1324c.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
     "abpa-101484b319c52682a75bfdbe": {
       "envelope_sha256": "2910cb57816b8ba3b5773b5a1b3f1234a19d536f480030434a67c98f83a9c7a5",
       "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/2910cb57816b8ba3b5773b5a1b3f1234a19d536f480030434a67c98f83a9c7a5.json",
@@ -333,6 +489,472 @@
       },
       "promoted_at": "2026-11-27T16:39:10.460544+00:00"
     },
+    "abpa-13053090d83866ba1384f645": {
+      "envelope_sha256": "eb6fe5537cd5faa1b70957c72372c4ce4d5bfbb3b69609fe877c1c43acb52fc2",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/eb6fe5537cd5faa1b70957c72372c4ce4d5bfbb3b69609fe877c1c43acb52fc2.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-65ff665e7dcc781ecd3b1831",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "3bfcac5f8b506d685db92de6f0970769ac3b268055468d2ac0a3c988439b90e9",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 23.102,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.34,
+            "presenter_peak_allocated_mib": null,
+            "presenter_seconds": null,
+            "qa_digest": "392feb8e6880f4948a486906e4e270f14573e54e42fc8fafd8350464261e1409",
+            "qualifications_audible": true,
+            "render_seconds": 11.031913826998789,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              882,
+              1451
+            ],
+            "true_peak_dbtp": -1.96,
+            "voice_peak_allocated_mib": 981.5791015625,
+            "voice_seconds": 0.3802688340001623
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T16:38:17.476343+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "QrIPu9WXNRJIPgWkDjUsf9zZvUlQmsJESI1eP6Hc1NulUQYraAq8fqYA9XRf+FCC2TKznk8M3+MXjHk4p5EmBg==",
+        "caption": "What job does a useful product need to do? In Leon Lin's words:\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/zipf\n\nAI-generated narration. Original graphics.",
+        "claim_id": "claim-65ff665e7dcc781ecd3b1831",
+        "concept_id": "abpa-13053090d83866ba1384f645",
+        "creative_format": "narrated_motion_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 23.102,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / product",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": null,
+          "presenter_model_revision": null,
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-12a7d4f87ce70f7a27d9",
+        "pair_role": "graphics",
+        "release_after": "2026-11-27T16:38:17.476347+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-65ff665e7dcc781ecd3b1831",
+          "concept_id": "abpa-13053090d83866ba1384f645",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / product",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "What job does a useful product need to do?",
+          "pair_id": "autopair-12a7d4f87ce70f7a27d9",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "graphics",
+          "presenter": false,
+          "scenes": [
+            {
+              "detail": "PRODUCT",
+              "headline": "WHAT JOB DOES A USEFUL PRODUCT NEED TO DO?",
+              "narration": "What job does a useful product need to do? In Leon Lin's words:"
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "If we had rules that we believe intelligent communications have to follow, we can test those rules against animal communications, and see how well they work."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "This will let us know if we need to broaden or narrow our search criteria."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "If we had rules that we believe intelligent communications have to follow, we can test those rules against animal communications, and see how well they work. This will let us know if we need to broaden or narrow our search criteria.",
+          "source_date": "2020-06-24",
+          "source_file": "src/content/blog/2020_06_24_zipf/index.md",
+          "source_sentences": [
+            "If we had rules that we believe intelligent communications have to follow, we can test those rules against animal communications, and see how well they work.",
+            "This will let us know if we need to broaden or narrow our search criteria."
+          ],
+          "source_sha256": "973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a",
+          "source_url": "https://leonlins.com/writing/zipf",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "What job does a useful product need to do?",
+            "subject": "product"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": false,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "What job does a useful product need to do? In Leon Lin's words: If we had rules that we believe intelligent communications have to follow, we can test those rules against animal communications, and see how well they work. This will let us know if we need to broaden or narrow our search criteria. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "War of the words",
+          "topic": "product",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "If we had rules that we believe intelligent communications have to follow, we can test those rules against animal communications, and see how well they work. This will let us know if we need to broaden or narrow our search criteria.",
+        "source_file": "src/content/blog/2020_06_24_zipf/index.md",
+        "source_sha256": "973192c22790935d832c5e18991ced9ee6c8da9f91d41215baf5d37cb9c8863a",
+        "source_url": "https://leonlins.com/writing/zipf",
+        "trial": false,
+        "video_path": "downloads/1961b31a8611f7e5a991d1a319953f50651feffcadb149e6cd0f7710c65c4adc.mp4",
+        "video_sha256": "1961b31a8611f7e5a991d1a319953f50651feffcadb149e6cd0f7710c65c4adc",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-13053090d83866ba1384f645/1961b31a8611f7e5a991d1a319953f50651feffcadb149e6cd0f7710c65c4adc.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
+    "abpa-22a8714166833955f6a5740b": {
+      "envelope_sha256": "52e4475d9ff60d84581744509355a860eda216525536c9442e534431873a9cbc",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/52e4475d9ff60d84581744509355a860eda216525536c9442e534431873a9cbc.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-44abcae2d7bb949f84122095",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "caa8a1b0c7ecaa01d686a5c78c24a3f5358cc8e14bb1a79588e65b982414e4df",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 31.233333,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.33,
+            "presenter_peak_allocated_mib": 7682.03564453125,
+            "presenter_seconds": 47.42158377899614,
+            "qa_digest": "25c11633461131717206f40834d3195b66fc7672a3706ea35cf122b4c081e0dd",
+            "qualifications_audible": true,
+            "render_seconds": 21.456248856004095,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              882,
+              1451
+            ],
+            "true_peak_dbtp": -1.95,
+            "voice_peak_allocated_mib": 1057.91943359375,
+            "voice_seconds": 0
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T16:35:25.554446+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "Ejxj5sS+5kiaxXL2pczpaw4dhWsnCpYAmlY3BfEvGmKMiol3XkeQDFVNyenxMuODF8N1+t0aqE2PaWXlc6mLAA==",
+        "caption": "What job does a useful product need to do? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/her\n\nAI-generated narration and fictional presenter.",
+        "claim_id": "claim-44abcae2d7bb949f84122095",
+        "concept_id": "abpa-22a8714166833955f6a5740b",
+        "creative_format": "presenter_then_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 31.233333,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / product",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": "ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb",
+          "presenter_model_revision": "74d81686a7bd750b276ec1ade295bc4077c5868a",
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-983eda102e5b47799127",
+        "pair_role": "presenter",
+        "release_after": "2026-11-27T16:35:25.554452+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-44abcae2d7bb949f84122095",
+          "concept_id": "abpa-22a8714166833955f6a5740b",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / product",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "What job does a useful product need to do?",
+          "pair_id": "autopair-983eda102e5b47799127",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "presenter",
+          "presenter": true,
+          "scenes": [
+            {
+              "detail": "PRODUCT",
+              "headline": "WHAT JOB DOES A USEFUL PRODUCT NEED TO DO?",
+              "narration": "What job does a useful product need to do? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "If a company's product isn't actually significantly better, they have to result to sales and marketing in order to differentiate."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "This implies even higher costs compared to a typical software company, which is already sales heavy. It does make you wonder whether the hype around machine learning is justified or is used to justify a company's survival."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "If a company's product isn't actually significantly better, they have to result to sales and marketing in order to differentiate. **This implies even higher costs compared to a typical software company,** which is already sales heavy. It does make you wonder whether the hype around machine learning is justified or is used to justify a company's survival.",
+          "source_date": "2020-04-29",
+          "source_file": "src/content/blog/2020_04_29_her/index.md",
+          "source_sentences": [
+            "If a company's product isn't actually significantly better, they have to result to sales and marketing in order to differentiate.",
+            "This implies even higher costs compared to a typical software company, which is already sales heavy.",
+            "It does make you wonder whether the hype around machine learning is justified or is used to justify a company's survival."
+          ],
+          "source_sha256": "140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199",
+          "source_url": "https://leonlins.com/writing/her",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "What job does a useful product need to do?",
+            "subject": "product"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": true,
+            "visual": "statement",
+            "voice": "af_heart"
+          },
+          "text": "What job does a useful product need to do? Leon Lin offers this perspective. If a company's product isn't actually significantly better, they have to result to sales and marketing in order to differentiate. This implies even higher costs compared to a typical software company, which is already sales heavy. It does make you wonder whether the hype around machine learning is justified or is used to justify a company's survival. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "We wanted Her, instead we got Tinder",
+          "topic": "product",
+          "visual": "statement",
+          "voice": "af_heart"
+        },
+        "source_anchor": "If a company's product isn't actually significantly better, they have to result to sales and marketing in order to differentiate. **This implies even higher costs compared to a typical software company,** which is already sales heavy. It does make you wonder whether the hype around machine learning is justified or is used to justify a company's survival.",
+        "source_file": "src/content/blog/2020_04_29_her/index.md",
+        "source_sha256": "140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199",
+        "source_url": "https://leonlins.com/writing/her",
+        "trial": false,
+        "video_path": "downloads/c5e9638ab72cbf64159693be8b9a0b7e4ab8d404c24558f06e31ecd3f75cb84d.mp4",
+        "video_sha256": "c5e9638ab72cbf64159693be8b9a0b7e4ab8d404c24558f06e31ecd3f75cb84d",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-22a8714166833955f6a5740b/c5e9638ab72cbf64159693be8b9a0b7e4ab8d404c24558f06e31ecd3f75cb84d.mp4",
+        "visual_style": "statement",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
+    "abpa-43fdd2309415b4051e6a937f": {
+      "envelope_sha256": "6499d8043850676ea2790685a617d12b84a884686e24ba3824c87add6374b4b0",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/6499d8043850676ea2790685a617d12b84a884686e24ba3824c87add6374b4b0.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-0f93e2a121126f86c27634d9",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "8d0804e7daed88d9457cd7fff1eb3cec2ab78f640f724ae794bdc311a7a093a6",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 27.273,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.25,
+            "presenter_peak_allocated_mib": 7682.03564453125,
+            "presenter_seconds": 39.85590000000229,
+            "qa_digest": "703993acc76153f748fd6e28812233baa386b17196f1a618ff39ac5f3c14310e",
+            "qualifications_audible": true,
+            "render_seconds": 16.83308487499744,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              882,
+              1451
+            ],
+            "true_peak_dbtp": -1.97,
+            "voice_peak_allocated_mib": 1062.93798828125,
+            "voice_seconds": 0
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T16:33:42.499154+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "9U+hvpj0Ya0FyhX4cwFIYKJXyuRmQfm3IGew8z8sMsLw4r7HWF7nATTYQbZMuRYNN6CvlBoEC9J2zxfsZF4qDw==",
+        "caption": "What job does a useful product need to do? In Leon Lin's words:\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/keen\n\nAI-generated narration and fictional presenter.",
+        "claim_id": "claim-0f93e2a121126f86c27634d9",
+        "concept_id": "abpa-43fdd2309415b4051e6a937f",
+        "creative_format": "presenter_then_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 27.273,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / product",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": "ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb",
+          "presenter_model_revision": "74d81686a7bd750b276ec1ade295bc4077c5868a",
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-d92f28c84ca0c2e1d9bf",
+        "pair_role": "presenter",
+        "release_after": "2026-11-27T16:33:42.499159+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 3,
+          "claim_id": "claim-0f93e2a121126f86c27634d9",
+          "concept_id": "abpa-43fdd2309415b4051e6a937f",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / product",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "What job does a useful product need to do?",
+          "pair_id": "autopair-d92f28c84ca0c2e1d9bf",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "presenter",
+          "presenter": true,
+          "scenes": [
+            {
+              "detail": "PRODUCT",
+              "headline": "WHAT JOB DOES A USEFUL PRODUCT NEED TO DO?",
+              "narration": "What job does a useful product need to do? In Leon Lin's words:"
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "I'd assume the plan is to have a flywheel of users attracting creators attracting users in the long term, so that customer acquisition costs are low."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "In the short term, there's the fixed costs of employees working on this, and what could be a high variable cost in acquiring new creators and users via ads and social outreach."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "   I'd assume the plan is to have a flywheel of users attracting creators attracting users in the long term, so that customer acquisition costs are low. In the short term, there's the fixed costs of employees working on this, and what could be a high variable cost in acquiring new creators and users via ads and social outreach.",
+          "source_date": "2020-04-15",
+          "source_file": "src/content/blog/2020_04_15_keen/index.md",
+          "source_sentences": [
+            "I'd assume the plan is to have a flywheel of users attracting creators attracting users in the long term, so that customer acquisition costs are low.",
+            "In the short term, there's the fixed costs of employees working on this, and what could be a high variable cost in acquiring new creators and users via ads and social outreach."
+          ],
+          "source_sha256": "e13ad424105a5f585b1ef90045821cf9fb5012d71f4ff3575d2d28699e057d64",
+          "source_url": "https://leonlins.com/writing/keen",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "What job does a useful product need to do?",
+            "subject": "product"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 3,
+            "hook": 0,
+            "presenter": true,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "What job does a useful product need to do? In Leon Lin's words: I'd assume the plan is to have a flywheel of users attracting creators attracting users in the long term, so that customer acquisition costs are low. In the short term, there's the fixed costs of employees working on this, and what could be a high variable cost in acquiring new creators and users via ads and social outreach. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "Review of Google Keen product",
+          "topic": "product",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "   I'd assume the plan is to have a flywheel of users attracting creators attracting users in the long term, so that customer acquisition costs are low. In the short term, there's the fixed costs of employees working on this, and what could be a high variable cost in acquiring new creators and users via ads and social outreach.",
+        "source_file": "src/content/blog/2020_04_15_keen/index.md",
+        "source_sha256": "e13ad424105a5f585b1ef90045821cf9fb5012d71f4ff3575d2d28699e057d64",
+        "source_url": "https://leonlins.com/writing/keen",
+        "trial": false,
+        "video_path": "downloads/b2719645ab3027a421f7d9237c8a0a61ee1166de0ef33b4a32e4e25bc11ef247.mp4",
+        "video_sha256": "b2719645ab3027a421f7d9237c8a0a61ee1166de0ef33b4a32e4e25bc11ef247",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-43fdd2309415b4051e6a937f/b2719645ab3027a421f7d9237c8a0a61ee1166de0ef33b4a32e4e25bc11ef247.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T16:55:11.931293+00:00"
+    },
     "abpa-4758fef16ed35ce8be8f3b72": {
       "envelope_sha256": "e6d18d75c4a9781e30591ada5a9ef2700d5bd8fd63abfc2d1c34206295147559",
       "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/e6d18d75c4a9781e30591ada5a9ef2700d5bd8fd63abfc2d1c34206295147559.json",
@@ -488,6 +1110,162 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T16:39:10.460544+00:00"
+    },
+    "abpa-63d43de3e53fe505a692d762": {
+      "envelope_sha256": "dab109ce2bd479bf1f4c3ae92cad857e60d18231479d690ce259434a2666ff7c",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/dab109ce2bd479bf1f4c3ae92cad857e60d18231479d690ce259434a2666ff7c.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-666449939255f9ab7ad912c5",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "e7ff3e45090105ea147546abed7a0394e2bdb24c86e89044eedf81dd75bd007e",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 23.1,
+            "independent_asr_word_error_rate": 0.015625,
+            "loudness_lufs": -16.26,
+            "presenter_peak_allocated_mib": 7682.03564453125,
+            "presenter_seconds": 47.45030410400068,
+            "qa_digest": "dacdf5798daf71973cd027053db4b833b1b9c70aab38d0b3fae49cc4111f2e59",
+            "qualifications_audible": true,
+            "render_seconds": 16.245584012998734,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              897,
+              1451
+            ],
+            "true_peak_dbtp": -1.93,
+            "voice_peak_allocated_mib": 980.91552734375,
+            "voice_seconds": 0
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T16:36:56.295587+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "LG3SJJIiYNEQ3rh/Zk2VALd3zkKEw/rjCj5hRBuec+DsrXXMj+0awi0828lWlQMHKJSQSQ/oQDZv6YoUaGncCg==",
+        "caption": "How do you make a decision with competing priorities? Leon Lin offers this perspective.\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/her\n\nAI-generated narration and fictional presenter.",
+        "claim_id": "claim-666449939255f9ab7ad912c5",
+        "concept_id": "abpa-63d43de3e53fe505a692d762",
+        "creative_format": "presenter_then_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 23.1,
+        "experiment_bucket": "control",
+        "experiment_hypothesis": "concrete situation / decision",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": "ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb",
+          "presenter_model_revision": "74d81686a7bd750b276ec1ade295bc4077c5868a",
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-54f9bbc886666fd3920c",
+        "pair_role": "presenter",
+        "release_after": "2026-11-27T16:36:56.295590+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-666449939255f9ab7ad912c5",
+          "concept_id": "abpa-63d43de3e53fe505a692d762",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "control",
+          "experiment_hypothesis": "concrete situation / decision",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "How do you make a decision with competing priorities?",
+          "pair_id": "autopair-54f9bbc886666fd3920c",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "presenter",
+          "presenter": true,
+          "scenes": [
+            {
+              "detail": "DECISION",
+              "headline": "HOW DO YOU MAKE A DECISION WITH COMPETING PRIORITIES?",
+              "narration": "How do you make a decision with competing priorities? Leon Lin offers this perspective."
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "Leaving options opens means you have flexibility."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "That works until you realise you've lived your life with all the options and never settling for something. But neither should you decide on a path without having a backup plan."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "Leaving options opens means you have flexibility. That works until you realise you've lived your life with all the options and never settling for something. But neither should you decide on a path without having a backup plan.",
+          "source_date": "2020-04-29",
+          "source_file": "src/content/blog/2020_04_29_her/index.md",
+          "source_sentences": [
+            "Leaving options opens means you have flexibility.",
+            "That works until you realise you've lived your life with all the options and never settling for something.",
+            "But neither should you decide on a path without having a backup plan."
+          ],
+          "source_sha256": "140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199",
+          "source_url": "https://leonlins.com/writing/her",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "How do you make a decision with competing priorities?",
+            "subject": "decision"
+          },
+          "template_parameters": {
+            "bucket": "control",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": true,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "How do you make a decision with competing priorities? Leon Lin offers this perspective. Leaving options opens means you have flexibility. That works until you realise you've lived your life with all the options and never settling for something. But neither should you decide on a path without having a backup plan. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "We wanted Her, instead we got Tinder",
+          "topic": "decision",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "Leaving options opens means you have flexibility. That works until you realise you've lived your life with all the options and never settling for something. But neither should you decide on a path without having a backup plan.",
+        "source_file": "src/content/blog/2020_04_29_her/index.md",
+        "source_sha256": "140929fc05bda4f1a76315eefef59e45e7cb3db132f6b4504e8865ffe9865199",
+        "source_url": "https://leonlins.com/writing/her",
+        "trial": false,
+        "video_path": "downloads/232fe1f355fa3501b48f4fe0816b2b398430fc1b8184b206927acd78398179be.mp4",
+        "video_sha256": "232fe1f355fa3501b48f4fe0816b2b398430fc1b8184b206927acd78398179be",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-63d43de3e53fe505a692d762/232fe1f355fa3501b48f4fe0816b2b398430fc1b8184b206927acd78398179be.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T16:55:11.931293+00:00"
     },
     "abpa-755fd763356b77e90d04dc2d": {
       "envelope_sha256": "083416e0cc8463d45fd08dd5d885d2fe776c165d2c8e0714bd7ece8e3d9ad8fe",
@@ -1266,6 +2044,161 @@
         "voice": "af_heart"
       },
       "promoted_at": "2026-11-27T03:56:56.398508+00:00"
+    },
+    "abpa-bde585110f8fde134ec04eca": {
+      "envelope_sha256": "1c6ceea797d25cbe0ba9c953b02f5790ccf71311a9603d0d57c2842d39313134",
+      "envelope_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/manifests/1c6ceea797d25cbe0ba9c953b02f5790ccf71311a9603d0d57c2842d39313134.json",
+      "manifest": {
+        "account": "avoidboringpeople",
+        "admission": {
+          "arithmetic": "NOT_APPLICABLE_NUMERIC_CLAIMS_EXCLUDED",
+          "claim_id": "claim-d49a3474e58a872f3df7e3ae",
+          "context": "EXPLICIT_TOPIC_AND_ATTRIBUTION",
+          "factual_text_sha256": "6a3b295bed64c01a6f246c3efcae1e12eb150cbda3b0b3d86a2fbf26d9d1bab1",
+          "human_approval_required": false,
+          "policy_digest": "f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd",
+          "policy_version": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "quality": {
+            "checks": [
+              "decode",
+              "ffprobe",
+              "faststart",
+              "source_anchor_and_hash",
+              "caption_exact_text_and_measured_word_timings",
+              "audio_clipping"
+            ],
+            "duration_seconds": 21.233333,
+            "independent_asr_word_error_rate": 0.0,
+            "loudness_lufs": -16.31,
+            "presenter_peak_allocated_mib": 7682.03564453125,
+            "presenter_seconds": 32.891576966001594,
+            "qa_digest": "508eea76a7e66671ee0261c53d1a37086be76d7f7a3978d32f054c85afd047d0",
+            "qualifications_audible": true,
+            "render_seconds": 13.761437640998338,
+            "status": "PASS",
+            "text_bounds": [
+              109,
+              292,
+              875,
+              1451
+            ],
+            "true_peak_dbtp": -1.99,
+            "voice_peak_allocated_mib": 947.18408203125,
+            "voice_seconds": 0
+          },
+          "rights": "OWNED_NONQUOTED_PROSE_ONLY",
+          "runtime_digest": "46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6",
+          "source_fidelity": "EXACT_COMPLETE_PARAGRAPH"
+        },
+        "admitted_at": "2026-11-27T16:32:15.798371+00:00",
+        "admitted_by": "ABP-AUTO-OWNED-COMMENTARY-1",
+        "ai_generated": true,
+        "artifact_type": "abp_auto_manifest_v1",
+        "auto_signature": "8zT2ZuD0qIYLrv1amYfjVFIoKEmAEjoAM6JU5uHx49bECS/DHxhh4ynqJRf6MBJjW9mcQy4Tsl6rA4UjR9e/Cg==",
+        "caption": "What makes learning a skill difficult? In Leon Lin's words:\n\nLeon Lin\u2019s perspective: https://leonlins.com/writing/time_illusion\n\nAI-generated narration and fictional presenter.",
+        "claim_id": "claim-d49a3474e58a872f3df7e3ae",
+        "concept_id": "abpa-bde585110f8fde134ec04eca",
+        "creative_format": "presenter_then_graphics",
+        "cta_type": "follow",
+        "duration_seconds": 21.233333,
+        "experiment_bucket": "exploration",
+        "experiment_hypothesis": "concrete situation / learning",
+        "format": "REELS",
+        "graduation_strategy": null,
+        "model_provenance": {
+          "alignment_model_revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+          "fictional_portrait_sha256": "ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb",
+          "presenter_model_revision": "74d81686a7bd750b276ec1ade295bc4077c5868a",
+          "rights": "Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music",
+          "voice_engine": "kokoro==0.9.4",
+          "voice_model_revision": "f3ff3571791e39611d31c381e3a41a3af07b4987"
+        },
+        "pair_id": "autopair-12c9e34593385272b74d",
+        "pair_role": "presenter",
+        "release_after": "2026-11-27T16:32:15.798374+00:00",
+        "review_status": "AUTO_ADMITTED",
+        "script": {
+          "auto_policy": "ABP-AUTO-OWNED-COMMENTARY-1",
+          "caption_words": 5,
+          "claim_id": "claim-d49a3474e58a872f3df7e3ae",
+          "concept_id": "abpa-bde585110f8fde134ec04eca",
+          "copyright_basis": "owned_nonquoted_commentary",
+          "cta_type": "follow",
+          "experiment_bucket": "exploration",
+          "experiment_hypothesis": "concrete situation / learning",
+          "graphic_labels": [
+            "THE SITUATION",
+            "THE PERSPECTIVE",
+            "THE CONDITIONS"
+          ],
+          "hook_type": "concrete situation",
+          "label": "What makes learning a skill difficult?",
+          "pair_id": "autopair-12c9e34593385272b74d",
+          "pair_primary_factor": "fictional_presenter_opening_vs_graphics",
+          "pair_role": "presenter",
+          "presenter": true,
+          "scenes": [
+            {
+              "detail": "LEARNING",
+              "headline": "WHAT MAKES LEARNING A SKILL DIFFICULT?",
+              "narration": "What makes learning a skill difficult? In Leon Lin's words:"
+            },
+            {
+              "detail": "AN IDEA TO EXAMINE",
+              "headline": "THE PERSPECTIVE",
+              "narration": "I don't know if this has any relevance to how we live our lives; just thought it was something fascinating to learn about."
+            },
+            {
+              "detail": "KEEP THE WHOLE ARGUMENT",
+              "headline": "THE CONDITIONS MATTER",
+              "narration": "We often take many things for granted but being surprised by something counterintuitive like this is fun."
+            },
+            {
+              "detail": "FOLLOW AVOID BORING PEOPLE",
+              "headline": "BETTER QUESTIONS, BETTER DECISIONS",
+              "narration": "Follow Avoid Boring People for more ways to think through decisions."
+            }
+          ],
+          "source_anchor": "I don't know if this has any relevance to how we live our lives; just thought it was something fascinating to learn about. We often take many things for granted but being surprised by something counterintuitive like this is fun.",
+          "source_date": "2019-03-24",
+          "source_file": "src/content/blog/2019_03_24_time_illusion/index.md",
+          "source_sentences": [
+            "I don't know if this has any relevance to how we live our lives; just thought it was something fascinating to learn about.",
+            "We often take many things for granted but being surprised by something counterintuitive like this is fun."
+          ],
+          "source_sha256": "ed957469baf2ed553e13eaee70c4b17e133a059083e5a76d57315495bb495136",
+          "source_url": "https://leonlins.com/writing/time_illusion",
+          "standalone_context": {
+            "payoff": "An attributed perspective with the complete original conditions retained.",
+            "situation": "What makes learning a skill difficult?",
+            "subject": "learning"
+          },
+          "template_parameters": {
+            "bucket": "exploration",
+            "caption_words": 5,
+            "hook": 0,
+            "presenter": true,
+            "visual": "cards",
+            "voice": "af_heart"
+          },
+          "text": "What makes learning a skill difficult? In Leon Lin's words: I don't know if this has any relevance to how we live our lives; just thought it was something fascinating to learn about. We often take many things for granted but being surprised by something counterintuitive like this is fun. Follow Avoid Boring People for more ways to think through decisions.",
+          "title": "Temporal illusions",
+          "topic": "learning",
+          "visual": "cards",
+          "voice": "af_heart"
+        },
+        "source_anchor": "I don't know if this has any relevance to how we live our lives; just thought it was something fascinating to learn about. We often take many things for granted but being surprised by something counterintuitive like this is fun.",
+        "source_file": "src/content/blog/2019_03_24_time_illusion/index.md",
+        "source_sha256": "ed957469baf2ed553e13eaee70c4b17e133a059083e5a76d57315495bb495136",
+        "source_url": "https://leonlins.com/writing/time_illusion",
+        "trial": false,
+        "video_path": "downloads/1d74f64cfe55a7fb5e21b33a1ebffaff5f5d626dfeffa6882b171d00f2617c48.mp4",
+        "video_sha256": "1d74f64cfe55a7fb5e21b33a1ebffaff5f5d626dfeffa6882b171d00f2617c48",
+        "video_url": "https://kveensoemz2j3t8d.public.blob.vercel-storage.com/instagram/reels/auto/abpa-bde585110f8fde134ec04eca/1d74f64cfe55a7fb5e21b33a1ebffaff5f5d626dfeffa6882b171d00f2617c48.mp4",
+        "visual_style": "cards",
+        "voice": "af_heart"
+      },
+      "promoted_at": "2026-11-27T16:55:11.931293+00:00"
     },
     "abpa-dba7c93f770d6f7da2eaa0b2": {
       "envelope_sha256": "622ec7c1bf14fb2fc1d19a70f86407f287d148eca935e6bbe721d3426192382e",
