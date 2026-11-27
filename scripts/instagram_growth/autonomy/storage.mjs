@@ -4,7 +4,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {getVercelOidcToken} from '@vercel/oidc';
-import {put,head} from '@vercel/blob';
+import {put,head,list} from '@vercel/blob';
 
 const TEAM='team_cilwkczruho74HBIaE1IlQIt',PROJECT='prj_Swcosa9UBmQBNDvJXFLIbTkHF7u6';
 const STORE='store_kvEENsOeMZ2J3t8D',HOST='kveensoemz2j3t8d.public.blob.vercel-storage.com';
@@ -28,14 +28,17 @@ async function quota(){
    transfer_usage:'Unavailable from Hobby billing API; not zero. Provider hard free limit applies.',cost_bound:'Hobby has no paid overage; never upgrade automatically.'};
 }
 const usageFile=path.join(config.root,`usage-${new Date().toISOString().slice(0,7)}.json`);
-async function reserve(bytes){
+async function saveUsage(usage){
+ const pending=usageFile+'.tmp';await fs.writeFile(pending,JSON.stringify(usage),{mode:0o600});await fs.rename(pending,usageFile);
+}
+async function reserve(bytes,operations=12){
  let usage={bytes_reserved:0,operations_reserved:0};try{usage=JSON.parse(await fs.readFile(usageFile,'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
  if(!Number.isSafeInteger(usage.bytes_reserved)||usage.bytes_reserved<0||!Number.isSafeInteger(usage.operations_reserved)||usage.operations_reserved<0)throw Error('Invalid durable usage ledger');
  // Conservative allowance for HEAD, immutable writes and public verification;
  // not a claim of measured provider billing or transfer usage.
- if(usage.bytes_reserved+bytes>256*1024*1024||usage.operations_reserved+12>900)throw Error('Monthly autonomous allowance circuit breaker');
- usage.bytes_reserved+=bytes;usage.operations_reserved+=12;await fs.mkdir(config.root,{recursive:true,mode:0o700});
- const pending=usageFile+'.tmp';await fs.writeFile(pending,JSON.stringify(usage),{mode:0o600});await fs.rename(pending,usageFile);return usage;
+ if(usage.bytes_reserved+bytes>256*1024*1024||usage.operations_reserved+operations>900)throw Error('Monthly autonomous allowance circuit breaker');
+ usage.bytes_reserved+=bytes;usage.operations_reserved+=operations;await fs.mkdir(config.root,{recursive:true,mode:0o700});
+ await saveUsage(usage);return usage;
 }
 if(process.argv[2]==='quota'){console.log(JSON.stringify(await quota()));process.exit(0);}
 if(process.argv[2]!=='upload')throw Error('Expected quota or upload');
@@ -52,7 +55,7 @@ const quotaEvidence=await quota();
 if(quotaEvidence.size_bytes+data.length>750*1024*1024)throw Error('Insufficient reserved storage');
 const oidcToken=await getVercelOidcToken({project:PROJECT,team:TEAM});const auth={storeId:STORE,oidcToken};
 let existing;try{existing=await head(m.video_url,auth);}catch(error){if(error.constructor?.name!=='BlobNotFoundError')throw error;}
-const usage=await reserve(existing?0:data.length);
+let usage=await reserve(existing?0:data.length);
 if(!existing)await put(pathname,data,{...auth,access:'public',contentType:'video/mp4',addRandomSuffix:false,allowOverwrite:false});
 const remote=await fetch(m.video_url,{redirect:'error',cache:'no-store'});if(!remote.ok||sha(Buffer.from(await remote.arrayBuffer()))!==m.video_sha256)throw Error('Public video hash mismatch');
 // Keep Python's exact number representation (0.0, not JS's 0) so the
@@ -64,15 +67,52 @@ else if(!verified.ok||sha(Buffer.from(await verified.arrayBuffer()))!==manifestH
 const confirmation=await fetch(manifestUrl+'?v='+Date.now(),{redirect:'error',cache:'no-store'});
 if(!confirmation.ok||sha(Buffer.from(await confirmation.arrayBuffer()))!==manifestHash)throw Error('Public manifest hash mismatch');
 const feedUrl=`https://${HOST}/instagram/reels/auto/feed.json`;let old,etag;
-try{const info=await head(feedUrl,auth);etag=info.etag;const response=await fetch(feedUrl+'?v='+Date.now(),{redirect:'error',cache:'no-store'});if(!response.ok)throw Error('Existing feed unavailable');old=authenticated(await response.json());}catch(error){if(error.constructor?.name!=='BlobNotFoundError')throw error;}
+try{etag=(await head(feedUrl,auth)).etag;}catch(error){if(error.constructor?.name!=='BlobNotFoundError')throw error;}
+// Public CDN bodies can lag HEAD, even with unique query strings/no-store.
+// Never combine one revision's bytes with another revision's write ETag.
+if(usage.feed_snapshot){
+ const saved=authenticated(usage.feed_snapshot.feed);
+ if(saved.artifact_type!=='abp_auto_feed_v1'||saved.account!=='avoidboringpeople')throw Error('Wrong feed checkpoint identity');
+ if(etag&&usage.feed_snapshot.etag===etag)old=saved;
+}
+if(!old){
+ // Bootstrap/recover from the origin registry of immutable signed envelopes,
+ // including uploads whose mutable feed entry was lost before this fix.
+ usage=await reserve(0,1);
+ const registry=await list({...auth,prefix:'instagram/reels/auto/manifests/',limit:65});
+ if(registry.hasMore||registry.blobs.length>64)throw Error('Feed registry retention circuit breaker');
+ usage=await reserve(0,registry.blobs.length);
+ const items=[];
+ for(const blob of registry.blobs){
+  const match=/^instagram\/reels\/auto\/manifests\/([a-f0-9]{64})\.json$/.exec(blob.pathname);
+  if(!match||blob.url!==`https://${HOST}/${blob.pathname}`||blob.size>64000)throw Error('Unexpected immutable envelope registry entry');
+  const response=await fetch(blob.url,{redirect:'error',cache:'no-store'});
+  if(!response.ok)throw Error('Registered envelope unavailable');
+  const chunks=[];let size=0;
+  for await(const chunk of response.body){size+=chunk.length;if(size>64000)throw Error('Registered envelope size limit');chunks.push(chunk);}
+  const bytes=Buffer.concat(chunks),text=bytes.toString('utf8');
+  if(sha(bytes)!==match[1])throw Error('Registered envelope hash mismatch');
+  const envelope=JSON.parse(text);
+  // Remove only the signature token, preserving Python canonical 0.0 bytes.
+  const payload=text.replace(`"auto_signature":${JSON.stringify(envelope.auto_signature)},`,'');
+  authenticated(envelope,payload);
+  if(envelope.artifact_type!=='abp_auto_manifest_v1'||envelope.account!=='avoidboringpeople'||envelope.review_status!=='AUTO_ADMITTED'||envelope.trial!==false)throw Error('Wrong registered admission contract');
+  if(items.some(x=>x.concept_id===envelope.concept_id))throw Error('Duplicate immutable concept envelopes');
+  items.push({concept_id:envelope.concept_id,url:blob.url,sha256:match[1]});
+ }
+ old={artifact_type:'abp_auto_feed_v1',account:'avoidboringpeople',items};
+}
 const entries=(old?.items??[]).filter(x=>x.concept_id!==m.concept_id);
 if(old&&(old.artifact_type!=='abp_auto_feed_v1'||old.account!=='avoidboringpeople'))throw Error('Wrong existing feed identity');
 const previous=old?.items?.find(x=>x.concept_id===m.concept_id);
 if(previous&&previous.sha256!==manifestHash)throw Error('Cannot replace an immutable concept envelope');
 entries.push({concept_id:m.concept_id,url:manifestUrl,sha256:manifestHash});
 if(entries.length>64)throw Error('Feed retention circuit breaker; no silent evidence eviction');
-const body={artifact_type:'abp_auto_feed_v1',account:'avoidboringpeople',generated_at:new Date().toISOString(),items:entries,factory:input.factory,storage:quotaEvidence,usage};
+const usageEvidence={bytes_reserved:usage.bytes_reserved,operations_reserved:usage.operations_reserved};
+const body={artifact_type:'abp_auto_feed_v1',account:'avoidboringpeople',generated_at:new Date().toISOString(),items:entries,factory:input.factory,storage:quotaEvidence,usage:usageEvidence};
 const keyPath=process.env.CREDENTIALS_DIRECTORY?path.join(process.env.CREDENTIALS_DIRECTORY,'auto-admission-key'):config.signing_key;
 const key=crypto.createPrivateKey(await fs.readFile(keyPath));const feed={...body,auto_signature:crypto.sign(null,Buffer.from(stable(body)),key).toString('base64')};
-await put('instagram/reels/auto/feed.json',stable(feed),{...auth,access:'public',contentType:'application/json',addRandomSuffix:false,cacheControlMaxAge:60,...(etag?{ifMatch:etag}:{allowOverwrite:false})});
-console.log(JSON.stringify({status:'AUTO_HOSTED',concept_id:m.concept_id,video_url:m.video_url,manifest_url:manifestUrl,manifest_sha256:manifestHash,feed_url:feedUrl,reused:!!existing,storage:quotaEvidence,usage}));
+const committed=await put('instagram/reels/auto/feed.json',stable(feed),{...auth,access:'public',contentType:'application/json',addRandomSuffix:false,cacheControlMaxAge:60,...(etag?{ifMatch:etag}:{allowOverwrite:false})});
+if(!committed.etag)throw Error('Feed write lacks committed ETag');
+await saveUsage({...usage,feed_snapshot:{etag:committed.etag,feed}});
+console.log(JSON.stringify({status:'AUTO_HOSTED',concept_id:m.concept_id,video_url:m.video_url,manifest_url:manifestUrl,manifest_sha256:manifestHash,feed_url:feedUrl,reused:!!existing,storage:quotaEvidence,usage:usageEvidence}));
