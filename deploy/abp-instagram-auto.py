@@ -18,7 +18,9 @@ if (root/'PAUSE').exists():raise SystemExit('ABP local kill switch is active')
 # Forward runtime settings only, never unrelated shell/user-manager credentials.
 allowed=('PATH','HOME','USER','LOGNAME','LANG','LC_ALL','XDG_CACHE_HOME','XDG_CONFIG_HOME',
          'XDG_DATA_HOME','XDG_RUNTIME_DIR','CREDENTIALS_DIRECTORY','CUDA_VISIBLE_DEVICES',
-         'LD_LIBRARY_PATH','PYTORCH_CUDA_ALLOC_CONF','SSL_CERT_FILE','NODE_EXTRA_CA_CERTS')
+         'LD_LIBRARY_PATH','PYTORCH_CUDA_ALLOC_CONF','SSL_CERT_FILE','SSL_CERT_DIR',
+         'REQUESTS_CA_BUNDLE','NODE_EXTRA_CA_CERTS','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY',
+         'NO_PROXY','http_proxy','https_proxy','all_proxy','no_proxy')
 env={k:os.environ[k] for k in allowed if k in os.environ}
 env['GIT_TERMINAL_PROMPT']='0'
 def git(*args):return subprocess.check_output(['git','-c','credential.helper=','-C',str(repo),*args],env=env,text=True).strip()

@@ -5,6 +5,9 @@ automatic admission and routine publication without per-video human approval.
 This is a new `AUTO_ADMITTED` contract, not a fabricated `approved_by` decision.
 The earlier human review/exception workflow remains available and unchanged.
 
+The producer, signed-data promotion, automatic-canary recovery and activation
+boundaries are described in [the lifecycle runbook](instagram-growth-autonomous-lifecycle.md).
+
 ## Factual-quality standard, established before activation
 
 Normal automatic content has one of two proofs:

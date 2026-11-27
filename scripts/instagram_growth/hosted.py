@@ -296,6 +296,7 @@ def reconcile_no_publish(store,concept):
 
 
 def weekly(store):
+    # Fresh account evidence and due age windows precede production advice.
     measure(store)
     report=scorecard.build(store.state,all_manifests(store.state))
     # Keep detailed rows in downloadable artifacts, not repeated in the CAS ledger.

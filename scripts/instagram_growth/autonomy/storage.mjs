@@ -13,7 +13,11 @@ const stable=x=>JSON.stringify(x&&typeof x==='object'&&!Array.isArray(x)?Object.
 const publicKey=await fs.readFile(new URL('./public-key.pem',import.meta.url));
 const config=JSON.parse(await fs.readFile(process.env.ABP_AUTO_CONFIG,'utf8'));
 function api(route){return JSON.parse(execFileSync(config.vercel_cli,['api',route,'--method','GET'],{stdio:['ignore','pipe','pipe'],timeout:45000}).toString());}
-function authenticated(value){const {auto_signature,...body}=value;if(!crypto.verify(null,Buffer.from(stable(body)),publicKey,Buffer.from(auto_signature||'','base64')))throw Error('Untrusted admission signature');return value;}
+function authenticated(value,payload){
+ const {auto_signature,...body}=value;const bytes=payload===undefined?stable(body):payload;
+ if(typeof bytes!=='string'||stable(JSON.parse(bytes))!==stable(body))throw Error('Signed payload differs from manifest');
+ if(!crypto.verify(null,Buffer.from(bytes),publicKey,Buffer.from(auto_signature||'','base64')))throw Error('Untrusted admission signature');return value;
+}
 async function quota(){
  const raw=api(`/v2/teams/${TEAM}`),team=raw.team??raw;
  const data=api(`/storage/stores/${STORE}?teamId=${TEAM}`),store=data.store??data;
@@ -35,7 +39,11 @@ async function reserve(bytes){
 }
 if(process.argv[2]==='quota'){console.log(JSON.stringify(await quota()));process.exit(0);}
 if(process.argv[2]!=='upload')throw Error('Expected quota or upload');
-const input=JSON.parse(await fs.readFile(process.argv[3],'utf8'));const m=authenticated(input.manifest);
+const input=JSON.parse(await fs.readFile(process.argv[3],'utf8'));
+if(typeof input.signing_payload!=='string'||typeof input.manifest_json!=='string')throw Error('Exact Python canonical envelope bytes required');
+const m=authenticated(input.manifest,input.signing_payload);
+const encoded=Buffer.from(input.manifest_json);
+if(stable(JSON.parse(encoded))!==stable(m))throw Error('Canonical envelope differs from admitted manifest');
 if(m.review_status!=='AUTO_ADMITTED'||m.account!=='avoidboringpeople'||m.trial!==false||m.artifact_type!=='abp_auto_manifest_v1')throw Error('Wrong automatic admission contract');
 const data=await fs.readFile(input.local_video);if(data.length>10*1024*1024||sha(data)!==m.video_sha256)throw Error('Media bytes changed');
 const pathname=`instagram/reels/auto/${m.concept_id}/${m.video_sha256}.mp4`;
@@ -47,7 +55,9 @@ let existing;try{existing=await head(m.video_url,auth);}catch(error){if(error.co
 const usage=await reserve(existing?0:data.length);
 if(!existing)await put(pathname,data,{...auth,access:'public',contentType:'video/mp4',addRandomSuffix:false,allowOverwrite:false});
 const remote=await fetch(m.video_url,{redirect:'error',cache:'no-store'});if(!remote.ok||sha(Buffer.from(await remote.arrayBuffer()))!==m.video_sha256)throw Error('Public video hash mismatch');
-const encoded=Buffer.from(stable(m));const manifestHash=sha(encoded),manifestPath=`instagram/reels/auto/manifests/${manifestHash}.json`;
+// Keep Python's exact number representation (0.0, not JS's 0) so the
+// independent Python consumer can reconstruct the original signed bytes.
+const manifestHash=sha(encoded),manifestPath=`instagram/reels/auto/manifests/${manifestHash}.json`;
 const manifestUrl=`https://${HOST}/${manifestPath}`;const verified=await fetch(manifestUrl,{redirect:'error',cache:'no-store'});
 if(verified.status===404){await put(manifestPath,encoded,{...auth,access:'public',contentType:'application/json',addRandomSuffix:false,allowOverwrite:false});}
 else if(!verified.ok||sha(Buffer.from(await verified.arrayBuffer()))!==manifestHash)throw Error('Existing public manifest hash mismatch');

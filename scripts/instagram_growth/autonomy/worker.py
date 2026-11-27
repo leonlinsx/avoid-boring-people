@@ -19,6 +19,14 @@ def write(path, value):
     tmp=path.with_suffix('.tmp');tmp.write_text(json.dumps(value,indent=2)+'\n');tmp.replace(path)
 
 
+def upload_request(manifest,video,factory):
+    # JS JSON.stringify changes Python 0.0 to 0. Preserve exact signed bytes
+    # rather than changing the established signature/canonicalization policy.
+    return {'manifest':manifest,'local_video':str(video),'factory':factory,
+            'signing_payload':policy.canonical(admission.unsigned(manifest)).decode(),
+            'manifest_json':policy.canonical(manifest).decode()}
+
+
 def reserve_render(budget,count,ledger):
     """Reserve before GPU work; failed/crashed work never refunds the cap."""
     if count<1 or budget['rendered']+count>21:raise RuntimeError('weekly render budget exhausted')
@@ -74,6 +82,8 @@ def main():
         for pending in sorted((root/'runs').glob('*/*-upload.json')):
             if args.dry_run:break
             request=json.loads(pending.read_text());m=admission.verify_manifest(request['manifest'])
+            if 'signing_payload' not in request or 'manifest_json' not in request:
+                write(pending,upload_request(m,request['local_video'],request['factory']))
             receipt=root/'uploads'/f'{m["concept_id"]}.json'
             if receipt.exists():continue
             response=subprocess.run(['node','scripts/instagram_growth/autonomy/storage.mjs','upload',str(pending)],check=True,capture_output=True,text=True,timeout=300)
@@ -141,7 +151,7 @@ def main():
                 if args.dry_run:
                     write(root/'admitted'/f'{concept}.json',manifest);admitted.append(concept);continue
                 # Persist recovery intent before local inventory counts the item.
-                write(request,{'manifest':manifest,'local_video':str(video),'factory':factory})
+                write(request,upload_request(manifest,video,factory))
                 write(root/'admitted'/f'{concept}.json',manifest)
                 result=subprocess.run(['node','scripts/instagram_growth/autonomy/storage.mjs','upload',str(request)],check=True,capture_output=True,text=True,timeout=300)
                 receipt=json.loads(result.stdout);write(root/'uploads'/f'{concept}.json',receipt)
@@ -164,7 +174,7 @@ def main():
         if not args.dry_run and not admitted and not failures and local and refresh_due:
             m=json.loads(local[-1].read_text());receipt=json.loads((root/'uploads'/f'{m["concept_id"]}.json').read_text())
             video=root/'heartbeat.mp4';response=requests.get(receipt['video_url'],timeout=60);response.raise_for_status();video.write_bytes(response.content)
-            request=run/'heartbeat.json';write(request,{'manifest':m,'local_video':str(video),'factory':factory})
+            request=run/'heartbeat.json';write(request,upload_request(m,video,factory))
             subprocess.run(['node','scripts/instagram_growth/autonomy/storage.mjs','upload',str(request)],check=True,timeout=300)
             write(root/'heartbeat.json',{'at':datetime.now(timezone.utc).isoformat()})
         print(json.dumps(factory,indent=2),flush=True)
