@@ -148,3 +148,16 @@ def test_personal_account_discovery_credential_is_not_accepted(tmp_path,monkeypa
     result=research.collect(tmp_path,['fixture_creator'],None,now=NOW)
     assert result['status']=='unavailable' and result['receipts']==[]
 
+
+def test_explicit_read_credential_does_not_need_to_enter_child_environment(tmp_path,monkeypatch):
+    monkeypatch.delenv('ABP_RESEARCH_META_TOKEN',raising=False);monkeypatch.delenv('ABP_RESEARCH_META_USER_ID',raising=False)
+    calls=[]
+    def fail(url,**kwargs):
+        calls.append(url)
+        assert 'ABP_RESEARCH_META_TOKEN' not in os.environ
+        assert kwargs['headers']['Authorization']=='Bearer fixture-explicit'
+        raise research.requests.HTTPError('fixture provider unavailable')
+    monkeypatch.setattr(research.requests,'get',fail)
+    result=research.collect(tmp_path,['fixture_creator'],None,now=NOW,token='fixture-explicit',user_id='12345678')
+    assert len(calls)==1 and result['status']=='unavailable'
+
