@@ -10,6 +10,11 @@ MIN_REACH = 100  # Screening floor, not a statistical confidence threshold.
 UNAVAILABLE = ('follows', 'non_follower_reach', 'profile_visits', 'website_sessions', 'newsletter_signups')
 
 
+def window_end(label, published_at):
+    """Existing comparison tolerance, also used to schedule useful reads."""
+    return published_at + queue.WINDOWS[label] + timedelta(hours=24 if label == '7d' else 6)
+
+
 def inventory(manifests, state, now):
     """Validate the existing manifest contract; never count used/renamed bytes."""
     used = state.get('receipts', {})
@@ -112,8 +117,9 @@ def build(state, manifests, now=None):
         for label, target in queue.WINDOWS.items():
             obs = state.get('observations', {}).get(f'{name}-{label}')
             if not obs:
+                gap = state.get('measurement_gaps', {}).get(f'{name}-{label}')
                 pending.append({'concept_id': name, 'window': label,
-                                'status': 'overdue' if now >= queue.instant(receipt['published_at']) + target else 'not_due'})
+                                'status': 'missed' if gap else 'overdue' if now >= queue.instant(receipt['published_at']) + target else 'not_due'})
                 continue
             age = obs.get('actual_age_hours')
             intended = target.total_seconds() / 3600
@@ -148,6 +154,7 @@ def build(state, manifests, now=None):
             'published_this_week': sum(start <= queue.instant(r['published_at']) <= now for r in published.values()),
             'inventory': inventory(manifests, state, now), 'rows': rows, 'equal_target_age_cohorts': cohorts,
             'matched_presentation_pairs':paired_presentations(rows),
+            'measurement_health': state.get('measurement_health', {}),
             'pending_windows': pending, 'failures': failures, 'minimum_reach_per_reel': MIN_REACH,
             'top_hypotheses': ranked[:3] if sufficient else [],
             'underperforming_hypotheses': ranked[-2:] if sufficient else [],
@@ -172,6 +179,8 @@ def markdown(report):
         m = r['metrics']; lines.append(f"| {r['concept_id']} | {r['window']} | {r['actual_age_hours']} | {m['reach']} | {m['views']} | {m['shares']} | {m['saved']} | {m['reels_skip_rate']} | {', '.join(r['missing'])} |")
     for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures')]:
         lines += ['', '## ' + title, '', json.dumps(report[key], indent=2)]
+    measurement = report.get('measurement_health') or {}
+    lines += ['', f"Measurement: {measurement.get('status', 'unavailable')}; {sum(x['status'] == 'missed' for x in report['pending_windows'])} missed age windows; {measurement.get('remaining_due', 'unavailable')} readings still due. Late cumulative readings cannot reconstruct earlier outcomes."]
     return '\n'.join(lines + ['', report['generation_health'], report['aggregation'], report['conclusion'],
                              'Website sessions, newsletter subscriptions and per-Reel follows are unavailable unless independently measured.']) + '\n'
 
