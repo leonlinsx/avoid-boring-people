@@ -56,7 +56,7 @@ def test_render_device_loss_halts_before_another_model_and_survives_restart(tmp_
     monkeypatch.setenv('ABP_AUTO_CONFIG',str(config));monkeypatch.delenv('CREDENTIALS_DIRECTORY',raising=False)
     monkeypatch.setattr(worker.requests,'get',lambda *a,**k:pytest.fail('offline path must not fetch public data'))
     monkeypatch.setattr(worker.scorecard,'load_manifests',lambda *a:[])
-    monkeypatch.setattr(worker,'candidates',lambda *a:(plan,[],{'planned_counts':{'exploration':24,'exploitation':10,'control':6}}))
+    monkeypatch.setattr(worker,'candidates',lambda *a,**kw:(plan,[],{'planned_counts':{'exploration':24,'exploitation':10,'control':6}}))
     render_calls=[];original_query=worker.subprocess.check_output;original_run=worker.subprocess.run
     def query(command,**kwargs):
         if command[0]!='nvidia-smi':return original_query(command,**kwargs)
