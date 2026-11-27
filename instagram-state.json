@@ -3847,53 +3847,62 @@
     "automatic_operations": {
       "operations": {
         "measurement": {
-          "checked_at": "2026-11-27T11:25:50.545191+00:00",
+          "checked_at": "2026-11-27T20:19:13.449129+00:00",
           "consecutive_failures": 0,
           "error": null
         },
         "promotion": {
-          "checked_at": "2026-11-27T16:00:11.569386+00:00",
+          "checked_at": "2026-11-27T22:48:25.243961+00:00",
           "consecutive_failures": 0,
           "error": null
         },
         "publishing": {
-          "checked_at": "2026-11-27T16:01:31.807086+00:00",
+          "checked_at": "2026-11-27T22:50:11.003885+00:00",
           "consecutive_failures": 0,
           "error": null
         }
       },
       "producer": {
         "factory": {
-          "admitted": 2,
+          "admitted": 10,
           "allocation": {
             "control": 6,
             "exploitation": 10,
             "exploration": 24
           },
-          "attempted": 2,
-          "elapsed_seconds": 1.97,
+          "attempted": 10,
+          "completed_at": "2026-11-27T16:38:21.545737+00:00",
+          "elapsed_seconds": 435.76,
           "electricity_cost": "Not metered; unavailable",
-          "eligible_source_units": 1,
-          "exploitation": "Reassigned to exploration without cross-article replication",
+          "eligible_source_units": 22,
+          "exploitation": "Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.",
           "gpu": "RTX 5070 Ti 16GB",
           "gpu_busy_policy": "Never terminate unrelated processes",
-          "head": "12d10d9a0d62ab1c94c6bdb7d2b3b7cf85f0efcf",
+          "growth_context_available": false,
+          "head": "cefca7dfbf00ab743677fcc90666e6b357fc5c71",
+          "inventory_before": 2,
+          "newly_hosted": 12,
+          "offline_verified": null,
           "policy": "ABP-AUTO-OWNED-COMMENTARY-1",
           "quarantined": 0,
+          "recovered_hosted": 2,
+          "remaining_eligible": 34,
           "software_spend_usd": 0,
-          "source_quarantined": 3028,
-          "started_at": "2026-11-27T03:54:19.140041+00:00"
+          "source_quarantined": 3029,
+          "started_at": "2026-11-27T16:31:05.786897+00:00",
+          "status": "healthy",
+          "weekly_render_reservations": 14
         },
-        "feed_generated_at": "2026-11-27T03:54:23.113Z",
+        "feed_generated_at": "2026-11-27T17:10:23.626Z",
         "newly_promoted": 0,
-        "promoted_at": "2026-11-27T16:00:10.020524+00:00",
+        "promoted_at": "2026-11-27T22:48:23.676518+00:00",
         "quarantined": [],
         "storage": {
-          "checked_at": "2026-11-27T03:54:22.004Z",
+          "checked_at": "2026-11-27T17:10:23.011Z",
           "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
-          "objects": 186,
+          "objects": 215,
           "plan": "hobby",
-          "size_bytes": 32515725,
+          "size_bytes": 71362614,
           "status": "active",
           "store": "store_kvEENsOeMZ2J3t8D",
           "team": "team_cilwkczruho74HBIaE1IlQIt",
@@ -3901,22 +3910,22 @@
           "usage_quota_exceeded": false
         },
         "usage": {
-          "bytes_reserved": 5299336,
-          "operations_reserved": 24
+          "bytes_reserved": 38749773,
+          "operations_reserved": 219
         }
       }
     },
     "conclusion": "Observational attention evidence; no causal, statistically validated or per-Reel follower winner.",
-    "created_at": "2026-11-27T16:31:36.986447+00:00",
+    "created_at": "2026-11-27T22:55:57.183384+00:00",
     "failures": [],
     "followers": {
       "attribution": "Account-level only; overlapping posts do not identify per-Reel acquisition.",
       "complete_week_boundary_coverage": false,
       "end": {
         "account": "avoidboringpeople",
-        "captured_at": "2026-11-27T16:31:35.848506+00:00",
+        "captured_at": "2026-11-27T22:55:56.132964+00:00",
         "followers_count": 0,
-        "media_count": 46
+        "media_count": 47
       },
       "end_snapshot_fresh": true,
       "net_new_followers_week": null,
@@ -3930,19 +3939,75 @@
     },
     "generation_health": "Producer telemetry is from its signed feed; see automatic_operations and its timestamps.",
     "inventory": {
-      "approved_unpublished": 0,
-      "days_at_max_cadence": 0.0,
+      "approved_unpublished": 11,
+      "days_at_max_cadence": 3.6666666666666665,
       "invalid_or_duplicate": [],
-      "items": [],
-      "level": "EXHAUSTED",
-      "ready_now": 0,
+      "items": [
+        {
+          "concept_id": "abpa-0500bd48c67929ef0e76b9b7",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:31:02.042176+00:00"
+        },
+        {
+          "concept_id": "abpa-13053090d83866ba1384f645",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:38:17.476347+00:00"
+        },
+        {
+          "concept_id": "abpa-22a8714166833955f6a5740b",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:35:25.554452+00:00"
+        },
+        {
+          "concept_id": "abpa-43fdd2309415b4051e6a937f",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:33:42.499159+00:00"
+        },
+        {
+          "concept_id": "abpa-4758fef16ed35ce8be8f3b72",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:36:54.296018+00:00"
+        },
+        {
+          "concept_id": "abpa-63d43de3e53fe505a692d762",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:36:56.295590+00:00"
+        },
+        {
+          "concept_id": "abpa-755fd763356b77e90d04dc2d",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:32:13.991423+00:00"
+        },
+        {
+          "concept_id": "abpa-87f87c84f34ab44b8987695d",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:35:23.667573+00:00"
+        },
+        {
+          "concept_id": "abpa-98fa23086f06aa209a66cbb8",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:33:40.453793+00:00"
+        },
+        {
+          "concept_id": "abpa-bde585110f8fde134ec04eca",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:32:15.798374+00:00"
+        },
+        {
+          "concept_id": "abpa-dba7c93f770d6f7da2eaa0b2",
+          "ready_now": true,
+          "release_after": "2026-11-27T16:38:19.378459+00:00"
+        }
+      ],
+      "level": "BUFFER_SHORT",
+      "ready_now": 11,
       "target_seven_days": 21
     },
     "low_information": true,
     "matched_presentation_pairs": [],
     "measurement_health": {
       "attempted": 0,
-      "checked_at": "2026-11-27T16:31:35.664268+00:00",
+      "checked_at": "2026-11-27T22:55:55.635014+00:00",
       "failures": [],
       "new_snapshots": 0,
       "remaining_due": 0,
@@ -4009,11 +4074,6 @@
       {
         "concept_id": "abp002-22",
         "status": "not_due",
-        "window": "48h"
-      },
-      {
-        "concept_id": "abp002-22",
-        "status": "not_due",
         "window": "7d"
       },
       {
@@ -4028,6 +4088,21 @@
       },
       {
         "concept_id": "abp002-24",
+        "status": "not_due",
+        "window": "7d"
+      },
+      {
+        "concept_id": "abpa-101484b319c52682a75bfdbe",
+        "status": "not_due",
+        "window": "24h"
+      },
+      {
+        "concept_id": "abpa-101484b319c52682a75bfdbe",
+        "status": "not_due",
+        "window": "48h"
+      },
+      {
+        "concept_id": "abpa-101484b319c52682a75bfdbe",
         "status": "not_due",
         "window": "7d"
       },
@@ -4062,9 +4137,9 @@
         "window": "7d"
       }
     ],
-    "period_start": "2026-11-20T16:31:36.986447+00:00",
-    "published_this_week": 14,
-    "published_total": 14,
+    "period_start": "2026-11-20T22:55:57.183384+00:00",
+    "published_this_week": 15,
+    "published_total": 15,
     "recommendation": "ADJUST",
     "recommendation_reason": "No follower-backed reproducible pattern yet; preserve controls and explore. Owned-site outcomes remain unavailable.",
     "replication_candidates": [],
