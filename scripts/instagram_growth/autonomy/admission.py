@@ -11,7 +11,7 @@ from scripts.instagram_growth.autonomy import policy
 
 PUBLIC_KEY = Path(__file__).with_name('public-key.pem')
 HOST = 'kveensoemz2j3t8d.public.blob.vercel-storage.com'
-RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','autonomy/creative.py','autonomy/research.py','autonomy/research-fixture-public.pem','factory/render.py','factory/audio.py','factory/transcribe.py','factory/gpu_guard.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
+RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','autonomy/creative.py','autonomy/research.py','autonomy/research-fixture-public.pem','factory/render.py','factory/source_typography.py','factory/audio.py','factory/transcribe.py','factory/gpu_guard.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
 # Frozen protected-main V1 releases, still reconstructed without creative fields.
 LEGACY_POLICY_DIGEST='f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd'
 LEGACY_RUNTIME_DIGEST='46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6'
@@ -23,6 +23,9 @@ LEGACY_POLICY=LEGACY_POLICY_DIGEST
 # identically; its signatures cannot authorize a newly introduced structure.
 CREATIVE001_POLICY_DIGEST='fba81ff8aaa32ac7afb23c35a180c4ac34488a01be2c005623763e0e7e3d15eb'
 CREATIVE001_RUNTIME_DIGEST='ba91bd9ea469207d36516576469ee1338090c4c22d46f37f47855fd2c830c9c0'
+# Frozen main #161 compatibility, excluding the new typography contract.
+COMPACT001_POLICY_DIGEST='25bfe22a33820a4f8bcfc452e5926cb1579fcb9403d4f64f47b68a9a8d619ebe'
+COMPACT001_RUNTIME_DIGEST='58ec96c0b3ee0aa536c221f535954c4f46d152de9ac82d2e8574da2f34108038'
 PORTRAIT_SHA='ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb'
 FLASH_REV='74d81686a7bd750b276ec1ade295bc4077c5868a'
 
@@ -86,6 +89,17 @@ def qa_check(item, meta, independent_asr):
     if error>.12:raise policy.Quarantine('independent_asr_mismatch')
     for qualifier in ('not','cannot','unless','if','may','might','could'):
         if b.count(qualifier)<a.count(qualifier):raise policy.Quarantine('independent_asr_qualification_missing')
+    if item.get('visual')=='source_type':
+        from scripts.instagram_growth.factory.source_typography import plan
+        expected=plan(item,meta['captions'],meta['audio']['duration'])
+        actual=meta.get('source_typography',{})
+        panels=actual.get('sentences',[])
+        stripped={'version':actual.get('version'),'sentences':[{k:v for k,v in p.items() if k!='layout'} for p in panels]}
+        if stripped!=expected:raise policy.Quarantine('source_typography_evidence_changed')
+        for panel in panels:
+            layout=panel.get('layout',{});size=layout.get('font_size',0);lines=layout.get('lines',[])
+            if size not in range(38,65,2) or not lines or len(lines)*size*1.2>500 or [w for line in lines for w in line]!=panel['words']:
+                raise policy.Quarantine('source_typography_layout_changed')
     models=meta['audio'].get('model',{})
     if models.get('revision')!='f3ff3571791e39611d31c381e3a41a3af07b4987':raise policy.Quarantine('unverified_voice_model')
     if item['presenter']:
@@ -145,7 +159,10 @@ def verify_manifest(item):
     prior_creative=(admission.get('policy_digest')==CREATIVE001_POLICY_DIGEST
                     and admission.get('runtime_digest')==CREATIVE001_RUNTIME_DIGEST
                     and (not treatment or treatment.get('factor') in ('baseline','audience','hook','caption','research')))
-    compatible=legacy or prior_creative
+    prior_compact=(admission.get('policy_digest')==COMPACT001_POLICY_DIGEST
+                   and admission.get('runtime_digest')==COMPACT001_RUNTIME_DIGEST
+                   and (not treatment or treatment.get('factor') in ('baseline','audience','hook','caption','research','compression')))
+    compatible=legacy or prior_creative or prior_compact
     if not compatible and admission['runtime_digest']!=runtime_digest():raise policy.Quarantine('stale_or_changed_auto_policy')
     if any(admission[k]!=v for k,v in evidence.items() if not (compatible and k=='policy_digest')):raise policy.Quarantine('stale_or_changed_auto_policy')
     for field in ('concept_id','claim_id','pair_id','pair_role','source_file','source_sha256','source_anchor','source_url','voice'):

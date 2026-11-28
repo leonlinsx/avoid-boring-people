@@ -131,3 +131,76 @@ is treated as a replication, a queue obligation or a reason to duplicate content
 
 The strategic review and PR merges are complete. Guarded graphics creative selection now defaults on in the factory while live external research remains separately credential-gated. Missing
 external research credentials affect only that arm, not existing production.
+
+## Native source typography (issue #150; offline pending #160)
+
+`typography` is an additional frozen `ABP-CREATIVE-001` factor, not a new
+renderer or an iart dependency. Both arms compile identical narration, voice,
+scene timing and captions. Control uses `cards`; treatment uses `source_type`.
+Single-sentence paragraphs use the already supported compact narration in both
+arms. The complete source paragraph, attribution and qualifications remain
+unchanged. Reference scripts and presenter experiments are outside this lane.
+
+The native renderer displays **complete source sentences**, never standalone
+comma fragments. All words of the current sentence remain visible while actual
+aligned word times drive emphasis. Context-dependent follow-on sentences (such as “This implies”, “If”, or “But”)
+stay with the preceding sentence rather than losing their antecedent. The next
+independent sentence group appears at its measured start. Type fits in the existing safe area before encoding, with a 38px floor;
+whole sentences that cannot fit or exceed 5.5 spoken words/second fail visibly.
+No estimated rotation clock, missing-condition excerpts, new factual labels,
+model judgment, new assets or inference models are introduced. Existing
+captions, disclosure, audio normalization, encoding and every-frame bounds checks
+remain authoritative. Failure quarantines the candidate; it does not publish a
+control under a treatment identity.
+
+The source/timing plan and readable layout are recorded in the normal media
+manifest and independently checked by admission QA. The new module is included
+in the runtime digest. Exact protected-main #161 admissions retain compatibility
+only for the old factor allowlist; mixing release digests or using those
+signatures for typography is refused.
+
+**Live activation is blocked**, even with a signing key: `require_live_evidence`
+raises `source_type_waiting_for_treatment_identity`. The normal selector does
+not choose this factor. Main lacks #160's versioned treatment identity,
+source-aware reuse spacing and matched visual controls. Do not remove this gate
+by setting a local flag, editing a manifest or relabeling existing videos.
+No timer, production allocation or individual-video approval has been added.
+
+After #160 is ready, a separate verified activation can use the existing
+three-distinct-claims-per-arm cap: three matched source claims, control versus
+source typography, same audio/timing/CTA, balanced existing publication slots,
+60/25/15 allocation, <=3 ordinary Reels per rolling day and >=3h spacing. Existing
+source, rights, duplicate/media, quota, kill switch and GPU safeguards still
+apply. Same-age 24h/48h/7d measurements feed the existing weekly scorecard's
+creative-factor aggregation. Missing metrics remain unavailable; inconclusive
+attention evidence never establishes a follower-growth winner. No live metric
+is claimed by offline rendering or the synthetic scorecard tests.
+
+Re-run focused checks with:
+
+```sh
+python -m pytest tests/test_instagram_source_typography.py -q
+```
+
+HyperFrames remains deferred. The original six-video experiment and pinned
+reproduction package remain local; no HyperFrames/iart runtime dependency is
+part of this change.
+
+The reproducible ten-claim comparison is a CPU-only wrapper around the existing
+renderer, verifier and admission QA. It requires a completed cached audio/ASR
+batch and refuses to synthesize missing narration or create an admission:
+
+```sh
+.tmp/instagram-growth/env/bin/python -m scripts.instagram_growth.factory.typography_benchmark \
+  --cached-batch PATH_TO_COMPLETED_AUDIO_BATCH \
+  --output .tmp/instagram-growth/source-type-comparison
+```
+
+The frozen corpus is `typography_benchmark.CLAIMS`: ten existing owned paragraphs
+across creative ideas, product, decision, city, community and learning. It covers
+negations, uncertainty, long prose and conditional qualifications. Twenty videos
+are rendered (ten per arm) with the same cached waveform in each matched pair.
+A changed/missing source, incomplete audio evidence, mismatched waveform, layout
+failure, failed decode, ASR/qualification failure or other production QA failure
+stops the command. Choose another output directory for a reproducibility run;
+completed outputs are never silently overwritten. Local files remain ignored.
