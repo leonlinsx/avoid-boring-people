@@ -150,6 +150,12 @@
       "captured_at": "2026-11-28T02:57:24.887060+00:00",
       "followers_count": 0,
       "media_count": 47
+    },
+    "20261128T122211Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-28T12:22:11.313915+00:00",
+      "followers_count": 0,
+      "media_count": 48
     }
   },
   "auto_canary_media_id": "18111970808338846",
@@ -3483,7 +3489,7 @@
     "followers_count": 0,
     "media_count": 47
   },
-  "last_measurement_at": "2026-11-28T02:57:24.492928+00:00",
+  "last_measurement_at": "2026-11-28T12:22:11.069699+00:00",
   "last_published_at": "2026-11-28T07:43:29.849854+00:00",
   "last_quota": {
     "limit": 50,
@@ -3496,13 +3502,20 @@
       "detected_at": "2026-11-27T11:25:48.152172+00:00",
       "reason": "age_window_missed",
       "window": "24h"
+    },
+    "abpa-973d2e169e179358776c057a-24h": {
+      "concept_id": "abpa-973d2e169e179358776c057a",
+      "deadline": "2026-11-28T11:02:10.839351+00:00",
+      "detected_at": "2026-11-28T12:22:11.069699+00:00",
+      "reason": "age_window_missed",
+      "window": "24h"
     }
   },
   "measurement_health": {
-    "attempted": 1,
-    "checked_at": "2026-11-28T02:57:24.492928+00:00",
+    "attempted": 0,
+    "checked_at": "2026-11-28T12:22:11.069699+00:00",
     "failures": [],
-    "new_snapshots": 1,
+    "new_snapshots": 0,
     "remaining_due": 0,
     "status": "healthy"
   },
