@@ -146,6 +146,33 @@ def creative_results(rows,manifests,published):
     return result
 
 
+def creative_learning(rows,now=None):
+    """Use one equal-age observation per Reel; diagnoses only order exploration."""
+    from scripts.instagram_growth.autonomy.creative import HYPOTHESES
+    now=now or datetime.now(timezone.utc)
+    factors=['audience','hook','caption','compression']
+    observed=[r for r in rows if r['window']=='24h' and r['timely']
+              and now-timedelta(days=14)<=queue.instant(r['published_at'])<=now
+              and isinstance(r['metrics'].get('reach'),(int,float))]
+    articles={r['source_url'] for r in observed if r.get('source_url')}
+    low_reach=len(observed)>=6 and len(articles)>=3 and all(r['metrics']['reach']<MIN_REACH for r in observed)
+    exposed=[r for r in observed if r['eligible_for_comparison']]
+    skips=[r['metrics'].get('reels_skip_rate') for r in exposed]
+    weak_openings=(len(exposed)>=6 and len({r['source_url'] for r in exposed})>=3
+                   and all(isinstance(v,(int,float)) and 0<=v<=100 for v in skips)
+                   and sum(skips)/len(skips)>=65)
+    priority=['audience','hook','compression','caption'] if low_reach else ['compression','hook','audience','caption'] if weak_openings else factors
+    reason=('Low reach across multiple articles: explore audience positioning and openings; inspect native discoverability after distinct treatments receive exposure.' if low_reach else
+            'High skip across exposed articles: test a nonrepeating payoff and practical question.' if weak_openings else
+            'Insufficient cross-article exposure for a creative diagnosis; balance the preregistered trials.')
+    return {'observation_window':'24h','observed_posts':len(observed),'source_articles':len(articles),
+            'evidence_concepts':[r['concept_id'] for r in observed],
+            'factor_priority':priority,'reason':reason,
+            'hypotheses':[{'factor':f,'test':HYPOTHESES[f]} for f in priority],
+            'effect':'Order ties in bounded exploration only; no growth winner or increased exploitation.',
+            'limitations':'Diagnostic thresholds are not significance tests. Missing, late and repeated-age observations cannot trigger a change.'}
+
+
 def build(state, manifests, now=None):
     now = now or datetime.now(timezone.utc)
     if state.get('account') != pilot.ACCOUNT:
@@ -212,6 +239,7 @@ def build(state, manifests, now=None):
             'inventory': inventory(manifests, state, now), 'rows': rows, 'equal_target_age_cohorts': cohorts,
             'matched_presentation_pairs':paired_presentations(rows),
             'creative_experiments':creative_results(rows,manifests,published),
+            'creative_learning':creative_learning(rows,now),
             'measurement_health': state.get('measurement_health', {}),
             'pending_windows': pending, 'failures': failures, 'minimum_reach_per_reel': MIN_REACH,
             'top_hypotheses': ranked[:3] if sufficient else [],
@@ -238,7 +266,7 @@ def markdown(report):
              '|---|---|---:|---:|---:|---:|---:|---:|---|']
     for r in report['rows']:
         m = r['metrics']; lines.append(f"| {r['concept_id']} | {r['window']} | {r['actual_age_hours']} | {m['reach']} | {m['views']} | {m['shares']} | {m['saved']} | {m['reels_skip_rate']} | {', '.join(r['missing'])} |")
-    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Creative protocol','creative_experiments'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
+    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Creative protocol','creative_experiments'), ('Creative learning','creative_learning'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
         lines += ['', '## ' + title, '', json.dumps(report[key], indent=2)]
     measurement = report.get('measurement_health') or {}
     lines += ['', f"Measurement: {measurement.get('status', 'unavailable')}; {sum(x['status'] == 'missed' for x in report['pending_windows'])} missed age windows; {measurement.get('remaining_due', 'unavailable')} readings still due. Late cumulative readings cannot reconstruct earlier outcomes."]

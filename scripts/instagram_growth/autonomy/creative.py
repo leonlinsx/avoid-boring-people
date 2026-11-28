@@ -10,6 +10,7 @@ HYPOTHESES={
     'hook':'An attributed source statement before its conditions earns more qualified discovery than a diagnostic question before the same type of perspective.',
     'caption':'Inviting the reader to examine the full owned source produces more qualified owned-site outcomes than a reflection prompt.',
     'research':'A verified relative public outlier\'s caption structure informs a useful original source-first treatment more often than the article-first question control.',
+    'compression':'A source payoff, its complete explanation, and a practical question retain attention better than repeating the payoff before reading the paragraph.',
 }
 JOBS={'city':'where to live','friendship':'what to share with a friend','feedback':'how to act on feedback',
       'community':'which community to join','decision':'a choice with competing priorities','process':'the order of a recurring process',
@@ -41,7 +42,7 @@ def apply(item,value):
     audience={'position':position,'intended_viewer':viewer,
               'specific_problem':('An earlier choice may need revisiting: ' if arm and factor=='audience' else 'Competing priorities make it hard to decide: ')+job,
               'promised_payoff':'An attributed perspective on '+job+', retaining the original conditions.'}
-    source_first=bool(arm and factor in ('hook','research'))
+    source_first=bool((arm and factor in ('hook','research')) or (factor=='compression' and not arm))
     if source_first:
         if value['evidence'] and value['evidence']['topic']!=topic:raise policy.Quarantine('research_topic_mismatch')
         first=f"Leon Lin on {topic}: "+item['source_sentences'][0]
@@ -51,11 +52,26 @@ def apply(item,value):
         first=f"Reconsidering {topic}? "+item['scenes'][0]['narration']
         item['scenes'][0].update(narration=first,headline=('RECONSIDERING '+topic+'?').upper())
         item['standalone_context'].update(subject=topic,situation='Reassess an earlier choice about '+job)
+    if factor=='compression' and arm:
+        # Relocate, never paraphrase or omit, source assertions. The verifier
+        # independently rebuilds every beat, including this fixed question.
+        item['scenes']=[
+            {'narration':f"Leon Lin writes on {topic}: "+item['source_sentences'][0],
+             'headline':('A QUESTION ABOUT '+topic).upper(),'detail':'LEON LIN’S PERSPECTIVE'},
+            {'narration':' '.join(item['source_sentences'][1:]) or 'Which condition matters most to you?',
+             'headline':'THE EXPLANATION' if len(item['source_sentences'])>1 else 'EXAMINE THE CONDITIONS',
+             'detail':'KEEP THE ORIGINAL CONDITIONS'},
+            {'narration':'What would change your choice?',
+             'headline':'WHAT WOULD CHANGE YOUR CHOICE?','detail':job.upper()},
+            {'narration':'Follow Avoid Boring People for useful decision questions.',
+             'headline':'ONE USEFUL QUESTION AT A TIME','detail':'FOLLOW AVOID BORING PEOPLE'}]
+        item['graphic_labels']=['YOUR CHOICE',topic.upper(),'WHAT WOULD CHANGE IT?']
+        item['standalone_context'].update(subject=topic,situation='Examine an attributed perspective on '+job)
     strategy='source_question' if factor=='baseline' else 'read_full_context' if factor=='caption' and arm else 'reflection_prompt'
     campaign=None if factor=='baseline' else 'abp_creative001_'+factor+'_'+('treatment' if arm else 'control')
     pair='autopair-'+policy.sha({'base_pair':item['pair_id'],'creative':value})[:20]
     item.update(pair_id=pair,concept_id='abpa-'+policy.sha({'pair':pair,'presenter':item['presenter']})[:24],
-                audience=audience,hook_structure='versioned_reference' if reference else 'attributed_source_first' if source_first else 'diagnostic_question',caption_strategy=strategy,
+                audience=audience,hook_structure='source_payoff_explanation_question' if factor=='compression' and arm else 'versioned_reference' if reference else 'attributed_source_first' if source_first else 'diagnostic_question',caption_strategy=strategy,
                 research_origin='viral_outlier_informed' if factor=='research' and arm else 'article_first_control',
                 research_evidence_id=research.validate_receipt(value['evidence'],now=research.instant(value['evidence']['retrieved_at']))['evidence_id'] if value['evidence'] else None,
                 creative_trial={'protocol':PROTOCOL,'factor':factor,'arm':'treatment' if arm else 'control',
@@ -84,12 +100,25 @@ def caption(item):
     return lead+'\n\nLeon Lin’s perspective: '+source+'\n\n'+disclosure
 
 
-def choose(record,slot,previous,cycle,*,shadow=False):
+def choose(record,slot,previous,cycle,*,shadow=False,review=None):
     baseline={'protocol':PROTOCOL,'factor':'baseline','arm':0,'evidence':None}
     if slot['experiment_bucket']!='exploration':return baseline
+    if len(record.get('source_sentences',[]))==1:
+        compact={'protocol':PROTOCOL,'factor':'compression','arm':1,'evidence':None}
+        if not has_capacity(compact,previous):raise policy.Quarantine('compact_claim_arm_full')
+        return compact
     candidates=research.eligible(cycle,shadow=shadow,now=research.instant(cycle['created_at']) if shadow and cycle.get('mode')=='fixture' else None)
     candidates=[r for r in candidates if r['topic']==record['topic']]
-    factors=['audience','hook','caption']+(['research'] if candidates else [])
+    factors=['audience','hook','caption','compression']+(['research'] if candidates else [])
+    # Weekly diagnostics may order exploratory ties; they never increase arm
+    # caps, manufacture a winner, or bypass allocation/admission.
+    review=review or {}
+    try:
+        age=(datetime.now(timezone.utc)-research.instant(review['created_at'])).total_seconds()
+        priorities=review['creative_learning']['factor_priority'] if -300<=age<=8*86400 else []
+    except (KeyError,TypeError,ValueError):priorities=[]
+    priorities=[f for f in priorities if f in factors]
+    factors=list(dict.fromkeys(priorities+factors))
     counts={(factor,arm):set() for factor in factors for arm in (0,1)}
     blocks={key:set() for key in counts}
     topics={key:set() for key in counts}

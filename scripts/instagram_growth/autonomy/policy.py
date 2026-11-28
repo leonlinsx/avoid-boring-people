@@ -66,7 +66,7 @@ def sentences(text):
     return re.split(r'(?<=[.!?])\s+', text)
 
 
-def source_record(path, anchor, today=None):
+def source_record(path, anchor, today=None, *, allow_single=False):
     path = Path(path)
     if not path.resolve().is_relative_to(Path('src/content/blog').resolve()) or path.suffix not in ('.md','.mdx'):
         raise Quarantine('unowned_source_path')
@@ -89,8 +89,10 @@ def source_record(path, anchor, today=None):
     if RISK.search(paragraph) or REFERENTIAL.search(paragraph) or OPEN_REF.search(paragraph):
         raise Quarantine('risk_or_missing_context')
     units = sentences(paragraph)
-    if len(units)<2 or not paragraph.endswith(('.', '?', '!')):
+    if (len(units)<2 and not allow_single) or not paragraph.endswith(('.', '?', '!')):
         raise Quarantine('incomplete_explanation')
+    if len(units)==1 and re.search(r'(?i)\b(this|that|these|those|stage|theory|finding)\b',paragraph):
+        raise Quarantine('single_claim_needs_surrounding_context')
     # Named current products/people and unexplained acronyms are not a V1 lane.
     for sentence in units:
         capitals=list(re.finditer(r'\b[A-Z][A-Za-z-]*',sentence))
@@ -111,7 +113,8 @@ def source_record(path, anchor, today=None):
 
 
 def compile_script(record, *, hook=0, voice='af_heart', presenter=False, visual='cards', caption_words=5, bucket='exploration', creative=None):
-    source=source_record(record['source_file'],record['source_anchor'])
+    compact=bool(creative and creative.get('factor')=='compression' and creative.get('arm')==1)
+    source=source_record(record['source_file'],record['source_anchor'],allow_single=compact)
     if any(source[k]!=record[k] for k in ('source_sha256','claim_id','topic')):
         raise Quarantine('source_record_changed')
     if hook not in (0,1) or voice not in ('af_heart','af_nicole') or visual not in ('cards','statement') or caption_words not in (3,5):
@@ -142,11 +145,17 @@ def compile_script(record, *, hook=0, voice='af_heart', presenter=False, visual=
 
 
 def verify_script(item):
-    rebuilt=compile_reference(**item['template_parameters']) if item.get('reference_index') is not None else compile_script(source_record(item['source_file'],item['source_anchor']),**item['template_parameters'])
+    rebuilt=compile_reference(**item['template_parameters']) if item.get('reference_index') is not None else compile_script(item,**item['template_parameters'])
     if set(item)!=set(rebuilt):raise Quarantine('unbound_content_fields')
     for key in rebuilt:
         if item.get(key)!=rebuilt.get(key):raise Quarantine('unbound_or_generated_content:'+key)
-    factual=' '.join(x['narration'] for x in item['scenes'][1:3])
+    treatment=item['template_parameters'].get('creative',{})
+    if treatment.get('factor')=='compression' and treatment.get('arm')==1:
+        prefix=f"Leon Lin writes on {item['topic']}: "
+        factual=item['scenes'][0]['narration'].removeprefix(prefix)
+        if len(item['source_sentences'])>1:factual+=' '+item['scenes'][1]['narration']
+    else:
+        factual=' '.join(x['narration'] for x in item['scenes'][1:3])
     if item.get('reference_index') is None and factual!=clean(item['source_anchor']):raise Quarantine('source_qualification_lost')
     standalone(item)
     return {'policy_version':VERSION,'policy_digest':policy_digest(),'claim_id':item['claim_id'],
@@ -184,6 +193,8 @@ def discover():
         for paragraph in pieces[2].split('\n\n'):
             if len(paragraph.split())<15:continue
             try:
-                record=source_record(path,paragraph); item=compile_script(record);verify_script(item);accepted.append(record)
+                record=source_record(path,paragraph,allow_single=True)
+                treatment={'protocol':'ABP-CREATIVE-001','factor':'compression','arm':1,'evidence':None} if len(record['source_sentences'])==1 else None
+                item=compile_script(record,creative=treatment);verify_script(item);accepted.append(record)
             except (Quarantine,ValueError):rejected.append({'source_file':str(path),'paragraph_sha256':sha(paragraph.encode())})
     return accepted,rejected
