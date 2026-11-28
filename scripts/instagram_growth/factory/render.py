@@ -123,6 +123,12 @@ def caption_groups(words,maximum=5):
  return groups
 def render(item,preview=False):
  bounds[:]=[1080,1920,0,0]; name=item['concept_id'];audio=json.loads((O/'audio'/f'{name}.json').read_text());align=json.loads((O/'audio'/f'{name}-REVIEW_ONLY.alignment.json').read_text());dur=audio['duration'];starts=[0]+align['scene_starts'][1:];groups=caption_groups(align['words'],item.get('caption_words',5));frames=[]
+ source_type=None
+ if item.get('visual')=='source_type':
+  import source_typography
+  source_type=source_typography.plan(item,align,dur)
+  measure=lambda value,size:font(size).getlength(value)
+  for panel in source_type['sentences']:panel['layout']=source_typography.layout(panel,measure)
  if item['presenter']:
   source=O/'presenters'/name/'flashhead-pro-native-REVIEW_ONLY.mp4'
   if not source.exists() and not preview:raise FileNotFoundError(source)
@@ -157,7 +163,9 @@ def render(item,preview=False):
    wrap(d,item['scenes'][stage]['detail'],110,1080,54,c=GREEN)
   else:
    wrap(d,item['scenes'][stage]['detail'],110,570,32,c=GREEN)
-   diagram(d,item,stage,elapsed,t)
+   if source_type:
+    source_typography.draw(sys.modules[__name__],d,source_type,t)
+   else:diagram(d,item,stage,elapsed,t)
   cg=next((g for g in groups if g[0]['start']<=t<g[-1]['end']+.06),None)
   if cg:
    # Waveform-aligned phrase captions, with actual active word highlighted.
@@ -189,6 +197,7 @@ def render(item,preview=False):
  proc.stdin.close();assert proc.wait()==0
  scan=json.loads(subprocess.check_output([str(FP),'-v','quiet','-show_format','-show_streams','-of','json',str(p)]));p.with_suffix('.ffprobe.json').write_text(json.dumps(scan,indent=2))
  out={'concept':item,'audio':audio,'captions':align,'caption_groups':groups,'scene_starts':starts,'verified_text_bounds':bounds.copy(),'safe_area_note':'Conservative central region; actual native Instagram overlay unverified until pilot','render_seconds':time.monotonic()-start,'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size,'rights':'Original owned article paraphrase and code-drawn graphics. No article photos, copyrighted clips or music. Lato OFL-1.1; Kokoro Apache-2.0; fictional Z-Image portrait and FlashHead Pro DiT/Wan VAE Apache-2.0. No real person likeness or voice cloning.','quality_review':'technical/source/frame review pending; no human full playback claimed','head':json.loads((O/'briefs.json').read_text())['head'],'ffprobe':scan}
+ if source_type:out['source_typography']=source_type
  if item['presenter']:
   out['presenter']=json.loads((O/'presenters'/name/'flashhead-pro.manifest.json').read_text())
   out['presenter_display_until_seconds']=presenter_end

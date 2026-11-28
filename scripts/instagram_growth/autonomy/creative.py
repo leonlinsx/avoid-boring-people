@@ -5,7 +5,9 @@ from scripts.instagram_growth.autonomy import policy,research
 
 PROTOCOL='ABP-CREATIVE-001'
 MAX_POSTS_PER_ARM=3  # Three distinct claims; graphics only in this protocol.
+# Available for frozen offline trials; live selection awaits #160 identities.
 HYPOTHESES={
+    'typography':'Whole source sentences with word-aligned emphasis improve comprehension and qualified discovery over generic graphics.',
     'audience':'People reassessing an earlier choice respond differently from people making that choice for the first time.',
     'hook':'An attributed source statement before its conditions earns more qualified discovery than a diagnostic question before the same type of perspective.',
     'caption':'Inviting the reader to examine the full owned source produces more qualified owned-site outcomes than a reflection prompt.',
@@ -35,6 +37,7 @@ def apply(item,value):
     value=config(value);factor=value['factor'];arm=value['arm']
     reference=item.get('reference_index') is not None
     if reference and factor!='baseline':raise policy.Quarantine('reference_has_no_new_creative_lane')
+    if factor=='typography' and item['presenter']:raise policy.Quarantine('source_type_graphics_only')
     topic=item.get('topic') or item['standalone_context']['subject']
     job=JOBS.get(topic,'how to think about '+topic)
     position='reassessing_an_earlier_choice' if factor=='audience' and arm else 'making_a_choice'
@@ -52,7 +55,7 @@ def apply(item,value):
         first=f"Reconsidering {topic}? "+item['scenes'][0]['narration']
         item['scenes'][0].update(narration=first,headline=('RECONSIDERING '+topic+'?').upper())
         item['standalone_context'].update(subject=topic,situation='Reassess an earlier choice about '+job)
-    if factor=='compression' and arm:
+    if (factor=='compression' and arm) or (factor=='typography' and len(item['source_sentences'])==1):
         # Relocate, never paraphrase or omit, source assertions. The verifier
         # independently rebuilds every beat, including this fixed question.
         item['scenes']=[
@@ -67,11 +70,13 @@ def apply(item,value):
              'headline':'ONE USEFUL QUESTION AT A TIME','detail':'FOLLOW AVOID BORING PEOPLE'}]
         item['graphic_labels']=['YOUR CHOICE',topic.upper(),'WHAT WOULD CHANGE IT?']
         item['standalone_context'].update(subject=topic,situation='Examine an attributed perspective on '+job)
+    if factor=='typography':
+        item['visual']='source_type' if arm else 'cards'
     strategy='source_question' if factor=='baseline' else 'read_full_context' if factor=='caption' and arm else 'reflection_prompt'
     campaign=None if factor=='baseline' else 'abp_creative001_'+factor+'_'+('treatment' if arm else 'control')
     pair='autopair-'+policy.sha({'base_pair':item['pair_id'],'creative':value})[:20]
     item.update(pair_id=pair,concept_id='abpa-'+policy.sha({'pair':pair,'presenter':item['presenter']})[:24],
-                audience=audience,hook_structure='source_payoff_explanation_question' if factor=='compression' and arm else 'versioned_reference' if reference else 'attributed_source_first' if source_first else 'diagnostic_question',caption_strategy=strategy,
+                audience=audience,hook_structure='source_payoff_explanation_question' if ((factor=='compression' and arm) or (factor=='typography' and len(item['source_sentences'])==1)) else 'versioned_reference' if reference else 'attributed_source_first' if source_first else 'diagnostic_question',caption_strategy=strategy,
                 research_origin='viral_outlier_informed' if factor=='research' and arm else 'article_first_control',
                 research_evidence_id=research.validate_receipt(value['evidence'],now=research.instant(value['evidence']['retrieved_at']))['evidence_id'] if value['evidence'] else None,
                 creative_trial={'protocol':PROTOCOL,'factor':factor,'arm':'treatment' if arm else 'control',
@@ -137,6 +142,10 @@ def choose(record,slot,previous,cycle,*,shadow=False,review=None):
 
 
 def require_live_evidence(item,*,now=None):
+    # The current publisher cannot identify/space reused-claim visual treatments.
+    # Keep offline availability separate from production authorization (#160).
+    if item.get('creative_trial',{}).get('factor')=='typography':
+        raise policy.Quarantine('source_type_waiting_for_treatment_identity')
     value=item.get('template_parameters',{}).get('creative')
     if value and value['evidence']:
         facts=research.validate_receipt(value['evidence'],now=now or datetime.now(timezone.utc))
