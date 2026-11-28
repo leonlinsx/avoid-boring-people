@@ -4827,7 +4827,7 @@
       "created_at": "2026-11-28T07:42:07.649998+00:00",
       "sha256": "d8456d75e4fa200b115b6aa9776007de9f4e462f48eae6e845aca71a9ff1324c",
       "source_url": "https://leonlins.com/writing/write",
-      "status": "container_created",
+      "status": "publish_attempted",
       "trial": false
     },
     "abpa-101484b319c52682a75bfdbe": {
