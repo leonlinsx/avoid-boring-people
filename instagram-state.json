@@ -3479,15 +3479,15 @@
   },
   "last_account": {
     "account": "avoidboringpeople",
-    "captured_at": "2026-11-27T22:48:27.989004+00:00",
+    "captured_at": "2026-11-28T07:42:05.470248+00:00",
     "followers_count": 0,
-    "media_count": 46
+    "media_count": 47
   },
   "last_measurement_at": "2026-11-28T02:57:24.492928+00:00",
   "last_published_at": "2026-11-27T22:50:04.131280+00:00",
   "last_quota": {
     "limit": 50,
-    "usage": 3
+    "usage": 2
   },
   "measurement_gaps": {
     "abp002-24-24h": {
