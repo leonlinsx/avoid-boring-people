@@ -186,7 +186,7 @@ def candidates(state, previous,*,experiments=False,research_cycle=None,shadow=Fa
                     else:
                         kwargs.update(bucket='exploration',creative={'protocol':creative.PROTOCOL,'factor':'baseline','arm':0,'evidence':None})
                 else:
-                    treatment=creative.choose(record,slot,seen,research_cycle or {},shadow=shadow) if kind=='source' else {'protocol':creative.PROTOCOL,'factor':'baseline','arm':0,'evidence':None}
+                    treatment=creative.choose(record,slot,seen,research_cycle or {},shadow=shadow,review=state.get('weekly_review')) if kind=='source' else {'protocol':creative.PROTOCOL,'factor':'baseline','arm':0,'evidence':None}
                     kwargs['creative']=treatment
                     if treatment['factor']!='baseline':kwargs.update(hook=0,voice='af_heart',visual='cards',caption_words=5)
             pair=[policy.compile_script(record,presenter=p,**kwargs) if kind=='source' else policy.compile_reference(record,presenter=p,**kwargs) for p in ((False,) if graphics_only else (False,True))]

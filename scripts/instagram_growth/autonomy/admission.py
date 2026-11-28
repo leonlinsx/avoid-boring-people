@@ -19,6 +19,10 @@ GRAPHICS_RUNTIME_DIGEST='698340531f4a2447010821144b4f8dfc4503752d8dc934d4695d9f5
 LEGACY_RUNTIMES=(LEGACY_RUNTIME_DIGEST,GRAPHICS_RUNTIME_DIGEST)
 LEGACY_RUNTIME=LEGACY_RUNTIME_DIGEST
 LEGACY_POLICY=LEGACY_POLICY_DIGEST
+# Exact protected-main Phase 4 release (#159). Its scripts still reconstruct
+# identically; its signatures cannot authorize a newly introduced structure.
+CREATIVE001_POLICY_DIGEST='fba81ff8aaa32ac7afb23c35a180c4ac34488a01be2c005623763e0e7e3d15eb'
+CREATIVE001_RUNTIME_DIGEST='ba91bd9ea469207d36516576469ee1338090c4c22d46f37f47855fd2c830c9c0'
 PORTRAIT_SHA='ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb'
 FLASH_REV='74d81686a7bd750b276ec1ade295bc4077c5868a'
 
@@ -137,8 +141,13 @@ def verify_manifest(item):
     if item['script']['presenter'] and item['script']['template_parameters'].get('creative'):raise policy.Quarantine('experimental_native_presenter_disabled')
     legacy=(not item['script']['template_parameters'].get('creative') and admission.get('policy_digest')==LEGACY_POLICY_DIGEST
             and admission.get('runtime_digest') in LEGACY_RUNTIMES)
-    if not legacy and admission['runtime_digest']!=runtime_digest():raise policy.Quarantine('stale_or_changed_auto_policy')
-    if any(admission[k]!=v for k,v in evidence.items() if not (legacy and k=='policy_digest')):raise policy.Quarantine('stale_or_changed_auto_policy')
+    treatment=item['script']['template_parameters'].get('creative',{})
+    prior_creative=(admission.get('policy_digest')==CREATIVE001_POLICY_DIGEST
+                    and admission.get('runtime_digest')==CREATIVE001_RUNTIME_DIGEST
+                    and (not treatment or treatment.get('factor') in ('baseline','audience','hook','caption','research')))
+    compatible=legacy or prior_creative
+    if not compatible and admission['runtime_digest']!=runtime_digest():raise policy.Quarantine('stale_or_changed_auto_policy')
+    if any(admission[k]!=v for k,v in evidence.items() if not (compatible and k=='policy_digest')):raise policy.Quarantine('stale_or_changed_auto_policy')
     for field in ('concept_id','claim_id','pair_id','pair_role','source_file','source_sha256','source_anchor','source_url','voice'):
         if item.get(field)!=item['script'][field]:raise policy.Quarantine('manifest_script_disagreement')
     if item['script']['template_parameters'].get('creative'):

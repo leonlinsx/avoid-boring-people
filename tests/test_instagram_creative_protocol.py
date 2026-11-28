@@ -100,7 +100,7 @@ def test_finite_parallel_trials_count_claim_pairs_not_independent_format_posts()
         if c['factor']=='baseline':continue
         counts[c['factor'],c['arm']]=counts.get((c['factor'],c['arm']),0)+1
         previous.append({'claim_id':str(n),'source_url':record['source_url'],'template_parameters':{'creative':c}})
-    assert counts=={(f,arm):3 for f in ('audience','hook','caption') for arm in (0,1)}
+    assert counts=={(f,arm):3 for f in ('audience','hook','caption','compression') for arm in (0,1)}
     assert creative.choose({'topic':'city','source_url':'new'}, {'experiment_bucket':'control'},[],{})==treatment('baseline',0)
     assert not creative.has_capacity(treatment('hook',1),previous)
 
