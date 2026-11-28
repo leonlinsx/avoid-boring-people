@@ -52,7 +52,10 @@ uploads reserve at most 256 MiB and 900 conservative operation allowances per
 calendar month. Each upload attempt reserves twelve operations before any write;
 this is a conservative local allowance, not measured provider billing. A full
 inventory refreshes its signed heartbeat at most daily. The feed has at most 64
-entries; it stops for review rather than silently evicting evidence.
+active entries. [Evidence-preserving retention](instagram-growth-retention.md)
+separates this bounded handoff from immutable Git archives, restores full history
+before decisions, and collects only redundant archive-proven pending indices.
+Original public media and signed envelopes are never deleted.
 
 MP4s and envelope hashes are immutable. The signed feed uses an ETag conditional
 write, and a conflicting writer fails rather than replacing its update. Local

@@ -4,7 +4,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
-from scripts.instagram_growth import reel_pilot as pilot, rolling_queue as queue
+from scripts.instagram_growth import reel_pilot as pilot, rolling_queue as queue, retention
 from scripts.instagram_growth.factory.allocation import production_parameters,plan
 
 MIN_REACH = 100  # Screening floor, not a statistical confidence threshold.
@@ -294,6 +294,7 @@ def build(state, manifests, now=None):
             'matched_presentation_pairs':paired_presentations(rows),
             'creative_experiments':creative_results(rows,manifests,published),
             'creative_learning':creative_learning(rows,now),
+            'retention':retention.health(state,now=now),
             'renewable_creative':renewable_results(rows,manifests,state,now),
             'measurement_health': state.get('measurement_health', {}),
             'pending_windows': pending, 'failures': failures, 'minimum_reach_per_reel': MIN_REACH,
@@ -321,7 +322,7 @@ def markdown(report):
              '|---|---|---:|---:|---:|---:|---:|---:|---|']
     for r in report['rows']:
         m = r['metrics']; lines.append(f"| {r['concept_id']} | {r['window']} | {r['actual_age_hours']} | {m['reach']} | {m['views']} | {m['shares']} | {m['saved']} | {m['reels_skip_rate']} | {', '.join(r['missing'])} |")
-    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Creative protocol','creative_experiments'), ('Renewable creative episodes','renewable_creative'), ('Creative learning','creative_learning'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
+    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Creative protocol','creative_experiments'), ('Renewable creative episodes','renewable_creative'), ('Retention and recovery','retention'), ('Creative learning','creative_learning'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
         lines += ['', '## ' + title, '', json.dumps(report[key], indent=2)]
     measurement = report.get('measurement_health') or {}
     lines += ['', f"Measurement: {measurement.get('status', 'unavailable')}; {sum(x['status'] == 'missed' for x in report['pending_windows'])} missed age windows; {measurement.get('remaining_due', 'unavailable')} readings still due. Late cumulative readings cannot reconstruct earlier outcomes."]

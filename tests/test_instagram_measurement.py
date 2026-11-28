@@ -177,6 +177,7 @@ def test_weekly_cli_through_identity_insights_cas_report_and_next_plan(monkeypat
     from scripts.instagram_growth.factory import allocation
     st, _ = store_with_ages(25)
     ledger = {'state': st.state, 'sha': 'first-sha'}
+    archives = {}
     calls = []
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(h.pilot, 'datetime', h.datetime)
@@ -192,6 +193,15 @@ def test_weekly_cli_through_identity_insights_cas_report_and_next_plan(monkeypat
         query = parse_qs(url.query)
         calls.append((request.method, url.hostname, url.path))
         if url.hostname == 'api.github.com':
+            if '/contents/instagram-archives/' in url.path:
+                if request.method == 'PUT':
+                    body=json.loads(request.body)
+                    assert 'sha' not in body and body['branch']==h.BRANCH
+                    archives[url.path]=body['content'];payload={'content':{'sha':'immutable-archive'}}
+                elif url.path in archives:payload={'content':archives[url.path]}
+                else:
+                    response=h.requests.Response();response.status_code=404;response._content=b'{}';return response
+                response=h.requests.Response();response.status_code=200;response._content=json.dumps(payload).encode();return response
             assert url.path == f'/repos/{h.REPO}/contents/{h.STATE_PATH}'
             if request.method == 'PUT':
                 body = json.loads(request.body)
@@ -224,8 +234,11 @@ def test_weekly_cli_through_identity_insights_cas_report_and_next_plan(monkeypat
     assert report['rows'][0]['metrics']['reach'] == 0
     assert report['rows'][0]['metrics']['follows'] is None
     assert len(ledger['state']['observations']) == 1
-    assert ledger['state']['weekly_review']['created_at'] == NOW.isoformat()
-    plan = allocation.plan(40, ledger['state'])
+    restored,_=h.retention.restore(ledger['state'],lambda ref:base64.b64decode(archives[f'/repos/{h.REPO}/contents/'+ref['path']]))
+    assert restored['weekly_review']['created_at'] == NOW.isoformat()
+    assert 'weekly_review' not in ledger['state'] and archives
+    plan = allocation.plan(40, restored)
     assert plan['planned_counts'] == {'exploration': 24, 'exploitation': 10, 'control': 6}
     assert all(x['experiment_bucket'] != 'exploitation' for x in plan['slots'])
-    assert sum(method == 'PUT' for method, _, _ in calls) == 2
+    assert sum(method == 'PUT' and path.endswith('/'+h.STATE_PATH) for method, _, path in calls) == 2
+    assert sum(method == 'PUT' and '/instagram-archives/' in path for method, _, path in calls) == 1
