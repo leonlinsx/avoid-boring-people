@@ -144,6 +144,12 @@
       "captured_at": "2026-11-28T00:26:09.935395+00:00",
       "followers_count": 0,
       "media_count": 47
+    },
+    "20261128T025724Z": {
+      "account": "avoidboringpeople",
+      "captured_at": "2026-11-28T02:57:24.887060+00:00",
+      "followers_count": 0,
+      "media_count": 47
     }
   },
   "auto_canary_media_id": "18111970808338846",
@@ -3477,7 +3483,7 @@
     "followers_count": 0,
     "media_count": 46
   },
-  "last_measurement_at": "2026-11-28T00:26:09.391291+00:00",
+  "last_measurement_at": "2026-11-28T02:57:24.492928+00:00",
   "last_published_at": "2026-11-27T22:50:04.131280+00:00",
   "last_quota": {
     "limit": 50,
@@ -3493,10 +3499,10 @@
     }
   },
   "measurement_health": {
-    "attempted": 0,
-    "checked_at": "2026-11-28T00:26:09.391291+00:00",
+    "attempted": 1,
+    "checked_at": "2026-11-28T02:57:24.492928+00:00",
     "failures": [],
-    "new_snapshots": 0,
+    "new_snapshots": 1,
     "remaining_due": 0,
     "status": "healthy"
   },
@@ -4159,6 +4165,36 @@
         "views": 3
       },
       "published_at": "2026-11-25T19:57:39.512151+00:00",
+      "window": "48h"
+    },
+    "abp002-24-48h": {
+      "account": "avoidboringpeople",
+      "actual_age_hours": 48.09831275055555,
+      "availability": {
+        "comments": "available",
+        "ig_reels_avg_watch_time": "available",
+        "likes": "available",
+        "reach": "available",
+        "reels_skip_rate": "available",
+        "saved": "available",
+        "shares": "available",
+        "views": "available"
+      },
+      "captured_at": "2026-11-28T02:57:25.158422+00:00",
+      "concept_id": "abp002-24",
+      "media_id": "18118854422117768",
+      "metrics": {
+        "comments": 0,
+        "follows": null,
+        "ig_reels_avg_watch_time": 937,
+        "likes": 0,
+        "reach": 2,
+        "reels_skip_rate": 100,
+        "saved": 0,
+        "shares": 0,
+        "views": 2
+      },
+      "published_at": "2026-11-26T02:51:31.232520+00:00",
       "window": "48h"
     }
   },
