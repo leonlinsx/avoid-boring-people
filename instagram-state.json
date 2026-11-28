@@ -4955,7 +4955,7 @@
           "error": null
         },
         "promotion": {
-          "checked_at": "2026-11-27T23:40:30.566419+00:00",
+          "checked_at": "2026-11-27T23:43:51.257884+00:00",
           "consecutive_failures": 0,
           "error": null
         },
@@ -4967,14 +4967,15 @@
       },
       "producer": {
         "factory": {
-          "admitted": 2,
+          "admitted": 6,
           "allocation": {
             "control": 6,
             "exploitation": 10,
             "exploration": 24
           },
-          "attempted": 2,
-          "elapsed_seconds": 43.55,
+          "attempted": 6,
+          "completed_at": "2026-11-27T23:41:56.393368+00:00",
+          "elapsed_seconds": 135.1,
           "electricity_cost": "Not metered; unavailable",
           "eligible_source_units": 16,
           "exploitation": "Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.",
@@ -4983,23 +4984,30 @@
           "gpu_fault_latched": true,
           "growth_context_available": false,
           "head": "90f37ce8af06507c1921c318ef214f3569244f6d",
+          "inventory_before": 12,
+          "newly_hosted": 6,
+          "offline_verified": null,
           "policy": "ABP-AUTO-OWNED-COMMENTARY-1",
           "production_mode": "graphics_gpu",
           "quarantined": 0,
+          "recovered_hosted": 0,
+          "remaining_eligible": 10,
           "software_spend_usd": 0,
           "source_quarantined": 3032,
-          "started_at": "2026-11-27T23:39:41.289099+00:00"
+          "started_at": "2026-11-27T23:39:41.289099+00:00",
+          "status": "healthy",
+          "weekly_render_reservations": 21
         },
-        "feed_generated_at": "2026-11-27T23:40:26.469Z",
-        "newly_promoted": 2,
-        "promoted_at": "2026-11-27T23:40:28.999058+00:00",
+        "feed_generated_at": "2026-11-27T23:41:57.959Z",
+        "newly_promoted": 4,
+        "promoted_at": "2026-11-27T23:43:48.046784+00:00",
         "quarantined": [],
         "storage": {
-          "checked_at": "2026-11-27T23:40:25.716Z",
+          "checked_at": "2026-11-27T23:41:57.583Z",
           "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
-          "objects": 219,
+          "objects": 227,
           "plan": "hobby",
-          "size_bytes": 73475321,
+          "size_bytes": 78209025,
           "status": "active",
           "store": "store_kvEENsOeMZ2J3t8D",
           "team": "team_cilwkczruho74HBIaE1IlQIt",
@@ -5007,20 +5015,61 @@
           "usage_quota_exceeded": false
         },
         "usage": {
-          "bytes_reserved": 42185576,
-          "operations_reserved": 267
+          "bytes_reserved": 46714518,
+          "operations_reserved": 327
         }
       }
     },
     "conclusion": "Observational attention evidence; no causal, statistically validated or per-Reel follower winner.",
-    "created_at": "2026-11-27T23:41:12.842287+00:00",
+    "created_at": "2026-11-28T00:26:11.610101+00:00",
+    "creative_experiments": [],
+    "creative_learning": {
+      "effect": "Order ties in bounded exploration only; no growth winner or increased exploitation.",
+      "evidence_concepts": [
+        "abp002-01",
+        "abp002-02",
+        "abp002-05",
+        "abp002-07",
+        "abp002-08",
+        "abp002-19-standard"
+      ],
+      "factor_priority": [
+        "audience",
+        "hook",
+        "compression",
+        "caption"
+      ],
+      "hypotheses": [
+        {
+          "factor": "audience",
+          "test": "People reassessing an earlier choice respond differently from people making that choice for the first time."
+        },
+        {
+          "factor": "hook",
+          "test": "An attributed source statement before its conditions earns more qualified discovery than a diagnostic question before the same type of perspective."
+        },
+        {
+          "factor": "compression",
+          "test": "A source payoff, its complete explanation, and a practical question retain attention better than repeating the payoff before reading the paragraph."
+        },
+        {
+          "factor": "caption",
+          "test": "Inviting the reader to examine the full owned source produces more qualified owned-site outcomes than a reflection prompt."
+        }
+      ],
+      "limitations": "Diagnostic thresholds are not significance tests. Missing, late and repeated-age observations cannot trigger a change.",
+      "observation_window": "24h",
+      "observed_posts": 6,
+      "reason": "Low reach across multiple articles: explore audience positioning and openings; inspect native discoverability after distinct treatments receive exposure.",
+      "source_articles": 4
+    },
     "failures": [],
     "followers": {
       "attribution": "Account-level only; overlapping posts do not identify per-Reel acquisition.",
       "complete_week_boundary_coverage": false,
       "end": {
         "account": "avoidboringpeople",
-        "captured_at": "2026-11-27T23:41:11.634819+00:00",
+        "captured_at": "2026-11-28T00:26:09.935395+00:00",
         "followers_count": 0,
         "media_count": 47
       },
@@ -5036,8 +5085,8 @@
     },
     "generation_health": "Producer telemetry is from its signed feed; see automatic_operations and its timestamps.",
     "inventory": {
-      "approved_unpublished": 14,
-      "days_at_max_cadence": 4.666666666666667,
+      "approved_unpublished": 18,
+      "days_at_max_cadence": 6.0,
       "invalid_or_duplicate": [],
       "items": [
         {
@@ -5054,6 +5103,11 @@
           "concept_id": "abpa-22a8714166833955f6a5740b",
           "ready_now": true,
           "release_after": "2026-11-27T16:35:25.554452+00:00"
+        },
+        {
+          "concept_id": "abpa-235a4dde387e71542cede217",
+          "ready_now": true,
+          "release_after": "2026-11-27T23:41:12.283473+00:00"
         },
         {
           "concept_id": "abpa-3d099fa98baa7497804b9669",
@@ -5091,9 +5145,19 @@
           "release_after": "2026-11-27T16:35:23.667573+00:00"
         },
         {
+          "concept_id": "abpa-8ff2f8234a8e87fe4f16cac1",
+          "ready_now": true,
+          "release_after": "2026-11-27T23:41:30.733710+00:00"
+        },
+        {
           "concept_id": "abpa-98fa23086f06aa209a66cbb8",
           "ready_now": true,
           "release_after": "2026-11-27T16:33:40.453793+00:00"
+        },
+        {
+          "concept_id": "abpa-ab6f0a346969817eeb72867a",
+          "ready_now": true,
+          "release_after": "2026-11-27T23:41:54.683781+00:00"
         },
         {
           "concept_id": "abpa-bde585110f8fde134ec04eca",
@@ -5109,17 +5173,22 @@
           "concept_id": "abpa-dba7c93f770d6f7da2eaa0b2",
           "ready_now": true,
           "release_after": "2026-11-27T16:38:19.378459+00:00"
+        },
+        {
+          "concept_id": "abpa-dede15fa18cb35fb6e6d6206",
+          "ready_now": true,
+          "release_after": "2026-11-27T23:40:49.483584+00:00"
         }
       ],
       "level": "BUFFER_SHORT",
-      "ready_now": 14,
+      "ready_now": 18,
       "target_seven_days": 21
     },
     "low_information": true,
     "matched_presentation_pairs": [],
     "measurement_health": {
       "attempted": 0,
-      "checked_at": "2026-11-27T23:41:11.426373+00:00",
+      "checked_at": "2026-11-28T00:26:09.391291+00:00",
       "failures": [],
       "new_snapshots": 0,
       "remaining_due": 0,
@@ -5249,7 +5318,7 @@
         "window": "7d"
       }
     ],
-    "period_start": "2026-11-20T23:41:12.842287+00:00",
+    "period_start": "2026-11-21T00:26:11.610101+00:00",
     "published_this_week": 15,
     "published_total": 15,
     "recommendation": "ADJUST",
