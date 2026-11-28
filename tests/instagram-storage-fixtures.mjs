@@ -31,6 +31,7 @@ async function scenario(name, supplied) {
     await fs.writeFile(input,JSON.stringify({manifest:signed,local_video:video,factory:{status:'healthy'},
       signing_payload:supplied?.signing_payload??stable(m),manifest_json:supplied?.manifest_json??stable(signed)}));
     if(['budget','invalid_budget'].includes(name))await fs.writeFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),JSON.stringify({bytes_reserved:name==='invalid_budget'?-1:0,operations_reserved:900}));
+    if(name==='byte_budget')await fs.writeFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),JSON.stringify({bytes_reserved:256*1024*1024-1,operations_reserved:0}));
     if(name==='recovery_budget')await fs.writeFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),JSON.stringify({bytes_reserved:0,operations_reserved:888}));
     const objects = new Map(), puts = [], lines = [];
     const feedUrl = `https://${host}/instagram/reels/auto/feed.json`;
@@ -84,7 +85,7 @@ async function scenario(name, supplied) {
         requests++;
         return Buffer.from(JSON.stringify(args[1].startsWith('/v2/teams/')
           ?{id:'team_cilwkczruho74HBIaE1IlQIt',billing:{plan:name==='paid'?'pro':'hobby',status:'active'}}
-          :{id:'store_kvEENsOeMZ2J3t8D',ownerId:'team_cilwkczruho74HBIaE1IlQIt',access:'public',status:'available',usageQuotaExceeded:name==='quota',size:10,count:1}));
+          :{id:'store_kvEENsOeMZ2J3t8D',ownerId:'team_cilwkczruho74HBIaE1IlQIt',access:'public',status:'available',usageQuotaExceeded:name==='quota',size:name==='metadata_headroom'?750*1024*1024-media.length-1:10,count:1}));
       }},
       '@vercel/oidc':{getVercelOidcToken:async()=>'disposable-fixture-token'},
       '@vercel/blob':{
@@ -131,7 +132,7 @@ async function scenario(name, supplied) {
       if(supplied?.output)await fs.writeFile(supplied.output,JSON.stringify({feed:objects.get(feedUrl).data.toString(),manifest:objects.get(body.items[0].url).data.toString()}));
     }else{
       await assert.rejects(module.evaluate());assert.equal(lines.length,0);
-      if(['forged','paid','quota','budget','invalid_budget','bytes'].includes(name))assert.equal(puts.length,0);
+      if(['forged','paid','quota','budget','invalid_budget','byte_budget','metadata_headroom','bytes'].includes(name))assert.equal(puts.length,0);
       else if(!['cas','checkpoint_crash'].includes(name))assert.ok(puts.every(row=>row.url!==feedUrl),`${name}: failure must preserve the previous feed`);
       if(name==='checkpoint_crash'){
         assert.equal(JSON.parse(objects.get(feedUrl).data).items.length,1);
@@ -142,6 +143,6 @@ async function scenario(name, supplied) {
     }
   }finally{await fs.rm(root,{recursive:true,force:true});}
 }
-for(const name of ['valid','forged','paid','quota','budget','invalid_budget','bytes','cas','stale_feed','checkpoint','stale_checkpoint','checkpoint_tamper','registry_forged','registry_hash','registry_duplicate','registry_overflow','recovery_budget','checkpoint_crash'])await scenario(name);
+for(const name of ['valid','forged','paid','quota','budget','invalid_budget','byte_budget','metadata_headroom','bytes','cas','stale_feed','checkpoint','stale_checkpoint','checkpoint_tamper','registry_forged','registry_hash','registry_duplicate','registry_overflow','recovery_budget','checkpoint_crash'])await scenario(name);
 if(process.argv[2])await scenario('valid',JSON.parse(await fs.readFile(process.argv[2],'utf8')));
 console.log('PASS: signed upload, immutable bytes, no-paid/budget gates and CAS conflict; provider I/O faked');
