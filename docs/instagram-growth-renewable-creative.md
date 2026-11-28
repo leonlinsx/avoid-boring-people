@@ -15,7 +15,7 @@ source paragraph, qualifications, sentence order and attribution must reconstruc
 exactly; creative freedom never authorizes paraphrased factual assertions.
 
 Each V2 script freezes a `treatment_id`, `creative_spec_hash`, presentation
-signature, audience and episode. Its specification describes three currently
+signature, audience and episode. Its specification describes the following
 supported substantive levers:
 
 | Primary variable | Control | Treatment |
@@ -23,6 +23,7 @@ supported substantive levers:
 | Narrative compression | Diagnostic question, then the complete explanation | Attributed source payoff and complete explanation, then an application question; no repeated payoff |
 | Source typography | Existing graphics | Complete sentence groups with actual word-aligned emphasis and independently checked readable layout |
 | Viewer decision stage | Making a choice | Reassessing an earlier choice, with an explicit retrospective opening or application question |
+| Spoken application task | Request a follow | Ask the viewer to name a condition where the perspective is less useful; factual narration stays identical |
 
 Only one variable changes across an episode's frozen control and treatment.
 Voice (existing Kokoro Heart), caption segmentation, caption policy, production
@@ -50,6 +51,11 @@ it is not another numbered copy of a completed arm. Earlier control observations
 may support another contrast, retaining their original publication and measurement
 receipts. They are not generated again or counted as independent replications.
 
+The application task is an additional contrast over each existing context, not
+a new Cartesian axis that changes historical specifications or controls. Its
+identity adds `application=condition_check` only to the treatment. Existing
+controls retain their original presentation signatures and observations.
+
 Each arm reserves at most three distinct claims per topic/specification. Once
 both arms fill, or fourteen days pass after the episode's first publication,
 selection automatically considers another unused supported contrast. Incomplete
@@ -60,9 +66,9 @@ exploitation returns to exploration. Account follower change is not per-Reel
 attribution. Qualified site outcomes remain unavailable until actually measured.
 
 The supported useful space is **bounded**, not an assertion of infinitely useful
-permutations. There are at most eight substantial presentation signatures per
+permutations. There are at most sixteen substantial presentation signatures per
 eligible multi-sentence claim (fewer for single-sentence claims), and at most
-twelve single-variable contrasts per topic. Different contexts create successive
+twenty single-variable contrasts per topic. Different contexts create successive
 episodes automatically. Exhausted signatures never reset when time passes.
 When useful supply is saturated, produce fewer posts and report it; adding a
 new independently verified creative lever would be exception maintenance.
@@ -74,15 +80,20 @@ most three claim exposures in 28 days, three article exposures in seven days
 and five topic exposures in seven days. At admission, unpublished inventory
 occupies a repetition reservation until it publishes; missing dates never imply
 old age. At publication, actual published/ambiguous receipts determine exposure.
-Queue limits remain at most three ordinary Reels per rolling 24 hours and at
-least three hours apart. Historical signed assets are preserved unchanged.
+The planner additionally waits ten days between published claim uses, to
+spread three allowed exposures across the 28-day window rather than consuming
+them in three consecutive weeks and then stopping for a week. This does not
+postpone already admitted inventory or change the seven-day admission /
+publication contract. Queue limits remain at most three ordinary Reels per
+rolling 24 hours and at least three hours apart. Historical signed assets are preserved unchanged.
 
 Failed QA concepts are skipped during subsequent treatment selection. Media
 recovery still reuses immutable completed artifacts without rerendering. PAUSE,
 GPU faults, disabled production, unavailable device handling, 21 weekly render
 reservations (failures never refund them), 40 attempts, wall-clock bounds and all
 storage quotas remain authoritative. This change does not reset any ledger.
-The existing 64-envelope feed/storage circuit can still require intervention;
+The #165 retention path bounds active media/feed storage while preserving
+immutable historical evidence. All storage circuits remain authoritative;
 evidence is never evicted silently to simulate perpetual availability.
 
 Hourly publication/measurement, the existing local timer and Monday 07:25 UTC
@@ -127,3 +138,10 @@ no extra post is forced. Issue #160 must remain open until a real reused-claim
 V2 generation → admission → queue → normal publication → measurement receipt
 is verified after resources and repetition windows permit it. A synthetic
 simulation or a single new candidate is not that production closeout.
+
+The [November 28 focused audit](instagram-growth-opportunity-audit.md) records
+editorial ranking, the additional relationship paragraph, the spoken-task CPU
+media checks, current typography eligibility, deferred research routing and
+operational blockers. Protected-main V2 vectors reconstruct unchanged; the 21 actual signed V1
+inventory records still verify. Historical digest pairs cannot authorize the
+new spoken task or new source topic. No production render reservation was reset for verification.

@@ -151,6 +151,16 @@ def test_finite_archive_continues_across_eight_weekly_budgets_then_saturates(mon
                        'template_parameters': {'creative': {'protocol': r.PROTOCOL, 'factor': 'compression', 'arm': int(structure=='payoff'),
                          'evidence': None, 'control': {'structure': 'question', 'layout': layout, 'audience': audience}}}}
         all_specs.append(fake)
+    pending=r.options(sample, all_specs, {}, now=NOW+timedelta(days=365))
+    assert pending and all(c['factor']=='reflection' and c['arm']==1 for c in pending)
+    # The old execution space is exhausted; only the new spoken task remains.
+    # Exhaust that separately, then advancing the clock still cannot reopen it.
+    for old in list(all_specs):
+        fake=copy.deepcopy(old)
+        spec=r.signature(old)
+        fake['script']['template_parameters']['creative']={
+            'protocol':r.PROTOCOL,'factor':'reflection','arm':1,'evidence':None,'control':spec}
+        all_specs.append(fake)
     assert not r.options(sample, all_specs, {}, now=NOW+timedelta(days=365))
 
 

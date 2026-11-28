@@ -29,6 +29,11 @@ COMPACT001_RUNTIME_DIGEST='58ec96c0b3ee0aa536c221f535954c4f46d152de9ac82d2e8574d
 # Exact protected-main #162; its live contract excluded native typography.
 TYPE001_POLICY_DIGEST='7cc6e5ad7fa9826e03a168601e0a9fff02b3e15ef11e4839948e71523b00347f'
 TYPE001_RUNTIME_DIGEST='15e5bf493c3abe9e65bbd1b07f6009b0664928034594afb8d6d04576fb22d25c'
+# Protected main #163/#165. Old V2 scripts reconstruct byte-for-byte; this
+# compatibility pair cannot authorize the new spoken reflection treatment.
+RENEWAL002_POLICY_DIGEST='a18aecd4607230152ddf1e716a142d6d3df8cac021eaddf06c9c4bb6366589e0'
+RENEWAL002_RUNTIME_DIGEST='c2ead784b68c25096c76d886672cae517da65de6820853d6138b573ccc3a0887'
+HISTORICAL_OWNED_TOPICS=('city','friendship','feedback','community','decision','process','creative ideas','learning','product')
 PORTRAIT_SHA='ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb'
 FLASH_REV='74d81686a7bd750b276ec1ade295bc4077c5868a'
 
@@ -142,7 +147,7 @@ def admit(item, meta, independent_asr, key):
                                   'fictional_portrait_sha256':PORTRAIT_SHA if item['presenter'] else None,
                                   'rights':'Kokoro Apache2; Lato OFL1.1; original graphics; fictional portrait; FlashHead Pro DiT/WanVAE Apache2; no external clips/music'},
               'voice':item['voice'],'duration_seconds':quality['duration_seconds'],'creative_format':'presenter_then_graphics' if item['presenter'] else 'narrated_motion_graphics',
-              'visual_style':item['visual'],'cta_type':'follow','experiment_hypothesis':item['experiment_hypothesis'],
+              'visual_style':item['visual'],'cta_type':item.get('cta_type','follow'),'experiment_hypothesis':item['experiment_hypothesis'],
               'experiment_bucket':item['experiment_bucket'],'pair_id':item['pair_id'],'pair_role':item['pair_role'],'claim_id':item['claim_id']}
     if item['template_parameters'].get('creative'):
         manifest.update({k:item[k] for k in ('audience','hook_structure','caption_strategy','creative_trial','research_origin','research_evidence_id')})
@@ -171,6 +176,15 @@ def verify_manifest(item):
                 and admission.get('runtime_digest')==TYPE001_RUNTIME_DIGEST
                 and (not treatment or treatment.get('factor') in ('baseline','audience','hook','caption','research','compression')))
     compatible=(legacy or prior_creative or prior_compact or prior_type) and treatment.get('protocol') in (None,'ABP-CREATIVE-001')
+    prior_renewal=(admission.get('policy_digest')==RENEWAL002_POLICY_DIGEST
+                   and admission.get('runtime_digest')==RENEWAL002_RUNTIME_DIGEST
+                   and treatment.get('protocol')=='ABP-CREATIVE-002'
+                   and treatment.get('factor') in ('compression','typography','audience'))
+    compatible=compatible or prior_renewal
+    # A newly admitted source topic must not borrow any historical release's
+    # authorization just because its old presentation fields reconstruct.
+    compatible=compatible and (item['script'].get('reference_index') is not None
+                               or item['script'].get('topic') in HISTORICAL_OWNED_TOPICS)
     if not compatible and admission['runtime_digest']!=runtime_digest():raise policy.Quarantine('stale_or_changed_auto_policy')
     if any(admission[k]!=v for k,v in evidence.items() if not (compatible and k=='policy_digest')):raise policy.Quarantine('stale_or_changed_auto_policy')
     for field in ('concept_id','claim_id','pair_id','pair_role','source_file','source_sha256','source_anchor','source_url','voice'):
@@ -184,6 +198,7 @@ def verify_manifest(item):
     if 'treatment_id' in item['script']:
         for field in ('source_claim_id','treatment_id','creative_spec_hash','presentation_signature'):
             if item.get(field)!=item['script'][field]:raise policy.Quarantine('manifest_treatment_disagreement')
+        if item.get('cta_type')!=item['script']['cta_type']:raise policy.Quarantine('manifest_cta_disagreement')
     if admission['quality']['status']!='PASS' or item['account']!='avoidboringpeople':raise policy.Quarantine('qa_or_identity_failure')
     expected=f'https://{HOST}/instagram/reels/auto/{item["concept_id"]}/{item["video_sha256"]}.mp4'
     if item['video_url']!=expected:raise policy.Quarantine('unowned_auto_video_url')

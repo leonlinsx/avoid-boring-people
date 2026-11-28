@@ -164,11 +164,15 @@ def renewable_candidates(state,previous,*,now=None,rejected=(),claim_ids=None):
     now=now or datetime.now(timezone.utc)
     records,quarantined=policy.discover();slots=allocation.plan(40,state,now=now)
     if claim_ids is not None:records=[r for r in records if r['claim_id'] in claim_ids]
-    records.sort(key=lambda r:(sum(renewal.script(m).get('source_file')==r['source_file'] for m in previous),
-                               sum(renewal.script(m).get('topic')==r['topic'] for m in previous),r['source_file'],r['claim_id']))
+    from scripts.instagram_growth.autonomy import editorial
+    records=editorial.order(records,previous)
     seen=list(previous);result=[]
     for n,record in enumerate(records):
         slot=slots['slots'][n%len(slots['slots'])];bucket=slot['experiment_bucket']
+        try:renewal.planning_spacing(record,seen,state,now=now)
+        except policy.Quarantine as error:
+            quarantined.append({'candidate':record['claim_id'],'reason':str(error)})
+            continue
         choices=renewal.options(record,seen,state,now=now)
         if bucket=='control':
             baseline={'structure':'payoff' if len(record['source_sentences'])==1 else 'question',
@@ -320,6 +324,7 @@ def main():
                  'exploitation':'Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.',
                  'software_spend_usd':0,'electricity_cost':'Not metered; unavailable','gpu':'RTX 5070 Ti 16GB','gpu_busy_policy':'Never terminate unrelated processes'}
         if experimental:
+            from scripts.instagram_growth.autonomy import editorial
             factory['creative_protocol']=renewal.PROTOCOL if graphics and not args.creative_shadow else creative.PROTOCOL
             old_claims={m['claim_id'] for m in prior.values() if m.get('claim_id')}
             factory['creative_supply']={'new_claims':sum(i['claim_id'] not in old_claims for i in plan),
@@ -328,6 +333,11 @@ def main():
                                         'eligible_episodes':sorted({i['creative_trial']['episode_id'] for i in plan if i.get('creative_trial',{}).get('episode_id')}),
                                         'rejection_reasons':{reason:sum(q.get('reason')==reason for q in quarantined) for reason in sorted({q['reason'] for q in quarantined if 'reason' in q})},
                                         'renewal':'History-derived single-variable episodes; saturation reduces cadence; no automatic replay.'}
+            if graphics and not args.creative_shadow:
+                factory['creative_supply']['editorial']={
+                    'version':editorial.VERSION,
+                    'ordered_candidates':[{'claim_id':i['claim_id'],**editorial.evaluate(i)} for i in plan],
+                    'policy':'Article/topic rotation first; heuristic merit breaks ties; factual admission unchanged.'}
             factory['research']={'status':cycle.get('status','fixture' if args.creative_shadow else 'disabled'),'cost_usd':cycle.get('cost_usd',0),
                                  'calls':cycle.get('calls',0),'receipts':len(cycle.get('receipts',[])),
                                  'actual_live_eligible':len(research.eligible(cycle)),'reason':cycle.get('reason'),

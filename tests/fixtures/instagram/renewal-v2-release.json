@@ -1,0 +1,367 @@
+{
+  "base_head": "0028c2f",
+  "policy_digest": "a18aecd4607230152ddf1e716a142d6d3df8cac021eaddf06c9c4bb6366589e0",
+  "runtime_digest": "c2ead784b68c25096c76d886672cae517da65de6820853d6138b573ccc3a0887",
+  "vectors": [
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "553bd73df6648d0a60bf109e3fbe8785cf08c597d9fbe192cb37d48bec224f80"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "ce9ed634dde48652336528ea2798491110172edc1d2eba862d8c23d2b63799db"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "7331f9f74291d73222f47c86678a29afea19c9e0cf7609fa7f5c914dc0d75844"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "6fabe30212c72e1e251f31bd23bab2747e9b029193329cae891498d6a659b30b"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "5f9333b720c07ac08148d6ded18b534583bff1645a4d754d6466443e1bcb6548"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "15c33a4e1e244f339f120162147d73372968766e3445809d47b47e94ca78b5f8"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "cc497f799bb82f304663c1e5c4f9697a16a937cb038fa634679851b4cb9a54b5"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "bcf8b0cb643a44d0a61d5ca30d2bbf903876a5b06c6729e0a20665b359af97d4"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "02f9e5a4643734a299d055ca7d09942930c162810ac110d108a89ccbf11fc7e3"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "cards",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "37621b5d10171c7566f008d5e2e5331904852c87a3322af573e71c538c3ede2f"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "source_type",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "2e23c6442e3c93f0c5be51e1c1dac37c1d5791d234d662cab27091cac8281571"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "source_type",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "aacfe16be57c8a0260cd3772757556105700537fd3d29e0dcb12f8f8e7b0981d"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "source_type",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "709c020b1f5ee0270ae41d927a82faf88c11359904456dd138bcb9b07ca0d93c"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "source_type",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "3c1b2de7d000c69c441838967bf06d6f4f787304b734532db062c648ed96bf08"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "source_type",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "b40b552d7ca1c6b962dccb8af8864d6dd72b94936b41830c5c087b9b9c45f3d2"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "compression",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "question",
+          "layout": "source_type",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "3e30d8f9c9c11fe6a3c5e1bc1b6c87588c8a60f2fa30f245ee2eb2bd23acd4e3"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "4cc8539870d44878357e7cf1fa9670e3c275871eee26ee56069a040ffb3fb094"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "2b568cd879b94f3d1bb6d3ea98a1b16172ba7093c1b397f19b493dd8aebba4bd"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "abea8cbf9492fd9563657f1af64825c5fabd8cde5d1ee800210c70d4c38f6e93"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "cards",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "54cefbbf786e7d327c31732c3e15f9bf29bd930604ca8b53c6de203467279a6d"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "cards",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "4832c1ce5afde04218daa1d773d6a72f1268aa9b782a705f59dd2f8cc338ed72"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "typography",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "cards",
+          "audience": "reassessing_an_earlier_choice"
+        }
+      },
+      "script_sha256": "d248ad2530323446dc2263899d9339d3521f84061bbb6a60c4789b3f5a3335dd"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 0,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "source_type",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "bde17e6456f2a8cbebbe048cc83efa3e780be4c7954645cf3880070e7adb849c"
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "config": {
+        "protocol": "ABP-CREATIVE-002",
+        "factor": "audience",
+        "arm": 1,
+        "evidence": null,
+        "control": {
+          "structure": "payoff",
+          "layout": "source_type",
+          "audience": "making_a_choice"
+        }
+      },
+      "script_sha256": "42e128111e7008dce2c7e03c4eb404a62bd62c7e0b8144a49400d3c441af67d5"
+    }
+  ]
+}
