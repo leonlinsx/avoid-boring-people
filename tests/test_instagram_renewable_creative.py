@@ -130,6 +130,16 @@ def test_finite_archive_continues_across_eight_weekly_budgets_then_saturates(mon
     assert len({m['claim_id'] for m in history}) <= len(records)
     assert len(history) > 4*len(records)
     assert snapshots[0] < snapshots[-1] and len(snapshots[-1]) > 20
+    episodes = scorecard.renewable_results([],history,state,now)['episodes']
+    completed = [ep for ep in episodes if ep['status']=='arm_complete']
+    assert completed
+    first_completion = min(max(r.instant(p['published_at']) for arm in ep['arms'].values()
+                               for p in arm['publication_receipts']) for ep in completed)
+    episode_starts = {}
+    for m in history:
+        eid=m['creative_trial']['episode_id'];when=r.instant(state['receipts'][m['concept_id']]['published_at'])
+        episode_starts[eid]=min(when,episode_starts.get(eid,when))
+    assert any(when>first_completion for when in episode_starts.values())
     executions = [(m['claim_id'], policy.sha(r.signature(m))) for m in history]
     assert len(set(executions)) == len(executions)
     # Inventing an episode ID/advancing time never reopens an exhausted spec.
