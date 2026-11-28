@@ -44,7 +44,7 @@ if not checkout.exists():
     git('worktree','add','--detach',str(checkout),head)
 if not (checkout/'node_modules').exists():(checkout/'node_modules').symlink_to(repo/'node_modules',target_is_directory=True)
 env.update(ABP_AUTO_CONFIG=str(config_path),ABP_GPU_ROOT=str(repo/'.tmp/instagram-growth'))
-if config.get('creative_experiments') and config.get('research_enabled') and config.get('research_meta_credential_file'):
+if config.get('creative_experiments', True) and config.get('research_enabled') and config.get('research_meta_credential_file'):
     credential=Path(config['research_meta_credential_file'])
     if not credential.is_absolute() or credential.stat().st_mode&0o077:raise SystemExit('Research credential must be an owner-only absolute file')
     secret=json.loads(credential.read_text())

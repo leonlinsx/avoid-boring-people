@@ -239,7 +239,9 @@ def main():
         if not (args.canary or args.dry_run) and not state.get('auto_canary_verified'):raise RuntimeError('automatic canary not verified')
         recovered=[] if args.dry_run else recover(root,key,budget,ledger,args.limit,graphics=graphics)
         cycle={}
-        experimental=bool(config.get('creative_experiments') or args.creative_shadow) and not args.canary
+        # Owner-authorized creative trials run by default in existing guarded graphics mode.
+        # An explicit local false is still an operator opt-out; research remains separately gated.
+        experimental=bool(config.get('creative_experiments',True) or args.creative_shadow) and not args.canary
         if args.creative_shadow:cycle=research.fixture()
         elif experimental and config.get('research_enabled'):cycle=research.collect(root,config.get('research_creators',[]),key,token=research_token,user_id=research_user)
         existing=scorecard.load_manifests('scripts/instagram_growth/approved')+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
