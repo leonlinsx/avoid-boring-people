@@ -20,7 +20,8 @@ The narrow additional source lane accepts a complete one-sentence paragraph,
 never an excerpt cut from a longer paragraph. Existing word, rights, publication,
 entity, numeric, sensitive-domain and missing-context exclusions still apply.
 Single claims additionally reject deictic references and unexplained stages,
-theories or findings. Only the compact treatment can compile this lane. It
+theories or findings, and require an explicit reason, contrast or condition
+rather than a descriptive setup alone. Only the compact treatment can compile this lane. It
 retains its three-distinct-claims arm ceiling; source shortage never expands it.
 
 The consumer reconstructs the script from the owned article independently of the

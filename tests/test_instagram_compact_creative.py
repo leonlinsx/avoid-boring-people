@@ -41,6 +41,9 @@ def test_single_claim_requires_whole_owned_paragraph_and_compact_lane(tmp_path,m
     path,paragraph=single_source(tmp_path,monkeypatch,'Learning a skill may require practice, but the conditions of that practice could change how you approach it.')
     # Deictic references are deliberately conservative in the narrower lane.
     with pytest.raises(policy.Quarantine):policy.source_record(path,paragraph,allow_single=True)
+    path,paragraph=single_source(tmp_path,monkeypatch,'A beginner, starry eyed and bushy tailed, will come looking for advice on how to get started in a subject.')
+    with pytest.raises(policy.Quarantine,match='no_reason_or_condition'):
+        policy.source_record(path,paragraph,allow_single=True)
     paragraph='Learning a skill may require practice, but careful reflection could change how you approach learning.'
     path,paragraph=single_source(tmp_path,monkeypatch,paragraph)
     record=policy.source_record(path,paragraph,allow_single=True)

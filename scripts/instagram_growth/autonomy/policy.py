@@ -93,6 +93,8 @@ def source_record(path, anchor, today=None, *, allow_single=False):
         raise Quarantine('incomplete_explanation')
     if len(units)==1 and re.search(r'(?i)\b(this|that|these|those|stage|theory|finding)\b',paragraph):
         raise Quarantine('single_claim_needs_surrounding_context')
+    if len(units)==1 and not re.search(r'(?i)\b(but|though|because|which|if|may|might|could|likelihood)\b',paragraph):
+        raise Quarantine('single_claim_has_no_reason_or_condition')
     # Named current products/people and unexplained acronyms are not a V1 lane.
     for sentence in units:
         capitals=list(re.finditer(r'\b[A-Z][A-Za-z-]*',sentence))
