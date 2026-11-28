@@ -4823,10 +4823,11 @@
     "abpa-0500bd48c67929ef0e76b9b7": {
       "ai_generated": true,
       "concept_id": "abpa-0500bd48c67929ef0e76b9b7",
+      "container_id": "18137580322753300",
       "created_at": "2026-11-28T07:42:07.649998+00:00",
       "sha256": "d8456d75e4fa200b115b6aa9776007de9f4e462f48eae6e845aca71a9ff1324c",
       "source_url": "https://leonlins.com/writing/write",
-      "status": "reserved",
+      "status": "container_created",
       "trial": false
     },
     "abpa-101484b319c52682a75bfdbe": {
