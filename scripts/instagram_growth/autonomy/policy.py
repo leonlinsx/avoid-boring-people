@@ -115,7 +115,8 @@ def source_record(path, anchor, today=None, *, allow_single=False):
 
 
 def compile_script(record, *, hook=0, voice='af_heart', presenter=False, visual='cards', caption_words=5, bucket='exploration', creative=None):
-    compact=bool(creative and ((creative.get('factor')=='compression' and creative.get('arm')==1) or creative.get('factor')=='typography'))
+    from scripts.instagram_growth.autonomy import renewal
+    compact=renewal.compact(creative) if creative and creative.get('protocol')==renewal.PROTOCOL else bool(creative and ((creative.get('factor')=='compression' and creative.get('arm')==1) or creative.get('factor')=='typography'))
     source=source_record(record['source_file'],record['source_anchor'],allow_single=compact)
     if any(source[k]!=record[k] for k in ('source_sha256','claim_id','topic')):
         raise Quarantine('source_record_changed')
@@ -152,7 +153,9 @@ def verify_script(item):
     for key in rebuilt:
         if item.get(key)!=rebuilt.get(key):raise Quarantine('unbound_or_generated_content:'+key)
     treatment=item['template_parameters'].get('creative',{})
-    if (treatment.get('factor')=='compression' and treatment.get('arm')==1) or (treatment.get('factor')=='typography' and len(item['source_sentences'])==1):
+    from scripts.instagram_growth.autonomy import renewal
+    is_compact=renewal.compact(treatment) if treatment.get('protocol')==renewal.PROTOCOL else (treatment.get('factor')=='compression' and treatment.get('arm')==1) or (treatment.get('factor')=='typography' and len(item['source_sentences'])==1)
+    if is_compact:
         prefix=f"Leon Lin writes on {item['topic']}: "
         factual=item['scenes'][0]['narration'].removeprefix(prefix)
         if len(item['source_sentences'])>1:factual+=' '+item['scenes'][1]['narration']

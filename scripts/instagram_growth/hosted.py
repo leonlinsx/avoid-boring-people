@@ -144,7 +144,7 @@ def publish_one(store, concept=None, *, is_pilot=False, auto_canary=False):
     if not is_pilot and (not state.get('pilot_verified') or os.getenv('ABP_REELS_PUBLISH')!='enabled'):
         raise StateError('kill switch or unverified pilot prevents scheduling')
     now=datetime.now(timezone.utc)
-    auto=promotion.eligible(state,os.getenv('ABP_AUTO_MODE','off'),canary=auto_canary)
+    auto=promotion.eligible(state,os.getenv('ABP_AUTO_MODE','off'),canary=auto_canary,legacy=scorecard.load_manifests(QUEUE_DIR))
     if auto_canary:
         if state.get('auto_canary_verified'):raise StateError('automatic canary already passed; never repeat it')
         # This ID is a fixed low-risk source-exact graphics treatment, not feed-selected code.

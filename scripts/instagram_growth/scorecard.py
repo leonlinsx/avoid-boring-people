@@ -173,6 +173,60 @@ def creative_learning(rows,now=None):
             'limitations':'Diagnostic thresholds are not significance tests. Missing, late and repeated-age observations cannot trigger a change.'}
 
 
+def renewable_results(rows,manifests,state,now):
+    from scripts.instagram_growth.autonomy import renewal as r
+    episodes={r.script(m)['creative_trial']['episode_id']:r.script(m) for m in manifests
+              if r.script(m).get('creative_trial',{}).get('protocol')==r.PROTOCOL}
+    result=[]
+    for eid,item in sorted(episodes.items()):
+        trial=item['creative_trial'];value=item['template_parameters']['creative']
+        specs={'control':value['control'],'treatment':r.specification({**value,'arm':1})}
+        arms={}
+        for arm,spec in specs.items():
+            members=[m for m in manifests if r.comparable(m,item['topic'],spec)]
+            ids={m['concept_id'] for m in members}
+            receipts=[(name,state.get('receipts',{}).get(name,{})) for name in sorted(ids)]
+            published=[(name,p) for name,p in receipts if p.get('status')=='published']
+            observed=[row for row in rows if row['concept_id'] in ids]
+            arms[arm]={'admitted_claims':len({m['claim_id'] for m in members}),
+                       'published_claims':len({m['claim_id'] for m in members if m['concept_id'] in {name for name,_ in published}}),
+                       'publication_receipts':[{'concept_id':name,'published_at':p['published_at']} for name,p in published],
+                       'measurement_receipts':[{'key':row['concept_id']+'-'+row['window'],
+                                                'eligible_for_comparison':row['eligible_for_comparison'],
+                                                'actual_age_hours':row['actual_age_hours'],'metrics':row['metrics']} for row in observed],
+                       'missing_windows':[name+'-'+window for name,_ in published for window in queue.WINDOWS
+                                          if name+'-'+window not in state.get('observations',{})]}
+        dates=[r.instant(p['published_at']) for a in arms.values() for p in a['publication_receipts']
+               if p['concept_id'] in {m['concept_id'] for m in manifests if r.script(m).get('creative_trial',{}).get('episode_id')==eid}]
+        complete=all(a['published_claims']>=r.MAX_POSTS for a in arms.values())
+        timed_out=bool(dates and now-min(dates)>=r.STOP_AFTER)
+        result.append({'episode_id':eid,'protocol':r.PROTOCOL,'topic':item['topic'],'primary_variable':trial['primary_variable'],
+                       'hypothesis':trial['hypothesis'],'control':specs['control'],'treatment':specs['treatment'],
+                       'arms':arms,'stop_conditions':trial['stop_conditions'],
+                       'status':'arm_complete' if complete else 'closed_incomplete_evidence' if timed_out else 'collecting_or_supply_limited',
+                       'winner':None,'next_action':'Choose an unused supported contrast automatically; never replay the same claim/execution.',
+                       'limitation':'Controls can be shared observations, not new independent replications. Follower attribution and qualified website outcomes remain unavailable.'})
+    published=sorted(((queue.instant(p['published_at']),name) for name,p in state.get('receipts',{}).items()
+                      if p.get('status')=='published'))
+    meta={m['concept_id']:m for m in manifests};seen=set();new=0;reused=0;unknown=0
+    treatments=[]
+    for when,name in published:
+        m=meta.get(name,{});claim=m.get('claim_id')
+        if now-timedelta(days=7)<=when<=now:
+            if not claim:unknown+=1
+            elif claim in seen:reused+=1
+            else:new+=1
+            s=r.script(m)
+            if s.get('treatment_id'):treatments.append({'concept_id':name,'source_claim_id':claim,'treatment_id':s['treatment_id'],
+                                                      'hypothesis':s['creative_trial']['hypothesis'],'specification':r.signature(m)})
+        if claim:seen.add(claim)
+    return {'protocol':r.PROTOCOL,'published_this_week':{'new_source_claims':new,'reused_source_claims':reused,'unknown_legacy_claims':unknown},
+            'treatments_tested_this_week':treatments,'episodes':result,
+            'repeat_windows':{'claim_cooldown_days':7,'max_claim_exposures_in_28d':3,'max_article_in_7d':3,'max_topic_in_7d':5},
+            'supply':state.get('auto_health',{}).get('factory',{}).get('creative_supply',{}),
+            'cadence_policy':'Publish less when safe, distinct supply is limited. Episode renewal never resets creative identity or resource budgets.'}
+
+
 def build(state, manifests, now=None):
     now = now or datetime.now(timezone.utc)
     if state.get('account') != pilot.ACCOUNT:
@@ -240,6 +294,7 @@ def build(state, manifests, now=None):
             'matched_presentation_pairs':paired_presentations(rows),
             'creative_experiments':creative_results(rows,manifests,published),
             'creative_learning':creative_learning(rows,now),
+            'renewable_creative':renewable_results(rows,manifests,state,now),
             'measurement_health': state.get('measurement_health', {}),
             'pending_windows': pending, 'failures': failures, 'minimum_reach_per_reel': MIN_REACH,
             'top_hypotheses': ranked[:3] if sufficient else [],
@@ -266,7 +321,7 @@ def markdown(report):
              '|---|---|---:|---:|---:|---:|---:|---:|---|']
     for r in report['rows']:
         m = r['metrics']; lines.append(f"| {r['concept_id']} | {r['window']} | {r['actual_age_hours']} | {m['reach']} | {m['views']} | {m['shares']} | {m['saved']} | {m['reels_skip_rate']} | {', '.join(r['missing'])} |")
-    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Creative protocol','creative_experiments'), ('Creative learning','creative_learning'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
+    for title, key in [('Top hypotheses', 'top_hypotheses'), ('Underperforming hypotheses', 'underperforming_hypotheses'), ('Patterns to replicate', 'replication_candidates'), ('Presenter versus graphics pairs','matched_presentation_pairs'), ('Creative protocol','creative_experiments'), ('Renewable creative episodes','renewable_creative'), ('Creative learning','creative_learning'), ('Next experiments', 'next_experiments'), ('Pending measurement', 'pending_windows'), ('Publication failures', 'failures'), ('Automatic operations','automatic_operations')]:
         lines += ['', '## ' + title, '', json.dumps(report[key], indent=2)]
     measurement = report.get('measurement_health') or {}
     lines += ['', f"Measurement: {measurement.get('status', 'unavailable')}; {sum(x['status'] == 'missed' for x in report['pending_windows'])} missed age windows; {measurement.get('remaining_due', 'unavailable')} readings still due. Late cumulative readings cannot reconstruct earlier outcomes."]

@@ -10,7 +10,7 @@ import subprocess
 import sys
 import time
 import requests
-from scripts.instagram_growth.autonomy import policy, admission, promotion,creative,research
+from scripts.instagram_growth.autonomy import policy, admission, promotion,creative,research,renewal
 from scripts.instagram_growth.factory import allocation
 from scripts.instagram_growth import scorecard
 
@@ -156,10 +156,58 @@ def recover(root,key,budget,ledger,limit,graphics=False):
 
 def failed_concepts(root):
     return {row['concept_id'] for path in (root/'runs').glob('*/failures.json')
-            for row in json.loads(path.read_text()) if row.get('error')=='Quarantine'}
+            for row in json.loads(path.read_text()) if row.get('error') in
+            ('Quarantine','ValueError','KeyError','CalledProcessError','TimeoutExpired')}
 
 
-def candidates(state, previous,*,experiments=False,research_cycle=None,shadow=False,graphics_only=False):
+def renewable_candidates(state,previous,*,now=None,rejected=(),claim_ids=None):
+    now=now or datetime.now(timezone.utc)
+    records,quarantined=policy.discover();slots=allocation.plan(40,state,now=now)
+    if claim_ids is not None:records=[r for r in records if r['claim_id'] in claim_ids]
+    records.sort(key=lambda r:(sum(renewal.script(m).get('source_file')==r['source_file'] for m in previous),
+                               sum(renewal.script(m).get('topic')==r['topic'] for m in previous),r['source_file'],r['claim_id']))
+    seen=list(previous);result=[]
+    for n,record in enumerate(records):
+        slot=slots['slots'][n%len(slots['slots'])];bucket=slot['experiment_bucket']
+        choices=renewal.options(record,seen,state,now=now)
+        if bucket=='control':
+            baseline={'structure':'payoff' if len(record['source_sentences'])==1 else 'question',
+                      'layout':'cards','audience':'making_a_choice'}
+            choices=[c for c in choices if c['arm']==0 and renewal.specification(c)==baseline]
+        elif bucket=='exploitation':
+            evidence=slot.get('allocation_evidence') or {};params=evidence.get('production_parameters',{})
+            frozen=params.get('creative',{})
+            replication=(frozen.get('protocol')==renewal.PROTOCOL and record['topic']==evidence.get('topic')
+                         and record['source_url'] not in evidence.get('source_articles',[]))
+            choices=[c for c in choices if c==frozen] if replication else []
+            if not choices:
+                # Legacy evidence remains valid for its old production path;
+                # it cannot silently become evidence for a new V2 structure.
+                bucket='exploration';choices=renewal.options(record,seen,state,now=now)
+        reason='useful_treatments_saturated'
+        for value in choices:
+            try:
+                item=policy.compile_script(record,hook=0,voice='af_heart',visual='cards',caption_words=5,
+                                           presenter=False,bucket=bucket,creative=value)
+                if item['concept_id'] in rejected:
+                    reason='previous_QA_rejection';continue
+                draft={**item,'script':item,'video_sha256':'unrendered-'+item['concept_id']}
+                promotion.duplicate(draft,seen)
+                renewal.exposure(draft,seen,state,now=now)
+                seen.append(draft);result.append(item);break
+            except policy.Quarantine as error:
+                reason=str(error)
+                if reason.endswith('saturation') or reason=='claim_cooldown_or_pending':break
+        else:
+            quarantined.append({'candidate':record['claim_id'],'reason':reason})
+            continue
+        if not result or result[-1]['claim_id']!=record['claim_id']:
+            quarantined.append({'candidate':record['claim_id'],'reason':reason})
+    return result,quarantined,slots
+
+
+def candidates(state, previous,*,experiments=False,research_cycle=None,shadow=False,graphics_only=False,now=None,rejected=()):
+    if experiments and graphics_only and not shadow:return renewable_candidates(state,previous,now=now,rejected=rejected)
     records,quarantined=policy.discover()
     # Round-robin articles instead of exhausting adjacent paragraphs of one essay.
     records.sort(key=lambda r:(sum(x['source_file']==r['source_file'] for x in previous),r['source_file'],r['claim_id']))
@@ -250,8 +298,10 @@ def main():
             m=json.loads(file.read_text());admission.verify_manifest(m);prior[m['concept_id']]=m
         inventory=scorecard.inventory(list(prior.values()),state,datetime.now(timezone.utc))
         needed=min(args.limit-len(recovered),max(0,21-inventory['approved_unpublished']))
-        plan,quarantined,slots=candidates(state,list(prior.values()),experiments=True,research_cycle=cycle,shadow=args.creative_shadow,graphics_only=graphics) if experimental else candidates(state,list(prior.values()))
-        rejected=failed_concepts(root);rejected_pairs={x['pair_id'] for x in plan if x['concept_id'] in rejected}
+        inventory_demand=needed
+        rejected=failed_concepts(root)
+        plan,quarantined,slots=candidates(state,list(prior.values()),experiments=True,research_cycle=cycle,shadow=args.creative_shadow,graphics_only=graphics,rejected=rejected) if experimental else candidates(state,list(prior.values()))
+        rejected_pairs={x['pair_id'] for x in plan if x['concept_id'] in rejected}
         plan=[x for x in plan if x['pair_id'] not in rejected_pairs]
         needed=min(needed,max(0,21-budget['rendered']),max(0,40-budget['attempted']))
         if args.canary:
@@ -269,7 +319,14 @@ def main():
                  'exploitation':'Only fresh reproducible multi-article patterns with positive account follower context earn bounded replication; otherwise exploration.',
                  'software_spend_usd':0,'electricity_cost':'Not metered; unavailable','gpu':'RTX 5070 Ti 16GB','gpu_busy_policy':'Never terminate unrelated processes'}
         if experimental:
-            factory['creative_protocol']=creative.PROTOCOL
+            factory['creative_protocol']=renewal.PROTOCOL if graphics and not args.creative_shadow else creative.PROTOCOL
+            old_claims={m['claim_id'] for m in prior.values() if m.get('claim_id')}
+            factory['creative_supply']={'new_claims':sum(i['claim_id'] not in old_claims for i in plan),
+                                        'reused_claims':sum(i['claim_id'] in old_claims for i in plan),
+                                        'eligible_treatments':len(plan),
+                                        'eligible_episodes':sorted({i['creative_trial']['episode_id'] for i in plan if i.get('creative_trial',{}).get('episode_id')}),
+                                        'rejection_reasons':{reason:sum(q.get('reason')==reason for q in quarantined) for reason in sorted({q['reason'] for q in quarantined if 'reason' in q})},
+                                        'renewal':'History-derived single-variable episodes; saturation reduces cadence; no automatic replay.'}
             factory['research']={'status':cycle.get('status','fixture' if args.creative_shadow else 'disabled'),'cost_usd':cycle.get('cost_usd',0),
                                  'calls':cycle.get('calls',0),'receipts':len(cycle.get('receipts',[])),
                                  'actual_live_eligible':len(research.eligible(cycle)),'reason':cycle.get('reason'),
@@ -322,8 +379,8 @@ def main():
                 # Three media failures is a quality circuit; no blind rerender loop.
                 if len(failures)>=3:break
         factory.update(completed_at=datetime.now(timezone.utc).isoformat(),elapsed_seconds=round(time.monotonic()-start,2),newly_hosted=0 if args.dry_run else len(admitted)+len(recovered),recovered_hosted=len(recovered),offline_verified=len(admitted) if args.dry_run else None,inventory_before=inventory['approved_unpublished'],remaining_eligible=max(0,len(plan)-factory['attempted']),weekly_render_reservations=budget['rendered'],status='failed' if failures else 'verified_offline' if args.dry_run else 'healthy')
-        if len(admitted)<needed and (budget['rendered']>=21 or budget['attempted']>=40):factory['pause_reason']='weekly_budget_exhausted'
-        if needed and not plan:factory.update(status='source_exhausted',pause_reason='no_fresh_admissible_claims')
+        if inventory_demand and (budget['rendered']>=21 or budget['attempted']>=40):factory['pause_reason']='weekly_budget_exhausted'
+        elif inventory_demand and not plan:factory.update(status='supply_limited',pause_reason='cooldown_saturation_or_no_safe_treatment')
         write(run/'factory-report.json',factory);write(root/'status.json',factory)
         # Refresh signed heartbeat even when inventory is full; all data are from
         # a previously signed immutable admission, never a fabricated new approval.

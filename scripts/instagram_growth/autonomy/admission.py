@@ -11,7 +11,7 @@ from scripts.instagram_growth.autonomy import policy
 
 PUBLIC_KEY = Path(__file__).with_name('public-key.pem')
 HOST = 'kveensoemz2j3t8d.public.blob.vercel-storage.com'
-RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','autonomy/creative.py','autonomy/research.py','autonomy/research-fixture-public.pem','factory/render.py','factory/source_typography.py','factory/audio.py','factory/transcribe.py','factory/gpu_guard.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
+RUNTIME_FILES = ('autonomy/policy.py','autonomy/admission.py','autonomy/creative.py','autonomy/renewal.py','autonomy/research.py','autonomy/research-fixture-public.pem','factory/render.py','factory/source_typography.py','factory/audio.py','factory/transcribe.py','factory/gpu_guard.py','factory/run.py','factory/verify.py','factory/presenter.py','specs/standalone-v3.json')
 # Frozen protected-main V1 releases, still reconstructed without creative fields.
 LEGACY_POLICY_DIGEST='f8956d04b7646b748acf01d36fb51b4aee23be29ba051c571f26f475566a85dd'
 LEGACY_RUNTIME_DIGEST='46d3f4fae1c219e6f42e3a2b5b9318f6518deca7068bd8908bca29e7c0ed21a6'
@@ -26,6 +26,9 @@ CREATIVE001_RUNTIME_DIGEST='ba91bd9ea469207d36516576469ee1338090c4c22d46f37f4785
 # Frozen main #161 compatibility, excluding the new typography contract.
 COMPACT001_POLICY_DIGEST='25bfe22a33820a4f8bcfc452e5926cb1579fcb9403d4f64f47b68a9a8d619ebe'
 COMPACT001_RUNTIME_DIGEST='58ec96c0b3ee0aa536c221f535954c4f46d152de9ac82d2e8574da2f34108038'
+# Exact protected-main #162; its live contract excluded native typography.
+TYPE001_POLICY_DIGEST='7cc6e5ad7fa9826e03a168601e0a9fff02b3e15ef11e4839948e71523b00347f'
+TYPE001_RUNTIME_DIGEST='15e5bf493c3abe9e65bbd1b07f6009b0664928034594afb8d6d04576fb22d25c'
 PORTRAIT_SHA='ed3d505c510944b7f4356f75a25df6e4804cf0b7d557598a74600ca74b492bbb'
 FLASH_REV='74d81686a7bd750b276ec1ade295bc4077c5868a'
 
@@ -143,6 +146,8 @@ def admit(item, meta, independent_asr, key):
               'experiment_bucket':item['experiment_bucket'],'pair_id':item['pair_id'],'pair_role':item['pair_role'],'claim_id':item['claim_id']}
     if item['template_parameters'].get('creative'):
         manifest.update({k:item[k] for k in ('audience','hook_structure','caption_strategy','creative_trial','research_origin','research_evidence_id')})
+    if 'treatment_id' in item:
+        manifest.update({k:item[k] for k in ('source_claim_id','treatment_id','creative_spec_hash','presentation_signature')})
     return seal(manifest,key)
 
 
@@ -162,7 +167,10 @@ def verify_manifest(item):
     prior_compact=(admission.get('policy_digest')==COMPACT001_POLICY_DIGEST
                    and admission.get('runtime_digest')==COMPACT001_RUNTIME_DIGEST
                    and (not treatment or treatment.get('factor') in ('baseline','audience','hook','caption','research','compression')))
-    compatible=legacy or prior_creative or prior_compact
+    prior_type=(admission.get('policy_digest')==TYPE001_POLICY_DIGEST
+                and admission.get('runtime_digest')==TYPE001_RUNTIME_DIGEST
+                and (not treatment or treatment.get('factor') in ('baseline','audience','hook','caption','research','compression')))
+    compatible=(legacy or prior_creative or prior_compact or prior_type) and treatment.get('protocol') in (None,'ABP-CREATIVE-001')
     if not compatible and admission['runtime_digest']!=runtime_digest():raise policy.Quarantine('stale_or_changed_auto_policy')
     if any(admission[k]!=v for k,v in evidence.items() if not (compatible and k=='policy_digest')):raise policy.Quarantine('stale_or_changed_auto_policy')
     for field in ('concept_id','claim_id','pair_id','pair_role','source_file','source_sha256','source_anchor','source_url','voice'):
@@ -173,6 +181,9 @@ def verify_manifest(item):
         if item.get('caption')!=caption(item['script']):raise policy.Quarantine('creative_caption_disagreement')
         for field in ('audience','hook_structure','caption_strategy','creative_trial','research_origin','research_evidence_id'):
             if item.get(field)!=item['script'][field]:raise policy.Quarantine('manifest_creative_disagreement')
+    if 'treatment_id' in item['script']:
+        for field in ('source_claim_id','treatment_id','creative_spec_hash','presentation_signature'):
+            if item.get(field)!=item['script'][field]:raise policy.Quarantine('manifest_treatment_disagreement')
     if admission['quality']['status']!='PASS' or item['account']!='avoidboringpeople':raise policy.Quarantine('qa_or_identity_failure')
     expected=f'https://{HOST}/instagram/reels/auto/{item["concept_id"]}/{item["video_sha256"]}.mp4'
     if item['video_url']!=expected:raise policy.Quarantine('unowned_auto_video_url')
