@@ -4941,6 +4941,15 @@
         "visibility_caveat": "API media existence/ownership verified; algorithmic distribution and native Trial visibility require their own evidence"
       }
     },
+    "abpa-755fd763356b77e90d04dc2d": {
+      "ai_generated": true,
+      "concept_id": "abpa-755fd763356b77e90d04dc2d",
+      "created_at": "2026-11-28T16:51:50.720002+00:00",
+      "sha256": "f368222b63c6b24f7c9643d42dfdb8f32615af2b7141c5410f0a26cfd472ce4c",
+      "source_url": "https://leonlins.com/writing/time_illusion",
+      "status": "reserved",
+      "trial": false
+    },
     "abpa-973d2e169e179358776c057a": {
       "ai_generated": true,
       "auto_admission": {
