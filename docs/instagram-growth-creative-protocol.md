@@ -1,5 +1,10 @@
 # Bounded creative protocol ABP-CREATIVE-001
 
+For the current guarded graphics factory, see
+[history-derived ABP-CREATIVE-002 episodes](instagram-growth-renewable-creative.md).
+The V1 contract below is retained for historical admissions and offline trials;
+its once-per-claim restriction and finite live selector are superseded by V2.
+
 Depends on the [read-only Issue #149 proof](instagram-growth-outlier-research.md).
 This protocol was introduced as opt-in; a separately reviewed default activation now permits guarded graphics production unless explicitly disabled in local configuration. Issue #149 requires
 strategic review before merge; it does not require individual video approval.

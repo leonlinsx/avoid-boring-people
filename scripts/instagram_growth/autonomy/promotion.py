@@ -29,7 +29,11 @@ def fetch(url, limit):
 
 
 def duplicate(candidate, existing):
-    """Allow just one exact matched presenter/graphics pair per claim, ever."""
+    """Legacy matched pairs survive; only reconstructed V2 opens source reuse."""
+    from scripts.instagram_growth.autonomy import renewal
+    s=renewal.script(candidate)
+    renewable=s.get('template_parameters',{}).get('creative',{}).get('protocol')==renewal.PROTOCOL
+    if renewable:policy.verify_script(s)
     for old in existing:
         if old['concept_id']==candidate['concept_id']:
             if old['video_sha256']!=candidate['video_sha256']:raise policy.Quarantine('immutable_concept_changed')
@@ -40,7 +44,12 @@ def duplicate(candidate, existing):
         if same or similar:
             matched=(same and old.get('pair_id')==candidate['pair_id'] and old.get('pair_role')!=candidate['pair_role']
                      and old.get('pair_role') in ('presenter','graphics'))
-            if not matched:raise policy.Quarantine('repetitive_claim_or_near_duplicate')
+            if matched:continue
+            # An adjacent/reworded claim cannot acquire new creative capacity.
+            if not same or not renewable:raise policy.Quarantine('repetitive_claim_or_near_duplicate')
+            prior=renewal.signature(old)
+            if prior is None or prior==renewal.signature(candidate):
+                raise policy.Quarantine('equivalent_creative_execution')
 
 
 def promote(store, legacy, download):
@@ -67,7 +76,12 @@ def promote(store, legacy, download):
         if policy.sha(body)!=entry['sha256']:raise policy.Quarantine('envelope_hash_mismatch')
         item=a.verify_manifest(json.loads(body))
         if item['concept_id']!=entry['concept_id']:raise policy.Quarantine('envelope_identity')
-        try:duplicate(item,legacy+[x['manifest'] for x in inventory.values()]+[x['manifest'] for x in staged.values()])
+        try:
+            history=legacy+[x['manifest'] for x in inventory.values()]+[x['manifest'] for x in staged.values()]
+            duplicate(item,history)
+            if item['script'].get('treatment_id'):
+                from scripts.instagram_growth.autonomy import renewal
+                renewal.exposure(item,history,store.state,now=now)
         except policy.Quarantine as error:
             quarantine.append({'concept_id':item['concept_id'],'reason':str(error)});continue
         # Real public MP4 bytes, SHA and ffprobe, not the producer's attestation alone.
@@ -87,7 +101,7 @@ def circuit(state, operation, error=None):
     return row['consecutive_failures']>=3
 
 
-def eligible(state, mode, *, canary=False):
+def eligible(state, mode, *, canary=False,legacy=()):
     if mode not in ('canary','enabled'):return []
     if not canary and (mode!='enabled' or not state.get('auto_canary_verified')):return []
     if any(x.get('consecutive_failures',0)>=3 for x in state.get('operation_health',{}).values()):return []
@@ -95,4 +109,17 @@ def eligible(state, mode, *, canary=False):
     when=health.get('feed_generated_at')
     now=datetime.now(timezone.utc)
     if not when or not now-timedelta(days=8)<=datetime.fromisoformat(when.replace('Z','+00:00'))<=now+timedelta(minutes=5):return []
-    return [a.verify_manifest(x['manifest']) for x in state.get('auto_inventory',{}).values()]
+    inventory=[a.verify_manifest(x['manifest']) for x in state.get('auto_inventory',{}).values()]
+    from scripts.instagram_growth.autonomy import renewal
+    history=list(legacy)+inventory;result=[]
+    # Pending inventory is considered at admission. At publication, exclude
+    # other queued assets: only actual exposure and ambiguous receipts count.
+    published=[m for m in history if m['concept_id'] in state.get('receipts',{})]
+    for item in inventory:
+        if item['script'].get('treatment_id'):
+            try:
+                duplicate(item,[m for m in published if m['concept_id']!=item['concept_id']])
+                renewal.exposure(item,published,state,now=now)
+            except policy.Quarantine:continue
+        result.append(item)
+    return result

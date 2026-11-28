@@ -20,6 +20,9 @@ JOBS={'city':'where to live','friendship':'what to share with a friend','feedbac
 
 
 def config(value):
+    if isinstance(value,dict) and value.get('protocol')=='ABP-CREATIVE-002':
+        from scripts.instagram_growth.autonomy import renewal
+        return renewal.config(value)
     if not isinstance(value,dict) or set(value)!={'protocol','factor','arm','evidence'}:raise policy.Quarantine('creative_protocol_fields')
     if value['protocol']!=PROTOCOL or value['factor'] not in ('baseline',*HYPOTHESES) or type(value['arm']) is not int or value['arm'] not in (0,1):raise policy.Quarantine('creative_protocol_treatment')
     if value['factor']=='baseline' and value['arm']!=0:raise policy.Quarantine('baseline_arm')
@@ -34,7 +37,11 @@ def config(value):
 
 
 def apply(item,value):
-    value=config(value);factor=value['factor'];arm=value['arm']
+    value=config(value)
+    if value.get('protocol')=='ABP-CREATIVE-002':
+        from scripts.instagram_growth.autonomy import renewal
+        return renewal.apply(item,value)
+    factor=value['factor'];arm=value['arm']
     reference=item.get('reference_index') is not None
     if reference and factor!='baseline':raise policy.Quarantine('reference_has_no_new_creative_lane')
     if factor=='typography' and item['presenter']:raise policy.Quarantine('source_type_graphics_only')
@@ -142,9 +149,9 @@ def choose(record,slot,previous,cycle,*,shadow=False,review=None):
 
 
 def require_live_evidence(item,*,now=None):
-    # The current publisher cannot identify/space reused-claim visual treatments.
-    # Keep offline availability separate from production authorization (#160).
-    if item.get('creative_trial',{}).get('factor')=='typography':
+    # V1 has no execution identity/repetition contract. Only reconstructed V2
+    # can enter the source-aware visual reuse lane.
+    if item.get('creative_trial',{}).get('factor')=='typography' and item.get('creative_trial',{}).get('protocol')==PROTOCOL:
         raise policy.Quarantine('source_type_waiting_for_treatment_identity')
     value=item.get('template_parameters',{}).get('creative')
     if value and value['evidence']:
