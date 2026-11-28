@@ -117,6 +117,17 @@ def test_weekly_review_proposes_new_task_without_claiming_outcomes():
     assert all('{' not in h['test'] for h in review['hypotheses'])
 
 
+def test_planning_spreads_exposures_without_rewriting_publication_cooldown():
+    now=datetime.now(timezone.utc);old=reflection(0);new=reflection()
+    history=[{**old,'script':old,'video_sha256':'old'}]
+    state={'receipts':{old['concept_id']:{'status':'published','published_at':(now-timedelta(days=8)).isoformat()}}}
+    renewal.exposure(new,history,state,now=now)  # Existing contract remains seven days.
+    with pytest.raises(policy.Quarantine,match='planning_spacing'):
+        renewal.planning_spacing(new,history,state,now=now)
+    state['receipts'][old['concept_id']]['published_at']=(now-timedelta(days=10)).isoformat()
+    renewal.planning_spacing(new,history,state,now=now)
+
+
 def test_one_additional_owned_relationship_paragraph_keeps_complete_context(tmp_path,monkeypatch):
     path=Path('src/content/blog/2020_02_26_time/index.md')
     anchor=next(p for p in path.read_text().split('\n\n') if p.startswith('You want as much time as possible'))

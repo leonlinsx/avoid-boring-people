@@ -169,6 +169,10 @@ def renewable_candidates(state,previous,*,now=None,rejected=(),claim_ids=None):
     seen=list(previous);result=[]
     for n,record in enumerate(records):
         slot=slots['slots'][n%len(slots['slots'])];bucket=slot['experiment_bucket']
+        try:renewal.planning_spacing(record,seen,state,now=now)
+        except policy.Quarantine as error:
+            quarantined.append({'candidate':record['claim_id'],'reason':str(error)})
+            continue
         choices=renewal.options(record,seen,state,now=now)
         if bucket=='control':
             baseline={'structure':'payoff' if len(record['source_sentences'])==1 else 'question',

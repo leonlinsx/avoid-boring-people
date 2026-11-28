@@ -23,6 +23,7 @@ MAX_POSTS = 3
 COOLDOWN = timedelta(days=7)
 EXPOSURE = timedelta(days=28)
 STOP_AFTER = timedelta(days=14)
+PLANNING_REUSE = timedelta(days=10)  # Spread three exposures across 28 days.
 
 
 def instant(value):
@@ -218,6 +219,22 @@ def exposure(candidate, previous, state, *, now=None):
         raise policy.Quarantine('article_7d_saturation')
     if topic and sum(s.get('topic') == topic and now - when < COOLDOWN for s, _, when in recent) >= 5:
         raise policy.Quarantine('topic_7d_saturation')
+
+
+def planning_spacing(record, previous, state, *, now):
+    """Avoid spending all three claim exposures in the first three weeks.
+
+    A conservative planner interval does not change the seven-day admission /
+    publication contract or postpone already admitted inventory. Pending and
+    ambiguous reservations continue to be handled by exposure(), unchanged.
+    """
+    for old in previous:
+        if script(old).get('claim_id') != record['claim_id']:continue
+        receipt = state.get('receipts', {}).get(old['concept_id'], {})
+        if receipt.get('status') == 'published':
+            if not receipt.get('published_at'):raise policy.Quarantine('claim_cooldown_or_pending')
+            if now-instant(receipt['published_at']) < PLANNING_REUSE:
+                raise policy.Quarantine('claim_planning_spacing')
 
 
 if __name__ == '__main__':

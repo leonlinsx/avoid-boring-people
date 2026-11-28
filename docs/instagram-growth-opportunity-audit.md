@@ -38,6 +38,7 @@ not proof of live typography results. Keep its measured live comparison open.
 | Adopt | Six-dimension editorial ordering after article/topic rotation | Transparent local heuristic; complete paragraphs only; no model or new admission authority in steady state |
 | Adopt | Spoken condition-check task versus follow request | Same V2 episodes, controls, three claims per arm, stopping/repetition rules; only final spoken beat changes |
 | Adopt | Narrow relationships template matching `loved ones` | One additional complete owned paragraph from “About time”; no changes to risk, quotation, numeric, source/hash, context or qualification checks |
+| Adopt | Ten-day planning interval for reuse | Eight-week regression caught synchronized 28-day exhaustion; admission/publication still enforce the original seven-day minimum and exposure caps |
 | Adopt | Weekly proposals include typography and reflection | Previously diagnostics named older factors only; actual missing evidence stays unavailable |
 | Retain | Native typography and compact payoff from #161–163 | Existing differentiation and independent QA; no new renderer framework |
 | Defer | Nicole/Heart, sentence pauses, pace and duration experiments | Available components, but V2 intentionally freezes these; require separate matched audio/ASR and substantive identity evidence, not nominal permutations |
@@ -95,6 +96,17 @@ python -m scripts.instagram_growth.autonomy.editorial --output /tmp/editorial.js
 This replay makes no model/API call and has no pass threshold. Missing ratings
 are reported, not fabricated. The original six comparison positions remain
 unchanged after the additional source mapping.
+
+The added source also exposed a long-horizon supply issue: allocating the whole
+library at seven-day reuse intervals produced weekly simulated counts
+`16, 16, 16, 0, 16, 15, 14, 3`. The zero week was correct enforcement of the
+three-exposures-per-28-days limit, not a reason to weaken it. The planner now
+waits ten days between published uses of a claim, spreading that existing
+capacity. Admission/publication retain their seven-day minimum, all saturation
+checks, and already admitted inventory. The unchanged eight-week continuation
+assertion now passes: `16, 10, 8, 15, 8, 10, 14, 7` (88 unique executions).
+This is an isolated simulation, not a publication commitment or audience result.
+The planner's new deferrals appear in existing supply diagnostics.
 
 ## Transferable research
 

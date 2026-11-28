@@ -80,8 +80,12 @@ most three claim exposures in 28 days, three article exposures in seven days
 and five topic exposures in seven days. At admission, unpublished inventory
 occupies a repetition reservation until it publishes; missing dates never imply
 old age. At publication, actual published/ambiguous receipts determine exposure.
-Queue limits remain at most three ordinary Reels per rolling 24 hours and at
-least three hours apart. Historical signed assets are preserved unchanged.
+The planner additionally waits ten days between published claim uses, to
+spread three allowed exposures across the 28-day window rather than consuming
+them in three consecutive weeks and then stopping for a week. This does not
+postpone already admitted inventory or change the seven-day admission /
+publication contract. Queue limits remain at most three ordinary Reels per
+rolling 24 hours and at least three hours apart. Historical signed assets are preserved unchanged.
 
 Failed QA concepts are skipped during subsequent treatment selection. Media
 recovery still reuses immutable completed artifacts without rerendering. PAUSE,
@@ -138,6 +142,6 @@ simulation or a single new candidate is not that production closeout.
 The [November 28 focused audit](instagram-growth-opportunity-audit.md) records
 editorial ranking, the additional relationship paragraph, the spoken-task CPU
 media checks, current typography eligibility, deferred research routing and
-operational blockers. Existing signed V2 inventory reconstructs under its
-protected-main digest pair; that pair cannot authorize the new spoken task or
-new source topic. No production render reservation was reset for verification.
+operational blockers. Protected-main V2 vectors reconstruct unchanged; the 21 actual signed V1
+inventory records still verify. Historical digest pairs cannot authorize the
+new spoken task or new source topic. No production render reservation was reset for verification.
