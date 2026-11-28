@@ -195,8 +195,9 @@
     },
     "feed_generated_at": "2026-11-27T23:41:57.959Z",
     "newly_promoted": 0,
-    "promoted_at": "2026-11-28T07:42:01.071370+00:00",
+    "promoted_at": "2026-11-28T16:51:45.082795+00:00",
     "quarantined": [],
+    "retention": {},
     "storage": {
       "checked_at": "2026-11-27T23:41:57.583Z",
       "cost_bound": "Hobby has no paid overage; never upgrade automatically.",
@@ -3495,6 +3496,7 @@
     "limit": 50,
     "usage": 2
   },
+  "legacy_manifests": {},
   "measurement_gaps": {
     "abp002-24-24h": {
       "concept_id": "abp002-24",
