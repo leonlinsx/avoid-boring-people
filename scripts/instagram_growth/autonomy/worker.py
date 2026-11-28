@@ -12,7 +12,7 @@ import time
 import requests
 from scripts.instagram_growth.autonomy import policy, admission, promotion,creative,research,renewal
 from scripts.instagram_growth.factory import allocation
-from scripts.instagram_growth import scorecard
+from scripts.instagram_growth import scorecard,retention
 
 
 def write(path, value):
@@ -281,9 +281,10 @@ def main():
         budget=json.loads(ledger.read_text()) if ledger.exists() else {'attempted':0,'rendered':0}
         if args.state:state=json.loads(args.state.read_text())
         else:
-            state_response=requests.get('https://raw.githubusercontent.com/leonlinsx/avoid-boring-people/abp-instagram-state/instagram-state.json',params={'v':int(time.time())},headers={'Cache-Control':'no-cache'},timeout=30)
+            state_response=requests.get('https://api.github.com/repos/leonlinsx/avoid-boring-people/contents/instagram-state.json',params={'ref':'abp-instagram-state'},headers={'Accept':'application/vnd.github.raw+json','Cache-Control':'no-cache'},timeout=30)
             state_response.raise_for_status();state=state_response.json()
         if state.get('account')!='avoidboringpeople':raise RuntimeError('wrong durable account')
+        state,_=retention.restore(state,retention.public_read)
         if not (args.canary or args.dry_run) and not state.get('auto_canary_verified'):raise RuntimeError('automatic canary not verified')
         recovered=[] if args.dry_run else recover(root,key,budget,ledger,args.limit,graphics=graphics)
         cycle={}
@@ -292,7 +293,7 @@ def main():
         experimental=bool(config.get('creative_experiments',True) or args.creative_shadow) and not args.canary
         if args.creative_shadow:cycle=research.fixture()
         elif experimental and config.get('research_enabled'):cycle=research.collect(root,config.get('research_creators',[]),key,token=research_token,user_id=research_user)
-        existing=scorecard.load_manifests('scripts/instagram_growth/approved')+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
+        existing=list(state.get('legacy_manifests',{}).values())+scorecard.load_manifests('scripts/instagram_growth/approved')+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
         local=list((root/'admitted').glob('*.json'));prior={x['concept_id']:x for x in existing}
         for file in local:
             m=json.loads(file.read_text());admission.verify_manifest(m);prior[m['concept_id']]=m

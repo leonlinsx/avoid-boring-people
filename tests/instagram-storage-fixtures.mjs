@@ -5,6 +5,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
+import {gunzipSync} from 'node:zlib';
 
 const sourceUrl = new URL('../scripts/instagram_growth/autonomy/storage.mjs', import.meta.url);
 const source = await fs.readFile(sourceUrl, 'utf8');
@@ -30,6 +31,7 @@ async function scenario(name, supplied) {
     await fs.writeFile(input,JSON.stringify({manifest:signed,local_video:video,factory:{status:'healthy'},
       signing_payload:supplied?.signing_payload??stable(m),manifest_json:supplied?.manifest_json??stable(signed)}));
     if(['budget','invalid_budget'].includes(name))await fs.writeFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),JSON.stringify({bytes_reserved:name==='invalid_budget'?-1:0,operations_reserved:900}));
+    if(name==='byte_budget')await fs.writeFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),JSON.stringify({bytes_reserved:256*1024*1024-1,operations_reserved:0}));
     if(name==='recovery_budget')await fs.writeFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),JSON.stringify({bytes_reserved:0,operations_reserved:888}));
     const objects = new Map(), puts = [], lines = [];
     const feedUrl = `https://${host}/instagram/reels/auto/feed.json`;
@@ -49,7 +51,9 @@ async function scenario(name, supplied) {
       objects.set(feedUrl,{data:Buffer.from(stable(feed)),etag:'current'});
       if(['checkpoint','stale_checkpoint','checkpoint_tamper'].includes(name)){
         if(name==='checkpoint_tamper')feed.auto_signature=Buffer.alloc(64).toString('base64');
+        if(name==='checkpoint_tamper')objects.set(feedUrl,{data:Buffer.from(stable(feed)),etag:'current'});
         await fs.writeFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),JSON.stringify({bytes_reserved:0,operations_reserved:0,feed_snapshot:{etag:name==='stale_checkpoint'?'older':'current',feed}}));
+        if(name==='checkpoint')objects.set(`https://${host}/instagram/reels/auto/registry-bootstrap-v1.json`,{data:Buffer.from(stable(sign({artifact_type:'abp_registry_bootstrap_v1',account:'avoidboringpeople',items:prior}))),etag:'bootstrap'});
       }
     }
     if(name==='bytes')objects.set(m.video_url,{data:Buffer.from('changed'),etag:'video'});
@@ -59,7 +63,13 @@ async function scenario(name, supplied) {
       process:{argv:['node','storage','upload',input],env:{ABP_AUTO_CONFIG:config}},
       fetch:async(url,options)=>{
         requests++;assert.equal(options.redirect,'error');
-        const u=new URL(url);u.search='';assert.equal(u.hostname,host);
+        const u=new URL(url);u.search='';
+        if(u.hostname==='api.github.com'){
+          assert.equal(options.headers.Accept,'application/vnd.github.raw+json');
+          const data=Buffer.from(JSON.stringify({account:'avoidboringpeople',receipts:{}}));
+          return {ok:true,body:{async *[Symbol.asyncIterator](){yield data;}}};
+        }
+        assert.equal(u.hostname,host);
         if(u.href===feedUrl)assert.equal(name,'stale_feed','Mutable public CDN reads must never supply a feed write base');
         // HEAD sees both earlier entries, but the CDN still has only the first.
         const row=u.href===feedUrl?{data:Buffer.from(stable(sign({artifact_type:'abp_auto_feed_v1',account:'avoidboringpeople',items:prior.slice(0,1)})))}:objects.get(u.href);
@@ -70,20 +80,27 @@ async function scenario(name, supplied) {
         readFile:async(p,...args)=>String(p).endsWith('/public-key.pem')?publicKey.export({type:'spki',format:'pem'}):fs.readFile(p,...args),
         rename:async(from,to)=>{if(name==='checkpoint_crash'&&JSON.parse(await fs.readFile(from,'utf8')).feed_snapshot)throw Error('fixture crash after feed commit');return fs.rename(from,to);}}},
       'node:path':{default:path},'node:crypto':{default:crypto},
+      'node:zlib':{gunzipSync},
       'node:child_process':{execFileSync:(_cmd,args)=>{
         requests++;
         return Buffer.from(JSON.stringify(args[1].startsWith('/v2/teams/')
           ?{id:'team_cilwkczruho74HBIaE1IlQIt',billing:{plan:name==='paid'?'pro':'hobby',status:'active'}}
-          :{id:'store_kvEENsOeMZ2J3t8D',ownerId:'team_cilwkczruho74HBIaE1IlQIt',access:'public',status:'available',usageQuotaExceeded:name==='quota',size:10,count:1}));
+          :{id:'store_kvEENsOeMZ2J3t8D',ownerId:'team_cilwkczruho74HBIaE1IlQIt',access:'public',status:'available',usageQuotaExceeded:name==='quota',size:name==='metadata_headroom'?750*1024*1024-media.length-1:10,count:1}));
       }},
       '@vercel/oidc':{getVercelOidcToken:async()=>'disposable-fixture-token'},
       '@vercel/blob':{
         list:async options=>{
+          if(options.prefix==='instagram/reels/auto/pending/')return {hasMore:false,blobs:[...objects].filter(([url])=>url.includes('/pending/')).map(([url,row])=>({url,pathname:new URL(url).pathname.slice(1),size:row.data.length}))};
           assert.notEqual(name,'recovery_budget','Registry read must reserve its allowance first');
           assert.notEqual(name,'checkpoint','Matching signed checkpoint must avoid registry reads');
           assert.equal(options.prefix,'instagram/reels/auto/manifests/');assert.equal(options.limit,65);
           return {hasMore:name==='registry_overflow',blobs:[...objects].filter(([url])=>url.includes('/manifests/')).map(([url,row])=>({url,pathname:new URL(url).pathname.slice(1),size:row.data.length}))};
         },
+        get:async(url,options)=>{
+          assert.equal(options.useCache,false);const row=objects.get(url);
+          return row?{statusCode:200,blob:{etag:row.etag,size:row.data.length},stream:{async *[Symbol.asyncIterator](){yield row.data;}}}:null;
+        },
+        del:async()=>assert.fail('No archive: no index can be deleted'),
         head:async url=>{if(!objects.has(url))throw new BlobNotFoundError();return {etag:objects.get(url).etag};},
         put:async(pathname,bytes,options)=>{
           const url=`https://${host}/${pathname}`;puts.push({url,options});
@@ -106,14 +123,16 @@ async function scenario(name, supplied) {
       else assert.equal(puts.at(-1).options.ifMatch,'current');
       assert.equal(body.items.length,name==='valid'?1:3);
       assert.deepEqual(body.items.map(x=>x.concept_id).sort(),[...prior.map(x=>x.concept_id),m.concept_id].sort());
-      assert.equal(receipt.usage.operations_reserved,name==='checkpoint'?12:name==='valid'?14:16);assert.equal(receipt.usage.bytes_reserved,media.length);
+      assert.equal(receipt.usage.operations_reserved,name==='checkpoint'?16:name==='valid'?19:21);
+      const bootstrapBytes=name==='checkpoint'?0:objects.get(`https://${host}/instagram/reels/auto/registry-bootstrap-v1.json`).data.length;
+      assert.equal(receipt.usage.bytes_reserved,media.length+2*Buffer.byteLength(supplied?.manifest_json??stable(signed))+bootstrapBytes);
       const checkpoint=JSON.parse(await fs.readFile(path.join(root,`usage-${new Date().toISOString().slice(0,7)}.json`),'utf8')).feed_snapshot;
       assert.equal(checkpoint.etag,objects.get(feedUrl).etag);assert.deepEqual(checkpoint.feed,JSON.parse(objects.get(feedUrl).data));
       assert.equal(body.usage.feed_snapshot,undefined,'Do not recursively publish the local checkpoint');
       if(supplied?.output)await fs.writeFile(supplied.output,JSON.stringify({feed:objects.get(feedUrl).data.toString(),manifest:objects.get(body.items[0].url).data.toString()}));
     }else{
       await assert.rejects(module.evaluate());assert.equal(lines.length,0);
-      if(['forged','paid','quota','budget','invalid_budget','bytes'].includes(name))assert.equal(puts.length,0);
+      if(['forged','paid','quota','budget','invalid_budget','byte_budget','metadata_headroom','bytes'].includes(name))assert.equal(puts.length,0);
       else if(!['cas','checkpoint_crash'].includes(name))assert.ok(puts.every(row=>row.url!==feedUrl),`${name}: failure must preserve the previous feed`);
       if(name==='checkpoint_crash'){
         assert.equal(JSON.parse(objects.get(feedUrl).data).items.length,1);
@@ -124,6 +143,6 @@ async function scenario(name, supplied) {
     }
   }finally{await fs.rm(root,{recursive:true,force:true});}
 }
-for(const name of ['valid','forged','paid','quota','budget','invalid_budget','bytes','cas','stale_feed','checkpoint','stale_checkpoint','checkpoint_tamper','registry_forged','registry_hash','registry_duplicate','registry_overflow','recovery_budget','checkpoint_crash'])await scenario(name);
+for(const name of ['valid','forged','paid','quota','budget','invalid_budget','byte_budget','metadata_headroom','bytes','cas','stale_feed','checkpoint','stale_checkpoint','checkpoint_tamper','registry_forged','registry_hash','registry_duplicate','registry_overflow','recovery_budget','checkpoint_crash'])await scenario(name);
 if(process.argv[2])await scenario('valid',JSON.parse(await fs.readFile(process.argv[2],'utf8')));
 console.log('PASS: signed upload, immutable bytes, no-paid/budget gates and CAS conflict; provider I/O faked');

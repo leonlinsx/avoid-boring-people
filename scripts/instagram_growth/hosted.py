@@ -7,14 +7,16 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import copy
 import json
 import os
+import re
 from pathlib import Path
 import tempfile
 from datetime import datetime, timezone, timedelta
 import requests
 from scripts.instagram_growth import reel_pilot as pilot, rolling_queue as queue
-from scripts.instagram_growth import scorecard
+from scripts.instagram_growth import scorecard, retention
 from scripts.instagram_growth.autonomy import promotion
 
 REPO = 'leonlinsx/avoid-boring-people'
@@ -35,12 +37,16 @@ class Store:
         self.session.headers.update(Authorization=f'Bearer {token}', Accept='application/vnd.github+json', **{'X-GitHub-Api-Version':'2022-11-28'})
         self.sha = None
         self.state = None
+        self.cold = retention.empty()
     def request(self, method, route, **kwargs):
-        if method not in ('GET','PUT') or route!=f'contents/{STATE_PATH}':
+        archive=re.fullmatch(r'contents/instagram-archives/[a-f0-9]{64}\.json',route)
+        if method not in ('GET','PUT') or not (route==f'contents/{STATE_PATH}' or archive):
             raise StateError('state client cannot write application code or other refs')
+        if archive and method=='PUT' and 'sha' in kwargs.get('json',{}):raise StateError('immutable archive cannot be overwritten')
         if method=='PUT' and kwargs.get('json',{}).get('branch')!=BRANCH:
             raise StateError('state client can write only the dedicated data branch')
         response = self.session.request(method, f'https://api.github.com/repos/{REPO}/{route}', timeout=30, **kwargs)
+        if archive and method=='GET' and response.status_code==404:return None
         if response.status_code not in (200, 201):
             raise StateError(f'GitHub durable state refused HTTP {response.status_code}; no blind retry')
         return response.json()
@@ -50,13 +56,51 @@ class Store:
         self.state = json.loads(base64.b64decode(raw['content']))
         if self.state.get('account') != pilot.ACCOUNT or not isinstance(self.state.get('receipts'),dict):
             raise StateError('state has wrong account/shape')
+        self.state,self.cold=retention.restore(self.state,self.read_archive)
         return self.state
-    def save(self):
-        body = json.dumps(self.state, indent=2, sort_keys=True).encode()
-        if len(body)>900_000:
-            raise StateError('state budget exceeded; archive reviewed observations before continuing')
-        result = self.request('PUT', f'contents/{STATE_PATH}', json={'branch':BRANCH,'sha':self.sha,'message':'ABP Reel receipts [skip ci] [skip vercel]','content':base64.b64encode(body).decode()})
+    def read_archive(self,ref):
+        retention.check_ref(ref)
+        raw=self.request('GET','contents/'+ref['path'],params={'ref':BRANCH})
+        if raw is None:raise FileNotFoundError(ref['path'])
+        return base64.b64decode(raw['content'],validate=False)
+    def write_archive(self,ref,body):
+        # Create-only Git content; a lost response is recovered by a read, not
+        # an overwrite. Orphans after a CAS conflict are harmless immutable data.
+        try:existing=self.read_archive(ref)
+        except FileNotFoundError:existing=None
+        if existing is None:
+            try:
+                self.request('PUT','contents/'+ref['path'],json={'branch':BRANCH,'message':'ABP immutable evidence archive [skip ci] [skip vercel]',
+                             'content':base64.b64encode(body).decode()})
+            except (requests.RequestException,StateError):
+                # A lost create response may already have committed. Only an
+                # exact independent readback can turn that uncertainty to success.
+                if self.read_archive(ref)!=body:raise
+        elif existing!=body:raise StateError('immutable archive already differs')
+        restored=self.read_archive(ref)
+        if restored!=body:raise StateError('archive readback changed')
+        retention.decode(ref,restored)
+    def save(self,*,archive_review=False):
+        cold=copy.deepcopy(self.cold);old_head=self.state.get('archive_head')
+        planned=retention.plan(self.state,cold,review=archive_review,manifests=scorecard.load_manifests(QUEUE_DIR))
+        if planned:
+            ref,archive,tables,review=planned
+            self.write_archive(ref,archive)
+            for key,rows in tables.items():cold[key].update(copy.deepcopy(rows))
+            if review is not None:cold['weekly_review']=copy.deepcopy(review)
+            self.state['archive_head']=ref
+        try:
+            hot=retention.compact(self.state,cold)
+            body = json.dumps(hot, indent=2, sort_keys=True).encode()
+            if len(body)>900_000:raise StateError('state budget exceeded; unresolved evidence remains hot')
+            result = self.request('PUT', f'contents/{STATE_PATH}', json={'branch':BRANCH,'sha':self.sha,'message':'ABP Reel receipts [skip ci] [skip vercel]','content':base64.b64encode(body).decode()})
+        except Exception:
+            if old_head is None:self.state.pop('archive_head',None)
+            else:self.state['archive_head']=old_head
+            raise
         self.sha = result['content']['sha']
+        self.cold=cold
+        if planned:self.state.setdefault('legacy_manifests',{}).update(copy.deepcopy(tables['legacy_manifests']))
     def receipt(self, record):
         self.state['receipts'][record['concept_id']] = record
         self.save()
@@ -299,9 +343,13 @@ def weekly(store):
     # Fresh account evidence and due age windows precede production advice.
     measure(store)
     report=scorecard.build(store.state,all_manifests(store.state))
+    report['retention']=retention.health(store.state,getattr(store,'cold',None))
     # Keep detailed rows in downloadable artifacts, not repeated in the CAS ledger.
     store.state['weekly_review']={k:v for k,v in report.items() if k not in ('rows','equal_target_age_cohorts')}
-    store.save();scorecard.write(report,'reports/instagram-growth')
+    if isinstance(store,Store):store.save(archive_review=True)
+    else:store.save()
+    report['retention']=retention.health(store.state,getattr(store,'cold',None))
+    scorecard.write(report,'reports/instagram-growth')
     summary=os.environ.get('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary,'a') as output:output.write(scorecard.markdown(report))
@@ -314,6 +362,9 @@ def inventory_health(store):
     if report['level']!='OK':
         message=f"ABP inventory {report['level']}: {report['approved_unpublished']} approved unpublished; target21; never auto-approve to fill quota"
         print(f'::warning::{message}')
+    archive_health=retention.health(store.state,getattr(store,'cold',None))
+    print(json.dumps({'retention_health':archive_health}))
+    if archive_health['level']!='OK':print('::warning::ABP retention headroom low; preserve evidence and inspect existing limits')
     if os.environ.get('GITHUB_STEP_SUMMARY'):
         with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as output:
             output.write(f"\nABP inventory: **{report['level']}**, {report['approved_unpublished']} approved unpublished; target21.\n")
@@ -321,7 +372,11 @@ def inventory_health(store):
 
 
 def all_manifests(state):
-    return scorecard.load_manifests(QUEUE_DIR)+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
+    legacy=dict(state.get('legacy_manifests',{}))
+    for m in scorecard.load_manifests(QUEUE_DIR):
+        if m['concept_id'] in legacy and legacy[m['concept_id']]!=m:raise StateError('immutable archived manual concept changed')
+        legacy[m['concept_id']]=m
+    return [legacy[name] for name in sorted(legacy)]+[x['manifest'] for x in state.get('auto_inventory',{}).values()]
 
 
 def promote_auto(store):

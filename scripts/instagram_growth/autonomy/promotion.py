@@ -88,7 +88,7 @@ def promote(store, legacy, download):
         download(item)
         staged[item['concept_id']]={'manifest':item,'envelope_url':entry['url'],'envelope_sha256':entry['sha256'],'promoted_at':now.isoformat()}
     inventory.update(staged)
-    store.state['auto_health']={'promoted_at':now.isoformat(),'factory':feed['factory'],'storage':storage,'usage':feed['usage'],'quarantined':quarantine,'newly_promoted':len(staged),'feed_generated_at':feed['generated_at']}
+    store.state['auto_health']={'promoted_at':now.isoformat(),'factory':feed['factory'],'storage':storage,'usage':feed['usage'],'quarantined':quarantine,'newly_promoted':len(staged),'feed_generated_at':feed['generated_at'],'retention':feed.get('retention',{})}
     store.save()
     return len(staged)
 
