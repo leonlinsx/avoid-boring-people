@@ -5,7 +5,7 @@ from scripts.instagram_growth.autonomy import policy,research
 
 PROTOCOL='ABP-CREATIVE-001'
 MAX_POSTS_PER_ARM=3  # Three distinct claims; graphics only in this protocol.
-# Available for frozen offline trials; live selection awaits #160 identities.
+# V1 remains frozen. Guarded graphics production selects V2 via renewal.py.
 HYPOTHESES={
     'typography':'Whole source sentences with word-aligned emphasis improve comprehension and qualified discovery over generic graphics.',
     'audience':'People reassessing an earlier choice respond differently from people making that choice for the first time.',
@@ -16,7 +16,8 @@ HYPOTHESES={
 }
 JOBS={'city':'where to live','friendship':'what to share with a friend','feedback':'how to act on feedback',
       'community':'which community to join','decision':'a choice with competing priorities','process':'the order of a recurring process',
-      'creative ideas':'which creative ideas to pursue','learning':'how to learn an unfamiliar skill','product':"how a product fits users' work"}
+      'creative ideas':'which creative ideas to pursue','learning':'how to learn an unfamiliar skill','product':"how a product fits users' work",
+      'relationships':'how to spend time with loved ones'}
 
 
 def config(value):

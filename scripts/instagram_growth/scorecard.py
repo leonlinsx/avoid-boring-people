@@ -149,8 +149,10 @@ def creative_results(rows,manifests,published):
 def creative_learning(rows,now=None):
     """Use one equal-age observation per Reel; diagnoses only order exploration."""
     from scripts.instagram_growth.autonomy.creative import HYPOTHESES
+    from scripts.instagram_growth.autonomy import renewal
+    hypotheses={**HYPOTHESES,**renewal.HYPOTHESES}
     now=now or datetime.now(timezone.utc)
-    factors=['audience','hook','caption','compression']
+    factors=['audience','hook','caption','compression','typography','reflection']
     observed=[r for r in rows if r['window']=='24h' and r['timely']
               and now-timedelta(days=14)<=queue.instant(r['published_at'])<=now
               and isinstance(r['metrics'].get('reach'),(int,float))]
@@ -162,13 +164,14 @@ def creative_learning(rows,now=None):
                    and all(isinstance(v,(int,float)) and 0<=v<=100 for v in skips)
                    and sum(skips)/len(skips)>=65)
     priority=['audience','hook','compression','caption'] if low_reach else ['compression','hook','audience','caption'] if weak_openings else factors
+    priority=list(dict.fromkeys(priority+factors))
     reason=('Low reach across multiple articles: explore audience positioning and openings; inspect native discoverability after distinct treatments receive exposure.' if low_reach else
             'High skip across exposed articles: test a nonrepeating payoff and practical question.' if weak_openings else
             'Insufficient cross-article exposure for a creative diagnosis; balance the preregistered trials.')
     return {'observation_window':'24h','observed_posts':len(observed),'source_articles':len(articles),
             'evidence_concepts':[r['concept_id'] for r in observed],
             'factor_priority':priority,'reason':reason,
-            'hypotheses':[{'factor':f,'test':HYPOTHESES[f]} for f in priority],
+            'hypotheses':[{'factor':f,'test':hypotheses[f]} for f in priority],
             'effect':'Order ties in bounded exploration only; no growth winner or increased exploitation.',
             'limitations':'Diagnostic thresholds are not significance tests. Missing, late and repeated-age observations cannot trigger a change.'}
 

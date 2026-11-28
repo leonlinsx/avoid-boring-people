@@ -91,7 +91,7 @@ def test_recursive_diagnoses_require_same_age_multi_article_evidence():
     assert skipped['factor_priority'][0]=='compression'
     for sample in (rows()[:1],rows(articles=1),rows(window='48h'),[{**r,'timely':False} for r in rows()],
                    [{**r,'published_at':(datetime.now(timezone.utc)-timedelta(days=15)).isoformat()} for r in rows()]):
-        assert scorecard.creative_learning(sample)['factor_priority']==['audience','hook','caption','compression']
+        assert scorecard.creative_learning(sample)['factor_priority']==['audience','hook','caption','compression','typography','reflection']
     assert 'no growth winner' in low['effect']
 
 

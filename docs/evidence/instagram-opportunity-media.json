@@ -1,0 +1,199 @@
+{
+  "base_head": "0028c2f19c31a8110f74aa83735a2d0b7c6fcf0d",
+  "mode": "CPU_ONLY_OFFLINE_NO_SIGNING_UPLOAD_OR_PUBLICATION",
+  "production_render_reservations_before": 21,
+  "production_render_reservations_after": 21,
+  "rows": [
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "arm": "control",
+      "concept_id": "abpa-ec53df7a9f0f2fec9876b6d9",
+      "quality": {
+        "status": "PASS",
+        "independent_asr_word_error_rate": 0.017241379310344827,
+        "qualifications_audible": true,
+        "duration_seconds": 21.633333,
+        "loudness_lufs": -16.38,
+        "true_peak_dbtp": -1.97,
+        "text_bounds": [
+          109,
+          292,
+          890,
+          1451
+        ],
+        "checks": [
+          "decode",
+          "ffprobe",
+          "faststart",
+          "source_anchor_and_hash",
+          "caption_exact_text_and_measured_word_timings",
+          "audio_clipping"
+        ],
+        "qa_digest": "86eea49786151d0ce31a0a0e343d8d2460aedce97448d71ae18a3284c7cd199c",
+        "render_seconds": 10.36157036300574,
+        "voice_seconds": 3.2853828399966005,
+        "voice_peak_allocated_mib": null,
+        "presenter_seconds": null,
+        "presenter_peak_allocated_mib": null
+      },
+      "bytes": 974592,
+      "sha256": "a1d250d961e525103558031b5ae46a54f11ece1364e54296c9b0655d8b25dda8",
+      "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+      "audio_sha256": "0704279cc31064f718d749f23f10033fc1cb40bce1ee83bf4c2a61fcd043abdb",
+      "render_seconds": 10.36157036300574
+    },
+    {
+      "claim_id": "claim-e54e87db222ee4fe66d84d2b",
+      "arm": "treatment",
+      "concept_id": "abpa-8f4a921dd89d379d27406bf8",
+      "quality": {
+        "status": "PASS",
+        "independent_asr_word_error_rate": 0.015625,
+        "qualifications_audible": true,
+        "duration_seconds": 22.5,
+        "loudness_lufs": -16.35,
+        "true_peak_dbtp": -1.98,
+        "text_bounds": [
+          109,
+          292,
+          890,
+          1451
+        ],
+        "checks": [
+          "decode",
+          "ffprobe",
+          "faststart",
+          "source_anchor_and_hash",
+          "caption_exact_text_and_measured_word_timings",
+          "audio_clipping"
+        ],
+        "qa_digest": "5b8033a43a49950e41c71660022cf70e3e174ef6ee9373f7500922acf4d406d3",
+        "render_seconds": 11.060161432003952,
+        "voice_seconds": 3.473128278987133,
+        "voice_peak_allocated_mib": null,
+        "presenter_seconds": null,
+        "presenter_peak_allocated_mib": null
+      },
+      "bytes": 1012764,
+      "sha256": "4dd892cc99c0d85f854048f4d7ab4944645912c53c9d2405887afae6ff987bae",
+      "source_sha256": "9119f7a8a1112cda374e9b9bd7a1918bce49cb88f3ecfe5f6cf6c55043d40e0e",
+      "audio_sha256": "8016a0c0fb94ef82dc6c972247acefa87ca496594e5737fa9279e1d7a6aadece",
+      "render_seconds": 11.060161432003952
+    },
+    {
+      "claim_id": "claim-f59b48a546311ced177229d3",
+      "arm": "control",
+      "concept_id": "abpa-8365d5318eb22e873908470d",
+      "quality": {
+        "status": "PASS",
+        "independent_asr_word_error_rate": 0.0196078431372549,
+        "qualifications_audible": true,
+        "duration_seconds": 18.5,
+        "loudness_lufs": -16.34,
+        "true_peak_dbtp": -1.99,
+        "text_bounds": [
+          109,
+          292,
+          850,
+          1451
+        ],
+        "checks": [
+          "decode",
+          "ffprobe",
+          "faststart",
+          "source_anchor_and_hash",
+          "caption_exact_text_and_measured_word_timings",
+          "audio_clipping"
+        ],
+        "qa_digest": "4a0fbfa6a56efddee51debeb01b0c3e9158df2af51e3100c81e802d6c418cca8",
+        "render_seconds": 9.588089647993911,
+        "voice_seconds": 3.3725389720057137,
+        "voice_peak_allocated_mib": null,
+        "presenter_seconds": null,
+        "presenter_peak_allocated_mib": null
+      },
+      "bytes": 887807,
+      "sha256": "f4b5a703ea3fa5021b65439a516a552542912eefccf409c9e90936d1c54e5067",
+      "source_sha256": "eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385",
+      "audio_sha256": "d916c9fcdf24c39d00cd372f5ecddaf37a2b68910652be076349160e26ae4882",
+      "render_seconds": 9.588089647993911
+    },
+    {
+      "claim_id": "claim-f59b48a546311ced177229d3",
+      "arm": "treatment",
+      "concept_id": "abpa-1d91d0e898592a38bedd871f",
+      "quality": {
+        "status": "PASS",
+        "independent_asr_word_error_rate": 0.017543859649122806,
+        "qualifications_audible": true,
+        "duration_seconds": 19.472,
+        "loudness_lufs": -16.33,
+        "true_peak_dbtp": -1.99,
+        "text_bounds": [
+          109,
+          292,
+          850,
+          1451
+        ],
+        "checks": [
+          "decode",
+          "ffprobe",
+          "faststart",
+          "source_anchor_and_hash",
+          "caption_exact_text_and_measured_word_timings",
+          "audio_clipping"
+        ],
+        "qa_digest": "18a5da83db516f75522a37701dfb6e6bdb9e91e73863cf99571d4b765f99b834",
+        "render_seconds": 10.372905395997805,
+        "voice_seconds": 3.9512642189947655,
+        "voice_peak_allocated_mib": null,
+        "presenter_seconds": null,
+        "presenter_peak_allocated_mib": null
+      },
+      "bytes": 935155,
+      "sha256": "3d261a79045645122670f0b3b709347668136443a3eae6fc2728ad833e53d2a7",
+      "source_sha256": "eaaae758f179b4c72f96267a78f14ed2e71b73716254c1628d075d11a4f7c385",
+      "audio_sha256": "19f919065fb803cbe5df5f9cb1edf33b1abd3f3da8a368bf2f6d42a3424a3428",
+      "render_seconds": 10.372905395997805
+    },
+    {
+      "claim_id": "claim-6c7e2ecf88a5bc6c4cc8132f",
+      "arm": "control",
+      "concept_id": "abpa-d377f9b084e4aad403990961",
+      "quality": {
+        "status": "PASS",
+        "independent_asr_word_error_rate": 0.0,
+        "qualifications_audible": true,
+        "duration_seconds": 26.3,
+        "loudness_lufs": -16.28,
+        "true_peak_dbtp": -1.98,
+        "text_bounds": [
+          109,
+          292,
+          850,
+          1451
+        ],
+        "checks": [
+          "decode",
+          "ffprobe",
+          "faststart",
+          "source_anchor_and_hash",
+          "caption_exact_text_and_measured_word_timings",
+          "audio_clipping"
+        ],
+        "qa_digest": "537a5125173d5af2a5355e3c00bdb44b69055b98188ae5b7850466a8c0a2da14",
+        "render_seconds": 12.908361564012012,
+        "voice_seconds": 4.041561662001186,
+        "voice_peak_allocated_mib": null,
+        "presenter_seconds": null,
+        "presenter_peak_allocated_mib": null
+      },
+      "bytes": 1237583,
+      "sha256": "bece1259b33b7082464803e0260318c29e82a41d8c7d97ff9aac6c0527539a1c",
+      "source_sha256": "1375179a4064a4563efda8610093a7120aaa7aaf6014da8486925a8829a940a4",
+      "audio_sha256": "ae25dfad999865d75e512a1fe8698a125b6713e13ae146a3dea31f1dabc0b6a8",
+      "render_seconds": 12.908361564012012
+    }
+  ],
+  "limitations": "Real Kokoro waveforms, CTC alignment, unprompted CPU ASR and canonical render/verify/admission QA. Not the guarded GPU production launcher, signed inventory, Meta publication or an audience test. Audio may differ across arms because the spoken task is the intervention; durations are measured rather than matched."
+}

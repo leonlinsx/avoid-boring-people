@@ -34,6 +34,7 @@ TOPICS = [
     ('creative ideas', r'\bcreativ|\bideas\b|\binnovat', ['How do you make room for useful creative ideas?', 'Which creative ideas deserve more attention?']),
     ('learning', r'\blearn|\bteach|\bpractice|\bskill', ['What makes learning a skill difficult?', 'How do you approach learning something unfamiliar?']),
     ('product', r'\bproduct|\bcustomer|\buser|\bcommunication|\bsoftware', ['What job does a useful product need to do?', 'How does a product fit the way people work?']),
+    ('relationships', r'\bloved ones\b', ['What makes time together valuable in relationships?', 'How do you make room for time in relationships?']),
 ]
 RISK = re.compile(r'(?i)\b(invest\w*|stocks?|portfolio|gambl\w*|bank\w*|funds?|trading|ipo|tax\w*|medical|health|disease|drug\w*|suicid\w*|law\w*|legal|elections?|politic\w*|sexual\w*|sex|violence|weapons?|billion|million|percent|dollars?|guarantee\w*)\b')
 REFERENTIAL = re.compile(r'(?i)\b(above|below|as mentioned|as discussed|earlier|this section|this second|the former|the latter|screenshot|pictured|the image|the chart|for this reason|currently|today|now)\b')

@@ -12,10 +12,12 @@ AXES = {'compression': ('question', 'payoff'),
         'typography': ('cards', 'source_type'),
         'audience': ('making_a_choice', 'reassessing_an_earlier_choice')}
 FIELDS = dict(zip(AXES, ('structure', 'layout', 'audience')))
+PRIMARY_FIELDS = {**FIELDS, 'reflection': 'application'}
 HYPOTHESES = {
     'compression': 'For {audience} viewers using {layout}, an attributed payoff and full explanation followed by an application question retain more attention than a diagnostic question before the explanation.',
     'typography': 'With {structure} narration for {audience} viewers, complete word-aligned source typography improves comprehension and qualified discovery over the existing graphics.',
     'audience': 'With {structure} narration and {layout}, an explicit invitation to revisit an earlier choice produces more qualified discovery than positioning the same perspective for a new choice.',
+    'reflection': 'With {structure} narration and {layout} for {audience} viewers, asking for a boundary condition instead of asking for a follow produces more saves and qualified discovery. Classroom self-explanation evidence motivates this test; it does not establish Reel performance.',
 }
 MAX_POSTS = 3
 COOLDOWN = timedelta(days=7)
@@ -36,7 +38,7 @@ def script(item):
 def config(value):
     if set(value) != {'protocol', 'factor', 'arm', 'evidence', 'control'}:
         raise policy.Quarantine('renewal_protocol_fields')
-    if (value['protocol'] != PROTOCOL or value['factor'] not in AXES
+    if (value['protocol'] != PROTOCOL or value['factor'] not in HYPOTHESES
         or type(value['arm']) is not int or value['arm'] not in (0, 1) or value['evidence'] is not None):
         raise policy.Quarantine('renewal_protocol_treatment')
     control = value['control']
@@ -44,13 +46,15 @@ def config(value):
         raise policy.Quarantine('renewal_control_fields')
     if any(control[FIELDS[f]] not in levels for f, levels in AXES.items()):
         raise policy.Quarantine('renewal_control_values')
-    if control[FIELDS[value['factor']]] != AXES[value['factor']][0]:
+    if value['factor'] in AXES and control[FIELDS[value['factor']]] != AXES[value['factor']][0]:
         raise policy.Quarantine('renewal_primary_variable')
     return value
 
 
 def specification(value):
     value = config(value)
+    if value['factor'] == 'reflection':
+        return {**value['control'], **({'application': 'condition_check'} if value['arm'] else {})}
     return {**value['control'], FIELDS[value['factor']]: AXES[value['factor']][value['arm']]}
 
 
@@ -61,8 +65,9 @@ def compact(value):
 def signature(item):
     """Ignore IDs, colors, caption wording, voice and equivalent hook rewrites.
 
-    Only source placement/repetition, whole-source typography, and explicit
-    earlier-choice positioning distinguish these supported executions.
+    Source placement/repetition, whole-source typography, earlier-choice
+    positioning and a spoken boundary-condition task distinguish executions.
+    Caption-only CTA rewrites still do not create capacity.
     """
     s = script(item)
     if not s.get('scenes'):return None  # Unverifiable legacy execution: no reuse exception.
@@ -108,6 +113,11 @@ def apply(item, value):
         item['audience'].update(position=spec['audience'], intended_viewer='Someone reassessing ' + creative.JOBS.get(item['topic'], item['topic']),
                                 specific_problem='An earlier choice may need revisiting: ' + item['topic'])
     item['visual'] = spec['layout']
+    if spec.get('application') == 'condition_check':
+        item['scenes'][3] = {
+            'narration': 'Before your next choice, name a condition that would make this perspective less useful.',
+            'headline': 'WHERE WOULD THIS NOT APPLY?', 'detail': 'NAME A CONDITION BEFORE DECIDING'}
+        item['cta_type'] = 'reflect'
     eid = episode(item['topic'], value)
     h = policy.sha({'protocol': PROTOCOL, 'specification': spec, 'voice': item['voice'], 'caption_words': 5,
                     'caption_strategy': item['caption_strategy']})
@@ -117,7 +127,7 @@ def apply(item, value):
                 presentation_signature=spec, pair_id=pair, concept_id='abpa-' + policy.sha({'pair': pair, 'presenter': False})[:24])
     item['creative_trial'] = {**item['creative_trial'], 'protocol': PROTOCOL, 'factor': value['factor'],
                              'arm': 'treatment' if value['arm'] else 'control', 'episode_id': eid,
-                             'hypothesis': HYPOTHESES[value['factor']].format(**{k:v.replace('_',' ') for k,v in value['control'].items()}), 'primary_variable': FIELDS[value['factor']],
+                             'hypothesis': HYPOTHESES[value['factor']].format(**{k:v.replace('_',' ') for k,v in value['control'].items()}), 'primary_variable': PRIMARY_FIELDS[value['factor']],
                              'control': value['control'], 'specification': spec, 'unit': 'distinct_owned_claim_graphics_only',
                              'stop_conditions': {'max_distinct_claims_per_arm': MAX_POSTS, 'days_after_first_publication': 14,
                                                  'unsafe_or_saturated_supply': 'defer; never relax QA'},
@@ -152,13 +162,13 @@ def options(record, previous, state, *, now=None):
     try:fresh = now - timedelta(days=8) <= instant(review['created_at']) <= now + timedelta(minutes=5)
     except (KeyError, ValueError, TypeError):fresh = False
     priorities = review.get('creative_learning', {}).get('factor_priority', []) if fresh else []
-    factors = list(dict.fromkeys([f for f in priorities if f in AXES] + list(AXES)))
+    factors = list(dict.fromkeys([f for f in priorities if f in HYPOTHESES] + list(HYPOTHESES)))
     used = [signature(m) for m in previous if script(m).get('claim_id') == record['claim_id']]
     choices = []
     for levels in product(*AXES.values()):
         control = dict(zip(FIELDS.values(), levels))
         for factor in factors:
-            if control[FIELDS[factor]] != AXES[factor][0]:continue
+            if factor in AXES and control[FIELDS[factor]] != AXES[factor][0]:continue
             if len(record['source_sentences']) == 1 and (control['structure'] != 'payoff' or factor == 'compression'):continue
             base = {'protocol': PROTOCOL, 'factor': factor, 'arm': 0, 'evidence': None, 'control': control}
             target = specification({**base, 'arm': 1})
