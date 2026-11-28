@@ -150,7 +150,8 @@ def creative_learning(rows,now=None):
     """Use one equal-age observation per Reel; diagnoses only order exploration."""
     from scripts.instagram_growth.autonomy.creative import HYPOTHESES
     from scripts.instagram_growth.autonomy import renewal
-    hypotheses={**HYPOTHESES,**renewal.HYPOTHESES}
+    hypotheses={**HYPOTHESES,'reflection':renewal.HYPOTHESES['reflection'].format(
+        structure='matched',layout='the same graphics',audience='the same')}
     now=now or datetime.now(timezone.utc)
     factors=['audience','hook','caption','compression','typography','reflection']
     observed=[r for r in rows if r['window']=='24h' and r['timely']

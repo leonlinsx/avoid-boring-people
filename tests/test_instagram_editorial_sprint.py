@@ -114,6 +114,7 @@ def test_weekly_review_proposes_new_task_without_claiming_outcomes():
     assert 'typography' in review['factor_priority'] and 'reflection' in review['factor_priority']
     assert review['observed_posts']==0
     assert 'no growth winner' in review['effect']
+    assert all('{' not in h['test'] for h in review['hypotheses'])
 
 
 def test_one_additional_owned_relationship_paragraph_keeps_complete_context(tmp_path,monkeypatch):
